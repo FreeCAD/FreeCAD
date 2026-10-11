@@ -53,7 +53,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDraftParameters */
 
 TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, false, true, parent)
+    : TaskDressUpParameters(DressUpView, false, true, false, true, parent)
     , ui(new Ui_TaskDraftParameters)
 {
     // we need a separate container widget to add all controls to

@@ -67,7 +67,7 @@ jobs:
           egress-policy: audit
 
       - name: Checking out source code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
@@ -90,7 +90,7 @@ jobs:
       - name: Install cmake
         uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
-          cmake-version: '3.31.6'
+          cmake-version: '4.4.3'
 
       - name: Configuring CMake
         run: >
@@ -107,13 +107,21 @@ jobs:
           -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=ON
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
 
+      # The default x86 MSBuild runs emulated on ARM64 and selects the emulated HostX86 compiler.
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
+        with:
+          msbuild-architecture: ${{ inputs.cmakeArchitecture == 'ARM64' && 'arm64' || 'x86' }}
 
       - name: Compiling sources
         run: |
           cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m:3 /p:Configuration=Release /p:TrackFileAccess=false
+          $extraArguments = @()
+          if ("${{ inputs.cmakeArchitecture }}" -eq "ARM64") {
+            $extraArguments += "/p:PreferredToolArchitecture=arm64"
+          }
+          msbuild ALL_BUILD.vcxproj /m:4 /p:Configuration=Release /p:TrackFileAccess=false `
+            @extraArguments
 
       - name: Installing to staging tree
         run: |

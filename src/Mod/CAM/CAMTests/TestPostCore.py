@@ -283,6 +283,43 @@ class TestPathPostUtils(unittest.TestCase):
         self.assertEqual(result.Commands[6].Name, "G80")  # Final termination
         self.assertEqual(len(result.Commands), 7)
 
+    def test090_canned_cycle_inserted_commands_carry_annotations(self):
+        """Inserted G98/G99/G80 carry the cycle's annotations (linuxcnc rigid tapping keys on them)"""
+        annotations = {"RetractMode": "G99", "operation": "tapping", "rigid": "True"}
+        cmd1 = Path.Command("G84", {"X": 0.0, "Y": 0.0, "Z": -5.0, "R": 1.0, "F": 1.25})
+        cmd1.Annotations = annotations
+        cmd2 = Path.Command("G84", {"X": 5.0, "Y": 0.0, "Z": -5.0, "R": 1.0, "F": 1.25})
+        cmd2.Annotations = annotations
+
+        result = PostUtils.cannedCycleTerminator(Path.Path([cmd1, cmd2, Path.Command("G0 Z10")]))
+
+        self.assertEqual([c.Name for c in result.Commands], ["G99", "G84", "G84", "G80", "G0"])
+        for i in (0, 3):
+            self.assertEqual(result.Commands[i].Annotations.get("operation"), "tapping")
+            self.assertEqual(result.Commands[i].Annotations.get("rigid"), "True")
+
+    def test100_canned_cycle_unannotated_keeps_path_retract_mode(self):
+        """Cycles without a RetractMode annotation use the last literal G98/G99, not G98"""
+        # Shape of the deprecated Tapping op: one G99, then a G0 before every hole.
+        commands = [Path.Command("G99")]
+        for x in (0.0, 5.0):
+            commands.append(Path.Command("G0", {"X": x, "Y": 0.0, "Z": 10.0}))
+            commands.append(Path.Command("G84", {"X": x, "Y": 0.0, "Z": -5.0, "R": 1.0}))
+        commands.append(Path.Command("G80"))
+
+        result = PostUtils.cannedCycleTerminator(Path.Path(commands))
+
+        names = [c.Name for c in result.Commands]
+        self.assertNotIn("G98", names)
+        for i, name in enumerate(names):
+            if name == "G84":
+                self.assertEqual(names[i - 1], "G99", f"G84 at {i} not preceded by G99: {names}")
+
+        # A G80 in the path ends the explicit mode; later bare cycles default to G98 again.
+        later = Path.Command("G81", {"X": 0.0, "Y": 0.0, "Z": -1.0, "R": 1.0})
+        result = PostUtils.cannedCycleTerminator(Path.Path(commands + [later]))
+        self.assertEqual(result.Commands[-3].Name, "G98")
+
 
 class TestBuildPostList(unittest.TestCase):
     """

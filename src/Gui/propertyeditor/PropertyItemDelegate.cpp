@@ -267,7 +267,10 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
             return false;
         }
     }
-    return QItemDelegate::eventFilter(o, ev);
+    QPointer<QObject> guardedObject(o);
+    const bool filtered = QItemDelegate::eventFilter(o, ev);
+    // Closing an editor can delete it while this event is being filtered.
+    return filtered || !guardedObject;
 }
 
 QWidget* PropertyItemDelegate::createEditor(

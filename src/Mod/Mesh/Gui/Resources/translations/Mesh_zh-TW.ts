@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="752"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>加上三角形</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="753"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>手動在網格上新增三角形</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1489"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>邊界框資訊</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>顯示選取網格的邊界框座標</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Regular Solid</source>
-      <translation>矩形實體</translation>
+      <translation>規則實體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1545"/>
       <source>Builds a regular solid</source>
-      <translation>建立一標準實體</translation>
+      <translation>建立規則實體</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="994"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>剖面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>建立網格剖面</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>簡化</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>Decimates a mesh</source>
-      <translation>十進制網格</translation>
+      <translation>簡化網格</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>建立選取網格的布林差集</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1127"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>面資訊</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1128"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>顯示選取面的資訊</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="1308"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>評估實體</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1309"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>不論網格是否為實體均檢查</translation>
+      <translation>檢查網格是否為實體</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>評估與修復</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="403"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>匯出網格…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="404"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>將網格匯出至檔案</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1631"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>封閉孔洞</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1632"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>以互動方式封閉網格孔洞</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1576"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>填補孔洞</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>填補網格中的孔洞</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1450"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>翻轉法線</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1451"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>翻轉選取網格的法線</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>從幾何建立網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>從選取的幾何建立網格</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>從形狀建立網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
+      <translation>將選取的形狀細分為網格</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Harmonize Normals</source>
-      <translation type="unfinished">Harmonize Normals</translation>
+      <translation>統一法線</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1412"/>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>匯入網格…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>從檔案匯入網格</translation>
     </message>
   </context>
   <context>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="260"/>
       <source>Creates a boolean intersection from the selected meshes</source>
-      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
+      <translation>建立選取網格的布林交集</translation>
     </message>
   </context>
   <context>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../Command.cpp" line="803"/>
       <source>Cuts the mesh with a selected polygon</source>
-      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
+      <translation>以選取的多邊形切割網格</translation>
     </message>
   </context>
   <context>
@@ -371,7 +371,7 @@
     <message>
       <location filename="../../Command.cpp" line="691"/>
       <source>Segment</source>
-      <translation>Segment</translation>
+      <translation>區段</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="692"/>
@@ -389,12 +389,12 @@
     <message>
       <location filename="../../Command.cpp" line="1022"/>
       <source>Split</source>
-      <translation>Split</translation>
+      <translation>分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
+      <translation>將網格分割為兩個網格</translation>
     </message>
   </context>
   <context>
@@ -412,7 +412,7 @@
     <message>
       <location filename="../../Command.cpp" line="870"/>
       <source>Trims a mesh with a selected polygon</source>
-      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+      <translation>以選取的多邊形修剪網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="872"/>
@@ -430,12 +430,12 @@
     <message>
       <location filename="../../Command.cpp" line="1224"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>細化</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
       <source>Refines an existing mesh</source>
-      <translation type="unfinished">Refines an existing mesh</translation>
+      <translation>細化現有網格</translation>
     </message>
   </context>
   <context>
@@ -448,12 +448,12 @@
     <message>
       <location filename="../../Command.cpp" line="1258"/>
       <source>Remove Components Manually</source>
-      <translation type="unfinished">Remove Components Manually</translation>
+      <translation>手動移除元件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1259"/>
       <source>Marks a component to remove it from the mesh</source>
-      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
+      <translation>標記要從網格移除的元件</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>移除元件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
+      <translation>從網格移除拓樸上獨立的元件</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Scales the selected mesh objects</source>
-      <translation type="unfinished">Scales the selected mesh objects</translation>
+      <translation>縮放選取的網格物件</translation>
     </message>
   </context>
   <context>
@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="965"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>從平面剖切</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="966"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>以選取的平面剖切網格</translation>
     </message>
   </context>
   <context>
@@ -520,12 +520,12 @@
     <message>
       <location filename="../../Command.cpp" line="1679"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1680"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>從網格建立新網格區段</translation>
     </message>
   </context>
   <context>
@@ -538,12 +538,12 @@
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>從最佳擬合曲面分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1717"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>從最佳擬合曲面建立新網格區段</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>平滑</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1351"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>平滑選取的網格</translation>
     </message>
   </context>
   <context>
@@ -574,12 +574,12 @@
     <message>
       <location filename="../../Command.cpp" line="1799"/>
       <source>Split by Components</source>
-      <translation type="unfinished">Split by Components</translation>
+      <translation>依元件分割</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1800"/>
       <source>Splits the selected mesh into its components</source>
-      <translation type="unfinished">Splits the selected mesh into its components</translation>
+      <translation>將選取的網格分割為各元件</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>以平面修剪</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="937"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>移除選取平面一側的面以修剪網格</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>合併選取的網格</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@
     <message>
       <location filename="../../Command.cpp" line="583"/>
       <source>Curvature Plot</source>
-      <translation type="unfinished">Curvature Plot</translation>
+      <translation>曲率圖</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="584"/>
@@ -641,17 +641,17 @@
     <message>
       <location filename="../../Command.cpp" line="639"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <source>Curvature Info</source>
-      <translation type="unfinished">Curvature Info</translation>
+      <translation>曲率資訊</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Displays information about the curvature</source>
-      <translation type="unfinished">Displays information about the curvature</translation>
+      <translation>顯示曲率資訊</translation>
     </message>
   </context>
   <context>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>修復網格</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -791,7 +791,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1242"/>
       <source>Segment</source>
-      <translation>Segment</translation>
+      <translation>區段</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1870"/>
@@ -863,7 +863,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>網格資訊</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="772"/>
@@ -873,7 +873,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>邊的數量</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
@@ -888,7 +888,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>評估與修復網格</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>重複面</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>重複點</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>網格修復</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -1139,7 +1139,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation Settings</source>
-      <translation type="unfinished">Evaluation Settings</translation>
+      <translation>評估設定</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>矩形實體</translation>
+      <translation>規則實體</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
@@ -1231,7 +1231,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>邊長</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>取樣</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1290,7 +1290,7 @@
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
       <source>No Active Document</source>
-      <translation type="unfinished">No Active Document</translation>
+      <translation>沒有作用中文件</translation>
     </message>
   </context>
   <context>
@@ -1443,12 +1443,12 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>網格視圖</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>新網格的預設外觀</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1456,10 +1456,7 @@ is used when writing a file in AMF format</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>表面底面將以與頂面相同的方式著色。若未勾選，則視繪圖引擎設定而定。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1470,13 +1467,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to an unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
-
-With flat shading the surface normals are not defined per vertex that leads
-to an unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
-</translation>
+      <translation>若啟用此選項則使用 Phong 著色，否則使用平面著色。著色決定表面的外觀。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="369"/>
@@ -1525,12 +1516,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1563,17 +1554,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>前沿四邊形</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>準結構化四邊形</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
       <source>Time</source>
-      <translation>Time</translation>
+      <translation>時間</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
@@ -1583,7 +1574,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>正在執行 Gmsh…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="270"/>
@@ -1601,17 +1592,17 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>無法新增三角形以避免非流形。</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>加上三角形</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="408"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>翻轉法線</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="409"/>
@@ -1621,7 +1612,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="426"/>
       <source>Finish</source>
-      <translation>完成</translation>
+      <translation>結束</translation>
     </message>
   </context>
   <context>
@@ -1637,7 +1628,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="176"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>曲面擬合</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="183"/>
@@ -1700,12 +1691,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>最大元素尺寸（0.0 = 自動）</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>最小元素尺寸（0.0 = 自動）</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1725,7 +1716,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>留空以使用預設 gmsh 執行檔</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1735,7 +1726,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation>Time</translation>
+      <translation>時間</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>
@@ -1748,7 +1739,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>移除元件</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1782,17 +1773,17 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>挑選三角形</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>區域選項</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>只考慮法線朝向螢幕的三角形</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1825,7 +1816,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>網格分割</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1867,22 +1858,22 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (flat)</source>
-      <translation type="unfinished">Tolerance (flat)</translation>
+      <translation>公差（平坦）</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (curved)</source>
-      <translation type="unfinished">Tolerance (curved)</translation>
+      <translation>公差（曲面）</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Maximum curvature</source>
-      <translation type="unfinished">Maximum curvature</translation>
+      <translation>最大曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Minimum curvature</source>
-      <translation type="unfinished">Minimum curvature</translation>
+      <translation>最小曲率</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1892,7 +1883,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
       <source>Freeform</source>
-      <translation>Freeform</translation>
+      <translation>自由曲面</translation>
     </message>
   </context>
   <context>
@@ -1905,7 +1896,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>網格分割</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1987,12 +1978,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Accept only visible triangles</source>
-      <translation type="unfinished">Accept only visible triangles</translation>
+      <translation>只接受可見三角形</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>只接受法線朝向螢幕的三角形</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="87"/>
@@ -2034,7 +2025,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>Boundings of %1:</source>
-      <translation>Boundings of %1:</translation>
+      <translation>%1 的邊界：</translation>
     </message>
   </context>
   <context>
@@ -2062,8 +2053,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="321"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>系統找不到 OpenSCAD。
+請至 https://openscad.org/ 安裝。</translation>
     </message>
   </context>
   <context>
@@ -2192,7 +2183,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>匯出網格</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="495"/>
@@ -2227,12 +2218,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1591"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>填補孔洞</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1592"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>以最大邊數填補孔洞</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1865"/>
@@ -2252,28 +2243,28 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>顯示元件</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>顯示區段</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>顯示色彩</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>離開資訊模式</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>
       <source>Mesh: %1</source>
-      <translation type="unfinished">Mesh: %1</translation>
+      <translation>網格：%1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>
@@ -2283,37 +2274,37 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1751"/>
       <source>Points: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Points: &lt;%1, %2, %3&gt;</translation>
+      <translation>點：&lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1758"/>
       <source>Neighbours: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Neighbours: &lt;%1, %2, %3&gt;</translation>
+      <translation>相鄰：&lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1764"/>
       <source>Triangle:</source>
-      <translation type="unfinished">Triangle:</translation>
+      <translation>三角形：</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>離開填孔模式</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1844"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>離開移除模式</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1845"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>刪除選取的面</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>清除選取的面</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="472"/>
@@ -2328,27 +2319,27 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>面片數量</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>下限</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>上限</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation>網格資訊方塊</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>網格資訊</translation>
     </message>
   </context>
   <context>
@@ -2376,32 +2367,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>網格工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>網格修改</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation>Mesh Boolean</translation>
+      <translation>網格布林</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>網格切割</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>網格分割</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>網格分析</translation>
     </message>
   </context>
   <context>
@@ -2409,7 +2400,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL 網格</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>
@@ -2426,7 +2417,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../../Init.py" line="27"/>
       <source>Object File Format Mesh</source>
       <extracomment>Translation note: "Object File Format" is the official name and should not be translated</extracomment>
-      <translation type="unfinished">Object File Format Mesh</translation>
+      <translation>Object File Format 網格</translation>
     </message>
   </context>
 </TS>

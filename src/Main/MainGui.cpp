@@ -272,7 +272,7 @@ int main(int argc, char** argv)
         QApplication app(argc, argv);
         QString msg = QString::fromLatin1(e.what());
         displayCritical(msg);
-        exit(1);
+        return 1;
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
@@ -282,7 +282,7 @@ int main(int argc, char** argv)
         else {
             displayInfo(e.what());
         }
-        exit(0);
+        return 0;
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
@@ -315,7 +315,7 @@ int main(int argc, char** argv)
         }
 
         displayCritical(msg, false);
-        exit(100);
+        return 100;
     }
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
@@ -327,7 +327,7 @@ int main(int argc, char** argv)
         )
                           .arg(appName);
         displayCritical(msg, false);
-        exit(101);
+        return 101;
     }
 
     // Run phase ===========================================================

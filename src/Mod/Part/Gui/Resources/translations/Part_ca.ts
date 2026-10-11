@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Pla mitjà entre cares</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>L'origen del pla és a mig camí entre dues cares planes i la seva orientació bisecta l'angle entre elles per igual. Per a cares no paral·leles, el pla conté la seva línia d'intersecció.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Pla mitjà entre cares</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>L'origen del pla és a mig camí entre dues cares planes i la seva orientació bisecta l'angle entre elles per igual. Per a cares no paral·leles, el pla conté la seva línia d'intersecció.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -1198,22 +1198,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2394"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2395"/>
+      <location filename="../../Command.cpp" line="2399"/>
       <source>Box Selection</source>
       <translation>Selecció rectangular</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2400"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Selecciona elements del visor 3D utilitzant una selecció rectangular</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Box selection</source>
       <translation>Quadre de selecció</translation>
     </message>
@@ -1221,17 +1221,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2316"/>
+      <location filename="../../Command.cpp" line="2320"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2317"/>
+      <location filename="../../Command.cpp" line="2321"/>
       <source>Check Geometry</source>
       <translation>Comprovar la geometria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2322"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Analitza les formes seleccionades per a trobar errors</translation>
     </message>
@@ -1239,17 +1239,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2350"/>
+      <location filename="../../Command.cpp" line="2354"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2351"/>
+      <location filename="../../Command.cpp" line="2355"/>
       <source>Appearance per &amp;Face</source>
       <translation>Aparença per &amp;cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2356"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Estableix l'aparença de cada cara individual de l'objecte seleccionat</translation>
     </message>
@@ -1257,19 +1257,19 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1408"/>
       <source>Boolean Operation</source>
       <translation>Operació booleana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Applies a boolean operation with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
+      <translation>Aplica una operació booleana amb les formes seleccionades</translation>
     </message>
   </context>
   <context>
@@ -1294,17 +1294,17 @@
   <context>
     <name>CmdPartBox2</name>
     <message>
-      <location filename="../../Command.cpp" line="133"/>
+      <location filename="../../Command.cpp" line="137"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Box Fix 1</source>
       <translation>Correcció de caixa 1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="135"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>Creates a solid box</source>
       <translation>Crea una caixa sòlida</translation>
     </message>
@@ -1312,17 +1312,17 @@
   <context>
     <name>CmdPartBox3</name>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="180"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="181"/>
       <source>Box Fix 2</source>
       <translation>Correcció de caixa 2</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="182"/>
       <source>Creates a solid box</source>
       <translation>Crea una caixa sòlida</translation>
     </message>
@@ -1330,17 +1330,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Shape Builder</source>
       <translation>Construïr forma</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1709"/>
       <source>Advanced utility to create shapes</source>
       <translation>Utilitat avançada per crear formes</translation>
     </message>
@@ -1348,17 +1348,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Chamfer</source>
       <translation>Xamfrà</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Crea un xamfrà a les vores seleccionades d'una forma</translation>
     </message>
@@ -1366,17 +1366,17 @@
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Intersection</source>
       <translation>Intersecció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="392"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Intersects the selected shapes</source>
       <translation>Interseca les formes seleccionades</translation>
     </message>
@@ -1384,17 +1384,17 @@
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="817"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="818"/>
+      <location filename="../../Command.cpp" line="822"/>
       <source>Compound Tools</source>
       <translation>Eines de composts</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="819"/>
+      <location filename="../../Command.cpp" line="823"/>
       <source>Compound tools for working with multiple shapes</source>
       <translation>Eines de composts per a treballar amb múltiples formes</translation>
     </message>
@@ -1402,17 +1402,17 @@
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="573"/>
       <source>Join Shapes</source>
       <translation>Unir formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>Joins the selected walled shapes</source>
       <translation>Uneix les formes de paret seleccionades</translation>
     </message>
@@ -1420,17 +1420,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1923"/>
+      <location filename="../../Command.cpp" line="1927"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1924"/>
+      <location filename="../../Command.cpp" line="1928"/>
       <source>Offset</source>
       <translation>Equidistància</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1929"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Eines per a l'equidistància de les formes (construir formes paral·leles)</translation>
     </message>
@@ -1438,17 +1438,17 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="686"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
+      <location filename="../../Command.cpp" line="687"/>
       <source>Split Shapes</source>
       <translation>Dividir formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="685"/>
+      <location filename="../../Command.cpp" line="689"/>
       <source>Shape splitting and compsolid creation tools</source>
       <translation>Eines de divisió de formes i de creació de compostos sòlids</translation>
     </message>
@@ -1456,17 +1456,17 @@
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="934"/>
+      <location filename="../../Command.cpp" line="938"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="935"/>
+      <location filename="../../Command.cpp" line="939"/>
       <source>Compound</source>
       <translation>Composició</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="940"/>
       <source>Compounds the selected shapes</source>
       <translation>Crea un compost amb les formes seleccionades</translation>
     </message>
@@ -1493,17 +1493,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1667"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
+      <location filename="../../Command.cpp" line="1668"/>
       <source>Cross-Sections</source>
       <translation>Seccions transversals</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Creates cross-sections</source>
       <translation>Crea seccions transversals</translation>
     </message>
@@ -1511,17 +1511,17 @@
   <context>
     <name>CmdPartCut</name>
     <message>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Cut</source>
       <translation>Talla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Cuts 2 selected shapes</source>
       <translation>Talla 2 formes seleccionades</translation>
     </message>
@@ -1584,17 +1584,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1136"/>
+      <location filename="../../Command.cpp" line="1140"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1137"/>
+      <location filename="../../Command.cpp" line="1141"/>
       <source>Export CAD File</source>
       <translation>Exporta el fitxer CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1139"/>
+      <location filename="../../Command.cpp" line="1143"/>
       <source>Exports to a CAD file</source>
       <translation>Exporta a fitxer CAD</translation>
     </message>
@@ -1602,17 +1602,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Extrude</source>
       <translation>Extrusió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1441"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Extrudeix el croquis o perfil seleccionat</translation>
     </message>
@@ -1620,17 +1620,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1579"/>
+      <location filename="../../Command.cpp" line="1583"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1580"/>
+      <location filename="../../Command.cpp" line="1584"/>
       <source>Fillet</source>
       <translation>Arrodoniment</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1585"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Arrodoneix les arestes seleccionades d'una forma</translation>
     </message>
@@ -1638,17 +1638,17 @@
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="467"/>
+      <location filename="../../Command.cpp" line="471"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="468"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Union</source>
       <translation>Unió</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="469"/>
+      <location filename="../../Command.cpp" line="473"/>
       <source>Unites the selected shapes</source>
       <translation>Uneix les formes seleccionades</translation>
     </message>
@@ -1656,17 +1656,17 @@
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="1066"/>
+      <location filename="../../Command.cpp" line="1070"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1067"/>
+      <location filename="../../Command.cpp" line="1071"/>
       <source>Import CAD File</source>
       <translation>Importa el fitxer CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1069"/>
+      <location filename="../../Command.cpp" line="1073"/>
       <source>Imports a CAD file</source>
       <translation>Importa un fitxer CAD</translation>
     </message>
@@ -1674,17 +1674,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1192"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1193"/>
       <source>Import Curve Network</source>
       <translation>Importar xarxa de corbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1195"/>
       <source>Imports a curve network</source>
       <translation>Importa una xarxa de corbes</translation>
     </message>
@@ -1692,17 +1692,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1732"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Loft</source>
       <translation>Altell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Lofts the selected profiles</source>
       <translation>Alça els perfils seleccionats</translation>
     </message>
@@ -1710,17 +1710,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1493"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Face From Wires</source>
       <translation>Cara a partir de filferros</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1498"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Crea una cara a partir dels filferros seleccionats (p. ex. d'un croquis)</translation>
     </message>
@@ -1728,17 +1728,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1241"/>
+      <location filename="../../Command.cpp" line="1245"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1242"/>
+      <location filename="../../Command.cpp" line="1246"/>
       <source>Convert to Solid</source>
       <translation>Convertir a sòlid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1247"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Converteix la closca o compost seleccionat a un sòlid</translation>
     </message>
@@ -1746,17 +1746,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1640"/>
       <source>Mirror</source>
       <translation>Simetria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Mirrors the selected shape</source>
       <translation>Reflecteix la forma seleccionada</translation>
     </message>
@@ -1764,17 +1764,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1790"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1795"/>
       <source>3D Offset</source>
       <translation>Equidistància 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1796"/>
       <source>Offsets shapes in 3D</source>
       <translation>Desplaça formes en 3D</translation>
     </message>
@@ -1782,17 +1782,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1857"/>
+      <location filename="../../Command.cpp" line="1861"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1858"/>
+      <location filename="../../Command.cpp" line="1862"/>
       <source>2D Offset</source>
       <translation>Equidistància 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1863"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Desplaça formes planars en 2D</translation>
     </message>
@@ -1800,17 +1800,17 @@
   <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="91"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="92"/>
       <source>Pick Curve Network</source>
       <translation>Seleccioni una xarxa de corbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Picks a curve network</source>
       <translation>Selecciona una xarxa de corbes</translation>
     </message>
@@ -1836,17 +1836,17 @@
   <context>
     <name>CmdPartPrimitives</name>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Primitive</source>
       <translation>Primitiu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="226"/>
       <source>Creates solid geometric primitives parametrically</source>
       <translation>Crea primitives geomètriques sòlides de forma paramètrica</translation>
     </message>
@@ -1854,17 +1854,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2424"/>
+      <location filename="../../Command.cpp" line="2428"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2425"/>
+      <location filename="../../Command.cpp" line="2429"/>
       <source>Project on Surface</source>
       <translation>Projectar en una superfície</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2430"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1894,17 +1894,17 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
+      <location filename="../../Command.cpp" line="1339"/>
       <source>Reverse Shapes</source>
       <translation>Invertir formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1340"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Inverteix l'orientació de les formes seleccionades</translation>
     </message>
@@ -1912,17 +1912,17 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1551"/>
+      <location filename="../../Command.cpp" line="1555"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>Revolve</source>
       <translation>Girar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1557"/>
       <source>Revolves the selected shape</source>
       <translation>Revoluciona la forma seleccionada</translation>
     </message>
@@ -1930,17 +1930,17 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2172"/>
+      <location filename="../../Command.cpp" line="2176"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2173"/>
+      <location filename="../../Command.cpp" line="2177"/>
       <source>Ruled Surface</source>
       <translation>Superfície reglada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2178"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Crea una superfície reglada entre 2 filferros seleccionats</translation>
     </message>
@@ -1948,17 +1948,17 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="996"/>
+      <location filename="../../Command.cpp" line="1000"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="997"/>
+      <location filename="../../Command.cpp" line="1001"/>
       <source>Section</source>
       <translation>Secció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="998"/>
+      <location filename="../../Command.cpp" line="1002"/>
       <source>Sections 2 selected shapes</source>
       <translation>Secciona 2 formes seleccionades</translation>
     </message>
@@ -2039,17 +2039,17 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="1765"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1762"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Sweep</source>
       <translation>Escombrar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1767"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Escombra perfils al llarg d'un filferro</translation>
     </message>
@@ -2057,27 +2057,27 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2025"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2026"/>
+      <location filename="../../Command.cpp" line="2030"/>
       <source>Thickness</source>
       <translation>Gruix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2031"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Elimina les cares seleccionades i desplaça la forma restant cap a fora, i afegeix un gruix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2086"/>
+      <location filename="../../Command.cpp" line="2090"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2091"/>
       <source>Selected shape is not a solid</source>
       <translation>La forma seleccionada no és un sòlid</translation>
     </message>
@@ -2122,93 +2122,118 @@ La vista de la càmera determina la direcció de la projecció.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Part Box Create</source>
       <translation>Creació peça de caixa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Part Cut</source>
       <translation>Part de tall</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="448"/>
       <source>Common</source>
       <translation>Comú</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="548"/>
       <source>Fusion</source>
       <translation>Fusion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="978"/>
       <source>Compound</source>
       <translation>Composició</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1025"/>
+      <location filename="../../Command.cpp" line="1029"/>
       <source>Section</source>
       <translation>Secció</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1097"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>Import Part</source>
       <translation>Importar Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1214"/>
+      <location filename="../../Command.cpp" line="1218"/>
       <source>Import Curve Net</source>
       <translation>Importar xarxa de corbes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1348"/>
+      <location filename="../../Command.cpp" line="1352"/>
       <source>Reverse</source>
       <translation>Revers</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1511"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Make face</source>
       <translation>Fer cara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1817"/>
+      <location filename="../../Command.cpp" line="1821"/>
       <source>Make Offset</source>
       <translation>Fer equidistància</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Make 2D Offset</source>
       <translation>Fer equidistància 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2098"/>
       <source>Make Thickness</source>
       <translation>Donar Gruix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2283"/>
+      <location filename="../../Command.cpp" line="2287"/>
       <source>Create ruled surface</source>
       <translation>Crea una superfície reglada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2651"/>
+      <source>Circular Link Array</source>
+      <translation>Matriu d'enllaços circular</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2686"/>
+      <source>Path Link Array</source>
+      <translation>Matriu d'enllaços de camins</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2721"/>
+      <source>Point Link Array</source>
+      <translation>Matriu d'enllaç de punts</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2756"/>
+      <source>Linear Link Array</source>
+      <translation>Matriu d'enllaços lineal</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2791"/>
+      <source>Polar Link Array</source>
+      <translation>Matriu d'enllaços polar</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2819"/>
       <source>Add coordinate system</source>
       <translation>Afegir sistema de coordenades</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2575"/>
+      <location filename="../../Command.cpp" line="2858"/>
       <source>Add datum plane</source>
       <translation>Afegir un pla de referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2609"/>
+      <location filename="../../Command.cpp" line="2892"/>
       <source>Add datum line</source>
       <translation>Afegir una línia de referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2643"/>
+      <location filename="../../Command.cpp" line="2926"/>
       <source>Add datum point</source>
       <translation>Afegir un punt de referència</translation>
     </message>
@@ -2372,7 +2397,7 @@ Nota: El posicionament s'expressa en l'espai local de l'objecte que s'adjunta.</
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation type="unfinished">Attachment Mode</translation>
+      <translation>Mode d'adjunció</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2968,12 +2993,12 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation type="unfinished">Constant radius</translation>
+      <translation>Radi constant</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable radius</source>
-      <translation type="unfinished">Variable radius</translation>
+      <translation>Radi variable</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
@@ -3202,7 +3227,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
+      <translation>Fusiona totes les formes en un únic compost durant la importació, resolent les instàncies de peces i aplicant les transformacions. Augmenta el temps d'importació, però no afecta la precisió de la geometria ni la qualitat de la renderització.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3390,7 +3415,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation type="unfinished">Select the type of geometric primitive to create</translation>
+      <translation>Seleccioneu el tipus de primitiva geomètrica que voleu crear</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3501,7 +3526,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="250"/>
       <source>Length of the plane in the local X direction</source>
-      <translation type="unfinished">Length of the plane in the local X direction</translation>
+      <translation>Longitud del pla en la direcció X local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="266"/>
@@ -3512,17 +3537,17 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="273"/>
       <source>Width of the plane in the local Y direction</source>
-      <translation type="unfinished">Width of the plane in the local Y direction</translation>
+      <translation>Amplada del pla en la direcció Y local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="347"/>
       <source>Length of the box in the local X direction</source>
-      <translation type="unfinished">Length of the box in the local X direction</translation>
+      <translation>Longitud de la caixa en la direcció X local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="370"/>
       <source>Width of the box in the local Y direction</source>
-      <translation type="unfinished">Width of the box in the local Y direction</translation>
+      <translation>Amplada de la caixa en la direcció Y local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="386"/>
@@ -3536,7 +3561,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="393"/>
       <source>Height of the box in the local Z direction</source>
-      <translation type="unfinished">Height of the box in the local Z direction</translation>
+      <translation>Alçada de la caixa en la direcció Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="463"/>
@@ -3555,17 +3580,17 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="493"/>
       <source>Height of the cylinder along the local Z axis</source>
-      <translation type="unfinished">Height of the cylinder along the local Z axis</translation>
+      <translation>Alçada del cilindre al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="516"/>
       <source>Skew angle of the cylinder in the first direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the first direction</translation>
+      <translation>Angle d'inclinació del cilindre en la primera direcció</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="542"/>
       <source>Skew angle of the cylinder in the second direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the second direction</translation>
+      <translation>Angle d'inclinació del cilindre en la segona direcció</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="593"/>
@@ -3575,7 +3600,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="600"/>
       <source>Rotation angle of the cylinder cross-section</source>
-      <translation type="unfinished">Rotation angle of the cylinder cross-section</translation>
+      <translation>Angle de rotació de la secció transversal del cilindre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="670"/>
@@ -3587,7 +3612,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="677"/>
       <source>Radius of the cone at the bottom</source>
-      <translation type="unfinished">Radius of the cone at the bottom</translation>
+      <translation>Radi del con a la base</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="693"/>
@@ -3599,12 +3624,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="700"/>
       <source>Radius of the cone at the top</source>
-      <translation type="unfinished">Radius of the cone at the top</translation>
+      <translation>Radi del con a la part superior</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="723"/>
       <source>Height of the cone along the local Z axis</source>
-      <translation type="unfinished">Height of the cone along the local Z axis</translation>
+      <translation>Alçada del con al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="765"/>
@@ -3615,12 +3640,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="772"/>
       <source>Rotation angle of the cone cross-section</source>
-      <translation type="unfinished">Rotation angle of the cone cross-section</translation>
+      <translation>Angle de rotació de la secció transversal del con</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="849"/>
       <source>Radius of the sphere</source>
-      <translation type="unfinished">Radius of the sphere</translation>
+      <translation>Radi de l'esfera</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="894"/>
@@ -3632,7 +3657,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="901"/>
       <source>Rotation angle of the sphere cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the sphere cross-section around the local Z axis</translation>
+      <translation>Angle de rotació de la secció transversal de l'esfera al voltant de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="917"/>
@@ -3642,22 +3667,22 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
       <source>Start angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">Start angle of the sphere along the local Z axis</translation>
+      <translation>Angle inicial de l'esfera al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="956"/>
       <source>End angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">End angle of the sphere along the local Z axis</translation>
+      <translation>Angle final de l'esfera al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1033"/>
       <source>Radius of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Z axis</translation>
+      <translation>Radi de l'el·lipsoide al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1056"/>
       <source>Radius of the ellipsoid along the local X axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local X axis</translation>
+      <translation>Radi de l'el·lipsoide al llarg de l'eix X local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1072"/>
@@ -3667,12 +3692,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1079"/>
       <source>Radius of the ellipsoid along the local Y axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Y axis</translation>
+      <translation>Radi de l'el·lipsoide al llarg de l'eix Y local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1131"/>
       <source>Rotation angle of the ellipsoid cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the ellipsoid cross-section around the local Z axis</translation>
+      <translation>Angle de rotació de la secció transversal de l'el·lipsoide al voltant de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
@@ -3683,37 +3708,37 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Start angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Start angle of the ellipsoid along the local Z axis</translation>
+      <translation>Angle inicial de l'el·lipsoide al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1186"/>
       <source>End angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">End angle of the ellipsoid along the local Z axis</translation>
+      <translation>Angle final de l'el·lipsoide al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1260"/>
       <source>Radius from the center of the torus to the center of the cross-section</source>
-      <translation type="unfinished">Radius from the center of the torus to the center of the cross-section</translation>
+      <translation>Radi des del centre del tor fins al centre de la secció transversal</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1283"/>
       <source>Radius of the torus cross-section</source>
-      <translation type="unfinished">Radius of the torus cross-section</translation>
+      <translation>Radi de la secció transversal del tor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
       <source>Rotation angle of the torus cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the torus cross-section around the local Z axis</translation>
+      <translation>Angle de rotació de la secció transversal del tor al voltant de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1358"/>
       <source>Start angle of the torus cross-section</source>
-      <translation type="unfinished">Start angle of the torus cross-section</translation>
+      <translation>Angle inicial de la secció transversal del tor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1390"/>
       <source>End angle of the torus cross-section</source>
-      <translation type="unfinished">End angle of the torus cross-section</translation>
+      <translation>Angle final de la secció transversal del tor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1460"/>
@@ -3724,7 +3749,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1467"/>
       <source>Number of sides of the polygon cross-section</source>
-      <translation type="unfinished">Number of sides of the polygon cross-section</translation>
+      <translation>Nombre de costats de la secció transversal poligonal</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
@@ -3735,22 +3760,22 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
       <source>Circumradius of the polygon cross-section</source>
-      <translation type="unfinished">Circumradius of the polygon cross-section</translation>
+      <translation>Circumradi de la secció transversal poligonal</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
       <source>Height of the prism along the local Z axis</source>
-      <translation type="unfinished">Height of the prism along the local Z axis</translation>
+      <translation>Alçada del prisma al llarg de l'eix Z local</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1539"/>
       <source>Skew angle of the prism in the first direction</source>
-      <translation type="unfinished">Skew angle of the prism in the first direction</translation>
+      <translation>Angle d'inclinació del prisma en la primera direcció</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1565"/>
       <source>Skew angle of the prism in the second direction</source>
-      <translation type="unfinished">Skew angle of the prism in the second direction</translation>
+      <translation>Angle d'inclinació del prisma en la segona direcció</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1611"/>
@@ -3760,12 +3785,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1618"/>
       <source>Minimum X value of the base face</source>
-      <translation type="unfinished">Minimum X value of the base face</translation>
+      <translation>Valor X mínim de la cara base</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1631"/>
       <source>Maximum X value of the base face</source>
-      <translation type="unfinished">Maximum X value of the base face</translation>
+      <translation>Valor X màxim de la cara base</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1647"/>
@@ -3775,12 +3800,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1654"/>
       <source>Minimum Y value (height start)</source>
-      <translation type="unfinished">Minimum Y value (height start)</translation>
+      <translation>Valor Y mínim (inici de l'alçada)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1667"/>
       <source>Maximum Y value (height end)</source>
-      <translation type="unfinished">Maximum Y value (height end)</translation>
+      <translation>Valor Y màxim (final de l'alçada)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1683"/>
@@ -3790,12 +3815,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1690"/>
       <source>Minimum Z value of the base face</source>
-      <translation type="unfinished">Minimum Z value of the base face</translation>
+      <translation>Valor Z mínim de la cara base</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1703"/>
       <source>Maximum Z value of the base face</source>
-      <translation type="unfinished">Maximum Z value of the base face</translation>
+      <translation>Valor Z màxim de la cara base</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1719"/>
@@ -3805,12 +3830,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1726"/>
       <source>Minimum X value of the top face</source>
-      <translation type="unfinished">Minimum X value of the top face</translation>
+      <translation>Valor X mínim de la cara superior</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1742"/>
       <source>Maximum X value of the top face</source>
-      <translation type="unfinished">Maximum X value of the top face</translation>
+      <translation>Valor X màxim de la cara superior</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1758"/>
@@ -3820,12 +3845,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
       <source>Minimum Z value of the top face</source>
-      <translation type="unfinished">Minimum Z value of the top face</translation>
+      <translation>Valor Z mínim de la cara superior</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1781"/>
       <source>Maximum Z value of the top face</source>
-      <translation type="unfinished">Maximum Z value of the top face</translation>
+      <translation>Valor Z màxim de la cara superior</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1848"/>
@@ -3835,22 +3860,22 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1855"/>
       <source>Distance between consecutive turns of the helix</source>
-      <translation type="unfinished">Distance between consecutive turns of the helix</translation>
+      <translation>Distància entre voltes consecutives de l'hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1878"/>
       <source>Total height of the helix</source>
-      <translation type="unfinished">Total height of the helix</translation>
+      <translation>Alçada total de l'hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1901"/>
       <source>Radius of the helix</source>
-      <translation type="unfinished">Radius of the helix</translation>
+      <translation>Radi de l'hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1924"/>
       <source>Taper angle of the helix</source>
-      <translation type="unfinished">Taper angle of the helix</translation>
+      <translation>Angle de conicitat de l'hèlix</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
@@ -3860,7 +3885,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1944"/>
       <source>Handedness of the helix: right-handed or left-handed</source>
-      <translation type="unfinished">Handedness of the helix: right-handed or left-handed</translation>
+      <translation>Sentit de gir de l'hèlix: a dretes o a esquerres</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2012"/>
@@ -3870,7 +3895,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2019"/>
       <source>Radial growth per rotation of the spiral</source>
-      <translation type="unfinished">Radial growth per rotation of the spiral</translation>
+      <translation>Creixement radial per volta de l'espiral</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
@@ -3880,12 +3905,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2042"/>
       <source>Total number of rotations of the spiral</source>
-      <translation type="unfinished">Total number of rotations of the spiral</translation>
+      <translation>Nombre total de rotacions de l'espiral</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2065"/>
       <source>Starting radius of the spiral</source>
-      <translation type="unfinished">Starting radius of the spiral</translation>
+      <translation>Radi inicial de l'espiral</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2124"/>
@@ -3901,7 +3926,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2147"/>
       <source>Start angle of the circular arc</source>
-      <translation type="unfinished">Start angle of the circular arc</translation>
+      <translation>Angle inicial de l'arc circular</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2160"/>
@@ -3912,12 +3937,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2167"/>
       <source>End angle of the circular arc</source>
-      <translation type="unfinished">End angle of the circular arc</translation>
+      <translation>Angle final de l'arc circular</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2200"/>
       <source>Define the circle by selecting 3 points in the 3D view</source>
-      <translation type="unfinished">Define the circle by selecting 3 points in the 3D view</translation>
+      <translation>Defineix el cercle seleccionant 3 punts a la vista 3D</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2203"/>
@@ -3952,7 +3977,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2304"/>
       <source>End angle of the elliptical arc</source>
-      <translation type="unfinished">End angle of the elliptical arc</translation>
+      <translation>Angle final de l'arc el·líptic</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2341"/>
@@ -3985,42 +4010,42 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2458"/>
       <source>X coordinate of the start point</source>
-      <translation type="unfinished">X coordinate of the start point</translation>
+      <translation>Coordenada X del punt inicial</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2471"/>
       <source>X coordinate of the end point</source>
-      <translation type="unfinished">X coordinate of the end point</translation>
+      <translation>Coordenada X del punt final</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2497"/>
       <source>Y coordinate of the start point</source>
-      <translation type="unfinished">Y coordinate of the start point</translation>
+      <translation>Coordenada Y del punt inicial</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2510"/>
       <source>Y coordinate of the end point</source>
-      <translation type="unfinished">Y coordinate of the end point</translation>
+      <translation>Coordenada Y del punt final</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2536"/>
       <source>Z coordinate of the start point</source>
-      <translation type="unfinished">Z coordinate of the start point</translation>
+      <translation>Coordenada Z del punt inicial</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2549"/>
       <source>Z coordinate of the end point</source>
-      <translation type="unfinished">Z coordinate of the end point</translation>
+      <translation>Coordenada Z del punt final</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2623"/>
       <source>Number of sides of the regular polygon</source>
-      <translation type="unfinished">Number of sides of the regular polygon</translation>
+      <translation>Nombre de costats del polígon regular</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
       <source>Circumradius of the regular polygon</source>
-      <translation type="unfinished">Circumradius of the regular polygon</translation>
+      <translation>Circumradi del polígon regular</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="509"/>
@@ -4080,7 +4105,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2654"/>
       <source>C&amp;reate</source>
-      <translation type="unfinished">C&amp;reate</translation>
+      <translation>C&amp;rea</translation>
     </message>
   </context>
   <context>
@@ -4305,7 +4330,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="538"/>
       <source>Selecting… (Line or Arc)</source>
-      <translation type="unfinished">Selecting… (Line or Arc)</translation>
+      <translation>S'està seleccionant… (línia o arc)</translation>
     </message>
   </context>
   <context>
@@ -4391,12 +4416,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="33"/>
       <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation type="unfinished">Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</translation>
+      <translation>Valida la geometria (BRep) després de cada operació booleana per a detectar errors. Nota: això pot alentir el rendiment en models complexos.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation type="unfinished">Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</translation>
+      <translation>Neteja automàticament la forma després de les operacions booleanes eliminant les arestes coplanàries redundants i fusionant les cares adjacents</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="80"/>
@@ -4406,12 +4431,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
       <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation type="unfinished">Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</translation>
+      <translation>Executa automàticament una passada de refinament després de crear característiques de Part Design per a eliminar les arestes innecessàries i netejar la geometria</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation type="unfinished">Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</translation>
+      <translation>Configura els cossos nous perquè admetin diversos sòlids desconnectats (compostos). Si no està marcat, un cos es limita estrictament a un únic sòlid contigu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4421,7 +4446,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="145"/>
       <source>Currently not implemented: this option does not yet modify automatically generated Part feature names</source>
-      <translation type="unfinished">Currently not implemented: this option does not yet modify automatically generated Part feature names</translation>
+      <translation>Actualment no implementat: aquesta opció encara no modifica els noms de les característiques de Part generats automàticament</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
@@ -4431,7 +4456,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
       <source>Specifies which profile geometry types are accepted by the Part Design Hole feature</source>
-      <translation type="unfinished">Specifies which profile geometry types are accepted by the Part Design Hole feature</translation>
+      <translation>Especifica quins tipus de geometria de perfil accepta la característica Forat de Part Design</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="181"/>
@@ -4441,7 +4466,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="194"/>
       <source>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</source>
-      <translation type="unfinished">Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</translation>
+      <translation>Especifica quins elements del croquis (punts, cercles o arcs) ha de detectar automàticament l'eina Forat per a utilitzar-los com a centres dels forats</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="207"/>
@@ -4466,12 +4491,12 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="258"/>
       <source>Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</source>
-      <translation type="unfinished">Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</translation>
+      <translation>Obre sempre el diàleg d'adjunció en crear un croquis nou a Part Design, independentment de la selecció o de si es manté premuda la tecla Maj. Sense això, només la selecció d'una sola cara o d'un pla de referència omet el diàleg.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="261"/>
       <source>Always open attachment dialog for new sketches</source>
-      <translation type="unfinished">Always open attachment dialog for new sketches</translation>
+      <translation>Obre sempre el diàleg d'adjunció per als croquis nous</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
@@ -4481,7 +4506,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation type="unfinished">Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</translation>
+      <translation>Mostra el model completament calculat a la vista 3D mentre s'edita una característica, de manera que es veu el context final en lloc de només la característica aïllada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
@@ -4491,7 +4516,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation type="unfinished">Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</translation>
+      <translation>Superposa una previsualització semitransparent del resultat mentre s'editen característiques per a visualitzar els canvis abans d'aplicar-los</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
@@ -4501,7 +4526,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
-      <translation type="unfinished">Visually highlights the source sketch or geometry used to generate the feature currently being edited</translation>
+      <translation>Ressalta visualment el croquis o la geometria d'origen utilitzats per a generar la característica que s'està editant</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
@@ -4521,7 +4546,7 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation type="unfinished">Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</translation>
+      <translation>Habilita nanses en pantalla (arrossegadors) a la vista 3D per a modificar interactivament, arrossegant-les, les cotes i els paràmetres de la característica que s'està editant</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
@@ -4531,57 +4556,57 @@ Comproveu primer una o més entitats de vora.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
-      <translation type="unfinished">Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</translation>
+      <translation>Evita que el model es recalculi mentre es manipulen els arrossegadors. La forma només s'actualitza en deixar anar el botó del ratolí.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
-      <translation type="unfinished">Enable coarse snapping while dragging</translation>
+      <translation>Habilita l'ajustament gros en arrossegar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
       <source>Enables larger snapping increments while  manipulating draggers</source>
-      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+      <translation>Habilita increments d'ajustament més grans mentre es manipulen els arrossegadors</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
-      <translation type="unfinished">Fine snap modifier</translation>
+      <translation>Modificador d'ajustament fi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
       <source>Defines the modifier key used for fine snapping while dragging</source>
-      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+      <translation>Defineix la tecla modificadora utilitzada per a l'ajustament fi en arrossegar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
-      <translation type="unfinished">Default coarse drag behavior</translation>
+      <translation>Comportament per defecte de l'arrossegament gros</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
-      <translation type="unfinished">Determines whether the drag is coarse or fine without holding the modifier key</translation>
+      <translation>Determina si l'arrossegament és gros o fi sense mantenir premuda la tecla modificadora</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
-      <translation type="unfinished">Coarse movement multiplier</translation>
+      <translation>Multiplicador del moviment gros</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="515"/>
       <source>Multiplies the base movement increment when coarse snapping is active</source>
-      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+      <translation>Multiplica l'increment de moviment base quan l'ajustament gros és actiu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
-      <translation type="unfinished">Coarse rotation step (degrees)</translation>
+      <translation>Pas de rotació gros (graus)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="548"/>
       <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
-      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
+      <translation>Estableix el pas de rotació en graus que s'aplica quan l'ajustament gros és actiu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4809,13 +4834,13 @@ s'utilitzarà o negre.</translation>
     <message>
       <location filename="../../Location.ui" line="32"/>
       <source>Set the placement location coordinates</source>
-      <translation type="unfinished">Set the placement location coordinates</translation>
+      <translation>Estableix les coordenades de la ubicació del posicionament</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="40"/>
       <location filename="../../Location.ui" line="50"/>
       <source>X coordinate of the placement location</source>
-      <translation type="unfinished">X coordinate of the placement location</translation>
+      <translation>Coordenada X de la ubicació del posicionament</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="43"/>
@@ -4827,7 +4852,7 @@ s'utilitzarà o negre.</translation>
       <location filename="../../Location.ui" line="63"/>
       <location filename="../../Location.ui" line="73"/>
       <source>Y coordinate of the placement location</source>
-      <translation type="unfinished">Y coordinate of the placement location</translation>
+      <translation>Coordenada Y de la ubicació del posicionament</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="66"/>
@@ -4839,7 +4864,7 @@ s'utilitzarà o negre.</translation>
       <location filename="../../Location.ui" line="86"/>
       <location filename="../../Location.ui" line="96"/>
       <source>Z coordinate of the placement location</source>
-      <translation type="unfinished">Z coordinate of the placement location</translation>
+      <translation>Coordenada Z de la ubicació del posicionament</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="89"/>
@@ -4855,7 +4880,7 @@ s'utilitzarà o negre.</translation>
     <message>
       <location filename="../../Location.ui" line="145"/>
       <source>X-component of the rotation axis direction vector</source>
-      <translation type="unfinished">X-component of the rotation axis direction vector</translation>
+      <translation>Component X del vector de direcció de l'eix de rotació</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="155"/>
@@ -4865,7 +4890,7 @@ s'utilitzarà o negre.</translation>
     <message>
       <location filename="../../Location.ui" line="177"/>
       <source>Y-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Y-component of the rotation axis direction vector</translation>
+      <translation>Component Y del vector de direcció de l'eix de rotació</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="187"/>
@@ -4875,7 +4900,7 @@ s'utilitzarà o negre.</translation>
     <message>
       <location filename="../../Location.ui" line="209"/>
       <source>Z-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Z-component of the rotation axis direction vector</translation>
+      <translation>Component Z del vector de direcció de l'eix de rotació</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="219"/>
@@ -4892,18 +4917,18 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
     <message>
       <location filename="../../Location.ui" line="111"/>
       <source>Select a point in the 3D view to set the location automatically</source>
-      <translation type="unfinished">Select a point in the 3D view to set the location automatically</translation>
+      <translation>Seleccioneu un punt a la vista 3D per a establir la ubicació automàticament</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="114"/>
       <source>Pick Position</source>
-      <translation type="unfinished">Pick Position</translation>
+      <translation>Tria la posició</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="244"/>
       <location filename="../../Location.ui" line="254"/>
       <source>Rotation angle around the specified axis</source>
-      <translation type="unfinished">Rotation angle around the specified axis</translation>
+      <translation>Angle de rotació al voltant de l'eix especificat</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="247"/>
@@ -4926,7 +4951,7 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Massa pocs elements</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="189"/>
@@ -5291,12 +5316,12 @@ només seran visibles els talls creats</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Massa pocs elements</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Selecció no vàlida</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5395,7 +5420,7 @@ de l'objecte que s'adjunta</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation type="unfinished">Attachment Mode</translation>
+      <translation>Mode d'adjunció</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
@@ -5491,7 +5516,7 @@ de l'objecte que s'adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="436"/>
       <source>Attachment Offset (in its local coordinate system):</source>
-      <translation type="unfinished">Attachment Offset (in its local coordinate system):</translation>
+      <translation>Equidistància de l'adjunció (en el seu sistema de coordenades local):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="437"/>
@@ -5662,7 +5687,7 @@ Comprovacions d'operació booleana individual:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
-      <translation type="unfinished">Run Check</translation>
+      <translation>Executa la comprovació</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
@@ -5832,12 +5857,12 @@ Comprovacions d'operació booleana individual:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1492"/>
       <source>%1 select reference</source>
-      <translation type="unfinished">%1 select reference</translation>
+      <translation>%1 seleccioneu la referència</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 seleccioneu i confirmeu</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -6096,89 +6121,101 @@ de la vista 3D per a la trajectòria d'escombrat.</translation>
       <translation>Editar %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="252"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
       <source>Part and Part Design workbench</source>
       <translation>Banc de treball Peça i disseny de peces (Part i Part design)</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="253"/>
-      <location filename="../../AppPartGui.cpp" line="254"/>
       <location filename="../../AppPartGui.cpp" line="255"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Part/Part Design</source>
       <translation>Peça/Disseny de peces</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="256"/>
-      <location filename="../../AppPartGui.cpp" line="257"/>
+      <location filename="../../AppPartGui.cpp" line="258"/>
+      <location filename="../../AppPartGui.cpp" line="259"/>
       <source>Import-Export</source>
       <translation>Importació-exportació</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
-      <location filename="../../Command.cpp" line="427"/>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="354"/>
+      <location filename="../../Command.cpp" line="431"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Non-solids selected</source>
       <translation>S' han seleccionat objectes no sòlids</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="1020"/>
       <source>Select 2 shapes</source>
       <translation>Seleccioneu 2 formes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="510"/>
-      <location filename="../../Command.cpp" line="952"/>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="1019"/>
+      <location filename="../../Command.cpp" line="2281"/>
+      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2562"/>
       <source>Wrong Selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
-      <location filename="../../Command.cpp" line="428"/>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="432"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
       <translation>L'ús d'objectes no sòlids per a operacions booleanes pot comportar resultats inesperats.
 Vol continuar?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="415"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
       <translation>Seleccioneu almenys 2 formes. Alternativament, seleccioneu 1 compost contenent 2 o més formes per a calcular la intersecció entre elles.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
       <translation>Seleccioneu almenys 2 formes. Alternativament, seleccioneu 1 compost contenent 2 o més formes per a fusionar.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="957"/>
       <source>Select at least one shape</source>
       <translation>Seleccioneu almenys una forma</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1080"/>
-      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1084"/>
+      <location filename="../../Command.cpp" line="1154"/>
       <source>STEP with colors</source>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP amb colors</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1082"/>
-      <location filename="../../Command.cpp" line="1152"/>
+      <location filename="../../Command.cpp" line="1086"/>
+      <location filename="../../Command.cpp" line="1156"/>
       <source>IGES with colors</source>
-      <translation type="unfinished">IGES with colors</translation>
+      <translation>IGES amb colors</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>All CAD Files</source>
       <translation>Tots els arxius de CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2278"/>
+      <location filename="../../Command.cpp" line="2553"/>
+      <source>Select at most one object to array.</source>
+      <translation>Seleccioneu com a màxim un objecte per a fer-ne una matriu.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2563"/>
+      <source>Select one object from the active document.</source>
+      <translation>Seleccioneu un objecte del document actiu.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2282"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Seleccioneu 2 vores o 2 filferros.</translation>
     </message>
@@ -6511,7 +6548,7 @@ Vol continuar?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation type="unfinished">Distance in Parameter Space</translation>
+      <translation>Distància en l'espai de paràmetres</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
@@ -6592,7 +6629,7 @@ Vol continuar?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation type="unfinished">Edit Attachment</translation>
+      <translation>Edita l'adjunció</translation>
     </message>
   </context>
   <context>
@@ -7137,17 +7174,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1464"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>Scale</source>
       <translation>Escala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>Scales the selected shape</source>
       <translation>Escala la forma seleccionada</translation>
     </message>
@@ -7309,17 +7346,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2524"/>
+      <location filename="../../Command.cpp" line="2807"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2525"/>
+      <location filename="../../Command.cpp" line="2808"/>
       <source>Coordinate System</source>
       <translation>Sistema de coordenades</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2809"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Crea un sistema de coordenades que es pot adjuntar a altres objectes</translation>
     </message>
@@ -7327,17 +7364,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2667"/>
+      <location filename="../../Command.cpp" line="2985"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2668"/>
+      <location filename="../../Command.cpp" line="2986"/>
       <source>Datums</source>
       <translation>Referències</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2670"/>
+      <location filename="../../Command.cpp" line="2988"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Crea un objecte de referència (sistema de coordenades, pla, línia o punt) que es pot adjuntar a altres objectes</translation>
     </message>
@@ -7353,17 +7390,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2846"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2847"/>
       <source>Datum Plane</source>
       <translation>Pla de referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2565"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Crea un pla de referència que es pot adjuntar a altres objectes</translation>
     </message>
@@ -7371,17 +7408,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2880"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2598"/>
+      <location filename="../../Command.cpp" line="2881"/>
       <source>Datum Line</source>
       <translation>Línia de referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2599"/>
+      <location filename="../../Command.cpp" line="2882"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Crea una línia de referència que es pot adjuntar a altres objectes</translation>
     </message>
@@ -7389,17 +7426,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2914"/>
       <source>Part</source>
       <translation>Peça</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2915"/>
       <source>Datum Point</source>
       <translation>Punt de referència</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2633"/>
+      <location filename="../../Command.cpp" line="2916"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Crea un punt de referència que es pot adjuntar a altres objectes</translation>
     </message>
@@ -7582,12 +7619,12 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2460"/>
+      <location filename="../../Command.cpp" line="2464"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>Tall de secció Persist&amp;ent</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2461"/>
+      <location filename="../../Command.cpp" line="2465"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Crea un objecte nou com a intersecció booleana de totes les formes visibles i els plans d'eix seleccionats</translation>
     </message>
@@ -7730,13 +7767,13 @@ S'eliminaran els volums superposats de les formes.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
       <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
-      <translation type="unfinished">Total Angle</translation>
+      <translation>Angle total</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
-      <translation type="unfinished">Angular Spacing</translation>
+      <translation>Espaiat angular</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="371"/>
@@ -7752,7 +7789,7 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="894"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>Reinicia l'espaiat</translation>
     </message>
   </context>
   <context>
@@ -7760,12 +7797,12 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
-      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+      <translation>La previsualització requereix un proveïdor de vista basat en Part; no se n'ha trobat cap per a %1.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
       <source>unknown object</source>
-      <translation type="unfinished">unknown object</translation>
+      <translation>objecte desconegut</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
@@ -7779,7 +7816,7 @@ S'eliminaran els volums superposats de les formes.</translation>
       <location filename="../../../Init.py" line="42"/>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP amb colors</translation>
     </message>
   </context>
   <context>
@@ -7787,7 +7824,7 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Patró circular</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7807,7 +7844,7 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
       <source>Concentric circles</source>
-      <translation type="unfinished">Concentric circles</translation>
+      <translation>Cercles concèntrics</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
@@ -7816,17 +7853,30 @@ S'eliminaran els volums superposats de les formes.</translation>
     </message>
   </context>
   <context>
+    <name>TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
+      <source>Linked object</source>
+      <translation>Objecte enllaçat</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
+      <source>Select Object</source>
+      <translation>Selecciona l'objecte</translation>
+    </message>
+  </context>
+  <context>
     <name>PartGui::PatternPointParametersWidget</name>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="8"/>
       <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
+      <translation>Objecte de punts</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="14"/>
       <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
       <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
+      <translation>Selecciona l'objecte de punts</translation>
     </message>
   </context>
   <context>
@@ -7840,12 +7890,12 @@ S'eliminaran els volums superposats de les formes.</translation>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
       <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
       <source>Select Path</source>
-      <translation type="unfinished">Select Path</translation>
+      <translation>Selecciona el camí</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
       <source>Spacing mode</source>
-      <translation type="unfinished">Spacing mode</translation>
+      <translation>Mode d'espaiat</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="10"/>
@@ -7860,42 +7910,42 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="14"/>
       <source>Start offset</source>
-      <translation type="unfinished">Start offset</translation>
+      <translation>Desplaçament inicial</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="16"/>
       <source>End offset</source>
-      <translation type="unfinished">End offset</translation>
+      <translation>Desplaçament final</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
       <source>Reverse path</source>
-      <translation type="unfinished">Reverse path</translation>
+      <translation>Inverteix el camí</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="19"/>
       <source>Align to path</source>
-      <translation type="unfinished">Align to path</translation>
+      <translation>Alinea al camí</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
       <source>Fixed count</source>
-      <translation type="unfinished">Fixed count</translation>
+      <translation>Nombre fix</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
       <source>Fixed spacing</source>
-      <translation type="unfinished">Fixed spacing</translation>
+      <translation>Espaiat fix</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
       <source>Fixed count and spacing</source>
-      <translation type="unfinished">Fixed count and spacing</translation>
+      <translation>Nombre i espaiat fixos</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
       <source>(+%1)</source>
-      <translation type="unfinished">(+%1)</translation>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7903,12 +7953,12 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
-      <translation type="unfinished">BuildFace facemaker</translation>
+      <translation>Generador de cares BuildFace</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation type="unfinished">Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+      <translation>Divideix les arestes a les interseccions i troba totes les regions de cara delimitades. Gestiona geometria superposada arbitrària.</translation>
     </message>
   </context>
   <context>
@@ -7916,12 +7966,120 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
       <source>Unified facemaker</source>
-      <translation type="unfinished">Unified facemaker</translation>
+      <translation>Generador de cares unificat</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
       <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation type="unfinished">Unified: handles nested holes, overlapping wires, and curved surfaces</translation>
+      <translation>Unificat: gestiona forats imbricats, filferros superposats i superfícies corbes</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayCircular</name>
+    <message>
+      <location filename="../../Command.cpp" line="2636"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2637"/>
+      <source>Circular Link Array</source>
+      <translation>Matriu d'enllaços circular</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2638"/>
+      <source>Creates a concentric circular array of linked objects</source>
+      <translation>Crea una matriu circular concèntrica d'objectes enllaçats</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPath</name>
+    <message>
+      <location filename="../../Command.cpp" line="2671"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2672"/>
+      <source>Path Link Array</source>
+      <translation>Matriu d'enllaços de camins</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2673"/>
+      <source>Creates an array of linked objects along a path</source>
+      <translation>Crea una matriu d'objectes enllaçats al llarg d'un camí</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPoint</name>
+    <message>
+      <location filename="../../Command.cpp" line="2706"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2707"/>
+      <source>Point Link Array</source>
+      <translation>Matriu d'enllaç de punts</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2708"/>
+      <source>Creates an array of linked objects at each point of a sketch or shape</source>
+      <translation>Crea una matriu d'objectes enllaçats a cada punt d'un croquis o d'una forma</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayLinear</name>
+    <message>
+      <location filename="../../Command.cpp" line="2741"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2742"/>
+      <source>Linear Link Array</source>
+      <translation>Matriu d'enllaços lineal</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2743"/>
+      <source>Creates a linear array of linked objects</source>
+      <translation>Crea una matriu lineal d'objectes enllaçats</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrayPolar</name>
+    <message>
+      <location filename="../../Command.cpp" line="2776"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2777"/>
+      <source>Polar Link Array</source>
+      <translation>Matriu d'enllaços polar</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2778"/>
+      <source>Creates a polar array of linked objects</source>
+      <translation>Crea una matriu polar d'objectes enllaçats</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartLinkArrays</name>
+    <message>
+      <location filename="../../Command.cpp" line="2949"/>
+      <source>Part</source>
+      <translation>Peça</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2950"/>
+      <source>Link Arrays</source>
+      <translation>Matrius d'enllaços</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2951"/>
+      <source>Creates link arrays</source>
+      <translation>Crea matrius d'enllaços</translation>
     </message>
   </context>
   <context>
@@ -7929,12 +8087,120 @@ S'eliminaran els volums superposats de les formes.</translation>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="226"/>
       <source>Restores this instance</source>
-      <translation type="unfinished">Restores this instance</translation>
+      <translation>Restaura aquesta instància</translation>
     </message>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="231"/>
       <source>Suppresses this instance</source>
-      <translation type="unfinished">Suppresses this instance</translation>
+      <translation>Suprimeix aquesta instància</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskPatternParameters</name>
+    <message>
+      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <source>Direction 2</source>
+      <translation>Direcció 2</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskLinkArrayParameters</name>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
+      <source>Circular Link Array</source>
+      <translation>Matriu d'enllaços circular</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
+      <source>Path Link Array</source>
+      <translation>Matriu d'enllaços de camins</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
+      <source>Point Link Array</source>
+      <translation>Matriu d'enllaç de punts</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
+      <source>Polar Link Array</source>
+      <translation>Matriu d'enllaços polar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
+      <source>Linear Link Array</source>
+      <translation>Matriu d'enllaços lineal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
+      <source>Selecting…</source>
+      <translation>Seleccionant…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
+      <source>Select Object</source>
+      <translation>Selecciona l'objecte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
+      <source>Select an object to link</source>
+      <translation>Seleccioneu un objecte per a enllaçar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="547"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
+      <source>Object X-axis</source>
+      <translation>Eix X de l'objecte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
+      <source>Object Y-axis</source>
+      <translation>Eix Y de l'objecte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
+      <source>Object Z-axis</source>
+      <translation>Eix Z de l'objecte</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
+      <source>Select reference…</source>
+      <translation>Seleccionar referència…</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
+      <source>Select connected path edges</source>
+      <translation>Seleccioneu arestes de camí connectades</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
+      <source>Select a sketch or shape containing points</source>
+      <translation>Seleccioneu un croquis o una forma que contingui punts</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
+      <source>Select a rotation axis</source>
+      <translation>Seleccioneu un eix de rotació</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
+      <source>Select a direction reference</source>
+      <translation>Seleccioneu una referència de direcció</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <source>Input Error</source>
+      <translation>Error d'entrada</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <source>Select an object to link.</source>
+      <translation>Seleccioneu un objecte per a enllaçar.</translation>
     </message>
   </context>
 </TS>

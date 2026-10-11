@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="983"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
+      <translation>Afegeix una línia cosmètica que passa per 2 punts seleccionats</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>Línia central a la cara</translation>
     </message>
   </context>
   <context>
@@ -1273,7 +1273,7 @@ Si feu clic amb el botó esquerre en un espai buit, es validarà la dimensió ac
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="709"/>
       <source>Align Vertical Chain Dimensions</source>
-      <translation type="unfinished">Align Vertical Chain Dimensions</translation>
+      <translation>Alinea les cotes de cadena verticals</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="710"/>
@@ -1505,7 +1505,7 @@ Si feu clic amb el botó esquerre en un espai buit, es validarà la dimensió ac
     <message>
       <location filename="../../CommandAnnotate.cpp" line="681"/>
       <source>Centerline on Face</source>
-      <translation type="unfinished">Centerline on Face</translation>
+      <translation>Línia central a la cara</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="682"/>
@@ -1582,7 +1582,7 @@ Si feu clic amb el botó esquerre en un espai buit, es validarà la dimensió ac
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1970"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature</translation>
+      <translation>Insereix una cota que mostra l'extensió horitzontal (longitud total) d'un objecte o característica</translation>
     </message>
   </context>
   <context>
@@ -2085,7 +2085,7 @@ Si feu clic amb el botó esquerre en un espai buit, es validarà la dimensió ac
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2095"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature</translation>
+      <translation>Insereix una cota que mostra l'extensió vertical (longitud total) d'un objecte o característica</translation>
     </message>
   </context>
   <context>
@@ -2195,7 +2195,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../Command.cpp" line="1774"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Crea una vista de full de càlcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="347"/>
@@ -2210,12 +2210,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandAnnotate.cpp" line="362"/>
       <source>Add Quadrant vertices</source>
-      <translation type="unfinished">Add Quadrant vertices</translation>
+      <translation>Afegeix vèrtexs de quadrant</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="113"/>
       <source>Edit Annotation</source>
-      <translation type="unfinished">Edit Annotation</translation>
+      <translation>Edita l'anotació</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="154"/>
@@ -2442,7 +2442,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Crear imatge</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="527"/>
+      <location filename="../../QGIViewBalloon.cpp" line="621"/>
       <source>Drag Balloon</source>
       <translation>Arrossegar Globus</translation>
     </message>
@@ -2452,7 +2452,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Arrossegar Dimensió</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="587"/>
+      <location filename="../../QGSPage.cpp" line="592"/>
       <source>Create Balloon</source>
       <translation>Crea un globus</translation>
     </message>
@@ -3028,7 +3028,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../mrichtextedit.cpp" line="258"/>
       <source>Document Source</source>
-      <translation type="unfinished">Document Source</translation>
+      <translation>Codi font del document</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="355"/>
@@ -3126,7 +3126,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Select a template file</source>
-      <translation type="unfinished">Select a template file</translation>
+      <translation>Seleccioneu un fitxer de plantilla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -3136,7 +3136,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>Selecció buida</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
@@ -3303,17 +3303,17 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../Command.cpp" line="1922"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Desa el fitxer DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2174"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>La direcció seleccionada es troba a menys de %1 graus d'una direcció estàndard. Voleu substituir la direcció seleccionada per %2?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2179"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>La direcció és propera a una d'estàndard</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3399,7 +3399,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2222"/>
       <source>Cannot make 3D dimension without 3d references</source>
-      <translation type="unfinished">Cannot make 3D dimension without 3d references</translation>
+      <translation>No es pot crear una cota 3D sense referències 3D</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2237"/>
@@ -3538,7 +3538,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="122"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>No es pot crear el cercle de forats per a %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="244"/>
@@ -3549,17 +3549,17 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <location filename="../../CommandExtensionPack.cpp" line="245"/>
       <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>No es poden crear les línies centrals per a %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Select a center for the circle.</source>
-      <translation type="unfinished">Select a center for the circle.</translation>
+      <translation>Seleccioneu un centre per al cercle.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1677"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw estén/escurça la línia</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1884"/>
@@ -3574,12 +3574,12 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2222"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw crea el cercle de rosca</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2223"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>No es pot crear el cercle de rosca per a %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2240"/>
@@ -3751,7 +3751,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandDecorate.cpp" line="365"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>Seleccioneu un fitxer d'imatge</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="421"/>
@@ -3775,49 +3775,49 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>No hi ha cares per tramar en aquesta selecció</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="312"/>
       <source>No page found</source>
       <translation>Cap pàgina trobada</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="312"/>
+      <location filename="../../DrawGuiUtil.cpp" line="313"/>
       <source>No Drawing Pages available.</source>
       <translation>No hi ha cap pàgina de dibuix disponible.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <location filename="../../DrawGuiUtil.cpp" line="418"/>
       <source>No page selected</source>
       <translation>No s'ha seleccionat cap pàgina</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="418"/>
+      <location filename="../../DrawGuiUtil.cpp" line="419"/>
       <source>This function needs a page.</source>
       <translation>Aquesta funció necessita una pàgina.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="840"/>
+      <location filename="../../MDIViewPage.cpp" line="870"/>
       <source>Export Page as PDF</source>
       <translation>Exporta la pàgina com a PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="759"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>Exporta la Pàgina com a SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="806"/>
       <source>Export page as DXF</source>
       <translation>Exporta la pàgina com a DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="823"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Unable to Write File</source>
-      <translation type="unfinished">Unable to Write File</translation>
+      <translation>No s'ha pogut escriure el fitxer</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="854"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
-      <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
+      <translation>El FreeCAD no pot obrir el fitxer %1 per a escriure-hi.  És possible que el fitxer estigui obert en un altre programa.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
@@ -4067,7 +4067,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="119"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Text de prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1985"/>
@@ -4280,22 +4280,22 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     <message>
       <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text creator</source>
-      <translation type="unfinished">Rich text creator</translation>
+      <translation>Creador de text enriquit</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="402"/>
       <source>Resize Rich Annotation</source>
-      <translation type="unfinished">Resize Rich Annotation</translation>
+      <translation>Redimensiona l'anotació enriquida</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="58"/>
       <source>Updates the text</source>
-      <translation type="unfinished">Updates the text</translation>
+      <translation>Actualitza el text</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
-      <translation type="unfinished">Select a Symbol</translation>
+      <translation>Seleccioneu un símbol</translation>
     </message>
   </context>
   <context>
@@ -4395,12 +4395,12 @@ perquè conté una soldadura de mosaic que es trencaria.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="20"/>
       <source>Crop</source>
-      <translation type="unfinished">Crop</translation>
+      <translation>Escapçament</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="47"/>
       <source>Crops the captured image to this height</source>
-      <translation type="unfinished">Crops the captured image to this height</translation>
+      <translation>Escapça la imatge capturada a aquesta alçada</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="70"/>
@@ -4410,7 +4410,7 @@ perquè conté una soldadura de mosaic que es trencaria.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="89"/>
       <source>Crops the captured image to this width</source>
-      <translation type="unfinished">Crops the captured image to this width</translation>
+      <translation>Escapça la imatge capturada a aquesta amplada</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="108"/>
@@ -4441,7 +4441,7 @@ perquè conté una soldadura de mosaic que es trencaria.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="152"/>
       <source>Sets the background color</source>
-      <translation type="unfinished">Sets the background color</translation>
+      <translation>Estableix el color de fons</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="159"/>
@@ -5406,12 +5406,12 @@ quan s'utilitzen dibuixos com a guia de tall 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
       <source>Break line</source>
-      <translation type="unfinished">Break line</translation>
+      <translation>Línia de trencament</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
       <source>Break line color for broken views</source>
-      <translation type="unfinished">Break line color for broken views</translation>
+      <translation>Color de la línia de trencament de les vistes trencades</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
@@ -5649,37 +5649,37 @@ Això només afecta la barra d'eines; totes les eines romanen disponibles a trav
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si està marcat, les cotes noves s'ajustaran a la posició.  Si no ho està, les cotes noves no s'ajustaran.  L'ajustament de cada cota es pot regular amb la propietat &amp;quot;AllowSnapping&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
       <source>Snap dimensions</source>
-      <translation type="unfinished">Snap dimensions</translation>
+      <translation>Ajusta les cotes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fracció de la longitud del text de la cota dins de la qual el text s'ajusta a la posició centrada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
       <source>Dimension text factor</source>
-      <translation type="unfinished">Dimension text factor</translation>
+      <translation>Factor del text de la cota</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
       <source>Chain factor</source>
-      <translation type="unfinished">Chain factor</translation>
+      <translation>Factor de cadena</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fracció de l'espaiat entre cotes dins de la qual s'ajusten com a cotes de cadena o d'ordenada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nota: els paràmetres d'ajustament de les vistes són a la pestanya general.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
@@ -6055,7 +6055,7 @@ pot sobreescriure el paràmetre global 'Actualitzar amb 3D'</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
-      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+      <translation>Ajusta una vista a la seva posició alineada quan és dins d'aquesta fracció de la mida de la vista respecte de l'objectiu d'alineació.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
@@ -6065,7 +6065,7 @@ pot sobreescriure el paràmetre global 'Actualitzar amb 3D'</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nota: els paràmetres d'ajustament de les cotes són a la pestanya de cotes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1071"/>
@@ -6295,7 +6295,48 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>Multiplicador per a la mida dels símbols de soldadura</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
+      <source>Screen Mode</source>
+      <translation>Mode de pantalla</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
+      <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
+      <translation>Dibuixa els vèrtexs i les arestes amb una mida constant a la pantalla en lloc d'escalar-los amb la pàgina. També es pot commutar des del menú contextual de la pàgina.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <source>Screen mode</source>
+      <translation>Mode de pantalla</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
+      <source>Vertex size</source>
+      <translation>Mida del vèrtex</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
+      <source>Size of vertex dots on screen. Only used in screen mode.</source>
+      <translation>Mida dels punts dels vèrtexs a la pantalla. Només s'usa en mode de pantalla.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="563"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
+      <source>Edge width</source>
+      <translation>Amplada de les arestes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
+      <source>Width of edges on screen. Only used in screen mode.</source>
+      <translation>Amplada de les arestes a la pantalla. Només s'usa en mode de pantalla.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6303,64 +6344,69 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
-      <translation type="unfinished">&amp;Keep Updated</translation>
+      <translation>&amp;Mantén actualitzat</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
-      <translation type="unfinished">Show &amp;Frames</translation>
+      <translation>Mostra els &amp;marcs</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="107"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
-      <translation type="unfinished">Show &amp;Grid</translation>
+      <translation>Mostra la &amp;quadrícula</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="110"/>
+      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Screen &amp;Mode</source>
+      <translation>&amp;Mode de pantalla</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="114"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>Export DXF</source>
       <translation>Exporta DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="122"/>
       <source>Export PDF</source>
       <translation>Exporta a PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="126"/>
       <source>Print All Pages</source>
       <translation>Imprimir totes les pàgines</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="444"/>
+      <location filename="../../MDIViewPage.cpp" line="448"/>
       <source>Different orientation</source>
       <translation>Orientació diferent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="454"/>
+      <location filename="../../MDIViewPage.cpp" line="458"/>
       <source>Different paper size</source>
       <translation>Mida de paper diferent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1403"/>
+      <location filename="../../MDIViewPage.cpp" line="1433"/>
       <source>Selected:</source>
       <translation>Seleccionat:</translation>
     </message>
@@ -6423,7 +6469,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Bubble Appearance</source>
-      <translation type="unfinished">Bubble Appearance</translation>
+      <translation>Aparença de la bombolla</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="118"/>
@@ -6503,7 +6549,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="291"/>
       <source>Kink length</source>
-      <translation type="unfinished">Kink length</translation>
+      <translation>Longitud del colze</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="298"/>
@@ -6528,7 +6574,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="312"/>
       <source>Symbol scale</source>
-      <translation type="unfinished">Symbol scale</translation>
+      <translation>Escala del símbol</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="319"/>
@@ -6591,7 +6637,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="77"/>
       <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
-      <translation type="unfinished">The centerline is positioned at the center of the combined bounding box of the selected elements</translation>
+      <translation>La línia central es col·loca al centre de la capsa delimitadora combinada dels elements seleccionats</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="95"/>
@@ -6619,27 +6665,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="150"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posició</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="174"/>
       <source>Shifts the line up (+) or down (-)</source>
-      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+      <translation>Desplaça la línia cap amunt (+) o cap avall (-)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="190"/>
       <source>Shifts the line left (-) or right (+)</source>
-      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+      <translation>Desplaça la línia cap a l'esquerra (-) o cap a la dreta (+)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="220"/>
       <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
-      <translation type="unfinished">Rotates the line counterclockwise (+) or clockwise (-)</translation>
+      <translation>Gira la línia en sentit antihorari (+) o horari (-)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="246"/>
       <source>Extends the line by the specified amount beyond its natural endpoints</source>
-      <translation type="unfinished">Extends the line by the specified amount beyond its natural endpoints</translation>
+      <translation>Allarga la línia la quantitat especificada més enllà dels seus extrems naturals</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="264"/>
@@ -6856,7 +6902,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="158"/>
       <location filename="../../TaskCosVertex.cpp" line="250"/>
       <source>Pick Point</source>
-      <translation type="unfinished">Pick Point</translation>
+      <translation>Tria un punt</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="114"/>
@@ -6876,7 +6922,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="175"/>
       <source>Escape Picking</source>
-      <translation type="unfinished">Escape Picking</translation>
+      <translation>Surt de la tria</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="203"/>
@@ -7303,7 +7349,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="91"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posició</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="194"/>
@@ -7541,33 +7587,33 @@ el valor negat per 'Sobretolerància'.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
       <source>Override Angles</source>
-      <translation type="unfinished">Override Angles</translation>
+      <translation>Sobreescriu els angles</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>Estableix l'angle de la línia d'extensió perquè coincideixi amb l'aresta o els vèrtexs seleccionats</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
       <location filename="../../TaskDimension.ui" line="403"/>
       <source>°</source>
-      <translation type="unfinished">°</translation>
+      <translation>°</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>Estableix l'angle de la línia de cota perquè coincideixi amb l'aresta o els vèrtexs seleccionats</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>
       <source>Resets the dimension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the dimension line angle to the default orthographic value</translation>
+      <translation>Restableix l'angle de la línia de cota al valor ortogràfic per defecte</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="423"/>
       <source>Resets the extension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the extension line angle to the default orthographic value</translation>
+      <translation>Restableix l'angle de la línia d'extensió al valor ortogràfic per defecte</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="390"/>
@@ -7874,18 +7920,18 @@ Podeu triar més punts per obtenir segments de línia.</translation>
       <location filename="../../TaskLeaderLine.cpp" line="759"/>
       <location filename="../../TaskLeaderLine.cpp" line="781"/>
       <source>Edit Points</source>
-      <translation type="unfinished">Edit Points</translation>
+      <translation>Edita els punts</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="535"/>
       <source>Save Points</source>
-      <translation type="unfinished">Save Points</translation>
+      <translation>Desa els punts</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="570"/>
       <location filename="../../TaskLeaderLine.cpp" line="587"/>
       <source>Save Changes</source>
-      <translation type="unfinished">Save Changes</translation>
+      <translation>Desa els canvis</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="618"/>
@@ -7958,9 +8004,9 @@ Podeu triar més punts per obtenir segments de línia.</translation>
     <message numerus="yes">
       <location filename="../../TaskLineDecor.cpp" line="81"/>
       <source>%n line(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n line(s)</numerusform>
-        <numerusform>%n line(s)</numerusform>
+      <translation>
+        <numerusform>%n línia</numerusform>
+        <numerusform>%n línies</numerusform>
       </translation>
     </message>
   </context>
@@ -8387,7 +8433,7 @@ utilitzant els espaiats X/Y donats</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="45"/>
       <source>Maximal width of the annotation block, if -1 then automatic width</source>
-      <translation type="unfinished">Maximal width of the annotation block, if -1 then automatic width</translation>
+      <translation>Amplada màxima del bloc d'anotació; si és -1, l'amplada és automàtica</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="61"/>
@@ -8764,7 +8810,7 @@ utilitzant els espaiats X/Y donats</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="88"/>
       <source>Applies autofill to this field</source>
-      <translation type="unfinished">Applies autofill to this field</translation>
+      <translation>Aplica l'emplenament automàtic a aquest camp</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="101"/>
@@ -9036,22 +9082,22 @@ utilitzant els espaiats X/Y donats</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="91"/>
       <source>Replace References With Selection</source>
-      <translation type="unfinished">Replace References With Selection</translation>
+      <translation>Substitueix les referències per la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="107"/>
       <source>2D References</source>
-      <translation type="unfinished">2D References</translation>
+      <translation>Referències 2D</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="202"/>
       <source>3D References</source>
-      <translation type="unfinished">3D References</translation>
+      <translation>Referències 3D</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="246"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Subelement</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="31"/>
@@ -9538,7 +9584,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
       <source>The selected vertex this offset vertex is based on</source>
-      <translation type="unfinished">The selected vertex this offset vertex is based on</translation>
+      <translation>El vèrtex seleccionat en què es basa aquest vèrtex desplaçat</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
@@ -9553,7 +9599,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
       <source>The X offset distance from the source vertex</source>
-      <translation type="unfinished">The X offset distance from the source vertex</translation>
+      <translation>La distància de desplaçament en X respecte del vèrtex d'origen</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -10282,7 +10328,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Subelement</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="247"/>
@@ -10311,17 +10357,17 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
       <source>Spreadsheet View Parameters</source>
-      <translation type="unfinished">Spreadsheet View Parameters</translation>
+      <translation>Paràmetres de la vista de full de càlcul</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="20"/>
       <source>Range:</source>
-      <translation type="unfinished">Range:</translation>
+      <translation>Interval:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="27"/>
       <source>Enter the top-left cell of the range (e.g., A1)</source>
-      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+      <translation>Introduïu la cel·la superior esquerra de l'interval (p. ex., A1)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="30"/>
@@ -10331,52 +10377,52 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="37"/>
       <source> to </source>
-      <translation type="unfinished"> to </translation>
+      <translation> a </translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="44"/>
       <source>Enter the bottom-right cell of the range (e.g., B2)</source>
-      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+      <translation>Introduïu la cel·la inferior dreta de l'interval (p. ex., B2)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="47"/>
       <source>B2</source>
-      <translation type="unfinished">B2</translation>
+      <translation>B2</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="54"/>
       <source>View Appearance</source>
-      <translation type="unfinished">View Appearance</translation>
+      <translation>Aparença de la vista</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="60"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Escala:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="67"/>
       <source>Scale of the view. Let you adjust the overall size of the table.</source>
-      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+      <translation>Escala de la vista. Permet ajustar la mida global de la taula.</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="83"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>Tipus de lletra:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="93"/>
       <source>Text Size:</source>
-      <translation type="unfinished">Text Size:</translation>
+      <translation>Mida del text:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="100"/>
       <source>Font size in points</source>
-      <translation type="unfinished">Font size in points</translation>
+      <translation>Mida del tipus de lletra en punts</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="119"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Color del text:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="126"/>
@@ -10386,22 +10432,22 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="140"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Amplada de línia:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="147"/>
       <source>Width of the cell border lines</source>
-      <translation type="unfinished">Width of the cell border lines</translation>
+      <translation>Amplada de les línies de vora de les cel·les</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="172"/>
       <source>Claim spreadsheet as child</source>
-      <translation type="unfinished">Claim spreadsheet as child</translation>
+      <translation>Reclama el full de càlcul com a fill</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="175"/>
       <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
-      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
+      <translation>Si està marcat, aquesta vista reclamarà el full de càlcul associat com a fill a l'arbre.</translation>
     </message>
   </context>
   <context>
@@ -10414,12 +10460,12 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="78"/>
       <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
+      <translation>Commuta els marcs de les vistes</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="79"/>
       <source>Toggles visibility of view frames and vertices</source>
-      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+      <translation>Commuta la visibilitat dels marcs de les vistes i dels vèrtexs</translation>
     </message>
   </context>
   <context>
@@ -10437,7 +10483,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="142"/>
       <source>Toggles the grid on the active page</source>
-      <translation type="unfinished">Toggles the grid on the active page</translation>
+      <translation>Commuta la quadrícula de la pàgina activa</translation>
     </message>
   </context>
   <context>
@@ -10455,7 +10501,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../Command.cpp" line="1951"/>
       <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
+      <translation>Exporta la pàgina actual com a PDF</translation>
     </message>
   </context>
   <context>
@@ -10500,7 +10546,7 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>Afegeix una fila</translation>
     </message>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>
@@ -10513,12 +10559,12 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
+      <translation>Interval no vàlid</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>The specified cell range is invalid. Please correct it.</source>
-      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+      <translation>L'interval de cel·les especificat no és vàlid. Corregiu-lo.</translation>
     </message>
   </context>
   <context>
@@ -10526,12 +10572,12 @@ hi ha un diàleg de tasca obert.</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Crea una vista de full de càlcul</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
       <source>Edit Spreadsheet View</source>
-      <translation type="unfinished">Edit Spreadsheet View</translation>
+      <translation>Edita la vista de full de càlcul</translation>
     </message>
   </context>
 </TS>

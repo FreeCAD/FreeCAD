@@ -904,7 +904,7 @@ def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
 
 
 # Method to combine faces if connected
-def combineHorizontalFaces(faces, keepOrder=False):
+def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     """combineHorizontalFaces(faces)...
     This function successfully identifies and combines multiple connected faces and
     works on multiple independent faces with multiple connected faces within the list.
@@ -914,81 +914,29 @@ def combineHorizontalFaces(faces, keepOrder=False):
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
     Path.Geom.combineConnectedShapes(), so this algorithm was created.
 
-    If keepOrder is True, returns shapes with original order
+    keepOrder: returns shapes with original order
+    z: returns faces at needed height
+    tol: set tolerance for fuzzy boolean operations
     """
     horizontal = []
     offset = 10.0
-    topFace = None
-    innerFaces = []
 
-    # Verify all incoming faces are at Z=0.0
-    for f in faces:
-        if f.BoundBox.ZMin != 0.0:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+    for f in faces:  # translate all faces to z
+        f.translate(FreeCAD.Vector(0, 0, z - f.BoundBox.ZMin))
 
-    # Make offset compound boundbox solid and cut incoming face extrusions from it
+    # Make compound from incoming shapes
     allFaces = Part.makeCompound(faces)
-    if hasattr(allFaces, "Area") and isRoughly(allFaces.Area, 0.0):
-        msg = translate(
-            "PathGeom",
-            "Zero working area to process. Check your selection and settings.",
-        )
+
+    # Ckeck if incoming shapes have area
+    if isRoughly(allFaces.Area, 0):
+        msg = translate("PathGeom", "combineHorizontalFaces: Zero working area to process")
         Path.Log.info(msg)
         return horizontal
 
-    afbb = allFaces.BoundBox
-    bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
-    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = []
-    for f in faces:
-        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
-
-    # Fuse all extruded faces together
-    allFacesSolid = extrudedFaces.pop()
-    for i in range(len(extrudedFaces)):
-        temp = extrudedFaces.pop().fuse(allFacesSolid)
-        allFacesSolid = temp
-    cut = bboxSolid.cut(allFacesSolid)
-
-    # Debug
-    # Part.show(cut)
-    # FreeCAD.ActiveDocument.ActiveObject.Label = "cut"
-
-    # Identify top face and floating inner faces that are the holes in incoming faces
-    for f in cut.Faces:
-        fbb = f.BoundBox
-        if isRoughly(fbb.ZMin, 5.0) and isRoughly(fbb.ZMax, 5.0):
-            if (
-                isRoughly(afbb.XMin - offset, fbb.XMin)
-                and isRoughly(afbb.XMax + offset, fbb.XMax)
-                and isRoughly(afbb.YMin - offset, fbb.YMin)
-                and isRoughly(afbb.YMax + offset, fbb.YMax)
-            ):
-                topFace = f
-            else:
-                innerFaces.append(f)
-
-    if not topFace:
-        return horizontal
-
-    outer = [Part.Face(w) for w in topFace.Wires[1:] if w.isClosed()]
-
-    if outer:
-        for f in outer:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-
-        if innerFaces:
-            # inner = [Part.Face(f.Wire1) for f in innerFaces]
-            inner = innerFaces
-
-            for f in inner:
-                f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-            innerComp = Part.makeCompound(inner)
-            outerComp = Part.makeCompound(outer)
-            cut = outerComp.cut(innerComp)
-            horizontal = cut.Faces
-        else:
-            horizontal = outer
+    # Make boundbox face with offset and cut incoming faces from it
+    bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
+    cut = bboxFace.cut(faces, tol)
+    horizontal = Part.makeFace(cut.Wires[1:], "Part::FaceMakerBullseye").Faces
 
     # restore order
     if keepOrder and len(horizontal) > 1:

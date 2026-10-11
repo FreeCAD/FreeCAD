@@ -6,8 +6,8 @@ from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from DocumentSettings import DocumentSettings
-from typing import Final, Literal, Sequence, overload
-
+from typing import Final, Literal, overload
+from collections.abc import Sequence
 
 class Document(PropertyContainer):
     """
@@ -173,7 +173,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def exportGraphviz(self, path: str = None, /) -> str | None:
+    def exportGraphviz(self, path: str = ..., /) -> str | None:
         """
         Export the dependencies of the objects as graph.
 
@@ -181,7 +181,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def openTransaction(self, name: str, /) -> None:
+    def openTransaction(self, name: str = ..., /) -> None:
         """
         Open a new Undo/Redo transaction.
 
@@ -260,7 +260,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def removeProperty(self, name: str, /) -> None:
+    def removeProperty(self, name: str, /) -> bool:
         """
         Remove a generic property.
 
@@ -268,7 +268,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def removeObject(self, name: str, /) -> None:
+    def removeObject(self, object: str | DocumentObject, /) -> None:
         """
         Remove an object from the document.
         """
@@ -332,7 +332,7 @@ class Document(PropertyContainer):
 
     def importLinks(
         self,
-        object: DocumentObject = None,
+        source: DocumentObject | Sequence[DocumentObject] | None = None,
         /,
     ) -> tuple[DocumentObject, ...]:
         """
@@ -423,9 +423,9 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getObject(self, name: str, /) -> DocumentObject:
+    def getObject(self, name: str | int, /) -> DocumentObject | None:
         """
-        Return the object with the given name
+        Return the object with the given name or ID, or None if it does not exist.
         """
         ...
 
@@ -439,9 +439,9 @@ class Document(PropertyContainer):
 
     def findObjects(
         self,
-        Type: str = None,
-        Name: str = None,
-        Label: str = None,
+        Type: str = ...,
+        Name: str = ...,
+        Label: str = ...,
     ) -> list[DocumentObject]:
         """
         Return a list of objects that match the specified type, name or label.
@@ -457,7 +457,7 @@ class Document(PropertyContainer):
 
     def getLinksTo(
         self,
-        obj: DocumentObject,
+        obj: DocumentObject | None = None,
         options: int = 0,
         maxCount: int = 0,
         /,

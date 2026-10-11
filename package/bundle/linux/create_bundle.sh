@@ -26,6 +26,8 @@ cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
 cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
 rm -rf ${conda_env}/bin_tmp
 
+${conda_env}/bin/dot -c
+
 sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
 
 echo -e "\nCopying Icon and Desktop file"
@@ -58,6 +60,7 @@ rm -rf ${conda_env}/lib/libclang-cpp.so.*
 rm -rf ${conda_env}/lib/libclang.so.*
 rm -rf ${conda_env}/lib/libLLVM-*.so
 rm -rf ${conda_env}/lib/libLLVM.so.*
+rm -rf ${conda_env}/lib/libdrm*.so*
 rm -rf ${conda_env}/lib/node_modules
 rm -rf ${conda_env}/lib/objects-Release
 rm -rf ${conda_env}/lib/perl5

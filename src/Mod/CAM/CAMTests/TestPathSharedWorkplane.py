@@ -105,15 +105,44 @@ class TestSharedWorkplane(PathTestUtils.PathTestBase):
         plane = PathWorkplane.createWorkplane(self.job, placement=turned)
         self.assertIn(plane, PathWorkplane.workplanesOf(self.job))
 
-    def test_threeAxisJobRefusesATiltedFace(self):
+    def test_threeAxisJobAcceptsATiltedFace(self):
+        """Creation is not gated on the machine: whether a tilted plane can
+        be reached is the operation's and the post's question, asked when
+        it matters. Here the operation records no rotary positions."""
         self._threeAxis()
         side = self._faceNamed(self.box, Vector(1, 0, 0))
-        before = len(self.doc.Objects)
-        with self.assertRaises(ValueError) as raised:
-            PathWorkplane.createWorkplane(self.job, self.box, side)
-        self.assertIn("rotary axes", str(raised.exception))
-        self.assertEqual(PathWorkplane.workplanesOf(self.job), [], "nothing left behind")
-        self.assertEqual(len(self.doc.Objects), before, "nothing left behind in the document")
+        plane = PathWorkplane.createWorkplane(self.job, self.box, side)
+        self.assertIn(plane, PathWorkplane.workplanesOf(self.job))
+        op = self._op()
+        op.Workplane = plane
+        self.doc.recompute()
+        z = op.Placement.Rotation.multVec(Vector(0, 0, 1))
+        self.assertTrue(z.isEqual(Vector(1, 0, 0), 1e-6), "the op generates in the plane")
+        self.assertNotIn("unavailable", op.Path.toGCode())
+
+    # --- the plane's fixture ---------------------------------------------
+
+    def test_aNewWorkplaneNamesNoFixture(self):
+        top = self._faceNamed(self.box, Vector(0, 0, 1))
+        plane = PathWorkplane.createWorkplane(self.job, self.box, top)
+        self.assertEqual(plane.Fixture, "")
+        self.assertIsNone(PathWorkplane.fixtureOf(plane))
+
+    def test_fixtureOfIsTheTrimmedWordOrNone(self):
+        plane = PathWorkplane.createWorkplane(self.job)
+        plane.Fixture = "  G55 "
+        self.assertEqual(PathWorkplane.fixtureOf(plane), "G55")
+        plane.Fixture = "   "
+        self.assertIsNone(PathWorkplane.fixtureOf(plane))
+        self.assertIsNone(PathWorkplane.fixtureOf(None))
+
+    def test_aPlaneFromAnOlderDocumentGainsTheFixturePropertyOnRestore(self):
+        older = self.doc.addObject("Part::LocalCoordinateSystem", "Workplane")
+        self.job.Workplanes.addObject(older)
+        self.assertFalse(hasattr(older, "Fixture"))
+        self.job.Proxy.onDocumentRestored(self.job)
+        self.assertTrue(hasattr(older, "Fixture"))
+        self.assertEqual(older.Fixture, "")
 
     def test_rotaryJobAcceptsATiltedFace(self):
         self._rotary()

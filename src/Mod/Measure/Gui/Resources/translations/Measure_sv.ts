@@ -52,22 +52,6 @@
     </message>
   </context>
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="61"/>
-      <source>Element to measure</source>
-      <translation>Element att mäta</translation>
-    </message>
-  </context>
-  <context>
-    <name>App::PropertyVector</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="68"/>
-      <source>The result location</source>
-      <translation>Resultatpositionen</translation>
-    </message>
-  </context>
-  <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
@@ -202,92 +186,92 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="137"/>
+      <location filename="../../TaskMeasure.cpp" line="138"/>
       <source>Measurement</source>
       <translation>Mått</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
-      <source>Show Delta</source>
-      <translation>Visa delta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="159"/>
+      <location filename="../../TaskMeasure.cpp" line="149"/>
       <source>Auto Save</source>
       <translation>Spara automatiskt</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="163"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>Sparar automatiskt den senaste mätningen när en ny mätning startas. Använd Skift-tangenten för att tillfälligt växla till det motsatta beteendet.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="168"/>
+      <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
       <translation>Additiv markering</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="174"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>Om detta är markerat läggs nya markeringar till i mätningen. Annars måste Ctrl-tangenten hållas ned för att lägga till en markering i den aktuella mätningen; utan Ctrl startas en ny mätning</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="187"/>
+      <location filename="../../TaskMeasure.cpp" line="175"/>
       <source>Settings</source>
       <translation>Inställningar</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="199"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
       <translation>Automatisk</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="231"/>
+      <location filename="../../TaskMeasure.cpp" line="222"/>
       <source>Mode</source>
       <translation>Läge</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="245"/>
+      <location filename="../../TaskMeasure.cpp" line="228"/>
       <source>Result</source>
       <translation>Resultat</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="551"/>
+      <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
       <translation>%1 spara automatiskt</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
       <translation>%1 starta ny mätning</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
       <translation>%1 lägg till i mätningen</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="780"/>
+      <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 ny mätning, %2 växla automatiskt sparande</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="785"/>
+      <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 lägg till i mätningen, %2 växla automatiskt sparande</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="281"/>
+      <location filename="../../TaskMeasure.cpp" line="820"/>
+      <source>Show Delta</source>
+      <translation>Visa delta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
       <translation>Sparar mätningen i det aktiva dokumentet</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="287"/>
+      <location filename="../../TaskMeasure.cpp" line="269"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="288"/>
+      <location filename="../../TaskMeasure.cpp" line="270"/>
       <source>Close the measurement task.</source>
       <translation>Stäng mätningsuppgiften.</translation>
     </message>
@@ -295,57 +279,9 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="280"/>
+      <location filename="../../TaskMeasure.cpp" line="262"/>
       <source>Save</source>
       <translation>Spara</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskMeasure</name>
-    <message>
-      <location filename="../../../InitGui.py" line="44"/>
-      <source>Center of mass</source>
-      <translation>Masscentrum</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="119"/>
-      <source>Distance</source>
-      <translation>Avstånd</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="127"/>
-      <source>Distance Free</source>
-      <translation>Fritt avstånd</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="135"/>
-      <source>Angle</source>
-      <translation>Vinkel</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="143"/>
-      <source>Length</source>
-      <translation>Längd</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="151"/>
-      <source>Position</source>
-      <translation>Position</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="159"/>
-      <source>Area</source>
-      <translation>Area</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="167"/>
-      <source>Diameter</source>
-      <translation>Diameter</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="175"/>
-      <source>Radius</source>
-      <translation>Radie</translation>
     </message>
   </context>
   <context>
@@ -503,6 +439,54 @@
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
       <translation>Tröghetsmoment kring axel</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>Avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>Fritt avstånd</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>Vinkel</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>Längd</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>Area</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>Diameter</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>Radie</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation>Geometriskt centrum</translation>
     </message>
   </context>
   <context>

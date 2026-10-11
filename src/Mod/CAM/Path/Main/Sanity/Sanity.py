@@ -39,6 +39,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -262,12 +263,20 @@ class CAMSanity:
         }
 
         data["cycletotal"] = str(obj.CycleTime)
-        data["jobMinZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
-        ).UserString
-        data["jobMaxZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
-        ).UserString
+        # Z in Job coordinates: an operation on a work plane stores its path
+        # in the plane's frame, so the placed path is the one that says where
+        # the tool goes. The Job's own Path is empty; its range is its
+        # operations'.
+        placed = {}
+        for op in obj.Operations.Group:
+            path = PathUtils.getPathWithPlacement(op)
+            if path.BoundBox.isValid():
+                placed[op.Name] = path.BoundBox
+        if placed:
+            zmin = min(bb.ZMin for bb in placed.values())
+            zmax = max(bb.ZMax for bb in placed.values())
+            data["jobMinZ"] = FreeCAD.Units.Quantity(zmin, FreeCAD.Units.Length).UserString
+            data["jobMaxZ"] = FreeCAD.Units.Quantity(zmax, FreeCAD.Units.Length).UserString
         data["jobDescription"] = obj.Description
 
         data["operations"] = []
@@ -289,13 +298,9 @@ class CAMSanity:
                 oplabel = "{} (INACTIVE)".format(oplabel)
                 ctime = "00:00:00"
 
-            if op.Path.BoundBox.isValid():
-                zmin = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMin, FreeCAD.Units.Length
-                ).UserString
-                zmax = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMax, FreeCAD.Units.Length
-                ).UserString
+            if op.Name in placed:
+                zmin = FreeCAD.Units.Quantity(placed[op.Name].ZMin, FreeCAD.Units.Length).UserString
+                zmax = FreeCAD.Units.Quantity(placed[op.Name].ZMax, FreeCAD.Units.Length).UserString
             else:
                 zmin = ""
                 zmax = ""

@@ -267,21 +267,18 @@ class _CopyOperation:
         selection = FreeCADGui.Selection.getSelection()
         for sel in selection:
             job = PathUtils.findParentJob(sel)
-            prevOp = PathDressup.baseOp(sel)
-            prevOpCopy = FreeCAD.ActiveDocument.copyObject(prevOp, False)
-            while prevOp != sel:
-                # recursive processing Dressup
-                op = sel
-                while op.Base != prevOp:
-                    # get higher level operation
-                    op = op.Base
-                opCopy = FreeCAD.ActiveDocument.copyObject(op, False)
-                opCopy.Base = prevOpCopy
-                prevOpCopy = opCopy
-                prevOp = op
+            # collect the dressup chain from the top object down to the base operation
+            baseOp = PathDressup.baseOp(sel)
+            chain = [sel]
+            while chain[-1] != baseOp:
+                chain.append(chain[-1].Base)
+
+            # copy the whole chain at once so Base links and expressions
+            # (e.g. RampEntry DressupStartDepth) point at the copies, not the originals
+            copies = FreeCAD.ActiveDocument.copyObject(chain, False)
 
             # add to Job top object
-            PathUtils.addToJob(prevOpCopy, job.Name)
+            PathUtils.addToJob(copies[0], job.Name)
 
 
 if FreeCAD.GuiUp:

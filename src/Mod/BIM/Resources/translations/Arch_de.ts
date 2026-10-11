@@ -2570,7 +2570,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="333"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation>Toleranz, die verwendet wird um zu prüfen, ob zwei angrenzende Flächen koplanar sind</translation>
+      <translation>Toleranzwert, der bei der Überprüfung, ob zwei aneinandergrenzende Flächen komplanar sind, verwendet wird</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
@@ -3484,7 +3484,7 @@ Der Farbverlauf der lokalen Maschengröße h(x) ist durch |Δh(x)| ≤ 1/value g
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation>Geschwungene Formen, die in IFC nicht als Wölbung dargestellt werden können, werden als ebene Facetten zerlegt. Wenn diese Option aktiviert ist, wird eine zusätzliche Berechnung durchgeführt um koplanare Facetten zu verbinden.</translation>
+      <translation>Geschwungene Formen, die in IFC nicht als Wölbung dargestellt werden können, werden als ebene Facetten zerlegt. Wenn diese Option aktiviert ist, wird eine zusätzliche Berechnung durchgeführt, um komplanare Facetten zu verbinden.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="127"/>
@@ -3781,14 +3781,14 @@ Die Standardvorlage befindet sich unter:
       <translation>Struktur erzeugen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="204"/>
+      <location filename="../../bimcommands/BimWall.py" line="201"/>
       <source>Next point</source>
       <translation>Nächster Punkt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchCommands.py" line="1728"/>
-      <location filename="../../bimcommands/BimProfile.py" line="99"/>
+      <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Kategorie</translation>
     </message>
@@ -3877,7 +3877,7 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchCoveringGui.py" line="672"/>
       <location filename="../../ArchCoveringGui.py" line="683"/>
       <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
       <source>No selection</source>
       <translation>Keine Auswahl</translation>
     </message>
@@ -3960,9 +3960,9 @@ Die Standardvorlage befindet sich unter:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimPanel.py" line="204"/>
-      <location filename="../../bimcommands/BimWindow.py" line="450"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>Voreinstellung</translation>
     </message>
@@ -4050,13 +4050,13 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1604"/>
+      <location filename="../../ArchStructure.py" line="1624"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="214"/>
-      <location filename="../../bimcommands/BimWall.py" line="507"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../bimcommands/BimWall.py" line="504"/>
       <source>Length</source>
       <translation>Länge</translation>
     </message>
@@ -4069,13 +4069,13 @@ Die Standardvorlage befindet sich unter:
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchStructure.py" line="1625"/>
       <location filename="../../ArchWall.py" line="1863"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="221"/>
-      <location filename="../../bimcommands/BimWall.py" line="514"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>Breite</translation>
     </message>
@@ -4227,12 +4227,12 @@ Die Standardvorlage befindet sich unter:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1606"/>
+      <location filename="../../ArchStructure.py" line="1626"/>
       <location filename="../../ArchWall.py" line="1869"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchWindow.py" line="1199"/>
-      <location filename="../../bimcommands/BimWall.py" line="521"/>
+      <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>Höhe</translation>
     </message>
@@ -4252,39 +4252,39 @@ Die Standardvorlage befindet sich unter:
       <translation>Länge und Breite tauschen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1070"/>
+      <location filename="../../ArchStructure.py" line="1090"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Dieses Polygonnetz ist ein ungültiger Volumenkörper</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1189"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker wurde mit Fehler beendet</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1616"/>
+      <location filename="../../ArchStructure.py" line="1636"/>
       <source>Node Tools</source>
       <translation>Knotenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1640"/>
+      <location filename="../../ArchStructure.py" line="1660"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Verlängert die Knoten dieses Elements, um die Knoten eines anderen Elements zu erreichen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1671"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Verbindet die Knoten von diesem Element mit denen von einem anderen Element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1662"/>
+      <location filename="../../ArchStructure.py" line="1682"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Schaltet alle Strukturknoten des Dokuments ein / aus</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1669"/>
+      <location filename="../../ArchStructure.py" line="1689"/>
       <source>Extrusion Tools</source>
       <translation>Extrusionswerkzeuge</translation>
     </message>
@@ -4310,17 +4310,17 @@ Die Standardvorlage befindet sich unter:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
-      <location filename="../../bimcommands/BimTruss.py" line="83"/>
-      <location filename="../../bimcommands/BimWall.py" line="157"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
+      <location filename="../../bimcommands/BimWall.py" line="154"/>
       <source>%1 pick first point</source>
       <translation>%1 ersten Punkt auswählen</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
-      <location filename="../../bimcommands/BimTruss.py" line="85"/>
-      <location filename="../../bimcommands/BimWall.py" line="159"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
+      <location filename="../../bimcommands/BimWall.py" line="156"/>
       <source>%1 pick next point</source>
       <translation>%1 nächsten Punkt auswählen</translation>
     </message>
@@ -4340,90 +4340,90 @@ Die Standardvorlage befindet sich unter:
       <translation>Strukturoptionen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1042"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>Fehler: Die Grundform konnte nicht entlang dieses Werkzeugobjekts extrudiert werden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1621"/>
+      <location filename="../../ArchStructure.py" line="1641"/>
       <source>Reset Nodes</source>
       <translation>Knotenpunkte zurücksetzen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1627"/>
+      <location filename="../../ArchStructure.py" line="1647"/>
       <source>Edit Nodes</source>
       <translation>Knotenpunkte bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1633"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Extend Nodes</source>
       <translation>Knotenpunkte erweitern</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1646"/>
+      <location filename="../../ArchStructure.py" line="1666"/>
       <source>Connect Nodes</source>
       <translation>Knotenpunkte verbinden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1657"/>
+      <location filename="../../ArchStructure.py" line="1677"/>
       <source>Toggle All Nodes</source>
       <translation>Alle Knotenpunkte umschalten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1674"/>
-      <location filename="../../ArchStructure.py" line="1875"/>
+      <location filename="../../ArchStructure.py" line="1694"/>
+      <location filename="../../ArchStructure.py" line="1895"/>
       <source>Select Tool</source>
       <translation>Auswahlwerkzeug</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1679"/>
+      <location filename="../../ArchStructure.py" line="1699"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>Wählt Objekte oder Kanten aus, die als Werkzeug (Extrusionspfad) verwendet werden sollen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1703"/>
-      <location filename="../../ArchStructure.py" line="1753"/>
+      <location filename="../../ArchStructure.py" line="1723"/>
+      <location filename="../../ArchStructure.py" line="1773"/>
       <source>Choose another Structure object:</source>
       <translation>Ein anderes Strukturobjekt auswählen:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1709"/>
-      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1729"/>
+      <location filename="../../ArchStructure.py" line="1779"/>
       <source>The chosen object is not a Structure</source>
       <translation>Das ausgewählte Objekt ist keine Struktur</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1714"/>
-      <location filename="../../ArchStructure.py" line="1764"/>
+      <location filename="../../ArchStructure.py" line="1734"/>
+      <location filename="../../ArchStructure.py" line="1784"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Das ausgewählte Objekt hat keine Strukturknoten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1719"/>
-      <location filename="../../ArchStructure.py" line="1769"/>
+      <location filename="../../ArchStructure.py" line="1739"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Eines dieser Objekte hat mehr als 2 Knoten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
-      <location filename="../../ArchStructure.py" line="1782"/>
+      <location filename="../../ArchStructure.py" line="1752"/>
+      <location filename="../../ArchStructure.py" line="1802"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Es konnte kein geeigneter Schnittpunkt gefunden werden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1736"/>
+      <location filename="../../ArchStructure.py" line="1756"/>
       <source>Intersection found.
 </source>
       <translation>Schnittpunkt gefunden.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1787"/>
+      <location filename="../../ArchStructure.py" line="1807"/>
       <source>Intersection found.</source>
       <translation>Schnittpunkt gefunden.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1860"/>
       <source>Done</source>
       <translation>Fertig</translation>
     </message>
@@ -4433,12 +4433,12 @@ Die Standardvorlage befindet sich unter:
       <translation>Ausstattung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="61"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="58"/>
       <source>Select a base shape object and optionally a mesh object</source>
       <translation>Wähle ein Basisformobjekt und optional ein Netz-Objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="81"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="78"/>
       <source>Create Equipment</source>
       <translation>Ausrüstung erstellen</translation>
     </message>
@@ -4453,19 +4453,19 @@ Die Standardvorlage befindet sich unter:
       <translation>Stockwerk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="68"/>
-      <location filename="../../bimcommands/BimProfile.py" line="152"/>
+      <location filename="../../bimcommands/BimProfile.py" line="65"/>
+      <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>Profil erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="79"/>
-      <location filename="../../bimcommands/BimPanel.py" line="129"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
       <source>%1 pick point</source>
       <translation>%1 Punkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="95"/>
+      <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>Profileinstellungen</translation>
     </message>
@@ -4480,25 +4480,25 @@ Die Standardvorlage befindet sich unter:
       <translation>Grundstück</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="58"/>
+      <location filename="../../bimcommands/BimSite.py" line="55"/>
       <source>Create Site</source>
       <translation>Grundstück erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="65"/>
-      <location filename="../../bimcommands/BimRoof.py" line="81"/>
+      <location filename="../../bimcommands/BimRoof.py" line="62"/>
+      <location filename="../../bimcommands/BimRoof.py" line="78"/>
       <source>Create Roof</source>
       <translation>Dach erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="97"/>
-      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>%1 select a base object</source>
       <translation>%1 Ein Basisobjekt auswählen</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="92"/>
+      <location filename="../../bimcommands/BimRoof.py" line="89"/>
       <source>Unable to create a roof</source>
       <translation>Dach konnte nicht erzeugt werden</translation>
     </message>
@@ -4565,47 +4565,47 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Öffnung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="64"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="61"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
       <translation>Zwei Objekte in dieser Reihenfolge auswählen: Ein zu schneidendes Objekt und ein Objekt, das eine Schneidebene definiert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="69"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="66"/>
       <source>The first object does not have a shape</source>
       <translation>Das erste Objekt hat keine Form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="74"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="71"/>
       <source>The second object does not define a plane</source>
       <translation>Das zweite Objekt definiert keine Ebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="118"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="115"/>
       <source>Cutting</source>
       <translation>Zuschnitt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="144"/>
       <source>Cut Plane</source>
       <translation>Schnittebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="148"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="145"/>
       <source>Cut Plane Options</source>
       <translation>Schnittebene-Optionen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="149"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="146"/>
       <source>Which side to cut</source>
       <translation>Welche Seite zu schneiden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Behind</source>
       <translation>hinter</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Front</source>
       <translation>Vorne</translation>
     </message>
@@ -4707,7 +4707,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Referenzdateien</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="56"/>
+      <location filename="../../bimcommands/BimReference.py" line="53"/>
       <source>Create external reference</source>
       <translation>Externe Referenz erstellen</translation>
     </message>
@@ -4717,7 +4717,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Rahmen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="60"/>
+      <location filename="../../bimcommands/BimFrame.py" line="57"/>
       <source>Create Frame</source>
       <translation>Rahmen erstellen</translation>
     </message>
@@ -4777,44 +4777,44 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Fenster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="109"/>
-      <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="213"/>
+      <location filename="../../bimcommands/BimWindow.py" line="106"/>
+      <location filename="../../bimcommands/BimWindow.py" line="133"/>
+      <location filename="../../bimcommands/BimWindow.py" line="210"/>
       <source>Create Window</source>
       <translation>Fenster erzeugen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="154"/>
+      <location filename="../../bimcommands/BimWindow.py" line="151"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Wähle eine Fläche auf einem existierenden Objekt oder wähle eine Voreinstellung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="171"/>
+      <location filename="../../bimcommands/BimWindow.py" line="168"/>
       <source>%1 pick point on host</source>
       <translation>%1 Punkt auf Host auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="260"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Fenster basiert auf keiner Skizze. Fenster ist nicht ausgerichtet oder in der Größe angepasst.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="282"/>
+      <location filename="../../bimcommands/BimWindow.py" line="279"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Keine Breiten- und/oder Höhenbegrenzung in Fensterskizze. Fenster wird nicht verändert.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="285"/>
+      <location filename="../../bimcommands/BimWindow.py" line="282"/>
       <source>No window found. Cannot continue.</source>
       <translation>Kein Fenster gefunden. Kann nicht fortfahren.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Auto include in host object</source>
       <translation>Automatisch in Host-Objekt einfügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="412"/>
+      <location filename="../../bimcommands/BimWindow.py" line="409"/>
       <source>Sill height</source>
       <translation>Fensterbankhöhe</translation>
     </message>
@@ -4837,7 +4837,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="399"/>
+      <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>Fensteroptionen</translation>
     </message>
@@ -4908,7 +4908,7 @@ Wenn Länge = 0, dann wird die Länge so berechnet, dass die Höhe mit dem relat
       <translation>Ruft die gewählte Kante ab</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
       <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
@@ -5077,7 +5077,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchSectionPlane.py" line="1592"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
@@ -5119,25 +5119,25 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1599"/>
+      <location filename="../../ArchStructure.py" line="1619"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../bimcommands/BimPanel.py" line="228"/>
+      <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1720"/>
-      <location filename="../../bimcommands/BimWall.py" line="537"/>
+      <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>Versatz</translation>
     </message>
@@ -5167,17 +5167,17 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Achsensystem</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="85"/>
+      <location filename="../../bimcommands/BimAxis.py" line="82"/>
       <source>Only axes must be selected</source>
       <translation>Es dürfen nur Achsen ausgewählt werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="90"/>
+      <location filename="../../bimcommands/BimAxis.py" line="87"/>
       <source>Create Axis System</source>
       <translation>Achsensystem erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="95"/>
+      <location filename="../../bimcommands/BimAxis.py" line="92"/>
       <source>Select at least one axis</source>
       <translation>Wähle mindestens eine Achse</translation>
     </message>
@@ -5208,7 +5208,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Fachwerkbinder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="116"/>
+      <location filename="../../bimcommands/BimTruss.py" line="113"/>
       <source>Create Truss</source>
       <translation>Fachwerkbinder erstellen</translation>
     </message>
@@ -5288,17 +5288,17 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Beschichtung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="58"/>
+      <location filename="../../bimcommands/BimStairs.py" line="55"/>
       <source>Create Stairs</source>
       <translation>Treppe erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="543"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="540"/>
       <source>Create material</source>
       <translation>Material erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="576"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="573"/>
       <source>Create multi-material</source>
       <translation>Multi-Material erstellen</translation>
     </message>
@@ -5346,7 +5346,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Fehler: Raum '%s' hat keine Zone. Breche ab.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="117"/>
+      <location filename="../../bimcommands/BimAxis.py" line="114"/>
       <source>Create Grid</source>
       <translation>Raster erstellen</translation>
     </message>
@@ -5569,28 +5569,28 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Plattenzeichnung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="87"/>
-      <location filename="../../bimcommands/BimPanel.py" line="148"/>
+      <location filename="../../bimcommands/BimPanel.py" line="84"/>
+      <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Platte erstellt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="200"/>
+      <location filename="../../bimcommands/BimPanel.py" line="197"/>
       <source>Panel Options</source>
       <translation>Panel-Optionen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="237"/>
+      <location filename="../../bimcommands/BimPanel.py" line="234"/>
       <source>Rotate</source>
       <translation>Drehen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="322"/>
+      <location filename="../../bimcommands/BimPanel.py" line="319"/>
       <source>Create Panel Cut</source>
       <translation>Plattenzuschnitt erstellt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="354"/>
+      <location filename="../../bimcommands/BimPanel.py" line="351"/>
       <source>Create Panel Sheet</source>
       <translation>Plattenzeichnung erstellt</translation>
     </message>
@@ -5600,7 +5600,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Fehler bei Berechnung der Form von</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1988"/>
+      <location filename="../../ArchStructure.py" line="2008"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Form konnte nicht berechnet werden</translation>
@@ -5641,7 +5641,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Ansichtspositionen bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="455"/>
+      <location filename="../../bimcommands/BimPanel.py" line="452"/>
       <source>This object has no face</source>
       <translation>Dieses Objekt hat keine Fläche</translation>
     </message>
@@ -5651,14 +5651,14 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Vorhangfassade</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
+      <location filename="../../bimcommands/BimTruss.py" line="58"/>
       <source>Select only one base object or none</source>
       <translation>Nur ein Basis-Objekt oder nichts auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="122"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
       <source>Create Curtain Wall</source>
       <translation>Vorhangfassade erstellen</translation>
     </message>
@@ -6195,23 +6195,23 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <translation>Verbinder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="62"/>
-      <location filename="../../bimcommands/BimPipe.py" line="71"/>
+      <location filename="../../bimcommands/BimPipe.py" line="59"/>
+      <location filename="../../bimcommands/BimPipe.py" line="68"/>
       <source>Create Pipe</source>
       <translation>Rohr erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="106"/>
+      <location filename="../../bimcommands/BimPipe.py" line="103"/>
       <source>Select exactly 2 or 3 pipe objects</source>
       <translation>Genau 2 oder 3 Rohr-Objekte auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="112"/>
+      <location filename="../../bimcommands/BimPipe.py" line="109"/>
       <source>Select only pipe objects</source>
       <translation>Nur Rohr-Objekte auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="116"/>
+      <location filename="../../bimcommands/BimPipe.py" line="113"/>
       <source>Create Connector</source>
       <translation>Verbinder erstellen</translation>
     </message>
@@ -6339,7 +6339,7 @@ Das Python-Modul ladybug oder pysolar ist erforderlich.</translation>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="480"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Wert</translation>
     </message>
@@ -6384,7 +6384,7 @@ Geschoß-Erstellung abgebrochen.</translation>
       <translation>Boden erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="50"/>
+      <location filename="../../bimcommands/BimAxis.py" line="47"/>
       <source>Create Axis</source>
       <translation>Achse erstellen</translation>
     </message>
@@ -6491,8 +6491,8 @@ Geschoß-Erstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="94"/>
-      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
       <source>Select a base object</source>
       <translation>Basis-Objekt auswählen</translation>
     </message>
@@ -6561,7 +6561,7 @@ Geschoß-Erstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="475"/>
       <source>Property</source>
       <translation>Eigenschaft</translation>
     </message>
@@ -6592,13 +6592,13 @@ Geschoß-Erstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="635"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
       <translation>Neue Eigenschaft</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>New property set</source>
       <translation>Neue Eigenschaften-Gruppe</translation>
     </message>
@@ -6608,13 +6608,13 @@ Geschoß-Erstellung abgebrochen.</translation>
       <translation>Armierung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="72"/>
-      <location filename="../../bimcommands/BimRebar.py" line="106"/>
+      <location filename="../../bimcommands/BimRebar.py" line="69"/>
+      <location filename="../../bimcommands/BimRebar.py" line="103"/>
       <source>Create Rebar</source>
       <translation>Bewehrung erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="116"/>
+      <location filename="../../bimcommands/BimRebar.py" line="113"/>
       <source>Select a base face on a structural object</source>
       <translation>Wähle eine Basisfläche auf einem Strukturobjekt aus</translation>
     </message>
@@ -6624,114 +6624,114 @@ Geschoß-Erstellung abgebrochen.</translation>
       <translation>Schnittebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="62"/>
       <source>Create Section Plane</source>
       <translation>Schnittebene erzeugen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1799"/>
+      <location filename="../../ArchSectionPlane.py" line="1798"/>
       <source>Scope</source>
       <translation>Anwendungsbereich</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Placement and Visuals</source>
       <translation>Positionierung und Darstellung</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchSectionPlane.py" line="1804"/>
       <source>Objects seen by this section plane</source>
       <translation>Objekte, die von dieser Schnittebene erkannt werden</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Entfernt hervorgehobene Objekte aus der obigen Liste</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1812"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Add Selected</source>
       <translation>Ausgewählte hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1817"/>
+      <location filename="../../ArchSectionPlane.py" line="1816"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Fügt ausgewählte Objekte zum Bereich dieser Schnittebene hinzu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1818"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Cut View</source>
       <translation>Schnittansicht</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1825"/>
+      <location filename="../../ArchSectionPlane.py" line="1824"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Erstellt einen Live-Schnitt in der 3D-Ansicht, wobei die Geometrie auf einer Seite der Ebene ausgeblendet wird, um das Innere Ihres Modells zu sehen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Rotate by 90°</source>
       <translation>Um 90° drehen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1830"/>
+      <location filename="../../ArchSectionPlane.py" line="1829"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Dreht die Ebene um ihre lokale X-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1834"/>
+      <location filename="../../ArchSectionPlane.py" line="1833"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Dreht die Ebene um ihre lokale Y-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1838"/>
+      <location filename="../../ArchSectionPlane.py" line="1837"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Dreht die Ebene um ihre lokale Z-Achse</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1839"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Resize to Fit</source>
       <translation>Größe anpassen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1845"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Recenter Plane</source>
       <translation>Ebene neu zentrieren</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1827"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate X</source>
       <translation>Drehen X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1598"/>
+      <location filename="../../ArchSectionPlane.py" line="1597"/>
       <source>Toggle Cut View</source>
       <translation>Schnittansicht umschalten</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1831"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotate Y</source>
       <translation>Drehen Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1835"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotate Z</source>
       <translation>Drehen Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1844"/>
+      <location filename="../../ArchSectionPlane.py" line="1843"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ändert die Ausdehnung der Ebene, sodass alle Objekte der obigen Liste darauf passen</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
       <location filename="../../ArchWall.py" line="1873"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>Zentrum</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1850"/>
+      <location filename="../../ArchSectionPlane.py" line="1849"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Zentriert die Ebene gemäß den Objekten in obiger Liste</translation>
     </message>
@@ -6750,9 +6750,9 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation>Es kann alles außer Grundstücks- und Gebäudeobjekte in einem Gebäude-Objekt platziert werden.
+      <translation>Es kann alles außer Grundstücks- und Gebäudeobjekten in einem Gebäudeobjekt platziert werden.
 
-Gebäude-Objekte akzeptieren keine Grundstücks- und andere Gebäudeobjekte.
+Gebäudeobjekte akzeptieren keine Grundstücks- und andere Gebäudeobjekte.
 
 Grundstücks- und Gebäudeobjekte werden daher aus der Auswahl entfernt.
 
@@ -6769,7 +6769,7 @@ Gebäudeerstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="281"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="87"/>
       <source>Create Building</source>
       <translation>Gebäude erstellen</translation>
     </message>
@@ -6779,7 +6779,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Raum</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="59"/>
+      <location filename="../../bimcommands/BimSpace.py" line="56"/>
       <source>Create Space</source>
       <translation>Bereich erstellen</translation>
     </message>
@@ -6834,69 +6834,69 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Wände konnen nur aus Part- oder Mesh-Objekten bestehen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="110"/>
-      <location filename="../../bimcommands/BimWall.py" line="410"/>
-      <location filename="../../bimcommands/BimWall.py" line="658"/>
+      <location filename="../../bimcommands/BimWall.py" line="107"/>
+      <location filename="../../bimcommands/BimWall.py" line="407"/>
+      <location filename="../../bimcommands/BimWall.py" line="655"/>
       <source>Create Wall</source>
       <translation>Wand erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="146"/>
+      <location filename="../../bimcommands/BimWall.py" line="143"/>
       <source>First Point of Wall</source>
       <translation>Erster Punkt der Wand</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="486"/>
+      <location filename="../../bimcommands/BimWall.py" line="483"/>
       <source>Wall Presets</source>
       <translation>Wand-Voreinstellungen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="492"/>
+      <location filename="../../bimcommands/BimWall.py" line="489"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Diese Liste zeigt alle Multimaterial-Objekte dieses Dokuments an. Objekte erstellen um Wandtypen zu definieren.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="544"/>
+      <location filename="../../bimcommands/BimWall.py" line="541"/>
       <source>Baseline</source>
       <translation>Basislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="550"/>
+      <location filename="../../bimcommands/BimWall.py" line="547"/>
       <source>No baseline</source>
       <translation>Keine Basislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="551"/>
+      <location filename="../../bimcommands/BimWall.py" line="548"/>
       <source>Draft line</source>
       <translation>Draft-Linie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="552"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>Sketch</source>
       <translation>Skizze</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
       <location filename="../../ArchWall.py" line="1893"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>Ausrichtung</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1872"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>Links</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
-      <location filename="../../bimcommands/BimWall.py" line="531"/>
+      <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="584"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="609"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="581"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="606"/>
       <source>Merge Walls</source>
       <translation>Wände vebinden</translation>
     </message>
@@ -6922,7 +6922,7 @@ Gebäudeerstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1848"/>
-      <location filename="../../bimcommands/BimWall.py" line="481"/>
+      <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>Wand-Optionen</translation>
     </message>
@@ -7033,64 +7033,64 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Aktiviere erzwungene Darstellung durch Begrenzungsflächen (B-rep) für dieses Objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="55"/>
       <source>Add space boundary</source>
       <translation>Raum-Grenzen hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="73"/>
       <source>Grouping</source>
       <translation>Gruppierung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="112"/>
       <source>Remove space boundary</source>
       <translation>Raum-Grenzen entfernen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="130"/>
       <source>Ungrouping</source>
       <translation>Aufheben der Gruppierung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="173"/>
       <source>Split Mesh</source>
       <translation>Netz aufteilen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="221"/>
       <source>Mesh to shape</source>
       <translation>Netz aus Form</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="291"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="288"/>
       <source>Remove shape</source>
       <translation>Form entfernen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="340"/>
       <source>No problems found!</source>
       <translation>Keine Probleme gefunden!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <source>The selected wall contains no subwalls to merge</source>
       <translation>Die ausgewählte Wand enthält keine Unterwände, die zusammengeführt werden können</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="595"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="599"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="596"/>
       <source>Select only wall objects</source>
       <translation>Nur Wandobjekte auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="607"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="604"/>
       <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
       <translation>Wände mit unterschiedlichen Eigenschaften für „Breite“, „Höhe“ und „Ausrichtung“ können nicht zusammengeführt werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="415"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="448"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="412"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="445"/>
       <source>Create Component</source>
       <translation>Komponente erstellen</translation>
     </message>
@@ -7100,27 +7100,27 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Schlüssel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="482"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="479"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Kalkulationstabelle für IFC-Eigenschaften erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="57"/>
       <source>Create Level</source>
       <translation>Stockwerk erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="63"/>
+      <location filename="../../bimcommands/BimFence.py" line="60"/>
       <source>Create Fence</source>
       <translation>Zaun erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="303"/>
+      <location filename="../../bimcommands/BimBox.py" line="299"/>
       <source>Create Box</source>
       <translation>Box erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="65"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="62"/>
       <source>Create 2D View</source>
       <translation>Standard Geschossfarbe</translation>
     </message>
@@ -7305,7 +7305,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Aufbereiten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>Skizze erstellen</translation>
     </message>
@@ -7340,7 +7340,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1865"/>
+      <location filename="../../ArchStructure.py" line="1885"/>
       <source>An optional extrusion path for this element</source>
       <translation>Ein optionaler Extrusionspfad für dieses Element</translation>
     </message>
@@ -7443,42 +7443,42 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Benutzerdefinierte Eigenschaft auswählen, die beim Erstellen einer Variantenform mit derselben ArchSketch verwendet werden soll </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1432"/>
+      <location filename="../../ArchStructure.py" line="1452"/>
       <source>If the nodes are visible or not</source>
       <translation>Ob die Knoten sichtbar sind</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1440"/>
+      <location filename="../../ArchStructure.py" line="1460"/>
       <source>The width of the nodes line</source>
       <translation>Die Breite der Knotenlinie</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1448"/>
+      <location filename="../../ArchStructure.py" line="1468"/>
       <source>The size of the node points</source>
       <translation>Die Größe der Knotenpunkte</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1457"/>
+      <location filename="../../ArchStructure.py" line="1477"/>
       <source>The color of the nodes line</source>
       <translation>Die Farbe der Knotenlinie</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1466"/>
+      <location filename="../../ArchStructure.py" line="1486"/>
       <source>The type of structural node</source>
       <translation>Die Art des Strukturknotens</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1912"/>
+      <location filename="../../ArchStructure.py" line="1932"/>
       <source>Axes systems this structure is built on</source>
       <translation>Achsen-Systeme auf denen diese Struktur aufgebaut ist</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1922"/>
+      <location filename="../../ArchStructure.py" line="1942"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Die Elementanzahl, die ausgeschlossen werden sollen, wenn diese Struktur auf Achsen basiert</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1929"/>
+      <location filename="../../ArchStructure.py" line="1949"/>
       <source>If true the element are aligned with axes</source>
       <translation>Wenn wahr, wird das Element an Achsen ausgerichtet</translation>
     </message>
@@ -8608,7 +8608,7 @@ Gebäudeerstellung abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="98"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="409"/>
       <source>IFC properties of this object</source>
       <translation>IFC-Eigenschaften dieses Objekts</translation>
     </message>
@@ -9392,34 +9392,33 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Die Transparenz dieses Objekts</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
-      <location filename="../../ArchSectionPlane.py" line="1247"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <source>Show the cut in the 3D view</source>
       <translation>Schnitt in der 3D-Ansicht anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1238"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The color of this object</source>
       <translation>Die Farbe dieses Objekts</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Die Entfernung zwischen der Schnitt-Ebene und der tatsächlichen Anzeige-Ebene (nutze einen sehr kleinen Wert, aber nicht 0)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>Show the label in the 3D view</source>
       <translation>Beschriftung in der 3D-Ansicht anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Der Name der Schriftart</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1284"/>
+      <location filename="../../ArchSectionPlane.py" line="1276"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Die Größe der Textschriftart</translation>
@@ -9822,12 +9821,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2050"/>
+      <location filename="../../ArchStructure.py" line="2070"/>
       <source>Structure Tools</source>
       <translation>Strukturwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2051"/>
+      <location filename="../../ArchStructure.py" line="2071"/>
       <source>Structure tools</source>
       <translation>Strukturwerkzeuge</translation>
     </message>
@@ -9835,12 +9834,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="43"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="40"/>
       <source>Equipment</source>
       <translation>Ausstattung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="47"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="44"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
       <translation>Erstellt eine Ausstattung vom ausgewählten Objekt (Teil oder Netz)</translation>
     </message>
@@ -9959,12 +9958,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="43"/>
+      <location filename="../../bimcommands/BimProfile.py" line="40"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="45"/>
+      <location filename="../../bimcommands/BimProfile.py" line="42"/>
       <source>Creates a profile</source>
       <translation>Erstellt ein Profil</translation>
     </message>
@@ -9972,12 +9971,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="46"/>
+      <location filename="../../bimcommands/BimSite.py" line="43"/>
       <source>Site</source>
       <translation>Grundstück</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="48"/>
+      <location filename="../../bimcommands/BimSite.py" line="45"/>
       <source>Creates a site including selected objects</source>
       <translation>Erstellt ein Grundstück mit ausgewählten Objekten</translation>
     </message>
@@ -9985,12 +9984,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="42"/>
+      <location filename="../../bimcommands/BimRoof.py" line="39"/>
       <source>Roof</source>
       <translation>Dach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="46"/>
+      <location filename="../../bimcommands/BimRoof.py" line="43"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Erstellt ein Dach-Objekt aus dem gewählten Kantenzug.</translation>
     </message>
@@ -9998,12 +9997,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="41"/>
       <source>Cut With Plane</source>
       <translation>Mit Ebene schneiden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="42"/>
       <source>Cuts an object with a plane</source>
       <translation>Beschneidet ein Objekt mit einer Ebene</translation>
     </message>
@@ -10011,12 +10010,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="43"/>
+      <location filename="../../bimcommands/BimReference.py" line="40"/>
       <source>External Reference</source>
       <translation>Externe Referenz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="45"/>
+      <location filename="../../bimcommands/BimReference.py" line="42"/>
       <source>Creates an external reference object</source>
       <translation>Externes Referenzobjekt erstellen</translation>
     </message>
@@ -10024,12 +10023,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="43"/>
+      <location filename="../../bimcommands/BimFrame.py" line="40"/>
       <source>Frame</source>
       <translation>Rahmen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="48"/>
+      <location filename="../../bimcommands/BimFrame.py" line="45"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>Erstellt ein Rahmenobjekt aus einem ebenen 2D-Objekt (dem Extrusionsweg) und einem Profil. Die Objekte in dieser Reihenfolge auswählen: Erst Extrusionsweg, dann das Profil.</translation>
     </message>
@@ -10037,12 +10036,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="50"/>
+      <location filename="../../bimcommands/BimWindow.py" line="47"/>
       <source>Window</source>
       <translation>Fenster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="55"/>
+      <location filename="../../bimcommands/BimWindow.py" line="52"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Erzeugt ein Fensterobjekt aus einem ausgewählten Objekt (Draht, Rechteck oder Skizze)</translation>
     </message>
@@ -10050,12 +10049,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="69"/>
+      <location filename="../../bimcommands/BimAxis.py" line="66"/>
       <source>Axis System</source>
       <translation>Achsensystem</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="73"/>
+      <location filename="../../bimcommands/BimAxis.py" line="70"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Erzeugt ein Achsensystem aus einer Reihe von Achsen</translation>
     </message>
@@ -10063,12 +10062,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Truss</name>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="43"/>
+      <location filename="../../bimcommands/BimTruss.py" line="40"/>
       <source>Truss</source>
       <translation>Fachwerkbinder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="47"/>
+      <location filename="../../bimcommands/BimTruss.py" line="44"/>
       <source>Creates a truss object from the selected line or from scratch</source>
       <translation>Erstellt ein Fachwerkbinder-Objekte aus der ausgewählten Linie oder von Grund auf neu</translation>
     </message>
@@ -10076,12 +10075,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="43"/>
+      <location filename="../../bimcommands/BimStairs.py" line="40"/>
       <source>Stairs</source>
       <translation>Treppe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="45"/>
+      <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Creates a flight of stairs</source>
       <translation>Erstellt eine Treppe</translation>
     </message>
@@ -10089,12 +10088,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="43"/>
+      <location filename="../../bimcommands/BimSpace.py" line="40"/>
       <source>Space</source>
       <translation>Raum</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="47"/>
+      <location filename="../../bimcommands/BimSpace.py" line="44"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Erstellt ein Raum-Objekt aus ausgewählten Begrenzungsobjekten</translation>
     </message>
@@ -10102,12 +10101,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="42"/>
+      <location filename="../../bimcommands/BimFence.py" line="39"/>
       <source>Fence</source>
       <translation>Zaun</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="45"/>
+      <location filename="../../bimcommands/BimFence.py" line="42"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Erstellt ein Zaun-Objekt aus einem ausgewählten Abschnitt, Pfosten und Pfad</translation>
     </message>
@@ -10115,12 +10114,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="533"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="530"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="537"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="534"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>Erstellt oder bearbeitet die Materialeigenschaften eines markierten Objekts.</translation>
     </message>
@@ -10128,12 +10127,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="568"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="565"/>
       <source>Multi-Material</source>
       <translation>Mehrfach-Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="570"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
       <source>Creates or edits multi-materials</source>
       <translation>Erstellt oder bearbeitet Mehrfach-Materialien</translation>
     </message>
@@ -10141,12 +10140,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="600"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="597"/>
       <source>Material Tools</source>
       <translation>Materialwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="601"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Material tools</source>
       <translation>Materialwerkzeuge</translation>
     </message>
@@ -10154,12 +10153,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="110"/>
+      <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Grid</source>
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="112"/>
+      <location filename="../../bimcommands/BimAxis.py" line="109"/>
       <source>Creates a customizable grid object</source>
       <translation>Erstellt ein anpassbares Rasterobjekt</translation>
     </message>
@@ -10227,12 +10226,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="55"/>
+      <location filename="../../bimcommands/BimPanel.py" line="52"/>
       <source>Panel</source>
       <translation>Platte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="60"/>
+      <location filename="../../bimcommands/BimPanel.py" line="57"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Erstellt ein Plattenobjekt von Grund auf oder auf Basis eines ausgewählten Objekts (Skizze, Kantenzug, Fläche oder Festkörper)</translation>
     </message>
@@ -10240,12 +10239,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="307"/>
+      <location filename="../../bimcommands/BimPanel.py" line="304"/>
       <source>Panel Cut</source>
       <translation>Plattenzuschnitt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="309"/>
+      <location filename="../../bimcommands/BimPanel.py" line="306"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Erstellt 2D-Ansichten von ausgewählten Platten</translation>
     </message>
@@ -10253,12 +10252,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="340"/>
+      <location filename="../../bimcommands/BimPanel.py" line="337"/>
       <source>Panel Sheet</source>
       <translation>Plattenzeichnung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="344"/>
+      <location filename="../../bimcommands/BimPanel.py" line="341"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Erstellt ein 2D-Zeichnungsblatt, das Plattenzuschnitte enthalten kann</translation>
     </message>
@@ -10266,12 +10265,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="379"/>
+      <location filename="../../bimcommands/BimPanel.py" line="376"/>
       <source>Nest</source>
       <translation>Verschachteln</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="383"/>
+      <location filename="../../bimcommands/BimPanel.py" line="380"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Verschachtelt ausgewählte Formen in einem Behälter</translation>
     </message>
@@ -10279,12 +10278,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="555"/>
+      <location filename="../../bimcommands/BimPanel.py" line="552"/>
       <source>Panel Tools</source>
       <translation>Plattenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="556"/>
+      <location filename="../../bimcommands/BimPanel.py" line="553"/>
       <source>Panel tools</source>
       <translation>Plattenwerkzeuge</translation>
     </message>
@@ -10292,12 +10291,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="40"/>
       <source>Curtain Wall</source>
       <translation>Vorhangfassade</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="45"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Erstellt ein Vorhangfassaden-Objekt von der ausgewählten Linie oder von Grund auf</translation>
     </message>
@@ -10305,12 +10304,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="43"/>
+      <location filename="../../bimcommands/BimPipe.py" line="40"/>
       <source>Pipe</source>
       <translation>Rohr</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="47"/>
+      <location filename="../../bimcommands/BimPipe.py" line="44"/>
       <source>Creates a pipe object from a given wire or line</source>
       <translation>Erstellt ein Rohrobjekt aus einem Linienzug oder einer Linie</translation>
     </message>
@@ -10318,12 +10317,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="87"/>
+      <location filename="../../bimcommands/BimPipe.py" line="84"/>
       <source>Connector</source>
       <translation>Verbinder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="91"/>
+      <location filename="../../bimcommands/BimPipe.py" line="88"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Erstellt eine Verbindung zwischen 2 oder 3 ausgewählten Rohren</translation>
     </message>
@@ -10331,12 +10330,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="132"/>
+      <location filename="../../bimcommands/BimPipe.py" line="129"/>
       <source>Pipe Tools</source>
       <translation>Rohrwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="133"/>
+      <location filename="../../bimcommands/BimPipe.py" line="130"/>
       <source>Pipe tools</source>
       <translation>Rohrwerkzeuge</translation>
     </message>
@@ -10344,12 +10343,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="39"/>
       <source>Schedule</source>
       <translation>Liste</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="45"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Erstellt einen Terminplan, um Daten aus dem Modell zu sammeln</translation>
     </message>
@@ -10370,12 +10369,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="43"/>
+      <location filename="../../bimcommands/BimAxis.py" line="40"/>
       <source>Axis</source>
       <translation>Achse</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="45"/>
+      <location filename="../../bimcommands/BimAxis.py" line="42"/>
       <source>Creates a set of axes</source>
       <translation>Erstellt einen Achsensatz</translation>
     </message>
@@ -10383,12 +10382,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="137"/>
+      <location filename="../../bimcommands/BimAxis.py" line="134"/>
       <source>Axis Tools</source>
       <translation>Achsenwerkzeuge</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="138"/>
+      <location filename="../../bimcommands/BimAxis.py" line="135"/>
       <source>Axis tools</source>
       <translation>Achsenwerkzeuge</translation>
     </message>
@@ -10396,12 +10395,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="43"/>
+      <location filename="../../bimcommands/BimRebar.py" line="40"/>
       <source>Custom Rebar</source>
       <translation>Benutzerdefinierte Bewehrung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="48"/>
+      <location filename="../../bimcommands/BimRebar.py" line="45"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>Erstellt einen Bewehrungsstab aus der ausgewählten Fläche eines Festkörperobjekts und/oder einer Skizze</translation>
     </message>
@@ -10409,12 +10408,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="41"/>
       <source>Section Plane</source>
       <translation>Schnittebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="45"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Erstellt eine Schnittebene, einschließlich der ausgewählten Objekte</translation>
     </message>
@@ -10423,7 +10422,7 @@ Gebäudeerstellung abgebrochen.</translation>
     <name>Arch_Building</name>
     <message>
       <location filename="../../ArchBuilding.py" line="229"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="75"/>
       <source>Building</source>
       <translation>Gebäude</translation>
     </message>
@@ -10433,7 +10432,7 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Erzeugt ein Gebäudeobjekt, einschließlich der ausgewählten Objekte.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="77"/>
       <source>Creates a building object</source>
       <translation>Erstellt ein Gebäude-Objekt</translation>
     </message>
@@ -10441,12 +10440,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="59"/>
+      <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Wall</source>
       <translation>Wand</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="64"/>
+      <location filename="../../bimcommands/BimWall.py" line="61"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Erzeuge ein Wandobjekt von Grund auf neu oder von einem ausgewählten Objekt (Kantenzug, Oberfläche oder Volumenkörper)</translation>
     </message>
@@ -10454,12 +10453,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merge Walls</source>
       <translation>Wände verbinden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="549"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Führt die ausgewählten Wände zusammen, wenn möglich</translation>
     </message>
@@ -10467,12 +10466,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="39"/>
       <source>Add Component</source>
       <translation>Komponente hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Adds the selected components to the active object</source>
       <translation>Fügt ausgewählte Komponenten zu den aktiven Objekten hinzu</translation>
     </message>
@@ -10480,12 +10479,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="158"/>
       <source>Split Mesh</source>
       <translation>Netz aufteilen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Zerlegt ausgewählte Netze in unabhängige Komponenten</translation>
     </message>
@@ -10493,12 +10492,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="191"/>
       <source>Mesh to Shape</source>
       <translation>Netz in Form umwandeln</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
       <source>Turns selected meshes into Part shape objects</source>
       <translation>Wandelt ausgewählte Netze in Part-Formobjekte um</translation>
     </message>
@@ -10506,12 +10505,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="237"/>
       <source>Select Non-Manifold Meshes</source>
       <translation>Nicht-mannigfaltige Netze auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Wählt alle nicht-wasserichten Netze aus dem Dokument oder aus der ausgewählten Gruppe</translation>
     </message>
@@ -10519,12 +10518,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Close Holes</source>
       <translation>Löcher schließen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
       <source>Closes holes in open shapes, turning them into solids</source>
       <translation>Schließt Löcher in offenen Formen und wandelt sie in Volumenkörper um</translation>
     </message>
@@ -10532,12 +10531,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="330"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="327"/>
       <source>Check</source>
       <translation>Überprüfung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="331"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="328"/>
       <source>Checks the selected objects for problems</source>
       <translation>Prüft die ausgewählten Objekte auf Probleme</translation>
     </message>
@@ -10545,12 +10544,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="359"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="356"/>
       <source>Survey</source>
       <translation>Inspizieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="360"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="357"/>
       <source>Starts survey</source>
       <translation>Beginne Messung/Abfrage</translation>
     </message>
@@ -10558,12 +10557,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Component</source>
       <translation>Komponente</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="405"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="402"/>
       <source>Creates an undefined architectural component</source>
       <translation>Erstellt eine undefinierte Architekturkomponente</translation>
     </message>
@@ -10571,12 +10570,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="434"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Clone Component</source>
       <translation>Komponente klonen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="438"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="435"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Klont ein Objekt als undefinierte architektonische Komponente</translation>
     </message>
@@ -10584,12 +10583,12 @@ Gebäudeerstellung abgebrochen.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Toggle Subcomponents</source>
       <translation>Unterkomponenten umschalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="506"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Zeigt oder verbirgt die Unterkomponenten dieses Objekts</translation>
     </message>
@@ -10623,8 +10622,8 @@ Gebäudeerstellung abgebrochen.</translation>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
       <location filename="../../BimStatus.py" line="63"/>
-      <location filename="../../bimcommands/BimNudge.py" line="76"/>
-      <location filename="../../bimcommands/BimNudge.py" line="146"/>
+      <location filename="../../bimcommands/BimNudge.py" line="73"/>
+      <location filename="../../bimcommands/BimNudge.py" line="143"/>
       <source>Auto</source>
       <translation>Automatisch</translation>
     </message>
@@ -10663,1196 +10662,1196 @@ Alt + Bild auf zum Erweitern der Extrusion Alt + Bild ab zum Verkleinern der Ext
       <translation>Einrasten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="45"/>
+      <location filename="../../bimcommands/BimBox.py" line="170"/>
       <source>Length</source>
       <translation>Länge</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
-      <location filename="../../bimcommands/BimBox.py" line="183"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
+      <location filename="../../bimcommands/BimBox.py" line="179"/>
       <source>Width</source>
       <translation>Breite</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
-      <location filename="../../bimcommands/BimBox.py" line="192"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
+      <location filename="../../bimcommands/BimBox.py" line="188"/>
       <source>Height</source>
       <translation>Höhe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="90"/>
+      <location filename="../../bimcommands/BimClassification.py" line="87"/>
       <source>Search…</source>
       <translation>Suchen…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="91"/>
+      <location filename="../../bimcommands/BimClassification.py" line="88"/>
       <source>Searches classes</source>
       <translation>Klassen suchen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="110"/>
+      <location filename="../../bimcommands/BimClassification.py" line="107"/>
       <source>Editing</source>
       <translation>Bearbeitung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="69"/>
+      <location filename="../../bimcommands/BimDiff.py" line="66"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
       <translation>Das aktuelle Dokument muss das Hauptdokument sein. Das andere enthält neuere Objekte, die darin zusammengeführt werden sollen. Stelle sicher, dass in beiden Dokumenten nur die Objekte sichtbar sind, die zum Vergleich vorgesehen sind. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="328"/>
+      <location filename="../../bimcommands/BimDiff.py" line="325"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation>Die Objekte haben immer noch dieselbe Form, aber ein anderes Material. Sollen sie im Hauptdokument aktualisiert werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="383"/>
+      <location filename="../../bimcommands/BimDiff.py" line="380"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>Objekte haben keine IFC-ID im Hauptdokument, aber ein identisches Objekt mit einer ID ist im neuen Dokument vorhanden. Sollen diese IDs auf die Originalobjekte übertragen werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="400"/>
+      <location filename="../../bimcommands/BimDiff.py" line="397"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>Objektnamen wurden geändert. Sollen sie umbenannt werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="417"/>
+      <location filename="../../bimcommands/BimDiff.py" line="414"/>
       <source>objects had their properties changed. Update?</source>
       <translation>Objekteigenschaften wurden geändert. Sollen sie aktualisiert werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="436"/>
+      <location filename="../../bimcommands/BimDiff.py" line="433"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>Objektstandorte wurden geändert. Sollen sie auf ihre neue Position verschoben werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="455"/>
+      <location filename="../../bimcommands/BimDiff.py" line="452"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation>Die Objekte, die sich in der anderen Datei verschoben haben, gelb einfärben (als Diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="476"/>
+      <location filename="../../bimcommands/BimDiff.py" line="473"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation>Die Objekte, die in der anderen Datei geändert wurden, orange einfärben (als Diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="499"/>
+      <location filename="../../bimcommands/BimDiff.py" line="496"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation>Objekte sind im neuen Dokument nicht länger vorhanden. Sollen sie in eine 'Zu Löschen'-Gruppe verschoben werden?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="514"/>
+      <location filename="../../bimcommands/BimDiff.py" line="511"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation>Die Objekte, die in der anderen Datei entfernt wurden, rot einfärben (als Diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="534"/>
+      <location filename="../../bimcommands/BimDiff.py" line="531"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation>Die Objekte, die in der anderen Datei hinzugefügt wurden, grün einfärben (als Diff)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="555"/>
+      <location filename="../../bimcommands/BimDiff.py" line="552"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation>Um dieses Werkzeug auszuführen, müssen zwei Dokumente geöffnet sein. Eines davon ist das Hauptdokument, das andere enthält neue Objekte, die mit dem bestehenden Dokument verglichen werden sollen. Stelle sicher, dass nur die zu vergleichenden Objekte in beiden Dokumenten sichtbar sind.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="88"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="457"/>
       <source>Create new material</source>
       <translation>Neues Material erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="89"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
       <source>Create new multi-material</source>
       <translation>Neues Multi-Material erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
       <source>Label</source>
       <translation>Beschriftung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>IFC-Typ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/__init__.py" line="42"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell wurde auf diesem System nicht gefunden. IFC-Unterstützung ist deaktiviert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation>Objektstruktur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation>Attribut</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="104"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>Wert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="103"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>Eigenschaft</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="125"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="122"/>
       <source>Open</source>
       <translation>Öffnen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="128"/>
       <source>Back</source>
       <translation>Zurück</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="129"/>
       <source>Go back to last item selected</source>
       <translation>Zurück zum zuletzt ausgewählten Element</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="134"/>
       <source>Insert</source>
       <translation>Einfügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="140"/>
       <source>Inserts the selected object and its children in the active document</source>
       <translation>Fügt das ausgewählte Objekt und seine Unterobjekte in das aktive Dokument ein</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="146"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="147"/>
       <source>Turn mesh display on/off</source>
       <translation>Netzanzeige ein-/ausschalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
       <source>IFC files (*.ifc)</source>
       <translation>IFC-Dateien (*.ifc)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="193"/>
       <source>File not found</source>
       <translation>Datei nicht gefunden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="200"/>
       <source>IFC Explorer</source>
       <translation>IFC-Explorer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="123"/>
       <source>Open another IFC file</source>
       <translation>Öffne eine andere IFC-Datei</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="183"/>
       <source>Select an IFC File</source>
       <translation>Eine IFC-Datei auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="225"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
       <translation>IfcSite-Element wurde nicht in %sgefunden. Kann nicht angezeigt werden.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="482"/>
       <source>Error in entity</source>
       <translation>Fehler in der Entität</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="124"/>
       <source>Custom property sets can be defined in</source>
       <translation>Benutzerdefinierte Eigenschaftssätze können definiert werden in</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="129"/>
       <source>Add property</source>
       <translation>Eigenschaft hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>Add property set</source>
       <translation>Eigenschaftssatz hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>New</source>
       <translation>Neu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>Search results</source>
       <translation>Suchergebnisse</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="377"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
       <translation>Warnung: Objekt %1 hat alte IfcProperties und kann nicht aktualisiert werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="671"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="668"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>Bitte zuerst ein Eigenschaft-Set auswählen oder ein Neues erzeugen, das die neue Eigenschaft aufnehmen soll.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New Property Set</source>
       <translation>Neue Eigenschaften-Gruppe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="687"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>Property set name:</source>
       <translation>Eigenschaften-Set Name:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
       <source>Area</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
       <source>Horizontal Area</source>
       <translation>Horizontaler Bereich</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
       <source>Vertical Area</source>
       <translation>Vertikaler Bereich</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
       <source>Volume</source>
       <translation>Volumen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="183"/>
       <source>Add quantity set…</source>
       <translation>Mengenangabe hinzufügen…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="200"/>
       <source>Adding quantity set</source>
       <translation>Menge hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="435"/>
       <source>Cannot save quantities settings for object %1</source>
       <translation>Mengeneinstellungen für Objekt %1 können nicht gespeichert werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="54"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="51"/>
       <source>Select Image</source>
       <translation>Bild auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>Bild (*.png *.jpg *.jpeg)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
-      <location filename="../../bimcommands/BimBox.py" line="81"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
       <source>%1 pick first point</source>
       <translation>%1 ersten Punkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="83"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
       <source>%1 pick opposite point</source>
       <translation>%1 gegenüberliegenden Punkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="203"/>
+      <location filename="../../bimcommands/BimLayers.py" line="200"/>
       <source>Warning: The new layer was added to the project</source>
       <translation>Warnung: Die neue Ebene wurde dem Projekt hinzugefügt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="209"/>
+      <location filename="../../bimcommands/BimLayers.py" line="206"/>
       <source>There is no IFC project in this document</source>
       <translation>Es gibt kein IFC-Projekt in diesem Dokument</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="312"/>
+      <location filename="../../bimcommands/BimLayers.py" line="309"/>
       <source>On</source>
       <translation>Ein</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="313"/>
+      <location filename="../../bimcommands/BimLayers.py" line="310"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="314"/>
+      <location filename="../../bimcommands/BimLayers.py" line="311"/>
       <source>Line width</source>
       <translation>Linienbreite</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="315"/>
+      <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Draw style</source>
       <translation>Linienart</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="316"/>
+      <location filename="../../bimcommands/BimLayers.py" line="313"/>
       <source>Line color</source>
       <translation>Linienfarbe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="317"/>
+      <location filename="../../bimcommands/BimLayers.py" line="314"/>
       <source>Face color</source>
       <translation>Flächenfarbe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="318"/>
+      <location filename="../../bimcommands/BimLayers.py" line="315"/>
       <source>Transparency</source>
       <translation>Transparenz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="319"/>
+      <location filename="../../bimcommands/BimLayers.py" line="316"/>
       <source>Line print color</source>
       <translation>Ausgabe-Farbe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="341"/>
+      <location filename="../../bimcommands/BimLayers.py" line="338"/>
       <source>New Layer</source>
       <translation>Neue Ebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="52"/>
+      <location filename="../../bimcommands/BimLeader.py" line="49"/>
       <source>Leader</source>
       <translation>Hinweislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="77"/>
+      <location filename="../../bimcommands/BimLeader.py" line="74"/>
       <source>Create Leader</source>
       <translation>Hinweislinie erstellen</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimLibrary.py" line="184"/>
       <location filename="../../bimcommands/BimLibrary.py" line="187"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="937"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="941"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="934"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="938"/>
       <source>Preview</source>
       <translation>Vorschau</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="924"/>
       <location filename="../../bimcommands/BimLibrary.py" line="927"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="930"/>
       <source>Options</source>
       <translation>Optionen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="344"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation>Eine Verknüpfung ist nicht möglich, da das Hauptdokument geschlossen ist.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="304"/>
       <source>Save the working file before linking.</source>
       <translation>Speichere die Arbeitsdatei vor dem Verknüpfen.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="497"/>
       <source>No structure in cache. Refresh required.</source>
       <translation>Keine Struktur im Cache. Bitte aktualisieren.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>Es ist nicht möglich, dieses Objekt einzufügen, da das Dokument geschlossen wurde.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="605"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation>Fehler: SAT-Dateien können nicht importiert werden - InventorLoader oder CadExchanger-Addon muss installiert sein</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="631"/>
       <source>Error: Unable to download</source>
       <translation>Fehler: Download nicht möglich</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="678"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>%1 pick insertion point</source>
       <translation>%1 Einfügepunkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Insertion Point</source>
       <translation>Einfügepunkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Origin</source>
       <translation>Ursprung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Top left</source>
       <translation>Oben links</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Top center</source>
       <translation>Oben zentriert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Top right</source>
       <translation>Oben rechts</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Middle left</source>
       <translation>Mitte links</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
       <source>Middle center</source>
       <translation>Mitte zentriert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
       <source>Middle right</source>
       <translation>Mitte rechts</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="709"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
       <source>Bottom left</source>
       <translation>Unten links</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="710"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
       <source>Bottom center</source>
       <translation>Unten zentriert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="711"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
       <source>Bottom right</source>
       <translation>Unten rechts</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="817"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="814"/>
       <source>Could not fetch library contents</source>
       <translation>Bibliotheksinhalt konnte nicht abgerufen werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="821"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="818"/>
       <source>No results fetched from online library</source>
       <translation>Keine Ergebnisse aus der Online-Bibliothek geladen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="879"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="876"/>
       <source>Warning, this can take several minutes!</source>
       <translation>Achtung, das kann einige Zeit dauern!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="122"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="119"/>
       <source>Clears the search field</source>
       <translation>Löscht das Suchfeld</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="129"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="126"/>
       <source> Material Operations</source>
       <translation>Werkstoffoperationen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="135"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="132"/>
       <source>New Material</source>
       <translation>Neues Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge Duplicates</source>
       <translation>Duplikate zusammenfassen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
       <source>Delete Unused</source>
       <translation>Unbenutzte löschen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
       <source>Rename</source>
       <translation>Umbenennen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
       <source>Duplicate</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
       <source>Merge To…</source>
       <translation>Zusammenführen zu…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="103"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation>Material auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="104"/>
       <source>Search materials</source>
       <translation>Suche Materialien</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="105"/>
       <source>Searches for materials in the list</source>
       <translation>Sucht nach Materialien in der Liste</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation>Neues Mehrfachmaterial</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="237"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="247"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="234"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="244"/>
       <source>Merging duplicate material</source>
       <translation>Materialduplikate zusammenführen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="256"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="253"/>
       <source>Unable to delete material</source>
       <translation>Material kann nicht gelöscht werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="260"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="257"/>
       <source>InList not empty</source>
       <translation>InList nicht leer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="287"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="284"/>
       <source>Deleting unused material</source>
       <translation>Nicht verwendetes Material löschen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="337"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="334"/>
       <source>Select Material to Merge To</source>
       <translation>Material zum Zusammenführen auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="382"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="379"/>
       <source>This material is used by:</source>
       <translation>Dieses Material wird verwendet von:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="164"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="161"/>
       <source>Passed</source>
       <translation>Bestanden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="165"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="162"/>
       <source>This test has succeeded.</source>
       <translation>Dieser Test war erfolgreich.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="176"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="173"/>
       <source>This test has failed. Press the button to know more</source>
       <translation>Dieser Test ist fehlgeschlagen. Die Schaltfläche drücken, um mehr zu erfahren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="184"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="181"/>
       <source>Test</source>
       <translation>Aufgabe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="297"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="294"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
       <translation>IfcOpenShell ist auf dem System nicht installiert oder für FreeCAD nicht verfügbar. Diese Bibliothek wird für die IFC-Unterstützung in FreeCAD benötigt. Daher ist die IFC-Unterstützung gegenwärtig deaktiviert. Weitere Informationen unter: %1.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="328"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="325"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
       <translation>Die auf dem System installierte Version von Ifcopenshell konnte nicht ermittelt werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="340"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="337"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
       <translation>Die auf dem System installierte Version von Ifcopenshell erstellt Dateien mit dieser Schemaversion:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="441"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="438"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
       <translation>Die folgenden Gebäudeobjekte wurden in keinem Grundstück gefunden. Das Problem kann behoben werden, indem ein Grundstücks-Objekt erstellt wird, falls im Modell noch keines vorhanden ist, und die Gebäudeobjekte in der Baumansicht per Ziehen und Ablegen (Drag&amp;Drop) dorthin verschoben werden:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="487"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="484"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
       <translation>Die folgenden BIM-Objekte wurden nicht in einem Gebäudegeschoss gefunden (Gebäudeteile, deren IFC-Rolle als „Gebäudegeschoss” festgelegt ist). Das Problem beheben, indem ein Gebäudegeschoss-Objekt erstellt wird, falls im Modell noch keines vorhanden ist, und diese Objekte in der Baumansicht per Ziehen und Ablegen (Drag &amp; Drop) dort hinein verschieben:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="548"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="545"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
       <translation>Die folgenden BIM-Objekte wurden nicht in einem Gebäudegeschoss gefunden (Gebäudeteile, deren IFC-Rolle als „Gebäudegeschoss” festgelegt ist). Das Problem beheben, indem ein Gebäudegeschoss-Objekt erstellt wird, falls im Modell noch keines vorhanden ist, und diese Objekte in der Baumansicht per Ziehen und Ablegen (Drag &amp; Drop) dort hinein verschieben:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="685"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="682"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
       <translation>Die folgenden Objekte haben Eigenschaften für Länge, Breite oder Höhe, aber diese Eigenschaften werden nicht explizit in IFC exportiert. Dies ist nicht unbedingt ein Problem, es sei denn, diese Größen sollen exportiert werden:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="693"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="690"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
       <translation>Um den Export dieser Mengen zu ermöglichen, verwende das IFC-Mengen-Manager-Werkzeug, das sich unter dem Menüpunkt Verwalten -&gt; IFC-Mengen verwalten befindet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="765"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="762"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Um diesen Objekten gemeinsame Eigenschaften zuzuweisen, verwendet man das IFC-Eigenschaften-Verwalten-Werkzeug, das sich unter dem Menüpunkt Verwalten -&gt; IFC-Eigenschaften verwalten befindet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="858"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="855"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Um die Eigenschaften dieser Objekte festzulegen, verwende das IFC-Eigenschaften-Manager-Werkzeug, das unter dem Menüpunkt Verwalten -&gt; IFC-Eigenschaften verwalten auffindbar ist</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1071"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
       <translation>Ein zusätzliches Objekt namens „TinyLinesResult“ wurde zu diesem Modell hinzugefügt und ausgewählt. Es enthält alle gefundenen winzigen Linien zur Überprüfung. Lösche das TinyLinesResult-Objekt unbedingt, wenn die Bearbeitung beendet ist!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="386"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="383"/>
       <source>The following types were not found in the project:</source>
       <translation>Folgende Typen wurden im Projekt nicht gefunden:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="92"/>
-      <location filename="../../bimcommands/BimPreflight.py" line="185"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="89"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="182"/>
       <source>Performs the test</source>
       <translation>Den Test ausführen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="595"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="592"/>
       <source>The following BIM objects have the "Undefined" type:</source>
       <translation>Die folgenden BIM-Objects haben den Typ "Undefiniert":</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="600"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="597"/>
       <source>The following objects are not BIM objects:</source>
       <translation>Folgende Objekte sind keine BIM-Objekte:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="607"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="604"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
       <translation>Diese Objekte können in BIM-Objekte durch Verwendung von: Werkzeuge -&gt; Erstelle Komponente umwandelt werden.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="642"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="639"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
       <translation>Die folgenden BIM-Objekte besitzen eine ungültige oder nicht Festkörper-basierte Geometrie:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="757"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="754"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
       <translation>Die folgenden Objekte haben einen definierten IFC-Typ, haben aber nicht das zugehörige gemeinsame Eigenschaft-Set:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="839"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="836"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
       <translation>Die folgenden Objekte haben ein gemeinsames Eigenschaft-Set, aber dieses enthält nicht alle benötigten Eigenschaften:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="848"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="845"/>
       <source>Verify which properties a certain property set must contain on %1</source>
       <translation>Überprüfen, welche Eigenschaften eine bestimmte Eigenschaftsmenge auf %1 enthalten muss</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="887"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="884"/>
       <source>The following BIM objects have no material attributed:</source>
       <translation>Die folgenden BIM-Objekte haben keine Materialzuordnung:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="928"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="925"/>
       <source>The following BIM objects have no defined standard code:</source>
       <translation>Die folgenden BIM-Objekte haben keinen definierten Standardcode:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="978"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="975"/>
       <source>The following BIM objects are not extrusions:</source>
       <translation>Folgende BIM-Objekte sind keine Extrusionen:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1012"/>
       <source>The following BIM objects are not standard cases:</source>
       <translation>Die folgenden BIM-Objekte sind keine Standardfälle:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1061"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
       <translation>Die folgenden Objekte haben Linien kleiner als 1/32 Zoll oder 0,79 mm, was die kleinste Zeilengröße ist, die Revit akzeptiert. Diese Objekte werden beim Import in Revit verworfen:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1077"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
       <translation>Tipp: Die Ergebnisse werden am besten im Drahtgitter-Modus angezeigt (Menü Ansichten -&gt; Zeichenstil -&gt; Drahtgitter)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="302"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="299"/>
       <source>Building Layout</source>
       <translation>Gebäudeaufteilung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="315"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="312"/>
       <source>Building Outline</source>
       <translation>Gebäudeumriss</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="331"/>
       <source>Building Label</source>
       <translation>Building Label</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="344"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="341"/>
       <source>Vertical Axes</source>
       <translation>Vertikale Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="355"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="352"/>
       <source>Horizontal Axes</source>
       <translation>Horizontale Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="365"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="362"/>
       <source>Axes</source>
       <translation>Achsen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="376"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="373"/>
       <source>Zero Level Height</source>
       <translation>Null-Ebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="374"/>
       <source>Level height is zero. No levels will be created.</source>
       <translation>Die Höhe der Ebene beträgt null. Es werden keine Ebenen erstellt.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="380"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
       <source>Set the level height to a non-zero value.</source>
       <translation>Die Höhe der Ebene auf einen Wert ungleich Null einstellen.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="390"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="387"/>
       <source>Level</source>
       <translation>Stockwerk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="451"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="448"/>
       <source>Save Preset</source>
       <translation>Voreinstellungen speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="452"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="449"/>
       <source>Preset name</source>
       <translation>Voreinstellungs-Name</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="507"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="504"/>
       <source>User preset</source>
       <translation>Benutzer-Voreinstellung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="661"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
       <source>Save Template File</source>
       <translation>Vorlagendatei speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="682"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="679"/>
       <source>Open Template File</source>
       <translation>Vorlagendatei öffnen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="796"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="793"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Vorlage erfolgreich in das aktuelle Dokument geladen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>Neue Gruppe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="670"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="667"/>
       <source>Template saved successfully</source>
       <translation>Vorlage erfolgreich gespeichert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="52"/>
+      <location filename="../../bimcommands/BimReorder.py" line="49"/>
       <source>You must choose a group object before using this command</source>
       <translation>Ein Basisobjekt auswählen, bevor dieser Befehl verwenden werden kann</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="138"/>
+      <location filename="../../bimcommands/BimSetup.py" line="135"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
       <translation>Einige zusätzliche Arbeitsbereiche, die die BIM-Funktionalität erweitern, sind nicht installiert:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="142"/>
+      <location filename="../../bimcommands/BimSetup.py" line="139"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
       <translation>Diese können über das Menü Werkzeuge -&gt; Addon-Manager installiert werden.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="181"/>
+      <location filename="../../bimcommands/BimSetup.py" line="178"/>
       <source>Unit system updated for active document</source>
       <translation>Einheitensystem für aktives Dokument aktualisiert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="185"/>
+      <location filename="../../bimcommands/BimSetup.py" line="182"/>
       <source>Unit system updated for all opened documents</source>
       <translation>Einheitensystem für alle geöffneten Dokumente aktualisiert</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="631"/>
+      <location filename="../../bimcommands/BimSetup.py" line="628"/>
       <source>IfcOpenShell Not Found</source>
       <translation>IfcOpenShell nicht gefunden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="635"/>
+      <location filename="../../bimcommands/BimSetup.py" line="632"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
       <translation>IfcOpenShell wird zum Importieren und Exportieren von IFC-Dateien benötigt. Es scheint auf dem System zu fehlen. Soll es jetzt heruntergeladen und installiert werden? Es wird im Makroverzeichnis von FreeCAD installiert.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="59"/>
+      <location filename="../../bimcommands/BimSlab.py" line="56"/>
       <source>Select a planar object</source>
       <translation>Ein ebenes Objekt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>%1 select a planar object</source>
       <translation>%1 Ein ebenes Objekt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="85"/>
+      <location filename="../../bimcommands/BimSlab.py" line="82"/>
       <source>Slab</source>
       <translation>Platte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="61"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="58"/>
       <source>Select Page Template</source>
       <translation>Blattvorlage auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="73"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="70"/>
       <source>Template</source>
       <translation>Vorlage</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="52"/>
+      <location filename="../../bimcommands/BimTrash.py" line="49"/>
       <source>Trash</source>
       <translation>Papierkorb</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="130"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="127"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
       <translation>Der Zugriff auf das Tutorial ist nicht möglich. Überprüfe die Internetverbindung (dies ist nur einmal erforderlich).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="160"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="157"/>
       <source>Downloading images…</source>
       <translation>Bilder werden heruntergeladen…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="244"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="241"/>
       <source>BIM Tutorial - Step</source>
       <translation>BIM-Tutorial - Schritt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="138"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="135"/>
       <source>Draft clones are not supported yet!</source>
       <translation>Draft Klonen-Objekte werden noch nicht unterstützt!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="139"/>
       <source>The selected object is not a clone</source>
       <translation>Das ausgewählte Objekt ist kein Klon</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="145"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
       <source>Select exactly one object</source>
       <translation>Genau ein Objekt wählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>Isolate</source>
       <translation>Isolieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="137"/>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Creates a new working plane proxy</source>
       <translation>Erstellt einen neuen Arbeitsebenen-Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Deletes the selected item</source>
       <translation>Löscht das ausgewählte Element</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimViews.py" line="701"/>
+      <location filename="../../bimcommands/BimViews.py" line="97"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="102"/>
+      <location filename="../../bimcommands/BimViews.py" line="99"/>
       <source>New Working Plane Proxy</source>
       <translation>Neuer Arbeitsebenen-Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="104"/>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
       <source>Toggle Visibility</source>
       <translation>Sichtbarkeit umschalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="141"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Schaltet die Sichtbarkeit ausgewählter Elemente um</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="144"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Schaltet alle Elemente außer das Ausgewählte aus</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <location filename="../../bimcommands/BimViews.py" line="98"/>
       <source>New Level Above</source>
       <translation>Neues Stockwerk darüber</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
       <translation>Kameraansicht speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Save Visibility of Objects</source>
       <translation>Sichtbarkeit von Objekten speichern</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="131"/>
       <source>Creates a new level above the highest existing one</source>
       <translation>Erstellt eine neues Stockwerk oberhalb des höchsten vorhandenen Stockwerks</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Saves the current camera view to the selected items</source>
       <translation>Speichert die aktuelle Kameraansicht in den ausgewählten Elementen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="148"/>
+      <location filename="../../bimcommands/BimViews.py" line="145"/>
       <source>Renames the selected item</source>
       <translation>Benennt das ausgewählte Elemente um</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="149"/>
-      <location filename="../../bimcommands/BimViews.py" line="704"/>
+      <location filename="../../bimcommands/BimViews.py" line="146"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>Aktiviert das ausgewählte Objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="176"/>
+      <location filename="../../bimcommands/BimViews.py" line="173"/>
       <source>BIM Views Manager</source>
       <translation>BIM-Ansichten-Manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="327"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>2D-Ansichten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="340"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>Blätter</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="712"/>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
       <source>Set Working Plane</source>
       <translation>Arbeitsebene festlegen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="716"/>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
       <translation>Legt das ausgewählte Element als aktuelle Arbeitsebene fest</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="225"/>
+      <location filename="../../bimcommands/BimWindows.py" line="222"/>
       <source>None</source>
       <translation>Kein</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="127"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="124"/>
       <source>The active document is already an IFC document</source>
       <translation>Das aktive Dokument ist bereits ein IFC-Dokument</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="76"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="73"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
       <translation>Die IFC-Datei wird nicht gespeichert. Speichern Sie sie einmal, um eine vorhandene IFC-Datei zum Vergleich zu haben. Führen Sie dann diesen Befehl erneut aus.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="88"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="85"/>
       <source>No changes to display.</source>
       <translation>Keine anzuzeigenden Änderungen.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="75"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="72"/>
       <source>IfcOpenShell Update</source>
       <translation>IfcOpenShell-Update</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
       <translation>Die Aktualisierung wird im FreeCAD-Benutzerverzeichnis installiert und wirkt sich nicht auf den Rest des Systems aus.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="78"/>
       <source>An update to your installed IfcOpenShell version is available</source>
       <translation>Ein Update für die installierte IfcOpenShell Version ist verfügbar</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="80"/>
       <source>Would you like to install that update?</source>
       <translation>Das Update jetzt installieren?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="84"/>
       <source>Your version of IfcOpenShell is already up to date</source>
       <translation>Die Version von IfcOpenShell ist bereits aktuell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
       <translation>Auf diesem System wurde keine bestehende IfcOpenShell-Installation gefunden.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>Would you like to install the most recent version?</source>
       <translation>Soll die aktuellste Version installiert werden?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="99"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
       <translation>IfcOpenShell ist nicht installiert und FreeCAD konnte keine passende Version für die Installation finden. IfcOpenShell kann trotzdem trotzdem manuell installiert werden, siehe: https://wiki.freecad.org/IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="107"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="104"/>
       <source>IfcOpenShell update successfully installed.</source>
       <translation>IfcOpenShell Update erfolgreich installiert.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="155"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="152"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
       <translation>Pip kann nicht ausgeführt werden. Bitte sicherstellen, dass Pip auf diesem System installiert ist.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="36"/>
+      <location filename="../../nativeifc/ifc_status.py" line="33"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
       <translation>Strikter IFC-Modus ist AN (alle Objekte sind IFC)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="39"/>
+      <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
       <translation>Strikter IFC-Modus ist AUS (IFC- und Nicht-IFC-Objekte erlaubt)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="78"/>
+      <location filename="../../nativeifc/ifc_status.py" line="75"/>
       <source>Add IFC property…</source>
       <translation>IFC-Eigenschaft hinzufügen…</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="83"/>
+      <location filename="../../nativeifc/ifc_status.py" line="80"/>
       <source>Add standard IFC Property Set…</source>
       <translation>Standard-IFC-Eigenschaften-Set hinzufügen…</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="140"/>
+      <location filename="../../nativeifc/ifc_status.py" line="137"/>
       <source>No Property set provided</source>
       <translation>Kein Eigenschaftssatz angegeben</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="151"/>
+      <location filename="../../nativeifc/ifc_status.py" line="148"/>
       <source>add property</source>
       <translation>Eigenschaft hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="214"/>
+      <location filename="../../nativeifc/ifc_status.py" line="211"/>
       <source>Property set already exists</source>
       <translation>Eigenschaftssatz existiert bereits</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="218"/>
+      <location filename="../../nativeifc/ifc_status.py" line="215"/>
       <source>add property set</source>
       <translation>Eigenschaftssatz hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="226"/>
+      <location filename="../../nativeifc/ifc_status.py" line="223"/>
       <source>Property already exists</source>
       <translation>Eigenschaft existiert bereits</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
       <source>Viewed lines</source>
       <translation>Angeschaute Zeilen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="82"/>
       <source>Cut lines</source>
       <translation>Linien schneiden</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="374"/>
       <source>Removing property</source>
       <translation>Eigenschaft wird entfernt</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="379"/>
       <source>Removing property set</source>
       <translation>Eigenschaftssatz entfernen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_types.py" line="167"/>
+      <location filename="../../nativeifc/ifc_types.py" line="164"/>
       <source>Error: Incompatible type</source>
       <translation>Fehler: Inkompatibler Typ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="160"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="157"/>
       <source>Error: Select exactly one base face</source>
       <translation>Fehler: Wähle genau eine Grundfläche aus</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="81"/>
+      <location filename="../../bimcommands/BimTDView.py" line="78"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
       <translation>Keine Schnittansicht, Draft-Objekt, oder Seite im Dokument gefunden oder ausgewählt</translation>
     </message>
@@ -11900,93 +11899,93 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
       <translation>WebGL-Export-Vorlagenfehler</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="102"/>
       <source>Deactivate Container</source>
       <translation>Behälter deaktivieren</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="104"/>
       <source>Make Active Container</source>
       <translation>Aktiven Container erstellen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="108"/>
       <source>Expand Children</source>
       <translation>Unterelemente aufklappen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="112"/>
       <source>Collapse Children</source>
       <translation>Unterelemente einklappen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="117"/>
       <source>Remove Shape</source>
       <translation>Form entfernen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="119"/>
       <source>Load Shape</source>
       <translation>Form laden</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="123"/>
       <source>Load Representation</source>
       <translation>Darstellung laden</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="127"/>
       <source>Add Geometry Properties</source>
       <translation>Geometrieeigenschaften hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Show Geometry Tree</source>
       <translation>Geometriebaum anzeigen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
       <source>Expand Property Sets</source>
       <translation>Eigenschaftssätze aufklappen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="138"/>
       <source>Load Material</source>
       <translation>Material laden</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="142"/>
       <source>Convert to Type</source>
       <translation>In Typ umwandeln</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="426"/>
       <source>View Diff</source>
       <translation>Unterschiede anzeigen</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="430"/>
       <source>Save IFC File</source>
       <translation>ICF-Datei speichern</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File As…</source>
       <translation>IFC-Datei speichern als…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="30"/>
+      <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>Ein Objekt auswählen, das verknüpft werden soll</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="83"/>
+      <location filename="../../bimcommands/BimBox.py" line="79"/>
       <source>%1 pick next point</source>
       <translation>%1 nächsten Punkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="171"/>
+      <location filename="../../bimcommands/BimBox.py" line="167"/>
       <source>Box Dimensions</source>
       <translation>Quader-Abmessungen</translation>
     </message>
@@ -12007,12 +12006,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Background</name>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="38"/>
+      <location filename="../../bimcommands/BimBackground.py" line="35"/>
       <source>Toggle Background</source>
       <translation>Hintergrund umschalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="42"/>
+      <location filename="../../bimcommands/BimBackground.py" line="39"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation>Schaltet den Hintergrund der 3D-Ansicht zwischen Einfach und Farbverlauf um</translation>
     </message>
@@ -12020,12 +12019,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Beam</name>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="49"/>
+      <location filename="../../bimcommands/BimBeam.py" line="46"/>
       <source>Beam</source>
       <translation>Balken</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="50"/>
+      <location filename="../../bimcommands/BimBeam.py" line="47"/>
       <source>Creates a beam between two points</source>
       <translation>Erstellt einen Balken zwischen zwei Punkten</translation>
     </message>
@@ -12033,12 +12032,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Box</name>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="39"/>
+      <location filename="../../bimcommands/BimBox.py" line="35"/>
       <source>Box</source>
       <translation>Quader</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="42"/>
+      <location filename="../../bimcommands/BimBox.py" line="38"/>
       <source>Graphically creates a generic box in the current document</source>
       <translation>Grafisch ein generisches Feld im aktuellen Dokument erstellen</translation>
     </message>
@@ -12046,12 +12045,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Part_Builder</name>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="38"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
       <translation>Formgenerator</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="39"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
       <source>Advanced utility to create shapes</source>
       <translation>Erweitertes Dienstprogramm um Formen zu erstellen</translation>
     </message>
@@ -12059,12 +12058,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch_Level</name>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="46"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
       <source>Level</source>
       <translation>Stockwerk</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="47"/>
       <source>Creates a building part object that represents a level</source>
       <translation>Erstellt ein Gebäudeteilobjekt, das ein Stockwerk darstellt</translation>
     </message>
@@ -12072,12 +12071,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="43"/>
       <source>Clone</source>
       <translation>Klonen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="49"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
       <translation>Klont ausgewählte Objekte an einen anderen Ort</translation>
     </message>
@@ -12085,12 +12084,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Column</name>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="49"/>
+      <location filename="../../bimcommands/BimColumn.py" line="46"/>
       <source>Column</source>
       <translation>Stütze</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="50"/>
+      <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>Erstellt eine Stütze an einer gegebenen Position</translation>
     </message>
@@ -12098,12 +12097,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Part_Common</name>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="38"/>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
       <source>Intersection</source>
       <translation>Schnitt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="39"/>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
       <translation>Erstellt einen Schnitt aus zwei Formen</translation>
     </message>
@@ -12111,22 +12110,22 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Convert</name>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="38"/>
+      <location filename="../../bimcommands/BimConvert.py" line="35"/>
       <source>Convert to BIM</source>
       <translation>In BIM umwandeln</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="39"/>
+      <location filename="../../bimcommands/BimConvert.py" line="36"/>
       <source>Converts any object to a BIM component</source>
       <translation>Konvertiert jedes Objekt in eine BIM-Komponente</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
       <translation>Aus Gruppe entfernen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="41"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
       <translation>Entfernt dieses Objekt aus seiner übergeordneten Gruppe</translation>
     </message>
@@ -12134,12 +12133,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Copy</name>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="43"/>
+      <location filename="../../bimcommands/BimCopy.py" line="40"/>
       <source>Copy</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="44"/>
+      <location filename="../../bimcommands/BimCopy.py" line="41"/>
       <source>Copies selected objects to another location</source>
       <translation>Kopiert ausgewählte Objekte an einen anderen Ort</translation>
     </message>
@@ -12147,12 +12146,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="37"/>
+      <location filename="../../bimcommands/BimCut.py" line="34"/>
       <source>Difference</source>
       <translation>Differenz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="38"/>
+      <location filename="../../bimcommands/BimCut.py" line="35"/>
       <source>Creates a difference between two shapes</source>
       <translation>Erstellt eine Differenz aus zwei Formen</translation>
     </message>
@@ -12160,12 +12159,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Diff</name>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="38"/>
+      <location filename="../../bimcommands/BimDiff.py" line="35"/>
       <source>IFC Shape Diff</source>
       <translation>IFC-Form-Differenz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="41"/>
+      <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>Shows the difference between two IFC-based documents</source>
       <translation>Zeigt den Unterschied zwischen zwei IFC-basierten Dokumenten an</translation>
     </message>
@@ -12173,12 +12172,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Door</name>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="43"/>
+      <location filename="../../bimcommands/BimDoor.py" line="40"/>
       <source>Door</source>
       <translation>Tür</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="44"/>
+      <location filename="../../bimcommands/BimDoor.py" line="41"/>
       <source>Places a door at a given location</source>
       <translation>Platziert eine Tür am angegebenen Ort</translation>
     </message>
@@ -12186,18 +12185,18 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_EmptyTrash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="82"/>
+      <location filename="../../bimcommands/BimTrash.py" line="79"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
       <translation>Löscht alle Objekte aus dem Papierkorb, die nicht von anderen verwendet werden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>Papierkorb leeren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="39"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
       <translation>Löscht alle Objekte aus dem Papierkorb, die von keinem anderen Objekt verwendet werden</translation>
     </message>
@@ -12205,12 +12204,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Examples</name>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="38"/>
+      <location filename="../../bimcommands/BimExamples.py" line="35"/>
       <source>BIM Examples</source>
       <translation>BIM Beispiele</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="42"/>
+      <location filename="../../bimcommands/BimExamples.py" line="39"/>
       <source>Download examples of BIM files made with FreeCAD</source>
       <translation>Beispiele für BIM-Dateien herunterladen, die mit FreeCAD erstellt wurden</translation>
     </message>
@@ -12218,12 +12217,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Extrude</name>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="38"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="35"/>
       <source>Extrude</source>
       <translation>Extrudieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="39"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="36"/>
       <source>Extrudes a selected 2D shape</source>
       <translation>Extrudiert eine ausgewählte 2D-Form</translation>
     </message>
@@ -12231,7 +12230,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch Fence selection</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="59"/>
+      <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>Einen Abschnitt, Pfosten und Pfad in genau dieser Reihenfolge auswählen, um einen Zaun zu erstellen.</translation>
     </message>
@@ -12239,12 +12238,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Part_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="37"/>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
       <source>Union</source>
       <translation>Vereinigung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="38"/>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
       <translation>Erstellt eine Vereinigung mehrerer Formen</translation>
     </message>
@@ -12252,12 +12251,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Glue</name>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="38"/>
+      <location filename="../../bimcommands/BimGlue.py" line="35"/>
       <source>Glue</source>
       <translation>Kleben</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="41"/>
+      <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Joins selected shapes into one non-parametric shape</source>
       <translation>Fügt die ausgewählte Formen in eine nicht-parametrische Form zusammen</translation>
     </message>
@@ -12265,12 +12264,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Help</name>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="38"/>
+      <location filename="../../bimcommands/BimHelp.py" line="35"/>
       <source>BIM Help</source>
       <translation>BIM-Hilfe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="42"/>
+      <location filename="../../bimcommands/BimHelp.py" line="39"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
       <translation>Öffnet die BIM-Hilfeseite auf der FreeCAD-Dokumentations-Webseite</translation>
     </message>
@@ -12278,12 +12277,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_ImagePlane</name>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="35"/>
       <source>Image Plane</source>
       <translation>Bildebene</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="36"/>
       <source>Creates a plane from an image</source>
       <translation>Erstellt eine Ebene aus einem Bild</translation>
     </message>
@@ -12291,12 +12290,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Leader</name>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="45"/>
+      <location filename="../../bimcommands/BimLeader.py" line="42"/>
       <source>Leader</source>
       <translation>Hinweislinie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="48"/>
+      <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
       <translation>Erstellt einen Linienzug mit einem Pfeil an seinem Endpunkt</translation>
     </message>
@@ -12304,12 +12303,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Library</name>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="86"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="83"/>
       <source>Objects Library</source>
       <translation>Objektbibliothek</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="87"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="84"/>
       <source>Opens the objects library</source>
       <translation>Öffnet die Objektbibliothek</translation>
     </message>
@@ -12317,12 +12316,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="61"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="58"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="65"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="62"/>
       <source>Sets or creates a material for selected objects</source>
       <translation>Setzt oder erstellt ein Material für ausgewählte Objekte</translation>
     </message>
@@ -12330,12 +12329,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_MoveView</name>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="38"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="35"/>
       <source>Move View</source>
       <translation>Ansicht verschieben</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="39"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="36"/>
       <source>Moves this view to an existing page</source>
       <translation>Verschiebt diese Ansicht auf eine existierende Seite</translation>
     </message>
@@ -12343,7 +12342,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Switch</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="127"/>
+      <location filename="../../bimcommands/BimNudge.py" line="124"/>
       <source>Nudge Switch</source>
       <translation>Schrittweitenschalter</translation>
     </message>
@@ -12351,7 +12350,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Up</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="153"/>
+      <location filename="../../bimcommands/BimNudge.py" line="150"/>
       <source>Nudge Up</source>
       <translation>Schrittweite nach oben</translation>
     </message>
@@ -12359,7 +12358,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Down</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="173"/>
+      <location filename="../../bimcommands/BimNudge.py" line="170"/>
       <source>Nudge Down</source>
       <translation>Schrittweite nach unten</translation>
     </message>
@@ -12367,7 +12366,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Left</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="193"/>
+      <location filename="../../bimcommands/BimNudge.py" line="190"/>
       <source>Nudge Left</source>
       <translation>Schrittweite nach links</translation>
     </message>
@@ -12375,7 +12374,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Right</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="213"/>
+      <location filename="../../bimcommands/BimNudge.py" line="210"/>
       <source>Nudge Right</source>
       <translation>Schrittweite nach rechts</translation>
     </message>
@@ -12383,7 +12382,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Extend</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="233"/>
+      <location filename="../../bimcommands/BimNudge.py" line="230"/>
       <source>Nudge Extend</source>
       <translation>Schrittweite erweitern</translation>
     </message>
@@ -12391,7 +12390,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_Shrink</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="257"/>
+      <location filename="../../bimcommands/BimNudge.py" line="254"/>
       <source>Nudge Shrink</source>
       <translation>Schrittweite verkleinern</translation>
     </message>
@@ -12399,7 +12398,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_RotateLeft</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="281"/>
+      <location filename="../../bimcommands/BimNudge.py" line="278"/>
       <source>Nudge Rotate Left</source>
       <translation>Eine Schrittweite links drehen</translation>
     </message>
@@ -12407,7 +12406,7 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Nudge_RotateRight</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="310"/>
+      <location filename="../../bimcommands/BimNudge.py" line="307"/>
       <source>Nudge Rotate Right</source>
       <translation>Eine Schrittweite rechts drehen</translation>
     </message>
@@ -12415,12 +12414,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Part_Offset2D</name>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="38"/>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
       <translation>2D-Versatz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="39"/>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation>Werkzeug zum Versetzen von ebenen Formen</translation>
     </message>
@@ -12428,12 +12427,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Preflight</name>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="64"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="61"/>
       <source>Preflight Checks</source>
       <translation>Vorabkontrollen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="68"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="65"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
       <translation>Prüft mehrere Merkmale dieses Modells, bevor es nach IFC exportiert wird</translation>
     </message>
@@ -12441,12 +12440,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Project</name>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="38"/>
+      <location filename="../../bimcommands/BimProject.py" line="35"/>
       <source>IFC Project</source>
       <translation>IFC-Projekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="39"/>
+      <location filename="../../bimcommands/BimProject.py" line="36"/>
       <source>Creates an empty NativeIFC project</source>
       <translation>Erstellt ein leeres Natives-IFC-Projekt</translation>
     </message>
@@ -12454,12 +12453,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_ResetCloneColors</name>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="35"/>
       <source>Reset Colors</source>
       <translation>Farben zurücksetzen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="39"/>
       <source>Resets the colors of this object from its cloned original</source>
       <translation>Setzt die Farben dieses Objekts von seinem geklonten Original zurück</translation>
     </message>
@@ -12467,12 +12466,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Rewire</name>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="38"/>
+      <location filename="../../bimcommands/BimRewire.py" line="35"/>
       <source>Rewire</source>
       <translation>Neu verbinden</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="39"/>
+      <location filename="../../bimcommands/BimRewire.py" line="36"/>
       <source>Recreates wires from selected objects</source>
       <translation>Verbindet die Kantenzüge ausgewählter Objekte neu</translation>
     </message>
@@ -12480,12 +12479,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="51"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
       <source>Create 2D view</source>
       <translation>2D-Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
       <source>Create 2D Cut</source>
       <translation>2D-Schnitt erstellen</translation>
     </message>
@@ -12493,12 +12492,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="38"/>
+      <location filename="../../bimcommands/BimSketch.py" line="35"/>
       <source>New Sketch</source>
       <translation>Neue Skizze</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="41"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>Erstellt eine neue Skizze in der aktuellen Arbeitsebene</translation>
     </message>
@@ -12506,12 +12505,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="42"/>
+      <location filename="../../bimcommands/BimSlab.py" line="39"/>
       <source>Slab</source>
       <translation>Platte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="40"/>
       <source>Creates a slab from a planar shape</source>
       <translation>Erstellt eine Platte aus einer ebenen Form</translation>
     </message>
@@ -12519,12 +12518,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_TDPage</name>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="37"/>
       <source>New Page</source>
       <translation>Neues Zeichnungsblatt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="43"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Creates a new TechDraw page from a template</source>
       <translation>Erstellt ein neues TechDraw-Zeichnungsblatt aus einer Vorlage</translation>
     </message>
@@ -12532,12 +12531,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Text</name>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="37"/>
+      <location filename="../../bimcommands/BimText.py" line="34"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="40"/>
+      <location filename="../../bimcommands/BimText.py" line="37"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
       <translation>Einen Text in der aktuellen 3D-Ansicht oder TechDraw-Seite erstellen</translation>
     </message>
@@ -12545,12 +12544,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Trash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="39"/>
+      <location filename="../../bimcommands/BimTrash.py" line="36"/>
       <source>Move to Trash</source>
       <translation>In den Papierkorb verschieben</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Moves the selected objects to the trash folder</source>
       <translation>Verschiebt die ausgewählten Objekte in den Papierkorb</translation>
     </message>
@@ -12558,12 +12557,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Tutorial</name>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="48"/>
       <source>BIM Tutorial</source>
       <translation>BIM-Anleitung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="54"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
       <source>Starts or continues the BIM in-game tutorial</source>
       <translation>Startet oder setzt die anwendungsinterne BIM-Anleitung fort</translation>
     </message>
@@ -12571,12 +12570,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Unclone</name>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="39"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="36"/>
       <source>Unclone</source>
       <translation>Entklonen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="43"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="40"/>
       <source>Creates a selected clone object independent from its original</source>
       <translation>Erstellt ein ausgewähltes Klon-Objekt, dass unabhängig vom Original ist</translation>
     </message>
@@ -12584,12 +12583,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="55"/>
+      <location filename="../../bimcommands/BimViews.py" line="52"/>
       <source>Views Manager</source>
       <translation>Ansichten-Manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="56"/>
+      <location filename="../../bimcommands/BimViews.py" line="53"/>
       <source>Shows or hides the views manager</source>
       <translation>Ansichten-Manager ein-/ausblenden</translation>
     </message>
@@ -12597,12 +12596,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_SetWPFront</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="35"/>
       <source>Working Plane Front</source>
       <translation>Arbeitsebene Vorderansicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="36"/>
       <source>Sets the working plane to Front</source>
       <translation>Setzt die Arbeitsebene auf Vorderansicht</translation>
     </message>
@@ -12610,12 +12609,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_SetWPSide</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="50"/>
       <source>Working Plane Side</source>
       <translation>Arbeitsebene Seitenansicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="51"/>
       <source>Sets the working plane to Side</source>
       <translation>Setzt die Arbeitsebene auf Seitenansicht</translation>
     </message>
@@ -12623,12 +12622,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_SetWPTop</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="65"/>
       <source>Working Plane Top</source>
       <translation>Arbeitsebene Draufsicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="66"/>
       <source>Sets the working plane to Top</source>
       <translation>Setzt die Arbeitsebene auf Draufsicht</translation>
     </message>
@@ -12636,12 +12635,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_WPView</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="80"/>
       <source>Working Plane View</source>
       <translation>Arbeitsebenenansicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="84"/>
       <source>Aligns the view to the current item in BIM Views Manager or to the current working plane</source>
       <translation>Richtet die Ansicht auf das aktuelle Element im BIM-Ansichten-Manager oder auf die aktuelle Arbeitsebene aus</translation>
     </message>
@@ -12649,12 +12648,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_Diff</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="52"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="49"/>
       <source>Shows the current unsaved changes in the IFC file</source>
       <translation>Zeigt die aktuellen ungespeicherten Änderungen in der IFC-Datei an</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="54"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="51"/>
       <source>IFC File Diff</source>
       <translation>IFC-Datei-Differenz</translation>
     </message>
@@ -12662,12 +12661,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_Expand</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="75"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="72"/>
       <source>Expands the children of the selected objects or document</source>
       <translation>Erweitert die Unterobjekte der ausgewählten Objekte oder Dokumente</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="77"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="74"/>
       <source>IFC Expand</source>
       <translation>IFC erweitern</translation>
     </message>
@@ -12675,12 +12674,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_ConvertDocument</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="115"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="112"/>
       <source>Converts the active document to an IFC document</source>
       <translation>Konvertiert das aktive Dokument in ein IFC-Dokument</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="117"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="114"/>
       <source>Convert Document</source>
       <translation>Dokument konvertieren</translation>
     </message>
@@ -12688,12 +12687,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_MakeProject</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="141"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="138"/>
       <source>Converts the current selection to an IFC project</source>
       <translation>Konvertiert die aktuelle Auswahl in ein IFC-Projekt</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="143"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="140"/>
       <source>Convert to IFC Project</source>
       <translation>In IFC-Projekt umwandeln</translation>
     </message>
@@ -12701,12 +12700,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_Save</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="179"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="176"/>
       <source>Saves the current IFC document</source>
       <translation>Speichert das aktuelle IFC-Dokument</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="181"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="178"/>
       <source>Save IFC File</source>
       <translation>ICF-Datei speichern</translation>
     </message>
@@ -12714,12 +12713,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="212"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="209"/>
       <source>Saves the current IFC document as another file</source>
       <translation>Speichert das aktuelle IFC-Dokument als eine andere Datei</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="214"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="211"/>
       <source>Save IFC File As…</source>
       <translation>IFC-Datei speichern als…</translation>
     </message>
@@ -12727,12 +12726,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>IFC_UpdateIOS</name>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="41"/>
       <source>Shows a dialog to update IfcOpenShell</source>
       <translation>Zeigt einen Dialog zum Aktualisieren von IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="46"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="43"/>
       <source>IfcOpenShell Update</source>
       <translation>IfcOpenShell-Update</translation>
     </message>
@@ -13134,12 +13133,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="273"/>
       <source>Remove Shape From BIM</source>
       <translation>Form aus BIM entfernen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Removes cubic shapes from BIM components</source>
       <translation>Entfernt kubische Formen von BIM-Komponenten</translation>
     </message>
@@ -13147,12 +13146,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_DrawingView</name>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="45"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="42"/>
       <source>2D Drawing</source>
       <translation>2D-Zeichnung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="49"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="46"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
       <translation>Erstellt einen Zeichnungsbehälter, um Elemente einer 2D-Ansicht aufzunehmen</translation>
     </message>
@@ -13176,12 +13175,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="96"/>
       <source>Remove Component</source>
       <translation>Komponente entfernen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="100"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
       <translation>Entfernt die ausgewählten Komponenten aus ihren übergeordneten Elementen oder erstellt eine Lücke in einer Komponente</translation>
     </message>
@@ -13189,12 +13188,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Toggle IFC B-Rep Flag</source>
       <translation>IFC-B-Rep-Kennzeichen umschalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="381"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
       <source>Forces an object to be exported as B-rep or not</source>
       <translation>Erzwingt, dass ein Objekt als B-rep exportiert wird oder nicht</translation>
     </message>
@@ -13202,12 +13201,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="464"/>
       <source>New IFC Spreadsheet</source>
       <translation>Neue IFC-Tabelle</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="471"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="468"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
       <translation>Erstellt eine Tabelle zum Speichern der IFC-Eigenschaften eines Objekts</translation>
     </message>
@@ -13215,12 +13214,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Classification</name>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="43"/>
+      <location filename="../../bimcommands/BimClassification.py" line="40"/>
       <source>Manage Classification</source>
       <translation>Klassifizierung verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="47"/>
+      <location filename="../../bimcommands/BimClassification.py" line="44"/>
       <source>Manages classification systems and apply classification to objects</source>
       <translation>Verwaltet Klassifikationssysteme und wendet Klassifizierung auf Objekte an</translation>
     </message>
@@ -13228,12 +13227,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_DimensionAligned</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="43"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="40"/>
       <source>Aligned Dimension</source>
       <translation>Ausgerichtete Maße</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="44"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="41"/>
       <source>Creates an aligned dimension</source>
       <translation>Erstellt ein ausgerichtetes Maß</translation>
     </message>
@@ -13241,12 +13240,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_DimensionHorizontal</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="54"/>
       <source>Horizontal Dimension</source>
       <translation>Horizontales Maß</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="60"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Creates an horizontal dimension</source>
       <translation>Erstellt ein horizontales Maß</translation>
     </message>
@@ -13254,12 +13253,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_DimensionVertical</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="79"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="76"/>
       <source>Vertical Dimension</source>
       <translation>Vertikales Maß</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="80"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="77"/>
       <source>Creates a vertical dimension</source>
       <translation>Erzeugt ein vertikales Maß</translation>
     </message>
@@ -13267,12 +13266,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_IfcElements</name>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="36"/>
       <source>Manage IFC Elements</source>
       <translation>IFC-Elemente verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="40"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
       <translation>Verwaltet, wie die verschiedenen Elemente des BIM-Projekts in IFC exportiert werden</translation>
     </message>
@@ -13280,12 +13279,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_IfcExplorer</name>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="41"/>
       <source>IFC Explorer</source>
       <translation>IFC-Explorer</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="42"/>
       <source>Opens the IFC explorer utility</source>
       <translation>Öffnet das IFC-Explorer-Dienstprogramm</translation>
     </message>
@@ -13293,12 +13292,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_IfcProperties</name>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="41"/>
       <source>Manage IFC Properties</source>
       <translation>IFC-Eigenschaften verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="45"/>
       <source>Manages the different IFC properties of the BIM objects</source>
       <translation>Die verschiedenen IFC-Eigenschaften der BIM-Objekte verwalten</translation>
     </message>
@@ -13306,12 +13305,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_IfcQuantities</name>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="69"/>
       <source>Manage IFC Quantities</source>
       <translation>IFC-Mengen verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="73"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
       <translation>Verwaltet, wie die Mengen der verschiedenen Elemente des BIM-Projekts in IFC exportiert werden</translation>
     </message>
@@ -13319,12 +13318,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Layers</name>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="57"/>
+      <location filename="../../bimcommands/BimLayers.py" line="54"/>
       <source>Manage Layers</source>
       <translation>Ebenen verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="60"/>
+      <location filename="../../bimcommands/BimLayers.py" line="57"/>
       <source>Sets/modifies the different layers of your BIM project</source>
       <translation>Legt die verschiedenen Ebenen des BIM-Projekts fest/ändert sie</translation>
     </message>
@@ -13332,12 +13331,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_ProjectManager</name>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="53"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="50"/>
       <source>Setup Project</source>
       <translation>Projekt einrichten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="54"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="51"/>
       <source>Creates or manages a BIM project</source>
       <translation>Erstellt oder verwaltet ein BIM-Projekt</translation>
     </message>
@@ -13345,12 +13344,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Reextrude</name>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="35"/>
       <source>Re-Extrude</source>
       <translation>Erneut extrudieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="41"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Recreates an extruded structure from a selected face</source>
       <translation>Erstellt eine extrudierte Struktur aus einer ausgewählten Fläche neu</translation>
     </message>
@@ -13358,12 +13357,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Reorder</name>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="39"/>
+      <location filename="../../bimcommands/BimReorder.py" line="36"/>
       <source>Reorder Children</source>
       <translation>Unterobjekte neu anordnen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="41"/>
+      <location filename="../../bimcommands/BimReorder.py" line="38"/>
       <source>Reorders children of the selected object</source>
       <translation>Unterobjekte des gewählten Objekts neu anordnen</translation>
     </message>
@@ -13371,12 +13370,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Setup</name>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="42"/>
+      <location filename="../../bimcommands/BimSetup.py" line="39"/>
       <source>BIM Setup</source>
       <translation>BIM-Einrichtung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="45"/>
+      <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
       <translation>Legt allgemeine FreeCAD-Einstellungen für einen BIM-Arbeitsablauf fest</translation>
     </message>
@@ -13384,12 +13383,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_Shape2DView</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="39"/>
       <source>Section View</source>
       <translation>Schnitt, Schnittansicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
       <source>Section Cut</source>
       <translation>Schnitt</translation>
     </message>
@@ -13397,12 +13396,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_SimpleCopy</name>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="35"/>
       <source>Simple Copy</source>
       <translation>Einfache Kopie</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="36"/>
       <source>Creates a simple non-parametric copy</source>
       <translation>Erstellt eine einfach nicht-parametrische Kopie</translation>
     </message>
@@ -13410,12 +13409,12 @@ Bitte überprüfe die FreeCAD-Installation oder gebe eine benutzerdefinierte Vor
   <context>
     <name>BIM_TDView</name>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="38"/>
+      <location filename="../../bimcommands/BimTDView.py" line="35"/>
       <source>New View</source>
       <translation>Neue Ansicht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="44"/>
+      <location filename="../../bimcommands/BimTDView.py" line="41"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
@@ -13427,12 +13426,12 @@ markiere sowohl die Ansicht als auch die Seite, bevor der Befehl ausgeführt wir
   <context>
     <name>BIM_Welcome</name>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="39"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="36"/>
       <source>BIM Welcome Screen</source>
       <translation>BIM-Willkommensbildschirm</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="40"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="37"/>
       <source>Shows the BIM workbench welcome screen</source>
       <translation>Zeigt den Willkommensbildschirm des Arbeitsbereichs BIM</translation>
     </message>
@@ -13440,12 +13439,12 @@ markiere sowohl die Ansicht als auch die Seite, bevor der Befehl ausgeführt wir
   <context>
     <name>BIM_Windows</name>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="38"/>
+      <location filename="../../bimcommands/BimWindows.py" line="35"/>
       <source>Manage Doors and Windows</source>
       <translation>Türen und Fenster verwalten</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="42"/>
+      <location filename="../../bimcommands/BimWindows.py" line="39"/>
       <source>Manages the different doors and windows of the BIM project</source>
       <translation>Verwaltet die verschiedenen Türen und Fenster des BIM-Projekts</translation>
     </message>
@@ -13651,7 +13650,7 @@ markiere sowohl die Ansicht als auch die Seite, bevor der Befehl ausgeführt wir
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1758"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
       <source>Create Covering</source>
       <translation>Beschichtung erstellen</translation>
     </message>
@@ -13762,12 +13761,12 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BIM_ExtrudeFace</name>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="17"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
       <source>Extrude Face</source>
       <translation>Fläche extrudieren</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="20"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
       <source>Extrudes a selected face into a solid</source>
       <translation>Extrudiert eine ausgewählte Fläche zu einem Festkörper</translation>
     </message>
@@ -13775,12 +13774,12 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
       <source>Covering</source>
       <translation>Beschichtung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
       <translation>Erstellt eine Beschichtung (Bodenbelag, Wandbeschichtung aus Fliesen, Ziegeln oder Putz) auf einer ausgewählten Fläche</translation>
     </message>
@@ -13788,12 +13787,12 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BIM_Compound</name>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="38"/>
+      <location filename="../../bimcommands/BimCompound.py" line="35"/>
       <source>Compound</source>
       <translation>Verbund</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="39"/>
+      <location filename="../../bimcommands/BimCompound.py" line="36"/>
       <source>Creates a compound of several shapes</source>
       <translation>Erzeuge einen Verbund aus mehreren Formen</translation>
     </message>
@@ -13801,7 +13800,7 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="308"/>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
       <source>Wall Trace</source>
       <translation>Wand Verlauf</translation>
     </message>
@@ -13809,12 +13808,12 @@ Soll fortgefahren werden?</translation>
   <context>
     <name>BIM_LinkMake</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="14"/>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
       <source>Make Link</source>
       <translation>Verknüpfung erstellen</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="18"/>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>Erstellt eine Verknüpfung zum ausgewählten Objekt und ermöglicht sofort dessen Verschieben</translation>
     </message>

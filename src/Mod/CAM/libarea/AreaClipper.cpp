@@ -10,8 +10,12 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <cstdlib>
+#include <cstdio>
+#include <format>
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 using namespace heeks;
@@ -22,7 +26,7 @@ bool CArea::HolesLinked()
     return false;
 }
 
-double CArea::m_clipper_scale = 10000.0;
+double CArea::m_clipper_scale = CArea::default_clipper_scale;
 
 static const int min_arc_points = 4;
 
@@ -131,9 +135,45 @@ void CArea::_Clip(
     FillRule fillType,
     bool reverseOpenPathContents,
     bool reverseOpenPathOrder,
-    std::optional<std::reference_wrapper<CArea>> cNeg
+    std::optional<std::reference_wrapper<CArea>> cNeg,
+    bool assertOutputClosed
 )
 {
+    // Regardless of the provided value for assertOutputClosed, assert anyway if every input curve
+    // is exactly closed and all edge tags are the same (i.e. no closed curves will get split up).
+    {
+        bool forceAssertClosed = true;
+        std::optional<int> observedTag;
+        auto checkClosedAndKeepEdges = [&forceAssertClosed, &observedTag](const CArea& a) {
+            for (const CCurve& curve : a.m_curves) {
+                if (!curve.IsExactlyClosed()) {
+                    forceAssertClosed = false;
+                }
+                if (curve.m_edgeTags.empty()) {
+                    int tag = 1;
+                    if (observedTag && *observedTag != tag) {
+                        forceAssertClosed = false;
+                    }
+                    else {
+                        observedTag = tag;
+                    }
+                }
+                for (int tag : curve.m_edgeTags) {
+                    if (observedTag && tag != *observedTag) {
+                        forceAssertClosed = false;
+                    }
+                    else {
+                        observedTag = tag;
+                    }
+                }
+            }
+        };
+
+        checkClosedAndKeepEdges(*this);
+        checkClosedAndKeepEdges(clip_area);
+        assertOutputClosed |= forceAssertClosed;
+    }
+
     // Initialize a clipper object and populate it with subject/clip geometry
     Clipper64 c;
     ConversionMetadata metadata;
@@ -203,8 +243,8 @@ void CArea::_Clip(
     }
 
     m_curves.clear();
-    SetFromResult(closedPaths, /*is_closed=*/true, metadata, cNeg);
-    SetFromResult(openPaths, /*is_closed=*/false, metadata, cNeg);
+    SetFromResult(closedPaths, /*is_closed=*/true, assertOutputClosed, metadata, cNeg);
+    SetFromResult(openPaths, /*is_closed=*/false, /*assertOutputClosed=*/false, metadata, cNeg);
 }
 
 void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType)
@@ -230,8 +270,8 @@ void CArea::ClipperNoop()
     }
 
     m_curves.clear();
-    SetFromResult(closed_paths, /*is_closed=*/true, metadata);
-    SetFromResult(open_paths, /*is_closed=*/false, metadata);
+    SetFromResult(closed_paths, /*is_closed=*/true, /*assertOutputClosed=*/true, metadata);
+    SetFromResult(open_paths, /*is_closed=*/false, /*assertOutputClosed=*/false, metadata);
 }
 
 void CArea::Debug_IntersectOpenPathReversal(
@@ -344,12 +384,15 @@ void CArea::NaiveOffset(double offset)
             const Point64 negBack64 = ToPoint64(
                 PointD(cNeg.m_vertices.back().m_p.x, cNeg.m_vertices.back().m_p.y, 0)
             );
-            if ((posTarget64.x == posBack64.x && posTarget64.y == posBack64.y)
-                || (negTarget64.x == negBack64.x && negTarget64.y == negBack64.y)) {
-                // Skip join. I checked if either point is equal in clipper coordinates rather than
-                // both because, besides for rounding error, they should agree with each other, and
-                // I'm not interested in having single-unit clipper lines anyway. We can round
-                // within that range, and the curve data structure ensures connectivity
+            if ((std::abs(posTarget64.x - posBack64.x) < 2 && std::abs(posTarget64.y - posBack64.y) < 2)
+                || (std::abs(negTarget64.x - negBack64.x) < 2
+                    && std::abs(negTarget64.y - negBack64.y) < 2)) {
+                // Skip the join if the points are already equal, or nearly equal. I chose
+                // `dx > 2 || dy > 2` to be sure that in segments we join, the process of rounding
+                // to integers does't move the points enough to change which side should be joined
+                // by an arc and which should be joined by lines to the center point. Without
+                // allowing this much slack, the decision is sometimes incorrect and the final
+                // output contains spikes to the arc center.
                 return;
             }
 
@@ -506,6 +549,12 @@ void CArea::NaiveOffset(double offset)
             const heeks::Point pNegStart = cNeg.m_vertices.front().m_p;
             addJoin(pPosStart, pNegStart, pPrev, prevDirX, prevDirY, startDirX, startDirY, enterQ, startQex);
 
+            // curve.IsClosed() allows for start/end mismatch by some tolerance, but we really want
+            // to produce a curve that is actually closed here. Coerce the start point to match the
+            // end point (moving it by at most that tolerance).
+            cPos.m_vertices.front().m_p = cPos.m_vertices.back().m_p;
+            cNeg.m_vertices.front().m_p = cNeg.m_vertices.back().m_p;
+
             // Reverse the negative path so together cPos and cNeg enclose the area within `offset`
             // of the original curve
             cNeg.Reverse();
@@ -551,6 +600,13 @@ void CArea::NaiveOffset(double offset)
     }
 
     m_curves = std::move(offset_curves);
+
+    // Sanity check output: should be closed
+    for (const CCurve& c : m_curves) {
+        if (!c.IsExactlyClosed()) {
+            throw std::logic_error(std::format("NaiveOffset({}) produced an open curve", offset));
+        }
+    }
 }
 
 // Convert the input CCurve to clipper, populating metadata.
@@ -618,7 +674,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
             metadata.edges[newPt.z].push_back(pPrev.z);
             pPrev = newPt;
         }
-        else if (vertex.m_p.x != ptPrev.x || vertex.m_p.y != ptPrev.y) {
+        else if (!vertex.m_p.exactlyEquals(ptPrev)) {
             // The current edge is an arc; interpolate many lines in clipper
             assert(vertex.m_type == 1 || vertex.m_type == -1);
 
@@ -705,6 +761,7 @@ const int tagSentinel = -2;
 void CArea::SetFromResult(
     Paths64& paths,
     bool isClosed,
+    bool assertOutputClosed,
     ConversionMetadata& metadata,
     std::optional<std::reference_wrapper<CArea>> cNeg
 )
@@ -741,8 +798,16 @@ void CArea::SetFromResult(
         // and update firstTag/firstCurve variables
         auto saveCurve = [&]() {
             if (!c.m_vertices.empty()) {
-                CCurve* added = nullptr;
+                if (assertOutputClosed) {
+                    // Sanity check saved curve -- should be closed
+                    if (!c.IsExactlyClosed()) {
+                        throw std::logic_error(
+                            "SetFromResult saved an open curve from a closed clipper path"
+                        );
+                    }
+                }
 
+                CCurve* added = nullptr;
                 if (tag == 1 || tag == tagSentinel) {
                     m_curves.push_back(c);
                     added = &m_curves.back();
@@ -759,12 +824,20 @@ void CArea::SetFromResult(
             }
         };
 
-        // For closed paths, start at the smallest z-value
+        // For closed paths, start at the smallest z-value of a segment that won't be skipped
         size_t startVertex = 0;
+        const int skipDx = 2;
+        const int skipDy = skipDx;
         if (isClosed) {
-            for (size_t i = startVertex + 1; i < path.size(); i++) {
-                if (path[i].z < path[startVertex].z) {
+            bool bestSkip = true;
+            for (size_t i = 0; i < path.size(); i++) {
+                const Point64& v0 = path[i];
+                const Point64& v1 = path[(i + 1) % path.size()];
+
+                bool isSkip = std::abs(v1.x - v0.x) < skipDx && std::abs(v1.y - v0.y) < skipDy;
+                if (isSkip < bestSkip || (isSkip <= bestSkip && path[i].z <= path[startVertex].z)) {
                     startVertex = i;
+                    bestSkip = isSkip;
                 }
             }
         }
@@ -775,6 +848,38 @@ void CArea::SetFromResult(
             const size_t iEdge = (startVertex + edgeNum) % path.size();
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
+            const PointD endD = ToPointD(v1);
+            const heeks::Point end = {endD.x, endD.y};
+
+            // If length is tiny, skip the edge. This is important because clipper sometimes
+            // silently merges points that are only 1 unit away from each other (Clipper2 issue
+            // #1111), and this can result in incorrect tags on segments that short. Fortunately, it
+            // is acceptable to skip such short segments because it changes the output very little.
+            //
+            // When skipping the edge, amend the previous vertex to end at the new end location to
+            // keep the curve closed. This process may require extra handling if the adjustment
+            // terminates
+            //  the segment back at its start point.
+            if (std::abs(v1.x - v0.x) < skipDx && std::abs(v1.y - v0.y) < skipDy) {
+                if (c.m_vertices.size()) {
+                    const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(end);
+                    if (!fullLoop) {
+                        c.m_vertices.back().m_p = end;
+                    }
+                    else if (c.m_vertices.back().m_type == 0) {
+                        // Collapsed a line to its start point -- delete the vertex
+                        c.m_vertices.pop_back();
+                    }
+                    else {
+                        // Completed an arc -- change the representation to two semi-circles
+                        CVertex& prev = c.m_vertices.back();
+                        const heeks::Point mid {2 * prev.m_c.x - end.x, 2 * prev.m_c.y - end.y};
+                        prev.m_p = mid;
+                        c.m_vertices.emplace_back(prev.m_type, end, prev.m_c);
+                    }
+                }
+                continue;
+            }
 
             // Look up the segment data of the parent edge. Check for and handle the tag sentinel
             // value. The sentinel value is provided only when the parent edge lookup fails.
@@ -803,7 +908,6 @@ void CArea::SetFromResult(
             }
 
             // Construct the edge to be added based on the end point and the parent's type
-            const PointD end = ToPointD(v1);
             CVertex edge(parentData.orig.m_type, {end.x, end.y}, parentData.orig.m_c);
             if (!CArea::m_fit_arcs) {
                 edge.m_type = 0;
@@ -825,7 +929,7 @@ void CArea::SetFromResult(
             if (edge.m_type != 0 && edge.m_type == prev.m_type && edge.m_c == prev.m_c) {
                 // It is. If the edge does not complete a circle, we should extend the existing
                 // CVertex instead of adding a new one.
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(edge.m_p);
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
                 }
@@ -846,7 +950,9 @@ void CArea::SetFromResult(
 
         // Save the final curve
         if (isClosed && firstCurve && firstTag && tag == *firstTag) {
-            // Save the curve by joining it with the (distinct!) first curve
+            // For open offsets, the input curve is closed but edge tagging will split the curve
+            // into open sections. If the current/last section matches the tag of the first section,
+            // we join them here.
 
             // Remove the first curve's (now redundant) start point
             firstCurve->m_vertices.pop_front();
@@ -857,7 +963,7 @@ void CArea::SetFromResult(
             CVertex& prev = c.m_vertices.back();
             if (edge.m_type != 0 && edge.m_type == prev.m_type && edge.m_c == prev.m_c) {
                 // It is an extension
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == edge.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(edge.m_p);
                 if (!fullLoop) {
                     prev.m_p = edge.m_p;
                     firstCurve->m_vertices.pop_front();
@@ -869,20 +975,20 @@ void CArea::SetFromResult(
                 }
             }
 
-            // ...and finally concatenate them
+            // Concatenate them
             firstCurve->m_vertices
                 .insert(firstCurve->m_vertices.begin(), c.m_vertices.begin(), c.m_vertices.end());
         }
         else if (!firstTag && isClosed && c.m_vertices.size() >= 3) {
-            // Same as above, but the first curve has not been saved yet because the current curve
-            // *is* the first curve. Merging the curve to itself requires some special handling
+            // Similar to the above, but if the closed input curve has only one tag in it then no
+            // first curve will be saved yet, and the curve's end should be joined to its own beginning
 
             // First check if the first CVertex of the curve can extend the last CVertex
             CVertex& first = *std::next(c.m_vertices.begin());
             CVertex& last = c.m_vertices.back();
             if (last.m_type != 0 && last.m_type == first.m_type && last.m_c == first.m_c) {
                 // It is an extension
-                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p == first.m_p;
+                const bool fullLoop = std::prev(c.m_vertices.end(), 2)->m_p.exactlyEquals(first.m_p);
                 if (!fullLoop) {
                     c.m_vertices.front().m_p = std::prev(c.m_vertices.end(), 2)->m_p;
                     c.m_vertices.pop_back();
@@ -902,7 +1008,7 @@ void CArea::SetFromResult(
             saveCurve();
         }
         else {
-            // Save it as a new curve
+            // None of the above -- the curve does not need to be joined to any curve. Just save it
             saveCurve();
         }
     }
@@ -964,6 +1070,17 @@ void CArea::Offset(double offset)
         return;
     }
 
+    // Sanity check inputs -- should be closed
+    for (const CCurve& c : m_curves) {
+        if (!c.IsClosed()) {
+            std::fprintf(
+                stderr,
+                "WARNING: CArea::Offset input curve is open (%zu vertices)\n",
+                c.m_vertices.size()
+            );
+        }
+    }
+
     // Perform the naive offset, offsetting each edge and joining
     NaiveOffset(std::abs(offset));
 
@@ -976,12 +1093,12 @@ void CArea::Offset(double offset)
         }
     }
 
-    // Union (fill rule positive), keeping positive edges and dropping negative edges
-    _Clip(ClipType::Union, CArea {}, FillRule::Positive);
+    // Union, keeping positive edges and dropping negative edges
+    _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::nullopt, true);
 
-    // Note that this code currently has no impact because we call Reorder afterwards, but
-    // (to be vetted in a future PR) I think the curves from the previous step have known
-    // orientation and this simpler/lighter loop should replace the Reorder call
+    // Test code (to be vetted in a future PR) for replacing the expensive call to Reorder().
+    // To preserve full functionality probably we need to use the clipper PolyTree to determine
+    // nesting, but tbh nesting information may not be needed here at all.
     //
     // // If negative offset, reverse the curves to put them in the forward direction
     // if (offset < 0) {
@@ -993,6 +1110,13 @@ void CArea::Offset(double offset)
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
     this->Reorder();
+
+    // Sanity check outputs -- should be closed
+    for (const CCurve& c : m_curves) {
+        if (!c.IsExactlyClosed()) {
+            throw std::logic_error(std::format("CArea::Offset({}) produced an open curve", offset));
+        }
+    }
 }
 
 CArea CArea::OpenOffset(double offset)
@@ -1031,8 +1155,15 @@ void CArea::Thicken(double value)
         curve.m_edgeTags.clear();
     }
 
-    // Union (fill rule positive), keeping positive edges and dropping negative edges
-    _Clip(ClipType::Union, CArea {}, FillRule::Positive);
+    // Union (fill rule positive), keeping all edges
+    _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::nullopt, true);
+
+    // Sanity check outputs -- should be closed
+    for (const CCurve& c : m_curves) {
+        if (!c.IsExactlyClosed()) {
+            throw std::logic_error(std::format("CArea::Thicken({}) produced an open curve", value));
+        }
+    }
 }
 
 SegmentData CArea::getParentMetadataFallback(

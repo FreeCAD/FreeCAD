@@ -58,9 +58,13 @@ def countOffsetLoops(commands, pocket_depth):
             current_z = params["Z"]
             # Check if this is a plunge: G1 command going to pocket depth
             # from a higher Z position
-            if cmd.Name == "G1" and abs(current_z - pocket_depth) < 0.01:
-                if prev_z is not None and prev_z > pocket_depth + 0.5:
-                    plunge_count += 1
+            if (
+                cmd.Name == "G1"
+                and abs(current_z - pocket_depth) < 0.01
+                and prev_z is not None
+                and prev_z > pocket_depth + 0.5
+            ):
+                plunge_count += 1
             prev_z = current_z
     return plunge_count
 
@@ -99,31 +103,38 @@ def getLoopDirection(commands, pocket_depth, loop_index=0):
             current_pos.z = current_z
 
             # Check for plunge (start of new loop)
-            if cmd.Name == "G1" and abs(current_z - pocket_depth) < 0.01:
-                if prev_z is not None and prev_z > pocket_depth + 0.5:
-                    current_loop += 1
-                    if current_loop == loop_index:
-                        in_target_loop = True
-                        loop_points = [FreeCAD.Vector(current_pos.x, current_pos.y, 0)]
-                    elif current_loop > loop_index:
-                        # We've passed the target loop, stop collecting
-                        break
+            if (
+                cmd.Name == "G1"
+                and abs(current_z - pocket_depth) < 0.01
+                and prev_z is not None
+                and prev_z > pocket_depth + 0.5
+            ):
+                current_loop += 1
+                if current_loop == loop_index:
+                    in_target_loop = True
+                    loop_points = [FreeCAD.Vector(current_pos.x, current_pos.y, 0)]
+                elif current_loop > loop_index:
+                    # We've passed the target loop, stop collecting
+                    break
 
             # Check for retract (end of loop)
             if (
                 prev_z is not None
                 and abs(prev_z - pocket_depth) < 0.01
                 and current_z > pocket_depth + 0.5
+                and in_target_loop
             ):
-                if in_target_loop:
-                    break
+                break
 
             prev_z = current_z
 
         # Collect points for the target loop (only G1 moves at cutting depth)
-        if in_target_loop and cmd.Name in ("G1", "G2", "G3"):
-            if abs(current_pos.z - pocket_depth) < 0.01:
-                loop_points.append(FreeCAD.Vector(current_pos.x, current_pos.y, 0))
+        if (
+            in_target_loop
+            and cmd.Name in ("G1", "G2", "G3")
+            and abs(current_pos.z - pocket_depth) < 0.01
+        ):
+            loop_points.append(FreeCAD.Vector(current_pos.x, current_pos.y, 0))
 
     if len(loop_points) < 3:
         return None
@@ -604,14 +615,14 @@ class TestPathPocket(PathTestBase):
             "pocket_square_zigzag",
             tool_diameter,
             StepOver=stepover_percent,
-            ClearingPattern="ZigZagOffset",
+            ClearingPattern="ZigZag",
             StartAt="Edge",
             Angle=0,
         )
 
         stepover_distance = tool_diameter * (stepover_percent / 100.0)
         effective_height = pocket_height - tool_diameter
-        expected_num_horizontal_lines = int(math.ceil(effective_height / stepover_distance)) + 1
+        expected_num_horizontal_lines = math.ceil(effective_height / stepover_distance) + 1
         expected_num_vertical_lines = expected_num_horizontal_lines - 1
 
         # Collect G1 moves at cutting depth
@@ -695,7 +706,7 @@ class TestPathPocket(PathTestBase):
             tool_diameter=large_tool_diameter,
             job=job,
             StepOver=50,
-            ClearingPattern="ZigZagOffset",
+            ClearingPattern="ZigZag",
             StartAt="Edge",
             Angle=0,
         )
@@ -709,7 +720,7 @@ class TestPathPocket(PathTestBase):
             job=job,
             StepOver=50,
             StepDown=5,
-            ClearingPattern="ZigZagOffset",
+            ClearingPattern="ZigZag",
             StartAt="Edge",
             Angle=0,
             UseRestMachining=True,

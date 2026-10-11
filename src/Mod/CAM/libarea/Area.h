@@ -167,6 +167,7 @@ public:
     static bool m_please_abort;  // the user sets this from another thread, to tell
                                  // MakeOnePocketCurve to finish with no result.
     static double m_clipper_scale;
+    static constexpr double default_clipper_scale = 10000.0;
 
     void append(const CCurve& curve);
     void move(CCurve&& curve);
@@ -264,6 +265,7 @@ private:
     void SetFromResult(
         Clipper2Lib::Paths64& paths,
         bool isClosed,
+        bool assertOutputClosed,
         ConversionMetadata& metadata,
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
@@ -284,7 +286,8 @@ private:
         Clipper2Lib::FillRule fillType,
         bool reverseOpenPathContents = false,
         bool reverseOpenPathOrder = false,
-        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
+        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt,
+        bool assertOutputClosed = false
     );
 };
 

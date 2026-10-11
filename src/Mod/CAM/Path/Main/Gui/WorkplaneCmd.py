@@ -114,11 +114,7 @@ class CommandWorkplaneCreate:
                     job = candidate
                     break
 
-        try:
-            workplane = PathWorkplane.createWorkplane(job, base, sub)
-        except ValueError as e:
-            Path.Log.error(str(e))
-            return
+        workplane = PathWorkplane.createWorkplane(job, base, sub)
         if base is None:
             Path.Log.info(
                 translate(

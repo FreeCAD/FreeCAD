@@ -128,8 +128,8 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
         }
     }
     // Base::Console().message("LD::execute - front: {} back: {}\n",
-    //                         DrawUtil::formatVector(points.front()).c_str(),
-    //                         DrawUtil::formatVector(points.back()).c_str());
+    //                         DrawUtil::formatVector(points.front()),
+    //                         DrawUtil::formatVector(points.back()));
     setLinearPoints(points.front(), points.back());
 
     // App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();

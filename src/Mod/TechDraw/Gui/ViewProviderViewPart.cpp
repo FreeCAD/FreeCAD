@@ -250,6 +250,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
+          // One child may reference its parent through several persisted links.
+          if (std::find(temp.begin(), temp.end(), *it) != temp.end()) continue;
           auto view = dynamic_cast<TechDraw::DrawView *>(*it);
           if (view && view->claimParent() == getViewPart()) {
               temp.push_back(view);

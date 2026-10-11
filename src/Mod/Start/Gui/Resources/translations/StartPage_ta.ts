@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>கோப்பை திற</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>கூட்டி</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>2டி வரைவு</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation>2டி வரைவு ஆவணத்தை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>BIM/கட்டிடக்கலை</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation>வெற்று கோப்பு</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>புதிய வெற்று FreeCAD கோப்பை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>ஏற்கனவே உள்ள CAD கோப்பு அல்லது 3D மாதிரியைத் திறக்கும்</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation>பாராமெட்ரிக் உடல்</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="233"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>பார்ட் டிசைன் ஒர்க் பெஞ்ச் மூலம் உடலை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="238"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation>ஒரு பேரவை திட்டத்தை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="246"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation>கட்டடக்கலை திட்டத்தை உருவாக்குகிறது</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="538"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>புதிய கோப்பு</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>எடுத்துக்காட்டுகள்</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="542"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>அண்மைக்கால கோப்புகள்</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="557"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>முதல் தொடக்க அமைப்பைத் திறக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="558"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>இந்த தொடக்கப் பக்கத்தை மீண்டும் காட்ட வேண்டாம் (வெற்றுத் திரையில் தொடங்கவும்)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>தொடங்கு</translation>
     </message>

@@ -450,6 +450,10 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     pnt2 = pnt2 - centroid;
     pnt2 = dvp->projectPoint(pnt2);
 
+    if (pnt1.IsEqual(pnt2, Precision::Confusion())) {
+        PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - projected end points are equal.");
+        return nullptr;
+    }
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce) {

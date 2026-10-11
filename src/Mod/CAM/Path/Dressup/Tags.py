@@ -22,6 +22,7 @@
 from Path.Dressup.Gui.TagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Constants
 import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
@@ -674,9 +675,11 @@ class PathData:
     def __init__(self, obj):
         logger.track(obj.Base.Name)
         self.obj = obj
-        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = obj.Base.Path
         self.wire, rapid, _ = Path.Geom.wireForPath(path)
         self.rapid = _RapidEdges(rapid)
+        # linking moves are travel between cuts, tags are neither placed on them nor change them
+        self.linking = _RapidEdges(self.linkingEdges(path))
         if self.wire:
             self.edges = self.wire.Edges
         else:
@@ -699,12 +702,23 @@ class PathData:
     def supportsTagGeneration(self):
         return self.baseWires is not None
 
+    def linkingEdges(self, path):
+        edges = []
+        startPoint = FreeCAD.Vector(0, 0, 0)
+        for cmd in path.Commands:
+            edge = Path.Geom.edgeForCmd(cmd, startPoint)
+            if edge:
+                if cmd.Annotations.get("type") == Constants.ANNOT_LINKING["type"]:
+                    edges.append(edge)
+                startPoint = Path.Geom.commandEndPoint(cmd, startPoint)
+        return edges
+
     def findZLimits(self, edges):
         # not considering arcs and spheres in Z direction, find the highest and lowest Z values
         minZ = 99999999999
         maxZ = -99999999999
         for e in edges:
-            if self.rapid.isRapid(e):
+            if self.rapid.isRapid(e) or self.linking.isRapid(e):
                 continue
             for v in e.Vertexes:
                 minZ = min(v.Point.z, minZ)
@@ -1067,7 +1081,9 @@ class ObjectTagDressup:
             if edge:
                 tIndex = t % len(tags)
                 t += 1
-                i = tagsSorted[tIndex].intersects(edge, edge.FirstParameter)
+                i = None
+                if not pathData.linking.isRapid(edge):
+                    i = tagsSorted[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
                     mapper = MapWireToTag(
                         edge,
@@ -1099,16 +1115,20 @@ class ObjectTagDressup:
                             commands.append(
                                 Path.Command("G0", {"X": v.X, "Y": v.Y, "Z": v.Z, "F": vertRapid})
                             )
+                            if pathData.linking.isRapid(edge):
+                                commands[-1].Annotations = Constants.ANNOT_LINKING
                     else:
-                        commands.extend(
-                            Path.Geom.cmdsForEdge(
-                                edge,
-                                approximation=obj.Approximation,
-                                hSpeed=horizFeed,
-                                vSpeed=vertFeed,
-                                tol=tol,
-                            )
+                        edgeCommands = Path.Geom.cmdsForEdge(
+                            edge,
+                            approximation=obj.Approximation,
+                            hSpeed=horizFeed,
+                            vSpeed=vertFeed,
+                            tol=tol,
                         )
+                        if pathData.linking.isRapid(edge):
+                            for cmd in edgeCommands:
+                                cmd.Annotations = Constants.ANNOT_LINKING
+                        commands.extend(edgeCommands)
                 edge = None
                 t = 0
 
@@ -1186,6 +1206,8 @@ class ObjectTagDressup:
         if not obj.Base.Path.Commands:
             return
 
+        PathDressup.placeWithBase(obj)
+
         pathData = self.setup(obj)
         if not pathData:
             logger.debug("execute - no pathData")
@@ -1203,14 +1225,14 @@ class ObjectTagDressup:
 
         if not self.tags:
             logger.debug("execute - no tags")
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+            obj.Path = obj.Base.Path
             return
 
         try:
             self.processTags(obj)
         except Exception as e:
             logger.error("processing tags failed clearing all tags… '{}'", e.args[0])
-            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
+            obj.Path = obj.Base.Path
 
         # update disabled in case there are some additional ones
         disabled = copy.copy(self.obj.Disabled)

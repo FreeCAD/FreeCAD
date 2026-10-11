@@ -58,6 +58,7 @@ namespace sp = std::placeholders;
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Helper Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Modeling Tools");
     qApp->translate("Gui::TaskView::TaskWatcherCommands", "Create Geometry");
+    qApp->translate("Gui::TaskView::TaskWatcherCommands", "Start Part");
     //
     qApp->translate("Workbench", "Measure");
     qApp->translate("Workbench", "Refresh");
@@ -354,6 +355,9 @@ void Workbench::activated()
         "PartDesign_Mirrored",
         "PartDesign_LinearPattern",
         "PartDesign_PolarPattern",
+        "PartDesign_CircularPattern",
+        "PartDesign_PathPattern",
+        "PartDesign_PointPattern",
         "PartDesign_MultiTransform",
         nullptr
     };
@@ -434,6 +438,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *transformations << "PartDesign_Mirrored"
                      << "PartDesign_LinearPattern"
                      << "PartDesign_PolarPattern"
+                     << "PartDesign_CircularPattern"
+                     << "PartDesign_PathPattern"
+                     << "PartDesign_PointPattern"
                      << "PartDesign_MultiTransform";
 
     // dressups
@@ -536,6 +543,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
+          << "PartDesign_CircularPattern"
+          << "PartDesign_PathPattern"
+          << "PartDesign_PointPattern"
           << "PartDesign_MultiTransform";
 
     return root;

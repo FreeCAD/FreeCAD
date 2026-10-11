@@ -51,6 +51,27 @@ from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
+def _get_global_shape(obj, subname=""):
+    """Return an object's shape transformed through its container chain."""
+    import Part
+
+    return Part.getShape(obj, subname, needSubElement=bool(subname), noElementMap=True)
+
+
+def _resolve_selection(sel):
+    """Return the selected object, its global placement, and its shape."""
+    subname = sel.SubElementNames[0] if sel.SubElementNames else ""
+    component = subname.rpartition(".")[2]
+    if component.startswith(("Edge", "Face", "Vertex")):
+        subname = subname.rpartition(".")[0]
+        if subname:
+            subname += "."
+    obj = sel.Object.getSubObject(subname, 1) if subname else sel.Object
+    placement = sel.Object.getSubObject(subname, 3)
+    shape = _get_global_shape(sel.Object, subname)
+    return obj, placement, shape
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
@@ -99,13 +120,13 @@ class Trimex(gui_base_original.Modifier):
         """Proceed with execution of the command after proper selection."""
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
-        sel = Gui.Selection.getSelection()
-        if len(sel) == 2:
-            self.trimObjects(sel)
+        selection = Gui.Selection.getSelection()
+        if len(selection) == 2:
+            self.trimObjects(selection)
             self.finish()
             return
-        self.obj = sel[0]
         sel = Gui.Selection.getSelectionEx("", 0)[0]
+        self.obj, self.placement, selected_shape = _resolve_selection(sel)
 
         if self._setupObjectTrimex(sel):
             return
@@ -116,21 +137,21 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             _err(reason)
             return
-        self._startWireTrimex()
+        self._startWireTrimex(selected_shape)
 
-    def _startWireTrimex(self):
+    def _startWireTrimex(self, shape=None):
         """Set up the common trim/extend interaction for editable edges."""
         import Part
 
         self.ui.trimUi(title=translate("draft", self.featureName))
         self.linetrack = trackers.lineTracker()
-        if hasattr(self.obj, "Placement"):
-            self.placement = self.obj.Placement
-        if self.obj.Shape.Wires:
-            self.edges = self.obj.Shape.Wires[0].Edges
+        if shape is None:
+            shape = _get_global_shape(self.obj)
+        if shape.Wires:
+            self.edges = shape.Wires[0].Edges
             self.edges = Part.__sortEdges__(self.edges)
         else:
-            self.edges = self.obj.Shape.Edges
+            self.edges = shape.Edges
         for edge in self.edges:
             if isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
                 self.obj = None
@@ -381,7 +402,7 @@ class Trimex(gui_base_original.Modifier):
             else:
                 parent = self.doc.getObject(snapped["Object"])
                 subname = snapped["Component"]
-            shape = Part.getShape(parent, subname, needSubElement=True, noElementMap=True)
+            shape = _get_global_shape(parent, subname)
             if shape.Edges:
                 pts = []
                 for e in shape.Edges:
