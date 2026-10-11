@@ -121,18 +121,6 @@ void DlgSettings3DViewPart::saveSettings()
 {
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
-
-    // search for Part view providers and apply the new settings
-    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (auto it : docs) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
-        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
-            ViewProviderPart::getClassTypeId()
-        );
-        for (auto view : views) {
-            static_cast<ViewProviderPart*>(view)->reload();
-        }
-    }
 }
 void DlgSettings3DViewPart::loadSettings()
 {

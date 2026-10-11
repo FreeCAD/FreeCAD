@@ -954,6 +954,7 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection) {
         AngularDeflection.setValue(angularDeflection);
+        changed = true;
     }
 
     return changed;
