@@ -264,7 +264,9 @@ App::DocumentObjectExecReturn* Loft::execute()
 
         std::vector<std::string> sectionLabels;
         sectionLabels.reserve(multisections.size() + 1);
-        sectionLabels.push_back(Profile.getValue() ? Profile.getValue()->Label.getStrValue() : "Profile");
+        sectionLabels.push_back(
+            Profile.getValue() ? Profile.getValue()->Label.getStrValue() : "Profile"
+        );
         for (const auto& sec : multisections) {
             sectionLabels.push_back(sec.first ? sec.first->Label.getStrValue() : "Section");
         }
