@@ -340,7 +340,25 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(const std::vecto
         byEdge.emplace(segments[i].endEdge, i);
     }
 
+    // The reach of the segments is used to determine a tolerance for welding points together.
+    Base::BoundBox3d reach;
+    for (const Segment& segment : segments) {
+        reach.Add(segment.start);
+        reach.Add(segment.end);
+    }
+    const double tolerance = weldTolerance(reach);
+    std::unordered_map<EndpointCell, std::vector<std::size_t>, EndpointCellHash> byPoint;
+    for (std::size_t i = 0; i < segments.size(); ++i) {
+        byPoint[cellOf(segments[i].start, tolerance)].push_back(i);
+        byPoint[cellOf(segments[i].end, tolerance)].push_back(i);
+    }
+
+    const double tolSq = tolerance * tolerance;
     std::vector<bool> used(segments.size(), false);
+    auto meets = [&](const Base::Vector3d& a, const Base::Vector3d& b) {
+        return Base::DistanceP2(a, b) <= tolSq;
+    };
+
     for (std::size_t seed = 0; seed < segments.size(); ++seed) {
         if (used[seed]) {
             continue;
@@ -351,7 +369,7 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(const std::vecto
         std::vector<Base::Vector3d> loop {segments[seed].start, segments[seed].end};
         MeshEdge tail = segments[seed].endEdge;
 
-        while (tail != opening) {
+        while (tail != opening && !meets(loop.back(), loop.front())) {
             // The other triangle on this edge, if it has not been walked yet
             std::size_t next = segments.size();
             const auto range = byEdge.equal_range(tail);
@@ -361,21 +379,57 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(const std::vecto
                     break;
                 }
             }
+
+            // Nothing shares the edge, so ask where the contour actually is.
+            bool enteredAtStart = next < segments.size() && segments[next].startEdge == tail;
+            if (next == segments.size()) {
+                forEachNeighbouringCell(cellOf(loop.back(), tolerance), [&](const EndpointCell& cell) {
+                    if (next < segments.size()) {
+                        return;
+                    }
+                    const auto found = byPoint.find(cell);
+                    if (found == byPoint.end()) {
+                        return;
+                    }
+                    for (const std::size_t candidate : found->second) {
+                        if (used[candidate]) {
+                            continue;
+                        }
+                        if (meets(segments[candidate].start, loop.back())) {
+                            next = candidate;
+                            enteredAtStart = true;
+                            return;
+                        }
+                        if (meets(segments[candidate].end, loop.back())) {
+                            next = candidate;
+                            enteredAtStart = false;
+                            return;
+                        }
+                    }
+                });
+            }
+
             if (next == segments.size()) {
                 break;  // the mesh is open here
             }
             used[next] = true;
 
-            // Continue from whichever end of it is not the edge we arrived on
-            const bool enteredAtStart = segments[next].startEdge == tail;
+            // Continue from whichever end of it is not the one we arrived on
             loop.push_back(enteredAtStart ? segments[next].end : segments[next].start);
             tail = enteredAtStart ? segments[next].endEdge : segments[next].startEdge;
         }
 
-        if (tail == opening) {
+        if (tail == opening || meets(loop.back(), loop.front())) {
             loop.push_back(loop.front());  // say so plainly rather than by distance
         }
-        if (loop.size() >= 3) {
+        // A plane tangent to a round face clips a sliver of triangles at the
+        // point of contact, which chains into a loop with no extent. It would
+        // be drawn as a stray mark where the plane grazes the surface.
+        Base::BoundBox3d span;
+        for (const Base::Vector3d& point : loop) {
+            span.Add(point);
+        }
+        if (loop.size() >= 3 && span.CalcDiagonalLength() > tolerance) {
             loops.push_back(std::move(loop));
         }
     }
