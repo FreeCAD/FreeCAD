@@ -1027,4 +1027,100 @@ TEST(SectionCapHatchTriangles, testABadIndexIsSkippedNotDereferenced)
     EXPECT_NEAR(totalLength(hatch), 10 * 10.0, 1e-9);
 }
 
+namespace
+{
+
+/// The same soup as the scene graph hands it over: every triangle carries its
+/// own three points, so neighbours touch without sharing an index.
+TriangleSoup unwelded(const TriangleSoup& soup)
+{
+    TriangleSoup out;
+    for (std::size_t i = 0; i + 2 < soup.indices.size(); i += 3) {
+        const int base = static_cast<int>(out.points.size());
+        for (std::size_t k = 0; k < 3; ++k) {
+            out.points.push_back(soup.points[soup.indices[i + k]]);
+            out.indices.push_back(base + static_cast<int>(k));
+        }
+    }
+    return out;
+}
+
+std::size_t closedLoopCount(const std::vector<std::vector<Base::Vector3d>>& loops)
+{
+    return static_cast<std::size_t>(std::count_if(loops.begin(), loops.end(), isClosedExactly));
+}
+
+}  // namespace
+
+
+TEST(SectionCapWeld, testAnUnweldedBoxCutsIntoNothingThatCanBeFilled)
+{
+    // The failure this guards: a mesh, or any source with no solid to remesh
+    // from, arrives unwelded and its section comes out as an outline with no
+    // fill - you look straight through the cut.
+    const auto segments = sliceTriangles(unwelded(box(10)), Z, 5.0);
+    ASSERT_EQ(segments.size(), 8) << "the plane did not cut it, so nothing below is proven";
+
+    EXPECT_EQ(closedLoopCount(chainLoops(segments)), 0U);
+}
+
+TEST(SectionCapWeld, testWeldingAnUnweldedBoxMakesTheCutClose)
+{
+    TriangleSoup soup = unwelded(box(10));
+
+    weldPoints(soup, weldTolerance(boundsOf(soup)));
+
+    const auto loops = chainLoops(sliceTriangles(soup, Z, 5.0));
+    ASSERT_EQ(closedLoopCount(loops), 1U);
+    // A square halfway up the box, and the fill that square now allows
+    EXPECT_NEAR(soupArea(fillLoops(loops, U, V)), 100.0, 1e-6);
+}
+
+TEST(SectionCapWeld, testWeldingKeepsTheSurfaceItWasGiven)
+{
+    TriangleSoup soup = unwelded(box(10));
+    const double area = soupArea(soup);
+
+    weldPoints(soup, weldTolerance(boundsOf(soup)));
+
+    EXPECT_EQ(soup.points.size(), 8U) << "the eight corners of a box";
+    EXPECT_EQ(soup.indices.size(), 36U) << "a triangle was lost";
+    EXPECT_NEAR(soupArea(soup), area, 1e-9);
+}
+
+TEST(SectionCapWeld, testASoupThatAlreadySharesItsPointsIsLeftAlone)
+{
+    TriangleSoup soup = box(10);
+
+    weldPoints(soup, weldTolerance(boundsOf(soup)));
+
+    EXPECT_EQ(soup.points.size(), 8U);
+    EXPECT_EQ(soup.indices.size(), 36U);
+}
+
+TEST(SectionCapWeld, testATriangleTheWeldClosesUpIsDropped)
+{
+    // Two points within tolerance of each other leave a triangle with no area.
+    // Keeping it would put a degenerate edge into the chaining.
+    TriangleSoup soup;
+    soup.points = {Base::Vector3d(0, 0, 0), Base::Vector3d(1e-9, 0, 0), Base::Vector3d(0, 10, 0)};
+    soup.indices = {0, 1, 2};
+
+    weldPoints(soup, 1e-6);
+
+    EXPECT_TRUE(soup.indices.empty());
+}
+
+TEST(SectionCapWeld, testTheToleranceFollowsHowFarFromTheOriginTheBodyIs)
+{
+    // Coin holds vertices as float, so the gap between two points that ought to
+    // be one grows with their distance from the origin. A fixed tolerance would
+    // be either too tight out there or too loose at the origin.
+    const Base::BoundBox3d here(0, 0, 0, 10, 10, 10);
+    const Base::BoundBox3d farAway(10000, 0, 0, 10010, 10, 10);
+
+    EXPECT_GT(weldTolerance(farAway), weldTolerance(here));
+    EXPECT_LT(weldTolerance(here), 0.001) << "loose enough to swallow real geometry";
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

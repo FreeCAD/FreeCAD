@@ -86,6 +86,20 @@ constexpr double meshAngularDeflection = 0.5;
 /// Pass deflection <= 0 to size it from the shape.
 PartExport TriangleSoup meshSolid(const TopoDS_Shape& shape, double deflection = 0.0);
 
+/// Merge points that coincide to within `tolerance`, so triangles that touch
+/// also share vertex indices.
+///
+/// Scene graph triangles arrive one at a time, each with three fresh points, and
+/// a face by face triangulation does not share them either. Chaining matches
+/// endpoints by index, so without this every contour breaks at every triangle.
+/// Triangles that the merge collapses to a line are dropped.
+PartExport void weldPoints(TriangleSoup& soup, double tolerance);
+
+/// A merge tolerance for triangles that came through Coin, whose vertices are
+/// float: on a half metre part they agree only to about 1e-4 mm, so OCCT's
+/// Precision::Confusion() would leave every tessellation seam unjoined.
+PartExport double weldTolerance(const Base::BoundBox3d& bounds);
+
 /// Where the plane crosses one triangle, if it crosses at all.
 ///
 /// Uses a half open sign test, so a triangle yields exactly zero or two

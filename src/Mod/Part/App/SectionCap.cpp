@@ -36,6 +36,7 @@
 
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepTools.hxx>
+#include <Precision.hxx>
 #include <TopoDS_Shape.hxx>
 
 #include "BRepMesh.h"
@@ -103,6 +104,81 @@ void forEachNeighbouringCell(const EndpointCell& cell, const std::function<void(
 }
 
 }  // namespace
+
+
+double SectionCap::weldTolerance(const Base::BoundBox3d& bounds)
+{
+    if (!bounds.IsValid()) {
+        return Precision::Confusion();
+    }
+    // Relative, because float error is relative: a point far from the origin is
+    // coarse even on a small part.
+    const double reach = std::max(
+        bounds.CalcDiagonalLength(),
+        std::max({std::abs(bounds.MinX), std::abs(bounds.MaxX),
+                  std::abs(bounds.MinY), std::abs(bounds.MaxY),
+                  std::abs(bounds.MinZ), std::abs(bounds.MaxZ)})
+    );
+    return std::max(Precision::Confusion(), reach * 1.0e-6);
+}
+
+
+void SectionCap::weldPoints(TriangleSoup& soup, double tolerance)
+{
+    if (soup.points.empty() || tolerance <= 0.0) {
+        return;
+    }
+
+    std::unordered_map<EndpointCell, std::vector<int>, EndpointCellHash> grid;
+    std::vector<int> remap(soup.points.size(), -1);
+    std::vector<Base::Vector3d> welded;
+    welded.reserve(soup.points.size());
+
+    const double tolSq = tolerance * tolerance;
+    for (std::size_t i = 0; i < soup.points.size(); ++i) {
+        const Base::Vector3d& p = soup.points[i];
+        int match = -1;
+        forEachNeighbouringCell(cellOf(p, tolerance), [&](const EndpointCell& cell) {
+            if (match >= 0) {
+                return;
+            }
+            const auto found = grid.find(cell);
+            if (found == grid.end()) {
+                return;
+            }
+            for (const int candidate : found->second) {
+                if (Base::DistanceP2(welded[static_cast<std::size_t>(candidate)], p) <= tolSq) {
+                    match = candidate;
+                    return;
+                }
+            }
+        });
+
+        if (match < 0) {
+            match = static_cast<int>(welded.size());
+            welded.push_back(p);
+            grid[cellOf(p, tolerance)].push_back(match);
+        }
+        remap[i] = match;
+    }
+
+    std::vector<int> indices;
+    indices.reserve(soup.indices.size());
+    for (std::size_t i = 0; i + 2 < soup.indices.size(); i += 3) {
+        const int a = remap[static_cast<std::size_t>(soup.indices[i])];
+        const int b = remap[static_cast<std::size_t>(soup.indices[i + 1])];
+        const int c = remap[static_cast<std::size_t>(soup.indices[i + 2])];
+        if (a == b || b == c || a == c) {
+            continue;  // the weld closed this one up; it has no area to cut
+        }
+        indices.push_back(a);
+        indices.push_back(b);
+        indices.push_back(c);
+    }
+
+    soup.points = std::move(welded);
+    soup.indices = std::move(indices);
+}
 
 
 std::optional<Part::SectionCap::Segment> SectionCap::planeTriangleIntersection(

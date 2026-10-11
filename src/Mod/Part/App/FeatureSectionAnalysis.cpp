@@ -59,6 +59,7 @@
 #include <App/GroupExtension.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Base/Console.h>
 
@@ -329,6 +330,7 @@ void SectionAnalysis::forEachSourcePart(
                     return;
                 }
             }
+            bool descended = false;
             for (const auto& child : obj->getSubObjects()) {
                 // Resolved one hop, from obj. A container that only understands its
                 // own first level still answers this correctly.
@@ -336,6 +338,7 @@ void SectionAnalysis::forEachSourcePart(
                 if (!next) {
                     continue;
                 }
+                descended = true;
                 // Keep the longer path while it still names the same object: that is
                 // what carries a GeoFeatureGroup's placement down to its children.
                 if (root->getSubObject((sub + child).c_str()) == next) {
@@ -343,6 +346,20 @@ void SectionAnalysis::forEachSourcePart(
                 }
                 else {
                     descend(next, {});
+                }
+            }
+            if (descended) {
+                return;
+            }
+
+            // A mesh or a point cloud has no shape and nothing below it, so it
+            // used to drop out of the walk here unseen. It is still one part to
+            // section; what a null shape is worth is the caller's business.
+            // Datums carry a placement but no geometry, and stay out.
+            if (!isContainer && obj->isDerivedFrom<App::GeoFeature>()
+                && !obj->isDerivedFrom<App::DatumElement>()) {
+                if (seen.insert(obj).second) {
+                    visit(obj, TopoDS_Shape());
                 }
             }
         };
@@ -625,7 +642,11 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     // Display path has to group its triangles by exactly the same parts.
     std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
     forEachSourcePart(sources, this, [&parts](App::DocumentObject* obj, const TopoDS_Shape& shape) {
-        parts.emplace_back(shape, obj);
+        // Shapeless sources - a mesh, a point cloud - are for the preview to
+        // slice. There is nothing here to hand a boolean.
+        if (!shape.IsNull()) {
+            parts.emplace_back(shape, obj);
+        }
     });
 
     // Nothing visible is a valid state (e.g. all bodies hidden) - publish an
