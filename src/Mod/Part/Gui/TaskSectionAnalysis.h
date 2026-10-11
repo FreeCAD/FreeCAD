@@ -95,6 +95,15 @@ private:
     /// Name the two tilt boxes after the axes the given preset turns about.
     void applyPresetAngleLabels(Preset preset);
 
+    /// The plane normal a preset asks for, keeping the side the plane is already on.
+    Base::Vector3d normalForPreset(Preset preset) const;
+
+    /// Back to zero tilt, without the spin boxes reporting it as a user edit.
+    void resetTiltAngles();
+
+    /// Put the plane through the middle of the sources, and show the offset it got.
+    void centreOffsetOnSources(const Base::Vector3d& normal);
+
     /// Pull the plane back out of the feature into the boxes, after something
     /// other than the boxes moved it - the dragger, or a script.
     void refreshFromFeature();

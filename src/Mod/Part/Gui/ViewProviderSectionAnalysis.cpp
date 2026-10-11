@@ -20,6 +20,7 @@
  ******************************************************************************/
 
 #include <algorithm>
+#include <ranges>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
@@ -590,19 +591,18 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
     // The displayed triangles are meshed one face at a time and do not meet
     // along shared edges, so a contour cut through them breaks wherever the
     // plane crosses a face boundary. Anything with a solid behind it is remeshed
-    // watertight instead; the rest keeps what the scene graph gave.
+    // watertight instead.
+    std::vector<bool> remeshed(harvestCache.size(), false);
     Part::SectionAnalysis::forEachSourcePart(
         sources,
         feat,
-        [this](App::DocumentObject* obj, const TopoDS_Shape& shape) {
+        [this, &remeshed](App::DocumentObject* obj, const TopoDS_Shape& shape) {
             if (shape.IsNull() || TopExp_Explorer(shape, TopAbs_SOLID).More() == Standard_False) {
                 return;
             }
-            const auto body = std::find_if(
-                harvestCache.begin(),
-                harvestCache.end(),
-                [obj](const HarvestedBody& candidate) { return candidate.source == obj; }
-            );
+            const auto body = std::ranges::find_if(harvestCache, [obj](const HarvestedBody& candidate) {
+                return candidate.source == obj;
+            });
             if (body == harvestCache.end()) {
                 return;
             }
@@ -612,8 +612,22 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
             }
             body->bounds = Base::BoundBox3d(watertight.points.data(), watertight.points.size());
             body->soup = std::move(watertight);
+            remeshed[static_cast<std::size_t>(std::distance(harvestCache.begin(), body))] = true;
         }
     );
+
+    // The rest - meshes, point clouds, loose faces - have no solid to remesh
+    // from, so their triangles stay as the scene graph gave them: three fresh
+    // points each, touching but not joined. Welding is what lets a contour
+    // through them chain into a closed loop and so be filled.
+    for (std::size_t i = 0; i < harvestCache.size(); ++i) {
+        if (!remeshed[i]) {
+            Part::SectionCap::weldPoints(
+                harvestCache[i].soup,
+                Part::SectionCap::weldTolerance(harvestCache[i].bounds)
+            );
+        }
+    }
     harvestValid = true;
 }
 
@@ -1093,25 +1107,20 @@ void ViewProviderSectionAnalysis::installClipPlane()
         return;
     }
 
-    // Clip exactly the objects that contributed section geometry (SourceParts,
-    // computed by execute()), so clipping and capping always agree.
-    // Each object gets its own clip plane node, inserted just before the mode switch
-    // so the full global placement is in effect when
-    // the node is traversed: updateClipPlaneEquation() then only needs the
-    // inverse global placement. A shared node can't work as each insertion point
-    // sits under a different accumulated transform.
-    std::vector<App::DocumentObject*> targets = feat->SourceParts.getValues();
-    if (targets.empty()) {
-        // Leaves are resolved here instead of in the Display mode.
-        // execute() skips the boolean outright.
-        // Clipping the Source
-        // entries themselves only works when every one of them is a leaf: a clip
-        // plane goes under the object's own view provider, and only a
-        // GeoFeatureGroup nests its children there. A plain group or an Arch
-        // BuildingPart leaves them at the document root, so a container source
-        // clipped a subtree holding none of the geometry, and nothing was cut.
-        targets = Part::SectionAnalysis::distinctSourceParts(feat->Source.getValues(), feat);
-    }
+    // Every part the walk reaches, not just the ones that yielded solids:
+    // SourceParts is built from solids alone, so a mesh - or anything else
+    // without a B-rep - stayed whole and stuck out past the cut.
+    //
+    // Resolved to leaves, because a clip plane goes under the object's own view
+    // provider and only a GeoFeatureGroup nests its children there. A plain
+    // group leaves them at the document root, where clipping the source itself
+    // cuts a subtree holding none of the geometry.
+    //
+    // Each gets its own node, inserted just before the mode switch so the full
+    // global placement is in effect when it is traversed; a shared node can't
+    // work, as each insertion point sits under a different transform.
+    const std::vector<App::DocumentObject*> targets
+        = Part::SectionAnalysis::distinctSourceParts(feat->Source.getValues(), feat);
     for (auto* obj : targets) {
         if (!obj || obj == feat) {
             continue;
@@ -1255,7 +1264,7 @@ void ViewProviderSectionAnalysis::slotChangedObject(
         return false;
     };
     const auto& sources = feat->Source.getValues();
-    const bool related = std::any_of(sources.begin(), sources.end(), [&](const auto* src) {
+    const bool related = std::ranges::any_of(sources, [&](const auto* src) {
         return isAncestorOrSelf(src, &obj) || isAncestorOrSelf(&obj, src);
     });
     if (!related) {
@@ -1801,9 +1810,9 @@ void ViewProviderSectionAnalysis::applyPlaneDragger()
     Base::Vector3d u;
     Base::Vector3d v;
     Base::Vector3d n;
-    base.multVec(Base::Vector3d(1, 0, 0), u);
-    base.multVec(Base::Vector3d(0, 1, 0), v);
-    base.multVec(Base::Vector3d(0, 0, 1), n);
+    base.multVec(Base::Vector3d::UnitX, u);
+    base.multVec(Base::Vector3d::UnitY, v);
+    base.multVec(Base::Vector3d::UnitZ, n);
 
     // Turns about the handle being held, wherever it has been slid to.
     const Base::Rotation tilt
