@@ -299,7 +299,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                 const auto firstIdx = e.getFirstProfileIndex();
                 const auto secondIdx = e.getSecondProfileIndex();
                 if (firstIdx < multisections.size() + 1 && secondIdx < multisections.size() + 1) {
-                    auto getLabel = [profileObj, &multisections](std::size_t idx) -> const std::string& {
+                    auto getLabel = [profileObj,
+                                     &multisections](std::size_t idx) -> const std::string& {
                         return idx == 0 ? profileObj->Label.getStrValue()
                                         : multisections[idx - 1].first->Label.getStrValue();
                     };
