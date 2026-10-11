@@ -115,9 +115,14 @@ double SectionCap::weldTolerance(const Base::BoundBox3d& bounds)
     // coarse even on a small part.
     const double reach = std::max(
         bounds.CalcDiagonalLength(),
-        std::max({std::abs(bounds.MinX), std::abs(bounds.MaxX),
-                  std::abs(bounds.MinY), std::abs(bounds.MaxY),
-                  std::abs(bounds.MinZ), std::abs(bounds.MaxZ)})
+        std::max(
+            {std::abs(bounds.MinX),
+             std::abs(bounds.MaxX),
+             std::abs(bounds.MinY),
+             std::abs(bounds.MaxY),
+             std::abs(bounds.MinZ),
+             std::abs(bounds.MaxZ)}
+        )
     );
     return std::max(Precision::Confusion(), reach * 1.0e-6);
 }
