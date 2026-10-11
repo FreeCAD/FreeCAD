@@ -24,8 +24,19 @@
 
 
 #include <algorithm>
-#include <boost/graph/graphviz.hpp>
 #include <random>
+
+// GCC reports boost::detail::write_graphviz_subgraph's edge iterators as
+// possibly uninitialized; they are assigned by tie(...) = edges(g).
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+#include <boost/graph/graphviz.hpp>
+#if defined(__GNUC__) && !defined(__clang__)
+# pragma GCC diagnostic pop
+#endif
+
 #include <App/Application.h>
 
 #include "Application.h"
@@ -87,7 +98,7 @@ static PropType getPropType(DocumentObject* obj, const std::string& propName)
     if (obj->isInputProperty(propName)) {
         return PropType::PROP_INPUT;
     }
-    else if (obj->isOutputProperty(propName)) {
+    if (obj->isOutputProperty(propName)) {
         return PropType::PROP_OUTPUT;
     }
     return PropType::PROP_REGULAR;

@@ -3867,10 +3867,6 @@ void TopoShape::getLinesFromSubShape(
         return;
     }
 
-    // build up map edge->face
-    TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-    TopExp::MapShapesAndAncestors(this->_Shape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
-
     for (TopExp_Explorer exp(shape, TopAbs_EDGE); exp.More(); exp.Next()) {
         TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
         std::vector<gp_Pnt> points;
@@ -3879,18 +3875,13 @@ void TopoShape::getLinesFromSubShape(
             // the edge has not its own triangulation, but then a face the edge is attached to
             // must provide this triangulation
 
-            // Look for one face in our map (it doesn't care which one we take)
-            int index = edge2Face.FindIndex(aEdge);
-            if (index < 1) {
+            // Look for one face the edge belongs to (it doesn't care which one we take).
+            // The edge->face map is built once and kept in the shape cache.
+            const TopoDS_Shape face = findAncestorShape(aEdge, TopAbs_FACE);
+            if (face.IsNull()) {
                 continue;
             }
-
-            const auto& faces = edge2Face.FindFromIndex(index);
-            if (faces.IsEmpty()) {
-                continue;
-            }
-
-            const TopoDS_Face& aFace = TopoDS::Face(faces.First());
+            const TopoDS_Face& aFace = TopoDS::Face(face);
             if (!Part::Tools::getPolygonOnTriangulation(aEdge, aFace, points)) {
                 continue;
             }
@@ -4589,7 +4580,7 @@ bool TopoShape::_makeTransform(
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: {}\n", e.GetMessageString());
         }
     }
     makeTransform(shape, convert(rclTrf), op, copy);

@@ -107,7 +107,7 @@ endif(FREECAD_USE_PCH)
 
 target_compile_warn_error(CAMSimulator)
 
-SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
+SET_BIN_DIR(CAMSimulator)
 SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)
 
 INSTALL(TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

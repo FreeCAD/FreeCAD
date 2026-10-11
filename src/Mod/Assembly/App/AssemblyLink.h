@@ -98,6 +98,9 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
+
+private:
+    std::unordered_map<App::DocumentObject*, std::string> objSubPrefixMap;
 };
 
 

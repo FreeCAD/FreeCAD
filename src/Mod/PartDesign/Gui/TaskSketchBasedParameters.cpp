@@ -56,7 +56,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(
     const std::string& pixmapname,
     const QString& parname
 )
-    : TaskFeatureParameters(vp, parent, pixmapname, parname)
+    : TaskFeatureAddSubParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
     this->blockSelection(true);
@@ -311,7 +311,7 @@ QString TaskSketchBasedParameters::make2DLabel(
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {
-        Base::Console().error("No valid subelement linked in %s\n", section->Label.getValue());
+        Base::Console().error("No valid subelement linked in {}\n", section->Label.getValue());
         return {};
     }
     else {

@@ -65,7 +65,7 @@ struct TypeData;
       // do something..
     }
     else {
-      Base::Console().warning("getRightFeature", "Unknown feature type %s!\n",
+      Base::Console().warning("getRightFeature", "Unknown feature type {}!\n",
                                 anode->getTypeId().getName());
     }
   }

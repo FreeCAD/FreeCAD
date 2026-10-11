@@ -1497,7 +1497,8 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
         std::sort(
             ys.begin(),
             ys.end(),
-            [](std::tuple<double, int, int> a, std::tuple<double, int, int> b) {
+            [](const std::tuple<double, size_t, size_t>& a,
+               const std::tuple<double, size_t, size_t>& b) {
                 return std::get<0>(a) < std::get<0>(b);
             }
         );

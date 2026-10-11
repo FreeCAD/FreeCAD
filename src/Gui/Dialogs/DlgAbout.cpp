@@ -118,9 +118,9 @@ AboutDialog::AboutDialog(QWidget* parent)
     // See if we have a custom About screen image set
     QPixmap image = aboutImage();
 
-    // Fallback to the splashscreen image
+    // Fallback to the static splash screen image
     if (image.isNull()) {
-        image = SplashScreen::splashImage();
+        image = SplashScreen::defaultSplashImage();
     }
 
     // Make sure the image is not too big
@@ -339,9 +339,6 @@ void AboutDialog::showCredits()
               .arg(tr("Individuals", "Header for the list of individual people in the Credits list."));
 
     QTextStream stream(&creditsFile);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    stream.setCodec("UTF-8");
-#endif
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {

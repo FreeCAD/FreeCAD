@@ -1799,7 +1799,6 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
             {
                 "CompositionType": "ELEMENT",
                 "InteriorOrExteriorSpace": internal,
-                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin * scale,
             }
         )
     elif ifctype == "IfcReinforcingBar":

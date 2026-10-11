@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -46,7 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTransform, FemGui::ViewProvider
 ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 {
     sPixmap = "FEM_ConstraintTransform";
-    loadSymbol((resourceSymbolDir + "ConstraintTransform.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintTransform.iv");
 }
 
 ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform() = default;

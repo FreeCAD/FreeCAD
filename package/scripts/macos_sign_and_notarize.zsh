@@ -94,7 +94,8 @@ fi
 # There are a number of reasons signing might fail (network flakiness on the part of GitHub or
 # Apple are the most common culprits). We just burned a bunch of time building this thing, let's
 # try a few times to sign before giving up...
-CODESIGN_MAX_ATTEMPTS="${CODESIGN_MAX_ATTEMPTS:-5}"
+CODESIGN_MAX_ATTEMPTS="${CODESIGN_MAX_ATTEMPTS:-8}"
+CODESIGN_MAX_BACKOFF="${CODESIGN_MAX_BACKOFF:-120}"
 
 codesign_with_retry() {
     local target="$1"
@@ -114,7 +115,11 @@ codesign_with_retry() {
             return 1
         fi
         print -r -- "codesign attempt ${attempt} failed for ${target}, retrying..." >&2
-        sleep $(( 2**attempt + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+        local backoff=$(( 15 * 2**(attempt-1) ))
+        if (( backoff > CODESIGN_MAX_BACKOFF )); then
+            backoff=${CODESIGN_MAX_BACKOFF}
+        fi
+        sleep $(( backoff + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
     done
 }
 
@@ -139,8 +144,8 @@ function run_codesign_extension {
 }
 
 IFS=$'\n'
-dylibs=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.dylib"))
-shared_objects=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.so"))
+dylibs=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -type f -name "*.dylib"))
+shared_objects=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -type f -name "*.so"))
 bundles=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.bundle"))
 executables=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -type f -perm +111 -exec file {} + | grep "Mach-O 64-bit executable" | grep -v " (for architecture " | sed 's/:.*//g'))
 IFS=$' \t\n' # The default

@@ -95,13 +95,13 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def increaseDegree(self, Degree: int = ..., /) -> None:
+    def increaseDegree(self, degree: int, /) -> None:
         """
-        increase(Int=Degree)
-        Increases the degree of this B-Spline curve to Degree.
+        increaseDegree(degree)
+        Increases the degree of this B-Spline curve to degree.
         As a result, the poles, weights and multiplicities tables
         are modified; the knots table is not changed. Nothing is
-        done if Degree is less than or equal to the current degree.
+        done if degree is less than or equal to the current degree.
         """
         ...
 
@@ -132,7 +132,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, /) -> None:
+    def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, add: bool = ..., /) -> None:
         """
         insertKnot(u, mult = 1, tol = 0.0)
 
@@ -168,12 +168,12 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def removeKnot(self, Index: int, M: int, tol: float, /) -> bool:
+    def removeKnot(self, index: int, mult: int, tol: float, /) -> bool:
         """
-        removeKnot(Index, M, tol)
+        removeKnot(index, mult, tol)
 
-        Reduces the multiplicity of the knot of index Index to M.
-        If M is equal to 0, the knot is removed.
+        Reduces the multiplicity of the knot of index index to mult.
+        If mult is equal to 0, the knot is removed.
         With a modification of this type, the array of poles is also modified.
         Two different algorithms are systematically used to compute the new
         poles of the curve. If, for each pole, the distance between the pole
@@ -204,7 +204,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def setKnot(self, knot: float, index: int, /) -> None:
+    def setKnot(self, index: int, knot: float, mult: int = ..., /) -> None:
         """
         Set a knot of the B-Spline curve.
         """
@@ -230,15 +230,15 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def setPole(self, P: Vector, Index: int, /) -> None:
+    def setPole(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
-        Modifies this B-Spline curve by assigning P
-        to the pole of index Index in the poles table.
+        Modifies this B-Spline curve by assigning `pole`
+        to the pole of index `index` in the poles table.
         """
         ...
 
     @constmethod
-    def getPole(self, Index: int, /) -> Vector:
+    def getPole(self, index: int, /) -> Vector:
         """
         Get a pole of the B-Spline curve.
         """
@@ -251,7 +251,7 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def setWeight(self, weight: float, index: int, /) -> None:
+    def setWeight(self, index: int, weight: float, /) -> None:
         """
         Set a weight of the B-Spline curve.
         """
@@ -279,22 +279,22 @@ class BSplineCurve(BoundedCurve):
         ...
 
     @constmethod
-    def getResolution(self, Tolerance3D: float, /) -> float:
+    def getResolution(self, tolerance_3d: float, /) -> float:
         """
         Computes for this B-Spline curve the parametric tolerance (UTolerance)
-        for a given 3D tolerance (Tolerance3D).
+        for a given 3D tolerance (tolerance_3d).
         If f(t) is the equation of this B-Spline curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < Tolerance3D
+        |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < tolerance_3d
         """
         ...
 
-    def movePoint(self, U: float, P: Vector, Index1: int, Index2: int, /) -> tuple[int, int]:
+    def movePoint(self, u: float, pole: Vector, index1: int, index2: int, /) -> tuple[int, int]:
         """
-        movePoint(U, P, Index1, Index2)
+        movePoint(u, pole, index1, index2)
 
-        Moves the point of parameter U of this B-Spline curve to P.
-        Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
+        Moves the point of parameter u of this B-Spline curve to pole.
+        index1 and index2 are the indexes in the table of poles of this B-Spline curve
         of the first and last poles designated to be moved.
 
         Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
@@ -315,9 +315,9 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def setOrigin(self, Index: int, /) -> None:
+    def setOrigin(self, index: int, /) -> None:
         """
-        Assigns the knot of index Index in the knots table
+        Assigns the knot at the given index in the knots table
         as the origin of this periodic B-Spline curve. As a consequence,
         the knots and poles tables are modified.
         """
@@ -341,16 +341,24 @@ class BSplineCurve(BoundedCurve):
     @overload
     def approximate(
         self,
-        Points: List[Vector],
-        DegMin: int = 3,
-        DegMax: int = 8,
-        Tolerance: float = 1e-3,
+        MaxDegree: int,
+        MaxSegments: int = 8,
         Continuity: str = "C2",
+        Tolerance: float = 1e-3,
+    ) -> None: ...
+    @overload
+    def approximate(
+        self,
+        Points: List[Vector],
+        DegMax: int = 8,
+        Continuity: str = "C2",
+        Tolerance: float = 1e-3,
+        DegMin: int = 3,
+        ParamType: str = "ChordLength",
+        Parameters: List[float] = None,
         LengthWeight: float = 0.0,
         CurvatureWeight: float = 0.0,
         TorsionWeight: float = 0.0,
-        Parameters: List[float] = None,
-        ParamType: str = "Uniform",
     ) -> None: ...
     def approximate(self, **kwargs) -> None:
         """
@@ -388,7 +396,12 @@ class BSplineCurve(BoundedCurve):
 
     @overload
     @constmethod
-    def getCardinalSplineTangents(self, **kwargs) -> List[Vector]: ...
+    def getCardinalSplineTangents(self, Points: List[Vector], Parameter: float) -> List[Vector]: ...
+    @overload
+    @constmethod
+    def getCardinalSplineTangents(
+        self, Points: List[Vector], Parameters: List[float]
+    ) -> List[Vector]: ...
     @constmethod
     def getCardinalSplineTangents(self, **kwargs) -> List[Vector]:
         """
@@ -402,11 +415,12 @@ class BSplineCurve(BoundedCurve):
         Points: List[Vector],
         PeriodicFlag: bool = False,
         Tolerance: float = 1e-6,
-        Parameters: List[float] = None,
         InitialTangent: Vector = None,
         FinalTangent: Vector = None,
         Tangents: List[Vector] = None,
         TangentFlags: List[bool] = None,
+        Parameters: List[float] = None,
+        Scale: bool = True,
     ) -> None: ...
     def interpolate(self, **kwargs) -> None:
         """
@@ -478,10 +492,10 @@ class BSplineCurve(BoundedCurve):
     def buildFromPolesMultsKnots(
         self,
         poles: List[Vector],
-        mults: List[int],
-        knots: List[float],
-        periodic: bool,
-        degree: int,
+        mults: List[int] = None,
+        knots: List[float] = None,
+        periodic: bool = False,
+        degree: int = 3,
         weights: List[float] = None,
         CheckRational: bool = False,
     ) -> None: ...
@@ -528,13 +542,13 @@ class BSplineCurve(BoundedCurve):
         """
         ...
 
-    def join(self, other: "BSplineCurve", /) -> None:
+    def join(self, other: "BSplineCurve", /) -> bool:
         """
         Build a new spline by joining this and a second spline.
         """
         ...
 
-    def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /) -> "BSplineCurve":
+    def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /) -> None:
         """
         makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
         Reduces as far as possible the multiplicities of the knots of this BSpline

@@ -604,7 +604,7 @@ public:
     //@}
 
     // create right click context menu based on selection in the 3D view
-    void generateContextMenu();
+    void generateContextMenu(const Gui::View3DInventorViewer* viewer);
 
     //@}
 
@@ -724,6 +724,7 @@ public:
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+    QString getToolTip() const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
@@ -834,6 +835,8 @@ protected:
     ) const override;
 
 private:
+    bool hasMissingExternalGeometry() const;
+
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
         GeoListFacade& geolist,

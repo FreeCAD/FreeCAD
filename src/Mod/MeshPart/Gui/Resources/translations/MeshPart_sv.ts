@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation>Skapar en approximerad kurva ovanpå ett mesh-objekt</translation>
+      <translation>Skapar en approximerad kurva ovanpå ett nätobjekt</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation>Skapar en sektion från ett nät och ett plan</translation>
+      <translation>Skapar ett snitt från ett nät och ett plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
-      <translation>Sektion</translation>
+      <translation>Snitt</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation>Sektion med plan</translation>
+      <translation>Snitt med plan</translation>
     </message>
   </context>
   <context>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sektioner</translation>
+      <translation>Snitt</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
-      <translation>Stäng kabeln</translation>
+      <translation>Slut tråden</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="361"/>
@@ -229,7 +229,7 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Snap-tolerans för hörn</translation>
+      <translation>Fästtolerans för hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -239,17 +239,17 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Delad tröskel</translation>
+      <translation>Tröskel för uppdelning</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Spline-approximation</translation>
+      <translation>Splineapproximation</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation>Tolerans mot maskor</translation>
+      <translation>Tolerans mot nätet</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
@@ -259,12 +259,12 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation>Maximal krökningsgrad</translation>
+      <translation>Högsta kurvgrad</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Start</translation>
+      <translation>Starta</translation>
     </message>
   </context>
   <context>
@@ -282,17 +282,17 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Använd standardmesher</translation>
+      <translation>Använd standardverktyget för nätgenerering</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation>Maximal linjär avböjning av en masksektion från objektets yta</translation>
+      <translation>Största linjära avvikelse mellan ett nätsegment och objektets yta</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Maximal vinkelavböjning av en masksektion till nästa sektion</translation>
+      <translation>Största vinkelavvikelse mellan intilliggande nätsegment</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -314,9 +314,9 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Mesh-segmenten grupperas enligt färgen på objektytorna.
-Dessa grupper kommer att exporteras för mesh-utdataformat som stöder
-denna funktion (t.ex. formatet OBJ).</translation>
+      <translation>Nätsegmenten grupperas efter färgerna på objektets ytor.
+Grupperna exporteras till nätformat som stöder
+denna funktion (t.ex. OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -331,17 +331,17 @@ denna funktion (t.ex. formatet OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation>Använd Mefisto-mesharen</translation>
+      <translation>Använd Mefisto för nätgenerering</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation>Meshing-alternativ</translation>
+      <translation>Alternativ för nätgenerering</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation>Avvikelse från ytan</translation>
+      <translation>Ytavvikelse</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -352,8 +352,8 @@ denna funktion (t.ex. formatet OBJ).</translation>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>Den maximala linjära avvikelsen för ett nätsegment kommer att vara den angivna
-angivna ytavvikelsen multiplicerad med längden på det aktuella masksegmentet (kant)</translation>
+      <translation>Den största linjära avvikelsen för ett nätsegment är den angivna
+ytavvikelsen multiplicerad med längden på det aktuella nätsegmentet (kanten)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -364,13 +364,13 @@ angivna ytavvikelsen multiplicerad med längden på det aktuella masksegmentet (
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation>Om detta tal är mindre blir maskorna finare.
+      <translation>Ett mindre tal ger ett finare nät.
 Det minsta värdet är 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation>Uppskattning</translation>
+      <translation>Uppskatta</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="206"/>
@@ -380,7 +380,7 @@ Det minsta värdet är 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation>Använd Netgen-meshern</translation>
+      <translation>Använd Netgen för nätgenerering</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -415,7 +415,7 @@ Det minsta värdet är 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation>Sortering av maskstorlek</translation>
+      <translation>Storleksgradering av nätet</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -431,8 +431,8 @@ Det minsta värdet är 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>Om denna parameter är mindre blir maskningen finare.
-Ett värde i intervallet 0,1-1.</translation>
+      <translation>Ett mindre parametervärde ger ett finare nät.
+Värdet ska ligga i intervallet 0,1–1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -444,8 +444,8 @@ Ett värde i intervallet 0,1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation>Om denna parameter är större blir maskningen finare.
-Ett värde i intervallet 0,2-10.</translation>
+      <translation>Ett större parametervärde ger ett finare nät.
+Värdet ska ligga i intervallet 0,2–10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -470,12 +470,12 @@ Ett värde i intervallet 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Om maskorna företrädesvis kommer att ordnas med hjälp av fyrsidiga ytor</translation>
+      <translation>Om näten i första hand ska byggas upp av fyrsidiga ytor</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
       <source>Quad dominated</source>
-      <translation>Quad dominerade</translation>
+      <translation>Främst fyrsidiga element</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
@@ -497,8 +497,8 @@ Ett värde i intervallet 0,2-10.</translation>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation>Fel: kropp utan en spets vald.
-Antingen ställ in spetsen på kroppen eller välj en annan form.</translation>
+      <translation>Fel: en kropp utan slutfunktion har valts.
+Ange kroppens slutfunktion eller välj en annan form.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
@@ -577,7 +577,7 @@ Välj en annan form.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
-      <translation>Vik upp nät</translation>
+      <translation>Veckla ut nät</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="54"/>

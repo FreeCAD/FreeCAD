@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
@@ -78,7 +80,7 @@ bool TaskDlgAnalysis::accept()
     //    return true;
     //}
     // catch (const Base::Exception& e) {
-    //    Base::Console().warning("TaskDlgAnalysis::accept(): %s\n", e.what());
+    //    Base::Console().warning("TaskDlgAnalysis::accept(): {}\n", e.what());
     //}
 
     return false;

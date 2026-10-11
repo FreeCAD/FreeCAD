@@ -63,16 +63,14 @@ App::Origin* OriginGroupExtension::getOrigin() const
         err << "Can't find Origin for \"" << getExtendedObject()->getFullName() << "\"";
         throw Base::RuntimeError(err.str().c_str());
     }
-    else if (!originObj->isDerivedFrom<App::Origin>()) {
+    if (!originObj->isDerivedFrom<App::Origin>()) {
         std::stringstream err;
         err << "Bad object \"" << originObj->getFullName() << "\"("
             << originObj->getTypeId().getName() << ") linked to the Origin of \""
             << getExtendedObject()->getFullName() << "\"";
         throw Base::RuntimeError(err.str().c_str());
     }
-    else {
-        return static_cast<App::Origin*>(originObj);
-    }
+    return static_cast<App::Origin*>(originObj);
 }
 
 bool OriginGroupExtension::extensionGetSubObject(DocumentObject*& ret,
@@ -122,8 +120,8 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
         if (o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
             return o;
         }
-        else if (isOriginFeature
-                 && o->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        if (isOriginFeature
+            && o->isDerivedFrom<App::LocalCoordinateSystem>()) {
             auto result = getGroupOfObject(o);
             if (result) {
                 return result;
@@ -136,12 +134,7 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
 
 short OriginGroupExtension::extensionMustExecute()
 {
-    if (Origin.isTouched()) {
-        return 1;
-    }
-    else {
-        return GeoFeatureGroupExtension::extensionMustExecute();
-    }
+    return Origin.isTouched() ? 1 : GeoFeatureGroupExtension::extensionMustExecute();
 }
 
 App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()

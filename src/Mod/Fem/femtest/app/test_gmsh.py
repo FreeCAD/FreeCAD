@@ -38,6 +38,13 @@ from . import support_utils as testtools
 from .support_utils import fcc_print
 
 
+def _has_ccx_binary():
+    binary = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetString(
+        "ccxBinaryPath", ""
+    )
+    return shutil.which(binary or "ccx") is not None
+
+
 def generate_gmesh_samples_from_example_doc(doc, datapath):
     # used to process a example file into vtk mesh files and store it in datapath
     # this is intended as manual step to generate the correct meshes to witch the tests
@@ -362,6 +369,7 @@ class TestGMSHRefinements(TestGMSHBase):
         )
 
     # ********************************************************************************************
+    @unittest.skipUnless(_has_ccx_binary(), "CalculiX binary not found")
     def test_GMSHAdaptiv(self):
 
         try:

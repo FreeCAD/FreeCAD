@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -74,7 +76,7 @@ short DrawViewMulti::mustExecute() const
 void DrawViewMulti::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().message("TRACE - DVM::onChanged(%s) - %s\n", prop->getName(), Label.getValue());
+        //Base::Console().message("TRACE - DVM::onChanged({}) - {}\n", prop->getName(), Label.getValue());
         if (prop == &Sources) {
             const std::vector<App::DocumentObject*>& links = Sources.getValues();
             if (!links.empty()) {

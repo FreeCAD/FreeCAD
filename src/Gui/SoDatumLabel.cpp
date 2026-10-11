@@ -214,6 +214,8 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(string, (""));
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0F, 1.0F, 1.0F)));
     SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0F, .0F, .0F)));
+    SO_NODE_ADD_FIELD(extensionLines, (SbVec3f(.0F, .0F, .0F)));
+    extensionLines.setNum(0);
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0F, .0F, 1.F)));
     SO_NODE_ADD_FIELD(strikethrough, (false));
 
@@ -428,6 +430,12 @@ public:
         }
         else if (label->datumtype.getValue() == SoDatumLabel::ARCLENGTH) {
             corners = computeArcLengthBBox();
+        }
+
+        const int extensionPointCount = label->extensionLines.getNum();
+        if (extensionPointCount > 0) {
+            const SbVec3f* extensionPoints = label->extensionLines.getValues(0);
+            corners.insert(corners.end(), extensionPoints, extensionPoints + extensionPointCount);
         }
 
         getBBox(corners, box, center);
@@ -1244,6 +1252,20 @@ void SoDatumLabel::generatePrimitives(SoAction* action)
             generateArcLengthPrimitives(action, p1, p2, p3);
         }
     }
+
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        const float selectionWidth = (imgHeight / 3.0F) * 0.8F;
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            generateLineSelectionPrimitive(
+                action,
+                extensionPoints[i],
+                extensionPoints[i + 1],
+                selectionWidth
+            );
+        }
+    }
 }
 
 void SoDatumLabel::notify(SoNotList* l)
@@ -1516,6 +1538,14 @@ void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
                 arrowWidth,
                 arrowLength
             );
+        }
+    }
+
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            appendLine(lineVertices, lineCounts, extensionPoints[i], extensionPoints[i + 1]);
         }
     }
 

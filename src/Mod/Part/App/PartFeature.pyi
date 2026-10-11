@@ -24,7 +24,7 @@ class PartFeature(GeoFeature):
     @constmethod
     def getElementHistory(
         self,
-        name: str,
+        elementName: str,
         *,
         recursive: bool = True,
         sameType: bool = False,
@@ -34,7 +34,7 @@ class PartFeature(GeoFeature):
         List[Tuple[DocumentObject, str, List[str]]],
     ]:
         """
-        getElementHistory(name,recursive=True,sameType=False,showName=False) - returns the element mapped name history
+        getElementHistory(elementName,recursive=True,sameType=False,showName=False) - returns the element mapped name history
 
         name: mapped element name belonging to this shape
         recursive: if True, then track back the history through other objects till the origin

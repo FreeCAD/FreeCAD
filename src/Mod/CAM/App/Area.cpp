@@ -28,6 +28,8 @@
 #include <limits>
 #include <optional>
 
+using namespace std;
+
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/index/rtree.hpp>
@@ -48,10 +50,13 @@
 #include <BRepLib_MakeFace.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_QuasiUniformDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <gp_Circ.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
@@ -73,7 +78,9 @@
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/BSplineCurveBiArcs.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -148,7 +155,6 @@ CAreaConfig::CAreaConfig(const CAreaParams& p, bool noFitArcs)
 
     PARAM_FOREACH(AREA_CONF_SAVE_AND_APPLY, AREA_PARAMS_CAREA);
 
-    // Arc fitting is lossy. We shall reduce the number of unnecessary fit
     if (noFitArcs) {
         CArea::set_fit_arcs(false);
     }
@@ -366,14 +372,12 @@ int Area::addShape(
     return skipped;
 }
 
-static std::vector<gp_Pnt> discretize(const TopoDS_Edge& edge, double deflection)
+static std::vector<gp_Pnt> discretize(const Adaptor3d_Curve& curve, bool reversed, double deflection)
 {
     std::vector<gp_Pnt> ret;
-    BRepAdaptor_Curve curve(edge);
     Standard_Real efirst, elast;
     efirst = curve.FirstParameter();
     elast = curve.LastParameter();
-    bool reversed = (edge.Orientation() == TopAbs_REVERSED);
 
     // push the first point
     ret.push_back(curve.Value(reversed ? elast : efirst));
@@ -423,67 +427,138 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         const TopoDS_Edge& edge = TopoDS::Edge(xp.Current());
         BRepAdaptor_Curve curve(edge);
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
-
         p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
 
-        switch (curve.GetType()) {
-            case GeomAbs_Line: {
-                ccurve.append(CVertex(Point(p.X(), p.Y())));
-                if (to_edges) {
-                    area.append(ccurve);
-                    ccurve.m_vertices.pop_front();
-                }
-                break;
+        // Helper code for appending a discretized curve
+        auto appendDiscretized = [&](const Adaptor3d_Curve& c) {
+            const auto& pts = discretize(c, reversed, deflection);
+            for (size_t i = 1; i < pts.size(); ++i) {
+                auto& pt = pts[i];
+                ccurve.append(CVertex(Point(pt.X(), pt.Y())));
             }
-            case GeomAbs_Circle: {
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Dir dir = circle.Axis().Direction();
-                gp_Pnt center = circle.Location();
-                int type = dir.Z() < 0 ? -1 : 1;
+        };
+
+        // Helper code for appending an arc
+        auto appendArc = [&](const Adaptor3d_Curve& arc) {
+            double first = arc.FirstParameter();
+            double last = arc.LastParameter();
+            gp_Circ circ = arc.Circle();
+
+            // Arcs not parallel to the XY plane don't project to arcs; discretize them instead
+            if (!circ.Axis().Direction().IsParallel(gp::DZ(), Precision::Confusion())) {
+                appendDiscretized(arc);
+            }
+            else {
+                gp_Pnt center = circ.Location();
+                Point c(center.X(), center.Y());
+                int type = circ.Axis().Direction().Z() < 0 ? -1 : 1;
                 if (reversed) {
                     type = -type;
                 }
                 if (fabs(first - last) > std::numbers::pi) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
-                    gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
-                    ccurve.append(
-                        CVertex(type, Point(mid.X(), mid.Y()), Point(center.X(), center.Y()))
-                    );
+                    gp_Pnt mid = arc.Value((first + last) * 0.5);
+                    ccurve.append(CVertex(type, Point(mid.X(), mid.Y()), c));
                 }
-                ccurve.append(CVertex(type, Point(p.X(), p.Y()), Point(center.X(), center.Y())));
-                if (to_edges) {
-                    ccurve.UnFitArcs();
-                    CCurve c;
-                    c.append(ccurve.m_vertices.front());
-                    auto it = ccurve.m_vertices.begin();
-                    for (++it; it != ccurve.m_vertices.end(); ++it) {
-                        c.append(*it);
-                        area.append(c);
-                        c.m_vertices.pop_front();
+                gp_Pnt end = arc.Value(reversed ? first : last);
+                ccurve.append(CVertex(type, Point(end.X(), end.Y()), c));
+            }
+        };
+
+        switch (curve.GetType()) {
+            case GeomAbs_Line: {
+                ccurve.append(CVertex(Point(p.X(), p.Y())));
+                break;
+            }
+
+            case GeomAbs_Circle: {
+                appendArc(curve);
+                break;
+            }
+
+            case GeomAbs_BSplineCurve:
+            case GeomAbs_BezierCurve:
+            case GeomAbs_Ellipse:
+            case GeomAbs_Hyperbola:
+            case GeomAbs_Parabola: {
+                // Discretize instead of using biarcs for:
+                // - edges with only a pcurve (no 3D curve), which can't be fed to biarcs
+                // - degree 1 BSplines (polylines, no slope continuity at corners)
+                if (!curve.Is3DCurve()
+                    || (curve.GetType() == GeomAbs_BSplineCurve && curve.Degree() == 1)) {
+                    appendDiscretized(curve);
+                    break;
+                }
+
+                // Convert very short curves to single segments
+                if (GCPnts_AbscissaPoint::Length(curve) < Precision::Confusion()) {
+                    ccurve.append(CVertex(Point(p.X(), p.Y())));
+                    break;
+                }
+
+                // Use biarcs to approximate the curve as arcs and lines
+                Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
+                    curve.Curve().Curve(),
+                    curve.FirstParameter(),
+                    curve.LastParameter()
+                );
+                trimmed->Transform(curve.Trsf());
+                Part::BSplineCurveBiArcs biarcs(trimmed);
+                std::list<Part::Geometry*> segments;
+                bool biarcsFailed = false;
+                try {
+                    segments = biarcs.toBiArcs(deflection);
+                }
+                catch (...) {
+                    biarcsFailed = true;
+                }
+
+                if (biarcsFailed) {
+                    appendDiscretized(curve);
+                }
+                else {
+                    // Append each segment. If the curve is reversed, iterate the reversed list
+                    if (reversed) {
+                        segments.reverse();
                     }
-                    ccurve.m_vertices.clear();
-                    ccurve.append(c.m_vertices.front());
+                    for (Part::Geometry* seg : segments) {
+                        GeomAdaptor_Curve segC(Handle(Geom_Curve)::DownCast(seg->handle()));
+                        if (segC.GetType() == GeomAbs_Circle) {
+                            appendArc(segC);
+                        }
+                        else {
+                            gp_Pnt pt = segC.Value(
+                                reversed ? segC.FirstParameter() : segC.LastParameter()
+                            );
+                            ccurve.append(CVertex(Point(pt.X(), pt.Y())));
+                        }
+                        delete seg;
+                    }
                 }
                 break;
             }
+
             default: {
-                // Discretize all other type of curves
-                const auto& pts = discretize(edge, deflection);
-                for (size_t i = 1; i < pts.size(); ++i) {
-                    auto& pt = pts[i];
-                    ccurve.append(CVertex(Point(pt.X(), pt.Y())));
-                    if (to_edges) {
-                        area.append(ccurve);
-                        ccurve.m_vertices.pop_front();
-                    }
-                }
+                // Fallback for all other type of curves
+                appendDiscretized(curve);
+                break;
             }
         }
     }
-    if (!to_edges) {
+
+    if (to_edges) {
+        // Split the curve into single-edge curves, with arcs discretized
+        ccurve.Discretize();
+        CCurve c;
+        c.append(ccurve.m_vertices.front());
+        for (auto it = std::next(ccurve.m_vertices.begin()); it != ccurve.m_vertices.end(); ++it) {
+            c.append(*it);
+            area.append(c);
+            c.m_vertices.pop_front();
+        }
+    }
+    else {
         if (BRep_Tool::IsClosed(wire) && !ccurve.IsClosed()) {
             AREA_WARN("ccurve not closed");
             ccurve.append(ccurve.m_vertices.front());
@@ -644,16 +719,18 @@ public:
         (void)id;
         (void)center;
 
-        // Compute cw vs ccw
-        const Base::Vector3d vdirect = next - last;
-        const Base::Vector3d vstep = pts[0] - last;
-        const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
+        if (last.z <= maxZ && next.z <= maxZ) {
+            // Compute cw vs ccw
+            const Base::Vector3d vdirect = next - last;
+            const Base::Vector3d vstep = pts[0] - last;
+            const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
 
-        // Add an arc
-        CCurve curve;
-        curve.append(CVertex {{last.x, last.y}});
-        curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
-        pathSegments.append(curve);
+            // Add an arc
+            CCurve curve;
+            curve.append(CVertex {{last.x, last.y}});
+            curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
+            pathSegments.append(curve);
+        }
     }
 
     void g8x(
@@ -694,21 +771,26 @@ std::shared_ptr<Area> Area::getClearedArea(
     Base::BoundBox3d bbox
 )
 {
+    // Note: these estimates for precision loss are old, based on previous-generation clipper 1 and
+    // heuristic arc fitting. I am unsure what would be a better estimate now so I am leaving it as
+    // is, but it is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
+    // applies at all any more, and arc precision is much improved by the new fitting process) so it
+    // should be ok. The old/original comment on precision follows:
+    //
     // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Oversize cleared areas by buffer to smooth out imprecision
+    //
+    // 2.3 in generation of gcode (specified in obsolete-and-deleted documentation of
+    // CCurve::CheckForArc (libarea/Curve.cpp)), 1 in gcode arc to segment, 1 in Thicken() cleared
+    // area, 2 in getRestArea (offset in and back out).
+    //
+    // Oversize cleared areas by an appropriately sized buffer to smooth out imprecision
     // in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = {};
     const double buffer = params.Accuracy * 3;
     params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
-    params.SubjectFill = Clipper2Lib::FillRule::NonZero;
-    params.ClipFill = Clipper2Lib::FillRule::NonZero;
+    params.SubjectFill = Clipper2Lib::FillRule::Positive;
 
-    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all
-    // off those arcs will be converted back to segments again for clipper differencing in
-    // getRestArea anyway
-    CAreaConfig conf(params, /*no_fit_arcs*/ true);
+    CAreaConfig conf(params);
 
     ClearedAreaSegmentVisitor visitor(zmax, diameter / 2 + buffer, bbox);
     PathSegmentWalker walker(*path);
@@ -732,16 +814,14 @@ std::shared_ptr<Area> Area::getClearedArea(
 
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter)
 {
+    // See the comment at the start of getClearedArea() -- the calculations/buffer specified here
+    // must match that computation
     build();
-    // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Cleared area representations are oversized by buffer to
-    // smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = myParams;
-    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     const double buffer = myParams.Accuracy * 3;
-    const double roundPrecision = params.Accuracy;
+    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    params.SubjectFill = Clipper2Lib::FillRule::NonZero;
+    CAreaConfig conf(params);
 
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&params);
@@ -767,46 +847,18 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
-    clearable.OffsetWithClipper(
-        -diameter / 2,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
-    clearable.OffsetWithClipper(
-        diameter / 2,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
+    clearable.Offset(-diameter / 2);
+    clearable.Offset(diameter / 2);
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
-    remaining.Clip(
-        toClipperOp(Area::OperationDifference),
-        *(clearedAreasInPlane.myArea),
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    remaining.Clip(Clipper2Lib::ClipType::Difference, *(clearedAreasInPlane.myArea), params.SubjectFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.OffsetWithClipper(
-        diameter + buffer,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
-    restCArea.Clip(
-        toClipperOp(Area::OperationIntersection),
-        clearable,
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    restCArea.Offset(diameter + buffer);
+    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, params.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
         return {};
@@ -933,6 +985,7 @@ struct WireJoiner
         int iEnd[2];    // adjacent list index end
         bool used;
         bool hasBox;
+        int index = -1;  // used to create a stable ordering on edges in findClosedWires
         EdgeInfo(const TopoDS_Edge& e, bool bbox)
             : edge(e)
             , hasBox(false)
@@ -1227,12 +1280,24 @@ struct WireJoiner
         // tolerance of edges which are supposed to be connected. So use a
         // lesser precision below, and call makeCleanWire to fix the tolerance
 
+        // Order by position in `edges` instead of pointer address, so the resulting wire
+        // starts in a stable location
+        struct ByIndex
+        {
+            bool operator()(const EdgeInfo* a, const EdgeInfo* b) const
+            {
+                return a->index < b->index;
+            }
+        };
+
         std::vector<VertexInfo> adjacentList;
-        std::set<EdgeInfo*> edgesToVisit;
+        std::set<EdgeInfo*, ByIndex> edgesToVisit;
         int skips = 0;
 
+        int idx = 0;
         for (auto& info : edges) {
             info.reset();
+            info.index = idx++;
         }
 
         for (auto& info : edges) {
@@ -1709,7 +1774,6 @@ int Area::project(
     area.myParams.Offset = 0.0;
     area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
-    area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
     area.myParams.Outline = true;
     area.myParams.Fill = TopExp_Explorer(shape_in, TopAbs_FACE).More() ? FillFace : FillNone;
@@ -2141,7 +2205,7 @@ void Area::build()
                         myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
                     }
                     else {
-                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
                         areaClip.m_curves.clear();
                     }
                 }
@@ -2165,7 +2229,7 @@ void Area::build()
                 myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
             }
             else {
-                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
             }
         }
         myArea->m_curves.splice(myArea->m_curves.end(), myAreaOpen->m_curves);
@@ -2222,14 +2286,6 @@ TopoDS_Shape Area::toShape(CArea& area, short fill, int reorient)
             break;
         default:
             bFill = false;
-    }
-    if (myParams.FitArcs) {
-        if (&area == myArea.get()) {
-            CArea copy(area);
-            copy.FitArcs();
-            return toShape(copy, bFill, &trsf, reorient);
-        }
-        area.FitArcs();
     }
     return toShape(area, bFill, &trsf, reorient);
 }
@@ -2326,12 +2382,8 @@ TopoDS_Shape Area::getShape(int index)
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    short fill = myParams.Thicken ? FillFace : FillNone;
     for (shared_ptr<CArea> area : areas) {
-        if (myParams.Thicken) {
-            area->Thicken(myParams.ToolRadius);
-        }
-        const TopoDS_Shape& shape = toShape(*area, fill);
+        const TopoDS_Shape& shape = toShape(*area, FillNone);
         if (shape.IsNull()) {
             continue;
         }
@@ -2360,26 +2412,15 @@ TopoDS_Shape Area::makeOffset(
     std::list<shared_ptr<CArea>> areas;
     makeOffset(areas, PARAM_FIELDS(PARAM_FARG, AREA_PARAMS_OFFSET), from_center);
     if (areas.empty()) {
-        if (myParams.Thicken && myParams.ToolRadius > Precision::Confusion()) {
-            CArea area(*myArea);
-            area.Thicken(myParams.ToolRadius);
-            return toShape(area, FillFace, reorient);
-        }
         return TopoDS_Shape();
     }
     BRep_Builder builder;
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    bool thicken = myParams.Thicken && myParams.ToolRadius > Precision::Confusion();
-
     for (shared_ptr<CArea> area : areas) {
         short fill;
-        if (thicken) {
-            area->Thicken(myParams.ToolRadius);
-            fill = FillFace;
-        }
-        else if (areas.size() == 1) {
+        if (areas.size() == 1) {
             fill = myParams.Fill;
         }
         else {
@@ -2400,43 +2441,8 @@ TopoDS_Shape Area::makeOffset(
 std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
-    CArea areaOpen;
-
-#ifdef AREA_OFFSET_ALGO
-    switch (myParams.Algo) {
-        case Area::Algolibarea:
-            // Separate closed and open curves for libarea
-            for (const CCurve& c : myArea->m_curves) {
-                if (c.IsClosed()) {
-                    area->append(c);
-                }
-                else {
-                    areaOpen.append(c);
-                }
-            }
-            // libarea somehow fails offset without Reorder, but ClipperOffset
-            // works okay. Don't know why
-            area->Reorder();
-            area->Offset(-offset);
-            if (areaOpen.m_curves.size()) {
-                areaOpen.Thicken(offset);
-                area->Clip(Clipper2Lib::ClipType::Union, areaOpen, myParams.SubjectFill, myParams.ClipFill);
-            }
-            break;
-        case Area::AlgoClipperOffset:
-#endif
-            *area = *myArea;
-            area->OffsetWithClipper(
-                offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
-#ifdef AREA_OFFSET_ALGO
-            break;
-    }
-#endif
+    *area = *myArea;
+    area->Offset(offset);
 
     return area;
 }
@@ -2474,8 +2480,6 @@ void Area::makeOffset(
     bool check_gaps = !myParams.ForceMaxStepover && abs(stepover) > tool_radius;
     const double gap_tolerance = myParams.Accuracy;
     double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
-    auto jt = myParams.JoinType;
-    auto et = myParams.EndType;
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         double prevOffset = offset - stepover;
@@ -2485,13 +2489,7 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
-            curr_offset_opposite.OffsetWithClipper(
-                -sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            curr_offset_opposite.Offset(-sign_stepover * tool_radius);
             CArea gap = *previous_area_offset;
             gap.Subtract(curr_offset_opposite);
             bool has_gap = !gap.m_curves.empty();
@@ -2508,13 +2506,7 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
-                    test_offset_opposite.OffsetWithClipper(
-                        -sign_stepover * tool_radius,
-                        jt,
-                        et,
-                        myParams.MiterLimit,
-                        myParams.RoundPrecision
-                    );
+                    test_offset_opposite.Offset(-sign_stepover * tool_radius);
                     gap = *previous_area_offset;
                     gap.Subtract(test_offset_opposite);
 
@@ -2534,13 +2526,7 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
-            previous_area_offset->OffsetWithClipper(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius);
             if (previous_area_offset->m_curves.empty()) {
                 // Done after this pass; do another binary search to determine the minimum offset
                 // required to be done
@@ -2572,13 +2558,7 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
-            previous_area_offset->OffsetWithClipper(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius);
         }
 
         if (area->m_curves.empty()) {
@@ -2728,14 +2708,8 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 }
             }
             auto area = *myArea;
-            area.OffsetWithClipper(
-                -tool_radius - extra_offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
-            out.Clip(toClipperOp(OperationIntersection), area, myParams.SubjectFill, myParams.ClipFill);
+            area.Offset(-tool_radius - extra_offset);
+            out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill);
             done = true;
             break;
         }
@@ -2752,13 +2726,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
         in.MakePocketToolpath(out.m_curves, params);
     }
 
-    if (myParams.Thicken) {
-        out.Thicken(tool_radius);
-        return toShape(out, FillFace);
-    }
-    else {
-        return toShape(out, FillNone);
-    }
+    return toShape(out, FillNone);
 }
 
 static inline bool IsLeft(const gp_Pnt& a, const gp_Pnt& b, const gp_Pnt& c)
@@ -2805,10 +2773,30 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             gp_Pnt center(v.m_c.x, v.m_c.y, 0);
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
+
+            // Replace arcs with their chords if the radius is small (OCCT can't
+            // handle constructing arcs with radii near Precision::Confusion()).
+            // There is a wide range of plausibly acceptible thresholds to choose
+            // from for this; I have tentatively chosen diamter < m_accuracy.
+            //
+            // Also replace arcs if the chord is a very good representation of the
+            // arc (i.e. minor arc of with short cord).
+            //   Exact formula: r - sqrt(r² - d²/4)
+            //   Approximation for small d: d²/(8r)
+            double d = pt.Distance(pnext);
+            bool minorArc = IsLeft(pt, pnext, center) == (v.m_type > 0);
+            bool smallDeviation = d * d / (8.0 * r) < Precision::Confusion();
+            bool smallCircle = 2 * std::max(r, r2) < CArea::get_accuracy();
+            if ((minorArc && smallDeviation) || smallCircle) {
+                auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
+                hEdges->Append(edge);
+                pt = pnext;
+                continue;
+            }
+
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
             while (true) {
                 if (fix_arc) {
-                    double d = pt.Distance(pnext);
                     double rr = r * r;
                     double dd = d * d * 0.25;
                     double q = rr <= dd ? 0 : sqrt(rr - dd);
@@ -4286,7 +4274,7 @@ void Area::toPath(
                 }
                     /* FALLTHRU */
                 default: {
-                    const auto& pts = discretize(edge, deflection);
+                    const auto& pts = discretize(curve, reversed, deflection);
                     for (size_t i = 1; i < pts.size(); ++i) {
                         auto& pt = pts[i];
                         addG1(verbose, path, plast, pt, nf, cur_f);

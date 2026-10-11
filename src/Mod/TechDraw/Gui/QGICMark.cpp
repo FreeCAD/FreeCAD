@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Wandererfan <WandererFan@gmail.com>                *
  *                                                                         *
@@ -31,6 +33,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGICMark.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 
 using namespace TechDraw;
@@ -38,19 +41,21 @@ using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
-    m_markFuzz = PreferencesGui::markFuzz();
-    m_size = 3.0;
+    m_markFuzz = DrawGuiUtil::screenWidth(PreferencesGui::markFuzz());
     setThick(0.75);
     draw();
 }
 void QGICMark::draw()
 {
+    double size = m_size * m_screenScale;
     QPainterPath cmPath;
-    cmPath.moveTo(0.0, m_size);
-    cmPath.lineTo(0.0, -m_size);
-    cmPath.moveTo(m_size, 0.0);
-    cmPath.lineTo(-m_size, 0.0);
+    cmPath.moveTo(0.0, size);
+    cmPath.lineTo(0.0, -size);
+    cmPath.moveTo(size, 0.0);
+    cmPath.lineTo(-size, 0.0);
     setPath(cmPath);
+
+    setWidth(m_thickness * m_screenScale);
 }
 
 void QGICMark::setSize(float s)
@@ -61,7 +66,13 @@ void QGICMark::setSize(float s)
 
 void QGICMark::setThick(float t)
 {
-    m_pen.setWidthF(t);
+    m_thickness = DrawGuiUtil::screenWidth(t);
+    draw();
+}
+
+void QGICMark::setScreenScale(double scale)
+{
+    ScreenScalable::setScreenScale(scale);
     draw();
 }
 
@@ -92,7 +103,7 @@ QPainterPath QGICMark::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(this->m_markFuzz);
+    stroker.setWidth(m_markFuzz * m_screenScale);
     outline = stroker.createStroke(path());
     return outline;
 }

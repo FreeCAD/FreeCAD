@@ -203,7 +203,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge, std::vector<Fac
                     PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
                     Base::Console().log(
                         "MeshAlgos::projectCurve(): More then one intersection in "
-                        "Facet %lu, Edge %d\n",
+                        "Facet {}, Edge {}\n",
                         uCurFacetIdx,
                         i
                     );
@@ -225,7 +225,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge, std::vector<Fac
         }
         else {
             Base::Console().log(
-                "MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
+                "MeshAlgos::projectCurve(): Possible reentry in Facet {}\n",
                 uCurFacetIdx
             );
         }
@@ -355,7 +355,7 @@ void CurveProjectorSimple::projectCurve(
                 FaceProjctMap[It.Position()].push_back(TempResultPoint);
                 str << TempResultPoint.x << " " << TempResultPoint.y << " " << TempResultPoint.z
                     << std::endl;
-                Base::Console().log("IDX %d\n", It.Position());
+                Base::Console().log("IDX {}\n", It.Position());
 
                 if (bFirst) {
                     bFirst = false;
@@ -367,7 +367,7 @@ void CurveProjectorSimple::projectCurve(
     }
 
     str.close();
-    Base::Console().log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
+    Base::Console().log("Projection map [{} facets with {} points]\n", FaceProjctMap.size(), PointCount);
 }
 
 
@@ -477,7 +477,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge, std::vec
         LineSegs.push_back(s);
     }
 
-    Base::Console().log("Projection map [%d facets with %d points]\n", FaceProjctMap.size(), PointCount);
+    Base::Console().log("Projection map [{} facets with {} points]\n", FaceProjctMap.size(), PointCount);
 
 
     // build up the new mesh

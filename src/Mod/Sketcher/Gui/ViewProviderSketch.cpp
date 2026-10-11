@@ -51,10 +51,9 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <limits>
 #include <numbers>
-
-#include <fmt/format.h>
 
 #include <Base/BaseClass.h>
 #include <Base/Console.h>
@@ -76,6 +75,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -276,7 +276,7 @@ void ViewProviderSketch::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().developerError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -298,7 +298,7 @@ void ViewProviderSketch::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError& e) {// ensure that if parameter strings are not well-formed, the
                                        // exception is not propagated
         Base::Console().developerError(
-            "ViewProviderSketch", "Malformed parameter string: %s\n", e.what());
+            "ViewProviderSketch", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -1330,6 +1330,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             }
         }
         else {// Button 1 released
+            if (Mode == STATUS_SKETCH_Drag || Mode == STATUS_SKETCH_DragConstraint) {
+                // Use the actual cursor position instead of the picked geometry position.
+                if (!getCoordsOnSketchPlane(
+                        point, normal, snapHandle->cursorPos.x, snapHandle->cursorPos.y)) {
+                    return false;
+                }
+            }
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_SELECT_Point:
@@ -1516,7 +1523,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     sketchHandler->pressRightButton(Base::Vector2d(x, y));
                     return true;
                 case STATUS_NONE:
-                    generateContextMenu();
+                    generateContextMenu(viewer);
                     return true;
                 case STATUS_SELECT_Point:
                     if (hasSelectionPoint) {
@@ -1527,7 +1534,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu();
+                    generateContextMenu(viewer);
                     return true;
                 case STATUS_SELECT_Edge:
                     if (hasSelectionPoint) {
@@ -1542,7 +1549,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu();
+                    generateContextMenu(viewer);
                     return true;
                 case STATUS_SELECT_Cross:
                     if (hasSelectionPoint) {
@@ -1564,7 +1571,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu();
+                    generateContextMenu(viewer);
                     return true;
                 case STATUS_SELECT_Constraint: {
                     if (hasSelectionPoint) {
@@ -1577,7 +1584,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu();
+                    generateContextMenu(viewer);
                     return true;
                 }
                 case STATUS_SKETCH_Drag:
@@ -1610,7 +1617,7 @@ bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s& cursorPos,
 void ViewProviderSketch::editDoubleClicked()
 {
     if (preselection.isPreselectPointValid()) {
-        Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
+        Base::Console().log("double click point:{}\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
         int geoId = preselection.PreselectCurve;
@@ -1640,7 +1647,7 @@ void ViewProviderSketch::editDoubleClicked()
         }
     }
     else if (preselection.isCrossPreselected()) {
-        Base::Console().log("double click cross:%d\n",
+        Base::Console().log("double click cross:{}\n",
                             static_cast<int>(preselection.PreselectCross));
     }
     else if (!preselection.PreselectConstraintSet.empty()) {
@@ -2135,8 +2142,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             getSketchObject()->initTemporaryBSplinePieceMove(
                 geoId,
                 Sketcher::PointPos::none,
-                Base::Vector3d(drag.xInit, drag.yInit, 0.0),
-                false);
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0));
             return;
         }
     }
@@ -2146,7 +2152,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    getSketchObject()->initTemporaryMove(drag.Dragged, false);
+    getSketchObject()->initTemporaryMove(drag.Dragged);
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)
@@ -2191,7 +2197,7 @@ bool ViewProviderSketch::doDragStep(double x, double y)
         }
     }
 
-    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == GCS::SolveStatus::Success) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
         return true;
@@ -2275,7 +2281,7 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     }
     catch (const Base::Exception& e) {
         getDocument()->abortCommand();
-        Base::Console().developerError("ViewProviderSketch", "Drag: %s\n", e.what());
+        Base::Console().developerError("ViewProviderSketch", "Drag: {}\n", e.what());
         if (dragAutoConstraintHandler) {
             dragAutoConstraintHandler->clear();
         }
@@ -2702,7 +2708,7 @@ Base::BoundBox3d ViewProviderSketch::_getBoundingBox(
 
     // Apply the accumulated transformation
     if (bbox.IsValid()) {
-        bbox.Transformed(m);
+        bbox = bbox.Transformed(m);
     }
 
     return bbox;
@@ -3461,15 +3467,15 @@ bool ViewProviderSketch::selectAll()
 
         auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
             int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
-            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
+            addConvertedName(std::format("Vertex{}", vertexId + 1));
         };
 
         auto selectEdge = [&addConvertedName](int GeoId) {
             if (GeoId >= 0) {
-                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+                addConvertedName(std::format("Edge{}", GeoId + 1));
             }
             else {
-                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addConvertedName(std::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -3525,7 +3531,7 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, i) == ids.end()) {
                 continue;
             }
-            addConvertedName(fmt::format("Constraint{}", i + 1));
+            addConvertedName(std::format("Constraint{}", i + 1));
         }
     }
 
@@ -3546,7 +3552,15 @@ bool ViewProviderSketch::selectAll()
 
 bool ViewProviderSketch::doubleClicked()
 {
-    Gui::Application::Instance->activeDocument()->setEdit(this);
+    Gui::Document* document = Gui::Application::Instance->activeDocument();
+    if (document) {
+        if (document->getInEdit() == this && isInEditMode()) {
+            Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ViewSketch");
+        }
+        else {
+            document->setEdit(this);
+        }
+    }
     return true;
 }
 
@@ -3852,6 +3866,10 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
         ViewProvider2DObject::updateData(prop);
     }
 
+    if (prop == &getSketchObject()->ExternalGeo) {
+        signalChangeIcon();
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3887,17 +3905,12 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
 
-        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
-            return editdoc->getEditViewProvider() == this;
-        });
+        draw(false, true);
 
-        Gui::MDIView* mdi = nullptr;
-
-        if (editDoc) {
-            mdi = editDoc->getActiveView();
-        }
+        Gui::MDIView* mdi =
+            Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
-            draw(false, true);
+            static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
         }
 
         signalConstraintsChanged();
@@ -4328,16 +4341,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
         e.reportException();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().error("ViewProviderSketch::setEdit: %s\n", e.GetMessageString());
+        Base::Console().error("ViewProviderSketch::setEdit: {}\n", e.GetMessageString());
     }
 
-    // intercept del key press from main app
-    listener = std::make_unique<ShortcutListener>(this);
-
-    Gui::getMainWindow()->installEventFilter(listener.get());
-    if (editDoc && editDoc->isActive()) {
-        setupActiveAndInEdit();
-    }
+    setupActiveAndInEdit();
 
     return true;
 }
@@ -4490,7 +4497,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
-    else if (getSketchObject()->getLastSolverStatus() != 0) {
+    else if (getSketchObject()->getLastSolverStatus() != GCS::SolveStatus::Success) {
         signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
                     QStringLiteral(""),
@@ -4584,7 +4591,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     catch (Base::PyException& e) {
         Base::Console().developerError(
             "ViewProviderSketch",
-            "unsetEdit: visibility automation failed with an error: %s \n",
+            "unsetEdit: visibility automation failed with an error: {} \n",
             e.what());
     }
 }
@@ -4615,7 +4622,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         catch (Base::PyException& e) {
             Base::Console().developerError(
                 "ViewProviderSketch",
-                "setEdit: visibility automation failed with an error: %s \n",
+                "setEdit: visibility automation failed with an error: {} \n",
                 e.what());
         }
     }
@@ -4754,7 +4761,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
     auto tmpFactor = orientation.z < 0 ? -1 : 1;
 
     if (tmpFactor != viewOrientationFactor) {// redraw only if viewing side changed
-        Base::Console().log("Switching side, now %s, redrawing\n",
+        Base::Console().log("Switching side, now {}, redrawing\n",
                             tmpFactor < 0 ? "back" : "front");
         viewOrientationFactor = tmpFactor;
         draw();
@@ -4908,7 +4915,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d, True)", *rit);
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 
@@ -4936,7 +4943,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                 getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
-                            Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                            Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
                         }
                         break;
                     }
@@ -4960,7 +4967,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s], True)", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
 
             stream.str(std::string());
@@ -4978,13 +4985,13 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 Gui::cmdAppObjectArgs(getObject(), "delExternals([%s])", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
-                Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
+                Base::Console().developerError("ViewProviderSketch", "{}\n", e.what());
             }
         }
 
-        int ret = getSketchObject()->solve();
+        const auto status = getSketchObject()->solve();
 
-        if (ret != 0) {
+        if (status == SketchSolveStatus::Success) {
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();
@@ -5018,9 +5025,31 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
+bool ViewProviderSketch::hasMissingExternalGeometry() const
+{
+    const auto& externalGeometry = getSketchObject()->ExternalGeo.getValues();
+    return std::ranges::any_of(externalGeometry, [](const Part::Geometry* geometry) {
+        return ExternalGeometryFacade::getFacade(geometry)->testFlag(
+            ExternalGeometryExtension::Missing);
+    });
+}
+
+QString ViewProviderSketch::getToolTip() const
+{
+    return hasMissingExternalGeometry()
+        ? tr("Missing external geometry")
+        : QString();
+}
+
 QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
+
+    if (hasMissingExternalGeometry()) {
+        static QPixmap warning(Gui::BitmapFactory().pixmapFromSvg("Warning", QSize(10, 10)));
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(
+            mergedicon, warning, Gui::BitmapFactoryInst::TopRight);
+    }
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
@@ -5349,7 +5378,7 @@ bool ViewProviderSketch::isInEditMode() const
 {
     return editCoinManager != nullptr;
 }
-void ViewProviderSketch::generateContextMenu()
+void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* viewer)
 {
     if (blockContextMenu) return;
 
@@ -5610,8 +5639,7 @@ void ViewProviderSketch::generateContextMenu()
     }
     // create context menu
     Gui::Application::Instance->setupContextMenu("Sketch", &menu);
-    QMenu contextMenu(
-        qobject_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer()->getGLWidget());
+    QMenu contextMenu(viewer->getGLWidget());
     Gui::MenuManager::getInstance()->setupContextMenu(&menu, contextMenu);
     contextMenu.exec(QCursor::pos());
 }

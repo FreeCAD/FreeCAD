@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -91,7 +93,7 @@ void CmdTechDrawStackGroup::activated(int iMsg)
             execStackDown(this);
             break;
         default:
-            Base::Console().message("CMD::StackGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().message("CMD::StackGrp - invalid iMsg: {}\n",iMsg);
     };
 }
 

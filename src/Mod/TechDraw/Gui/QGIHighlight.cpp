@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -66,8 +68,8 @@ QGIHighlight::~QGIHighlight()
 // QGIHighlight is no longer dragged except through TaskDetail.
 void QGIHighlight::onDragFinished()
 {
-//    Base::Console().message("QGIH::onDragFinished - pos: %s\n",
-//                            DrawUtil::formatVector(pos()).c_str());
+//    Base::Console().message("QGIH::onDragFinished - pos: {}\n",
+//                            DrawUtil::formatVector(pos()));
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);
     if (qgivp) {

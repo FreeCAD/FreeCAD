@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Part.Curve2d import Curve2d
-from typing import Final, List
+from typing import Any, Final, List
 
 @export(
     Twin="Geom2dBezierCurve",
@@ -66,13 +66,13 @@ class BezierCurve2d(Curve2d):
         """
         ...
 
-    def insertPoleAfter(self, index: int, /) -> None:
+    def insertPoleAfter(self, index: int, pole: Any, weight: float = ..., /) -> None:
         """
         Inserts after the pole of index.
         """
         ...
 
-    def insertPoleBefore(self, index: int, /) -> None:
+    def insertPoleBefore(self, index: int, pole: Any, weight: float = ..., /) -> None:
         """
         Inserts before the pole of index.
         """
@@ -85,13 +85,13 @@ class BezierCurve2d(Curve2d):
         """
         ...
 
-    def segment(self) -> None:
+    def segment(self, u1: float, u2: float, /) -> None:
         """
         Modifies this Bezier curve by segmenting it.
         """
         ...
 
-    def setPole(self, index: int, pole: object, /) -> None:
+    def setPole(self, index: int, pole: object, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier curve.
         """

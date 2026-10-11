@@ -127,7 +127,7 @@ Sheet::~Sheet()
     catch (...) {
         // Don't let an exception propagate out of a destructor (calls terminate())
         Base::Console().error(
-            "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
+            "clearAll() resulted in an exception when deleting the spreadsheet : {}\n",
             getNameInDocument()
         );
     }
@@ -1178,7 +1178,7 @@ DocumentObjectExecReturn* Sheet::execute()
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().error(
-                    "Cyclic dependency detected in spreadsheet : %s\n",
+                    "Cyclic dependency detected in spreadsheet : {}\n",
                     getNameInDocument()
                 );
                 std::ostringstream ss;
@@ -1658,6 +1658,14 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
         cells.setAlias(address, alias);
     }
     else {
+        switch (classifyReservedAliasName(alias)) {
+            case ReservedAliasToken::Unit:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved unit token");
+            case ReservedAliasToken::Constant:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved constant token");
+            case ReservedAliasToken::None:
+                break;
+        }
         throw Base::ValueError("Invalid alias");
     }
 }
@@ -1677,6 +1685,17 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
         return cell->getAddress().toString();
     }
     return {};
+}
+
+Sheet::ReservedAliasToken Sheet::classifyReservedAliasName(const std::string& candidate)
+{
+    if (ExpressionParser::isTokenAUnit(candidate)) {
+        return ReservedAliasToken::Unit;
+    }
+    if (ExpressionParser::isTokenAConstant(candidate)) {
+        return ReservedAliasToken::Constant;
+    }
+    return ReservedAliasToken::None;
 }
 
 /**

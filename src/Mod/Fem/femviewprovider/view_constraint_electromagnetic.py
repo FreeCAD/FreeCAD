@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -30,6 +32,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for constraint electromagnetic object
 
+from os import path
+
 from femtaskpanels import task_constraint_electromagnetic
 from . import view_base_femconstraint
 
@@ -49,4 +53,4 @@ class VPConstraintElectromagnetic(view_base_femconstraint.VPBaseFemConstraint):
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectromagnetic.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintElectromagnetic.iv"))

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <src/App/InitApplication.h>
+#include <Base/Interpreter.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <App/Document.h>
@@ -58,6 +59,7 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
+        Base::Interpreter().loadModule("Part");
     }
 
     void SetUp() override

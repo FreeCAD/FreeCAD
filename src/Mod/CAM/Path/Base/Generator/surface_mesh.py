@@ -103,9 +103,12 @@ def _apply_mesh_simplification(vertices, facets, simplification_level, silence):
 
     try:
         # PyVista expects faces as a flat array: [3, v0, v1, v2, 3, v0, v1, v2...]
-        faces_pv = np.empty((len(facets), 4), dtype=int)
+        facets_arr = np.array(facets)
+        faces_pv = np.empty((len(facets_arr), 4), dtype=int)
         faces_pv[:, 0] = 3
-        faces_pv[:, 1:] = facets
+        faces_pv[:, 1] = facets_arr[:, 0]
+        faces_pv[:, 2] = facets_arr[:, 1]
+        faces_pv[:, 3] = facets_arr[:, 2]
         faces_flat = faces_pv.flatten()
 
         # Build the PyVista PolyData object
@@ -270,6 +273,7 @@ def _shape_to_stl(
     angular_deflection,
     mesh_simplification=1,
     silence=False,
+    use_cpp=True,
 ):
     """Convert a Part.Shape / Compound to ocl.STLSurf using raw arrays.
 
@@ -281,6 +285,7 @@ def _shape_to_stl(
         linear_deflection: Linear deflection for tessellation (mm).
         angular_deflection: Angular deflection for tessellation (degrees).
         mesh_simplification: Integer 1-7 for mesh simplification (1=highest accuracy, 7=fastest).
+        use_cpp: Temporary Flag to disable C++ tessellation for 3+2 axis on Waterline Op (Default - True)
 
     Returns:
         An ocl.STLSurf object.
@@ -304,7 +309,7 @@ def _shape_to_stl(
 
     # Tessellation phase
     tess_start = time.perf_counter()
-    if _HAS_CPP:
+    if _HAS_CPP and use_cpp:
         try:
             verts, faces = _shape_to_stl_cpp(shape, linear_deflection, angular_deflection)
         except RuntimeError as e:
@@ -501,7 +506,7 @@ def _model_optimization(
     stl_filter_adj=0.0,
     tool_diam=0.0,
     final_depth=0.0,
-    normal_tolerance=0.01,
+    faces=None,
 ):
     """
     Filters the model's faces based on specific criteria to minimize the
@@ -515,15 +520,21 @@ def _model_optimization(
         stl_filter_adj (float): A positive offset value for the boundary adjustment of the face filter.
         tool_diam (float): The diameter of the active tool.
         final_depth (float): The lower Z-bound of the operation.
-        normal_tolerance (float): Tolerance for filtering vertical faces.
+        faces (list, optional): Pre-computed shape.Faces, if the caller already has
+            it (e.g. reused from boundary-face construction), to avoid re-deriving
+            FreeCAD's freshly-built face wrappers again here. Falls back to
+            shape.Faces if not provided.
 
     Returns:
         Part.Compound or Part.Shape: A compound of the filtered faces, or the original shape if no faces are filtered.
     """
     from . import surface_common
 
+    if faces is None:
+        faces = shape.Faces
+
     # Detect pre-triangulated models and skip optimization
-    if not exempt_faces and surface_common._is_triangulated_mesh(shape.Faces):
+    if not exempt_faces and surface_common._is_triangulated_mesh(faces):
         Path.Log.debug(
             "surface_mesh._model_optimization: Pre-triangulated model detected. Skipping face optimization."
         )
@@ -548,7 +559,7 @@ def _model_optimization(
                 "YMax": bb.YMax + ba,
             }
 
-    for face in shape.Faces:
+    for face in faces:
         try:
             # SurfaceScan strategy with face selection
             # Exempt faces are always kept
@@ -573,18 +584,6 @@ def _model_optimization(
                     rejected += 1
                     continue
 
-            u1, u2, v1, v2 = face.ParameterRange
-            norm = face.normalAt((u1 + u2) / 2.0, (v1 + v2) / 2.0)
-            if face.Orientation == "Reversed":
-                norm = norm.multiply(-1)
-
-            normal_z = abs(norm.z)
-
-            # Reject truly vertical faces
-            if normal_z < normal_tolerance:
-                rejected += 1
-                continue
-
             filtered.append(face)
 
         except Exception as e:
@@ -600,11 +599,11 @@ def _model_optimization(
     Path.Log.debug(
         f"surface_mesh._filter_selected_faces: "
         f"Kept {len(filtered)} faces, rejected {rejected} "
-        f"(vertical or outside boundary)."
+        f"(below final depth or outside boundary)."
     )
 
     # All filtered! Return original
-    if len(filtered) == len(shape.Faces):
+    if len(filtered) == len(faces):
         return shape
 
     return Part.makeCompound(filtered)
@@ -615,11 +614,12 @@ def _shape_to_safe_stl(
     bb_safe,
     pad_buffer,
     final_depth,
-    avoid_boundary,
+    avoid_boundary_stl,
     start_depth,
     linear_deflection,
     angular_deflection,
     mesh_simplification,
+    use_cpp,
 ):
     """
     Generates the secondary (safety) STL mesh for collision avoidance.
@@ -631,7 +631,7 @@ def _shape_to_safe_stl(
         bb_safe (Part.Face): The bounding box of the model or selected faces.
         pad_buffer (float): The calculated outward offset for the safety pad.
         final_depth (float): The lower Z-bound of the operation.
-        avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
+        avoid_boundary_stl (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         start_depth (float): The upper Z-bound of the operation.
         linear_deflection (float): The base linear deflection for calculating a coarse mesh.
         angular_deflection (float): The base angular deflection for calculating a coarse mesh.
@@ -660,12 +660,12 @@ def _shape_to_safe_stl(
         Path.Log.warning(f"Failed to create bottom pad face for safe STL: {e}")
 
     # Fuse in the "Keep-Out Pillar" for the pre-built avoid boundary, if any
-    if avoid_boundary:
+    if avoid_boundary_stl:
         Path.Log.debug(
             "surface_mesh._shape_to_safe_stl: Fusing precomputed avoid-zone boundary into safe STL."
         )
         try:
-            avoid = Part.makeFace(avoid_boundary)
+            avoid = Part.makeFace(avoid_boundary_stl)
             avoid.translate(FreeCAD.Vector(0, 0, start_depth + 0.1))
             fused_shapes.append(avoid)
         except Exception as e:
@@ -692,6 +692,7 @@ def _shape_to_safe_stl(
             safe_ang_def,
             max(mesh_simplification, 2),
             silence=True,
+            use_cpp=use_cpp,
         )
         Path.Log.debug("surface_mesh._shape_to_safe_stl: Safe STL generated successfully.")
     except Exception as e:
@@ -712,7 +713,7 @@ def generate_stl(
     stl_faces,
     stl_filter_adj,
     bb_face,
-    avoid_boundary,
+    avoid_boundary_stl,
     tool_diam,
     needs_safe_stl,
     boundary_adjustment,
@@ -721,6 +722,8 @@ def generate_stl(
     linear_deflection,
     angular_deflection,
     mesh_simplification,
+    model_faces=None,
+    use_cpp=True,
 ):
     """
     Orchestrates the creation of the primary (machining) and secondary (safety) STL meshes.
@@ -737,7 +740,7 @@ def generate_stl(
         stl_faces (list): A list of Part.Face objects to be machined.
         stl_filter_adj (float): A positive offset value for the boundary adjustment of the STL face filter.
         bb_face: (Part.Face): The BoundBox of the selected faces.
-        avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
+        avoid_boundary_stl (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         tool_diam (float): The diameter of the active tool.
         needs_safe_stl (bool): Flag indicating if the safety model is required.
         boundary_adjustment (float): A positive or negative value of the boundary adjustment.
@@ -746,6 +749,10 @@ def generate_stl(
         linear_deflection (float): The user-set linear deflection for the primary mesh.
         angular_deflection (float): The user-set angular deflection for the primary mesh.
         mesh_simplification (int): The user-set simplification level for the primary mesh.
+        model_faces (list, optional): Pre-computed model_shape.Faces, if the caller
+            already has it (e.g. reused from boundary-face construction), to avoid
+            re-deriving FreeCAD's freshly-built face wrappers again here.
+        use_cpp (bool): Temporary Flag to disable C++ tessellation for 3+2 axis on Waterline Op
 
     Returns:
         tuple: (stl, safe_stl), where stl is the primary mesh and safe_stl is the
@@ -788,6 +795,7 @@ def generate_stl(
                 stl_filter_adj,
                 tool_diam,
                 final_depth,
+                faces=model_faces,
             )
             if optimized_shape and not optimized_shape.isNull():
                 model_shape = optimized_shape
@@ -809,6 +817,7 @@ def generate_stl(
             angular_deflection,
             mesh_simplification,
             silence=False,
+            use_cpp=use_cpp,
         )
 
         # Check if the STL object is None OR if it contains zero triangles.
@@ -833,11 +842,12 @@ def generate_stl(
                 bb_safe,
                 pad_buffer,
                 final_depth,
-                avoid_boundary,
+                avoid_boundary_stl,
                 start_depth,
                 linear_deflection,
                 angular_deflection,
                 mesh_simplification=max(mesh_simplification, 2),
+                use_cpp=use_cpp,
             )
 
         if safe_stl is None:

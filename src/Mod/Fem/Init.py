@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2001 Juergen Riegel <juergen.riegel@web.de>             *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *

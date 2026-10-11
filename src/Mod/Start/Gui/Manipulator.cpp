@@ -54,7 +54,7 @@ void CmdStart::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     auto mw = Gui::getMainWindow();
-    auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+    auto existingView = mw->findChild<StartGui::StartView*>();
     if (!existingView) {
         existingView = gsl::owner<StartGui::StartView*>(new StartGui::StartView(mw));
         mw->addWindow(existingView);  // Transfers ownership

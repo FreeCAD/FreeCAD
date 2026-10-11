@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Move to Home</source>
-      <translation>Flytta till hemmet</translation>
+      <translation>Flytta till hempositionen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Moves to the home position</source>
-      <translation>Flyttar till startpositionen</translation>
+      <translation>Flyttar till hempositionen</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="253"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation>Ställer in standardorienteringen för efterföljande kommandon för skapande av waypoints</translation>
+      <translation>Anger standardorienteringen för efterföljande kommandon som skapar vägpunkter</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="293"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation>Ställer in standardvärden för hastighet, acceleration och kontinuitet för efterföljande kommandon för skapande av waypoints</translation>
+      <translation>Anger standardvärden för hastighet, acceleration och kontinuitet för efterföljande kommandon som skapar vägpunkter</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Set Home Position</source>
-      <translation>Ställ in startposition</translation>
+      <translation>Ange hemposition</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Sets the home position</source>
-      <translation>Ställer in startpositionen</translation>
+      <translation>Anger hempositionen</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
       <location filename="../../CommandTrajectory.cpp" line="181"/>
       <location filename="../../CommandTrajectory.cpp" line="202"/>
       <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
       <location filename="../../Command.cpp" line="105"/>
       <location filename="../../Command.cpp" line="168"/>
       <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <source>Wrong selection</source>
       <translation>Fel val</translation>
     </message>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Välj en robot och ett rörelsebanobjekt.</translation>
     </message>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
       <source>Sizing Value</source>
-      <translation>Storlek Värde</translation>
+      <translation>Storleksvärde</translation>
     </message>
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="103"/>

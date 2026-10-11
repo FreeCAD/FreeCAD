@@ -29,7 +29,18 @@ __url__ = "https://www.freecad.org"
 import re
 import numpy as np
 from vtkmodules.util import numpy_support as vtk_np
-from vtkmodules.vtkCommonDataModel import vtkCellArray, vtkUnstructuredGrid
+from vtkmodules.vtkCommonDataModel import (
+    vtkCellArray,
+    vtkUnstructuredGrid,
+    VTK_HEXAHEDRON,
+    VTK_LINE,
+    VTK_QUADRATIC_HEXAHEDRON,
+    VTK_QUADRATIC_QUAD,
+    VTK_QUADRATIC_TETRA,
+    VTK_QUADRATIC_TRIANGLE,
+    VTK_TETRA,
+    VTK_TRIANGLE,
+)
 from vtkmodules.vtkCommonCore import vtkPoints
 
 
@@ -145,26 +156,26 @@ z88_to_vtk_order = {
 
 # z88 to vtk element type
 z88_to_vtk_type = {
-    1: vtk_np.vtkConstants.VTK_HEXAHEDRON,
-    2: vtk_np.vtkConstants.VTK_LINE,
-    3: vtk_np.vtkConstants.VTK_QUADRATIC_TRIANGLE,
-    4: vtk_np.vtkConstants.VTK_LINE,
-    5: vtk_np.vtkConstants.VTK_LINE,
-    6: vtk_np.vtkConstants.VTK_TRIANGLE,
-    7: vtk_np.vtkConstants.VTK_QUADRATIC_QUAD,
-    8: vtk_np.vtkConstants.VTK_QUADRATIC_QUAD,
-    9: vtk_np.vtkConstants.VTK_LINE,
-    10: vtk_np.vtkConstants.VTK_QUADRATIC_HEXAHEDRON,
-    13: vtk_np.vtkConstants.VTK_LINE,
-    14: vtk_np.vtkConstants.VTK_QUADRATIC_TRIANGLE,
-    15: vtk_np.vtkConstants.VTK_QUADRATIC_TRIANGLE,
-    16: vtk_np.vtkConstants.VTK_QUADRATIC_TETRA,
-    17: vtk_np.vtkConstants.VTK_TETRA,
-    18: vtk_np.vtkConstants.VTK_QUADRATIC_TRIANGLE,
-    20: vtk_np.vtkConstants.VTK_QUADRATIC_QUAD,
-    23: vtk_np.vtkConstants.VTK_QUADRATIC_QUAD,
-    24: vtk_np.vtkConstants.VTK_QUADRATIC_TRIANGLE,
-    25: vtk_np.vtkConstants.VTK_LINE,
+    1: VTK_HEXAHEDRON,
+    2: VTK_LINE,
+    3: VTK_QUADRATIC_TRIANGLE,
+    4: VTK_LINE,
+    5: VTK_LINE,
+    6: VTK_TRIANGLE,
+    7: VTK_QUADRATIC_QUAD,
+    8: VTK_QUADRATIC_QUAD,
+    9: VTK_LINE,
+    10: VTK_QUADRATIC_HEXAHEDRON,
+    13: VTK_LINE,
+    14: VTK_QUADRATIC_TRIANGLE,
+    15: VTK_QUADRATIC_TRIANGLE,
+    16: VTK_QUADRATIC_TETRA,
+    17: VTK_TETRA,
+    18: VTK_QUADRATIC_TRIANGLE,
+    20: VTK_QUADRATIC_QUAD,
+    23: VTK_QUADRATIC_QUAD,
+    24: VTK_QUADRATIC_TRIANGLE,
+    25: VTK_LINE,
 }
 
 # smesh type string names from type

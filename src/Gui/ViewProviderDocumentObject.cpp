@@ -31,7 +31,12 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 
+#include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
+#include <App/GeoFeatureGroupExtension.h>
+#include <App/GroupExtension.h>
+#include <App/Link.h>
 #include <App/Origin.h>
 #include <Base/Tools.h>
 
@@ -89,6 +94,37 @@ ViewProviderDocumentObject::~ViewProviderDocumentObject()
     // Make sure that the property class does not destruct our string list
     DisplayMode.setContainer(nullptr);
     DisplayMode.setEnums(nullptr);
+}
+
+App::SubObjectT ViewProviderDocumentObject::getDefaultEditReference() const
+{
+    auto* root = getObject();
+    if (!root || !root->isAttachedToDocument()) {
+        return {};
+    }
+    std::string subname;
+    for (int depth = 0; root && App::GetApplication().checkLinkDepth(depth); ++depth) {
+        const auto childName = std::string(root->getNameInDocument()) + '.';
+        auto* parent = App::GeoFeatureGroupExtension::getGroupOfObject(root);
+        if (!parent) {
+            parent = App::GroupExtension::getGroupOfObject(root);
+        }
+        if (!parent) {
+            for (auto* candidate : root->getInList()) {
+                if (candidate->isDerivedFrom<App::LinkGroup>()
+                    && candidate->getSubObject(childName.c_str()) == root) {
+                    parent = candidate;
+                    break;
+                }
+            }
+        }
+        if (!parent) {
+            break;
+        }
+        subname = childName + subname;
+        root = parent;
+    }
+    return App::SubObjectT(root, subname.c_str());
 }
 
 void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& vec) const

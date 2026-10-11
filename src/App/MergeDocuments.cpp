@@ -57,12 +57,7 @@ public:
     const char* getName(const char* name) const override
     {
         std::map<std::string, std::string>::const_iterator it = nameMap.find(name);
-        if (it != nameMap.end()) {
-            return it->second.c_str();
-        }
-        else {
-            return name;
-        }
+        return it != nameMap.end() ? it->second.c_str() : name;
     }
     bool doNameMapping() const override
     {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
@@ -76,6 +78,7 @@
 #include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewPart.h"
+#include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
@@ -217,7 +220,7 @@ void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
 QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
                                TechDraw::LineGenerator* generator)
 {
-    //    Base::Console().message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
+    //    Base::Console().message("DGU::iconForLine(lineNumber: {})\n", lineNumber);
     constexpr int iconSize {64};
     constexpr int borderSize {4};
     constexpr double iconLineWeight {1.0};
@@ -564,24 +567,24 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
 
 void DrawGuiUtil::dumpRectF(const char* text, const QRectF& r)
 {
-    Base::Console().message("DUMP - dumpRectF - %s\n", text);
+    Base::Console().message("DUMP - dumpRectF - {}\n", text);
     double left = r.left();
     double right = r.right();
     double top = r.top();
     double bottom = r.bottom();
-    Base::Console().message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
+    Base::Console().message("Extents: L: {:.3f}, R: {:.3f}, T: {:.3f}, B: {:.3f}\n",
                             left,
                             right,
                             top,
                             bottom);
-    Base::Console().message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
-    Base::Console().message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
+    Base::Console().message("Size: W: {:.3f} H: {:.3f}\n", r.width(), r.height());
+    Base::Console().message("Centre: ({:.3f}, {:.3f})\n", r.center().x(), r.center().y());
 }
 
 void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
 {
-    Base::Console().message("DUMP - dumpPointF - %s\n", text);
-    Base::Console().message("Point: (%.3f, %.3f)\n", p.x(), p.y());
+    Base::Console().message("DUMP - dumpPointF - {}\n", text);
+    Base::Console().message("Point: ({:.3f}, {:.3f})\n", p.x(), p.y());
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
@@ -635,7 +638,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
                                       faceName.c_str());
 
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
-        Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
+        Base::Console().warning("getProjDirFromFace({}) is not a Face\n", faceName);
         return dirs;
     }
 
@@ -670,6 +673,19 @@ double DrawGuiUtil::roundToDigits(double original, int digits)
     double rounded = std::round(temp);
     temp = rounded / factor;
     return temp;
+}
+
+double DrawGuiUtil::screenWidth(double sceneWidth)
+{
+    if (!PreferencesGui::screenMode()) {
+        return sceneWidth;
+    }
+
+    int lineGroup = Preferences::lineGroup();
+    double normalWidth = Rez::guiX(LineGroup::getDefaultWidth("Thick", lineGroup));
+    double width = PreferencesGui::screenEdgeWidth() * (sceneWidth / normalWidth);
+
+    return width;
 }
 
 // Returns true if the item or any of its descendants is selected

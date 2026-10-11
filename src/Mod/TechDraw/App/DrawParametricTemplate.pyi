@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Final
 
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
@@ -21,7 +21,7 @@ class DrawParametricTemplate(DrawTemplate):
     License: LGPL-2.1-or-later
     """
 
-    def drawLine(self) -> Any:
+    def drawLine(self, x1: float, y1: float, x2: float, y2: float, /) -> None:
         """Draw a line"""
         ...
 

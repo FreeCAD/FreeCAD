@@ -16,7 +16,7 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QWidget" name="widget">
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -26,9 +26,6 @@
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="side">
-        <property name="toolTip">
-         <string>Side of profile on which create Path</string>
-        </property>
         <item>
          <property name="text">
           <string>Inside</string>
@@ -42,7 +39,7 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_startAt">
         <property name="text">
          <string>Start from</string>
         </property>
@@ -50,9 +47,6 @@
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="startAt">
-        <property name="toolTip">
-         <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</string>
-        </property>
         <item>
          <property name="text">
           <string>Inside</string>
@@ -65,18 +59,15 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_cutMode">
         <property name="text">
          <string>Cut mode</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QComboBox" name="cutMode">
-        <property name="toolTip">
-         <string>The direction of the circular cuts</string>
-        </property>
         <item>
          <property name="text">
           <string>Climb</string>
@@ -90,7 +81,7 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_maxPitch">
         <property name="text">
          <string>Max pitch</string>
         </property>
@@ -98,19 +89,13 @@
       </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="helixMaxPitch">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
         <property name="minimum">
          <number>0</number>
-        </property>
-        <property name="toolTip">
-         <string>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_MaxRampAngl">
         <property name="text">
          <string>Max ramp angle</string>
         </property>
@@ -118,19 +103,13 @@
       </item>
       <item row="5" column="1">
        <widget class="Gui::QuantitySpinBox" name="helixMaxRampAngle">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
         <property name="minimum">
          <number>0</number>
-        </property>
-        <property name="toolTip">
-         <string>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</string>
         </property>
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="label_stepOver">
         <property name="text">
          <string>Step over</string>
         </property>
@@ -138,9 +117,6 @@
       </item>
       <item row="6" column="1">
        <widget class="QSpinBox" name="stepOver">
-        <property name="toolTip">
-         <string>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool's diameter).</string>
-        </property>
         <property name="suffix">
          <string>%</string>
         </property>
@@ -159,19 +135,92 @@
        </widget>
       </item>
       <item row="7" column="0">
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="label_radialStockToLeaveOuter">
         <property name="text">
          <string>Radial stock to leave (outer)</string>
         </property>
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="Gui::QuantitySpinBox" name="radialStockToLeaveOuter">
-        <property name="enabled">
-         <bool>true</bool>
+       <widget class="Gui::QuantitySpinBox" name="radialStockToLeaveOuter"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_radialStockToLeaveInner">
+        <property name="text">
+         <string>Radial stock to leave (inner)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::QuantitySpinBox" name="radialStockToLeaveInner"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_coneAngle">
+        <property name="text">
+         <string>Cone angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::QuantitySpinBox" name="coneAngle"/>
+      </item>
+      <item row="9" column="2">
+       <widget class="QToolButton" name="autoConeAngle">
+        <property name="text">
+         <string notr="true">…</string>
         </property>
         <property name="toolTip">
-         <string>How much stock to leave on the outer wall for this operation</string>
+         <string>Define cone angle if all base geometry is Part.Cone and all surfaces has identical angle</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_rotationAngle">
+        <property name="text">
+         <string>Starting angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="Gui::QuantitySpinBox" name="rotationAngle"/>
+      </item>
+      <item row="11" column="0">
+       <widget class="QCheckBox" name="spiralMill">
+        <property name="text">
+         <string>Spiral mill</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QCheckBox" name="singleHelix">
+        <property name="text">
+         <string>Single helix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QCheckBox" name="overrideArcFeed">
+        <property name="text">
+         <string>Override arc feed rate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QCheckBox" name="startBottom">
+        <property name="text">
+         <string>Start from bottom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QCheckBox" name="retractFromWall">
+        <property name="text">
+         <string>Retract from wall</string>
         </property>
        </widget>
       </item>

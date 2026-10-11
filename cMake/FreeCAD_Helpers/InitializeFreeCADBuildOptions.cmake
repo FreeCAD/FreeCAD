@@ -24,6 +24,7 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_TRACY_FRAME_PROFILER "If ON then enables support for the Tracy frame profiler" OFF)
 
     option(INSTALL_TO_SITEPACKAGES "If ON the freecad root namespace (python) is installed into python's site-packages" ON)
+    option(RELATIVE_RPATH "If ON the install RPATH is relative to the binary ($ORIGIN or @loader_path) instead of absolute" OFF)
     option(INSTALL_PREFER_SYMLINKS "If ON then fc_copy_sources macro will create symlinks instead of copying files" OFF)
     option(OCCT_CMAKE_FALLBACK "disable usage of occt-config files" OFF)
     option(FREECAD_USE_QT_DIALOGS "Use Qt's dialogs instead of the native one." OFF)
@@ -115,8 +116,6 @@ macro(InitializeFreeCADBuildOptions)
         option(FREECAD_LIBPACK_USE "Use the LibPack to build FreeCAD (MSVC only)." OFF)
         set(FREECAD_LIBPACK_DIR ""  CACHE PATH  "Directory of the FreeCAD LibPack")
     endif(MSVC)
-
-    ChooseQtVersion()
 
     option(BUILD_DESIGNER_PLUGIN "Build and install the designer plugin" OFF)
 

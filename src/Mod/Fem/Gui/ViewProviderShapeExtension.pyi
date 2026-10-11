@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 from Base.Metadata import export
 from Gui.ViewProviderExtension import ViewProviderExtension
 from typing import Any, List

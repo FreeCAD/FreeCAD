@@ -69,6 +69,7 @@ public:
     virtual bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const = 0;
     virtual GeomAbs_SurfaceType getType() const = 0;
     virtual TopoDS_Face buildFace(const FaceVectorType& faces) const = 0;
+    virtual std::vector<FaceVectorType> splitEqual(const FaceVectorType& faces) const;
 
     static GeomAbs_SurfaceType getFaceType(const TopoDS_Face& faceIn);
 
@@ -121,6 +122,7 @@ public:
     bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const override;
     GeomAbs_SurfaceType getType() const override;
     TopoDS_Face buildFace(const FaceVectorType& faces) const override;
+    std::vector<FaceVectorType> splitEqual(const FaceVectorType& faces) const override;
     friend FaceTypedBSpline& getBSplineObject();
 };
 FaceTypedBSpline& getBSplineObject();
@@ -165,24 +167,6 @@ private:
 
     TopTools_IndexedDataMapOfShapeListOfShape faceToEdgeMap;
     TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
-};
-
-class FaceEqualitySplitter
-{
-public:
-    FaceEqualitySplitter() = default;
-    void split(const FaceVectorType& faces, FaceTypedBase* object);
-    std::size_t getGroupCount() const
-    {
-        return equalityVector.size();
-    }
-    const FaceVectorType& getGroup(const std::size_t& index) const
-    {
-        return equalityVector[index];
-    }
-
-private:
-    std::vector<FaceVectorType> equalityVector;
 };
 
 class FaceUniter

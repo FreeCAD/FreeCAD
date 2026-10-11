@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
  *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
@@ -173,7 +175,7 @@ void TaskHatch::onOffsetChanged()
 void TaskHatch::apply(bool forceUpdate)
 {
     Q_UNUSED(forceUpdate)
-//    Base::Console().message("TH::apply() - m_hatch: %X\n", m_hatch);
+//    Base::Console().message("TH::apply() - m_hatch: {:X}\n", m_hatch);
     if (!m_hatch) {
         createHatch();
     }
@@ -289,6 +291,8 @@ TaskDlgHatch::TaskDlgHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::strin
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    // Not in edit mode, so nothing closes the dialog if undo deletes the hatch it created
+    setAutoCloseOnTransactionChange(true);
 }
 
 TaskDlgHatch::TaskDlgHatch(TechDrawGui::ViewProviderHatch* inVp) :

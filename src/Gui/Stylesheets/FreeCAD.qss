@@ -2320,9 +2320,17 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 QTableCornerButton::section {
   background-color: @PrimaryColor;
   border-radius: 0px;/*if you remove this line it breaks it */}
+
+QTableView#cells QTableCornerButton::section {
+  border: none;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+}
+
 QHeaderView {
   background-color: transparent;
-  margin-top -1px;/* fix for misalignment*/}
+}
+
 QHeaderView:disabled {
   color: @TextDisabledColor;
 }
@@ -2347,6 +2355,13 @@ QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-
   border-left: 1px solid @GeneralBorderColor;
 }
 
+QTableView#cells QHeaderView::section::horizontal {
+  border: none;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+  border-top: 1px solid @GeneralBorderColor;
+}
+
 QHeaderView::section::horizontal:disabled {
   color: @TextDisabledColor;
 }
@@ -2362,6 +2377,14 @@ QHeaderView::section::vertical {
 
 QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
  border-top: 1px solid @GeneralBorderColor;
+}
+
+QTableView#cells QHeaderView::section::vertical {
+  border: none;
+  border-left: 1px solid @GeneralBorderColor;
+  border-bottom: 1px solid @GeneralBorderColor;
+  border-right: 1px solid @GeneralBorderColor;
+  margin: 0px;
 }
 
 QHeaderView::section::vertical:disabled {
@@ -2704,6 +2727,59 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
 
 Gui--Dialog--DocumentRecovery QTreeView {
   border: 1px solid @GeneralBorderColor;
+}
+
+/*==================================================================================================
+In-view spreadsheet editor
+==================================================================================================*/
+QTableWidget#spreadsheetViewEditor {
+  background-color: transparent;
+  alternate-background-color: transparent;
+  selection-background-color: transparent;
+  border: none;
+}
+
+QTableWidget#spreadsheetViewEditor::item,
+QTableWidget#spreadsheetViewEditor::item:selected {
+  background-color: transparent;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section,
+QTableWidget#spreadsheetViewEditor QTableCornerButton::section {
+  background-color: rgb(235, 235, 235);
+  color: black;
+  border: 1px solid black;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section:checked {
+  background-color: rgb(205, 220, 235);
+}
+
+QTableWidget#spreadsheetViewEditor QLineEdit {
+  background-color: white;
+  color: black;
+  selection-background-color: rgb(190, 215, 240);
+  selection-color: black;
+  border: 1px solid black;
+  padding: 0;
+}
+
+/*==================================================================================================
+Overlay controls
+==================================================================================================*/
+QToolButton#overlayButton {
+  background-color: rgba(255, 255, 255, 215);
+  border: 1px solid rgba(40, 40, 40, 120);
+  border-radius: 11px;
+  padding: 2px;
+}
+
+QToolButton#overlayButton:hover {
+  background-color: rgba(255, 255, 255, 245);
+}
+
+QToolButton#overlayButton:pressed {
+  background-color: rgba(232, 232, 232, 245);
 }
 
 /*==================================================================================================

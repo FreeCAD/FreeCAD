@@ -238,7 +238,7 @@ public:
     /** Transform the corners of this box with the given matrix and create a new bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
-    BoundBox3<Precision> Transformed(const Matrix4D& mat) const;
+    [[nodiscard]] BoundBox3<Precision> Transformed(const Matrix4D& mat) const;
 
     /** Returns the center of the box. */
     inline Vector3<Precision> GetCenter() const;

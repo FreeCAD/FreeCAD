@@ -11,7 +11,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation>FreeCAD Unit Test</translation>
+      <translation>FreeCADs enhetstester</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
       <source>&amp;Copy</source>
-      <translation>K&amp;opiera</translation>
+      <translation>&amp;Kopiera</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
@@ -122,8 +122,8 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Ange namnet på ett anropsbart objekt som, när det anropas, kommer att returnera ett TestCase.
-Klicka på "start" och det test som skapats kommer att köras.
+      <translation>Ange namnet på ett anropsbart objekt som returnerar ett TestCase när det anropas.
+Klicka på ”Starta” för att köra testet som skapas.
 
 Dubbelklicka på ett fel i trädvyn för att se mer information om det, inklusive stackspårningen.</translation>
     </message>
@@ -139,7 +139,7 @@ Dubbelklicka på ett fel i trädvyn för att se mer information om det, inklusiv
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Upphovsrätt (c) Werner Mayer
 
-FreeCAD UnitTest är en del av FreeCAD och stöder skrivning av enhetstester för egna moduler.</translation>
+FreeCADs enhetstester är en del av FreeCAD och ger stöd för att skriva enhetstester för egna moduler.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>

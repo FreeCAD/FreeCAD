@@ -824,23 +824,21 @@ App::DocumentObject* ObjectIdentifier::getDocumentObject(const App::Document* do
     if (!objectByLabel && !objectById) {  // Not found at all
         return nullptr;
     }
-    else if (!objectByLabel) {  // Found by name
+    if (!objectByLabel) {  // Found by name
         flags.set(ResolveByIdentifier);
         return objectById;
     }
-    else if (!objectById) {  // Found by label
+    if (!objectById) {  // Found by label
         flags.set(ResolveByLabel);
         return objectByLabel;
     }
-    else if (objectByLabel == objectById) {  // Found by both name and label, same object
+    if (objectByLabel == objectById) {  // Found by both name and label, same object
         flags.set(ResolveByIdentifier);
         flags.set(ResolveByLabel);
         return objectByLabel;
     }
-    else {
-        flags.set(ResolveAmbiguous);
-        return nullptr;  // Found by both name and label, two different objects
-    }
+    flags.set(ResolveAmbiguous);
+    return nullptr;  // Found by both name and label, two different objects
 }
 
 void ObjectIdentifier::resolve(ResolveResults& results) const
@@ -1008,21 +1006,19 @@ Document* ObjectIdentifier::getDocument(String name, bool* ambiguous) const
     if (!docById) {
         return docByLabel;  // Either not found at all, or on label
     }
-    else {
-        /* Not found on label? */
-        if (!docByLabel) { /* Then return doc by id */
-            return docById;
-        }
-
-        /* docByLabel and docById could be equal; that is ok */
-        if (docByLabel == docById) {
-            return docById;
-        }
-        if (ambiguous) {
-            *ambiguous = true;
-        }
-        return nullptr;
+    /* Not found on label? */
+    if (!docByLabel) { /* Then return doc by id */
+        return docById;
     }
+
+    /* docByLabel and docById could be equal; that is ok */
+    if (docByLabel == docById) {
+        return docById;
+    }
+    if (ambiguous) {
+        *ambiguous = true;
+    }
+    return nullptr;
 }
 
 DocumentObject* ObjectIdentifier::getDocumentObject() const
@@ -1182,9 +1178,7 @@ ObjectIdentifier ObjectIdentifier::parse(const DocumentObject* docObj, const std
     if (v) {
         return v->getPath();
     }
-    else {
-        FC_THROWM(Base::RuntimeError, "Invalid property specification.");
-    }
+    FC_THROWM(Base::RuntimeError, "Invalid property specification.");
 }
 
 std::string ObjectIdentifier::resolveErrorString() const
@@ -1401,12 +1395,7 @@ bool ObjectIdentifier::hasDocumentObjectName(bool forced) const
 
 std::string ObjectIdentifier::String::toString(bool toPython) const
 {
-    if (isRealString()) {
-        return quote(str, toPython);
-    }
-    else {
-        return str;
-    }
+    return isRealString() ? quote(str, toPython) : str;
 }
 
 void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
@@ -1863,9 +1852,7 @@ bool ObjectIdentifier::isTouched() const
             if (result.propertyType == PseudoNone) {
                 return result.resolvedProperty->isTouched();
             }
-            else {
-                return result.resolvedDocumentObject->isTouched();
-            }
+            return result.resolvedDocumentObject->isTouched();
         }
     }
     catch (...) {

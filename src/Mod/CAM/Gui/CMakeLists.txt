@@ -90,7 +90,7 @@ endif()
 
 target_compile_warn_error(PathGui)
 
-SET_BIN_DIR(PathGui PathGui /Mod/CAM)
+SET_BIN_DIR(PathGui)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/CAM" ${PathGuiIcon_SVG})

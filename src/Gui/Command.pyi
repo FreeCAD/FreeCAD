@@ -103,14 +103,13 @@ class Command(PyObjectBase):
 
     @staticmethod
     def createCustomCommand(
-        *,
         macroFile: str,
-        menuText: str,
-        toolTip: str,
-        whatsThis: str,
-        statusTip: str,
-        pixmap: str,
-        shortcut: str,
+        menuText: Optional[str] = None,
+        toolTip: Optional[str] = None,
+        whatsThis: Optional[str] = None,
+        statusTip: Optional[str] = None,
+        pixmap: Optional[str] = None,
+        shortcut: Optional[str] = None,
     ) -> str:
         """
         Create a custom command for a macro. Returns name of the created command.

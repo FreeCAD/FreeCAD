@@ -88,8 +88,13 @@ public:
     static PyObject *sGetActiveTransaction   (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction (PyObject *self,PyObject *args);
     static PyObject *sCheckAbort             (PyObject *self,PyObject *args);
+  
     static PyObject *sGetDecodedMappedName   (PyObject *self,PyObject *args);
     static PyObject *sMakeEncodedSection     (PyObject *self,PyObject *args, PyObject* keywds);
+
+    static PyObject *sGetLastCrashReport     (PyObject *self,PyObject *args);
+    static PyObject *sGetCrashReports        (PyObject *self,PyObject *args);
+    static PyObject *sClearCrashReports      (PyObject *self,PyObject *args);
     // clang-format on
 };
 

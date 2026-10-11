@@ -45,6 +45,7 @@
 #include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Converter.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include <Mod/Part/App/Tools.h>
@@ -66,7 +67,16 @@ App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstra
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
 
-FeatureExtrude::FeatureExtrude() = default;
+FeatureExtrude::FeatureExtrude()
+{
+    ADD_PROPERTY_TYPE(
+        UseLegacyTaperDirection,
+        (false),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Use legacy profile copying for tapered extrusions"
+    );
+}
 
 short FeatureExtrude::mustExecute() const
 {
@@ -76,7 +86,7 @@ short FeatureExtrude::mustExecute() const
         || ReferenceAxis.isTouched() || AlongSketchNormal.isTouched() || Offset.isTouched()
         || Offset2.isTouched() || StartType.isTouched() || StartOffset.isTouched()
         || StartReference.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
-        || UpToShape.isTouched() || UpToShape2.isTouched()) {
+        || UpToShape.isTouched() || UpToShape2.isTouched() || UseLegacyTaperDirection.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -154,9 +164,9 @@ void FeatureExtrude::onChanged(const App::Property* prop)
             App::DocumentObject* obj = Profile.getValue();
             auto baseName = obj ? obj->getNameInDocument() : "";
             Base::Console().warning(
-                "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+                "The 'Midplane' property being set for the extrusion of {} is deprecated and has "
                 "been replaced by the 'SideType' property in FeatureExtrude; assuming "
-                "SideType='%s'. Please update your script, this property will be removed in a"
+                "SideType='{}'. Please update your script, this property will be removed in a"
                 " future version.\n",
                 baseName,
                 impliedSideType
@@ -529,8 +539,15 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             : std::strcmp(startType, "Offset") == 0
             ? StartOffset.getValue()
             : getStartReferenceOffset(sketchshape, StartReference, dir, StartOffset.getValue(), invObjLoc);
-        TopoShape startSketch = moveProfileToStart(sketchshape, dir, startOffset);
+        const bool useLegacyTaperDirection = UseLegacyTaperDirection.getValue();
+        TopoShape startSketch
+            = moveProfileToStart(sketchshape, dir, startOffset, useLegacyTaperDirection);
 
+        // Preserve the old deep-copy path for restored files because it can affect both generated
+        // topology and taper direction. New features reuse the profile for each side.
+        auto profileForSide = [useLegacyTaperDirection](const TopoShape& profile) {
+            return useLegacyTaperDirection ? profile.makeElementCopy() : profile;
+        };
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
@@ -561,7 +578,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     // directions.
                     L /= 2.0;
                     TopoShape prism1 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        profileForSide(startSketch),
                         method,
                         L,
                         taper1,
@@ -580,7 +597,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Dir dir2 = dir;
                     dir2.Reverse();
                     TopoShape prism2 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        profileForSide(startSketch),
                         method,
                         L,
                         taper1,
@@ -714,7 +731,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    profileForSide(startSketch),
                     method,
                     L,
                     taper1,
@@ -732,7 +749,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // Side 2
                 TopoShape prism2 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    profileForSide(startSketch),
                     method2,
                     L2,
                     taper2,
@@ -1008,12 +1025,22 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     return prism;
 }
 
+void FeatureExtrude::Restore(Base::XMLReader& reader)
+{
+    // SideType was introduced in 1.1. If the property exists in the file, restoring the remaining
+    // properties below overrides this version-based default.
+    UseLegacyTaperDirection.setValue(Base::getVersion(reader.ProgramVersion) >= Base::Version::v1_1);
+    ProfileBased::Restore(reader);
+}
+
 void FeatureExtrude::onDocumentRestored()
 {
     Base::StateLocker migrating(migratingDeprecatedProperties);
 
     // property Type no longer has TwoLengths.
     if (strcmp(Type.getValueAsString(), "?TwoLengths") == 0) {
+        // TwoLengths predates SideType and used the original profile for both taper directions.
+        UseLegacyTaperDirection.setValue(false);
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
@@ -1056,6 +1083,11 @@ void FeatureExtrude::onDocumentRestored()
         }
     }
     else if (Midplane.getValue()) {
+        // A missing SideType restores as One side. This distinguishes old Midplane documents from
+        // newer scripts that saved both Midplane and the corresponding SideType.
+        if (strcmp(SideType.getValueAsString(), "One side") == 0) {
+            UseLegacyTaperDirection.setValue(false);
+        }
         Midplane.setValue(false);
         SideType.setValue("Symmetric");
     }

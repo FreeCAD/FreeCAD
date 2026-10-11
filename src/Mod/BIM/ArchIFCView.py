@@ -170,7 +170,7 @@ class IfcContextUI:
 
         Returns
         -------
-        <PySide2.QtWidgets.QWidget>
+        <PySide6.QtWidgets.QWidget>
             Widget containing the label and form.
         """
 
@@ -189,7 +189,7 @@ class IfcContextUI:
 
         Returns
         -------
-        <PySide2.QtWidgets.QWidget>
+        <PySide6.QtWidgets.QWidget>
             The label Qt widget.
         """
 
@@ -208,7 +208,7 @@ class IfcContextUI:
 
         Returns
         -------
-        <PySide2.QtWidgets.QWidget>
+        <PySide6.QtWidgets.QWidget>
             The form Qt widget.
         """
 

@@ -69,6 +69,7 @@ private:
     bool isEdge(App::DocumentObject* pObj, const char* sSubName) const;
     bool isFace(App::DocumentObject* pObj, const char* sSubName) const;
     bool isCircle(App::DocumentObject* pObj, const char* sSubName) const;
+    bool isSolid(App::DocumentObject* pObj, const char* sSubName) const;
 };
 
 class NoDependentsSelection: public Gui::SelectionFilterGate

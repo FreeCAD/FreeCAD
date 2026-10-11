@@ -38,15 +38,15 @@
 #include "SketchObject.h"
 
 
-#undef DEBUG
-// #define DEBUG
-
-// clang-format off
 using namespace Sketcher;
 using namespace Base;
 
-int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, const Base::Vector3d& toPoint, bool relative,
-                            bool updateGeoBeforeMoving)
+SketchSolveStatus SketchObject::moveGeometries(
+    const std::vector<GeoElementId>& geoEltIds,
+    const Base::Vector3d& toPoint,
+    bool relative,
+    bool updateGeoBeforeMoving
+)
 {
 
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -62,17 +62,22 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
 
     if (updateGeoBeforeMoving || solverNeedsUpdate) {
         lastDoF = solvedSketch.setUpSketch(
-            getCompleteGeometry(), Constraints.getValues(), getExternalGeometryCount());
+            getCompleteGeometry(),
+            Constraints.getValues(),
+            getExternalGeometryCount()
+        );
 
         retrieveSolverDiagnostics();
 
         solverNeedsUpdate = false;
     }
 
-    if (lastDoF < 0)// over-constrained sketch
-        return -1;
-    if (lastHasConflict)// conflicting constraints
-        return -1;
+    if (lastDoF < 0) {  // over-constrained sketch
+        return SketchSolveStatus::SolverError;
+    }
+    if (lastHasConflict) {  // conflicting constraints
+        return SketchSolveStatus::SolverError;
+    }
 
     // move the point and solve
     lastSolverStatus = solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
@@ -80,26 +85,33 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
     // moving the point can not result in a conflict that we did not have
     // or a redundancy that we did not have before, or a change of DoF
 
-    if (lastSolverStatus == 0) {
+    if (lastSolverStatus == GCS::SolveStatus::Success) {
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
-        for (auto* geo :  geomlist) {
+        for (auto* geo : geomlist) {
             delete geo;
         }
     }
 
-    solvedSketch.resetInitMove();// reset solver point moving mechanism
+    solvedSketch.resetInitMove();  // reset solver point moving mechanism
 
-    return lastSolverStatus;
+    return lastSolverStatus == GCS::SolveStatus::Success ? SketchSolveStatus::Success
+                                                         : SketchSolveStatus::SolverError;
 }
 
-int SketchObject::moveGeometry(int geoId, PointPos pos, const Base::Vector3d& toPoint, bool relative,
-    bool updateGeoBeforeMoving)
+SketchSolveStatus SketchObject::moveGeometry(
+    int geoId,
+    PointPos pos,
+    const Base::Vector3d& toPoint,
+    bool relative,
+    bool updateGeoBeforeMoving
+)
 {
-    std::vector<GeoElementId> geoEltIds = { GeoElementId(geoId, pos) };
+    std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
     return moveGeometries(geoEltIds, toPoint, relative, updateGeoBeforeMoving);
 }
 
+// clang-format off
 int SketchObject::delGeometries(const std::vector<int>& GeoIds, DeleteOptions options)
 {
     return delGeometries(GeoIds.begin(), GeoIds.end(), options);
@@ -207,7 +219,7 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
-        Base::Console().error("Invalid GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -220,7 +232,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
-        Base::Console().error("Invalid number of edges connected to GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid number of edges connected to GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -448,30 +460,16 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         coinc2->addElement(GeoElementId(lineGeoId, filletPosId2));
 #endif
 
-        if (trim) {
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = GeoId1;
-            coinc1->SecondPos = PosId1;
+        coinc1->Second = filletId;
+        coinc1->SecondPos = PointPos::start;
 
-            coinc2->Second = GeoId2;
-            coinc2->SecondPos = PosId2;
+        coinc2->Second = filletId;
+        coinc2->SecondPos = PointPos::end;
 #else
-            coinc1->addElement(GeoElementId(GeoId1, PosId1));
-            coinc2->addElement(GeoElementId(GeoId2, PosId2));
+        coinc1->addElement(GeoElementId(filletId, PointPos::start));
+        coinc2->addElement(GeoElementId(filletId, PointPos::end));
 #endif
-        }
-        else {
-#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = filletId;
-            coinc1->SecondPos = PointPos::start;
-
-            coinc2->Second = filletId;
-            coinc2->SecondPos = PointPos::end;
-#else
-            coinc1->addElement(GeoElementId(filletId, PointPos::start));
-            coinc2->addElement(GeoElementId(filletId, PointPos::end));
-#endif
-        }
 
         addConstraint(std::move(coinc1));
         addConstraint(std::move(coinc2));
@@ -488,14 +486,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     return 0;
 }
 
-int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
+SketchSolveStatus SketchObject::extend(int GeoId, double increment, PointPos endpoint)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        return -1;
+        return SketchSolveStatus::SolverError;
 
     const std::vector<Part::Geometry*>& geomList = getInternalGeometry();
     Part::Geometry* geom = geomList[GeoId];
-    int retcode = -1;
+    auto status = SketchSolveStatus::Success;
     if (geom->is<Part::GeomLineSegment>()) {
         auto* seg = static_cast<Part::GeomLineSegment*>(geom);
         Base::Vector3d startVec = seg->getStartPoint();
@@ -506,7 +504,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + endVec;
-            retcode = moveGeometry(GeoId, Sketcher::PointPos::start, newPoint, false, true);
+            status = moveGeometry(GeoId, Sketcher::PointPos::start, newPoint, false, true);
         }
         else if (endpoint == PointPos::end) {
             Base::Vector3d newPoint = endVec - startVec;
@@ -514,7 +512,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
             newPoint.Normalize();
             newPoint.Scale(scaleFactor, scaleFactor, scaleFactor);
             newPoint = newPoint + startVec;
-            retcode = moveGeometry(GeoId, Sketcher::PointPos::end, newPoint, false, true);
+            status = moveGeometry(GeoId, Sketcher::PointPos::end, newPoint, false, true);
         }
     }
     else if (geom->is<Part::GeomArcOfCircle>()) {
@@ -523,17 +521,17 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
         arc->getRange(startArc, endArc, true);
         if (endpoint == PointPos::start) {
             arc->setRange(startArc - increment, endArc, true);
-            retcode = 0;
+            status = SketchSolveStatus::Success;
         }
         else if (endpoint == PointPos::end) {
             arc->setRange(startArc, endArc + increment, true);
-            retcode = 0;
+            status = SketchSolveStatus::Success;
         }
     }
-    if (retcode == 0 && noRecomputes) {
+    if (status == SketchSolveStatus::Success && noRecomputes) {
         solve();
     }
-    return retcode;
+    return status;
 }
 
 // clang-format on
@@ -906,10 +904,10 @@ void createNewConstraintsForTrim(
     }
 }
 
-int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketchAxes)
+SketchSolveStatus SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketchAxes)
 {
     if (!isGeoIdAllowedForTrim(this, GeoId)) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
     // Remove internal geometry beforehand for now
     // FIXME: we should be able to transfer these to new curves smoothly
@@ -917,7 +915,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
     const auto* geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
 
     if (geoAsCurve == nullptr) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     bool isOriginalCurveConstruction = GeometryFacade::getConstruction(geoAsCurve);
@@ -952,14 +950,14 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
         )) {
         // If no suitable trim points are found, then trim defaults to deleting the geometry
         delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
-        return 0;
+        return SketchSolveStatus::Success;
     }
 
     // TODO: find trim parameters
     std::vector<std::pair<double, double>> paramsOfNewGeos;
     paramsOfNewGeos.reserve(2);
     if (!getParamLimitsOfNewGeosForTrim(this, GeoId, cuttingGeoIds, cutPoints, paramsOfNewGeos)) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     //******************* Step B => Creation of new geometries
@@ -972,7 +970,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
     switch (paramsOfNewGeos.size()) {
         case 0: {
             delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
-            return 0;
+            return SketchSolveStatus::Success;
         }
         case 1: {
             newIds.push_back(GeoId);
@@ -984,7 +982,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
             break;
         }
         default: {
-            return -1;
+            return SketchSolveStatus::SolverError;
         }
     }
 
@@ -1133,7 +1131,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
         delete cons;
     }
 
-    return 0;
+    return SketchSolveStatus::Success;
 }
 
 int SketchObject::split(int GeoId, const Base::Vector3d& point)
@@ -2822,7 +2820,7 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         return false;
     }
@@ -2904,7 +2902,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
         bspline->increaseDegree(cdegree + degreeincrement);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -2950,7 +2948,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3065,7 +3063,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3213,7 +3211,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         bspline->insertKnot(param, multiplicity);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 

@@ -22,14 +22,14 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
     """
 
     @overload
-    def limitTolerance(self, shape: TopoShape, tmin: float, /) -> None: ...
+    def limitTolerance(self, shape: TopoShape, tmin: float, /) -> bool: ...
     @overload
     def limitTolerance(
         self, shape: TopoShape, tmin: float, tmax: float, ShapeEnum: str = None, /
-    ) -> None: ...
+    ) -> bool: ...
     def limitTolerance(
         self, shape: TopoShape, tmin: float, tmax: float = 0, ShapeEnum: str = None, /
-    ) -> None:
+    ) -> bool:
         """
         limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])
         """

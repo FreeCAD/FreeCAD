@@ -62,6 +62,7 @@ enum class SearchOption: int
 {
     CheckGeometry = 1, ///< Whether to compare shape geometry
     SingleResult = 2, ///< Stop at first found result
+    AdaptiveTolerance = 4, ///< Widen the tolerance stepwise and accept only a unique match
 };
 
 typedef Base::Flags<SearchOption> SearchOptions;

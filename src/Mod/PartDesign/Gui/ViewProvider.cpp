@@ -76,16 +76,43 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
 {
     ViewProviderPart::attach(pcObject);
 
+    updatePreviewColor();
+}
+
+void ViewProvider::updatePreviewColor()
+{
+    auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+    if (!addSubFeature) {
+        return;
+    }
+
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
-    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive;
-
-        PreviewColor.setValue(
-            isAdditive ? styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
-                       : styleParameterManager->resolve(StyleParameters::PreviewSubtractiveColor)
-        );
+    switch (addSubFeature->getBooleanOperation()) {
+        case PartDesign::FeatureAddSub::BooleanOperation::Subtraction:
+            PreviewColor.setValue(
+                styleParameterManager->resolve(StyleParameters::PreviewSubtractiveColor)
+            );
+            break;
+        case PartDesign::FeatureAddSub::BooleanOperation::Common:
+            PreviewColor.setValue(styleParameterManager->resolve(StyleParameters::PreviewCommonColor));
+            break;
+        case PartDesign::FeatureAddSub::BooleanOperation::Union:
+            PreviewColor.setValue(
+                styleParameterManager->resolve(StyleParameters::PreviewAdditiveColor)
+            );
+            break;
     }
+}
+
+void ViewProvider::updateData(const App::Property* prop)
+{
+    if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+        addSubFeature && prop == &addSubFeature->Operation) {
+        updatePreviewColor();
+    }
+
+    ViewProviderPart::updateData(prop);
 }
 
 bool ViewProvider::doubleClicked()

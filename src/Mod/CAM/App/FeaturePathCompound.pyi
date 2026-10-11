@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from typing import Any
-
 from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
@@ -19,10 +17,10 @@ class FeaturePathCompound(DocumentObject):
     License: LGPL-2.1-or-later
     """
 
-    def addObject(self) -> Any:
+    def addObject(self, obj: DocumentObject, /) -> None:
         """Add an object to the group"""
         ...
 
-    def removeObject(self) -> Any:
+    def removeObject(self, obj: DocumentObject, /) -> None:
         """Remove an object from the group"""
         ...

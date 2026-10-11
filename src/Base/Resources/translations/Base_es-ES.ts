@@ -16,7 +16,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="624"/>
       <source>US customary (in, lb)</source>
-      <translation>Sistema estadounidense (EE. UU) (in, lb)</translation>
+      <translation>Sistema estadounidense (EE. UU) (pulgada, libra)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="681"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>Decimales imperiales (in, lb)</translation>
+      <translation>Decimales imperiales (pulgada, libra)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="582"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="668"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Construcción estadounidense (ft-in, sqft, cft)</translation>
+      <translation>Construcción estadounidense (pies, pies cuadrados, pies cúbicos)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="54"/>
@@ -64,32 +64,32 @@
     <message>
       <location filename="../../Exception.cpp" line="323"/>
       <source>No permission to read the file</source>
-      <translation type="unfinished">No permission to read the file</translation>
+      <translation>No tiene permiso para leer el archivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="325"/>
       <source>No write permission for the file or the file is read-only</source>
-      <translation type="unfinished">No write permission for the file or the file is read-only</translation>
+      <translation>No hay permisos de escritura para el archivo o el archivo es de solo lectura</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="326"/>
       <source>File format not supported</source>
-      <translation type="unfinished">File format not supported</translation>
+      <translation>Formato de archivo no soportado</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="327"/>
       <source>Error reading from file</source>
-      <translation type="unfinished">Error reading from file</translation>
+      <translation>Error al leer desde el archivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="328"/>
       <source>Error writing to file</source>
-      <translation type="unfinished">Error writing to file</translation>
+      <translation>Error al escribir el archivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="330"/>
       <source>Directory does not exist</source>
-      <translation type="unfinished">Directory does not exist</translation>
+      <translation>El directorio no existe</translation>
     </message>
   </context>
 </TS>

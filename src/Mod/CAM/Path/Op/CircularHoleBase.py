@@ -246,8 +246,10 @@ class ObjectOp(PathOp.ObjectOp):
         if holes:
             if obj.SortingMode == "Automatic":
                 # Use the c++ implementation of the TSP sorting algorithm for better performance
-                startPoint = [obj.StartPoint.x, obj.StartPoint.y]
-                endPoint = [obj.EndPoint.x, obj.EndPoint.y] if obj.UseEndPoint else None
+                start = self.startPoint(obj)
+                startPoint = [start.x, start.y]
+                end = self.toFrame(obj.EndPoint)
+                endPoint = [end.x, end.y] if obj.UseEndPoint else None
                 holes = PathUtils.sort_locations_tsp(
                     holes, ["x", "y"], startPoint=startPoint, endPoint=endPoint
                 )

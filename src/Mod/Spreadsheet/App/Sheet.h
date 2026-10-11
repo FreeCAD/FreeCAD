@@ -190,6 +190,15 @@ public:
 
     std::string getAddressFromAlias(const std::string& alias) const;
 
+    enum class ReservedAliasToken
+    {
+        None,
+        Unit,
+        Constant
+    };
+
+    static ReservedAliasToken classifyReservedAliasName(const std::string& candidate);
+
     bool isValidAlias(const std::string& candidate);
 
     void setSpans(App::CellAddress address, int rows, int columns);
