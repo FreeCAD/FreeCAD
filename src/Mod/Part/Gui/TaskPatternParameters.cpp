@@ -69,7 +69,13 @@ std::string patternReferenceCommand(
 
 TaskPatternParameters::TaskPatternParameters() = default;
 
-TaskPatternParameters::~TaskPatternParameters() = default;
+TaskPatternParameters::~TaskPatternParameters()
+{
+    if (updateViewTimer) {
+        updateViewTimer->stop();
+        updateViewTimer->deleteLater();
+    }
+}
 
 void TaskPatternParameters::setupPatternParameterUI(
     QWidget* parent,
@@ -329,18 +335,38 @@ void TaskPatternParameters::updatePatternParameterUI()
 void TaskPatternParameters::setupUpdateViewTimer(QObject* signalContext)
 {
     constexpr int previewDebounceIntervalMs = 500;
-    updateViewTimer = new QTimer(signalContext);
+    // Re-init overwrites the pointer; tear down the old timer to avoid a leak.
+    if (updateViewTimer) {
+        updateViewTimer->stop();
+        updateViewTimer->deleteLater();
+    }
+    // Keep independent of the panel: recompute may destroy it mid-callback.
+
+    updateViewTimer = new QTimer();
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(previewDebounceIntervalMs);
-    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
-        onUpdateViewTimer();
-    });
+    QObject::connect(
+        updateViewTimer,
+        &QTimer::timeout,
+        signalContext,
+        [this, weakPanel = QPointer<QObject> {signalContext}]() {
+            if (weakPanel.isNull()) {
+                return;
+            }
+            onUpdateViewTimer(weakPanel);
+        }
+    );
 }
 
-void TaskPatternParameters::onUpdateViewTimer()
+void TaskPatternParameters::onUpdateViewTimer(const QPointer<QObject>& panel)
 {
     setupPatternTransaction();
     recomputePatternFeature();
+
+    // A recompute can tear the task panel down; bail before touching it.
+    if (panel.isNull()) {
+        return;
+    }
     updatePatternSpacingLabels();
     updatePatternParameterUI();
 }

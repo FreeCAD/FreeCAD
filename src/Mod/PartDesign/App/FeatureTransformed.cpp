@@ -534,6 +534,33 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return shapes;
     };
 
+    const auto applyBatchedOp =
+        [&](auto& support, const std::vector<TopoShape>& shapes, const bool isCut) {
+            if (shapes.size() <= 1) {
+                return;
+            }
+            // Batch boolean operations to avoid performance degradation with many tools.
+            // 6-8 tools is optimal; performance degrades exponentially with larger batches.
+            // The operation can take minutes and fail if the batch is large enough (~71)
+            constexpr std::size_t kBatchTools = 8;
+            const auto batchSize = std::min(shapes.size() - 1, kBatchTools);
+            support = shapes.front();
+            for (auto it = shapes.begin() + 1; it != shapes.end();) {
+                std::vector<TopoShape> batch;
+                batch.reserve(batchSize + 1);
+                batch.push_back(support);
+                for (std::size_t n = 0; n < batchSize && it != shapes.end(); ++n, ++it) {
+                    batch.push_back(*it);
+                }
+                if (isCut) {
+                    support.makeElementCut(batch);
+                }
+                else {
+                    support.makeElementFuse(batch);
+                }
+            }
+        };
+
     switch (mode) {
         case Mode::Features:
             // NOTE: It would be possible to build a compound from all original addShapes/subShapes
@@ -574,7 +601,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     if (!shapes.empty()) {
-                        supportShape.makeElementFuse(shapes);
+                        applyBatchedOp(supportShape, shapes, /* isCut = */ false);
                     }
                 }
                 if (!cutShape.isNull()) {
@@ -583,7 +610,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     if (shapes.size() > 1) {
-                        supportShape.makeElementCut(shapes);
+                        applyBatchedOp(supportShape, shapes, /* isCut = */ true);
                     }
                 }
             }
@@ -594,7 +621,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             if (!shapes.empty()) {
-                supportShape.makeElementFuse(shapes);
+                applyBatchedOp(supportShape, shapes, /* isCut = */ false);
             }
             break;
         }

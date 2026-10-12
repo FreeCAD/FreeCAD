@@ -6323,6 +6323,12 @@ TopoShape& TopoShape::makeElementBoolean(
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
+    if (!mk->IsDone()) {
+        FC_THROWM(Base::CADKernelError, "Boolean operation failed");
+    }
+    if (mk->Shape().IsNull()) {
+        FC_THROWM(Base::CADKernelError, "Boolean operation produced a null shape");
+    }
     makeElementShape(*mk, inputs, op, elementMapPolicy);
 
     if (buildShell) {
