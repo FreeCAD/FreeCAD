@@ -1012,7 +1012,12 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(hole.Shape.Edges), 77)
 
             # Edges in the thread should disappear when we stop modeling thread
-            sketch2.addExternal("Hole", "Edge29")
+            thread_edge = next(
+                i
+                for i, edge in enumerate(hole.Shape.Edges, 1)
+                if isinstance(edge.Curve, Part.BSplineCurve)
+            )
+            sketch2.addExternal("Hole", f"Edge{thread_edge}")
             hole.ModelThread = 0
             hole.Refine = 1
             self.Doc.recompute()
