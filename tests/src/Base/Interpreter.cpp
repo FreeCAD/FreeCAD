@@ -439,6 +439,37 @@ TEST_F(InterpreterTest, replaceStdOutputInstallsSilentStreams)  // NOLINT
     );
 }
 
+TEST_F(InterpreterTest, getPythonPathReturnsSearchPath)  // NOLINT
+{
+    EXPECT_FALSE(Base::Interpreter().getPythonPath().empty());
+}
+
+TEST_F(InterpreterTest, configuredPythonExecutableExists)  // NOLINT
+{
+    // sys.executable must point to the interpreter belonging to the loaded libpython,
+    // never to the host binary, a foreign interpreter or a nonexistent path.
+    const std::string executable = static_cast<std::string>(
+        Py::String(Base::Interpreter().runStringObject("__import__('sys').executable"))
+    );
+    ASSERT_FALSE(executable.empty());
+    std::error_code ec;
+    const std::filesystem::path path(executable);
+    EXPECT_TRUE(std::filesystem::is_regular_file(path, ec)) << executable;
+
+    // The interpreter was initialized with argv[0] == "FreeCADInterpreterTest", so a
+    // non-empty sys.executable under a different name proves the host fallback was not used.
+    EXPECT_NE(path.filename().string(), "FreeCADInterpreterTest");
+
+    const std::string versioned = std::format("python{}.{}", PY_MAJOR_VERSION, PY_MINOR_VERSION);
+#ifdef FC_OS_WIN32
+    // Windows installations use a version-less python.exe next to the loaded pythonXY.dll.
+    EXPECT_EQ(path.filename().string(), "python.exe") << executable;
+#else
+    // On Unix only versioned names are accepted, so an unrelated `python3` from another
+    // installation (e.g. /usr/bin/python3) can never be selected.
+    EXPECT_EQ(path.filename().string(), versioned) << executable;
+#endif
+}
 
 TEST_F(InterpreterTest, strToPythonEscapesSpecialCharacters)  // NOLINT
 {

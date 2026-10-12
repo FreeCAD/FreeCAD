@@ -35,9 +35,11 @@
 #include <format>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <span>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <vector>
 
 #include <FCConfig.h>
@@ -48,6 +50,12 @@
 #include "FCGlobal.h"
 #include "PyObjectBase.h"
 #include "Stream.h"
+
+#ifdef FC_OS_WIN32
+# include <windows.h>
+#else
+# include <dlfcn.h>
+#endif
 
 #include <frameobject.h>
 
@@ -60,6 +68,85 @@ namespace
 
 constexpr std::size_t pythonErrorTextSize = 2024;
 using PythonErrorText = std::array<char, pythonErrorTextSize>;
+
+/// Locate libpython.so/dll/dylib dynamic library path on disk based on dynamic linking.
+fs::path getLibPythonDir()
+{
+#ifdef FC_OS_WIN32
+    HMODULE hModule = NULL;
+    GetModuleHandleExW(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        reinterpret_cast<LPCWSTR>(&Py_Initialize),  // NOLINT
+        &hModule
+    );
+    wchar_t path[MAX_PATH];
+    GetModuleFileNameW(hModule, path, MAX_PATH);
+    return fs::path(path).parent_path();
+#else
+    // NOLINTNEXTLINE
+    auto initAddr = reinterpret_cast<void*>(&Py_Initialize);
+    Dl_info info;
+    if (dladdr(initAddr, &info)) {
+        return fs::path(info.dli_fname).parent_path().lexically_normal();
+    }
+    throw Base::RuntimeError("Failed to configure python environment");
+#endif
+}
+
+/// An interpreter candidate is a regular, executable file (symlinks are followed).
+bool isExecutableFile(const fs::path& path)
+{
+    std::error_code ec;
+    const fs::file_status status = fs::status(path, ec);
+    if (ec || !fs::is_regular_file(status)) {
+        return false;
+    }
+#ifdef FC_OS_WIN32
+    return true;
+#else
+    constexpr auto exec_bits = fs::perms::owner_exec | fs::perms::group_exec | fs::perms::others_exec;
+    return (status.permissions() & exec_bits) != fs::perms::none;
+#endif
+}
+
+/// Locate the python interpreter belonging to the loaded libpython. All candidates are
+/// derived from the libpython location and, on Unix, carry the exact version in their
+/// name (pythonX.Y), so the result can never be an unrelated Python found on PATH.
+/// Returns nullopt when no such interpreter exists so the caller can keep Python's
+/// default instead of configuring a foreign or nonexistent executable.
+std::optional<fs::path> getPythonExecutablePath()
+{
+    const fs::path base_path = getLibPythonDir();
+
+#ifdef FC_OS_WIN32
+    // The interpreter lives in the installation directory of the loaded pythonXY.dll
+    // whose name already pins the version.
+    const auto candidates = std::to_array({
+        base_path / "python.exe",
+        base_path.parent_path() / "python.exe",
+        base_path / "DLLs" / "python.exe",
+    });
+#else
+    const std::string versioned = std::format("python{}.{}", PY_MAJOR_VERSION, PY_MINOR_VERSION);
+    std::vector<fs::path> candidates {
+        base_path.parent_path() / "bin" / versioned,  // conda/venv, homebrew framework
+        base_path / "bin" / versioned,                // python.org macOS framework
+    };
+    // Linux multiarch / lib64: /usr/lib[/<triplet>]/libpythonX.Y.so -> /usr/bin/pythonX.Y.
+    const fs::path lib_dir = base_path.parent_path();
+    if (lib_dir.filename() == "lib" || lib_dir.filename() == "lib64") {
+        candidates.emplace_back(lib_dir.parent_path() / "bin" / versioned);
+    }
+#endif
+
+    for (const auto& candidate : candidates) {
+        if (isExecutableFile(candidate)) {
+            return candidate;
+        }
+    }
+
+    return std::nullopt;
+}
 
 void copyErrorText(std::span<char> dest, std::string_view text)
 {
@@ -513,8 +600,8 @@ public:
     }
 };
 
-PYCXX_VARARGS_METHOD_DECL(PythonStdOutput, write)  // NOLINT
-PYCXX_VARARGS_METHOD_DECL(PythonStdOutput, flush)  // NOLINT
+PYCXX_VARARGS_METHOD_DECL(PythonStdOutput, write)
+PYCXX_VARARGS_METHOD_DECL(PythonStdOutput, flush)
 
 void PythonStdOutput::init_type()
 {
@@ -890,6 +977,15 @@ void initInterpreter(int argc, char* argv[])
     PyStatus status = PyConfig_SetBytesArgv(&config, argc, argv);
     if (PyStatus_Exception(status)) {
         throw Base::RuntimeError("Failed to set config");
+    }
+
+    if (const auto python_exe = getPythonExecutablePath()) {
+        // Only sys.executable is overridden, keep program_name.
+        const std::wstring python_exe_wide = python_exe->wstring();
+        status = PyConfig_SetString(&config, &config.executable, python_exe_wide.c_str());
+        if (PyStatus_Exception(status)) {
+            throw Base::RuntimeError("Failed to set config");
+        }
     }
 
     status = Py_InitializeFromConfig(&config);
