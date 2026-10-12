@@ -395,9 +395,9 @@ public:
      * This function corrects a face if the inner wires are in the same direction as
      * the outer wire.
      *
-     * \param[in] face.
+     * \param[in] face The face to be validated.
      *
-     * \return shape either the corrected or supplied face.
+     * \return Either the corrected shape or supplied face.
      */
     static TopoDS_Shape validateFace(const TopoDS_Face& face);
 };
