@@ -507,6 +507,16 @@ Property* Sheet::getProperty(CellAddress key) const
     return props.getDynamicPropertyByName(key.toString(CellAddress::Cell::ShowRowColumn).c_str());
 }
 
+std::string Sheet::getCanonicalPropertyName(const char* name) const
+{
+    App::CellAddress address = getCellAddress(name, true);
+    if (!address.isValid()) {
+        return {};
+    }
+
+    return address.toString(CellAddress::Cell::ShowRowColumn);
+}
+
 /**
  * @brief Get a dynamic property.
  * @param addr Name of dynamic propeerty.
