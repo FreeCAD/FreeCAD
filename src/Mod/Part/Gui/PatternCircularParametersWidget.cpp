@@ -14,7 +14,8 @@
 using namespace PartGui;
 
 PatternCircularParametersWidget::PatternCircularParametersWidget(QWidget* parent)
-    : ui(new Ui_PatternCircularParametersWidget)
+    : QWidget(parent)
+    , ui(new Ui_PatternCircularParametersWidget)
     , axisWidget(new PatternReferenceWidget(this))
     , binormalAxisWidget(new PatternReferenceWidget(this))
 {
