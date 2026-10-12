@@ -33,6 +33,21 @@
 
 using namespace Gui::Dialog;
 
+namespace
+{
+void setColor(Base::Color& materialColor, const Base::Color& originalColor, const QColor& buttonColor)
+{
+    // QColor is limited to the precision exposed by the color picker.  Retain the original
+    // material color when the picker restores its initial color after cancellation.
+    if (buttonColor == originalColor.asValue<QColor>()) {
+        materialColor = originalColor;
+    }
+    else {
+        materialColor.setValue(buttonColor);
+    }
+}
+}  // namespace
+
 
 /* TRANSLATOR Gui::Dialog::DlgMaterialPropertiesImp */
 
@@ -76,6 +91,7 @@ void DlgMaterialPropertiesImp::setupConnections()
 void DlgMaterialPropertiesImp::setCustomMaterial(const App::Material& mat)
 {
     customMaterial = mat;
+    originalMaterial = mat;
     setButtonColors(customMaterial);
 }
 
@@ -99,7 +115,7 @@ App::Material DlgMaterialPropertiesImp::getDefaultMaterial() const
  */
 void DlgMaterialPropertiesImp::onAmbientColorChanged()
 {
-    customMaterial.ambientColor.setValue(ui->ambientColor->color());
+    setColor(customMaterial.ambientColor, originalMaterial.ambientColor, ui->ambientColor->color());
 }
 
 /**
@@ -107,7 +123,7 @@ void DlgMaterialPropertiesImp::onAmbientColorChanged()
  */
 void DlgMaterialPropertiesImp::onDiffuseColorChanged()
 {
-    customMaterial.diffuseColor.setValue(ui->diffuseColor->color());
+    setColor(customMaterial.diffuseColor, originalMaterial.diffuseColor, ui->diffuseColor->color());
 }
 
 /**
@@ -115,7 +131,7 @@ void DlgMaterialPropertiesImp::onDiffuseColorChanged()
  */
 void DlgMaterialPropertiesImp::onEmissiveColorChanged()
 {
-    customMaterial.emissiveColor.setValue(ui->emissiveColor->color());
+    setColor(customMaterial.emissiveColor, originalMaterial.emissiveColor, ui->emissiveColor->color());
 }
 
 /**
@@ -123,7 +139,7 @@ void DlgMaterialPropertiesImp::onEmissiveColorChanged()
  */
 void DlgMaterialPropertiesImp::onSpecularColorChanged()
 {
-    customMaterial.specularColor.setValue(ui->specularColor->color());
+    setColor(customMaterial.specularColor, originalMaterial.specularColor, ui->specularColor->color());
 }
 
 /**
