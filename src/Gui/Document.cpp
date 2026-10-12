@@ -1543,13 +1543,27 @@ static bool isOlderVersion(const App::Document* doc)
     const char* docVersion = doc->getProgramVersion();
     const bool hasVersionString = !Base::Tools::isNullOrEmpty(docVersion);
 
-    int docMajor = 0, docMinor = 0;
-    const bool hasVersion = hasVersionString
-        && std::sscanf(docVersion, "%d.%d", &docMajor, &docMinor) == 2;
+    int docMajor = 0;
+    int docMinor = 0;
+    bool hasVersion = false;
+    if (hasVersionString) {
+        std::string versionStr(docVersion);
+        size_t dotPos = versionStr.find('.');
+        if (dotPos != std::string::npos) {
+            try {
+                docMajor = std::stoi(versionStr.substr(0, dotPos));
+                docMinor = std::stoi(versionStr.substr(dotPos + 1));
+                hasVersion = true;
+            } catch (const std::exception&) {
+                hasVersion = false;
+            }
+        }
+    }
 
     auto config = App::Application::Config();
-    int currentMajor = 0, currentMinor = 0;
-    if (config.count("BuildVersionMajor") && config.count("BuildVersionMinor")) {
+    int currentMajor = 0;
+    int currentMinor = 0;
+    if (config.contains("BuildVersionMajor") && config.contains("BuildVersionMinor")) {
         currentMajor = std::stoi(config["BuildVersionMajor"]);
         currentMinor = std::stoi(config["BuildVersionMinor"]);
     }
@@ -1632,6 +1646,7 @@ bool Document::warnIfOlderVersion()
 }
 
 /// Save the document
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 bool Document::save()
 {
     if (d->_pcDocument->isSaved()) {
@@ -1843,8 +1858,8 @@ void Document::saveAll()
             continue;
         }
 
-        if (!gdoc->isModified() && !doc->isTouched() && !dmap[doc] && doc->isSaved()
-            && !isOlderVersion(doc)) {
+        // Simplified skip check based on PR review
+        if (!gdoc->isModified() && doc->isSaved() && !isOlderVersion(doc)) {
             continue;
         }
 
