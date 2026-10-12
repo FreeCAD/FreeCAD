@@ -541,6 +541,21 @@ const std::string& TopoShape::shapeName(bool silent) const
     return shapeName(shapeType(silent), silent);
 }
 
+
+void TopoShape::expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
+{
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    if (shape.getShape().ShapeType() != TopAbs_COMPOUND) {
+        res.push_back(shape);
+        return;
+    }
+    for (auto& s : shape.getSubTopoShapes()) {
+        expandCompound(s, res);
+    }
+}
+
 PyObject* TopoShape::getPySubShape(const char* Type, bool silent) const
 {
     TopoShape s(*this);

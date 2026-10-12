@@ -2302,7 +2302,7 @@ void prepareTransformed(
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         if (features.empty()) {
-            FCMD_OBJ_CMD(Feat, "TransformMode = \"Whole shape\"");
+            FCMD_OBJ_CMD(Feat, "TransformMode = \"Body\"");
         }
         else {
             std::stringstream str;
