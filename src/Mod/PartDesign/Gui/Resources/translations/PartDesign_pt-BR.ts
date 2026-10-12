@@ -205,17 +205,17 @@ para que a auto-interseção seja evitada.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2861"/>
       <source>Boolean Operation</source>
       <translation>Operação Booleana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2727"/>
+      <location filename="../../Command.cpp" line="2862"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Aplica operações booleanas com os objetos selecionados e o corpo ativo</translation>
     </message>
@@ -493,17 +493,17 @@ para que a auto-interseção seja evitada.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2729"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2730"/>
       <source>Multi-Transform</source>
       <translation>Multi-transformação</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Aplica múltiplas transformações aos recursos selecionados ou ao corpo ativo</translation>
     </message>
@@ -601,17 +601,17 @@ para que a auto-interseção seja evitada.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2489"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2490"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Polar Pattern</source>
       <translation>Padrão polar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplica os elementos selecionados ou o corpo ativo em um padrão circular</translation>
     </message>
@@ -637,17 +637,17 @@ para que a auto-interseção seja evitada.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2686"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2687"/>
       <source>Scale</source>
       <translation>Escalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2688"/>
       <source>Scales the selected features or the active body</source>
       <translation>Escala os elementos selecionados ou o corpo ativo</translation>
     </message>
@@ -904,7 +904,7 @@ para que a auto-interseção seja evitada.</translation>
       <translation>Criar cópia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2649"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Converter em recurso de multitransformação</translation>
     </message>
@@ -925,7 +925,7 @@ para que a auto-interseção seja evitada.</translation>
       <translation>Novo esboço</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2746"/>
+      <location filename="../../Command.cpp" line="2881"/>
       <source>Create Boolean</source>
       <translation>Criar Booleano</translation>
     </message>
@@ -961,22 +961,37 @@ para que a auto-interseção seja evitada.</translation>
       <translation>Mover um objeto</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="261"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
       <source>Mirror</source>
       <translation>Espelhar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>
       <source>Linear Pattern</source>
       <translation>Padrão linear</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="350"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Polar Pattern</source>
       <translation>Padrão polar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
+      <source>Circular Pattern</source>
+      <translation>Padrão circular</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
+      <source>Path Pattern</source>
+      <translation>Padrão ao longo de caminho</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
+      <source>Point Pattern</source>
+      <translation>Padrão de pontos</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
       <source>Scale</source>
       <translation>Escalar</translation>
     </message>
@@ -1016,7 +1031,7 @@ para que a auto-interseção seja evitada.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Start Part</source>
-      <translation type="unfinished">Start Part</translation>
+      <translation>Iniciar Part</translation>
     </message>
   </context>
   <context>
@@ -1350,7 +1365,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2365"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2370"/>
@@ -1409,7 +1424,7 @@ Se for zero, é igual ao Raio2</translation>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="290"/>
+      <location filename="../../ReferenceSelection.cpp" line="336"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Selecionar isto causará uma dependência circular.</translation>
     </message>
@@ -1733,27 +1748,27 @@ Se for zero, é igual ao Raio2</translation>
   <context>
     <name>PartDesignGui::TaskDressUpParameters</name>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="302"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="591"/>
       <source>Select</source>
       <translation>Selecione</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="307"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="596"/>
       <source>Confirm Selection</source>
       <translation>Confirmar seleção</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="320"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="609"/>
       <source>Add All Edges</source>
       <translation>Adicionar todas as arestas</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="326"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="615"/>
       <source>Adds all edges to the list box (only when in add selection mode)</source>
       <translation>Adiciona todas as arestas à caixa de listagem (apenas quando no modo de adição de seleção)</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="335"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="624"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
@@ -1983,7 +1998,7 @@ Se for zero, é igual ao Raio2</translation>
       <translation>Usar todas as arestas</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="205"/>
+      <location filename="../../TaskFilletParameters.cpp" line="204"/>
       <source>Empty fillet created!</source>
       <translation>Arredondamento vazio criado!</translation>
     </message>
@@ -2105,7 +2120,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="285"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="290"/>
@@ -2361,7 +2376,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="126"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="131"/>
@@ -2415,47 +2430,62 @@ Se for zero, é igual ao Raio2</translation>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Delete</source>
       <translation>Excluir</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="80"/>
       <source>Add Mirror Transformation</source>
       <translation>Adicionar transformação de espelhamento</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="85"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="88"/>
       <source>Add Linear Pattern</source>
       <translation>Adicionar padrão linear</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
+      <source>Add Circular Pattern</source>
+      <translation>Adicionar padrão circular</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <source>Add Path Pattern</source>
+      <translation>Adicionar padrão ao longo de caminho</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
+      <source>Add Point Pattern</source>
+      <translation>Adicionar padrão de pontos</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
       <source>Add Polar Pattern</source>
       <translation>Adicionar padrão polar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="128"/>
       <source>Add Scale Transformation</source>
       <translation>Adicionar transformação de escala</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="131"/>
       <source>Move Up</source>
       <translation>Mover para cima</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="134"/>
       <source>Move Down</source>
       <translation>Mover para baixo</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="139"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="166"/>
       <source>Right-click to add a transformation</source>
       <translation>Clique com o botão direito para adicionar uma transformação</translation>
     </message>
@@ -2713,7 +2743,7 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="773"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="778"/>
@@ -2870,7 +2900,7 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="169"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="174"/>
@@ -3103,12 +3133,12 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="374"/>
       <source>Projects the selected axis onto the profile plane if the profile is planar. When unchecked, uses the axis in its original position and direction.</source>
-      <translation type="unfinished">Projects the selected axis onto the profile plane if the profile is planar. When unchecked, uses the axis in its original position and direction.</translation>
+      <translation>Projeta o eixo selecionado no plano do perfil se o perfil for planar. Quando desmarcado, usa o eixo em sua posição e direção originais.</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="377"/>
       <source>Project selected axis to profile plane</source>
-      <translation type="unfinished">Project selected axis to profile plane</translation>
+      <translation>Projetar eixo selecionado para o plano do perfil</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="384"/>
@@ -3123,7 +3153,7 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="404"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="409"/>
@@ -3346,12 +3376,12 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="216"/>
       <source>Recto verso applies the thickness equally to both sides</source>
-      <translation type="unfinished">Recto verso applies the thickness equally to both sides</translation>
+      <translation>Frente e verso aplica a espessura igualmente a ambos os lados</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="219"/>
       <source>Total wall thickness; half is applied to each side</source>
-      <translation type="unfinished">Total wall thickness; half is applied to each side</translation>
+      <translation>Espessura total da parede; metade é aplicada a cada lado</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="293"/>
@@ -3922,7 +3952,7 @@ Para documentos antigos com objetos do Part Design sem um corpo, use a função 
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
@@ -3962,12 +3992,12 @@ Para documentos antigos com objetos do Part Design sem um corpo, use a função 
       <translation>Editar elemento de referência</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="100"/>
       <source>Feature error</source>
       <translation>Erro de objeto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>%1 Não possui um recurso base.\nEste recurso está corrompido e não pode ser editado.</translation>
@@ -4560,7 +4590,7 @@ Disponível apenas para furos que não tem histórico</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1221"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Subtração</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1226"/>
@@ -5067,12 +5097,12 @@ acima de 90: raio maior do furo na parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="849"/>
       <source>Cannot project the axis because the profile is not planar</source>
-      <translation type="unfinished">Cannot project the axis because the profile is not planar</translation>
+      <translation>Não é possível projetar o eixo porque o perfil não é planar</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="860"/>
       <source>Cannot project an axis perpendicular to the profile plane</source>
-      <translation type="unfinished">Cannot project an axis perpendicular to the profile plane</translation>
+      <translation>Não é possível projetar um eixo perpendicular ao plano do perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
@@ -5489,37 +5519,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Fusão com recurso base falhou</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Transformação do recurso ligado ao objeto não é uma peça</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="120"/>
       <source>No features selected to be mirrored.</source>
       <translation>Nenhum elemento selecionado para ser espelhado.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="127"/>
       <source>No features selected to be patterned.</source>
       <translation>Nenhum recurso foi selecionado para criar o padrão.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="130"/>
       <source>No features selected to be transformed.</source>
       <translation>Nenhum recurso foi selecionado para ser transformado.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="379"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="447"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Não é possível transformar forma base inválida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="430"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="561"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>A forma de recurso aditivo/subtrativo está vazia</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="421"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="552"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Apenas recursos aditivos e subtrativos podem ser transformadas</translation>
     </message>
@@ -5612,12 +5642,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2793"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Create Datum</source>
       <translation>Criar elemento de referência</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2794"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Cria um objeto de referência ou sistema de coordenadas local</translation>
     </message>
@@ -5625,12 +5655,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2828"/>
+      <location filename="../../Command.cpp" line="2963"/>
       <source>Create Datum</source>
       <translation>Criar esboço</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2829"/>
+      <location filename="../../Command.cpp" line="2964"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Cria um objeto de referência ou sistema de coordenadas local</translation>
     </message>
@@ -5859,32 +5889,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="278"/>
+      <location filename="../../TaskPatternParameters.cpp" line="415"/>
       <source>Select a sketch or shape containing the pattern points</source>
-      <translation type="unfinished">Select a sketch or shape containing the pattern points</translation>
+      <translation>Selecione um esboço ou forma contendo os pontos do padrão</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="284"/>
+      <location filename="../../TaskPatternParameters.cpp" line="421"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
-      <translation type="unfinished">Select a sketch, Sub-Shape Binder, or path edge</translation>
+      <translation>Selecione um esboço, Sub-Shape Binder ou aresta de caminho</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="293"/>
+      <location filename="../../TaskPatternParameters.cpp" line="430"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Selecione uma referência de direção (aresta, face, linha de referência)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="356"/>
+      <location filename="../../TaskPatternParameters.cpp" line="494"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
-      <translation type="unfinished">Invalid selection. Select a sketch or shape containing points.</translation>
+      <translation>Seleção inválida. Selecione um esboço ou forma contendo pontos.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="359"/>
+      <location filename="../../TaskPatternParameters.cpp" line="497"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
-      <translation type="unfinished">Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</translation>
+      <translation>Seleção inválida. Selecione um esboço, Sub-Shape Binder ou aresta de caminho.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="361"/>
+      <location filename="../../TaskPatternParameters.cpp" line="499"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Seleção inválida. Selecione uma aresta, face plana ou linha de referência.</translation>
     </message>
@@ -5931,11 +5961,78 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
+    <name>CmdPartDesignCircularPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2489"/>
+      <source>PartDesign</source>
+      <translation>PartDesign</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2490"/>
+      <source>Circular Pattern</source>
+      <translation>Padrão circular</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2491"/>
+      <source>Duplicates the selected features or the active body in concentric circular patterns</source>
+      <translation>Duplica os recursos selecionados ou o corpo ativo em padrões circulares concêntricos</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPathPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2546"/>
+      <source>PartDesign</source>
+      <translation>PartDesign</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2547"/>
+      <source>Path Pattern</source>
+      <translation>Padrão ao longo de caminho</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2548"/>
+      <source>Duplicates the selected features or the active body along a path</source>
+      <translation>Duplica os recursos selecionados ou o corpo ativo ao longo de um caminho</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPointPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2584"/>
+      <source>PartDesign</source>
+      <translation>PartDesign</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2585"/>
+      <source>Point Pattern</source>
+      <translation>Padrão de pontos</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2586"/>
+      <source>Duplicates the selected features or the active body at points from a shape</source>
+      <translation>Duplica os recursos selecionados ou o corpo ativo em pontos de uma forma</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::ViewProviderDefeaturing</name>
     <message>
       <location filename="../../ViewProviderDefeaturing.h" line="40"/>
       <source>Defeaturing Parameters</source>
       <translation>Parâmetros de remoção de recursos</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Parâmetros do padrão ao longo de caminho</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Editar padrão ao longo de caminho</translation>
     </message>
   </context>
   <context>
@@ -5972,11 +6069,37 @@ Ajuste os parâmetros e tente novamente.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Parâmetros do padrão circular</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Editar padrão circular</translation>
+    </message>
+  </context>
+  <context>
     <name>BooleanToolSelection</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="83"/>
       <source>The result Body cannot be used as a Boolean tool.</source>
       <translation>O corpo resultante não pode ser usado como ferramenta booleana.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Parâmetros do padrão de pontos</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Editar padrão de pontos</translation>
     </message>
   </context>
 </TS>

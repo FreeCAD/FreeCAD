@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing…</source>
-      <translation>העתק קיים...</translation>
+      <translation>העתק קיים…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation>הוֹרֶה</translation>
+      <translation>הורה</translation>
     </message>
   </context>
   <context>
@@ -1829,7 +1829,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
@@ -4111,7 +4111,7 @@ The default template is located at:
       <location filename="../../bimcommands/BimRoof.py" line="94"/>
       <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>%1 select a base object</source>
-      <translation type="unfinished">%1 select a base object</translation>
+      <translation>%1 בחר אובייקט בסיס</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
@@ -7163,7 +7163,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1177"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>שמור תצוגת מצלמה</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1183"/>
@@ -7324,7 +7324,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
-      <translation type="unfinished">Create Sketch</translation>
+      <translation>צור סקיצה</translation>
     </message>
   </context>
   <context>
@@ -7417,8 +7417,7 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>הגובה או עומק הבליטה של ​​אלמנט זה. יש להשאיר את הערך 0 כדי להתאים אוטומטית את גובה הקומה או הבניין המקיף.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9522,9 +9521,7 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>תבנית לטקסט התווית של החללים. השתמש ב-$area, $label, $longname, $description או כל שם מאפיין אחר שלפניו $ (לא תלוי רישיות), או $floor, $walls, $ceiling עבור גימורים, כדי להכניס את הנתונים המתאימים.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -11692,7 +11689,7 @@ Alt+PgUp להרחבת שחול Alt+PgDown כדי לכווץ שחול Alt+/ כד�
     <message>
       <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>שמור תצוגת מצלמה</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="104"/>

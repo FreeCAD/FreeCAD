@@ -327,7 +327,7 @@
     <message>
       <location filename="../../Command.cpp" line="2888"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2889"/>
@@ -345,7 +345,7 @@
     <message>
       <location filename="../../Command.cpp" line="2252"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2253"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2292"/>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../Command.cpp" line="2328"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2329"/>
@@ -409,7 +409,7 @@
     <message>
       <location filename="../../Command.cpp" line="2365"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2366"/>
@@ -1545,7 +1545,7 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>ייצוא</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
@@ -3290,7 +3290,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshShape.ui" line="145"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>תיבה</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="150"/>
@@ -3667,7 +3667,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
@@ -4859,7 +4859,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>תיבה</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -6564,7 +6564,7 @@ Please select a result type first.</source>
       <translation>אין אובייקט תוצאה</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="200"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
       <source>
 
 Correct module found in: 
@@ -6573,31 +6573,31 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="208"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
       <source>
 
 Should this module be loaded instead?</source>
       <translation>האם יש לטעון את המודול הזה במקום זאת?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="225"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>
 
 No matching module was found in the current Python path.</source>
       <translation>לא נמצא מודול תואם בנתיב הפייתון הנוכחי.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="229"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
       <source>VTK Python module conflict</source>
       <translation>התנגשות מודול VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="255"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python Module Conflict</source>
       <translation>קונפליקט מודול VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="258"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>פונקציונליות זו אינה זמינה עקב התנגשות מודול VTK Python</translation>
     </message>
@@ -6905,7 +6905,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1506"/>
@@ -6961,7 +6961,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1689"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1690"/>
@@ -6979,7 +6979,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="2557"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
@@ -7071,7 +7071,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1886"/>
@@ -7315,7 +7315,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
@@ -7456,7 +7456,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1437"/>
@@ -7477,7 +7477,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
@@ -8096,7 +8096,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../Command.cpp" line="2594"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2595"/>
@@ -8114,7 +8114,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../Command.cpp" line="3036"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>שיטת האלמנטים הסופיים</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3037"/>

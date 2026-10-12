@@ -1351,7 +1351,7 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Konstruktor kształtu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
@@ -1803,7 +1803,7 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     <message>
       <location filename="../../Command.cpp" line="1862"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Odsunięcie 2D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1863"/>
@@ -2210,7 +2210,7 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Szyk kołowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2225,12 +2225,12 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Szyk liniowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Szyk biegunowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -2891,8 +2891,8 @@ Jeśli obie długości są równe zero, używana jest wartość wielkości kieru
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Tworzenie wyciągnięcia nie powiodło się.
+Żaden kształt nie mógł zostać wyciągnięty.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -4434,11 +4434,6 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <translation>Automatycznie sprawdź model po wykonaniu operacji logicznej</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Automatycznie udoskonal model po wykonaniu operacji logicznej</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Dodaj nazwę obiektu podstawowego</translation>
@@ -4447,36 +4442,6 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Ustawienia modelu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Weryfikuje geometrię (BRep) po każdej operacji logicznej w celu wykrycia błędów. 
-Uwaga: 
-Może to spowolnić działanie na złożonych modelach.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Automatycznie oczyszcza bryłę po operacjach logicznych, 
-usuwając nadmiarowe współpłaszczyznowe krawędzie i scalając sąsiednie ściany.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Automatycznie udoskonalaj model po zastosowaniu operacji</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Automatycznie wykonuje operację ulepszania po utworzeniu elementów Projektu Części, 
-usuwając zbędne krawędzie i oczyszczając geometrię.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Ustawia nowe bryły tak, aby zezwalały na wiele rozłącznych brył (złożeń). 
-Jeśli opcja jest odznaczona, bryła jest ściśle związana do jednej spójnej bryły.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4657,6 +4622,39 @@ Kształt aktualizuje się dopiero po zwolnieniu przycisku myszy.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Automatycznie przełączaj się do panelu zadań po aktywowaniu środowiska pracy Projekt Części.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Weryfikuje geometrię (BRep) po każdej operacji logicznej w celu wykrycia błędów. 
+Uwaga: 
+Może to spowolnić działanie na złożonych modelach.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Automatyczne ulepszanie wyników operacji logicznej części</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Ulepsza wyniki operacji logicznej części usuwając nadmiarowe krawędzi i łącząc przyległe ściany</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Automatyczne ulepszanie cech Projektu Części</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Ulepsza cechy Projektu Części po utworzeniu poprzez usunięcie zbędnych krawędzi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Ustawia nowe bryły tak, aby zezwalały na wiele rozłącznych brył (złożeń). 
+Jeśli opcja jest odznaczona, bryła jest ściśle związana do jednej spójnej bryły.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -6261,12 +6259,12 @@ Alternatywnie możesz zaznaczyć jeden złożony obiekt zawierający dwa lub wi�
     <message>
       <location filename="../../Command.cpp" line="2553"/>
       <source>Select at most one object to array.</source>
-      <translation type="unfinished">Select at most one object to array.</translation>
+      <translation>Wybierz maksymalnie jeden obiekt do szyku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Select one object from the active document.</source>
-      <translation type="unfinished">Select one object from the active document.</translation>
+      <translation>Wybierz jeden obiekt z aktywnego dokumentu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2282"/>
@@ -7858,17 +7856,17 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
-      <source>Preview requires a Part-based view provider; none found for %1.</source>
-      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
-      <source>unknown object</source>
-      <translation type="unfinished">unknown object</translation>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Podgląd wymaga viewprovidera opartego o Część; nie znaleziono żadnego dla %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
+      <source>unknown object</source>
+      <translation>nieznany obiekt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Błąd podczas renderowania podglądu: %1. 
 Zazwyczaj oznacza to błąd modelu.</translation>
@@ -7888,12 +7886,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
       <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
+      <translation>Połączony obiekt</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Wybierz obiekt</translation>
     </message>
   </context>
   <context>
@@ -7901,7 +7899,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Szyk kołowy</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7921,7 +7919,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
       <source>Concentric circles</source>
-      <translation type="unfinished">Concentric circles</translation>
+      <translation>Okręgi koncentryczne</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
@@ -7938,14 +7936,14 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
-      <translation type="unfinished">Select Path</translation>
+      <translation>Wybierz ścieżkę</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
       <source>Spacing mode</source>
-      <translation type="unfinished">Spacing mode</translation>
+      <translation>Tryb odstępów</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="10"/>
@@ -7960,42 +7958,42 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="14"/>
       <source>Start offset</source>
-      <translation type="unfinished">Start offset</translation>
+      <translation>Odsunięcie początku</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="16"/>
       <source>End offset</source>
-      <translation type="unfinished">End offset</translation>
+      <translation>Odsunięcie końca</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
       <source>Reverse path</source>
-      <translation type="unfinished">Reverse path</translation>
+      <translation>Odwróć ścieżkę</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="19"/>
       <source>Align to path</source>
-      <translation type="unfinished">Align to path</translation>
+      <translation>Wyrównaj do ścieżki</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
-      <translation type="unfinished">Fixed count</translation>
+      <translation>Stała liczba</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
-      <translation type="unfinished">Fixed spacing</translation>
+      <translation>Stałe odstępy</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
-      <translation type="unfinished">Fixed count and spacing</translation>
+      <translation>Stała liczba i odstępy</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
-      <translation type="unfinished">(+%1)</translation>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
@@ -8003,13 +8001,13 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="8"/>
       <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
+      <translation>Obiekt punktu</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="14"/>
       <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
       <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
+      <translation>Wybierz Obiekt Punktu</translation>
     </message>
   </context>
   <context>
@@ -8022,12 +8020,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Szyk kołowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+      <translation>Tworzy koncentryczny szyk kołowy dowiązanych obiektów</translation>
     </message>
   </context>
   <context>
@@ -8045,7 +8043,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
       <source>Creates an array of linked objects along a path</source>
-      <translation type="unfinished">Creates an array of linked objects along a path</translation>
+      <translation>Tworzy szyk dowiązanych obiektów wzdłuż ścieżki</translation>
     </message>
   </context>
   <context>
@@ -8063,7 +8061,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
       <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
+      <translation>Tworzy szyk dowiązanych obiektów w każdym punkcie szkicu lub kształtu</translation>
     </message>
   </context>
   <context>
@@ -8076,12 +8074,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Szyk liniowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
       <source>Creates a linear array of linked objects</source>
-      <translation type="unfinished">Creates a linear array of linked objects</translation>
+      <translation>Tworzy liniowy szyk dowiązanych obiektów</translation>
     </message>
   </context>
   <context>
@@ -8094,12 +8092,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Szyk biegunowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
       <source>Creates a polar array of linked objects</source>
-      <translation type="unfinished">Creates a polar array of linked objects</translation>
+      <translation>Tworzy biegunowy szyk dowiązanych obiektów</translation>
     </message>
   </context>
   <context>
@@ -8112,12 +8110,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../Command.cpp" line="2950"/>
       <source>Link Arrays</source>
-      <translation type="unfinished">Link Arrays</translation>
+      <translation>Szyk łączy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2951"/>
       <source>Creates link arrays</source>
-      <translation type="unfinished">Creates link arrays</translation>
+      <translation>Tworzy szyk powiązań</translation>
     </message>
   </context>
   <context>
@@ -8125,18 +8123,18 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="226"/>
       <source>Restores this instance</source>
-      <translation type="unfinished">Restores this instance</translation>
+      <translation>Przywraca to wystąpienie</translation>
     </message>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="231"/>
       <source>Suppresses this instance</source>
-      <translation type="unfinished">Suppresses this instance</translation>
+      <translation>Pomija tę instancję</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Kierunek 2</translation>
     </message>
@@ -8146,7 +8144,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Szyk kołowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
@@ -8161,12 +8159,12 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Szyk biegunowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Szyk liniowy dowiązań</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
@@ -8176,7 +8174,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Wybierz Obiekt</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
@@ -8188,21 +8186,21 @@ Zazwyczaj oznacza to błąd modelu.</translation>
       <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
       <source>Object X-axis</source>
-      <translation type="unfinished">Object X-axis</translation>
+      <translation>Oś X obiektu</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
       <source>Object Y-axis</source>
-      <translation type="unfinished">Object Y-axis</translation>
+      <translation>Oś Y obiektu</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
       <source>Object Z-axis</source>
-      <translation type="unfinished">Object Z-axis</translation>
+      <translation>Oś Z obiektu</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
@@ -8212,22 +8210,22 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
       <source>Select connected path edges</source>
-      <translation type="unfinished">Select connected path edges</translation>
+      <translation>Wybierz połączone krawędzie ścieżki</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
       <source>Select a sketch or shape containing points</source>
-      <translation type="unfinished">Select a sketch or shape containing points</translation>
+      <translation>Wybierz szkic lub kształt zawierający punkty</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
       <source>Select a rotation axis</source>
-      <translation type="unfinished">Select a rotation axis</translation>
+      <translation>Wybierz oś obrotu</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
       <source>Select a direction reference</source>
-      <translation type="unfinished">Select a direction reference</translation>
+      <translation>Wybierz odniesienie kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
@@ -8238,7 +8236,7 @@ Zazwyczaj oznacza to błąd modelu.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
-      <translation type="unfinished">Select an object to link.</translation>
+      <translation>Wybierz obiekt do połączenia.</translation>
     </message>
   </context>
   <context>

@@ -3507,7 +3507,7 @@ Ní bheidh sé ar fáil má tá an rogha 'Úsáid Bunphrionsabail Chuid' cumasai
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>Cruthaigh réada</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
@@ -9008,6 +9008,19 @@ de chruth an tsraithe. Is fearr é seo chun comhaid an-mhóra a fheiceáil leis 
 The 'Auto Update' property of the views is ignored.</source>
       <translation>Cuirtear iallach ar na radhairc 2D roghnaithe, nó ar gach radharc 2D sa doiciméad, nuashonrú a dhéanamh.
 Déantar neamhaird ar airí 'Nuashonrú Uathoibríoch' na radharcanna.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Uirlisí Amhairc 2T</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Uirlisí chun radhairc 2D a chruthú agus a nuashonrú</translation>
     </message>
   </context>
 </TS>

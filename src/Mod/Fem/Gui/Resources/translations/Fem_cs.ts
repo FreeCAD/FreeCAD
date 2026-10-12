@@ -971,7 +971,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="317"/>
@@ -991,7 +991,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="259"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>Počet jader procesoru, které se mají použít</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="322"/>
@@ -1016,7 +1016,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
-      <translation type="unfinished">CalculiX path</translation>
+      <translation>Cesta k řešiči CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="590"/>
@@ -1065,7 +1065,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="132"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
   </context>
   <context>
@@ -1174,7 +1174,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
   </context>
   <context>
@@ -1384,12 +1384,12 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="134"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="141"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>Adresář '%1' nebyl nalezen</translation>
     </message>
   </context>
   <context>
@@ -1443,7 +1443,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
@@ -1593,7 +1593,7 @@ exportované z FreeCADu.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="80"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
   </context>
   <context>
@@ -1688,7 +1688,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Spustitelný soubor '%1' nebyl nalezen</translation>
     </message>
   </context>
   <context>
@@ -6561,7 +6561,7 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <translation>Žádný výsledný objekt</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="200"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
       <source>
 
 Correct module found in: 
@@ -6572,7 +6572,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="208"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6581,7 +6581,7 @@ Should this module be loaded instead?</source>
 Should this module be loaded instead?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="225"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6590,17 +6590,17 @@ No matching module was found in the current Python path.</source>
 No matching module was found in the current Python path.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="229"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
       <source>VTK Python module conflict</source>
       <translation type="unfinished">VTK Python module conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="255"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python Module Conflict</source>
       <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="258"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>

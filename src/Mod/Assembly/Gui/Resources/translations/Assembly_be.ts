@@ -137,7 +137,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
@@ -177,37 +177,37 @@
       <translation>Рэмень</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Непрацуючы спасылак у: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>Змяніць злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>Абнавіць захаваныя становішчы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Абраць два элемента з дзвюх асобных частак</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Радыус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Крок разьбы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Радыус падачы</translation>
     </message>
@@ -738,12 +738,12 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>{order} спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>Спіс спасылак на кампаненты для аб'яднання ў суполкі</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>Аб'ект для замацавання</translation>
     </message>

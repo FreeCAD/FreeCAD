@@ -4309,12 +4309,12 @@ it has a weld symbol that would become broken.</source>
 go bhfuil siombail táthú inti a bhrisfeadh.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Dún an dialóg oscailte sula scriostar an réad mionsonraithe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Ní féidir leat an radharc seo a scriosadh mar go bhfuil radharc spleách amháin nó níos mó ann a d'fhéadfadh briseadh.</translation>
     </message>
@@ -4324,8 +4324,8 @@ go bhfuil siombail táthú inti a bhrisfeadh.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
@@ -4722,27 +4722,27 @@ pionós feidhmíochta ann i samhlacha casta.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>Algartam aimsithe aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>Bain úsáid as an gceann is déanaí nó as ceann de na sean-algartaim chun aghaidheanna a aimsiú</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4869,14 +4869,14 @@ Tá gach aonad thart ar 0.1 mm ar leithead</translation>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>Má roghnaítear an rogha seo agus má thacaíonn an t-algartam aimsithe aghaidheanna leis, déanfaidh FreeCAD iarracht
+a chinneadh cé acu an t-ábhar nó poll a léiríonn gach aghaidh sa líníocht.
+D’fhéadfadh an próiseas braite a bheith mall má bhíonn líon mór aghaidheanna i gceist.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Aithin aghaidheanna a sheasann do fholúntais</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>

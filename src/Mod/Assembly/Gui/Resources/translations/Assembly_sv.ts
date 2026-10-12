@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -170,37 +170,37 @@
       <translation>Rem</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Trasig länk i: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>Redigera led</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>Uppdatera lagrade positioner</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Välj 2 element från 2 separata delar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Radie 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Gängstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Stigningsradie</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring t
       <translation>Ledens {order}-referens för fogen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>Lista över referenser till komponenter som ska grupperas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>Objektet som ska fixeras</translation>
     </message>
@@ -813,7 +813,7 @@ SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring t
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Distance</source>
-      <translation>Distans</translation>
+      <translation>Avstånd</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>

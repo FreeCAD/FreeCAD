@@ -206,17 +206,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2861"/>
       <source>Boolean Operation</source>
       <translation>Bulove operacije</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2727"/>
+      <location filename="../../Command.cpp" line="2862"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Primeni bulovu operaciju između izabranih objekata i aktivnog tela</translation>
     </message>
@@ -494,17 +494,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2729"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2730"/>
       <source>Multi-Transform</source>
       <translation>Višestruko pretvaranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Primeni više pretvaranja na izabrane tipske oblike ili aktivno telo</translation>
     </message>
@@ -602,17 +602,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2489"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2490"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Polar Pattern</source>
       <translation>Kružno umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Kružno umnoži izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -638,17 +638,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2686"/>
       <source>PartDesign</source>
       <translation>Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2687"/>
       <source>Scale</source>
       <translation>Razmera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2688"/>
       <source>Scales the selected features or the active body</source>
       <translation>Skaliraj izabrani tipski oblik ili aktivno telo</translation>
     </message>
@@ -905,7 +905,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Napravi kopiju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2649"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Pretvori u tipski oblik dobijen Višestrukim pretvaranjenjem</translation>
     </message>
@@ -926,7 +926,7 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2746"/>
+      <location filename="../../Command.cpp" line="2881"/>
       <source>Create Boolean</source>
       <translation>Napravi bulovu operaciju</translation>
     </message>
@@ -962,22 +962,37 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
       <translation>Pomeri objekat</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="261"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
       <source>Mirror</source>
       <translation>Simetrično preslikavanje</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>
       <source>Linear Pattern</source>
       <translation>Pravougaono umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="350"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Polar Pattern</source>
       <translation>Kružno umnožavanje</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
+      <source>Path Pattern</source>
+      <translation type="unfinished">Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
+      <source>Point Pattern</source>
+      <translation type="unfinished">Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
       <source>Scale</source>
       <translation>Razmera</translation>
     </message>
@@ -1410,7 +1425,7 @@ nula, onda je jednak poluprečniku 2</translation>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="290"/>
+      <location filename="../../ReferenceSelection.cpp" line="336"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Ako izabereš ovo prouzrokovaćeš kružna zavisnost.</translation>
     </message>
@@ -1736,27 +1751,27 @@ nula, onda je jednak poluprečniku 2</translation>
   <context>
     <name>PartDesignGui::TaskDressUpParameters</name>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="302"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="591"/>
       <source>Select</source>
       <translation>Izaberi</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="307"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="596"/>
       <source>Confirm Selection</source>
       <translation>Potvrdite izbor</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="320"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="609"/>
       <source>Add All Edges</source>
       <translation>Dodaj sve ivice</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="326"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="615"/>
       <source>Adds all edges to the list box (only when in add selection mode)</source>
       <translation>Dodaje sve ivice u panel sa listom (samo dok je aktivan režim izbora)</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="335"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="624"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
@@ -1986,7 +2001,7 @@ nula, onda je jednak poluprečniku 2</translation>
       <translation>Upotrebi sve ivice</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="205"/>
+      <location filename="../../TaskFilletParameters.cpp" line="204"/>
       <source>Empty fillet created!</source>
       <translation>Napravljen je prazan tipski oblik Zaobljenje!</translation>
     </message>
@@ -2418,47 +2433,62 @@ nula, onda je jednak poluprečniku 2</translation>
       <translation>U redu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Delete</source>
       <translation>Obriši</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="80"/>
       <source>Add Mirror Transformation</source>
       <translation>Simetrično preslikaj</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="85"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="88"/>
       <source>Add Linear Pattern</source>
       <translation>Umnoži pravougaono</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
+      <source>Add Circular Pattern</source>
+      <translation type="unfinished">Add Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <source>Add Path Pattern</source>
+      <translation type="unfinished">Add Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
+      <source>Add Point Pattern</source>
+      <translation type="unfinished">Add Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
       <source>Add Polar Pattern</source>
       <translation>Umnoži kružno</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="128"/>
       <source>Add Scale Transformation</source>
       <translation>Povećaj ili smanji</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="131"/>
       <source>Move Up</source>
       <translation>Pomeri nagore</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="134"/>
       <source>Move Down</source>
       <translation>Pomeri nadole</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="139"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="166"/>
       <source>Right-click to add a transformation</source>
       <translation>Desnim klikom dodaj pretvaranje</translation>
     </message>
@@ -3930,7 +3960,7 @@ Ako imaš nasleđeni dokument sa objektima bez tela, da bi ih smestio u Telo kor
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
@@ -3970,12 +4000,12 @@ Ako imaš nasleđeni dokument sa objektima bez tela, da bi ih smestio u Telo kor
       <translation>Uredi pomoćni element</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="100"/>
       <source>Feature error</source>
       <translation>Greška tipskog oblika</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>%1 nedostaje osnovni tipski oblik.
@@ -5501,37 +5531,37 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
       <translation>Unija sa početnim tipskim oblikom nije uspela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Povezani objekat tipskog oblika Transformacija nije objekat Deo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="120"/>
       <source>No features selected to be mirrored.</source>
       <translation>Nije izabran tipski oblik koji će se simetrično preslikati.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="127"/>
       <source>No features selected to be patterned.</source>
       <translation>Nije izabran tipski oblik koji će se umnožiti.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="130"/>
       <source>No features selected to be transformed.</source>
       <translation>Nije izabran tipski oblik za višestruko pretvaranje.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="379"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="447"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Nije moguće umnožiti nepodržani oblik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="430"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="561"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Tipski oblik je prazan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="421"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="552"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Umnožavati se mogu samo dodati ili oduzeti tipski oblici</translation>
     </message>
@@ -5624,12 +5654,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2793"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2794"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>
@@ -5637,12 +5667,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2828"/>
+      <location filename="../../Command.cpp" line="2963"/>
       <source>Create Datum</source>
       <translation>Napravi pomoćne elemente</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2829"/>
+      <location filename="../../Command.cpp" line="2964"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Napravi pomoćne elemente ili lokalni koordinatni sistem</translation>
     </message>
@@ -5871,32 +5901,32 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="278"/>
+      <location filename="../../TaskPatternParameters.cpp" line="415"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Izaberi skicu ili oblik koji sadrži tačke</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="284"/>
+      <location filename="../../TaskPatternParameters.cpp" line="421"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Izaberi skicu, povezivač podoblika ili putanju vodilju</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="293"/>
+      <location filename="../../TaskPatternParameters.cpp" line="430"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Izaberi referencu pravca (ivica, stranica, pomoćna prava)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="356"/>
+      <location filename="../../TaskPatternParameters.cpp" line="494"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Pogrešan izbor. Izaberi skicu ili oblik koji sadrži tačke.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="359"/>
+      <location filename="../../TaskPatternParameters.cpp" line="497"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Pogrešan izbor. Izaberi skicu, povezivač podoblika ili putanju vodilju.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="361"/>
+      <location filename="../../TaskPatternParameters.cpp" line="499"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Pogrešan izbor. Izaberi ivicu, ravnu stranicu ili pomoćnu pravu.</translation>
     </message>
@@ -5943,11 +5973,78 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     </message>
   </context>
   <context>
+    <name>CmdPartDesignCircularPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2489"/>
+      <source>PartDesign</source>
+      <translation>Konstruisanje delova</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2490"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2491"/>
+      <source>Duplicates the selected features or the active body in concentric circular patterns</source>
+      <translation type="unfinished">Duplicates the selected features or the active body in concentric circular patterns</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPathPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2546"/>
+      <source>PartDesign</source>
+      <translation>Konstruisanje delova</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2547"/>
+      <source>Path Pattern</source>
+      <translation type="unfinished">Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2548"/>
+      <source>Duplicates the selected features or the active body along a path</source>
+      <translation type="unfinished">Duplicates the selected features or the active body along a path</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPointPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2584"/>
+      <source>PartDesign</source>
+      <translation>Konstruisanje delova</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2585"/>
+      <source>Point Pattern</source>
+      <translation type="unfinished">Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2586"/>
+      <source>Duplicates the selected features or the active body at points from a shape</source>
+      <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::ViewProviderDefeaturing</name>
     <message>
       <location filename="../../ViewProviderDefeaturing.h" line="40"/>
       <source>Defeaturing Parameters</source>
       <translation>Parametri odstranjivanja tipskih oblika</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation type="unfinished">Path Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation type="unfinished">Edit Path Pattern</translation>
     </message>
   </context>
   <context>
@@ -5984,11 +6081,37 @@ Zadaj drugačije parametre i pokušaj ponovo.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation type="unfinished">Circular Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation type="unfinished">Edit Circular Pattern</translation>
+    </message>
+  </context>
+  <context>
     <name>BooleanToolSelection</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="83"/>
       <source>The result Body cannot be used as a Boolean tool.</source>
       <translation>Rezultujuće telo se ne može koristiti za Bulovu operaciju.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation type="unfinished">Point Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation type="unfinished">Edit Point Pattern</translation>
     </message>
   </context>
 </TS>

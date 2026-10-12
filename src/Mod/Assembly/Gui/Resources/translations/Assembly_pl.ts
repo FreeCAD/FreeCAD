@@ -132,7 +132,7 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -172,37 +172,37 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
       <translation>Pas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Uszkodzone łącze w: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>Edytuj połączenie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>Aktualizuj przechowywane pozycje</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Wybierz dwa elementy z dwóch oddzielnych części</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Promień 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Skok gwintu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Promień nachylenia</translation>
     </message>
@@ -739,12 +739,12 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
       <translation>{order} odniesienie połączenia</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>Lista odniesień do komponentów do zgrupowania razem</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>Obiekt do zakotwienia</translation>
     </message>

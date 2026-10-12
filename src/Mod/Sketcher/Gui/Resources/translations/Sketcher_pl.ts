@@ -988,12 +988,12 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Dodaj łuk paraboli do szkicu</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="130"/>
+      <location filename="../../DrawSketchHandlerText.h" line="131"/>
       <source>Add sketch Text</source>
       <translation>Dodaj tekst szkicu</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="114"/>
+      <location filename="../../EditTextDialog.cpp" line="115"/>
       <source>Modify sketch text constraint</source>
       <translation>Modyfikuj wiązanie tekstu szkicu</translation>
     </message>
@@ -2025,33 +2025,33 @@ Wybierz punkty końcowe krzywych.</translation>
       <translation>Obecnie nie jest obsługiwane przenoszenie geometrii zewnętrznej do innej warstwy wizualnej. Geometria zewnętrzna zostanie pominięta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="91"/>
+      <location filename="../../DrawSketchHandlerText.h" line="92"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="244"/>
+      <location filename="../../DrawSketchHandlerText.h" line="245"/>
       <source>Text parameters</source>
       <translation>Parametry tekstu</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="725"/>
+      <location filename="../../DrawSketchHandlerText.h" line="726"/>
       <source>%1 switch mode</source>
       <translation>%1 zmień tryb</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="735"/>
-      <location filename="../../DrawSketchHandlerText.h" line="743"/>
+      <location filename="../../DrawSketchHandlerText.h" line="736"/>
+      <location filename="../../DrawSketchHandlerText.h" line="744"/>
       <source>%1 pick bottom-left point</source>
       <translation>%1 wybierz lewy dolny punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="739"/>
+      <location filename="../../DrawSketchHandlerText.h" line="740"/>
       <source>%1 pick top-left point</source>
       <translation>%1 wybierz lewy górny punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="747"/>
+      <location filename="../../DrawSketchHandlerText.h" line="748"/>
       <source>%1 pick bottom-right point</source>
       <translation>%1 wybierz prawy dolny punkt</translation>
     </message>
@@ -4077,112 +4077,112 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4172"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Szkic jest nieprawidłowy i nie może być edytowany.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Następujące wiązanie jest częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4401"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Następujące wiązania są częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4144"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
       <source>Edit Sketch</source>
       <translation>Edycja szkicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4173"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4194"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
       <source>Invalid Sketch</source>
       <translation>Nieprawidłowy szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
       <source>Open the sketch validation tool?</source>
       <translation>Otworzyć narzędzie weryfikacji szkicu?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4386"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following constraint:</source>
       <translation>Usuń następujące wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Usuń co najmniej jedno z następujących wiązań:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4394"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Usuń następujące niepoprawne wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4408"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Usuń następujące niepoprawne wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4467"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
       <source>Empty sketch</source>
       <translation>Pusty szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
       <source>Malformed constraints:</source>
       <translation>Uszkodzone ograniczenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4486"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
       <source>Redundant constraints:</source>
       <translation>Wiązania nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
       <source>Partially redundant:</source>
       <translation>Częściowo nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4499"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -4192,12 +4192,12 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
       <source>Missing external geometry</source>
       <translation>Brakująca geometria zewnętrzna</translation>
     </message>
@@ -4690,7 +4690,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
@@ -4896,23 +4896,23 @@ Wprowadź 1, aby wyłączyć główne linie</translation>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="146"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="142"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Szkic zawiera zniekształcone wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="160"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="156"/>
       <source>"%1" has partially redundant constraint(s).</source>
       <translation>"%1" ma częściowo zbędne wiązania.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1120"/>
-      <location filename="../../../App/SketchObject.cpp" line="1168"/>
+      <location filename="../../../App/SketchObject.cpp" line="1116"/>
+      <location filename="../../../App/SketchObject.cpp" line="1160"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Niezarządzana zmiana właściwości wiązań skutkuje nieprawidłowymi indeksami wiązań</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1681"/>
+      <location filename="../../../App/SketchObject.cpp" line="1672"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!
@@ -4931,7 +4931,7 @@ Wprowadź 1, aby wyłączyć główne linie</translation>
       <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
@@ -5214,7 +5214,7 @@ Współczynnik skali musi być liczbą dodatnią.</translation>
       <translation>Nie udało się dodać łuku paraboli</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerText.h" line="183"/>
       <source>Failed to add text</source>
       <translation>Nie udało się dodać tekstu</translation>
     </message>
@@ -5929,12 +5929,12 @@ Zamiast tego stosuje się wiązania równości pomiędzy oryginalnymi obiektami 
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="954"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="951"/>
       <source>Periodic (F)</source>
       <translation>Okresowa (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="958"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="955"/>
       <source>Create a periodic B-spline.</source>
       <translation>Utwórz okresową krzywą złożoną.</translation>
     </message>
@@ -8319,12 +8319,12 @@ ujemne do wewnątrz</translation>
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="947"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="944"/>
       <source>From control points</source>
       <translation>Przez punkty kontrolne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="948"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
       <source>From knots</source>
       <translation>Przez węzły</translation>
     </message>
@@ -8446,7 +8446,7 @@ ujemne do wewnątrz</translation>
       <translation>Boki</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="997"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
       <source>Degree</source>
       <translation>Stopień</translation>
     </message>
@@ -8454,12 +8454,12 @@ ujemne do wewnątrz</translation>
   <context>
     <name>TaskSketcherTool_c1_text</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
       <source>Width</source>
       <translation>Szerokość</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <location filename="../../DrawSketchHandlerText.h" line="363"/>
       <source>Height</source>
       <translation>Wysokość</translation>
     </message>
@@ -8467,12 +8467,12 @@ ujemne do wewnątrz</translation>
   <context>
     <name>TaskSketcherTool_Text</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <location filename="../../DrawSketchHandlerText.h" line="369"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
       <translation>Czcionka</translation>
     </message>
@@ -8544,12 +8544,12 @@ ujemne do wewnątrz</translation>
   <context>
     <name>SketcherGui::EditTextDialog</name>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>Font not found</source>
       <translation>Nie znaleziono czcionki</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <location filename="../../EditTextDialog.cpp" line="74"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
       <translation>Oryginalna czcionka '%1' nie została znaleziona w Twoim systemie. Wybrano domyślną czcionkę.</translation>
     </message>

@@ -207,17 +207,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2861"/>
       <source>Boolean Operation</source>
       <translation>Лагічная аперацыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2727"/>
+      <location filename="../../Command.cpp" line="2862"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Прымяняе лагічныя аперацыі з абранымі аб'ектамі і бягучым целам</translation>
     </message>
@@ -495,17 +495,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2729"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2730"/>
       <source>Multi-Transform</source>
       <translation>Множнае пераўтварэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Прымяняе множныя пераўтварэнні да абраных характарыстык ці бягучага цела</translation>
     </message>
@@ -603,17 +603,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2489"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2490"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Polar Pattern</source>
       <translation>Палярны шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Паўтарае абраныя характарыстыкі ці бягучае цела ў выглядзе круглага шаблону</translation>
     </message>
@@ -639,17 +639,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2686"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2687"/>
       <source>Scale</source>
       <translation>Маштаб</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2688"/>
       <source>Scales the selected features or the active body</source>
       <translation>Маштабуе абраныя характарыстыкі ці бягучае цела</translation>
     </message>
@@ -907,7 +907,7 @@ False = унутраная шасцярня</translation>
       <translation>Зрабіць копію</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2649"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Пераўтварыць характарыстыку множнага пераўтварэння</translation>
     </message>
@@ -928,7 +928,7 @@ False = унутраная шасцярня</translation>
       <translation>Новы эскіз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2746"/>
+      <location filename="../../Command.cpp" line="2881"/>
       <source>Create Boolean</source>
       <translation>Стварыць лагічную аперацыю</translation>
     </message>
@@ -964,22 +964,37 @@ False = унутраная шасцярня</translation>
       <translation>Рухаць аб'ект</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="261"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
       <source>Mirror</source>
       <translation>Сіметрычна</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>
       <source>Linear Pattern</source>
       <translation>Лінейны шаблон</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="350"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Polar Pattern</source>
       <translation>Палярны шаблон</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
+      <source>Circular Pattern</source>
+      <translation>Кругавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
+      <source>Path Pattern</source>
+      <translation>Шаблон траекторыі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
+      <source>Point Pattern</source>
+      <translation>Кропкавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
       <source>Scale</source>
       <translation>Маштаб</translation>
     </message>
@@ -1414,7 +1429,7 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="290"/>
+      <location filename="../../ReferenceSelection.cpp" line="336"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Выбар гэтай налады выкліча цыклічную залежнасць.</translation>
     </message>
@@ -1742,27 +1757,27 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDressUpParameters</name>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="302"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="591"/>
       <source>Select</source>
       <translation>Select</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="307"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="596"/>
       <source>Confirm Selection</source>
       <translation>Пацвердзіць выбар</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="320"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="609"/>
       <source>Add All Edges</source>
       <translation>Дадаць усе рэбры</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="326"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="615"/>
       <source>Adds all edges to the list box (only when in add selection mode)</source>
       <translation>Дадае ўсе рэбры ў спіс (толькі ў рэжыме дадання выбару)</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="335"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="624"/>
       <source>Remove</source>
       <translation>Выдаліць</translation>
     </message>
@@ -1992,7 +2007,7 @@ If zero, it is equal to Radius2</source>
       <translation>Ужыць усе рэбры</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="205"/>
+      <location filename="../../TaskFilletParameters.cpp" line="204"/>
       <source>Empty fillet created!</source>
       <translation>Створана пустое акругленне!</translation>
     </message>
@@ -2424,47 +2439,62 @@ If zero, it is equal to Radius2</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
       <source>Edit</source>
       <translation>Змяніць</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Delete</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="80"/>
       <source>Add Mirror Transformation</source>
       <translation>Дадаць сіметрычнае пераўтварэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="85"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="88"/>
       <source>Add Linear Pattern</source>
       <translation>Дадаць лінейны шаблон</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
+      <source>Add Circular Pattern</source>
+      <translation>Дадаць кругавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <source>Add Path Pattern</source>
+      <translation>Дадаць шаблон траекторыі</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
+      <source>Add Point Pattern</source>
+      <translation>Дадаць кропкавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
       <source>Add Polar Pattern</source>
       <translation>Дадаць палярны шаблон</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="128"/>
       <source>Add Scale Transformation</source>
       <translation>Дадаць маштабнае пераўтварэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="131"/>
       <source>Move Up</source>
       <translation>Рухаць уверх</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="134"/>
       <source>Move Down</source>
       <translation>Рухаць уніз</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="139"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="166"/>
       <source>Right-click to add a transformation</source>
       <translation>Пстрыкніце &lt;правай кнопкай мышы&gt;, каб дадаць пераўтварэнне</translation>
     </message>
@@ -3940,7 +3970,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
@@ -3980,12 +4010,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Змяніць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="100"/>
       <source>Feature error</source>
       <translation>Памылка характарыстыкі</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>%1 не мае асноўнай характарыстыкі.
@@ -5514,37 +5544,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Не атрымалася выканаць зліццё з асноўнай характарыстыкай</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>Аб'ект, які звязаны з характарыстыкай пераўтварэння, не з'яўляецца аб'ектам дэталі</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="120"/>
       <source>No features selected to be mirrored.</source>
       <translation>Ні адзін аб'ект не абраны для сіметрыі.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="127"/>
       <source>No features selected to be patterned.</source>
       <translation>Ні адзін аб'ект не абраны для шаблону.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="130"/>
       <source>No features selected to be transformed.</source>
       <translation>Ні адзін аб'ект не абраны для пераўтварэння.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="379"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="447"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Не атрымалася пераўтварыць хібную фігуру падтрымкі</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="430"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="561"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Фігура характарыстыкі выцяжкі/адымання пустая</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="421"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="552"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Могуць быць пераўтвораныя толькі характарыстыкі, якія дадаюцца ці адымаюцца</translation>
     </message>
@@ -5638,12 +5668,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2793"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Create Datum</source>
       <translation>Стварыць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2794"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Стварае аб'ект кропкі адліку ці лакальную сістэму каардынат</translation>
     </message>
@@ -5651,12 +5681,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2828"/>
+      <location filename="../../Command.cpp" line="2963"/>
       <source>Create Datum</source>
       <translation>Стварыць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2829"/>
+      <location filename="../../Command.cpp" line="2964"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Стварае аб'ект кропкі адліку ці лакальную сістэму каардынат</translation>
     </message>
@@ -5885,34 +5915,34 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="278"/>
+      <location filename="../../TaskPatternParameters.cpp" line="415"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Абраць эскіз ці фігуру, якія змяшчаюць кропкі шаблону</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="284"/>
+      <location filename="../../TaskPatternParameters.cpp" line="421"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Абраць эскіз, злучнае рэчыва ўкладзенай фігуры ці рабро траекторыі</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="293"/>
+      <location filename="../../TaskPatternParameters.cpp" line="430"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Абраць апорны напрамак (рабро, грань, апорная лінія)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="356"/>
+      <location filename="../../TaskPatternParameters.cpp" line="494"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Хібны выбар.
 Абярыце эскіз ці фігуру, якія змяшчаюць кропкі.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="359"/>
+      <location filename="../../TaskPatternParameters.cpp" line="497"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Хібны выбар.
 Абраць эскіз, злучнае рэчыва ўкладзенай фігуры ці рабро траекторыі.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="361"/>
+      <location filename="../../TaskPatternParameters.cpp" line="499"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Хібны выбар.
 Абярыце рабро, плоскую грань ці апорную лінію.</translation>
@@ -5960,11 +5990,78 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
+    <name>CmdPartDesignCircularPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2489"/>
+      <source>PartDesign</source>
+      <translation>Праектаванне дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2490"/>
+      <source>Circular Pattern</source>
+      <translation>Кругавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2491"/>
+      <source>Duplicates the selected features or the active body in concentric circular patterns</source>
+      <translation>Паўтарае абраныя характарыстыкі ці бягучае цела ў выглядзе канцэнтрычных кругавых шаблонаў</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPathPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2546"/>
+      <source>PartDesign</source>
+      <translation>Праектаванне дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2547"/>
+      <source>Path Pattern</source>
+      <translation>Шаблон траекторыі</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2548"/>
+      <source>Duplicates the selected features or the active body along a path</source>
+      <translation>Паўтарае абраныя аб'екты ці бягучае цела наўздоўж траекторыі</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPointPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2584"/>
+      <source>PartDesign</source>
+      <translation>Праектаванне дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2585"/>
+      <source>Point Pattern</source>
+      <translation>Кропкавы шаблон</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2586"/>
+      <source>Duplicates the selected features or the active body at points from a shape</source>
+      <translation>Паўтарае абраныя аб'екты ці бягучае цела ў кропках фігуры</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::ViewProviderDefeaturing</name>
     <message>
       <location filename="../../ViewProviderDefeaturing.h" line="40"/>
       <source>Defeaturing Parameters</source>
       <translation>Налады выдалення элементаў</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation>Налады шаблону траекторыі</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation>Правіць шаблон траекторыі</translation>
     </message>
   </context>
   <context>
@@ -6001,11 +6098,37 @@ Adjust the parameters and try again.</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation>Налады кругавога шаблону</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation>Правіць кругавы шаблон</translation>
+    </message>
+  </context>
+  <context>
     <name>BooleanToolSelection</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="83"/>
       <source>The result Body cannot be used as a Boolean tool.</source>
       <translation>Цела выніку не можа быць ужыта ў якасці лагічнага інструмента.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation>Налады кропкавага шаблону</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation>Правіць кропкавы шаблон</translation>
     </message>
   </context>
 </TS>

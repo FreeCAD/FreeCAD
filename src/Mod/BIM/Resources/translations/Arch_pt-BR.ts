@@ -7397,8 +7397,8 @@ Criação de edifício abortada.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>A altura ou profundidade de extrusão deste elemento.
+Mantenha 0 para corresponder automaticamente à altura do Nível ou Edifício que o contém.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9502,9 +9502,9 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Modelo para o texto do rótulo do espaço.
+Use $area, $label, $longname, $description ou qualquer outro nome de propriedade precedido por $ (não sensível a maiúsculas/minúsculas),
+ou $floor, $walls, $ceiling para acabamentos, para inserir os respectivos dados.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9570,29 +9570,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>A extensão desta parede.
+Editável apenas se a linha de base desta parede for uma linha do Draft, um esboço não restringido com uma única linha, ou nenhum.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>A largura desta parede.
+Ignorado se esta parede for baseada em um sólido ou uma face.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>A altura desta parede.
+Mantenha 0 para corresponder automaticamente à altura do Nível ou Edifício que a contém.
+Ignorado se esta parede for baseada em um sólido.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>O alinhamento desta parede no seu objeto de base, se aplicável.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10674,12 +10674,12 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>Desenho 2D</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>Geometria 3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="685"/>
@@ -13750,12 +13750,12 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>Extrudar face</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
       <source>Extrudes a selected face into a solid</source>
-      <translation type="unfinished">Extrudes a selected face into a solid</translation>
+      <translation>Extruda uma face selecionada em um sólido</translation>
     </message>
   </context>
   <context>
@@ -13768,7 +13768,7 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Cria uma união de várias formas</translation>
     </message>
   </context>
   <context>
@@ -13820,7 +13820,7 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Cria uma interseção de duas formas</translation>
     </message>
   </context>
   <context>
@@ -13828,7 +13828,7 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Construtor de formas</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -13841,12 +13841,12 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Corte de seção</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Cria uma projeção 2D apenas das faces de interseção dos objetos selecionados no plano XY.</translation>
     </message>
   </context>
   <context>
@@ -13854,12 +13854,12 @@ Deseja prosseguir?</translation>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Deslocamento 2D</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Utilitário para criar deslocamento em formas planares</translation>
     </message>
   </context>
 </TS>

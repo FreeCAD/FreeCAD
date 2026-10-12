@@ -4411,11 +4411,6 @@ Válasszon ki egy vagy több élt.</translation>
       <translation>Automatikus modell ellenőrzés a logikai művelet után</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Automatikus modell finomítás a logikai művelet után</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Adjon nevet a forrásobjektumnak</translation>
@@ -4424,31 +4419,6 @@ Válasszon ki egy vagy több élt.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Folyamatmodell beállításai</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation type="unfinished">Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Alakzat automatikus letisztítása logikai művelet után redundáns élek eltávolításával és szomszédos lapok egyesítésével</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>A modellek automatikus finomítása műveletek alkalmazása után</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation type="unfinished">Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation type="unfinished">Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4624,6 +4594,36 @@ Válasszon ki egy vagy több élt.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Automatikusan váltson a feladattáblára, amikor a Alkatrésztervezés munkafelület aktív</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation type="unfinished">Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation type="unfinished">Refines Part Boolean results by removing redundant edges and merging adjacent faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation type="unfinished">Automatic refinement of Part Design features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation type="unfinished">Refines Part Design features after creation by removing unnecessary edges</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation type="unfinished">Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7804,17 +7804,17 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation type="unfinished">unknown object</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Hiba az előnézet megjelenítése közben: %1. Ez általában modellel kapcsolatos hibát jelez.</translation>
     </message>
@@ -7883,7 +7883,7 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation type="unfinished">Select Path</translation>
     </message>
@@ -7923,22 +7923,22 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
       <translation type="unfinished">Align to path</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation type="unfinished">Fixed count</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation type="unfinished">Fixed spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation type="unfinished">Fixed count and spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation type="unfinished">(+%1)</translation>
     </message>
@@ -8081,7 +8081,7 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>2. irány</translation>
     </message>

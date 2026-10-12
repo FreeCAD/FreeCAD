@@ -2281,7 +2281,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1751"/>
       <source>Points: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Points: &lt;%1, %2, %3&gt;</translation>
+      <translation>נקודות: &lt;%1,%2,%3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1758"/>
@@ -2291,7 +2291,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1764"/>
       <source>Triangle:</source>
-      <translation type="unfinished">Triangle:</translation>
+      <translation>משולש</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>

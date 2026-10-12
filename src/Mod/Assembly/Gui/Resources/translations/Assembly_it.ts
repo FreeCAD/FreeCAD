@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>Distanza</translation>
     </message>
@@ -170,37 +170,37 @@
       <translation>Cinghia</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Collegamento interrotto in: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>Modifica giunto</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>Aggiorna le posizioni salvate</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Selezionare 2 elementi da 2 parti separate</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Raggio 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Passo della vite</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Passo sul raggio</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE definisce la pendenza della transizione tra 0 e H1 e H2 a 0 al tempo = T1 
       <translation>Il riferimento {order} del giunto</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>Elenco dei riferimenti ai componenti da raggruppare</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>L'oggetto da fissare a terra</translation>
     </message>

@@ -4309,12 +4309,12 @@ it has a weld symbol that would become broken.</source>
 den har en svetssymbol som då skulle sluta fungera.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Stäng den öppna dialogrutan innan du tar bort detaljobjektet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Du kan inte ta bort denna vy eftersom den har en eller flera beroende vyer som då skulle sluta fungera.</translation>
     </message>
@@ -4324,8 +4324,8 @@ den har en svetssymbol som då skulle sluta fungera.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
@@ -4358,8 +4358,8 @@ den har en svetssymbol som då skulle sluta fungera.</translation>
       <location filename="../../ViewProviderPage.cpp" line="213"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation>Sidan är inte tom. Därför kan följande
-objekt som refererar till den gå förlorade:</translation>
+      <translation>Sidan är inte tom, så följande
+referensobjekt kan gå förlorade:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="141"/>
@@ -4372,8 +4372,8 @@ snitt- eller detaljvyer eller hänvisningslinjer som då skulle sluta fungera:</
       <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation>Projektionsgruppen är inte tom. Därför kan
-följande objekt som refererar till den gå förlorade:</translation>
+      <translation>Projektionsgruppen är inte tom, så
+följande referensobjekt kan gå förlorade:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="200"/>
@@ -4722,27 +4722,27 @@ men det kan bli en prestandaförlust i komplexa modeller.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>Algoritm för att hitta ytor</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>Använd den nyaste eller någon av de äldre algoritmerna för att hitta ytor</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4869,14 +4869,13 @@ Varje enhet är ca 0,1 mm bred</translation>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>Om det här är markerat och algoritmen för att hitta ytor har stöd för det försöker FreeCAD avgöra om varje ritad yta representerar materialet eller ett hål.
+För stora mängder ytor kan identifieringen bli långsam.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Identifiera ytor som representerar hålrum</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
@@ -5475,7 +5474,7 @@ när ritningar används som skärmallar i skala 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="488"/>
       <source>Controls the gap size between dimension line and dimension text for ISO dimensions.</source>
-      <translation>Styr mellanrummets storlek mellan måttlinjen och måttexten för ISO-mått.</translation>
+      <translation>Kontrollerar storleken på mellanrummet mellan måttlinjen och måttets text för ISO-mått.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="545"/>
@@ -6026,7 +6025,7 @@ kan åsidosätta den globala inställningen ”Uppdatera med 3D”</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="772"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="786"/>
@@ -7674,7 +7673,7 @@ av ett negativt värde för "Övertolerans".</translation>
       <location filename="../../TaskDimension.ui" line="344"/>
       <location filename="../../TaskDimension.ui" line="373"/>
       <source>Use Selection</source>
-      <translation>Använd markering</translation>
+      <translation>Använd urval</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="416"/>
@@ -9431,7 +9430,7 @@ en uppgiftsdialog är öppen.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Utkast</translation>
     </message>
   </context>
   <context>
@@ -9670,7 +9669,7 @@ en uppgiftsdialog är öppen.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
       <source>Fill Template Fields In </source>
-      <translation>Fyll i mallfält i </translation>
+      <translation>Fyll i mallens fält </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>

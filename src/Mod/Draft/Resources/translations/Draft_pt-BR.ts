@@ -3473,7 +3473,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>Criar objetos</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
@@ -4520,7 +4520,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_trimex.py" line="199"/>
       <location filename="../../draftguitools/gui_trimex.py" line="715"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>Selecione uma face única para extrudar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="304"/>
@@ -4555,12 +4555,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="705"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>Extrudar face</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="706"/>
       <source>Select a face to extrude</source>
-      <translation type="unfinished">Select a face to extrude</translation>
+      <translation>Selecione uma face para extrudar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="75"/>
@@ -6659,7 +6659,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="93"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>Apara ou estende o objeto selecionado</translation>
     </message>
   </context>
   <context>
@@ -8940,14 +8940,27 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
       <source>Force 2D View Update</source>
-      <translation type="unfinished">Force 2D View Update</translation>
+      <translation>Forçar atualização da visualização 2D</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
-      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
-The 'Auto Update' property of the views is ignored.</translation>
+      <translation>Força a atualização das visualizações 2D selecionadas ou de todas as visualizações 2D no documento.
+A propriedade 'Auto Update' das visualizações é ignorada.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Ferramentas de visualização 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Ferramentas para criar e atualizar visualizações 2D</translation>
     </message>
   </context>
 </TS>

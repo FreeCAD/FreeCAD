@@ -2195,7 +2195,7 @@ Jeśli nie wybrano żadnego obiektu, otworzy się okno przeglądarki plików w c
     <message>
       <location filename="../../Command.cpp" line="1774"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Utwórz widok arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
@@ -4357,12 +4357,12 @@ it has a weld symbol that would become broken.</source>
 zawiera symbol spoiny który zostałby uszkodzony.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Zamknij okno dialogowe przed usunięciem obiektu szczegółu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Nie można usunąć tego widoku, ponieważ ma on co najmniej jeden obiekt zależny, który zostałby uszkodzony.</translation>
     </message>
@@ -4372,8 +4372,8 @@ zawiera symbol spoiny który zostałby uszkodzony.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
@@ -4775,27 +4775,27 @@ Każde przejście zwiększa czas wymagany do utworzenia rysunku.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>Algorytm wyszukiwania ścian</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>Użyj najnowszego algorytmu wyszukiwania ścian lub jednego ze starszych algorytmów</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0,17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0,21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4923,14 +4923,14 @@ Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona i algorytm wyszukiwania ścian obsługuje tę funkcję, 
+FreeCAD spróbuje określić, czy każda ściana rysunku przedstawia materiał, czy otwór. 
+W przypadku dużej liczby ścian wykrywanie może działać wolniej.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Identyfikuj ściany reprezentujące otwory</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
@@ -5499,12 +5499,12 @@ Przy tej opcji zalecane jest stosowane przezroczystych lub jasnych kolorów ści
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
       <source>Break line</source>
-      <translation type="unfinished">Break line</translation>
+      <translation>Linia przerwania</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
       <source>Break line color for broken views</source>
-      <translation type="unfinished">Break line color for broken views</translation>
+      <translation>Kolor linii przerwania w widokach z przerwaniem</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
@@ -6405,17 +6405,18 @@ W przeciwnym razie zostanie użyta metoda dokładniejsza.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
       <source>Screen Mode</source>
-      <translation type="unfinished">Screen Mode</translation>
+      <translation>Tryb ekranu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
       <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
-      <translation type="unfinished">Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</translation>
+      <translation>Wyświetla wierzchołki i krawędzie w stałym rozmiarze na ekranie, zamiast skalować je wraz ze stroną.
+Można również włączyć lub wyłączyć tę opcję z menu kontekstowego strony.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
       <source>Screen mode</source>
-      <translation type="unfinished">Screen mode</translation>
+      <translation>Tryb ekranu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
@@ -6425,7 +6426,8 @@ W przeciwnym razie zostanie użyta metoda dokładniejsza.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
       <source>Size of vertex dots on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Size of vertex dots on screen. Only used in screen mode.</translation>
+      <translation>Rozmiar punktów wierzchołków na ekranie. 
+Używany tylko w trybie ekranowym.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
@@ -6436,12 +6438,13 @@ W przeciwnym razie zostanie użyta metoda dokładniejsza.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
       <source>Edge width</source>
-      <translation type="unfinished">Edge width</translation>
+      <translation>Szerokość krawędzi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
       <source>Width of edges on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Width of edges on screen. Only used in screen mode.</translation>
+      <translation>Szerokość krawędzi na ekranie. 
+Używana tylko w trybie ekranowym.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
@@ -6469,7 +6472,7 @@ W przeciwnym razie zostanie użyta metoda dokładniejsza.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="111"/>
       <source>Screen &amp;Mode</source>
-      <translation type="unfinished">Screen &amp;Mode</translation>
+      <translation>Tryb &amp;ekranu</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="114"/>
@@ -10477,17 +10480,17 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
       <source>Spreadsheet View Parameters</source>
-      <translation type="unfinished">Spreadsheet View Parameters</translation>
+      <translation>Parametry widoku arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="20"/>
       <source>Range:</source>
-      <translation type="unfinished">Range:</translation>
+      <translation>Zakres:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="27"/>
       <source>Enter the top-left cell of the range (e.g., A1)</source>
-      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+      <translation>Wprowadź lewą górną komórkę zakresu (np. A1)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="30"/>
@@ -10497,52 +10500,53 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="37"/>
       <source> to </source>
-      <translation type="unfinished"> to </translation>
+      <translation> do </translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="44"/>
       <source>Enter the bottom-right cell of the range (e.g., B2)</source>
-      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+      <translation>Wprowadź dolną prawą komórkę zakresu (np. B2)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="47"/>
       <source>B2</source>
-      <translation type="unfinished">B2</translation>
+      <translation>B2</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="54"/>
       <source>View Appearance</source>
-      <translation type="unfinished">View Appearance</translation>
+      <translation>Zobacz wygląd</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="60"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Skala:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="67"/>
       <source>Scale of the view. Let you adjust the overall size of the table.</source>
-      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+      <translation>Skala widoku. 
+Umożliwia dostosowanie ogólnego rozmiaru tabeli.</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="83"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>Czcionka:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="93"/>
       <source>Text Size:</source>
-      <translation type="unfinished">Text Size:</translation>
+      <translation>Rozmiar tekstu:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="100"/>
       <source>Font size in points</source>
-      <translation type="unfinished">Font size in points</translation>
+      <translation>Rozmiar czcionki w punktach</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="119"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Kolor tekstu:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="126"/>
@@ -10552,22 +10556,22 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="140"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Szerokość linii:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="147"/>
       <source>Width of the cell border lines</source>
-      <translation type="unfinished">Width of the cell border lines</translation>
+      <translation>Szerokość linii obramowania komórki</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="172"/>
       <source>Claim spreadsheet as child</source>
-      <translation type="unfinished">Claim spreadsheet as child</translation>
+      <translation>Przypisz arkusz kalkulacyjny jako element podrzędny</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="175"/>
       <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
-      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, ten widok przypisze powiązany arkusz kalkulacyjny jako element podrzędny w drzewie.</translation>
     </message>
   </context>
   <context>
@@ -10591,12 +10595,13 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
+      <translation>Nieprawidłowy zakres</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>The specified cell range is invalid. Please correct it.</source>
-      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+      <translation>Określony zakres komórek jest nieprawidłowy. 
+Popraw go.</translation>
     </message>
   </context>
   <context>
@@ -10604,12 +10609,12 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Utwórz widok arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
       <source>Edit Spreadsheet View</source>
-      <translation type="unfinished">Edit Spreadsheet View</translation>
+      <translation>Edytuj widok arkusza kalkulacyjnego</translation>
     </message>
   </context>
   <context>
@@ -10627,7 +10632,7 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../Command.cpp" line="1951"/>
       <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
+      <translation>Eksportuj bieżącą stronę jako PDF</translation>
     </message>
   </context>
   <context>
@@ -10692,7 +10697,7 @@ w punkcie środkowym wybranych krawędzi</translation>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>Dodaj wiersz</translation>
     </message>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>

@@ -987,12 +987,12 @@ vincoli non validi e geometrie degeneri</translation>
       <translation>Aggiungi arco di parabola allo schizzo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="130"/>
+      <location filename="../../DrawSketchHandlerText.h" line="131"/>
       <source>Add sketch Text</source>
       <translation>Aggiungi testo allo schizzo</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="114"/>
+      <location filename="../../EditTextDialog.cpp" line="115"/>
       <source>Modify sketch text constraint</source>
       <translation>Modifica il vincolo del testo dello schizzo</translation>
     </message>
@@ -2014,33 +2014,33 @@ vincoli non validi e geometrie degeneri</translation>
       <translation>Attualmente non è supportato spostare la geometria esterna su un altro livello visivo. La geometria esterna sarà omessa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="91"/>
+      <location filename="../../DrawSketchHandlerText.h" line="92"/>
       <source>Text</source>
       <translation>Testo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="244"/>
+      <location filename="../../DrawSketchHandlerText.h" line="245"/>
       <source>Text parameters</source>
       <translation>Parametri del testo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="725"/>
+      <location filename="../../DrawSketchHandlerText.h" line="726"/>
       <source>%1 switch mode</source>
       <translation>%1 commuta modalità</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="735"/>
-      <location filename="../../DrawSketchHandlerText.h" line="743"/>
+      <location filename="../../DrawSketchHandlerText.h" line="736"/>
+      <location filename="../../DrawSketchHandlerText.h" line="744"/>
       <source>%1 pick bottom-left point</source>
       <translation>%1 seleziona il punto in basso a sinistra</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="739"/>
+      <location filename="../../DrawSketchHandlerText.h" line="740"/>
       <source>%1 pick top-left point</source>
       <translation>%1 seleziona punto in alto a sinistra</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="747"/>
+      <location filename="../../DrawSketchHandlerText.h" line="748"/>
       <source>%1 pick bottom-right point</source>
       <translation>%1 seleziona il punto in basso a destra</translation>
     </message>
@@ -4055,112 +4055,112 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4172"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Lo schizzo non è valido e non può essere modificato.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Il seguente vincolo è parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4401"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraints are partially redundant:</source>
       <translation>I seguenti vincoli sono parzialmente ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4144"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
       <source>Edit Sketch</source>
       <translation>Modifica schizzo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4173"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4194"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
       <source>Invalid Sketch</source>
       <translation>Schizzo non valido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
       <source>Open the sketch validation tool?</source>
       <translation>Aprire lo strumento di convalida dello schizzo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4386"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following constraint:</source>
       <translation>Rimuovere il seguente vincolo:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Rimuovere almeno uno dei seguenti vincoli:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Rimuovere il seguente vincolo ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4394"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Rimuovere i seguenti vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Rimuovere il seguente vincolo malformato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4408"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Rimuovere i seguenti vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4467"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
       <source>Empty sketch</source>
       <translation>Schizzo vuoto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
       <source>Over-constrained:</source>
       <translation>Sovravincolato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
       <source>Malformed constraints:</source>
       <translation>Vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4486"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
       <source>Redundant constraints:</source>
       <translation>Vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
       <source>Partially redundant:</source>
       <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4499"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
       <source>Solver failed to converge</source>
       <translation>Risolutore impossibilitato a convergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
       <source>Under-constrained:</source>
       <translation>Sottovincolato:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grado di libertà</numerusform>
@@ -4168,12 +4168,12 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>Fully constrained</source>
       <translation>Completamente vincolato</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
       <source>Missing external geometry</source>
       <translation>Geometria esterna mancante</translation>
     </message>
@@ -4662,7 +4662,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>and %1 more</source>
       <translation>e %1 in più</translation>
     </message>
@@ -4867,23 +4867,23 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="146"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="142"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Lo schizzo contiene vincoli malformati!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectConstraints.cpp" line="160"/>
+      <location filename="../../../App/SketchObjectConstraints.cpp" line="156"/>
       <source>"%1" has partially redundant constraint(s).</source>
       <translation>"%1" ha vincoli parzialmente ridondanti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1120"/>
-      <location filename="../../../App/SketchObject.cpp" line="1168"/>
+      <location filename="../../../App/SketchObject.cpp" line="1116"/>
+      <location filename="../../../App/SketchObject.cpp" line="1160"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>La modifica non gestita della proprietà di un vincolo comporta indici di vincolo non validi</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1681"/>
+      <location filename="../../../App/SketchObject.cpp" line="1672"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Le parabole sono state convertite. I file convertiti non si apriranno nelle versioni precedenti di FreeCAD!!
@@ -4902,7 +4902,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
-      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
@@ -5178,7 +5178,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>Impossibile aggiungere l'arco di parabola</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <location filename="../../DrawSketchHandlerText.h" line="183"/>
       <source>Failed to add text</source>
       <translation>Impossibile aggiungere testo</translation>
     </message>
@@ -5892,12 +5892,12 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="954"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="951"/>
       <source>Periodic (F)</source>
       <translation>Periodico (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="958"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="955"/>
       <source>Create a periodic B-spline.</source>
       <translation>Crea una B-spline periodica.</translation>
     </message>
@@ -8274,12 +8274,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="947"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="944"/>
       <source>From control points</source>
       <translation>Dai punti di controllo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="948"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
       <source>From knots</source>
       <translation>Dai nodi</translation>
     </message>
@@ -8401,7 +8401,7 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <translation>Lati</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="997"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
       <source>Degree</source>
       <translation>Grado</translation>
     </message>
@@ -8409,12 +8409,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>TaskSketcherTool_c1_text</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
       <source>Width</source>
       <translation>Larghezza</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <location filename="../../DrawSketchHandlerText.h" line="363"/>
       <source>Height</source>
       <translation>Altezza</translation>
     </message>
@@ -8422,12 +8422,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>TaskSketcherTool_Text</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <location filename="../../DrawSketchHandlerText.h" line="369"/>
       <source>Text</source>
       <translation>Testo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
       <translation>Font</translation>
     </message>
@@ -8499,12 +8499,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>SketcherGui::EditTextDialog</name>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="72"/>
+      <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>Font not found</source>
       <translation>Carattere non trovato</translation>
     </message>
     <message>
-      <location filename="../../EditTextDialog.cpp" line="73"/>
+      <location filename="../../EditTextDialog.cpp" line="74"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
       <translation>Il carattere originale '%1' non è stato trovato sul sistema. È stato selezionato un carattere predefinito.</translation>
     </message>

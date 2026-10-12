@@ -2196,7 +2196,7 @@ A visão da câmera determina a direção da projeção.</translation>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Matriz de vínculo circular</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2211,12 +2211,12 @@ A visão da câmera determina a direção da projeção.</translation>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Matriz de vínculo linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Matriz de vínculo polar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -2870,8 +2870,8 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Falha ao criar extrusão.
+Nenhuma forma pôde ser extrudada.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -4402,11 +4402,6 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
       <translation>Verificar os modelos automaticamente após uma operação booleana</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Refinar os modelos automaticamente após uma operação booleana</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Adicionar o nome do objeto base</translation>
@@ -4415,31 +4410,6 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Configurações do modelo</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Valida a geometria (B-Rep) após cada operação booleana para detectar erros. Nota: isto pode diminuir o desempenho em modelos complexos.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Limpa automaticamente a forma após operações booleanas, removendo arestas coplanares redundantes e mesclando faces adjacentes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Refinar automaticamente o modelo após aplicar operações</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Executa automaticamente um passo de refinamento após criar operações no Part Design para remover arestas desnecessárias e limpar a geometria</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Define novos corpos para permitir múltiplos sólidos desconectados (compostos). Se desmarcado, um corpo fica estritamente limitado a um único sólido contíguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4615,6 +4585,36 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Alterna automaticamente para o painel de tarefas quando a bancada Part Design é ativada</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Valida a geometria (B-Rep) após cada operação booleana para detectar erros. Nota: isto pode diminuir o desempenho em modelos complexos.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Refinamento automático de resultados booleanos de peças</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Refina os resultados booleanos de peças removendo arestas redundantes e mesclando faces adjacentes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Refinamento automático de recursos do Part Design</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Refina recursos do Part Design após a criação, removendo arestas desnecessárias</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Define novos corpos para permitir múltiplos sólidos desconectados (compostos). Se desmarcado, um corpo fica estritamente limitado a um único sólido contíguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -6206,12 +6206,12 @@ Continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2553"/>
       <source>Select at most one object to array.</source>
-      <translation type="unfinished">Select at most one object to array.</translation>
+      <translation>Selecione no máximo um objeto para a matriz.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Select one object from the active document.</source>
-      <translation type="unfinished">Select one object from the active document.</translation>
+      <translation>Selecione um objeto do documento ativo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2282"/>
@@ -7794,17 +7794,17 @@ Volumes sobrepostos das formas serão removidos.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>A pré-visualização requer um provedor de visualização baseado na bancada Part; nenhum encontrado para %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>objeto desconhecido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Falha ao renderizar a pré-visualização: %1. Isso geralmente indica um erro no modelo.</translation>
     </message>
@@ -7823,12 +7823,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
       <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
+      <translation>Objeto vinculado</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Selecionar objeto</translation>
     </message>
   </context>
   <context>
@@ -7836,7 +7836,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Padrão circular</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7856,7 +7856,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
       <source>Concentric circles</source>
-      <translation type="unfinished">Concentric circles</translation>
+      <translation>Círculos concêntricos</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
@@ -7873,14 +7873,14 @@ Volumes sobrepostos das formas serão removidos.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
-      <translation type="unfinished">Select Path</translation>
+      <translation>Selecionar caminho</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
       <source>Spacing mode</source>
-      <translation type="unfinished">Spacing mode</translation>
+      <translation>Modo de espaçamento</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="10"/>
@@ -7895,42 +7895,42 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="14"/>
       <source>Start offset</source>
-      <translation type="unfinished">Start offset</translation>
+      <translation>Deslocamento inicial</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="16"/>
       <source>End offset</source>
-      <translation type="unfinished">End offset</translation>
+      <translation>Deslocamento final</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
       <source>Reverse path</source>
-      <translation type="unfinished">Reverse path</translation>
+      <translation>Inverter caminho</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="19"/>
       <source>Align to path</source>
-      <translation type="unfinished">Align to path</translation>
+      <translation>Alinhar ao caminho</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
-      <translation type="unfinished">Fixed count</translation>
+      <translation>Quantidade fixa</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
-      <translation type="unfinished">Fixed spacing</translation>
+      <translation>Espaçamento fixo</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
-      <translation type="unfinished">Fixed count and spacing</translation>
+      <translation>Quantidade e espaçamento fixos</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
-      <translation type="unfinished">(+%1)</translation>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7938,13 +7938,13 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="8"/>
       <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
+      <translation>Objeto de pontos</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="14"/>
       <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
       <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
+      <translation>Selecionar objeto de pontos</translation>
     </message>
   </context>
   <context>
@@ -7957,12 +7957,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Matriz de vínculo circular</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+      <translation>Cria uma matriz circular concêntrica de objetos vinculados</translation>
     </message>
   </context>
   <context>
@@ -7980,7 +7980,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
       <source>Creates an array of linked objects along a path</source>
-      <translation type="unfinished">Creates an array of linked objects along a path</translation>
+      <translation>Cria uma matriz de objetos vinculados ao longo de um caminho</translation>
     </message>
   </context>
   <context>
@@ -7998,7 +7998,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
       <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
+      <translation>Cria uma matriz de objetos vinculados em cada ponto de um esboço ou forma</translation>
     </message>
   </context>
   <context>
@@ -8011,12 +8011,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Matriz de vínculo linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
       <source>Creates a linear array of linked objects</source>
-      <translation type="unfinished">Creates a linear array of linked objects</translation>
+      <translation>Cria uma matriz linear de objetos vinculados</translation>
     </message>
   </context>
   <context>
@@ -8029,12 +8029,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Matriz de vínculo polar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
       <source>Creates a polar array of linked objects</source>
-      <translation type="unfinished">Creates a polar array of linked objects</translation>
+      <translation>Cria uma matriz polar de objetos vinculados</translation>
     </message>
   </context>
   <context>
@@ -8047,12 +8047,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2950"/>
       <source>Link Arrays</source>
-      <translation type="unfinished">Link Arrays</translation>
+      <translation>Matrizes de vínculos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2951"/>
       <source>Creates link arrays</source>
-      <translation type="unfinished">Creates link arrays</translation>
+      <translation>Cria matrizes de vínculos</translation>
     </message>
   </context>
   <context>
@@ -8060,18 +8060,18 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="226"/>
       <source>Restores this instance</source>
-      <translation type="unfinished">Restores this instance</translation>
+      <translation>Restaura esta instância</translation>
     </message>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="231"/>
       <source>Suppresses this instance</source>
-      <translation type="unfinished">Suppresses this instance</translation>
+      <translation>Suprime esta instância</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Direção 2</translation>
     </message>
@@ -8081,7 +8081,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Matriz de vínculo circular</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
@@ -8096,12 +8096,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Matriz de vínculo polar</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Matriz de vínculo linear</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
@@ -8111,7 +8111,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Selecionar objeto</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
@@ -8123,21 +8123,21 @@ Volumes sobrepostos das formas serão removidos.</translation>
       <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
       <source>Object X-axis</source>
-      <translation type="unfinished">Object X-axis</translation>
+      <translation>Eixo X do objeto</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
       <source>Object Y-axis</source>
-      <translation type="unfinished">Object Y-axis</translation>
+      <translation>Eixo Y do objeto</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
       <source>Object Z-axis</source>
-      <translation type="unfinished">Object Z-axis</translation>
+      <translation>Eixo Z do objeto</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
@@ -8147,22 +8147,22 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
       <source>Select connected path edges</source>
-      <translation type="unfinished">Select connected path edges</translation>
+      <translation>Selecionar arestas conectadas do caminho</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
       <source>Select a sketch or shape containing points</source>
-      <translation type="unfinished">Select a sketch or shape containing points</translation>
+      <translation>Selecione um esboço ou forma contendo pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
       <source>Select a rotation axis</source>
-      <translation type="unfinished">Select a rotation axis</translation>
+      <translation>Selecione um eixo de rotação</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
       <source>Select a direction reference</source>
-      <translation type="unfinished">Select a direction reference</translation>
+      <translation>Selecione uma referência de direção</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
@@ -8173,7 +8173,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <source>Select an object to link.</source>
-      <translation type="unfinished">Select an object to link.</translation>
+      <translation>Selecione um objeto para vincular.</translation>
     </message>
   </context>
   <context>

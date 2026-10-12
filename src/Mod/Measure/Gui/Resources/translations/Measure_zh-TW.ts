@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+      <translation>公稱距離：%1，軸向距離：%2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -388,32 +388,32 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
       <source>Jox</source>
-      <translation type="unfinished">Jox</translation>
+      <translation>Jox</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="545"/>
       <source>Jxy</source>
-      <translation type="unfinished">Jxy</translation>
+      <translation>Jxy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="559"/>
       <source>Jzx</source>
-      <translation type="unfinished">Jzx</translation>
+      <translation>Jzx</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="573"/>
       <source>Joy</source>
-      <translation type="unfinished">Joy</translation>
+      <translation>Joy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="587"/>
       <source>Jzy</source>
-      <translation type="unfinished">Jzy</translation>
+      <translation>Jzy</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="601"/>
       <source>Joz</source>
-      <translation type="unfinished">Joz</translation>
+      <translation>Joz</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
@@ -423,17 +423,17 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>J1</source>
-      <translation type="unfinished">J1</translation>
+      <translation>J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>J2</source>
-      <translation type="unfinished">J2</translation>
+      <translation>J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>J3</source>
-      <translation type="unfinished">J3</translation>
+      <translation>J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -462,47 +462,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
       <source>Parameters</source>
       <translation>參數</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
       <source>Physical Properties</source>
       <translation>物理屬性</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
       <source>Center of Gravity</source>
       <translation>重心</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
       <source>Center of Volume</source>
       <translation>形心（體積中心）</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Inertia</source>
       <translation>慣性</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="434"/>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
       <source>Close</source>
       <translation>關閉</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="437"/>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
       <source>Save</source>
       <translation>儲存</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="441"/>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
       <source>Reset</source>
       <translation>重設</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1222"/>
+      <location filename="../../TaskMassProperties.cpp" line="1232"/>
       <source> (Average)</source>
       <translation>（平均）</translation>
     </message>

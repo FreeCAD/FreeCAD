@@ -431,7 +431,7 @@ No pot ser zero.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
       <source>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Nombre de cercles concèntrics a crear, incloent una còpia de l'objecte original.
+      <translation>Nombre de cercles concèntrics a crear, incloent-hi una còpia de l'objecte original.
 Ha de ser com a mínim 2.</translation>
     </message>
     <message>
@@ -687,7 +687,7 @@ It must be at least 2.</source>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
       <translation>Les coordenades del punt per on passa l’eix de rotació.
-Canvieu la direcció del propi eix a l’editor de propietats.</translation>
+Canvieu la direcció del mateix eix a l’editor de propietats.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="101"/>
@@ -3484,7 +3484,7 @@ No disponible si la preferència "Utilitza primitives de peça" està habilitada
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>Crea objectes</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
@@ -8986,6 +8986,19 @@ de blocs no es preserven; la seva geometria passa a formar part de la forma de l
 The 'Auto Update' property of the views is ignored.</source>
       <translation>Força una actualització de les vistes 2D seleccionades o de totes les vistes 2D del document.
 S'ignora la propietat 'Auto Update' de les vistes.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Eines de visualització 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Eines per crear i actualitzar vistes 2D</translation>
     </message>
   </context>
 </TS>

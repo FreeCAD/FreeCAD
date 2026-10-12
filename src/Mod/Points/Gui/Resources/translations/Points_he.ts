@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
-      <translation>נקודות ייצוא...</translation>
+      <translation>נקודות ייצוא…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="152"/>
@@ -48,12 +48,12 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation>ייבוא ​​נקודות...</translation>
+      <translation>ייבוא ​​נקודות…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Imports a point cloud</source>
-      <translation>מיבא ענן נקודת</translation>
+      <translation>מייבא ענן נקודת</translation>
     </message>
   </context>
   <context>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Merge Point Clouds</source>
-      <translation>Merge Point Clouds</translation>
+      <translation>מזג ענני נקודות</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Cut Point Cloud</source>
-      <translation>Cut Point Cloud</translation>
+      <translation>חיתוך ענן נקודות</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
@@ -232,7 +232,7 @@
       <location filename="../../DlgPointsRead.ui" line="255"/>
       <location filename="../../DlgPointsRead.ui" line="291"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (וקטור דו מימדי רגיל)</translation>
+      <translation>I,K (וקטור 2 מימדי רגיל)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="224"/>

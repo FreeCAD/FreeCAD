@@ -2874,8 +2874,8 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>La creació de l'extrusió ha fallat.
+No s'ha pogut extrudir cap forma.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -4406,11 +4406,6 @@ Comproveu primer una o més entitats de vora.</translation>
       <translation>Comprova automàticament el model després de l'operació booleana</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Automàticament refinar el model de després de l'operació booleana</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Afegir nom de l'objecte base</translation>
@@ -4419,31 +4414,6 @@ Comproveu primer una o més entitats de vora.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Preferències de model</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Valida la geometria (BRep) després de cada operació booleana per a detectar errors. Nota: això pot alentir el rendiment en models complexos.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Neteja automàticament la forma després de les operacions booleanes eliminant les arestes coplanàries redundants i fusionant les cares adjacents</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Refina el model automàticament després d'aplicar les operacions</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Executa automàticament una passada de refinament després de crear característiques de Part Design per a eliminar les arestes innecessàries i netejar la geometria</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Configura els cossos nous perquè admetin diversos sòlids desconnectats (compostos). Si no està marcat, un cos es limita estrictament a un únic sòlid contigu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4619,6 +4589,36 @@ Comproveu primer una o més entitats de vora.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Canviar automàticament al tauler de tasques quan s'activa el banc de treball de disseny de peces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Valida la geometria (BRep) després de cada operació booleana per a detectar errors. Nota: això pot alentir el rendiment en models complexos.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Refinament automàtic dels resultats booleans de peça</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Refina els resultats booleans de peça eliminant vores redundants i fusionant cares adjacents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Refinament automàtic de les característiques de disseny de peça</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Refina les característiques de disseny de peça després de la creació eliminant vores innecessàries</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Configura els cossos nous perquè admetin diversos sòlids desconnectats (compostos). Si no està marcat, un cos es limita estrictament a un únic sòlid contigu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7802,17 +7802,17 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>La previsualització requereix un proveïdor de vista basat en Part; no se n'ha trobat cap per a %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>objecte desconegut</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>La previsualització de renderització ha fallat: %1. Normalment indica un error amb el model.</translation>
     </message>
@@ -7881,7 +7881,7 @@ S'eliminaran els volums superposats de les formes.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Selecciona el camí</translation>
     </message>
@@ -7921,22 +7921,22 @@ S'eliminaran els volums superposats de les formes.</translation>
       <translation>Alinea al camí</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Nombre fix</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Espaiat fix</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Nombre i espaiat fixos</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8079,7 +8079,7 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Direcció 2</translation>
     </message>

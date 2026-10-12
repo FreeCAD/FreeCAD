@@ -7499,8 +7499,8 @@ Odsunięcie zostało pominięte.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>Wysokość lub głębokość wyciągnięcia tego elementu. 
+Ustaw 0, aby automatycznie dopasować ją do wysokości nadrzędnego poziomu lub budynku.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9619,9 +9619,9 @@ obiekty bez brył też będą cięte, z możliwością pojawienia się błędów
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Szablon tekstu etykiety przestrzeni. 
+Użyj etykiety $area, $label, $longname, $description lub nazwy dowolnej właściwości poprzedzonej znakiem $ (bez rozróżniania wielkości liter) 
+albo $floor, $walls, $ceiling dla wykończeń, aby wstawić odpowiednie dane.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9703,29 +9703,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>Długość tej ściany. 
+Edytowalna tylko, gdy linia bazowa ściany jest linią środowiska pracy Kreślenie, nieograniczonym szkicem z pojedynczą linią lub gdy jej brak.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>Szerokość tej ściany.
+Ignorowana, jeśli ściana jest oparta na bryle lub ścianie.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>Wysokość tej ściany.
+Pozostaw 0, aby automatycznie dopasować wysokość otaczającego Poziomu lub Budynku. 
+Ignorowana, jeśli ściana jest oparta na bryle.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>Wyrównanie tej ściany względem jej obiektu bazowego, jeśli dotyczy.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10810,12 +10810,12 @@ Alt+PgUp rozszerz wytłaczanieAlt+PgDown zmniejsz wytłaczanieAlt+/ przełącz m
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>Kreślenie 2D</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>Geometria 3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="685"/>
@@ -13937,7 +13937,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Tworzy połączenie kilku kształtów</translation>
     </message>
   </context>
   <context>
@@ -13989,7 +13989,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Tworzy przecięcie dwóch kształtów</translation>
     </message>
   </context>
   <context>
@@ -13997,7 +13997,7 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Konstruktor kształtu</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -14010,12 +14010,12 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Tworzy rzut 2D tylko przecinających się ścian wybranych obiektów na płaszczyznę XY.</translation>
     </message>
   </context>
   <context>
@@ -14023,12 +14023,12 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Odsunięcie 2D</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Narzędzie do odsuwania płaskich kształtów</translation>
     </message>
   </context>
 </TS>

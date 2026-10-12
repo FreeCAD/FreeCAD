@@ -2229,17 +2229,17 @@ projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation>Réseau de liens circulaires</translation>
+      <translation>Réseau circulaire de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
       <source>Path Link Array</source>
-      <translation>Réseau lié selon une courbe</translation>
+      <translation>Réseau de copies liées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2721"/>
       <source>Point Link Array</source>
-      <translation>Réseau lié selon des points</translation>
+      <translation>Réseau selon des points de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
@@ -2249,7 +2249,7 @@ projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation>Réseau de liens polaires</translation>
+      <translation>Réseau polaire de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -4437,11 +4437,6 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <translation>Vérifier les modèles automatiquement après une opération booléenne</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Affiner les modèles automatiquement après une opération booléenne</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Ajouter un nom à l'objet de base</translation>
@@ -4450,35 +4445,6 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Paramètres des modèles</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Valide la géométrie (B-Rep) après chaque opération booléenne afin de détecter les erreurs. Remarque : cela peut ralentir les performances
-sur les modèles complexes.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Nettoie automatiquement la forme après des opérations booléennes en supprimant les arêtes coplanaires redondantes et en fusionnant les
-faces adjacentes.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Affiner automatiquement les modèles après avoir appliqué des opérations</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Exécute automatiquement une opération d'affinement après la création des fonctions de PartDesign. Cela supprime les arêtes superflues et
-nettoie la géométrie.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Définit les nouveaux corps de manière à autoriser plusieurs solides non contigus (composés). Si cette option n'est pas cochée, un corps est
-strictement limité à un seul solide contigu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4658,6 +4624,38 @@ fonction en cours d'édition par le glisser-déposer.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Bascule automatiquement sur le panneau des tâches lorsque l'atelier PartDesign est activé.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Valide la géométrie (B-Rep) après chaque opération booléenne afin de détecter les erreurs. Remarque : cela peut ralentir les performances
+sur les modèles complexes.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Amélioration automatique des résultats des opérations booléennes de Part</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Améliore les résultats des opérations booléennes en supprimant les arêtes redondantes et en fusionnant les faces adjacentes.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Amélioration automatique des fonctions de PartDesign</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Améliore les fonctions de PartDesign après leur création en supprimant les arêtes inutiles.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Définit les nouveaux corps de manière à autoriser plusieurs solides non contigus (composés). Si cette option n'est pas cochée, un corps est
+strictement limité à un seul solide contigu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7783,7 +7781,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../PatternParametersWidget.ui" line="50"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation>Inverser la direction du motif</translation>
+      <translation>Inverser la direction de la répétition</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="68"/>
@@ -7853,17 +7851,17 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>L'aperçu nécessite un fournisseur d'affichage basé sur des pièces. Rien n'a été trouvé pour %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>objet inconnu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>L'affichage de l'aperçu a échoué : %1. Cela indique généralement une erreur au niveau du modèle.</translation>
     </message>
@@ -7895,7 +7893,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation>Motif circulaire</translation>
+      <translation>Répétition circulaire</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7932,9 +7930,9 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
-      <translation>Sélectionner une trajectoire</translation>
+      <translation>Sélectionner une courbe</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
@@ -7964,30 +7962,30 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
       <source>Reverse path</source>
-      <translation>Inverser une trajectoire</translation>
+      <translation>Inverser la courbe</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="19"/>
       <source>Align to path</source>
-      <translation>Aligner sur une trajectoire</translation>
+      <translation>Aligner sur la courbe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Nombre fixe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Espacement fixe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Nombre et espacement fixes</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8016,7 +8014,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation>Réseau de liens circulaires</translation>
+      <translation>Réseau circulaire de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
@@ -8034,7 +8032,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../Command.cpp" line="2672"/>
       <source>Path Link Array</source>
-      <translation>Réseau lié selon une courbe</translation>
+      <translation>Réseau de copies liées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
@@ -8052,7 +8050,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../Command.cpp" line="2707"/>
       <source>Point Link Array</source>
-      <translation>Réseau lié selon des points</translation>
+      <translation>Réseau selon des points de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
@@ -8088,7 +8086,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation>Réseau de liens polaires</translation>
+      <translation>Réseau polaire de liens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
@@ -8130,7 +8128,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Direction 2</translation>
     </message>
@@ -8140,22 +8138,22 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
       <source>Circular Link Array</source>
-      <translation>Réseau de liens circulaires</translation>
+      <translation>Réseau circulaire de liens</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
       <source>Path Link Array</source>
-      <translation>Réseau lié selon une courbe</translation>
+      <translation>Réseau de copies liées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
       <source>Point Link Array</source>
-      <translation>Réseau lié selon des points</translation>
+      <translation>Réseau selon des points de liens</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
       <source>Polar Link Array</source>
-      <translation>Réseau de liens polaires</translation>
+      <translation>Réseau polaire de liens</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>

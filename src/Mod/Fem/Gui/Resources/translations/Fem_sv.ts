@@ -2327,7 +2327,7 @@ att ”MAXGS” måste ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="171"/>
       <source>Only faces can be picked</source>
-      <translation>Endast ytor kan väljas</translation>
+      <translation>Endast ansikten kan väljas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="181"/>
@@ -2435,7 +2435,7 @@ att ”MAXGS” måste ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="162"/>
       <source>Only faces can be picked</source>
-      <translation>Endast ytor kan väljas</translation>
+      <translation>Endast ansikten kan väljas</translation>
     </message>
   </context>
   <context>
@@ -4412,7 +4412,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="119"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="120"/>
@@ -5730,7 +5730,7 @@ normalvektorn för ytan används som riktning</translation>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
       <location filename="../../TaskPostDisplay.ui" line="93"/>
       <source>Outline</source>
-      <translation>Kontur</translation>
+      <translation>Översikt</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
@@ -5786,7 +5786,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
       <source>Outline</source>
-      <translation>Kontur</translation>
+      <translation>Översikt</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
@@ -6564,7 +6564,7 @@ Välj en resultattyp först.</translation>
       <translation>Inget resultatobjekt</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="200"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
       <source>
 
 Correct module found in: 
@@ -6575,7 +6575,7 @@ Korrekt modul hittades i:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="208"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6584,7 +6584,7 @@ Should this module be loaded instead?</source>
 Ska den här modulen läsas in i stället?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="225"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6593,17 +6593,17 @@ No matching module was found in the current Python path.</source>
 Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="229"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
       <source>VTK Python module conflict</source>
       <translation>Konflikt med VTK:s Python-modul</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="255"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python Module Conflict</source>
       <translation>Konflikt med VTK:s Python-modul</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="258"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Denna funktion är inte tillgänglig på grund av en konflikt med VTK:s Python-modul</translation>
     </message>
@@ -7697,7 +7697,7 @@ Lämna tomt för att använda den körbara standardfilen för Python</translatio
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Väljer vilka indata de underordnade filtren tar emot:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Seriell:&lt;/span&gt; Det första filtret i grenen får grenens indata. Nästa filter får det första filtrets utdata som indata, och så vidare.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallell: &lt;/span&gt;Alla filter i grenen får grenens indata. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Väljer den ingång som barnfiltret ska ta emot:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serie:&lt;/span&gt; Det första filtret i grenen får ingången Branches som sin egen ingång. Nästa filter får sedan det första filtrets utdata som inmatning och så vidare.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallell: &lt;/span&gt;Alla filter i grenen får Branches-ingången som sin egen ingång.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -7707,7 +7707,7 @@ Lämna tomt för att använda den körbara standardfilen för Python</translatio
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Väljer vilka indata de underordnade filtren tar emot:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Seriell:&lt;/span&gt; Det första filtret i grenen får grenens indata. Nästa filter får det första filtrets utdata som indata, och så vidare.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallell: &lt;/span&gt;Alla filter i grenen får grenens indata. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Väljer den ingång som barnfiltren ska ta emot:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serie:&lt;/span&gt;Det första filtret i grenen får Branches-ingången som sin egen ingång. Nästa filter får sedan det första filtrets utdata som inmatning och så vidare.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallell: &lt;/span&gt;Alla filter i grenen får Branches-ingången som sin egen ingång.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
@@ -7935,7 +7935,7 @@ Lämna tomt för att använda den körbara standardfilen för Python</translatio
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation>Ändrar skalfaktorn med +/- 50 % av den inställda skalfaktorn</translation>
+      <translation>Ändrar skalfaktorn med ± 50 % av den inställda skalfaktorn</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>

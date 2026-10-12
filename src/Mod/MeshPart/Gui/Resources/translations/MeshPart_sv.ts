@@ -352,7 +352,7 @@ denna funktion (t.ex. OBJ).</translation>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>Den största linjära avvikelsen för ett nätsegment är den angivna
+      <translation>Den maximala linjära avvikelsen för ett nätsegment motsvarar den angivna
 ytavvikelsen multiplicerad med längden på det aktuella nätsegmentet (kanten)</translation>
     </message>
     <message>

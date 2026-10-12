@@ -6562,7 +6562,7 @@ Sélectionner d'abord un type de résultat.</translation>
       <translation>Aucun résultat</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="200"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
       <source>
 
 Correct module found in: 
@@ -6571,31 +6571,31 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="208"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
       <source>
 
 Should this module be loaded instead?</source>
       <translation>Faut-il charger ce module à la place ?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="225"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>
 
 No matching module was found in the current Python path.</source>
       <translation>Il n'y a pas de module correspondant dans l'actuel chemin d'accès de Python.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="229"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
       <source>VTK Python module conflict</source>
       <translation>Conflit entre les modules Python VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="255"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python Module Conflict</source>
       <translation>Conflit entre les modules Python VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="258"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Cette fonction n'est pas disponible en raison d'un conflit de module VTK Python.</translation>
     </message>

@@ -5491,44 +5491,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Показати залежності</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
       <source>Depending on</source>
       <translation>В залежності від</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Document</source>
       <translation>Документ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
       <source>Depended by</source>
       <translation>Залежить від</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Selections</source>
       <translation>Виділення</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
       <source>All</source>
       <translation>Всі</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Використовувати початкові виділення</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Ігнорує залежності та продовжує роботу з початково
@@ -6144,7 +6144,7 @@ Save all changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="197"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2651"/>
       <source>Dimension</source>
       <translation>Розмірність</translation>
     </message>
@@ -6196,59 +6196,59 @@ Save all changes?</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1424"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>Закрити все</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1697"/>
-      <location filename="../MainWindow.cpp" line="1698"/>
       <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>Переключення цієї панелі</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1718"/>
-      <location filename="../MainWindow.cpp" line="1719"/>
       <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>Переключення цього закріплюваного вікна</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1927"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>Safe mode enabled</source>
       <translation>Безпечний режим увімкнено</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1928"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD зараз працює в безпечному режимі.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1934"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Безпечний режим тимчасово вимикає ваші конфігурації та доповнення. Перезапустіть програму, щоб вийти з безпечного режиму.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2374"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2376"/>
+      <location filename="../MainWindow.cpp" line="2527"/>
       <source>Unsaved document</source>
       <translation>Незбережений документ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2375"/>
+      <location filename="../MainWindow.cpp" line="2377"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Експортований обʼєкт містить зовнішні посилання. Збережіть документ хоча б раз перед експортом.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2528"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Щоб привʼязати зовнішні обʼєкти, документ повинен бути збережений хоча б один раз.
 Зберегти документ зараз?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3036"/>
+      <location filename="../MainWindow.cpp" line="3038"/>
       <source>Safe Mode</source>
       <translation>Безпечний режим</translation>
     </message>
@@ -6528,152 +6528,152 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
       <source>Edit</source>
       <translation>Редагувати</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>property</source>
       <translation>властивість</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
       <source>Expand/Collapse Properties</source>
       <translation>Розгорнути/згорнути властивості</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
       <source>Expand to Default</source>
       <translation>Розгортати за замовчуванням</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
       <source>Expand All</source>
       <translation>Розгорнути все</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
       <source>Collapse All</source>
       <translation>Згорнути все</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Default Expand</source>
       <translation>Розгортати за замовчуванням</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
       <source>Auto Expand</source>
       <translation>Автоматичне розгортання</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Auto Collapse</source>
       <translation>Автоматичне згортання</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
       <source>object %1 (%2):
 </source>
       <translation>об’єкт %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>property %1
 </source>
       <translation>властивість %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>document %1:
 </source>
       <translation>документ %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>Властивість %1 в об’єкті %2 (%3) у документі %4 є посиланням на:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
       <source>(No references found.)</source>
       <translation>(Посилань не знайдено.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Property Uses</source>
       <translation type="unfinished">Property Uses</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
       <source>Copy</source>
       <translation>Копіювати</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Add Property</source>
       <translation>Додати властивість</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Rename Property Group</source>
       <translation>Перейменувати групу властивостей</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>Неможливо перейменувати групу: одна або кілька властивостей мають назви, що починаються з назви групи</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Rename Property</source>
       <translation>Перейменувати властивість</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Edit Property Tooltip</source>
       <translation>Редагувати підказку властивості</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
       <source>Delete Property</source>
       <translation>Видалити властивість</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
       <source>Move Property</source>
       <translation type="unfinished">Move Property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Tooltip</source>
       <translation>Підказка</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
       <source>Show Hidden</source>
       <translation>Показати приховані</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
       <source>Expression</source>
       <translation>Вираз</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
       <source>Property name</source>
       <translation>Назва властивості</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
       <source>Group name:</source>
       <translation>Назва Групи:</translation>
     </message>
@@ -7458,7 +7458,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4254"/>
+      <location filename="../Tree.cpp" line="4258"/>
       <source>Search</source>
       <translation>Пошук</translation>
     </message>
@@ -7668,7 +7668,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6613"/>
+      <location filename="../Tree.cpp" line="6617"/>
       <source>Rename</source>
       <translation>Перейменувати</translation>
     </message>
@@ -7688,12 +7688,12 @@ Specify another directory?</source>
       <translation>Відкрити розташування файлу</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6581"/>
+      <location filename="../Tree.cpp" line="6585"/>
       <source> (but must be executed)</source>
       <translation> (але має бути виконано)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6584"/>
+      <location filename="../Tree.cpp" line="6588"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, внутрішнє імʼя: %2</translation>
     </message>
@@ -8773,7 +8773,7 @@ Choose 'Abort' to abort</source>
       <translation>Не вдається знайти файл %1 ні в %2 , ні в %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2790"/>
       <source>Clarify Selection</source>
       <translation>Очистити вибір</translation>
     </message>
@@ -9231,7 +9231,7 @@ the current copy will be lost.
       <translation>Заборонено:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1337"/>
+      <location filename="../Selection/Selection.cpp" line="1335"/>
       <source>Selection not allowed by filter</source>
       <translation>Виділення заборонено фільтром</translation>
     </message>
@@ -9545,7 +9545,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
@@ -14456,7 +14456,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4326"/>
+      <location filename="../Tree.cpp" line="4330"/>
       <source>Tree View</source>
       <translation>Деревовидний перегляд</translation>
     </message>

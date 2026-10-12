@@ -2873,8 +2873,8 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>La creación de extrusión falló.
+No se pudo extruir ninguna forma.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -4409,11 +4409,6 @@ Primero seleccione una o más aristas.</translation>
       <translation>Comprobar automáticamente el modelo después de la operación booleana</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Refinar automáticamente el modelo después de la operación booleana</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Agregar nombre del objeto base</translation>
@@ -4422,31 +4417,6 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Configuración del modelo</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Valida la geometría (BRep) después de cada operación booleana para detectar errores. Nota: Esto puede ralentizar el rendimiento en modelos complejos.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Limpia automáticamente la forma después de las operaciones booleanas eliminando los bordes coplanares redundantes y fusionando las caras adyacentes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Refinar automáticamente el modelo después de aplicar las operaciones</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Ejecuta automáticamente un pase de refinamiento después de crear las características de diseño de piezas para eliminar los bordes innecesarios y limpiar la geometría</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Establece nuevos cuerpos para permitir múltiples sólidos desconectados (compuestos). Si no se marca esta opción, un cuerpo se limita estrictamente a un único sólido contiguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4622,6 +4592,36 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Cambiar automáticamente al panel de tareas cuando se active el entorno de trabajo de Diseño de Piezas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Valida la geometría (BRep) después de cada operación booleana para detectar errores. Nota: Esto puede ralentizar el rendimiento en modelos complejos.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation type="unfinished">Refines Part Boolean results by removing redundant edges and merging adjacent faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation type="unfinished">Automatic refinement of Part Design features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation type="unfinished">Refines Part Design features after creation by removing unnecessary edges</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Establece nuevos cuerpos para permitir múltiples sólidos desconectados (compuestos). Si no se marca esta opción, un cuerpo se limita estrictamente a un único sólido contiguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7804,17 +7804,17 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Para la vista preliminar se necesita un proveedor de vista, y no se encuentra para %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>objeto desconocido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Error al renderizar la vista previa. Esto suele indicar un error en el modelo.</translation>
     </message>
@@ -7883,7 +7883,7 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Seleccionar trayectoria</translation>
     </message>
@@ -7923,22 +7923,22 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
       <translation>Alinear a la trayectoria</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Número fijo</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Espaciado fijo</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Número y espaciado fijos</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8081,7 +8081,7 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Dirección 2</translation>
     </message>

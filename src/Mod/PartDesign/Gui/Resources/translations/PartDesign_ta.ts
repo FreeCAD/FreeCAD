@@ -206,17 +206,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2861"/>
       <source>Boolean Operation</source>
       <translation>பூலியன் ஆபரேசன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2727"/>
+      <location filename="../../Command.cpp" line="2862"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பொருள்கள் மற்றும் செயலில் உள்ள உடலுடன் பூலியன் செயல்பாடுகளைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
+      <location filename="../../Command.cpp" line="2729"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2730"/>
       <source>Multi-Transform</source>
       <translation>பல உருமாற்றம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2731"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட நற்பொருத்தங்கள் அல்லது செயலில் உள்ள உடலுக்கு பல மாற்றங்களைப் பயன்படுத்துகிறது</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2489"/>
+      <location filename="../../Command.cpp" line="2624"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2490"/>
+      <location filename="../../Command.cpp" line="2625"/>
       <source>Polar Pattern</source>
       <translation>போலார் பேட்டர்ன்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2626"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அம்சங்களை அல்லது செயலில் உள்ள உடலை வட்ட வடிவில் நகலெடுக்கிறது</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2551"/>
+      <location filename="../../Command.cpp" line="2686"/>
       <source>PartDesign</source>
       <translation>பகுதி வடிவமைப்பு</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2687"/>
       <source>Scale</source>
       <translation>அளவுகோல்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2688"/>
       <source>Scales the selected features or the active body</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட அம்சங்களை அல்லது செயலில் உள்ள உடலை அளவிடுகிறது</translation>
     </message>
@@ -905,7 +905,7 @@ so that self intersection is avoided.</source>
       <translation>நகலெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2649"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>மல்டி-ட்ரான்ச்ஃபார்ம் அம்சத்திற்கு மாற்றவும்</translation>
     </message>
@@ -926,7 +926,7 @@ so that self intersection is avoided.</source>
       <translation>புதிய ச்கெட்ச்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2746"/>
+      <location filename="../../Command.cpp" line="2881"/>
       <source>Create Boolean</source>
       <translation>பூலியன் உருவாக்கவும்</translation>
     </message>
@@ -962,22 +962,37 @@ so that self intersection is avoided.</source>
       <translation>ஒரு பொருளை நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="261"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
       <source>Mirror</source>
       <translation>கண்ணாடி</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>
       <source>Linear Pattern</source>
       <translation>நேரியல் முறை</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="350"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
       <source>Polar Pattern</source>
       <translation>போலார் பேட்டர்ன்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
+      <source>Path Pattern</source>
+      <translation type="unfinished">Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
+      <source>Point Pattern</source>
+      <translation type="unfinished">Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
       <source>Scale</source>
       <translation>அளவுகோல்</translation>
     </message>
@@ -1410,7 +1425,7 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="290"/>
+      <location filename="../../ReferenceSelection.cpp" line="336"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>இதைத் தேர்ந்தெடுப்பது வட்ட சார்புநிலையை ஏற்படுத்தும்.</translation>
     </message>
@@ -1736,27 +1751,27 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDressUpParameters</name>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="302"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="591"/>
       <source>Select</source>
       <translation>தேர்ந்தெடு</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="307"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="596"/>
       <source>Confirm Selection</source>
       <translation>தேர்வை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="320"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="609"/>
       <source>Add All Edges</source>
       <translation>அனைத்து விளிம்புகளையும் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="326"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="615"/>
       <source>Adds all edges to the list box (only when in add selection mode)</source>
       <translation>பட்டியல் பெட்டியில் அனைத்து விளிம்புகளையும் சேர்க்கிறது (தேர்வு பயன்முறையில் சேர்க்கும் போது மட்டும்)</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="335"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="624"/>
       <source>Remove</source>
       <translation>அகற்று</translation>
     </message>
@@ -1986,7 +2001,7 @@ If zero, it is equal to Radius2</source>
       <translation>அனைத்து விளிம்புகளையும் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="205"/>
+      <location filename="../../TaskFilletParameters.cpp" line="204"/>
       <source>Empty fillet created!</source>
       <translation>வெற்று ஃபில்லட் உருவாக்கப்பட்டது!</translation>
     </message>
@@ -2418,47 +2433,62 @@ If zero, it is equal to Radius2</source>
       <translation>சரி</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="71"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="74"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Delete</source>
       <translation>நீக்கு</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="80"/>
       <source>Add Mirror Transformation</source>
       <translation>மிரர் உருமாற்றத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="85"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="88"/>
       <source>Add Linear Pattern</source>
       <translation>நேரியல் வடிவத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
+      <source>Add Circular Pattern</source>
+      <translation type="unfinished">Add Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <source>Add Path Pattern</source>
+      <translation type="unfinished">Add Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
+      <source>Add Point Pattern</source>
+      <translation type="unfinished">Add Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
       <source>Add Polar Pattern</source>
       <translation>போலார் பேட்டர்னைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="128"/>
       <source>Add Scale Transformation</source>
       <translation>அளவு மாற்றத்தைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="131"/>
       <source>Move Up</source>
       <translation>மேலே நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="107"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="134"/>
       <source>Move Down</source>
       <translation>கீழே நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="139"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="166"/>
       <source>Right-click to add a transformation</source>
       <translation>மாற்றத்தைச் சேர்க்க வலது சொடுக்கு செய்யவும்</translation>
     </message>
@@ -3929,7 +3959,7 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
@@ -3969,12 +3999,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>தேதியைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="100"/>
       <source>Feature error</source>
       <translation>அம்சப் பிழை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>% 1 அடிப்படை அம்சத்தை தவறவிட்டது. 
@@ -5500,37 +5530,37 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>அடிப்படை அம்சத்துடன் இணைதல் தோல்வியடைந்தது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="101"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation>உருமாற்ற நற்பொருத்தம் இணைக்கப்பட்ட பொருள் ஒரு பகுதி பொருள் அல்ல</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="109"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="120"/>
       <source>No features selected to be mirrored.</source>
       <translation type="unfinished">No features selected to be mirrored.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="127"/>
       <source>No features selected to be patterned.</source>
       <translation type="unfinished">No features selected to be patterned.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="115"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="130"/>
       <source>No features selected to be transformed.</source>
       <translation type="unfinished">No features selected to be transformed.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="379"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="447"/>
       <source>Cannot transform invalid support shape</source>
       <translation>தவறான உதவி வடிவத்தை மாற்ற முடியாது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="430"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="561"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>சேர்க்கை/கழித்தல் அம்சத்தின் வடிவம் காலியாக உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="421"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="552"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>சேர்க்கை மற்றும் கழித்தல் அம்சங்களை மட்டுமே மாற்ற முடியும்</translation>
     </message>
@@ -5623,12 +5653,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2793"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Create Datum</source>
       <translation>டேட்டமை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2794"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>தரவு பொருள் அல்லது உள்ளக ஒருங்கிணைப்பு அமைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -5636,12 +5666,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2828"/>
+      <location filename="../../Command.cpp" line="2963"/>
       <source>Create Datum</source>
       <translation>டேட்டமை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2829"/>
+      <location filename="../../Command.cpp" line="2964"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>தரவு பொருள் அல்லது உள்ளக ஒருங்கிணைப்பு அமைப்பை உருவாக்குகிறது</translation>
     </message>
@@ -5870,32 +5900,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="278"/>
+      <location filename="../../TaskPatternParameters.cpp" line="415"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation type="unfinished">Select a sketch or shape containing the pattern points</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="284"/>
+      <location filename="../../TaskPatternParameters.cpp" line="421"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation type="unfinished">Select a sketch, Sub-Shape Binder, or path edge</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="293"/>
+      <location filename="../../TaskPatternParameters.cpp" line="430"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>திசைக் குறிப்பைத் தேர்ந்தெடுக்கவும் (விளிம்பு, முகம், தரவுக் கோடு)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="356"/>
+      <location filename="../../TaskPatternParameters.cpp" line="494"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation type="unfinished">Invalid selection. Select a sketch or shape containing points.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="359"/>
+      <location filename="../../TaskPatternParameters.cpp" line="497"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation type="unfinished">Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="361"/>
+      <location filename="../../TaskPatternParameters.cpp" line="499"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>தவறான தேர்வு. விளிம்பு, சமதள முகம் அல்லது டேட்டம் லைனைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>
@@ -5942,11 +5972,78 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
+    <name>CmdPartDesignCircularPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2489"/>
+      <source>PartDesign</source>
+      <translation>பகுதி வடிவமைப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2490"/>
+      <source>Circular Pattern</source>
+      <translation type="unfinished">Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2491"/>
+      <source>Duplicates the selected features or the active body in concentric circular patterns</source>
+      <translation type="unfinished">Duplicates the selected features or the active body in concentric circular patterns</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPathPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2546"/>
+      <source>PartDesign</source>
+      <translation>பகுதி வடிவமைப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2547"/>
+      <source>Path Pattern</source>
+      <translation type="unfinished">Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2548"/>
+      <source>Duplicates the selected features or the active body along a path</source>
+      <translation type="unfinished">Duplicates the selected features or the active body along a path</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDesignPointPattern</name>
+    <message>
+      <location filename="../../Command.cpp" line="2584"/>
+      <source>PartDesign</source>
+      <translation>பகுதி வடிவமைப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2585"/>
+      <source>Point Pattern</source>
+      <translation type="unfinished">Point Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2586"/>
+      <source>Duplicates the selected features or the active body at points from a shape</source>
+      <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::ViewProviderDefeaturing</name>
     <message>
       <location filename="../../ViewProviderDefeaturing.h" line="40"/>
       <source>Defeaturing Parameters</source>
       <translation type="unfinished">Defeaturing Parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation type="unfinished">Path Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation type="unfinished">Edit Path Pattern</translation>
     </message>
   </context>
   <context>
@@ -5983,11 +6080,37 @@ Adjust the parameters and try again.</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation type="unfinished">Circular Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation type="unfinished">Edit Circular Pattern</translation>
+    </message>
+  </context>
+  <context>
     <name>BooleanToolSelection</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="83"/>
       <source>The result Body cannot be used as a Boolean tool.</source>
       <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation type="unfinished">Point Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation type="unfinished">Edit Point Pattern</translation>
     </message>
   </context>
 </TS>

@@ -4,37 +4,37 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="92"/>
+      <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Стандартная система мер (мм, кг, сек, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="350"/>
+      <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>МКС (м, кг, сек, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="763"/>
+      <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
       <translation>Американская традиционная система мер (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="820"/>
+      <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Английская для гражданского строительства (фут, фунт, миль/ч)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Английская десятичная (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Европейская для строительства (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="807"/>
+      <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>США для строительства (фут-дюйм, квадратный фут, кубический фут)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Метрическая для мелких деталей и ЧПУ (мм, мм/мин)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="611"/>
+      <location filename="../../UnitsSchemasData.h" line="627"/>
       <source>FEM (mm, N, s)</source>
       <translation>Для расчётов МКЭ (мм, Н, сек)</translation>
     </message>

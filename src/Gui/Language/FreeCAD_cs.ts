@@ -5482,44 +5482,44 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
       <translation>Zobrazit závislosti</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
       <source>Depending on</source>
       <translation>Závisí na</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Name</source>
       <translation>Název</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
       <source>Depended by</source>
       <translation>Závisí</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Selections</source>
       <translation>Výběry</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
       <source>All</source>
       <translation>Vše</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Použít původní výběr</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Ignorovat závislosti a pokračovat s objekty
@@ -6135,7 +6135,7 @@ Uložit všechny změny?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="197"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2651"/>
       <source>Dimension</source>
       <translation>Rozměr</translation>
     </message>
@@ -6187,59 +6187,59 @@ Uložit všechny změny?</translation>
       <translation>Připraven</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1424"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>Zavřít vše</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1697"/>
-      <location filename="../MainWindow.cpp" line="1698"/>
       <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>Přepíná panel nástrojů</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1718"/>
-      <location filename="../MainWindow.cpp" line="1719"/>
       <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>Přepne toto dokované okno</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1927"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>Safe mode enabled</source>
       <translation>Nouzový režim povolen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1928"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD nyní běží v nouzovém režimu.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1934"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Nouzový režim dočasně zakáže vaše nastavení a doplňky. Restartujte aplikaci pro ukončení nouzového režimu.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2374"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2376"/>
+      <location filename="../MainWindow.cpp" line="2527"/>
       <source>Unsaved document</source>
       <translation>Neuložený dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2375"/>
+      <location filename="../MainWindow.cpp" line="2377"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Exportovaný objekt obsahuje externí odkaz. Před exportem uložte dokument alespoň jednou.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2528"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Pro propojení s externími objekty musí být dokument alespoň jednou uložen.
 Uložit dokument?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3036"/>
+      <location filename="../MainWindow.cpp" line="3038"/>
       <source>Safe Mode</source>
       <translation>Nouzový režim</translation>
     </message>
@@ -6524,152 +6524,152 @@ V pravém pohledu jsou %2 body vybrány.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
       <source>Edit</source>
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>property</source>
       <translation>vlastnost</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
       <source>Expand/Collapse Properties</source>
       <translation>Rozbalit/Sbalit vlastnosti</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
       <source>Expand to Default</source>
       <translation>Rozbalit na výchozí</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
       <source>Expand All</source>
       <translation>Rozbalit vše</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
       <source>Collapse All</source>
       <translation>Sbalit vše</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Default Expand</source>
       <translation>Výchozí rozbalení</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
       <source>Auto Expand</source>
       <translation>Automatické rozbalení</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Auto Collapse</source>
       <translation>Automatické sbalení</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
       <source>object %1 (%2):
 </source>
       <translation>objekt %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>property %1
 </source>
       <translation>vlastnost %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>document %1:
 </source>
       <translation>dokument %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>Na objekt %1 v objektu %2 (%3) v dokumentu %4 odkazují:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
       <source>(No references found.)</source>
       <translation>(Nebyly nalezeny žádné odkazy.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Property Uses</source>
       <translation>Použité vlastnosti</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
       <source>Copy</source>
       <translation>Kopírovat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Add Property</source>
       <translation>Přidat vlastnost</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Rename Property Group</source>
       <translation>Přejmenovat skupinu vlastností</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>Nelze přejmenovat skupinu: názvy jedné nebo více vlastností začínají názvem skupiny</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Rename Property</source>
       <translation>Přejmenovat vlastnost</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Edit Property Tooltip</source>
       <translation>Upravit nápovědu vlastnosti</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
       <source>Delete Property</source>
       <translation>Odstranit vlastnost</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
       <source>Move Property</source>
       <translation>Přesunout vlastnosti</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Tooltip</source>
       <translation>Popisek nástroje</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
       <source>Show Hidden</source>
       <translation>Zobrazit skryté</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
       <source>Expression</source>
       <translation>Výraz</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
       <source>Property name</source>
       <translation>Název vlastnosti</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
       <source>Group name:</source>
       <translation>Jméno skupiny:</translation>
     </message>
@@ -7454,7 +7454,7 @@ Zadat jiný adresář?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4254"/>
+      <location filename="../Tree.cpp" line="4258"/>
       <source>Search</source>
       <translation>Hledat</translation>
     </message>
@@ -7664,7 +7664,7 @@ Zadat jiný adresář?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6613"/>
+      <location filename="../Tree.cpp" line="6617"/>
       <source>Rename</source>
       <translation>Přejmenovat</translation>
     </message>
@@ -7684,12 +7684,12 @@ Zadat jiný adresář?</translation>
       <translation>Otevřít umístění souboru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6581"/>
+      <location filename="../Tree.cpp" line="6585"/>
       <source> (but must be executed)</source>
       <translation> (ale musí být provedeno)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6584"/>
+      <location filename="../Tree.cpp" line="6588"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, interní název: %2</translation>
     </message>
@@ -8769,7 +8769,7 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Nelze najít soubor %1 %2 ani v %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2790"/>
       <source>Clarify Selection</source>
       <translation>Upřesnit výběr</translation>
     </message>
@@ -9226,7 +9226,7 @@ na aktuální kopii budou ztraceny.
       <translation>Toto není dovoleno:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1337"/>
+      <location filename="../Selection/Selection.cpp" line="1335"/>
       <source>Selection not allowed by filter</source>
       <translation>Výběr není povoleno filtrem</translation>
     </message>
@@ -9540,7 +9540,7 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
@@ -14452,7 +14452,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4326"/>
+      <location filename="../Tree.cpp" line="4330"/>
       <source>Tree View</source>
       <translation>Zobrazení stromu</translation>
     </message>

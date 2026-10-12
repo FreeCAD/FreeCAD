@@ -1337,7 +1337,7 @@
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Cruthaitheoir Cruthanna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1709"/>
@@ -1789,7 +1789,7 @@
     <message>
       <location filename="../../Command.cpp" line="1862"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Fritháireamh 2T</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1863"/>
@@ -2875,8 +2875,8 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Theip ar chruthú na heis-easbhrúite.
+Níorbh fhéidir aon chruth a eis-easbhrú.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -4411,11 +4411,6 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Seiceáil an tsamhail go huathoibríoch tar éis oibríochta booléan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Múnla a scagadh go huathoibríoch tar éis oibríochta booléan</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Cuir ainm an réada bhunúsaigh leis</translation>
@@ -4424,31 +4419,6 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Socruithe Múnla</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Déanann sé an geoiméadracht (BRep) a bhailíochtú i ndiaidh gach oibríochta booléan chun earráidí a bhrath. Tabhair faoi deara: D’fhéadfadh sé seo feidhmíocht a mhoilliú ar mhúnlaí casta.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Glanann an cruth go huathoibríoch tar éis oibríochtaí booléacha trí imill chomhphlánacha iomarcacha a bhaint agus aghaidheanna cóngaracha a chumasc</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Múnla a bheachtú go huathoibríoch tar éis oibríochtaí a chur i bhfeidhm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Ritheann sé pas scagtha go huathoibríoch tar éis gnéithe Dearaidh Páirte a chruthú chun imill neamhriachtanacha a bhaint agus an geoiméadracht a ghlanadh suas</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Socraíonn sé seo comhlachtaí nua chun ligean do sholaid (comhdhúile) iolracha atá scartha óna chéile. Mura ndéantar tic sa rogha seo, tá corp teoranta go docht do sholad amháin atá tadhlach leis.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4624,6 +4594,36 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Athraigh go huathoibríoch chuig an bpainéal tascanna nuair a ghníomhaítear an binse oibre Dearaidh Páirteanna</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Déanann sé an geoiméadracht (BRep) a bhailíochtú i ndiaidh gach oibríochta booléan chun earráidí a bhrath. Tabhair faoi deara: D’fhéadfadh sé seo feidhmíocht a mhoilliú ar mhúnlaí casta.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Mionchoigeartú uathoibríoch ar thorthaí Booleacha páirteanna</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Scagann sé torthaí Booleacha na coda trí imill iomarcacha a bhaint agus aghaidheanna cóngaracha a chumasc</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Mionchoigeartú uathoibríoch ar ghnéithe dearaidh páirteanna</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Déanann sé gnéithe de dhearadh na coda a scagadh tar éis iad a chruthú, trí imill neamhriachtanacha a bhaint</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Socraíonn sé seo comhlachtaí nua chun ligean do sholaid (comhdhúile) iolracha atá scartha óna chéile. Mura ndéantar tic sa rogha seo, tá corp teoranta go docht do sholad amháin atá tadhlach leis.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7819,17 +7819,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Éilíonn réamhamharc soláthraí radhairc bunaithe ar pháirteanna; ní bhfuarthas aon cheann do %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>réad anaithnid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Teip agus réamhamharc á rindreáil: %1. De ghnáth léiríonn sé sin earráid leis an tsamhail.</translation>
     </message>
@@ -7898,7 +7898,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Roghnaigh Conair</translation>
     </message>
@@ -7938,22 +7938,22 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
       <translation>Ailínigh leis an gcosán</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Comhaireamh seasta</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Spásáil sheasta</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Líon agus spásáil socraithe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8096,7 +8096,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Treo 2</translation>
     </message>

@@ -4,37 +4,37 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="92"/>
+      <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Стандарт (мм, кг, с, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="350"/>
+      <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="763"/>
+      <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
       <translation>Умовні позначення США (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="820"/>
+      <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Імперська для цивільних інженерів (фути, фунти, милі/год)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Імперська десяткова система (дюйми, фунти)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Будівництво Євро (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="807"/>
+      <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Будівництво США (фути-дюйми, фути², фути³)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="611"/>
+      <location filename="../../UnitsSchemasData.h" line="627"/>
       <source>FEM (mm, N, s)</source>
       <translation>Механічна система одиниць (мм, Н, сек)</translation>
     </message>

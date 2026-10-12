@@ -302,7 +302,7 @@
       <location filename="../../AttacherTexts.cpp" line="588"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Z-Koordinate des Objekts</translation>
+      <translation>Z des Objektes</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="598"/>
@@ -4409,11 +4409,6 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <translation>Modell nach Boolescher Verknüpfung automatisch überprüfen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Modell nach Boolescher Verknüpfung automatisch aufbereiten</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Name des Basisobjekts hinzufügen</translation>
@@ -4422,31 +4417,6 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Modelleinstellungen</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Überprüft die Geometrie (BRep) nach jeder booleschen Verknüpfung, um Fehler zu erkennen. Hinweis: Dies kann die Verarbeitungsgeschwindigkeit bei komplexen Modellen verlangsamen.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Bereinigt die Form nach booleschen Verknüpfungen automatisch, indem überflüssige komplanare Kanten entfernt und benachbarte Flächen zusammengefasst werden</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Modell nach Anwendung von Operationen automatisch aufbereiten</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Führt nach dem Erstellen von Part-Design-Formelementen automatisch einen Aufbereitungsdurchlauf aus, um unnötige Kanten zu entfernen und die Geometrie zu bereinigen</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Legt neue Körper fest, um mehrere nicht miteinander verbundene Festkörper (Verbundkörper) zuzulassen. Ist diese Option deaktiviert, ist ein Körper streng auf einen einzigen zusammenhängenden Festkörper beschränkt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4461,7 +4431,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
       <source>Features Settings</source>
-      <translation>Funktionen-Einstellungen</translation>
+      <translation>Formelement-Einstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
@@ -4622,6 +4592,36 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Wechselt automatisch zum Aufgaben-Fenster, wenn der Arbeitsbereich Part Design aktiviert wird</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Überprüft die Geometrie (BRep) nach jeder booleschen Verknüpfung, um Fehler zu erkennen. Hinweis: Dies kann die Verarbeitungsgeschwindigkeit bei komplexen Modellen verlangsamen.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Automatisches Aufbereiten der Ergebnisse boolescher Verknüpfungen im Arbeitsbereich Part</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Bereitet die Ergebnisse boolescher Verknüpfungen auf, indem redundante Kanten entfernt und aneinandergrenzende Flächen zusammengefasst werden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Automatisches Aufbereiten von Part Design-Formelementen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Bereitet Part Design-Formelemente nach dem Erstellen auf, indem unnötige Kanten entfernt werden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Legt neue Körper fest, um mehrere nicht miteinander verbundene Festkörper (Verbundkörper) zuzulassen. Ist diese Option deaktiviert, ist ein Körper streng auf einen einzigen zusammenhängenden Festkörper beschränkt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7811,17 +7811,17 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Für die Vorschau ist ein Part-basierter Ansichts-Provider erforderlich; für %1 wurde keiner gefunden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>unbekanntes Objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Fehler beim Rendern der Vorschau: %1. Dies deutet normalerweise auf einen Fehler mit dem Modell hin.</translation>
     </message>
@@ -7890,7 +7890,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Pfad auswählen</translation>
     </message>
@@ -7930,22 +7930,22 @@ oder mit den Formen innerhalb einer Verbindung durch.
       <translation>An Pfad ausrichten</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Gleichbleibende Anzahl</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Gleichbleibende Aufteilung</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Gleichbleibende Anzahl und Aufteilung</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8088,7 +8088,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Richtung 2</translation>
     </message>

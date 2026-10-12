@@ -3532,7 +3532,7 @@ Opcja niedostępna, gdy włączona jest preferencja "Twórz elementy pierwotne �
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>Utwórz obiekty</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
@@ -9066,6 +9066,19 @@ Najlepsze do przeglądania bardzo dużych plików przy maksymalnej wydajności.<
 The 'Auto Update' property of the views is ignored.</source>
       <translation>Wymusza aktualizację wybranych widoków 2D lub wszystkich widoków 2D w dokumencie.
 Właściwość widoków 'Automatyczna aktualizacja' jest ignorowana.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Narzędzia widoku 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Narzędzia do tworzenia i aktualizacji widoków 2D</translation>
     </message>
   </context>
 </TS>

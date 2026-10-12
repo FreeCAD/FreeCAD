@@ -931,12 +931,12 @@ Scriosann Athshocraigh na míreanna reatha go léir ón liosta agus líonann sé
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="26"/>
       <source>Work plane</source>
-      <translation type="unfinished">Work plane</translation>
+      <translation>Plána oibre</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="33"/>
       <source>The frame this operation works in. Heights and depths are measured in it, so changing it makes manually entered values stale.</source>
-      <translation type="unfinished">The frame this operation works in. Heights and depths are measured in it, so changing it makes manually entered values stale.</translation>
+      <translation>An creat ina bhfeidhmíonn an oibríocht seo. Tomhaistear airde agus doimhneacht laistigh de, mar sin, má athraítear é, éiríonn luachanna a cuireadh isteach de láimh as dáta.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="119"/>
@@ -981,12 +981,12 @@ Scriosann Athshocraigh na míreanna reatha go léir ón liosta agus líonann sé
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="320"/>
       <source>Recompute all heights and depths from this operation&apos;s work plane, stock and model. Discards manual edits to these fields.</source>
-      <translation type="unfinished">Recompute all heights and depths from this operation&apos;s work plane, stock and model. Discards manual edits to these fields.</translation>
+      <translation>Athríomhaigh gach airde agus doimhneacht bunaithe ar phlána oibre, ar an mbunábhar agus ar an múnla a bhaineann leis an oibríocht seo. Déantar neamhaird ar aon athruithe láimhe a rinneadh ar na réimsí seo.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="323"/>
       <source>Reset to defaults</source>
-      <translation type="unfinished">Reset to defaults</translation>
+      <translation>Athshocraigh go dtí na réamhshocruithe</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="332"/>
@@ -1112,7 +1112,7 @@ Ríomhfaidh luachanna níos mó (níos faide ar dheis) níos tapúla; beidh cos�
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="366"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="338"/>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="553"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="121"/>
@@ -1579,42 +1579,42 @@ Ní dhéanann sé difear d’spásáil na bpointí ar chonair an uirlis (Eatramh
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="150"/>
       <source>Radial stock to leave (inner)</source>
-      <translation type="unfinished">Radial stock to leave (inner)</translation>
+      <translation>Ábhar gathach le fágáil (istigh)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="173"/>
       <source>Define cone angle if all base geometry is Part.Cone and all surfaces has identical angle</source>
-      <translation type="unfinished">Define cone angle if all base geometry is Part.Cone and all surfaces has identical angle</translation>
+      <translation>Sainmhínigh uillinn an chóin má tá geoiméadracht na bonn uile ina Part.Cone agus má tá an uillinn chéanna ag gach dromchla</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="185"/>
       <source>Starting angle</source>
-      <translation type="unfinished">Starting angle</translation>
+      <translation>Uillinn tosaigh</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="195"/>
       <source>Spiral mill</source>
-      <translation type="unfinished">Spiral mill</translation>
+      <translation>Muileann bíseach</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="202"/>
       <source>Single helix</source>
-      <translation type="unfinished">Single helix</translation>
+      <translation>Aon-héilics</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="209"/>
       <source>Override arc feed rate</source>
-      <translation type="unfinished">Override arc feed rate</translation>
+      <translation>Sáraigh ráta beathaithe an stua</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="216"/>
       <source>Start from bottom</source>
-      <translation type="unfinished">Start from bottom</translation>
+      <translation>Tosaigh ón mbun</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="223"/>
       <source>Retract from wall</source>
-      <translation type="unfinished">Retract from wall</translation>
+      <translation>Tarraing siar ón mballa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="58"/>
@@ -1698,7 +1698,7 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="45"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="49"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="45"/>
       <source>Cut Mode</source>
       <translation>Mód Gearrtha</translation>
     </message>
@@ -1882,7 +1882,7 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="121"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="63"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="55"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
@@ -1893,18 +1893,17 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="73"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="62"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="157"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
       <translation>An fad cliathánach* a ghluaiseann an uirlis ghearrtha idir pasanna comhleanúnacha (*céatadán de thrastomhas na huirlise).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="275"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
       <source>Set picked point as start point</source>
       <translation>Socraigh an pointe roghnaithe mar phointe tosaigh</translation>
@@ -1937,12 +1936,12 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
       <translation>Déan neamhaird de phoill</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Specify if this operation uses a starting point</source>
       <translation>Sonraigh an úsáideann an oibríocht seo pointe tosaigh</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="190"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="415"/>
@@ -1956,17 +1955,12 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="248"/>
-      <source>Min travel</source>
-      <translation>Íosmhéid taistil</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="255"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
       <translation>Seiceáil chun réigiúin mheaisínithe atá glanta cheana féin ag oibríochtaí roimhe seo a scipeáil</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
       <source>Use rest machining</source>
       <translation>Bain úsáid as meaisínithe scíthe</translation>
     </message>
@@ -2313,7 +2307,7 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="79"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
       <source>Reverse</source>
       <translation>Droim ar ais</translation>
     </message>
@@ -2455,7 +2449,7 @@ Is féidir an dara ceann a úsáid chun aghaidhiú a dhéanamh ar an limistéar 
       <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="123"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="331"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="114"/>
       <source>Step over</source>
@@ -2881,54 +2875,19 @@ Má tá an ga níos mó ná an ga a thacaíonn cruth an chlib féin leis, beidh 
       <translation>Patrún Imréitigh</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
-      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
-      <translation>Patrún chun an aghaidh a ghlanadh: ZigZag, Déthreoch, Treoshuíomhach, nó Bíseach</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="56"/>
-      <source>Climb or Conventional milling direction</source>
-      <translation>Treo dreapadóireachta nó muilleoireachta traidisiúnta</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
-      <source>Rotation angle for angled facing operations</source>
-      <translation>Rotation angle for angled facing operations</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
-      <source>Reverse the cutting direction for the selected pattern</source>
-      <translation>Droim ar ais treo na gearrtha don phatrún roghnaithe</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="117"/>
       <source>Pass Extension</source>
       <translation>Síneadh Pas</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
-      <translation>Fad chun ciorruithe a shíneadh thar theorainn an pholagáin le haghaidh dícheangal uirlise</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="154"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
       <source>Stock Extension</source>
       <translation>Síneadh Stoic</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="161"/>
-      <source>Extends the boundary in both direction</source>
-      <translation>Síneann sé an teorainn sa dá threo</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="174"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="151"/>
       <source>Axial stock to leave</source>
       <translation>Stoc aiseach le himeacht</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
-      <source>How much stock to leave on the floor for this operation</source>
-      <translation>Cé mhéad stoic atá le fágáil ar an urlár don oibríocht seo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="20"/>
@@ -3131,32 +3090,32 @@ Is féidir leis seo a bheith ina chuidiú nuair a phróiseálfaidh an meaisín c
 Mura bhfágtar folamh é, ní roghnófar aon teimpléad roimh ré.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="64"/>
+      <location filename="../preferences/PathJob.ui" line="81"/>
       <source>Geometry</source>
       <translation>Geoiméadracht</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="256"/>
+      <location filename="../preferences/PathJob.ui" line="273"/>
       <source>Post Processor</source>
       <translation>Próiseálaí Iar-</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="143"/>
+      <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
       <translation>Comhad Aschuir</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="238"/>
+      <location filename="../preferences/PathJob.ui" line="255"/>
       <source>Overwrite existing file</source>
       <translation>Forscríobh comhad atá ann cheana</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="243"/>
+      <location filename="../preferences/PathJob.ui" line="260"/>
       <source>Append Unique ID on conflict</source>
       <translation>Cuir ID Uathúil leis nuair a bhíonn coimhlint ann</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="165"/>
+      <location filename="../preferences/PathJob.ui" line="182"/>
       <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
 The following substitutions are performed before the name is resolved at the time of the post processing:
 Substitution allows the following:
@@ -3210,163 +3169,168 @@ Stórálann an sampla seo a leanas na comhaid uile leis an ainm céanna leis an 
 Féach ar an mbeartas sábhála comhad thíos maidir le conas déileáil le coinbhleachtaí ainmneacha.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="224"/>
+      <location filename="../preferences/PathJob.ui" line="241"/>
       <source>Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.</source>
       <translation>Roghnaigh conas déileáil le coimhlintí féideartha ainmneacha comhad. Oscail dialóg i gcónaí, ná hoscail dialóg ach amháin má tá an comhad aschuir ann cheana féin, scríobh thar aon chomhad atá ann cheana féin nó cuir aitheantas seicheamhach uathúil (3 dhigit) leis an ainm comhaid.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="275"/>
+      <location filename="../preferences/PathJob.ui" line="292"/>
       <source>It doesn&apos;t seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.</source>
       <translation>Ní cosúil go bhfuil aon scripteanna iarphróiseála suiteáilte. Cuir cuid acu i do chomhadlann macra agus déan cinnte go gcríochnaíonn ainm an chomhaid le &amp;quot;_post.py&amp;quot;.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="339"/>
+      <location filename="../preferences/PathJob.ui" line="356"/>
       <source>Setup</source>
       <translation>Socrú</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="345"/>
+      <location filename="../preferences/PathJob.ui" line="362"/>
       <source>Stock</source>
       <translation>Stoc</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="72"/>
+      <location filename="../preferences/PathJob.ui" line="89"/>
       <source>Default geometry tolerance</source>
       <translation>Caoinfhulaingt réamhshocraithe geoiméadrachta</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="79"/>
+      <location filename="../preferences/PathJob.ui" line="61"/>
+      <source>Sanity report output file</source>
+      <translation>Comhad aschuir na tuarascála fíoraithe sláine</translation>
+    </message>
+    <message>
+      <location filename="../preferences/PathJob.ui" line="96"/>
       <source>Default value for new jobs, used for computing Paths. Smaller increases accuracy, but slows down computation</source>
       <translation>Luach réamhshocraithe do phoist nua, a úsáidtear chun Cosáin a ríomh. Méadaíonn luach níos lú cruinneas, ach moillíonn sé an ríomh</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="92"/>
+      <location filename="../preferences/PathJob.ui" line="109"/>
       <source>Default curve accuracy</source>
       <translation>Cruinneas cuar réamhshocraithe</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="99"/>
+      <location filename="../preferences/PathJob.ui" line="116"/>
       <source>Uses while calculates arcs. Smaller increases accuracy, but slows down computation</source>
       <translation>Úsáideann sé "while" chun stua a ríomh. Méadaíonn sé cruinneas, ach moillíonn sé an ríomh</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="131"/>
+      <location filename="../preferences/PathJob.ui" line="148"/>
       <source>Post processor</source>
       <translation>Próiseálaí poist</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="154"/>
+      <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default path</source>
       <translation>Cosán réamhshocraithe</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="207"/>
+      <location filename="../preferences/PathJob.ui" line="224"/>
       <source>File save policy</source>
       <translation>Polasaí sábhála comhad</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="228"/>
+      <location filename="../preferences/PathJob.ui" line="245"/>
       <source>Open file dialog</source>
       <translation>Oscail an dialóg comhaid</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="233"/>
+      <location filename="../preferences/PathJob.ui" line="250"/>
       <source>Open file dialog on conflict</source>
       <translation>Oscail an dialóg comhaid má bhíonn coinbhleacht ann</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="265"/>
+      <location filename="../preferences/PathJob.ui" line="282"/>
       <source>Post processors selection</source>
       <translation>Rogha iarphróiseálaithe</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="282"/>
+      <location filename="../preferences/PathJob.ui" line="299"/>
       <source>Default post processor</source>
       <translation>Próiseálaí poist réamhshocraithe</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="289"/>
+      <location filename="../preferences/PathJob.ui" line="306"/>
       <source>Select one of the post processors as the default</source>
       <translation>Roghnaigh ceann de na próiseálaithe iarchéime mar réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="302"/>
+      <location filename="../preferences/PathJob.ui" line="319"/>
       <source>Default arguments</source>
       <translation>Argóintí réamhshocraithe</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="309"/>
+      <location filename="../preferences/PathJob.ui" line="326"/>
       <source>Optional arguments passed to the default post processor specified above. See the post processor&apos;s documentation for supported arguments.</source>
       <translation>Argóintí roghnacha a chuirtear chuig an bpróiseálaí poist réamhshocraithe a shonraítear thuas. Féach ar dhoiciméadacht an phróiseálaí poist le haghaidh argóintí tacaithe.</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="364"/>
+      <location filename="../preferences/PathJob.ui" line="381"/>
       <source>Create box</source>
       <translation>Cruthaigh bosca</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="369"/>
+      <location filename="../preferences/PathJob.ui" line="386"/>
       <source>Create cylinder</source>
       <translation>Cruthaigh sorcóir</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="374"/>
+      <location filename="../preferences/PathJob.ui" line="391"/>
       <source>Extend model&apos;s bounding box</source>
       <translation>Leathnaigh bosca teorann an mhúnla</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="398"/>
+      <location filename="../preferences/PathJob.ui" line="415"/>
       <source>Ext. X</source>
       <translation>Síneadh X</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="418"/>
+      <location filename="../preferences/PathJob.ui" line="435"/>
       <source>Ext. Y</source>
       <translation>Síneadh Y</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="431"/>
+      <location filename="../preferences/PathJob.ui" line="448"/>
       <source>Ext. Z</source>
       <translation>Síneadh Z</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="450"/>
+      <location filename="../preferences/PathJob.ui" line="467"/>
       <source>Radius</source>
       <translation>Ga</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="460"/>
-      <location filename="../preferences/PathJob.ui" line="496"/>
+      <location filename="../preferences/PathJob.ui" line="477"/>
+      <location filename="../preferences/PathJob.ui" line="513"/>
       <source>Height</source>
       <translation>Airde</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="476"/>
+      <location filename="../preferences/PathJob.ui" line="493"/>
       <source>Length</source>
       <translation>Fad</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="486"/>
+      <location filename="../preferences/PathJob.ui" line="503"/>
       <source>Width</source>
       <translation>Leithead</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="522"/>
+      <location filename="../preferences/PathJob.ui" line="539"/>
       <source>Placement</source>
       <translation>Socrúchán</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="534"/>
+      <location filename="../preferences/PathJob.ui" line="551"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="544"/>
+      <location filename="../preferences/PathJob.ui" line="561"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="572"/>
+      <location filename="../preferences/PathJob.ui" line="589"/>
       <source>Position</source>
       <translation>Seasamh</translation>
     </message>
@@ -4147,8 +4111,8 @@ Set to zero to disable G-code highlighter.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1393"/>
-      <location filename="../panels/PathEdit.ui" line="1845"/>
-      <location filename="../panels/PathEdit.ui" line="2096"/>
+      <location filename="../panels/PathEdit.ui" line="1843"/>
+      <location filename="../panels/PathEdit.ui" line="2094"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
@@ -4158,12 +4122,12 @@ Set to zero to disable G-code highlighter.</translation>
       <translation>Cur síos</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1454"/>
+      <location filename="../panels/PathEdit.ui" line="1422"/>
       <source>Output</source>
       <translation>Aschur</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1467"/>
+      <location filename="../panels/PathEdit.ui" line="1465"/>
       <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
 The following substitutions are performed before the name is resolved at the time of the post processing:
 Substitution allows the following:
@@ -4217,27 +4181,27 @@ Stórálann an sampla seo a leanas na comhaid uile leis an ainm céanna leis an 
 Féach an polasaí sábhála comhad thíos maidir le conas déileáil le coinbhleachtaí ainmneacha.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1505"/>
+      <location filename="../panels/PathEdit.ui" line="1503"/>
       <source>Processor</source>
       <translation>Próiseálaí</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1515"/>
+      <location filename="../panels/PathEdit.ui" line="1513"/>
       <source>Arguments</source>
       <translation>Argóintí</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1535"/>
+      <location filename="../panels/PathEdit.ui" line="1533"/>
       <source>Work Coordinate Systems</source>
       <translation>Córais Chomhordanáidí Oibre</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1554"/>
+      <location filename="../panels/PathEdit.ui" line="1552"/>
       <source>Systems</source>
       <translation>Córais</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1541"/>
+      <location filename="../panels/PathEdit.ui" line="1539"/>
       <source>Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.
 
 This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.
@@ -4254,14 +4218,14 @@ Má dhéantar ordú de réir uirlis, laghdófar na hathruithe uirlise. Déanfar 
 Má dhéantar ordú de réir oibríochta, déanfar gach oibríocht i ngach córas comhordanáidí sula mbogtar go dtí an chéad oibríocht eile. Tá sé seo úsáideach go háirithe i gcomhar leis an &apos;aschur scoilte&apos; fiú le córas comhordanáidí oibre aonair ós rud é go gcuirfidh sé gach oibríocht i gcomhad ar leith.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1580"/>
+      <location filename="../panels/PathEdit.ui" line="1578"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Córais Chomhordanáidí Oibre&lt;/span&gt; ar a dtugtar freisin &lt;span style=&quot; font-style:italic;&quot;&gt;Fritháirimh Oibre&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fritháirimh Daingneáin&lt;/span&gt;, nó &lt;span style=&quot; font-style:italic;&quot;&gt;Daingneáin&lt;/span&gt;atá úsáideach chun poist táirgthe éifeachtacha a thógáil ina ndéantar an chuid chéanna go minic ar an meaisín.
 Níl aon eolas ag FreeCAD faoi cá bhfuil córas comhordanáidí ar leith laistigh de chóras comhordanáidí an mheaisín, mar sin ní bheidh aon athrú amhairc laistigh de do phost má chuireann tú córais chomhordanáidí breise le do phost. Athróidh sé, áfach, aschur do chód-G. Rialaítear an bealach cruinn a mbíonn tionchar ag an socrú &apos;ordaigh de réir&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1735"/>
+      <location filename="../panels/PathEdit.ui" line="1733"/>
       <source>Split Output</source>
       <translation>Aschur Scoilte</translation>
     </message>
@@ -4287,22 +4251,22 @@ Níl aon eolas ag FreeCAD faoi cá bhfuil córas comhordanáidí ar leith laisti
       <translation>Athnuachan</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1460"/>
+      <location filename="../panels/PathEdit.ui" line="1458"/>
       <source>Output file</source>
       <translation>Comhad aschuir</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1522"/>
+      <location filename="../panels/PathEdit.ui" line="1520"/>
       <source>Optional arguments passed to the post processor. The arguments are specific for each post processor, please see its documentation for details.</source>
       <translation>Argóintí roghnacha a cuireadh chuig an iarphróiseálaí. Tá na hargóintí sonrach do gach iarphróiseálaí, féach ar a dhoiciméadú le haghaidh sonraí.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1561"/>
+      <location filename="../panels/PathEdit.ui" line="1559"/>
       <source>Order by</source>
       <translation>Ordú de réir</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1723"/>
+      <location filename="../panels/PathEdit.ui" line="1721"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the G-code to be written to multiple output files as controlled by the &apos;order by&apos; property. For example, if ordering by fixture, the first output file will be for the first fixture and separate file for the second.</source>
       <translation>Má tá córais chomhordanáidí iolracha in úsáid, má shocraítear seo go TRUE, scríobhfar an cód-G chuig comhaid aschuir iolracha mar atá rialaithe ag an maoin &apos;ordaigh de réir&apos;. Mar shampla, má tá tú ag ordú de réir daingneáin, beidh an chéad chomhad aschuir don chéad daingneán agus comhad ar leithligh don dara ceann.</translation>
     </message>
@@ -4438,7 +4402,7 @@ Níl aon eolas ag FreeCAD faoi cá bhfuil córas comhordanáidí ar leith laisti
       <translation>Mód fuaraithe</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1883"/>
+      <location filename="../panels/PathEdit.ui" line="1881"/>
       <source>Default Values</source>
       <translation>Luachanna Réamhshocraithe</translation>
     </message>
@@ -4475,12 +4439,12 @@ Default: &quot;5mm&quot;</source>
 Réamhshocrú: &quot;5mm&quot;</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1971"/>
+      <location filename="../panels/PathEdit.ui" line="1969"/>
       <source>Active Tool</source>
       <translation>Uirlis Ghníomhach</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1726"/>
+      <location filename="../panels/PathEdit.ui" line="1724"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
 
 
@@ -4782,144 +4746,144 @@ Réamhshocrú: 3 mm</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1292"/>
-      <location filename="../panels/PathEdit.ui" line="2010"/>
+      <location filename="../panels/PathEdit.ui" line="2008"/>
       <source>Coolant</source>
       <translation>Fuaraitheoir</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1417"/>
+      <location filename="../panels/PathEdit.ui" line="1428"/>
       <source>Machine</source>
       <translation>Meaisín</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1429"/>
+      <location filename="../panels/PathEdit.ui" line="1441"/>
       <source>Machine configuration for this job, drawn from machines available in the asset path. New machines can be added with the New Machine button.</source>
       <translation>Cumraíocht meaisín don phost seo, tarraingthe ó mheaisíní atá ar fáil sa chonair sócmhainní. Is féidir meaisíní nua a chur leis leis an gcnaipe Meaisín Nua.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1436"/>
+      <location filename="../panels/PathEdit.ui" line="1448"/>
       <source>New Machine</source>
       <translation>Meaisín Nua</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1439"/>
+      <location filename="../panels/PathEdit.ui" line="1451"/>
       <source>Opens the Machine Editor to create a new machine. The new machine will be available for selection once saved.</source>
       <translation>Osclaítear an Eagarthóir Meaisín chun meaisín nua a chruthú. Beidh an meaisín nua ar fáil le roghnú a luaithe a bheidh sé sábháilte.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1759"/>
-      <location filename="../panels/PathEdit.ui" line="1777"/>
+      <location filename="../panels/PathEdit.ui" line="1757"/>
+      <location filename="../panels/PathEdit.ui" line="1775"/>
       <source>Tools</source>
       <translation>Uirlisí</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1796"/>
+      <location filename="../panels/PathEdit.ui" line="1794"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1801"/>
+      <location filename="../panels/PathEdit.ui" line="1799"/>
       <source>Nr.</source>
       <translation>Uimh.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1806"/>
-      <location filename="../panels/PathEdit.ui" line="1819"/>
+      <location filename="../panels/PathEdit.ui" line="1804"/>
+      <location filename="../panels/PathEdit.ui" line="1817"/>
       <source>Feed</source>
       <translation>Beatha</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1809"/>
+      <location filename="../panels/PathEdit.ui" line="1807"/>
       <source>Horizontal feed</source>
       <translation>Beatha cothrománach</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1822"/>
+      <location filename="../panels/PathEdit.ui" line="1820"/>
       <source>Vertical feed</source>
       <translation>Beatha ingearach</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1832"/>
+      <location filename="../panels/PathEdit.ui" line="1830"/>
       <source>Spindle</source>
       <translation>Fearsaid</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1852"/>
+      <location filename="../panels/PathEdit.ui" line="1850"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1862"/>
+      <location filename="../panels/PathEdit.ui" line="1860"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1889"/>
+      <location filename="../panels/PathEdit.ui" line="1887"/>
       <source>Rapid Speeds</source>
       <translation>Luasanna Tapa</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1898"/>
+      <location filename="../panels/PathEdit.ui" line="1896"/>
       <source>Horizontal</source>
       <translation>Cothrománach</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1911"/>
+      <location filename="../panels/PathEdit.ui" line="1909"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController</source>
       <translation>Luas cothrománach tapa sannta mar HorizRapid don ToolControl nua</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1918"/>
+      <location filename="../panels/PathEdit.ui" line="1916"/>
       <source>Vertical</source>
       <translation>Ingearach</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1931"/>
+      <location filename="../panels/PathEdit.ui" line="1929"/>
       <source>Rapid vertical speed assigned to VertRapid of new ToolController</source>
       <translation>Luas ingearach mear sannta do VertRapid an ToolController nua</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1959"/>
+      <location filename="../panels/PathEdit.ui" line="1957"/>
       <source>Workplan</source>
       <translation>Plean Oibre</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1987"/>
+      <location filename="../panels/PathEdit.ui" line="1985"/>
       <source>#</source>
       <translation>#</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1992"/>
+      <location filename="../panels/PathEdit.ui" line="1990"/>
       <source>Operation</source>
       <translation>Oibríocht</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1997"/>
+      <location filename="../panels/PathEdit.ui" line="1995"/>
       <source>Tool</source>
       <translation>Uirlis</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="2005"/>
+      <location filename="../panels/PathEdit.ui" line="2003"/>
       <source>Tool Controller</source>
       <translation>Rialaitheoir Uirlisí</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="2015"/>
+      <location filename="../panels/PathEdit.ui" line="2013"/>
       <source>Time</source>
       <translation>Am</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="2116"/>
+      <location filename="../panels/PathEdit.ui" line="2114"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="2127"/>
+      <location filename="../panels/PathEdit.ui" line="2125"/>
       <source>Advanced</source>
       <translation>Ardleibhéil</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="2137"/>
+      <location filename="../panels/PathEdit.ui" line="2135"/>
       <source>Operation Defaults</source>
       <translation>Réamhshocruithe Oibríochta</translation>
     </message>
@@ -4927,60 +4891,60 @@ Réamhshocrú: 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Project Setup</source>
       <translation>Socrú Tionscadail</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="277"/>
+      <location filename="../../../InitGui.py" line="278"/>
       <source>Tool Commands</source>
       <translation>Orduithe Uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="281"/>
+      <location filename="../../../InitGui.py" line="282"/>
       <source>New Operations</source>
       <translation>Oibríochtaí Nua</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="285"/>
-      <location filename="../../../InitGui.py" line="324"/>
+      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="325"/>
       <source>Path Modification</source>
       <translation>Mionathrú Cosáin</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="288"/>
+      <location filename="../../../InitGui.py" line="289"/>
       <source>Helpful Tools</source>
       <translation>Uirlisí Cabhracha</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="291"/>
-      <location filename="../../../InitGui.py" line="309"/>
-      <location filename="../../../InitGui.py" line="316"/>
-      <location filename="../../../InitGui.py" line="323"/>
-      <location filename="../../../InitGui.py" line="331"/>
-      <location filename="../../../InitGui.py" line="337"/>
-      <location filename="../../../InitGui.py" line="339"/>
-      <location filename="../../../InitGui.py" line="342"/>
+      <location filename="../../../InitGui.py" line="292"/>
+      <location filename="../../../InitGui.py" line="310"/>
+      <location filename="../../../InitGui.py" line="317"/>
+      <location filename="../../../InitGui.py" line="324"/>
+      <location filename="../../../InitGui.py" line="332"/>
+      <location filename="../../../InitGui.py" line="338"/>
+      <location filename="../../../InitGui.py" line="340"/>
+      <location filename="../../../InitGui.py" line="343"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="310"/>
+      <location filename="../../../InitGui.py" line="311"/>
       <source>Path Dressup</source>
       <translation>Gléasadh Cosáin</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="317"/>
+      <location filename="../../../InitGui.py" line="318"/>
       <source>Supplemental Commands</source>
       <translation>Orduithe Forlíontacha</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="332"/>
+      <location filename="../../../InitGui.py" line="333"/>
       <source>Specialty Operations</source>
       <translation>Oibríochtaí Speisialtachta</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="343"/>
+      <location filename="../../../InitGui.py" line="344"/>
       <source>Utils</source>
       <translation>Úsáideoirí</translation>
     </message>
@@ -5040,22 +5004,22 @@ Réamhshocrú: 3 mm</translation>
       <translation>RPM an fhearsaid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="753"/>
+      <location filename="../../../Path/Op/Util.py" line="732"/>
       <source>Selected tool has no TipAngle, treating as 0</source>
       <translation>Níl TipAngle ag an uirlis roghnaithe; á láimhseáil mar 0</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="760"/>
+      <location filename="../../../Path/Op/Util.py" line="739"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>Uillinn Imeall Gearrtha Neamhbhailí %.2f, ní mór di a bheith &gt;0° agus &lt;180°</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="770"/>
+      <location filename="../../../Path/Op/Util.py" line="749"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Mar thoradh ar Uillinn Imeall Gearrtha (%.2f) bíonn fad barr uirlis diúltach ann</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="79"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="99"/>
       <source>Save Sanity Check Report</source>
       <translation>Sábháil Tuarascáil Seiceála Meabhairshláinte</translation>
     </message>
@@ -5103,12 +5067,12 @@ Réamhshocrú: 3 mm</translation>
       <translation>Ní thacaítear le %s le haghaidh smeach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="936"/>
-      <source>Zero working area to process. Check your selection and settings.</source>
-      <translation>Níl aon limistéar oibre le próiseáil. Seiceáil do rogha agus do shocruithe.</translation>
+      <location filename="../../../Path/Geom.py" line="933"/>
+      <source>combineHorizontalFaces: Zero working area to process</source>
+      <translation>combineHorizontalFaces: Níl aon limistéar oibre le próiseáil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="1007"/>
+      <location filename="../../../Path/Geom.py" line="955"/>
       <source>Can not restore order of faces.</source>
       <translation>Ní féidir ord na n-aghaidheanna a athbhunú.</translation>
     </message>
@@ -5122,122 +5086,122 @@ Réamhshocrú: 3 mm</translation>
       <translation>Liosta de ghrúpaí maoine saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="126"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="125"/>
       <source>Default speed for horizontal rapid moves.</source>
       <translation>Luas réamhshocraithe le haghaidh gluaiseachtaí meara cothrománacha.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="132"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="131"/>
       <source>Default speed for vertical rapid moves.</source>
       <translation>Luas réamhshocraithe le haghaidh gluaiseachtaí meara ingearacha.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="138"/>
-      <location filename="../../../Path/Base/SetupSheet.py" line="410"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="137"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="414"/>
       <source>Coolant Modes</source>
       <translation>Módanna Fuaraithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="144"/>
-      <location filename="../../../Path/Base/SetupSheet.py" line="419"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="143"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="423"/>
       <source>Default coolant mode.</source>
       <translation>Mód fuaraithe réamhshocraithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="153"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="152"/>
       <source>The usage of this field depends on SafeHeightExpression - by default its value is added to the start depth and used for the safe height of an operation.</source>
       <translation>Braitheann úsáid an réimse seo ar SafeHeightExpression - de réir réamhshocraithe, cuirtear a luach leis an doimhneacht tosaigh agus úsáidtear é le haghaidh airde shábháilte oibríochta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="159"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="158"/>
       <source>Expression for the safe height of new operations.</source>
       <translation>Slonn le haghaidh airde shábháilte oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="168"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="167"/>
       <source>The usage of this field depends on ClearanceHeightExpression - by default is value is added to the start depth and used for the clearance height of an operation.</source>
       <translation>Braitheann úsáid an réimse seo ar an Sloinn Airde Imréitigh - de réir réamhshocraithe má chuirtear luach leis an doimhneacht tosaigh agus má úsáidtear é le haghaidh airde imréitigh oibríochta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="177"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="176"/>
       <source>Expression for the clearance height of new operations.</source>
       <translation>Slonn le haghaidh airde imréitigh oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="185"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="184"/>
       <source>Expression used for the start depth of new operations.</source>
       <translation>Slonn a úsáidtear le haghaidh doimhneacht tosaigh oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="193"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="192"/>
       <source>Expression used for the final depth of new operations.</source>
       <translation>Slonn a úsáidtear le haghaidh doimhneacht deiridh oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="199"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="198"/>
       <source>Expression used for step down of new operations.</source>
       <translation>Slonn a úsáidtear le haghaidh céim síos oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/SetupSheet.py" line="223"/>
-      <location filename="../../../Path/Base/SetupSheet.py" line="431"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="222"/>
+      <location filename="../../../Path/Base/SetupSheet.py" line="435"/>
       <source>Default collision avoidance strategy for new operations.</source>
       <translation>Straitéis réamhshocraithe chun imbhuailtí a sheachaint le haghaidh oibríochtaí nua.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="62"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="881"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="895"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="56"/>
       <source>The base path to modify</source>
       <translation>An cosán bunúsach le modhnú</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="72"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="73"/>
       <source>Solid object to be used to limit the generated Path.</source>
       <translation>Réad soladach le húsáid chun an Cosán ginte a theorannú.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="83"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="84"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
       <translation>Cinneann sé an dtugann Boundary cur síos ar masc cuimsithe nó eisiaimh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="93"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="144"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="186"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="291"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="94"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="145"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="194"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="358"/>
       <source>Set distance which will attempts to avoid unnecessary retractions.</source>
       <translation>Socraigh achar a dhéanfaidh iarracht tarraingt siar neamhriachtanach a sheachaint.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="102"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="158"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="103"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="159"/>
       <source>Apply boundary to Rest Machining.</source>
       <translation>Cuir teorainn i bhfeidhm ar Mheaisínithe Scíthe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="111"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="168"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="112"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="169"/>
       <source>Apply offset to stock shape.</source>
       <translation>Cuir an fhritháireamh i bhfeidhm ar chruth stoic.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="204"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="203"/>
       <source>The base path to dress up</source>
       <translation>An bealach bunúsach chun gléasadh suas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="212"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="211"/>
       <source>The side of path to insert bones</source>
       <translation>Taobh an chosáin chun cnámha a chur isteach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="229"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="228"/>
       <source>The style of bones</source>
       <translation>Stíl na gcnámha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="244"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="243"/>
       <source>The algorithm to determine the bone length
 
 Adaptive: length depend from shape
@@ -5250,57 +5214,57 @@ Seasta: is ionann an fad agus ga na huirlise
 Saincheaptha: fad ó mhaoin saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="257"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="256"/>
       <source>Dressup length if incision is set to &apos;custom&apos;
 Also non zero value limit max &apos;adaptive&apos; length</source>
       <translation>Fad an fheistis má shocraítear an gearradh go &apos;saincheaptha&apos;.
 Chomh maith leis sin, teorainn luach neamh-nialasach ar an uasfhad &apos;oiriúnaitheach&apos;'</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="265"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="264"/>
       <source>Bones that aren&apos;t dressed up</source>
       <translation>Cnámha nach bhfuil gléasta suas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/DogboneII.py" line="276"/>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="275"/>
       <source>Create bones only for outer closed profiles
 Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern</source>
       <translation>Cruthaigh cnámha le haghaidh próifílí dúnta seachtracha amháin
 Is féidir é a bheith úsáideach le haghaidh oibríochtaí ilphróifíle, m.sh. Póca le patrún ZigZagOffset</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="887"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="901"/>
       <source>Width of tags.</source>
       <translation>Leithead na gclibeanna.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="893"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="907"/>
       <source>Height of tags.</source>
       <translation>Airde na gclibeanna.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="899"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="913"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>Uillinn tumtha agus ardú an chlib.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="905"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="919"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Ga an fhilléid don chlib.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="911"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="925"/>
       <source>Locations of inserted holding tags</source>
       <translation>Suíomhanna na gclibeanna coinneála a cuireadh isteach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="917"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="931"/>
       <source>IDs of disabled holding tags</source>
       <translation>Aitheantais clibeanna sealbhaíochta faoi mhíchumas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="926"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="975"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="940"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="989"/>
       <source>Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</source>
       <translation>Scoilt an B-Spline de réir áirsí agus neamhaird a dhéanamh d'ais na n-áirsí nach áirsí ingearacha iad (turgnamhach).</translation>
     </message>
@@ -5325,14 +5289,15 @@ Is féidir é a bheith úsáideach le haghaidh oibríochtaí ilphróifíle, m.sh
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="142"/>
       <source>The centre of rotation.
 Affects only to Path repesentation in 3d view.</source>
-      <translation type="unfinished">The centre of rotation.
-Affects only to Path repesentation in 3d view.</translation>
+      <translation>Ionad na rothlaithe.
+Ní dhéanann sé difear ach do léiriú na conaire sa radharc 3T.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="61"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="49"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="74"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="49"/>
       <source>The base toolpath to modify</source>
       <translation>An cosán uirlisí bunúsach le modhnú</translation>
@@ -5353,161 +5318,187 @@ Affects only to Path repesentation in 3d view.</translation>
       <translation>Airde le hardú le linn gníomhaíochta cúinne</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="80"/>
       <source>Modify lead in to toolpath</source>
       <translation>Modhnaigh an luaidhe isteach sa chonair uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="85"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="86"/>
       <source>Modify lead out from toolpath</source>
       <translation>Modhnaigh an luaidhe amach ón gcosán uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="93"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="357"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="55"/>
+      <source>Shape to limit toolpath</source>
+      <translation>Cruth chun teorainn a chur le cosán an uirlis</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="61"/>
+      <source>Keep path inside or outside the shape</source>
+      <translation>Coinnigh an cosán taobh istigh nó taobh amuigh den chruth</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="70"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="94"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="358"/>
       <location filename="../../../Path/Op/Profile.py" line="193"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>Socraigh achar a dhéanfaidh iarracht aistarraingtí neamhriachtanacha a sheachaint</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="99"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="225"/>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="81"/>
+      <source>Apply boundary to Rest Machining
+Does not affects to current path, but can be used by other operations with Rest Machining feature</source>
+      <translation>Cuir teorainn i bhfeidhm ar Mheaisíniú Iarmharach
+Ní dhéanann sé difear don chonair reatha, ach is féidir le hoibríochtaí eile a bhfuil an ghné Meaisínithe Iarmharaigh acu é a úsáid</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="87"/>
+      <source>Apply offset to boundary shape</source>
+      <translation>Cuir fritháireamh i bhfeidhm ar chruth na teorann</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="100"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="226"/>
       <source>The style of motion into the toolpath</source>
       <translation>An stíl ghluaiseachta isteach sa chonair uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="106"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="242"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="107"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
       <source>The style of motion out of the toolpath</source>
       <translation>An stíl ghluaiseachta amach as an gcosán uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="119"/>
-      <source>Angle of the Lead-In</source>
-      <translation>Uillinn an Treoraithe Isteach</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="125"/>
-      <source>Angle of the Lead-Out</source>
-      <translation>Uillinn an Luaidhe Amach</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="170"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="374"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="171"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="375"/>
       <source>Extends Lead-in distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>Síneann sé an fad luaidhe isteach
 Do na stíleanna seo a leanas amháin: Stua, Líne, Ingearach agus Tangant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="179"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="387"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="180"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="388"/>
       <source>Extends Lead-out distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>Síneann sé an fad luaidhe-amach
 Do na stíleanna seo a leanas amháin: Stua, Líne, Ingearach agus Tangant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="258"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="259"/>
       <source>Angle of the Lead-In (1..90)</source>
       <translation>Uillinn an Treoraithe Isteach (1..90)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="266"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="267"/>
       <source>Angle of the Lead-Out (1..90)</source>
       <translation>Uillinn an Luaidhe Amach (1..90)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="131"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="293"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="132"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="294"/>
       <source>Determine length of the Lead-In</source>
       <translation>Fad an Treoraithe Isteach a chinneadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="137"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="308"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="120"/>
+      <source>Angle of the Lead-In</source>
+      <translation>Uillinn an Treoraithe Isteach</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="126"/>
+      <source>Angle of the Lead-Out</source>
+      <translation>Uillinn an Luaidhe Amach</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="138"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="309"/>
       <source>Determine length of the Lead-Out</source>
       <translation>Fad an Lead-Amach a chinneadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="143"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="326"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="144"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="327"/>
       <source>Invert Lead-In direction</source>
       <translation>Inbhéartaigh treo an luaidhe isteach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="149"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="333"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="150"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="334"/>
       <source>Invert Lead-Out direction</source>
       <translation>Treo Luaidhe Amach Inbhéartaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="155"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="340"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="156"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="341"/>
       <source>Move start point</source>
       <translation>Bog pointe tosaigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="161"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="347"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="162"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="348"/>
       <source>Move end point</source>
       <translation>Bog pointe deiridh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="113"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="114"/>
       <source>Perform plunges with G0</source>
       <translation>Déan tumadh le G0</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="55"/>
+      <location filename="../../../Path/Op/Profile.py" line="249"/>
       <source>Angle of ramp</source>
       <translation>Uillinn an rampa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="71"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="73"/>
       <source>Select ramping method.
 
 Ramp Method 0: Helix like path.
 Ramp Method 1: Ramp down at rampangle along the path and move backwards to the original plunge end point.
 Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
-Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.</source>
-      <translation>Roghnaigh modh rampála.
+Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.
+Ramp Method 4: Ramp down at rampangle along the path, continue with the original path, extend and close the path on the final loop</source>
+      <translation type="unfinished">Select ramping method.
 
-Modh Rampa 0: Cosán cosúil le héilics.
-Modh Rampa 1: Rampáil síos ag uillinn rampála feadh an chosáin agus bog siar go dtí an pointe deiridh tumtha bunaidh.
-Modh Rampa 2: Taisteal ag doimhneacht tosaigh feadh an chosáin agus rampáil siar ag uillinn rampála feadh an chosáin go dtí an pointe deiridh tumtha bunaidh.
-Modh Rampa 3: Rampáil síos feadh an chosáin go dtí go mbeidh leath an achair Z taistilte agat, athraigh treo agus rampáil siar go dtí an pointe deiridh tumtha bunaidh.</translation>
+Ramp Method 0: Helix like path.
+Ramp Method 1: Ramp down at rampangle along the path and move backwards to the original plunge end point.
+Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
+Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.
+Ramp Method 4: Ramp down at rampangle along the path, continue with the original path, extend and close the path on the final loop</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="91"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="93"/>
       <source>The depth where the ramp dressup is enabled.
 Above this depth ramps are not generated, but motion commands are passed through as is.</source>
       <translation>An doimhneacht ina bhfuil an gléasadh rampa cumasaithe.
 Os cionn na doimhneachta seo ní ghintear rampaí, ach cuirtear orduithe gluaisne tríd mar atá.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="97"/>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="182"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="99"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="185"/>
       <source>Calculate ramp angle from vertical plane</source>
       <translation>Ríomh uillinn an rampa ón eitleán ingearach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="80"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="82"/>
       <source>Should the dressup ignore motion commands above DressupStartDepth</source>
       <translation>Ar cheart don gléasadh suas neamhaird a dhéanamh d'orduithe gluaisne os cionn DressupStartDepth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="67"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="68"/>
       <source>The point file from the surface probing.</source>
       <translation>An comhad pointe ón scrúdú dromchla.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="74"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="75"/>
       <source>Deflection distance for arc interpolation</source>
       <translation>Fad díláithrithe le haghaidh idirshuíomh stua</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="83"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="84"/>
       <source>break segments into smaller segments of this length.</source>
       <translation>briseadh na codanna ina gcodanna níos lú den fhad seo.</translation>
     </message>
@@ -5564,19 +5555,19 @@ Os cionn na doimhneachta seo ní ghintear rampaí, ach cuirtear orduithe gluaisn
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="205"/>
-      <location filename="../../../Path/Main/Job.py" line="633"/>
+      <location filename="../../../Path/Main/Job.py" line="635"/>
       <source>Split output into multiple G-code files</source>
       <translation>Roinn an t-aschur ina chomhaid G-chód iolracha</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="211"/>
-      <location filename="../../../Path/Main/Job.py" line="624"/>
+      <location filename="../../../Path/Main/Job.py" line="626"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>Más il-WCSanna iad, cuir an t-aschur in ord ar an mbealach seo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="217"/>
-      <location filename="../../../Path/Main/Job.py" line="615"/>
+      <location filename="../../../Path/Main/Job.py" line="617"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>Na Córais Chomhordanáide Oibre don Phost</translation>
     </message>
@@ -5584,20 +5575,20 @@ Os cionn na doimhneachta seo ní ghintear rampaí, ach cuirtear orduithe gluaisn
       <location filename="../../../Path/Main/Job.py" line="223"/>
       <location filename="../../../Path/Main/Job.py" line="556"/>
       <location filename="../../../Path/Main/Job.py" line="565"/>
-      <location filename="../../../Path/Main/Job.py" line="651"/>
+      <location filename="../../../Path/Main/Job.py" line="653"/>
       <source>The Machine for the Job</source>
       <translation>An Meaisín don Phost</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="232"/>
-      <location filename="../../../Path/Main/Job.py" line="661"/>
+      <location filename="../../../Path/Main/Job.py" line="663"/>
       <source>JSON dict of postprocessor properties that override machine defaults for this job</source>
       <translation>JSON de na hairíonna iarphróiseálaí a sháraíonn réamhshocruithe meaisín don phost seo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="334"/>
       <source>Group of named work planes the Operations can share</source>
-      <translation type="unfinished">Group of named work planes the Operations can share</translation>
+      <translation>Grúpa eitleán oibre ainmnithe ar féidir leis na hoibríochtaí iad a roinnt</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="370"/>
@@ -5616,13 +5607,13 @@ Os cionn na doimhneachta seo ní ghintear rampaí, ach cuirtear orduithe gluaisn
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="270"/>
-      <location filename="../../../Path/Op/Base.py" line="620"/>
+      <location filename="../../../Path/Op/Base.py" line="629"/>
       <location filename="../../../Path/Main/Job.py" line="598"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Meastachán Ama Timthriall Oibríochtaí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="642"/>
+      <location filename="../../../Path/Main/Job.py" line="644"/>
       <source>Select the type of Job</source>
       <translation>Roghnaigh an cineál Poist</translation>
     </message>
@@ -5731,7 +5722,7 @@ Os cionn na doimhneachta seo ní ghintear rampaí, ach cuirtear orduithe gluaisn
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="160"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="159"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="173"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1579"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1964"/>
       <source>Percent of cutter diameter to step over on each pass</source>
@@ -5927,7 +5918,7 @@ Socraigh go náid chun teorannú de réir uillinne rámpa a dhíchumasú</transl
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1873"/>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="170"/>
       <source>Set how much stock to leave on the floor for the operation.</source>
       <translation>Socraigh cé mhéad stoic atá le fágáil ar an urlár don oibríocht.</translation>
     </message>
@@ -5968,8 +5959,8 @@ Socraigh go náid chun teorannú de réir uillinne rámpa a dhíchumasú</transl
       <translation>Gearrtar orduithe de réir réigiúin seachas doimhneachta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="100"/>
-      <location filename="../../../Path/Op/Area.py" line="153"/>
+      <location filename="../../../Path/Op/Area.py" line="95"/>
+      <location filename="../../../Path/Op/Area.py" line="146"/>
       <source>Split Arcs into discrete segments</source>
       <translation>Roinn na hÁircí ina ndeighleoga ar leithligh</translation>
     </message>
@@ -6028,7 +6019,7 @@ Cruth na huirlise: is sábháilte - seiceálann sé imréiteach ag baint úsáid
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="252"/>
-      <location filename="../../../Path/Op/Base.py" line="629"/>
+      <location filename="../../../Path/Op/Base.py" line="638"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>Cumasaigh an próiseálaí iarchéime chun orduithe scriosta bloc a chur leis</translation>
     </message>
@@ -6043,65 +6034,65 @@ Cruth na huirlise: is sábháilte - seiceálann sé imréiteach ag baint úsáid
       <translation>Lipéad Sannta ag an Úsáideoir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="286"/>
+      <location filename="../../../Path/Op/Base.py" line="292"/>
       <source>Base locations for this operation</source>
       <translation>Suíomhanna bunáite don oibríocht seo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="297"/>
+      <location filename="../../../Path/Op/Base.py" line="303"/>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="90"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>An rialtóir uirlise a úsáidfear chun an cosán a ríomh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="306"/>
+      <location filename="../../../Path/Op/Base.py" line="312"/>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="96"/>
       <source>Coolant mode for this operation</source>
       <translation>Mód fuaraithe don oibríocht seo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="314"/>
+      <location filename="../../../Path/Op/Base.py" line="320"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>Doimhneacht Tosaigh an Uirlis - doimhneacht an chéad ghearrtha i Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="320"/>
+      <location filename="../../../Path/Op/Base.py" line="326"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>Doimhneacht Deiridh an Uirlis - an luach is ísle i Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="334"/>
+      <location filename="../../../Path/Op/Base.py" line="340"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>Doimhneacht Tosaigh le húsáid inmheánach le haghaidh luachanna díorthaithe amháin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="345"/>
-      <location filename="../../../Path/Op/Base.py" line="637"/>
+      <location filename="../../../Path/Op/Base.py" line="351"/>
+      <location filename="../../../Path/Op/Base.py" line="646"/>
       <source>Incremental Step Down of Tool</source>
       <translation>Céim Anuas Incriminteach na hUirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="353"/>
+      <location filename="../../../Path/Op/Base.py" line="359"/>
       <source>Maximum material removed on final pass.</source>
       <translation>An t-ábhar uasta a baineadh ar an bpas deiridh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="364"/>
+      <location filename="../../../Path/Op/Base.py" line="370"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>An airde atá ag teastáil chun teanntáin agus bacainní a ghlanadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="370"/>
+      <location filename="../../../Path/Op/Base.py" line="376"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>Airde Sábháilteachta Tapa idir suíomhanna.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="378"/>
+      <location filename="../../../Path/Op/Base.py" line="384"/>
       <source>The start point of this path</source>
       <translation>Pointe tosaigh an chosáin seo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="384"/>
+      <location filename="../../../Path/Op/Base.py" line="390"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
       <location filename="../../../Path/Op/Slot.py" line="223"/>
       <location filename="../../../Path/Op/PlanarSurface.py" line="544"/>
@@ -6110,22 +6101,22 @@ Cruth na huirlise: is sábháilte - seiceálann sé imréiteach ag baint úsáid
       <translation>Déan Fíor, má shonraítear Pointe Tosaigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="392"/>
+      <location filename="../../../Path/Op/Base.py" line="398"/>
       <source>Lower limit of the turning diameter</source>
       <translation>Teorainn íochtarach an trastomhais casadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="398"/>
+      <location filename="../../../Path/Op/Base.py" line="404"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>Teorainn uachtarach an trastomhais casadh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="489"/>
+      <location filename="../../../Path/Op/Base.py" line="495"/>
       <source>The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</source>
-      <translation type="unfinished">The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</translation>
+      <translation>An plána oibre ainmnithe ina bhfeidhmíonn an oibríocht seo, agus a roinntear le hoibríochtaí eile sa Phost. Is é an t-aiseanna uirlise é a threoshuíomh áitiúil +Z. Ciallaíonn folamh gur ag baint úsáid as plána XY an Phoist féin atáthar — is é sin, muilleoireacht ghnáthach ina bhfuil an ais Z dírithe in airde.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="600"/>
+      <location filename="../../../Path/Op/Base.py" line="609"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
       <source>Coolant option for this operation</source>
       <translation>Rogha fuaraithe don oibríocht seo</translation>
@@ -6137,25 +6128,25 @@ Cruth na huirlise: is sábháilte - seiceálann sé imréiteach ag baint úsáid
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="91"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="298"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="300"/>
       <source>Manual or Automatic mode sorting of holes</source>
       <translation>Sórtáil poill i mód láimhe nó uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="102"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="312"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="314"/>
       <source>Start point for automatic sorting (x,y used, z ignored)</source>
       <translation>Pointe tosaigh le haghaidh sórtála uathoibríoch (x,y in úsáid, z neamhaird)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="109"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="321"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="323"/>
       <source>Enable to use end point for automatic sorting</source>
       <translation>Cumasaigh úsáid a bhaint as pointe deiridh le haghaidh sórtála uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="118"/>
-      <location filename="../../../Path/Op/CircularHoleBase.py" line="333"/>
+      <location filename="../../../Path/Op/CircularHoleBase.py" line="335"/>
       <source>End point for automatic sorting (x,y used, z ignored)</source>
       <translation>Pointe deiridh le haghaidh sórtála uathoibríoch (x,y in úsáid, z neamhaird)</translation>
     </message>
@@ -6357,17 +6348,17 @@ Uathoibríoch - Sreanga a shórtáil de réir mhodh an chomharsa is gaire, feabh
       <translation>Tosaigh ag gearradh ón taobh istigh nó ón taobh amuigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="97"/>
+      <location filename="../../../Path/Op/MillFace.py" line="100"/>
       <source>Shape to use for calculating Boundary</source>
       <translation>Cruth le húsáid chun Teorainn a ríomh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="105"/>
+      <location filename="../../../Path/Op/MillFace.py" line="108"/>
       <source>Clear edges of surface (Only applicable to BoundBox)</source>
       <translation>Imill shoiléire an dromchla (Baineann sé le BoundBox amháin)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="112"/>
+      <location filename="../../../Path/Op/MillFace.py" line="115"/>
       <source>Exclude milling raised areas inside the face.</source>
       <translation>Eisiaigh limistéir ardaithe muilleoireachta taobh istigh den aghaidh.</translation>
     </message>
@@ -6396,39 +6387,46 @@ Uathoibríoch - Sreanga a shórtáil de réir mhodh an chomharsa is gaire, feabh
       <translation>Próiseáil an tsamhail agus an stoc in oibríocht gan aon Gheoiméadracht Bhunúsach roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="145"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Fritháireamh breise le cur i bhfeidhm ar an oibríocht. Braitheann an treo ar an oibríocht.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="151"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="165"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Tosaigh ag pócaáil ag an lár nó ag an teorainn</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="165"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="179"/>
       <source>Angle of the grid, line and zigzag patterns</source>
       <translation>Uillinn na ngreille, na líne agus na bpatrún zigzag</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="215"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="281"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="223"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="348"/>
       <source>Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, &gt;50%) to ensure full area coverage.</source>
       <translation>Cuir an céim thar an trasnán uasta i bhfeidhm fiú mura bhfuil an limistéar ar fad glanta. Gan an bhratach seo socraithe, féadfar an céim thar an trasnán a laghdú (i gcás céim thar an trasnán mór, &gt;50%) chun clúdach iomlán an limistéir a chinntiú.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="171"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="251"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="408"/>
+      <source>Finishing pass will processing with one step down at final depth</source>
+      <translation>Déanfar an pas críochnaithe le céim amháin síos ag an doimhneacht dheiridh</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="260"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="432"/>
+      <source>Create helix ramp for finishing pass</source>
+      <translation>Cruthaigh rápa héilice don phas críochnúcháin</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="185"/>
       <source>Clearing pattern to use</source>
       <translation>Patrún imréitigh le húsáid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="177"/>
-      <source>Use 3D Sorting of Path</source>
-      <translation>Úsáid Sórtáil 3T den Chonair</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="195"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="271"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="203"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="338"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
       <location filename="../../../Path/Op/Adaptive.py" line="1851"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -6467,7 +6465,7 @@ Uathoibríoch - Sreanga a shórtáil de réir mhodh an chomharsa is gaire, feabh
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="105"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="136"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="150"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>An treo ar cheart don chonair uirlisí dul timpeall na coda Deiseal (CW) nó Frith-Chlog (CCW)</translation>
     </message>
@@ -6515,14 +6513,45 @@ Níor cheart é a úsáid ach amháin le Láimhseáil Ilghnéithe Aonair agus Ú
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="204"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="214"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="370"/>
       <source>Order processing of the shapes
 Automatic: uses nearest neighbour algorithm to sort shapes
 Manual: uses order of shapes selection</source>
       <translation>Próiseáil ord na gcruthanna
 Uathoibríoch: úsáideann sé algartam an chomharsa is gaire chun cruthanna a shórtáil
 Lámhleabhar: úsáideann sé ord roghnúcháin na gcruthanna</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="213"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="232"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="396"/>
+      <source>Distance between roughing and finishing passes</source>
+      <translation>An t-achar idir pasanna garbh-oibre agus pasanna críochnúcháin</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="222"/>
+      <source>Finish pass will processing with one step down at final depth</source>
+      <translation>Déanfar an pas críochnaitheach le céim amháin síos ag an doimhneacht dheiridh</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="231"/>
+      <source>Start multiple profile from edge or out of edge</source>
+      <translation>Cuir tús le próifílí iolracha ó Edge nó lasmuigh de Edge</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="240"/>
+      <source>Create helix ramp for closed path
+Helix pitch limits by &apos;Step Down&apos;</source>
+      <translation>Cruthaigh rámpa héilice do chonair iata
+Teorainneacha ar pháirc na héilice bunaithe ar &apos;Íoslaghdú Céime'&apos;</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="259"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="242"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="419"/>
+      <source>Adds an additional finishing pass that clears the stock left over from tool deflection</source>
+      <translation>Cuireann sé pas críochnúcháin breise leis a bhaineann an t-ábhar atá fágtha de bharr diall an uirlis</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="128"/>
@@ -7758,37 +7787,37 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
       <translation>RABHADH: Má dhéantar é seo a dhíchumasú, ceadaítear don algartam Adaptive2d bogadh lasmuigh de theorainn an ábhair i gcás pócaí oscailte. D’fhéadfadh sé seo a bheith ina chúis le tumadh neamhrialta, le bealaí uirlise do-thuartha agus le tuairteanna meaisín! Bí thar a bheith cúramach agus tú ag dul ar aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="134"/>
       <source>Set the cut mode for the operation.</source>
       <translation>Socraigh an modh gearrtha don oibríocht.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="143"/>
       <source>Set the clearing pattern for the operation.</source>
       <translation>Socraigh an patrún imréitigh don oibríocht.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="152"/>
       <source>Set the angle for the operation.</source>
       <translation>Socraigh an uillinn don oibríocht.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="161"/>
       <source>Set the stepover percentage of tool diameter.</source>
       <translation>Socraigh céatadán céimnithe thrastomhas an uirlis.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="179"/>
       <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
       <translation>Fad chun gearrthacha a shíneadh thar theorainn an pholagáin le haghaidh dícheangal uirlisí.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="188"/>
       <source>Extends the boundary in both direction.</source>
       <translation>Síneann sé an teorainn sa dá threo.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="197"/>
       <source>Reverse the cutting direction for the selected pattern.</source>
       <translation>Droim ar ais treo na gearrtha don phatrún roghnaithe.</translation>
     </message>
@@ -7796,6 +7825,11 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
       <location filename="../../../Path/Op/Gui/Drilling.py" line="244"/>
       <source>Apply G99 retraction: only retract to StartDepth between holes in this operation</source>
       <translation>Cuir aistarraingt G99 i bhfeidhm: aistarraingt go dtí an Doimhneacht Tosaigh idir na poill san oibríocht seo amháin</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Workplane.py" line="148"/>
+      <source>Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on this plane run. Empty: the Job&apos;s own fixture.</source>
+      <translation>Córas comhordanáidí oibre (G54-G59.9, G54.1 Pn) roghnaithe agus oibríochtaí ar an bplána seo á rith. Folamh: daingneán an phoist féin.</translation>
     </message>
   </context>
   <context>
@@ -7852,14 +7886,19 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
   <context>
     <name>PathAreaOp</name>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="122"/>
+      <location filename="../../../Path/Op/Area.py" line="116"/>
       <source>job %s has no Base.</source>
       <translation>níl aon bhunáit ag an bpost %s.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="124"/>
+      <location filename="../../../Path/Op/Area.py" line="118"/>
       <source>no job for operation %s found.</source>
       <translation>níor aimsíodh aon phost don oibríocht %s.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Area.py" line="293"/>
+      <source>%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</source>
+      <translation>%s: teastaíonn uillinn rampa ón modh rampa &apos;%s&apos;, ag tumadh</translation>
     </message>
   </context>
   <context>
@@ -7885,52 +7924,87 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="230"/>
+      <location filename="../../../Path/Op/Profile.py" line="285"/>
       <source>Outside</source>
       <translation>Lasmuigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="231"/>
+      <location filename="../../../Path/Op/Profile.py" line="286"/>
       <source>Inside</source>
       <translation>Taobh istigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="222"/>
+      <location filename="../../../Path/Op/Profile.py" line="277"/>
       <source>CW</source>
       <translation>Deiseal</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="223"/>
+      <location filename="../../../Path/Op/Profile.py" line="278"/>
       <source>CCW</source>
       <translation>Tuathalach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="226"/>
+      <location filename="../../../Path/Op/Profile.py" line="281"/>
       <source>Collectively</source>
       <translation>Go comhchoiteann</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="227"/>
+      <location filename="../../../Path/Op/Profile.py" line="282"/>
       <source>Individually</source>
       <translation>Ina n-aonar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="234"/>
+      <location filename="../../../Path/Op/Profile.py" line="289"/>
       <source>Automatic</source>
       <translation>Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="235"/>
+      <location filename="../../../Path/Op/Profile.py" line="290"/>
       <source>Manual</source>
       <translation>Lámhleabhar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="419"/>
+      <location filename="../../../Path/Op/Profile.py" line="293"/>
+      <source>OutOfEdge</source>
+      <translation>Lasmuigh den Imeall</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="294"/>
+      <source>Edge</source>
+      <translation>Imeall</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="297"/>
+      <source>None</source>
+      <translation>Dada</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="298"/>
+      <source>Helix</source>
+      <translation>Héilics</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="299"/>
+      <source>Method 1</source>
+      <translation>Modh 1</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="300"/>
+      <source>Method 2</source>
+      <translation>Modh 2</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="301"/>
+      <source>Method 3</source>
+      <translation>Modh 3</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="488"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Níl rochtain ar an imeall/na himill roghnaithe. Má tá níos mó ná ceann amháin i gceist, d'fhéadfadh sé go n-oibreodh athordú an roghnúcháin.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="564"/>
+      <location filename="../../../Path/Op/Profile.py" line="634"/>
       <source>Unable to create path for face(s).</source>
       <translation>Ní féidir cosán a chruthú don aghaidh(eanna).</translation>
     </message>
@@ -8293,17 +8367,17 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="315"/>
       <source>Set Work Plane from Face</source>
-      <translation type="unfinished">Set Work Plane from Face</translation>
+      <translation>Socraigh Plána Oibre ón Aghaidh</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="342"/>
       <source>Select a planar face to set a work plane from.</source>
-      <translation type="unfinished">Select a planar face to set a work plane from.</translation>
+      <translation>Roghnaigh aghaidh phlánach chun plána oibre a shocrú uaithi.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="356"/>
       <source>Set %s to work plane %s</source>
-      <translation type="unfinished">Set %s to work plane %s</translation>
+      <translation>Socraigh %s go dtí an plána oibre %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="369"/>
@@ -8331,7 +8405,7 @@ Déanfar ríomhanna níos tapúla le luachanna níos mó; beidh bealaí uirlise 
       <translation>Airde</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1398"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1401"/>
       <source>Tool Controller</source>
       <translation>Rialaitheoir Uirlisí</translation>
     </message>
@@ -8343,44 +8417,44 @@ If it is necessary to set the FinalDepth manually please select a different oper
 Más gá an Doimhneacht Deiridh a shocrú de láimh, roghnaigh oibríocht eile le do thoil.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1438"/>
       <source>Diameters</source>
       <translation>Trastomhais</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1467"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1470"/>
       <source>AreaOp Operation</source>
       <translation>Oibríocht LimistéarOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1529"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1537"/>
       <source>Operation</source>
       <translation>Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1596"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1604"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Díchruthaigh Oibríocht AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1735"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1767"/>
       <source>Start Point Selection</source>
       <translation>Roghnú Pointe Tosaigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1736"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1768"/>
       <source>Selects the start point</source>
       <translation>Roghnaíonn an pointe tosaigh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1786"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1818"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Níor aimsíodh rialtóir uirlisí oiriúnach.
 Ag cur deireadh le cruthú oibríochta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1790"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1822"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Gan rialtóir uirlisí, ag cur deireadh le cruthú oibríochta</translation>
     </message>
@@ -8388,7 +8462,7 @@ Ag cur deireadh le cruthú oibríochta</translation>
   <context>
     <name>PathArray</name>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="298"/>
+      <location filename="../../../Path/Dressup/Array.py" line="300"/>
       <source>No base objects for PathArray.</source>
       <translation>Gan aon réada bonn le haghaidh PathArray.</translation>
     </message>
@@ -8460,7 +8534,7 @@ Ag cur deireadh le cruthú oibríochta</translation>
       <location filename="../../../InitGui.py" line="114"/>
       <location filename="../../../InitGui.py" line="118"/>
       <location filename="../../../InitGui.py" line="122"/>
-      <location filename="../../../InitGui.py" line="360"/>
+      <location filename="../../../InitGui.py" line="361"/>
       <location filename="../../AppPathGui.cpp" line="92"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -8469,7 +8543,7 @@ Ag cur deireadh le cruthú oibríochta</translation>
   <context>
     <name>CAM_EngraveTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="196"/>
+      <location filename="../../../InitGui.py" line="197"/>
       <source>Engraving Operations</source>
       <translation>Oibríochtaí Greanta</translation>
     </message>
@@ -8477,7 +8551,7 @@ Ag cur deireadh le cruthú oibríochta</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="266"/>
       <source>3D Operations</source>
       <translation>Oibríochtaí 3T</translation>
     </message>
@@ -8595,92 +8669,92 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
       <translation>Tum ar luas tapa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="50"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="827"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="831"/>
       <source>Lead In/Out</source>
       <translation>Luaidhe Isteach/Amach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
       <source>Perpendicular</source>
       <translation>Ingearach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
       <source>Tangent</source>
       <translation>Tangent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
       <source>Arc3d</source>
       <translation>Arc3d</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
       <source>ArcZ</source>
       <translation>ArcZ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
       <source>ArcZFollow</source>
       <translation>ArcZFollow</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
       <source>Helix</source>
       <translation>Héilics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
       <source>Line3d</source>
       <translation>Line3d</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
       <source>LineZ</source>
       <translation>LíneZ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
       <source>LineZFollow</source>
       <translation>LíneZFollow</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
       <source>No Retract</source>
       <translation>Gan Tarraingt Siar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="64"/>
       <source>Vertical</source>
       <translation>Ingearach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="553"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="556"/>
       <source>Can not get parameters from base operation and path</source>
       <translation>Ní féidir paraiméadair a fháil ón mbunoibríocht agus ón gcosán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="831"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="835"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>Cruthaíonn sé gluaiseachtaí iontrála agus imeachta do chonair roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="862"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="866"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="867"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="871"/>
       <source>Select a profile object</source>
       <translation>Roghnaigh réad próifíle</translation>
     </message>
@@ -8688,7 +8762,7 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupPathBoundary</name>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="387"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="415"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
@@ -8706,17 +8780,17 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupTag</name>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1253"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1275"/>
       <source>Cannot insert holding tags for this path - select a profile path</source>
       <translation>Ní féidir clibeanna coinneála a chur isteach don chonair seo - roghnaigh cosán próifíle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1302"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1324"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1306"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1328"/>
       <source>Select a profile object</source>
       <translation>Roghnaigh réad próifíle</translation>
     </message>
@@ -8726,12 +8800,12 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
       <translation>Clib Sealbhaíochta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="580"/>
       <source>Tag</source>
       <translation>Chlib</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="583"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>Cruthaíonn réad gléasta clibe ó chonair uirlisí roghnaithe</translation>
     </message>
@@ -8739,12 +8813,12 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupAxisMap</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="282"/>
+      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
       <source>Axis Map</source>
       <translation>Léarscáil Ais</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
+      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="286"/>
       <source>Remaps one axis to another</source>
       <translation>Athmhapálann sé ais amháin go hais eile</translation>
     </message>
@@ -8752,21 +8826,21 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_Dressup</name>
     <message>
-      <location filename="../../../Path/Dressup/Utils.py" line="39"/>
+      <location filename="../../../Path/Dressup/Utils.py" line="38"/>
       <source>Select one toolpath object
 </source>
       <translation>Roghnaigh réad cosáin uirlisí amháin
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Utils.py" line="45"/>
+      <location filename="../../../Path/Dressup/Utils.py" line="44"/>
       <source>The selected object is not a toolpath
 </source>
       <translation>Ní cosán uirlisí é an réad roghnaithe
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Utils.py" line="51"/>
+      <location filename="../../../Path/Dressup/Utils.py" line="50"/>
       <source>The selected object is not an operation or dressup
 </source>
       <translation>Ní oibríocht ná gléasadh suas an réad roghnaithe
@@ -8789,12 +8863,12 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupDragKnife</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="592"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="594"/>
       <source>Drag Knife</source>
       <translation>Tarraing Scian</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="596"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="598"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
       <translation>Athraíonn sé cosán uirlisí chun gníomhartha cúinne scian tarraingthe a chur leis</translation>
     </message>
@@ -8810,42 +8884,47 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupRampEntry</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="124"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="126"/>
       <source>RampMethod1</source>
       <translation>Modh Ramp1</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="125"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="127"/>
       <source>RampMethod2</source>
       <translation>Modh Ramp2</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="126"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="128"/>
       <source>RampMethod3</source>
       <translation>RampMethod3</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="317"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="129"/>
+      <source>RampMethod4</source>
+      <translation type="unfinished">RampMethod4</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="327"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="322"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="332"/>
       <source>Select a profile object</source>
       <translation>Roghnaigh réad próifíle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="123"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="125"/>
       <source>Helix</source>
       <translation>Héilics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="283"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="293"/>
       <source>Ramp Entry</source>
       <translation>Iontráil Ramp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="287"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="297"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>Cruthaíonn réad maisiúcháin iontrála rampa ó chonair uirlisí roghnaithe</translation>
     </message>
@@ -8853,12 +8932,12 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_Probe</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="330"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="350"/>
       <source>Select Probe Point File</source>
       <translation>Roghnaigh Comhad Pointe Braite</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="332"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="352"/>
       <source>All Files (*)</source>
       <translation>Gach Comhad (*)</translation>
     </message>
@@ -8886,37 +8965,42 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_DressupZCorrect</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="114"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="115"/>
       <source>Probe file not found: %s</source>
       <translation>Níor aimsíodh comhad scrúdaithe: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="140"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="141"/>
       <source>Skipped non-data lines in file: %s (lines %s)</source>
       <translation>Línte neamh-shonraí scipeáilte sa chomhad: %s (línte %s)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="147"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="148"/>
       <source>Not enough points (%s) got from file: %s</source>
       <translation>Níor leor pointí (%s) a fuarthas ón gcomhad: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="181"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="182"/>
       <source>Failed to create surface from probe data: %s</source>
       <translation>Theip ar dhromchla a chruthú ó shonraí an tóireadóra: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="244"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="210"/>
+      <source>Z correction needs a work plane parallel to the table; path left unchanged</source>
+      <translation type="unfinished">Z correction needs a work plane parallel to the table; path left unchanged</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="263"/>
       <source>Path point %s is outside of the probe area %s, %s</source>
       <translation>Tá pointe cosáin %s lasmuigh den limistéar scrúdaithe %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="393"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="413"/>
       <source>Z Depth Correction</source>
       <translation>Ceartú Doimhneachta Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="397"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="417"/>
       <source>Corrects Z depth using a probe map</source>
       <translation>Ceartaíonn doimhneacht Z ag baint úsáide as léarscáil tóireadóir</translation>
     </message>
@@ -9058,47 +9142,47 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
       <translation>Tá uirlis uimhir {} in úsáid cheana féin ag {}.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2002"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2020"/>
       <source>Add one.</source>
       <translation>Cuir ceann amháin leis.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1696"/>
       <source>Unsupported stock object %s</source>
       <translation>Réad stoic neamhthacaithe %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1694"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1712"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Cineál stoic neamhthacaithe %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1777"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1795"/>
       <source>Model Selection</source>
       <translation>Roghnú Múnla</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2001"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2019"/>
       <source>Warning</source>
       <translation>Rabhadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2003"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2021"/>
       <source>Ok</source>
       <translation>Ceart go leor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2005"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2023"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2016"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2034"/>
       <source>This job has no base model.</source>
       <translation>Níl aon mhúnla bonn ag an bpost seo.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2023"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2041"/>
       <source>This job has no tool.</source>
       <translation>Níl aon uirlis ag baint leis an bpost seo.</translation>
     </message>
@@ -9113,12 +9197,12 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
       <translation>Poist</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="281"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="282"/>
       <source>Model</source>
       <translation>Samhail</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="282"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="283"/>
       <source>Count</source>
       <translation>Líon</translation>
     </message>
@@ -9133,22 +9217,22 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
       <translation>Luas léirithe in aghaidh an tsoicind. Neamhshábháilte do rátaí beathaithe G-chód.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="396"/>
       <source>(none)</source>
       <translation>(níl aon cheann)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="489"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="490"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Bonn -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="499"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="500"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Bosca: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="514"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="515"/>
       <source>Unsupported stock type</source>
       <translation>Cineál stoic nach dtacaítear leis</translation>
     </message>
@@ -9179,45 +9263,51 @@ Roghnaigh gach imeall, aghaidh (ALT) nó buaicphointe (CTRL) den mhúnla.</trans
   <context>
     <name>CAM_Inspect</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="108"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="120"/>
       <source>Raw</source>
       <translation>Amh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="115"/>
-      <source>Raw shows original values without rounds and units conversion</source>
-      <translation>Taispeánann 'Raw' na luachanna bunaidh gan slánú ná comhshó aonad</translation>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="130"/>
+      <source>Raw shows the commands exactly as the operation stored them: no rounding, no unit conversion, and no Placement applied. An operation on a work plane stores its path in the plane&apos;s own frame.</source>
+      <translation type="unfinished">Raw shows the commands exactly as the operation stored them: no rounding, no unit conversion, and no Placement applied. An operation on a work plane stores its path in the plane&apos;s own frame.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="120"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="137"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="184"/>
       <source>Show tool: %s</source>
       <translation>Taispeáin uirlisí: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="126"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="143"/>
       <source>Show tool shape
 G-code under the cursor defines tool shape placement</source>
       <translation>Taispeáin cruth na huirlise
 Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="275"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="326"/>
       <source>&lt;b&gt;Caution&lt;/b&gt;: This windows shows commands generated by operation.&lt;br&gt;The final G-code will be created by post processor.&lt;br&gt;&lt;b&gt;Current units&lt;/b&gt;: %slength - &lt;b&gt;%s&lt;/b&gt;, feed - &lt;b&gt;%s/%s&lt;/b&gt;.</source>
       <translation>&lt;b&gt;Rabhadh&lt;/b&gt;: Taispeánann an fhuinneog seo orduithe a gineadh de bharr na hoibríochta.&lt;br&gt;Cruthóidh an próiseálaí iar-oibríochta an cód G deiridh.&lt;br&gt;&lt;b&gt;Aonaid reatha&lt;/b&gt;: %sfad - &lt;b&gt;%s&lt;/b&gt;, ráta beathaithe - &lt;b&gt;%s/%s&lt;/b&gt;.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="305"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="339"/>
+      <source>&lt;br&gt;&lt;b&gt;Raw&lt;/b&gt;: as stored, in the operation&apos;s own frame; the frame&apos;s origin (%.3f, %.3f, %.3f) and rotation are not applied.</source>
+      <translation type="unfinished">&lt;br&gt;&lt;b&gt;Raw&lt;/b&gt;: as stored, in the operation&apos;s own frame; the frame&apos;s origin (%.3f, %.3f, %.3f) and rotation are not applied.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="368"/>
       <source>Inspect Toolpath</source>
       <translation>Cigireacht a dhéanamh ar an gCosán Uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="309"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="372"/>
       <source>Inspects the contents of a toolpath object</source>
       <translation>Déanann sé iniúchadh ar ábhar réada cosáin uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="324"/>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="329"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="387"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="392"/>
       <source>Select exactly one path object</source>
       <translation>Roghnaigh réad cosáin amháin go díreach</translation>
     </message>
@@ -9238,7 +9328,7 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="505"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="506"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Sorcóir: %.2f x %.2f</translation>
     </message>
@@ -9506,98 +9596,98 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
       <translation>Dáta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="247"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="248"/>
       <source>The Job&apos;s last post-processed file is missing</source>
       <translation>Tá an comhad iarphróiseáilte deireanach den phost ar iarraidh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="380"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="385"/>
       <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
       <translation>Is uirlis oidhreachta í uirlis uimhir {}. Ní thacaíonn
                     Path-Sanity le huirlisí oidhreachta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="392"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="397"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>Uimhir uirlis {} a úsáideann il-uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="426"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation>Cruth Giotán Uirlise do TC: {} gan aimsiú</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="451"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="456"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
       <translation>Níl aon ráta beathaithe ag Rialaitheoir Uirlisí &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="463"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="468"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
       <translation>Níl aon luas fearsaid ag Rialaitheoir Uirlisí &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="489"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="494"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
       <translation>Ní úsáidtear Rialaitheoir Uirlisí &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="654"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="659"/>
       <source>No operations found in job</source>
       <translation>Ní bhfuarthas aon oibríochtaí sa phost</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="664"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="669"/>
       <source>No model/base geometry found in job</source>
       <translation>Níor aimsíodh aon gheoiméadracht mhúnla/bhunaidh sa phost</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="351"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="356"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>Smaoinigh ar an Ábhar Stoic a Shonrú</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="230"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
       <source>The Job has not been post-processed</source>
       <translation>Níl an post iarphróiseáilte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="54"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="56"/>
       <source>Sanity Check</source>
       <translation>Seiceáil Meabhairshláinte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="56"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="58"/>
       <source>Checks the CAM job for common errors</source>
       <translation>Seiceálann sé an post CAM le haghaidh earráidí coitianta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="108"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
       <source>Quick Validate</source>
       <translation>Bailíochtú Tapa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="113"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
       <source>Validates the CAM job for common issues without generating a full report</source>
       <translation>Bailíochtú an post CAM le haghaidh saincheisteanna coitianta gan tuarascáil iomlán a ghiniúint</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="136"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="155"/>
       <source>Quick Validate: No issues found.
 </source>
       <translation>Bailíochtú Tapa: Níor aimsíodh aon fhadhbanna.
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="139"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="158"/>
       <source>=== Quick Validation Results ===
 </source>
       <translation>=== Torthaí Bailíochtaithe Tapa ===
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="151"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="170"/>
       <source>=== {len(all_squawks)} issue(s) found, {len(critical_squawks)} critical ===
 </source>
       <translation>=== {len(all_squawks)} fadhb(anna) aimsithe, {len(critical_squawks)} criticiúil ===
@@ -9627,12 +9717,12 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
       <translation>Meánach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Simulator.py" line="601"/>
+      <location filename="../../../Path/Main/Gui/Simulator.py" line="628"/>
       <source>Legacy CAM Simulator</source>
       <translation>Insamhlóir CAM Oidhreachta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Simulator.py" line="603"/>
+      <location filename="../../../Path/Main/Gui/Simulator.py" line="630"/>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>Insamhlaíonn sé cód G ar stoc</translation>
@@ -9674,52 +9764,52 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="455"/>
+      <location filename="../../../Path/Op/Base.py" line="461"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="456"/>
+      <location filename="../../../Path/Op/Base.py" line="462"/>
       <source>Flood</source>
       <translation>Tuilte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="457"/>
+      <location filename="../../../Path/Op/Base.py" line="463"/>
       <source>Mist</source>
       <translation>Ceo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="965"/>
+      <location filename="../../../Path/Op/Base.py" line="974"/>
       <source>No parent job found for operation</source>
       <translation type="unfinished">No parent job found for operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="971"/>
+      <location filename="../../../Path/Op/Base.py" line="980"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1109"/>
+      <location filename="../../../Path/Op/Base.py" line="1124"/>
       <source>%s: Final depth is above start depth</source>
       <translation type="unfinished">%s: Final depth is above start depth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1118"/>
+      <location filename="../../../Path/Op/Base.py" line="1133"/>
       <source>%s: Start depth is above safe height</source>
       <translation type="unfinished">%s: Start depth is above safe height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1125"/>
+      <location filename="../../../Path/Op/Base.py" line="1140"/>
       <source>%s: Safe height is above clearance height</source>
       <translation type="unfinished">%s: Safe height is above clearance height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1441"/>
+      <location filename="../../../Path/Op/Base.py" line="1471"/>
       <source>Base object %s.%s already in the list</source>
       <translation type="unfinished">Base object %s.%s already in the list</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1451"/>
+      <location filename="../../../Path/Op/Base.py" line="1481"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation type="unfinished">Base object %s.%s rejected by operation</translation>
     </message>
@@ -9752,47 +9842,47 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="957"/>
+      <location filename="../../../Path/Op/Base.py" line="966"/>
       <source>%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</source>
       <translation type="unfinished">%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1276"/>
+      <location filename="../../../Path/Op/Base.py" line="1313"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Níl Rialaitheoir Uirlise roghnaithe. Teastaíonn uirlis uainn chun Cosán a thógáil.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1294"/>
+      <location filename="../../../Path/Op/Base.py" line="1331"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Níor aimsíodh aon uirlis nó is ionann an trastomhas agus nialas. Teastaíonn uirlis uainn chun cosán a thógáil.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="709"/>
+      <location filename="../../../Path/Op/Util.py" line="688"/>
       <source>No Tool Controller selected.</source>
       <translation>Níl aon Rialaitheoir Uirlise roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="712"/>
+      <location filename="../../../Path/Op/Util.py" line="691"/>
       <source>Tool Error</source>
       <translation>Earráid Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="724"/>
+      <location filename="../../../Path/Op/Util.py" line="703"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Rátaí beatha Rialaitheora Uirlisí atá riachtanach chun an t-am timthrialla a ríomh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="727"/>
+      <location filename="../../../Path/Op/Util.py" line="706"/>
       <source>Tool Feedrate Error</source>
       <translation>Earráid Ráta Beathú Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="733"/>
+      <location filename="../../../Path/Op/Util.py" line="712"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Cuir Luasanna Tapa Rialaitheora Uirlisí leis an mBileog Socraithe le haghaidh amanna timthrialla níos cruinne.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="741"/>
+      <location filename="../../../Path/Op/Util.py" line="720"/>
       <source>Cycletime Error</source>
       <translation>Earráid Am Timthrialla</translation>
     </message>
@@ -9812,13 +9902,13 @@ Sainmhíníonn cód-G faoin gcúrsóir suíomh chruth na huirlise</translation>
       <translation>Socraíodh an doimhneacht deiridh faoi bhun ZMin den aghaidh(eanna) roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="321"/>
+      <location filename="../../../Path/Op/Pocket.py" line="322"/>
       <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
       <translation>Níl tús oiriúnaitheach plánach ar fáil. Déanfar iarracht ar an neamhphlánánach.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="335"/>
-      <location filename="../../../Path/Op/Pocket.py" line="360"/>
+      <location filename="../../../Path/Op/Pocket.py" line="336"/>
+      <location filename="../../../Path/Op/Pocket.py" line="361"/>
       <source>The non-planar adaptive start is also unavailable.</source>
       <translation>Níl an tús oiriúnaitheach neamhphlánach ar fáil ach an oiread.</translation>
     </message>
@@ -10118,7 +10208,7 @@ Ní scriosfaidh sé seo na giotáin uirlisí atá inti.</translation>
       <translation>An bhfuil tú cinnte gur mian leat an uirlis/na giotáin roghnaithe a scriosadh? Ní féidir é seo a aisiompú. Bainfear na giotáin uirlisí den diosca agus as na leabharlanna uile ina bhfuil siad.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="260"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="266"/>
       <source>Selected faces should be vertical</source>
       <translation>Ba chóir go mbeadh na haghaidheanna roghnaithe ingearach</translation>
     </message>
@@ -10128,321 +10218,416 @@ Ní scriosfaidh sé seo na giotáin uirlisí atá inti.</translation>
       <translation>{diameter} {pitch} {rotation} tapáil, {flutes}-fliúit, {cutting_edge_length} imeall gearrtha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="209"/>
+      <location filename="../../../Path/Post/Utils.py" line="221"/>
       <source>CAM Export Gcode</source>
       <translation>Cód Easpórtála CAM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="219"/>
+      <location filename="../../../Path/Post/Utils.py" line="231"/>
       <source>Save With Changes</source>
       <translation>Sábháil le hAthruithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="226"/>
-      <location filename="../../../Path/Post/Utils.py" line="229"/>
+      <location filename="../../../Path/Post/Utils.py" line="238"/>
+      <location filename="../../../Path/Post/Utils.py" line="241"/>
       <source>Save Without Changes</source>
       <translation>Sábháil Gan Athruithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="227"/>
+      <location filename="../../../Path/Post/Utils.py" line="239"/>
       <source>Abort</source>
       <translation>Toirmisc</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="408"/>
+      <location filename="../../../Path/Post/Processor.py" line="436"/>
       <source>File Extension</source>
       <extracomment>Scope assumed when a schema entry declares none.  Matches the historical behaviour of postprocessor-specific properties without a &quot;runtime&quot; key.</extracomment>
       <translation>Síneadh Comhaid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="414"/>
+      <location filename="../../../Path/Post/Processor.py" line="442"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation>Síneadh comhaid réamhshocraithe le haghaidh comhaid aschuir (gan an ponc). Síneadh coitianta: nc, gcode, tap, ngc, sbp, srl.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="420"/>
+      <location filename="../../../Path/Post/Processor.py" line="448"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation>Cúiteamh Ga Uirlise (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
+      <location filename="../../../Path/Post/Processor.py" line="454"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation>Cumasaigh má thacaíonn an iarphróiseálaí seo le horduithe cúitimh ga uirlisí G41/G42. Nuair a bhíonn sé cumasaithe, is féidir leis an iarphróiseálaí cóid cúitimh gearrthóra a aschur.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="432"/>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
       <source>Supported G-code Commands</source>
       <translation>Orduithe G-chód Tacaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="438"/>
+      <location filename="../../../Path/Post/Processor.py" line="466"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation>Liosta d’orduithe G-chód a dtacaítear leo ag an iarphróiseálaí seo (ceann amháin in aghaidh na líne). Déanfar orduithe nach bhfuil sa liosta seo a scagadh amach nó tabharfar rabhaidh mar thoradh orthu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="444"/>
+      <location filename="../../../Path/Post/Processor.py" line="472"/>
       <source>Ignore G-code Commands</source>
       <translation>Déan neamhaird d'orduithe G-chóid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="451"/>
+      <location filename="../../../Path/Post/Processor.py" line="479"/>
       <source>List of G-code commands, tolerated but ignored by this post-processor (one per line). Commands in this list will be filtered out.</source>
       <translation>Liosta d'orduithe G-chód, a nglactar leo ach a ndéantar neamhaird orthu ag an iarphróiseálaí seo (ceann amháin in aghaidh na líne). Déanfar orduithe sa liosta seo a scagadh amach.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="457"/>
+      <location filename="../../../Path/Post/Processor.py" line="485"/>
       <source>Drill Cycles to Translate</source>
       <translation>Timthriallta Druileála le hAistriú</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="464"/>
+      <location filename="../../../Path/Post/Processor.py" line="492"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.EXPANDABLE_DRILL_CYCLES)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation>Liosta d’orduithe timthrialla druileála le tiontú go gluaiseachtaí G0/G1 (ceann amháin in aghaidh na líne). Timthriallta druileála caighdeánacha: {&apos;, &apos;.join(Constants.EXPANDABLE_DRILL_CYCLES)}. Fág folamh é má thacaíonn an iarphróiseálaí le timthriallta druileála go dúchais.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="470"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Preamble</source>
       <translation>Réamhrá</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="474"/>
+      <location filename="../../../Path/Post/Processor.py" line="502"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation>Orduithe G-chód a chuirtear isteach ag tús an chláir i ndiaidh an cheanntásca.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="480"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Postamble</source>
       <translation>Iar-fhocal</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="482"/>
+      <location filename="../../../Path/Post/Processor.py" line="510"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation>Orduithe G-chód curtha isteach ag deireadh an chláir.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="488"/>
+      <location filename="../../../Path/Post/Processor.py" line="516"/>
       <source>Safety Block</source>
       <translation>Bloc Sábháilteachta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="493"/>
+      <location filename="../../../Path/Post/Processor.py" line="521"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation>Orduithe sábháilteachta chun an meaisín a athshocrú go riocht sábháilte aitheanta (m.sh., G40, G49, G80).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="499"/>
+      <location filename="../../../Path/Post/Processor.py" line="527"/>
       <source>Pre-Job</source>
       <translation>Réamh-phost</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="501"/>
+      <location filename="../../../Path/Post/Processor.py" line="529"/>
       <source>G-code commands inserted before each Job.</source>
       <translation>Orduithe G-chód curtha isteach roimh gach Post.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="507"/>
+      <location filename="../../../Path/Post/Processor.py" line="535"/>
       <source>Post-Job</source>
       <translation>Iar-Post</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="509"/>
+      <location filename="../../../Path/Post/Processor.py" line="537"/>
       <source>G-code commands inserted after each Job.</source>
       <translation>Orduithe G-chód curtha isteach i ndiaidh gach Poist.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="515"/>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
       <source>Pre-Fixture</source>
       <translation>Réamh-Daingneán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="517"/>
+      <location filename="../../../Path/Post/Processor.py" line="545"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation>Orduithe G-chód curtha isteach roimh athrú daingneáin.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <location filename="../../../Path/Post/Processor.py" line="551"/>
       <source>Post-Fixture</source>
       <translation>Iar-Daingneán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="525"/>
+      <location filename="../../../Path/Post/Processor.py" line="553"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation>Orduithe G-chód curtha isteach tar éis athrú daingneáin.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="531"/>
+      <location filename="../../../Path/Post/Processor.py" line="559"/>
       <source>Pre-Operation</source>
       <translation>Réamh-Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <location filename="../../../Path/Post/Processor.py" line="561"/>
       <source>G-code commands inserted before each operation.</source>
       <translation>Cuirtear orduithe G-chóid isteach roimh gach oibríocht.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="539"/>
+      <location filename="../../../Path/Post/Processor.py" line="567"/>
       <source>Post-Operation</source>
       <translation>Iar-Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="541"/>
+      <location filename="../../../Path/Post/Processor.py" line="569"/>
       <source>G-code commands inserted after each operation.</source>
       <translation>Orduithe G-chód curtha isteach i ndiaidh gach oibríochta.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="547"/>
+      <location filename="../../../Path/Post/Processor.py" line="575"/>
       <source>Pre-Tool Change</source>
       <translation>Athrú Réamh-Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="549"/>
+      <location filename="../../../Path/Post/Processor.py" line="577"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation>Orduithe G-chód curtha isteach roimh athruithe uirlisí.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="555"/>
+      <location filename="../../../Path/Post/Processor.py" line="583"/>
       <source>Post-Tool Change</source>
       <translation>Athrú Iar-Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="560"/>
+      <location filename="../../../Path/Post/Processor.py" line="588"/>
       <source>G-code to execute immediately after a tool change (M6), before the spindle is turned on. Use for a custom tool length offset routine, custom cutter compensation, or a return motion before the spindle starts.</source>
       <translation>G-chód le cur i gcrích díreach tar éis athrú uirlise (M6), sula gcuirtear an fhearsaid ar siúl. Bain úsáid as le haghaidh gnáthamh saincheaptha fritháirimh fad uirlise, cúiteamh saincheaptha gearradóra, nó gluaiseacht fillte sula dtosaíonn an fhearsaid ag obair.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="566"/>
+      <location filename="../../../Path/Post/Processor.py" line="594"/>
       <source>Tool Return after tool changes</source>
       <translation>Tuairisceán Uirlis tar éis athruithe uirlis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="571"/>
+      <location filename="../../../Path/Post/Processor.py" line="599"/>
       <source>G-code to execute immediately after the spindle is turned on after a tool change.</source>
       <translation>G-chód le cur i gcrích láithreach tar éis an fhearsaid a chasadh air i ndiaidh athrú uirlise.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="577"/>
+      <location filename="../../../Path/Post/Processor.py" line="605"/>
       <source>Pre-Rotary Move</source>
       <translation>Bogadh Réamh-Rothlach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="579"/>
-      <source>G-code commands inserted before rotary axis moves.</source>
-      <translation>Cuirtear orduithe G-chóid isteach sula mbogann an ais rothlach.</translation>
+      <location filename="../../../Path/Post/Processor.py" line="615"/>
+      <source>G-code commands inserted before the rotary axes move: before a rotary positioning move, and before a tilted work plane is declared when the control positions the axes itself. Put the moves that bring the tool clear of the part here, in machine coordinates (for example G53 G0 Z0); an operation&apos;s clearance height is measured in its own work plane and says nothing about the tool while the table turns.</source>
+      <translation type="unfinished">G-code commands inserted before the rotary axes move: before a rotary positioning move, and before a tilted work plane is declared when the control positions the axes itself. Put the moves that bring the tool clear of the part here, in machine coordinates (for example G53 G0 Z0); an operation&apos;s clearance height is measured in its own work plane and says nothing about the tool while the table turns.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="585"/>
+      <location filename="../../../Path/Post/Processor.py" line="621"/>
       <source>Post-Rotary Move</source>
       <translation>Bogadh Iar-Rotary</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="587"/>
-      <source>G-code commands inserted after rotary axis moves.</source>
-      <translation>Orduithe G-chód curtha isteach tar éis bogadh ais rothlach.</translation>
+      <location filename="../../../Path/Post/Processor.py" line="627"/>
+      <source>G-code commands inserted after the rotary axes have moved, and after a tilted work plane has been declared and aligned to.</source>
+      <translation type="unfinished">G-code commands inserted after the rotary axes have moved, and after a tilted work plane has been declared and aligned to.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="593"/>
+      <location filename="../../../Path/Post/Processor.py" line="633"/>
+      <source>Tilted work plane: control positions the rotaries</source>
+      <translation type="unfinished">Tilted work plane: control positions the rotaries</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="639"/>
+      <source>The plane command positions the rotary axes itself (G53.1, TURN). Off, the program commands them with a rotary move before declaring the plane.</source>
+      <translation type="unfinished">The plane command positions the rotary axes itself (G53.1, TURN). Off, the program commands them with a rotary move before declaring the plane.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="645"/>
+      <source>Tilted work plane: declare</source>
+      <translation type="unfinished">Tilted work plane: declare</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="652"/>
+      <source>The line that declares a tilted work plane, with {x} {y} {z} the plane&apos;s origin and {a1} {a2} {a3} the plane command&apos;s angles. Empty uses the plane command&apos;s own form.</source>
+      <translation type="unfinished">The line that declares a tilted work plane, with {x} {y} {z} the plane&apos;s origin and {a1} {a2} {a3} the plane command&apos;s angles. Empty uses the plane command&apos;s own form.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="658"/>
+      <source>Tilted work plane: align</source>
+      <translation type="unfinished">Tilted work plane: align</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="664"/>
+      <source>The line that points the tool along a declared plane when the control positions the rotary axes itself. Empty uses the plane command&apos;s own form.</source>
+      <translation type="unfinished">The line that points the tool along a declared plane when the control positions the rotary axes itself. Empty uses the plane command&apos;s own form.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="670"/>
+      <source>Tilted work plane: cancel</source>
+      <translation type="unfinished">Tilted work plane: cancel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="676"/>
+      <source>The line that cancels a declared plane. Empty uses the plane command&apos;s own form.</source>
+      <translation type="unfinished">The line that cancels a declared plane. Empty uses the plane command&apos;s own form.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="682"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>Taispeáin Dialóga Réamhphróiseála</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="599"/>
+      <location filename="../../../Path/Post/Processor.py" line="688"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation>Taispeáin dialóga idirghníomhacha le linn iarphróiseála. Díchumasaigh le haghaidh oibríochta nó tástála uathoibrithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="605"/>
+      <location filename="../../../Path/Post/Processor.py" line="694"/>
       <source>Generated Parameter Order for GCode</source>
       <translation>Ord Paraiméadair Ginithe do GCode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="607"/>
+      <location filename="../../../Path/Post/Processor.py" line="696"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation>Ord Paraiméadair Ginithe le haghaidh GCode le haghaidh aschuir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="613"/>
+      <location filename="../../../Path/Post/Processor.py" line="702"/>
       <source>TLO after tool-change</source>
       <translation>TLO tar éis athrú uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="618"/>
+      <location filename="../../../Path/Post/Processor.py" line="707"/>
       <source>Output a G43 TLO after tool-change</source>
       <translation>Aschur TLO G43 tar éis athrú uirlis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="624"/>
+      <location filename="../../../Path/Post/Processor.py" line="713"/>
       <source>Allow tool-change</source>
       <translation>Ceadaigh athrú uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="629"/>
+      <location filename="../../../Path/Post/Processor.py" line="718"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation>Gan seiceáil chun athrú uirlisí a chosc (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="635"/>
+      <location filename="../../../Path/Post/Processor.py" line="724"/>
       <source>Axis precision in output</source>
       <translation>Cruinneas ais san aschur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="640"/>
+      <location filename="../../../Path/Post/Processor.py" line="729"/>
       <source>Decimals of precision for axis motion</source>
       <translation>Deicheamháin chruinnis le haghaidh gluaiseacht ais</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="646"/>
+      <location filename="../../../Path/Post/Processor.py" line="735"/>
       <source>Feedrate precision in output</source>
       <translation>Cruinneas ráta beathaithe san aschur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="651"/>
+      <location filename="../../../Path/Post/Processor.py" line="740"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation>Deachúla beachtais don ráta cothaithe (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="657"/>
+      <location filename="../../../Path/Post/Processor.py" line="746"/>
       <source>Spindle-speed precision in output</source>
       <translation>Cruinneas luas fearsaid san aschur</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="662"/>
+      <location filename="../../../Path/Post/Processor.py" line="751"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation>Deicheamháin chruinnis le haghaidh luas an fhearsaid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="668"/>
+      <location filename="../../../Path/Post/Processor.py" line="757"/>
       <source>Output F parameter for G0 (rapid)</source>
       <translation>Paraiméadar aschuir F do G0 (tapa)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="673"/>
+      <location filename="../../../Path/Post/Processor.py" line="762"/>
       <source>Whether to output the F parameter for G0 (rapid moves)</source>
       <translation>Cibé acu an ndéanfar an paraiméadar F a aschur le haghaidh G0 (gluaiseachtaí gasta)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="681"/>
+      <location filename="../../../Path/Post/Processor.py" line="770"/>
       <source>Output non-engaging moves at the no-engagement feed rate</source>
       <translation>Aschuir gluaiseachtaí neamhoibríochta ag ráta beathaithe neamhoibríochta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="686"/>
+      <location filename="../../../Path/Post/Processor.py" line="775"/>
       <source>Certain G0&apos;s become G1 for operations that have &quot;No-Engagement Feedrate&quot;</source>
       <translation>Éiríonn G0anna áirithe ina G1 i gcás oibríochtaí a bhfuil &quot;Ráta Beatha Gan Teagmháil&quot; acu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2867"/>
+      <location filename="../../../Path/Post/Processor.py" line="1936"/>
+      <source>{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</source>
+      <translation type="unfinished">{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="1938"/>
+      <source>the Job</source>
+      <translation type="unfinished">the Job</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="1957"/>
+      <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</source>
+      <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="1967"/>
+      <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</source>
+      <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="1977"/>
+      <source>{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</source>
+      <translation type="unfinished">{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="2115"/>
+      <source>{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</source>
+      <translation type="unfinished">{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="2158"/>
+      <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</source>
+      <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="3296"/>
+      <source>The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</source>
+      <translation type="unfinished">The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="3321"/>
+      <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</source>
+      <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="3333"/>
+      <source>Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</source>
+      <translation type="unfinished">Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="3456"/>
       <source> (in the Custom op, uncheck Post Process Output, or put &apos;!&apos; in front of specific command)</source>
       <translation> (sa rogha Saincheaptha, díthiceáil Aschur Iarphróisis, nó cuir &apos;!&apos; os comhair ordaithe ar leith)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3198"/>
+      <location filename="../../../Path/Post/Processor.py" line="3788"/>
       <source>S parameter is required for a tapping operation</source>
       <translation>Tá paraiméadar S ag teastáil le haghaidh oibríocht snáithithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3206"/>
+      <location filename="../../../Path/Post/Processor.py" line="3796"/>
       <source>S parameter must be &gt; 0 for a tapping operation</source>
       <translation>Caithfidh an paraiméadar S a bheith &gt; 0 le haghaidh oibríocht cnagtha</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="3981"/>
+      <source>{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</source>
+      <translation type="unfinished">{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="180"/>
@@ -10507,37 +10692,37 @@ Ní scriosfaidh sé seo na giotáin uirlisí atá inti.</translation>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="267"/>
       <source>Fixture Output</source>
-      <translation type="unfinished">Fixture Output</translation>
+      <translation>Aschur na gCluichí</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="275"/>
       <source>preset: CYCL DEF 247 PRESETTING selects a preset table entry. datum: CYCL DEF 7 DATUM SHIFT selects a datum table entry. none: fixture commands are not output.</source>
-      <translation type="unfinished">preset: CYCL DEF 247 PRESETTING selects a preset table entry. datum: CYCL DEF 7 DATUM SHIFT selects a datum table entry. none: fixture commands are not output.</translation>
+      <translation>réamhshocrú: Roghnaíonn CYCL DEF 247 PRESETTING iontráil i dtábla na réamhshocruithe. bunphointe: Roghnaíonn CYCL DEF 7 DATUM SHIFT iontráil i dtábla na mbunphointí. dada: ní dhéantar orduithe daingneáin a aschur.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="281"/>
       <source>Fixture Number for G54</source>
-      <translation type="unfinished">Fixture Number for G54</translation>
+      <translation>Uimhir an Daingneáin do G54</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="288"/>
       <source>Preset or datum number selected for G54. G55 selects the next one, and so on.</source>
-      <translation type="unfinished">Preset or datum number selected for G54. G55 selects the next one, and so on.</translation>
+      <translation>Uimhir réamhshocraithe nó uimhir thagartha atá roghnaithe do G54. Roghnaíonn G55 an chéad cheann eile, agus mar sin de.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="294"/>
       <source>Output BLK FORM</source>
-      <translation type="unfinished">Output BLK FORM</translation>
+      <translation>Aschur Foirm Bhloca</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="300"/>
       <source>Write the stock bounding box as BLK FORM 0.1 / 0.2 blocks after BEGIN PGM for graphic simulation on the control.</source>
-      <translation type="unfinished">Write the stock bounding box as BLK FORM 0.1 / 0.2 blocks after BEGIN PGM for graphic simulation on the control.</translation>
+      <translation>Scríobh an bosca teorannach don bhlaic mar `BLK FORM 0.1 / 0.2` i ndiaidh `BEGIN PGM` chun insamhalta grafach a dhéanamh ar an aonad rialaithe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="311"/>
       <source>Heidenhain Klartext post processor</source>
-      <translation type="unfinished">Heidenhain Klartext post processor</translation>
+      <translation>Próiseálaí post Heidenhain Klartext</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
@@ -10689,6 +10874,116 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
       <translation>Próiseálaí poist Marlin</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="143"/>
+      <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool to machine Z zero; G91 G28 Z0 followed by G90 references it. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
+      <translation>Cuirtear G-chód isteach sula mbogann na haiseanna rothlacha agus sula ndéantar eitleán oibre claonta a ailíniú le G53.1. Cuir anseo na gluaiseachtaí a bhogann an uirlis saor ón bpíosa oibre, ag baint úsáide as comhordanáidí meaisín: ardaíonn G53 G0 Z0 an uirlis go dtí an pointe nialasach Z don mheaisín; ina dhiaidh sin, socraíonn G91 G28 Z0 agus G90 an tagairt di. Má fhágtar bán é, ní bhogtar an uirlis saor ón bpíosa oibre sula rothlaíonn an tábla, agus tugann an seiceáil bailíochta rabhadh faoi sin.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="151"/>
+      <source>G-code inserted after the rotary axes have moved. Under the DWO rotation strategy this is where the control&apos;s dynamic fixture offset is selected: G54.2 P1 on a Fanuc with that option. Under TWP the plane command handles the rotation and this block is usually empty.</source>
+      <translation>Cuirtear an cód G isteach tar éis do na haiseanna rothlacha gluaiseacht. Faoi straitéis rothlaithe DWO, is anseo a roghnaítear fritháireamh dinimiciúil an daingneáin sa chóras rialaithe: G54.2 P1 ar chóras Fanuc a bhfuil an rogha sin aige. Faoi TWP, is ag an ordú plána a bhíonn cúram an rothlaithe agus bíonn an bloc seo folamh de ghnáth.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="160"/>
+      <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</source>
+      <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="170"/>
+      <source>Program Number</source>
+      <translation>Uimhir an Chláir</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="179"/>
+      <source>The O number written after the leading % mark, zero-padded to four digits. 0 writes no O line. The control files the program under this number when it is loaded.</source>
+      <translation>An uimhir O a scríobhtar i ndiaidh an tsiombail % tosaigh, agus í comhlánaithe le nialais go dtí ceithre dhigit. Má tá an uimhir 0 ann, ní scríobhtar aon líne O. Sábhálann an córas an clár faoin uimhir seo nuair a luchtar é.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="185"/>
+      <source>Tape Marks (%)</source>
+      <translation>Marcanna Téipe (%)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="190"/>
+      <source>Write % as the first and last line, as tape-format DNC expects.</source>
+      <translation>Scríobh % mar an gcéad líne agus mar an líne dheireanach, mar a éilíonn DNC i bhformáid téipe.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="196"/>
+      <source>Upper-Case Output</source>
+      <translation>Aschur i gCás Uachtair</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="202"/>
+      <source>Write the whole program in upper case, comments included. Older controls read nothing else.</source>
+      <translation>Scríobh an clár ar fad i gceannlitreacha, na nótaí tráchta san áireamh. Ní léann rialtáin níos sine aon rud eile.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="208"/>
+      <source>Dwell in Milliseconds</source>
+      <translation>Fan sna Millisicindí</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="215"/>
+      <source>Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</source>
+      <translation type="unfinished">Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="221"/>
+      <source>Rigid Tapping (M29)</source>
+      <translation>Cnámhú docht (M29)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="229"/>
+      <source>Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</source>
+      <translation type="unfinished">Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="235"/>
+      <source>Parametric Tool Length Offset</source>
+      <translation>Fritháireamh Paraiméadrach ar Fhad Uirlise</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="242"/>
+      <source>After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</source>
+      <translation type="unfinished">After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="248"/>
+      <source>Park Empty Spindle at End</source>
+      <translation>Páirceáil an fhearsaid folamh ag an deireadh</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="255"/>
+      <source>Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</source>
+      <translation type="unfinished">Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="261"/>
+      <source>Empty-Spindle Retract</source>
+      <translation>Tarraingt Siar an Spindle Fholaimh</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="267"/>
+      <source>The retract written between M05 and M6 T0 when the empty-spindle park is on.</source>
+      <translation>An gluaiseacht aistarraingthe a scríobhtar idir M05 agus M6 T0 nuair atá an fheidhm páirceála don fhearsaid fholamh gníomhach.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="278"/>
+      <source>Fanuc post processor</source>
+      <translation>Próiseálaí iar-phróiseála Fanuc</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="352"/>
+      <source>Rigid tapping needs a spindle speed: {op} taps with {cmd} and no S has been commanded</source>
+      <translation>Teastaíonn luas fearsaidí le haghaidh cnagadh docht: {op} cnagadh le {cmd} agus níor ordaíodh aon S</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="513"/>
+      <source>&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</source>
+      <translation type="unfinished">&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
       <source>Refactored SmoothieBoard post processor</source>
       <translation>Próiseálaí iar-SmoothieBoard athfhachtúraithe</translation>
@@ -10714,12 +11009,12 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
       <translation>Próiseálaí iar-Grbl</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/Generator/leadinout.py" line="918"/>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="950"/>
       <source>Exceeded length in cutTravelEnd</source>
       <translation>Fad thar an gciorrúTravelEnd</translation>
     </message>
     <message>
-      <location filename="../../../Path/Base/Generator/leadinout.py" line="939"/>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="971"/>
       <source>Exceeded length in cutTravelBegin</source>
       <translation>Fad thar an gearradhTosaighTaisteal</translation>
     </message>
@@ -10734,19 +11029,14 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
       <translation>Níorbh fhéidir leis an oibríocht oiriúnaitheach an sreang teorann a chinneadh. Ar roghnaigh tú geoiméadracht bhunúsach?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Workplane.py" line="110"/>
-      <source>{plane} is tilted, and the Job&apos;s machine has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</source>
-      <translation type="unfinished">{plane} is tilted, and the Job&apos;s machine has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="105"/>
       <source>No Job found to add a work plane to.</source>
-      <translation type="unfinished">No Job found to add a work plane to.</translation>
+      <translation>Níor aimsíodh aon phost chun eitleán oibre a chur leis.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="129"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="125"/>
       <source>Created %s at the Job origin. Select a planar face before the command to derive one from the model.</source>
-      <translation type="unfinished">Created %s at the Job origin. Select a planar face before the command to derive one from the model.</translation>
+      <translation>Cruthaíodh %s ag bunphointe na hoibre. Roghnaigh aghaidh phlánach roimh an ordú chun ceann a dhíorthú ón tsamhail.</translation>
     </message>
   </context>
   <context>
@@ -10861,22 +11151,22 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
   <context>
     <name>CAM_Pocket</name>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="69"/>
+      <location filename="../../../Path/Op/MillFace.py" line="72"/>
       <source>Boundbox</source>
       <translation>Bosca Teoranta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="70"/>
+      <location filename="../../../Path/Op/MillFace.py" line="73"/>
       <source>Face Region</source>
       <translation>Réigiún Aghaidhe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="71"/>
+      <location filename="../../../Path/Op/MillFace.py" line="74"/>
       <source>Perimeter</source>
       <translation>Imlíne</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="72"/>
+      <location filename="../../../Path/Op/MillFace.py" line="75"/>
       <source>Stock</source>
       <translation>Stoc</translation>
     </message>
@@ -10891,59 +11181,64 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
       <translation>Ina n-aonar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="62"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="63"/>
       <source>Climb</source>
       <translation>Dreap</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="63"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="64"/>
       <source>Conventional</source>
       <translation>Traidisiúnta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="66"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="67"/>
       <source>Center</source>
       <translation>Lár</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="67"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="68"/>
       <source>Edge</source>
       <translation>Imeall</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="70"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZag</source>
       <translation>Fiarlán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="71"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="72"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="72"/>
-      <source>ZigZagOffset</source>
-      <translation>Fritháireamh Fiarlán</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/PocketBase.py" line="73"/>
-      <source>Line</source>
-      <translation>Líne</translation>
+      <source>Helix</source>
+      <translation>Héilics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Eangach</translation>
+      <location filename="../../../Path/Op/PocketBase.py" line="76"/>
+      <source>No clearing</source>
+      <translation>Gan glanadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="77"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="79"/>
       <source>Automatic</source>
       <translation>Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="78"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="80"/>
       <source>Manual</source>
       <translation>Lámhleabhar</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="74"/>
+      <source>Line</source>
+      <translation>Líne</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketBase.py" line="75"/>
+      <source>Grid</source>
+      <translation>Eangach</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
@@ -10966,7 +11261,7 @@ Spindle_Control: Déantar aon orduithe M3/M5 a aschur mar atá siad.</translatio
       <translation>Síneadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="199"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="189"/>
       <source>Set start point: %s, %s</source>
       <translation>Socraigh pointe tosaigh: %s, %s</translation>
     </message>
@@ -11486,17 +11781,17 @@ Ní cheadaítear rogha ach ó mhúnla amháin:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="133"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="139"/>
       <source>Select file containing the gcode</source>
       <translation>Roghnaigh comhad ina bhfuil an gcód</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="148"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="154"/>
       <source>Custom</source>
       <translation>Saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="149"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="155"/>
       <source>Create custom G-code snippet</source>
       <translation>Cruthaigh blúire saincheaptha de chód G</translation>
     </message>
@@ -11552,12 +11847,12 @@ Ní cheadaítear rogha ach ó mhúnla amháin:
   <context>
     <name>CAM_MillFace</name>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>
+      <location filename="../../../Path/Op/Gui/MillFace.py" line="74"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFace.py" line="76"/>
+      <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>
       <source>Create a Facing Operation from a model or face</source>
       <translation>Cruthaigh Oibríocht Aghaidh ó mhúnla nó aghaidh</translation>
     </message>
@@ -11591,12 +11886,12 @@ Ní cheadaítear rogha ach ó mhúnla amháin:
   <context>
     <name>CAM_SimpleCopy</name>
     <message>
-      <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="66"/>
+      <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="59"/>
       <source>Simple Copy</source>
       <translation>Cóip Shimplí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="71"/>
+      <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="64"/>
       <source>Creates a non-parametric copy of another toolpath
 Several operations can be used with identical tool controller and coolant mode</source>
       <translation>Cruthaíonn sé cóip neamhpharaiméadrach de chonair uirlisí eile
@@ -11652,24 +11947,24 @@ Is féidir roinnt oibríochtaí a úsáid leis an rialtóir uirlisí agus leis a
       <translation>Próiseálann iar-phróiseálacha na n-oibríochtaí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="185"/>
+      <location filename="../../../Path/Post/Utils.py" line="197"/>
       <source>The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
 </source>
-      <translation type="unfinished">The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
+      <translation>Ainmníonn na hionadaithe %T, %t, %W agus %O an chuid d'aschur scoilte. Ós rud é nach bhfuil an jab ag scoilteadh a chuid aschuir, déantar neamhaird díobh.
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2695"/>
+      <location filename="../../../Path/Post/Processor.py" line="3202"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</source>
-      <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</translation>
+      <translation>Ordaíonn &apos;{}&apos; luas fearsaid de {} r/n, atá faoi bhun íosmhéid an mheaisín de {} r/n</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2707"/>
+      <location filename="../../../Path/Post/Processor.py" line="3214"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</source>
       <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2731"/>
+      <location filename="../../../Path/Post/Processor.py" line="3238"/>
       <source>Machine defines {} toolheads; spindle speed was not checked against their limits</source>
       <translation type="unfinished">Machine defines {} toolheads; spindle speed was not checked against their limits</translation>
     </message>
@@ -11691,8 +11986,9 @@ Is féidir roinnt oibríochtaí a úsáid leis an rialtóir uirlisí agus leis a
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="176"/>
-      <source>(none)</source>
-      <translation>(níl aon cheann)</translation>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1540"/>
+      <source>(Legacy post-processor)</source>
+      <translation>(Iarphróiseálaí oidhreachta)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="338"/>
@@ -11956,7 +12252,7 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_DrillingTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="205"/>
+      <location filename="../../../InitGui.py" line="206"/>
       <source>Drilling Operations</source>
       <translation>Oibríochtaí Druileála</translation>
     </message>
@@ -12002,7 +12298,7 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_DressupTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="216"/>
+      <location filename="../../../InitGui.py" line="217"/>
       <source>Dressup Operations</source>
       <translation>Oibríochtaí Gléasadh</translation>
     </message>
@@ -12023,7 +12319,7 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_DressupArray</name>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="397"/>
+      <location filename="../../../Path/Dressup/Array.py" line="393"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
@@ -12163,27 +12459,27 @@ Uimhir uirlis do {}:</translation>
       <translation>Seiceáil le haghaidh nuashonruithe uirlisí ón leabharlann agus doiciméad á oscailt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="160"/>
       <source>Select Asset Directory</source>
       <translation>Roghnaigh Eolaire Sócmhainní</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="181"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="179"/>
       <source>Warning</source>
       <translation>Rabhadh</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="182"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="180"/>
       <source>The selected asset path is not writable.</source>
       <translation>Ní féidir an cosán sócmhainne roghnaithe a scríobh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="261"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="259"/>
       <source>Delete Machine</source>
       <translation>Scrios Meaisín</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="264"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="262"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>An bhfuil tú cinnte gur mian leat an comhad meaisín seo a scriosadh?</translation>
     </message>
@@ -12643,7 +12939,7 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_PostTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="180"/>
+      <location filename="../../../InitGui.py" line="181"/>
       <source>Post process Operations</source>
       <translation>Oibríochtaí iarphróisis</translation>
     </message>
@@ -12651,7 +12947,7 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_SimTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="188"/>
+      <location filename="../../../InitGui.py" line="189"/>
       <source>Simulators</source>
       <translation>Insamhlóirí</translation>
     </message>
@@ -12806,682 +13102,707 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_MachineEditor</name>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="95"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Include Blank Lines</source>
       <translation>Cuir Línte Folamh san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
       <source>Path Labels</source>
       <translation>Lipéid Chosáin</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
       <source>Include Machine Name</source>
       <translation>Cuir Ainm an Mheaisín san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
       <source>Output Duplicate Axis Values</source>
       <translation>Aschur Luachanna Aise Dúblacha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
       <source>Adaptive Output</source>
       <translation>Aschur Oiriúnaitheach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="164"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Axis Precision</source>
       <translation>Axis Precision</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <source>Feed Precision</source>
       <translation>Beachtas Beatha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
       <source>Toolhead Decimals</source>
       <translation>Deicheamháin Ceann Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
       <source>Comment Symbol</source>
       <translation>Siombail Trácht</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
       <source>Modal Output (Suppress Repeats)</source>
       <translation>Aschur Módúil (Athdhéanamh faoi Chosc)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
       <source>Translate Drill Cycles</source>
       <translation>Aistrigh Timthriallta Druileála</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
       <source>Translate Rapid Moves</source>
       <translation>Aistrigh Gluaiseachtaí Tapa</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
       <source>Split Arcs</source>
       <translation>Arcanna Scoilte</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="111"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
       <source>XY Before Z After Tool Change</source>
       <translation>XY Roimh Z Tar éis Athrú Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
       <source>Show Editor After Generation</source>
       <translation>Taispeáin an tEagarthóir Tar éis Giniúint</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
       <source>List Tools in Preamble</source>
       <translation>Liostaigh Uirlisí i Réamhrá</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
       <source>Show Machine Units</source>
       <translation>Taispeáin Aonaid Meaisín</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
       <source>Show Operation Labels</source>
       <translation>Taispeáin Lipéid Oibríochta</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
       <source>Output T Before M6</source>
       <translation>Aschur T Roimh M6</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
       <source>Chipbreaking Amount (mm)</source>
       <translation>Méid Briste Sliseanna (mm)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Toolhead Wait Time (seconds)</source>
       <translation>Am Feithimh Ceann Uirlise (soicindí)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
       <source>Post Processor</source>
       <translation>Próiseálaí Iar-</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
       <source>Post Processor Arguments</source>
       <translation>Argóintí Iarphróiseálaí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
       <source>Use Tool Length Offset</source>
       <translation>Úsáid Fritháireamh Fad an Uirlis</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
       <source>Output Tool Length Offset (G43)</source>
       <translation>Fritháireamh Fad Uirlis Aschuir (G43)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Enable Remote Posting</source>
       <translation>Cumasaigh Postáil Chianda</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Stop Toolhead for Tool Change</source>
       <translation>Stop Ceann Uirlise le haghaidh Athrú Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Enable Coolant</source>
       <translation>Cumasaigh Fuaraitheoir</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="132"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
       <source>Enable Machine-Specific Commands</source>
       <translation>Cumasaigh Orduithe atá Sonrach don Mheaisín</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Output Units</source>
       <translation>Aonaid Aschuir</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>Header Options</source>
       <translation>Roghanna Ceanntásca</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Comment Options</source>
       <translation>Roghanna Trácht</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Formatting Options</source>
       <translation>Roghanna Formáidithe</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Precision Options</source>
       <translation>Roghanna Beachtais</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Duplicate Output Options</source>
       <translation>Roghanna Aschuir Dhúblacha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Output Header</source>
       <translation>Ceanntásc Aschuir</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Include Date</source>
       <translation>Cuir Dáta san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Include Description</source>
       <translation>Cuir Cur Síos san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
       <source>Include Document Name</source>
       <translation>Cuir Ainm an Doiciméid san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
       <source>Include Project File</source>
       <translation>Cuir Comhad Tionscadail san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Include Units</source>
       <translation>Cuir Aonaid san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
       <source>Include Tool List</source>
       <translation>Cuir Liosta Uirlisí san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
       <source>Include Fixture List</source>
       <translation>Cuir Liosta Daingneáin san áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Enable Comments</source>
       <translation>Cumasaigh Tráchtanna</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
       <source>Include Operation Labels</source>
       <translation>Cuir Lipéid Oibríochta san Áireamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
       <source>Output bCNC Comments</source>
       <translation>Aschur Tráchtanna bCNC</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
       <source>Line Numbers</source>
       <translation>Uimhreacha Líne</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Line Number Start</source>
       <translation>Tús Uimhir na Líne</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Line Number Prefix</source>
       <translation>Réimír Uimhir Líne</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
       <source>Line Increment</source>
       <translation>Méadú Líne</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <source>Command Space</source>
       <translation>Spás Ordú</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <source>End of Line Chars</source>
       <translation>Carachtair Deireadh Líne</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <source>Toolhead Precision</source>
       <translation>Beachtas Ceann Uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
       <source>Duplicate Commands</source>
       <translation>Orduithe Dúblacha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Duplicate Parameters</source>
       <translation>Paraiméadair Dhúblacha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1009"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
       <source>Kinematics</source>
       <translation>Cinéimeitic</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
       <source>Base Frame</source>
       <translation>Fráma Bonn</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Origin</source>
       <translation>Bunús</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Orientation Quaternion</source>
       <translation>Treoshuíomh Ceathairnín</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1016"/>
       <source>TCP Supported</source>
       <translation>Tacaítear le TCP</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1026"/>
-      <source>DWO Supported</source>
-      <translation>Tacaithe le DWO</translation>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <source>Rotation Strategy</source>
+      <translation>Straitéis Rothlaithe</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
       <source>Kinematics Notes</source>
       <translation>Nótaí Cineamaitice</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="179"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1329"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1201"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1350"/>
       <source>Role</source>
       <translation>Ról</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
       <source>Parent Axis</source>
       <translation>Ais Tuismitheora</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1204"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1225"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1374"/>
       <source>Sequence</source>
       <translation>Seicheamh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1291"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1312"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1454"/>
       <source>Joint Origin</source>
       <translation>Bunús Comhpháirteach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
       <source>Joint Axis</source>
       <translation>Ais Chomhpháirteach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1446"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1467"/>
       <source>Solution Preference</source>
       <translation>Rogha Réitigh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1475"/>
       <source>Allow Flip</source>
       <translation>Ceadaigh Smeach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1497"/>
       <source>Wrap Strategy</source>
       <translation>Straitéis Fillte</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="351"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="352"/>
       <source>Custom Machine</source>
       <translation>Meaisín Saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="356"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="357"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>Deil 2-Ais (X, Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="361"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="362"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>Muileann 3-Ais (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="366"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="367"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>Muileann 4-Ais (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="371"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="372"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>Muileann 4-Ais (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="376"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="377"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>Muileann 5-Ais (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="381"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="382"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>Muileann 5-Ais (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="418"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="633"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="419"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="634"/>
       <source>Machine Editor</source>
       <translation>Eagarthóir Meaisín</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="434"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="435"/>
       <source>Machine</source>
       <translation>Meaisín</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="440"/>
       <source>Toolheads</source>
       <translation>Ceann Uirlisí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="444"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="445"/>
       <source>Postprocessor</source>
       <translation>Iarphróiseálaí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="449"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="450"/>
       <source>Options</source>
       <translation>Roghanna</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="476"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2265"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="477"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2288"/>
       <source>Edit as Text</source>
       <translation>Cuir in Eagar mar Théacs</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="480"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="481"/>
       <source>Validate</source>
       <translation>Bailíochtaigh</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="488"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation>Déan seiceáil ar an meaisín seo féachaint an bhfuil fadhbanna ann a chuirfeadh bac ar luchtú nó a fhágfadh go gcaillfí socruithe gan fógra</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="498"/>
       <source>Save</source>
       <translation>Sábháil</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="500"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="501"/>
       <source>Close</source>
       <translation>Dún</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="802"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="803"/>
       <source>Remove Toolhead</source>
       <translation>Bain Ceann Uirlise</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="803"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="804"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>Bain an ceann uirlis? Ní féidir an gníomh seo a chealú.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="950"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="980"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="873"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="951"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="978"/>
       <source>Custom</source>
       <translation>Saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="880"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="881"/>
       <source>Template Load Error</source>
       <translation>Earráid Luchtaithe Teimpléid</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="881"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="882"/>
       <source>Could not load template</source>
       <translation>Níorbh fhéidir an teimpléad a luchtú</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="930"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="931"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="985"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
       <source>Load settings from an existing machine template</source>
       <translation>Luchtaigh socruithe ó theimpléad meaisín atá ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="984"/>
       <source>Template</source>
       <translation>Teimpléad</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="990"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="988"/>
       <source>Manufacturer</source>
       <translation>Monaróir</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="994"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="992"/>
       <source>Description</source>
       <translation>Cur síos</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="997"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
       <source>Metric</source>
       <translation>Méadrach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="996"/>
       <source>Imperial</source>
       <translation>Impiriúil</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1000"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
       <source>Units</source>
       <translation>Aonaid</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1006"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1004"/>
       <source>Type</source>
       <translation>Cineál</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1035"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1022"/>
+      <source>Not declared</source>
+      <translation>Gan dearbhú</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1023"/>
+      <source>Dynamic work offset (DWO)</source>
+      <translation>Fritháireamh oibre dinimiciúil (DWO)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1024"/>
+      <source>Tilted work plane (TWP)</source>
+      <translation>Plána oibre claonta (TWP)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1027"/>
+      <source>Post transform (not available yet)</source>
+      <translation>Iar-chlaochlú (níl sé ar fáil go fóill)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1040"/>
+      <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
+      <translation type="unfinished">How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1056"/>
       <source>Notes</source>
       <translation>Nótaí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1041"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1062"/>
       <source>Axes</source>
       <translation>Aiseanna</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1069"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1070"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1090"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
       <source>Add Toolhead</source>
       <translation>Cuir Ceann Uirlise leis</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1195"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1344"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
       <source>Parent</source>
       <translation>Tuismitheoir</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1222"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1243"/>
       <source>Direction</source>
       <translation>Treo</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1233"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1361"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1254"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1382"/>
       <source>Min Limit</source>
       <translation>Teorainn Íosta</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1243"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1368"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1264"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
       <source>Max Limit</source>
       <translation>Uasteorainn</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1253"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1377"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1274"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1398"/>
       <source>Max Velocity</source>
       <translation>Uasluas</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1395"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1416"/>
       <source>Rotation Axis</source>
       <translation>Ais Rothlaithe</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1464"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1485"/>
       <source>Prefer Positive</source>
       <translation>Is fearr Dearfach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1841"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1862"/>
       <source>Postprocessor Selection</source>
       <translation>Roghnú Iarphróiseálaí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1851"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1872"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>Roghnaigh an comhad iarphróiseálaí don mheaisín seo</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1877"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1898"/>
       <source>Post Processor:</source>
       <translation>Próiseálaí Iar-:</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1883"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1904"/>
       <source>Postprocessor Configuration</source>
       <translation>Cumraíocht Iarphróiseálaí</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2270"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2432"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2293"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2455"/>
       <source>JSON Error</source>
       <translation>Earráid JSON</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2271"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2328"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2294"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2351"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2456"/>
       <source>Invalid JSON: {}</source>
       <translation>JSON neamhbhailí: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2276"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2295"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2299"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2318"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2462"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2277"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2300"/>
       <source>Failed to parse data: {}</source>
       <translation>Theip ar an bparsáil sonraí: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2313"/>
       <source>Edit as Form</source>
       <translation>Cuir in Eagar mar Fhoirm</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2296"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2319"/>
       <source>Failed to generate JSON: {}</source>
       <translation>Theip ar JSON a ghiniúint: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2327"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2334"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2350"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2366"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2357"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2373"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2389"/>
       <source>Validation</source>
       <translation>Bailíochtú</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2335"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2358"/>
       <source>This machine does not load: {}</source>
       <translation>Níl an meaisín seo ag luchtú: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2351"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2374"/>
       <source>No problems found.</source>
       <translation>Níor aimsíodh aon fhadhbanna.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2357"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation>Aimsíodh {} earráid(eanna) agus {} rabhadh.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2385"/>
       <source>{} warning(s) found.</source>
       <translation>Aimsíodh {} rabhadh.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2406"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2429"/>
       <source>Duplicate Machine Name</source>
       <translation>Ainm Meaisín Dúblach</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2410"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>Tá meaisín leis an ainm &apos;{}&apos; ann cheana féin. Roghnaigh ainm difriúil le do thoil.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2440"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2463"/>
       <source>Failed to save: {}</source>
       <translation>Theip ar shábháil: {}</translation>
     </message>
@@ -13843,24 +14164,67 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>CAM_DressupMirror</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="275"/>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
       <source>Mirror</source>
       <translation>Scáthán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="279"/>
       <source>Creates mirror of a selected path</source>
       <translation>Cruthaíonn scáthán den chonair roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="306"/>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="308"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="310"/>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="312"/>
       <source>Select a profile object</source>
       <translation>Roghnaigh réad próifíle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupPathBoundary2</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="118"/>
+      <source>Boundary model missing</source>
+      <translation>Múnla teorann ar iarraidh</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="122"/>
+      <source>Boundary has no shape</source>
+      <translation>Níl aon chruth ar an teorainn</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="126"/>
+      <source>Boundary shape is not a solid</source>
+      <translation>Ní solad é cruth na teorann</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="172"/>
+      <source>No path with such boundary</source>
+      <translation>Níl aon chonair ann a bhfuil a leithéid de theorainn aici</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="281"/>
+      <source>The selected object is not a path</source>
+      <translation>Ní cosán é an réad roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="286"/>
+      <source>Select a profile object</source>
+      <translation>Roghnaigh réad próifíle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="305"/>
+      <source>Boundary2</source>
+      <translation>Teorainn2</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="309"/>
+      <source>Creates a boundary dress-up from a selected toolpath</source>
+      <translation>Cruthaíonn sé maisiú teorann ó chonair uirlisí roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -13886,22 +14250,22 @@ Uimhir uirlis do {}:</translation>
       <translation>Forluí céime diúltach nó nialasach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="273"/>
+      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="278"/>
       <source>Plunge Milling</source>
       <translation>Muilleoireacht Phlumcála</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="277"/>
+      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="282"/>
       <source>Creates plunge milling for a selected path</source>
       <translation>Cruthaíonn sé muilleoireacht tumtha do chonair roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="307"/>
+      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="312"/>
       <source>The selected object is not a path</source>
       <translation>Ní cosán é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="312"/>
+      <location filename="../../../Path/Dressup/Gui/PlungeMilling.py" line="317"/>
       <source>Select a profile object</source>
       <translation>Roghnaigh réad próifíle</translation>
     </message>
@@ -14147,19 +14511,19 @@ Uimhir uirlis do {}:</translation>
   <context>
     <name>Pocket_Shape</name>
     <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="160"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="161"/>
       <source>Pocket_Shape can not process open wire.
 You can enable feature Close Open Path</source>
       <translation>Ní féidir le Pocket_Shape sreang oscailte a phróiseáil.
 Is féidir leat an ghné Dún Cosán Oscailte a chumasú</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="339"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="342"/>
       <source>Processing vertical faces was failed</source>
       <translation>Theip ar phróiseáil aghaidheanna ingearacha</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="347"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="350"/>
       <source>Processing vertical faces was failed.
 You can enable feature Close Open Path</source>
       <translation>Theip ar phróiseáil aghaidheanna ingearacha.
@@ -14449,7 +14813,7 @@ Cineálacha uirlisí a dtacaítear leo: cothrom, srón-tarbh, giotán-V.</transl
       <translation>Gan POST</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PlanarSurface.py" line="1789"/>
+      <location filename="../../../Path/Op/PlanarSurface.py" line="1791"/>
       <source>Error creating OCL cutter from tool parameters.</source>
       <translation>Earráid agus gearrthóir OCL á chruthú ó pharaiméadair an uirlis.</translation>
     </message>
@@ -14467,57 +14831,62 @@ Cineálacha uirlisí a dtacaítear leo: cothrom, srón-tarbh, giotán-V.</transl
   <context>
     <name>CAM_MillFacing</name>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="95"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="98"/>
       <source>New property added to</source>
       <translation>Maoin nua curtha leis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="97"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="100"/>
       <source>Check default value(s).</source>
       <translation>Seiceáil an luach/na luachanna réamhshocraithe.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="215"/>
       <source>Climb</source>
       <translation>Dreap</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
       <source>Conventional</source>
       <translation>Traidisiúnta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
       <source>ZigZag</source>
       <translation>Fiarlán</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="220"/>
       <source>Bidirectional</source>
       <translation>Déthreoch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="221"/>
       <source>Directional</source>
       <translation>Treoch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
-      <source>Spiral</source>
-      <translation>Bíorlach</translation>
+      <location filename="../../../Path/Op/MillFacing.py" line="222"/>
+      <source>Spiral Circular</source>
+      <translation>Spíorálach Ciorclach</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="423"/>
+      <location filename="../../../Path/Op/MillFacing.py" line="223"/>
+      <source>Spiral Rectangular</source>
+      <translation type="unfinished">Spiral Rectangular</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="443"/>
       <source>%s: Generating empty toolpath. Take attention to extensions and tool diameter.</source>
       <translation type="unfinished">%s: Generating empty toolpath. Take attention to extensions and tool diameter.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="170"/>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="181"/>
       <source>Mill Facing</source>
       <translation>Aghaidh a thabhairt ar an Muileann</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="173"/>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="184"/>
       <source>Create a Mill Facing Operation to machine the top surface of stock</source>
       <translation>Cruthaigh Oibríocht Aghaidh a thabhairt ar Mhuilinn chun dromchla uachtarach stoic a mheaisíniú</translation>
     </message>

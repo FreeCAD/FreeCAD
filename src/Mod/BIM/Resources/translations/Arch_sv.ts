@@ -219,11 +219,11 @@
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation>En valfri lista med filter av typen egenskap:värde, avgränsade med semikolon (;). Sätt ! framför ett egenskapsnamn för att invertera filtret (utesluta objekt som matchar filtret). Objekt vars egenskap innehåller värdet matchas.
+      <translation>En valfri semikolonavgränsad (;) lista med filter i formen egenskap:värde. Skriv ”!” före ett egenskapsnamn för att invertera filtrets effekt och utesluta objekt som matchar filtret. Objekt vars egenskap innehåller värdet matchas.
 
-Exempel på giltiga filter (allt är skiftlägesokänsligt): Name:Wall – tar endast med objekt med ”wall” i sitt interna namn; !Name:Wall – tar endast med objekt som INTE har ”wall” i sitt interna namn; Description:Win – tar endast med objekt med ”win” i sin beskrivning; !Label:Win – tar endast med objekt som INTE har ”win” i sin etikett; IfcType:Wall – tar endast med objekt vars IFC-typ är ”Wall”; !Tag:Wall – tar endast med objekt vars tagg INTE är ”Wall”. Om fältet lämnas tomt används ingen filtrering.
+Exempel på giltiga filter (skiftlägesokänsliga): Name:Wall – endast objekt med ”wall” i namnet (internt namn); !Name:Wall – endast objekt som inte har ”wall” i namnet (internt namn); Description:Win – endast objekt med ”win” i beskrivningen; !Label:Win – endast objekt som inte har ”win” i etiketten; IfcType:Wall – endast objekt vars IFC-typ är ”Wall”; !Tag:Wall – endast objekt vars tagg inte är ”Wall”. Om fältet lämnas tomt tillämpas ingen filtrering.
 
-För inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, t.ex. ”Class:IfcWall”, eller andra IFC-attribut, t.ex. ”IsTypedBy:#455”. Om kolumnen ”Objekt” är inställd på ett IFC-projekt eller -dokument tas alla IFC-entiteter i det projektet med.</translation>
+För inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, till exempel ”Class:IfcWall”, eller andra IFC-attribut, till exempel ”IsTypedBy:#455”. Om kolumnen ”Objects” är inställd på ett IFC-projekt eller ett IFC-dokument beaktas alla IFC-entiteter i projektet.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
@@ -311,14 +311,14 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation>En valfri lista över objektnamn avgränsade med semikolon (;),
-som ska tas med i denna åtgärd. Använd interna namn, inte etiketter.
-Om listan innehåller grupper läggs underordnade objekt till.
+      <translation>En valfri semikolonavgränsad (;) lista med objektnamn
+(interna namn, inte etiketter) som ska användas av åtgärden.
+Om listan innehåller grupper läggs deras underordnade objekt till.
 
-Lämna tomt för att använda alla objekt i dokumentet.
+Lämna fältet tomt för att använda alla objekt i dokumentet.
 
-Om dokumentet är ett IFC-projekt används alla IFC-entiteter
-i dokumentet, oavsett om de är expanderade
+Om dokumentet är ett IFC-projekt används alla IFC-entiteter i
+dokumentet, oavsett om de är expanderade
 i FreeCAD eller inte.
 
 Använd namnet på IFC-projektet för att hämta alla IFC-entiteter
@@ -1373,7 +1373,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="130"/>
       <source>There is no required workflow; walls and columns can be created directly, with levels organised later if preferred.</source>
-      <translation>Du kan arbeta i valfri ordning. Väggar och pelare kan skapas direkt och nivåerna ordnas senare.</translation>
+      <translation>Det krävs inget särskilt arbetsflöde; väggar och pelare kan skapas direkt och nivåerna kan organiseras senare vid behov.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="140"/>
@@ -1874,7 +1874,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="46"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
@@ -1969,7 +1969,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Följande test kontrollerar att modellen eller det/de valda objekten och deras underordnade objekt överensstämmer med IFC-standarderna.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Viktigt&lt;/span&gt;: Inget av de misslyckade testerna nedan kommer att förhindra export av IFC-filer, och dessa tester garanterar inte heller att IFC-filerna uppfyller något specifikt kvalitets- eller standardkrav. De är till för att bedöma vilka element som ingår eller utesluts från den exporterade filen. Avgör själv vilka kontroller som är viktiga. Om du håller muspekaren över varje beskrivning visas mer information.&lt;/p&gt;&lt;p&gt;När ett test har körts kan du klicka på motsvarande knapp för att visa mer information som hjälper dig att åtgärda problemen.&lt;/p&gt;&lt;p&gt;Den &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;officiella IFC-webbplatsen&lt;/span&gt;&lt;/a&gt; innehåller mycket användbar information om IFC-standarder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Följande test kontrollerar om modellen eller de valda objekten och deras underordnade objekt uppfyller IFC-standarderna.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Viktigt&lt;/span&gt;: Tester som misslyckas hindrar inte export av IFC-filer och garanterar inte heller att IFC-filerna uppfyller ett visst kvalitets- eller standardkrav. De används för att bedöma vilka element som ingår i eller utesluts från den exporterade filen. Välj manuellt vilket objekt som är viktigt. Håll muspekaren över varje beskrivning för mer information.&lt;/p&gt;&lt;p&gt;När ett test har körts kan du klicka på motsvarande knapp för att få information som hjälper dig att åtgärda problemen.&lt;/p&gt;&lt;p&gt;Den &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;officiella IFC-webbplatsen&lt;/span&gt;&lt;/a&gt; innehåller mycket användbar information om IFC-standarder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
@@ -2024,7 +2024,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Även om IFC-objekt inte måste ha helt felfri och solid geometri är det bättre om de har det. Det minskar risken för problem i andra program. I verkligheten har alla objekt solida former.&lt;/p&gt;&lt;p&gt;FreeCAD har många verktyg för att kontrollera geometrins kvalitet. De flesta parametriska objekt, inklusive BIM-objekt, varnar vanligtvis om geometrin blir felaktig eller inte längre är solid. Det här testet kontrollerar att geometrin är solid.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Det är inte ett krav att IFC-objekt har helt ren och solid geometri, men det är bättre om de har det. Det minskar risken för problem i andra program. I verkligheten har alla objekt solida former.&lt;/p&gt;&lt;p&gt;FreeCAD har många verktyg för att kontrollera geometrikvalitet och de flesta parametriska objekt, även BIM-objekt, varnar vanligen användaren om deras geometri blir oren eller osolid. Detta test validerar geometriens soliditet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
@@ -2499,7 +2499,7 @@ p, li { blanksteg: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source> faces</source>
-      <translation> ytor</translation>
+      <translation> ansikten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="186"/>
@@ -5514,7 +5514,7 @@ Om Horisontell längd = 0 beräknas den horisontella längden så att höjden bl
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="452"/>
       <source>This object has no face</source>
-      <translation>Detta objekt har ingen yta</translation>
+      <translation>Detta objekt har inget ansikte</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="362"/>
@@ -7423,8 +7423,8 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>Höjden eller extruderingsdjupet på det här elementet.
+Behåll 0 för att automatiskt matcha höjden på den omslutande nivån eller byggnaden.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9528,9 +9528,9 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Mall för utrymmets etiketttext.
+Använd $area, $label, $longname, $description eller ett annat egenskapsnamn som föregås av $ (skiftlägesokänsligt),
+eller $floor, $walls, $ceiling för ytbehandlingar för att infoga respektive data.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9596,29 +9596,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>Längden på den här väggen.
+Kan bara redigeras om väggens baslinje är en Draft-linje, en obunden skiss med en enda linje eller ingen alls.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>Bredden på den här väggen.
+Ignoreras om väggen baseras på en solid eller en yta.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>Höjden på den här väggen.
+Behåll 0 för att automatiskt matcha höjden på den omslutande nivån eller byggnaden.
+Ignoreras om väggen baseras på en solid.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>Justeringen av den här väggen mot dess basobjekt, om tillämpligt.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10322,7 +10322,7 @@ Ignored if this wall is based on a solid.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="553"/>
       <source>Panel tools</source>
-      <translation>Panelverktyg</translation>
+      <translation>Verktyg för panel</translation>
     </message>
   </context>
   <context>
@@ -10640,7 +10640,7 @@ Ignored if this wall is based on a solid.</translation>
     <message>
       <location filename="../../InitGui.py" line="603"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Utkast</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="863"/>
@@ -10696,12 +10696,12 @@ Alt+PgUp: förläng extruderingen. Alt+PgDown: förkorta extruderingen. Alt+/: v
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>2D-ritning</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>3D/BIM-geometri</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="685"/>
@@ -11057,7 +11057,7 @@ Alt+PgUp: förläng extruderingen. Alt+PgDown: förkorta extruderingen. Alt+/: v
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Draw style</source>
-      <translation>Ritstil</translation>
+      <translation>Rita stil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="313"/>
@@ -11335,7 +11335,7 @@ Alt+PgUp: förläng extruderingen. Alt+PgDown: förkorta extruderingen. Alt+/: v
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="294"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
-      <translation>ifcopenshell är inte installerat på systemet eller inte tillgängligt för FreeCAD. Detta bibliotek ansvarar för IFC-stödet i FreeCAD, och därför är IFC-stödet för närvarande inaktiverat. Kontrollera %1 för att få mer information.</translation>
+      <translation>ifcopenshell är inte installerat på systemet eller inte tillgängligt för FreeCAD. Biblioteket ansvarar för IFC-stödet i FreeCAD och därför är IFC-stödet för närvarande inaktiverat. Se %1 för mer information.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="325"/>
@@ -11350,17 +11350,17 @@ Alt+PgUp: förläng extruderingen. Alt+PgDown: förkorta extruderingen. Alt+/: v
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="438"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
-      <translation>Följande byggnadsobjekt ingår inte i någon byggplats. Skapa ett byggplatsobjekt om modellen saknar ett sådant, och dra sedan byggnadsobjekten till det i trädvyn:</translation>
+      <translation>Följande byggnadsobjekt ingår inte i någon Site. Du kan lösa detta genom att skapa ett Site-objekt om det saknas i modellen och dra byggnadsobjekten till det i trädvyn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="484"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
-      <translation>Följande våningsplansobjekt (byggnadsdelar med IFC-rollen Building Storey) ingår inte i någon byggnad. Skapa ett byggnadsobjekt om modellen saknar ett sådant, och dra sedan våningsplansobjekten till det i trädvyn:</translation>
+      <translation>Följande objekt för byggnadsvåning (byggnadsdelar med IFC-rollen ”building storey”) ingår inte i någon byggnad. Lös detta genom att skapa ett byggnadsobjekt om det saknas i modellen och dra objekten för byggnadsvåning till det i trädvyn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="545"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
-      <translation>Följande BIM-objekt ingår inte i något våningsplan (en byggnadsdel med IFC-rollen Building Storey). Skapa ett våningsplansobjekt om modellen saknar ett sådant, och dra sedan dessa objekt till det i trädvyn:</translation>
+      <translation>Följande BIM-objekt ingår inte i någon byggnadsvåning (byggnadsdelar med IFC-rollen ”building storey”). Lös detta genom att skapa ett objekt för byggnadsvåning om det saknas i modellen och dra objekten till det i trädvyn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="682"/>
@@ -12945,7 +12945,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</source>
-      <translation>Den här dialogrutan hjälper dig att anpassa FreeCAD för BIM-arbete genom att ändra ett antal inställningar. Du kan öppna den igen via Hantera → BIM-inställningar. Fler alternativ finns under Redigera → Inställningar.</translation>
+      <translation>Den här dialogrutan hjälper dig att konfigurera FreeCAD för ett effektivt BIM-arbetsflöde genom att ange några FreeCAD-inställningar. Dialogrutan kan öppnas igen från Hantera → Inställningar och fler alternativ finns under Redigera → Inställningar.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
@@ -13020,7 +13020,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
     <message>
       <location filename="../ui/dialogSetup.ui" line="377"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="391"/>
@@ -13791,7 +13791,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Skapar en union av flera former</translation>
     </message>
   </context>
   <context>
@@ -13843,7 +13843,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Skapar en skärning mellan två former</translation>
     </message>
   </context>
   <context>
@@ -13851,7 +13851,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Formbyggare</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -13864,12 +13864,12 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Sektionssnitt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Skapar en 2D-projektion av endast de skärande ytorna hos de valda objekten på XY-planet.</translation>
     </message>
   </context>
   <context>
@@ -13877,12 +13877,12 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2D-förskjutning</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Verktyg för att förskjuta plana former</translation>
     </message>
   </context>
 </TS>
