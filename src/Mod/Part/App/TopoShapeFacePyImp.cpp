@@ -53,6 +53,9 @@
 #include <Standard_Version.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopoDS_Edge.hxx>
 
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
