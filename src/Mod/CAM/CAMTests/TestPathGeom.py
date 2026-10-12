@@ -182,25 +182,62 @@ class TestPathGeom(PathTestBase):
         )
 
         # bezier curves
-        # ml: I know nothing about bezier curves, so this might be bollocks
-        # and now I disable the tests because they seem to fail on OCE
-        # bezier = Part.BezierCurve()
-        # bezier.setPoles([Vector(), Vector(1,1,0), Vector(2,1,0), Vector(2,2,0)])
-        # self.assertTrue(Path.Geom.isHorizontal(Part.Edge(bezier)))
-        # self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
-        # bezier.setPoles([Vector(), Vector(1,1,1), Vector(2,1,0), Vector(2,2,0)])
-        # self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
-        # self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
-        # bezier.setPoles([Vector(), Vector(1,1,0), Vector(2,1,1), Vector(2,2,0)])
-        # self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
-        # self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
-        # bezier.setPoles([Vector(), Vector(1,1,0), Vector(2,1,0), Vector(2,2,1)])
-        # self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
-        # self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
-        #
-        # bezier.setPoles([Vector(), Vector(1,1,1), Vector(2,2,2), Vector(0,0,3)])
-        # self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
-        # self.assertTrue(Path.Geom.isVertical(Part.Edge(bezier)))
+        bezier = Part.BezierCurve()
+        bezier.setPoles([Vector(), Vector(1, 1, 0), Vector(2, 1, 0), Vector(2, 2, 0)])
+        self.assertTrue(Path.Geom.isHorizontal(Part.Edge(bezier)))
+        self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
+        bezier.setPoles([Vector(), Vector(1, 1, 1), Vector(2, 1, 0), Vector(2, 2, 0)])
+        self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
+        self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
+        bezier.setPoles([Vector(), Vector(1, 1, 0), Vector(2, 1, 1), Vector(2, 2, 0)])
+        self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
+        self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
+        bezier.setPoles([Vector(), Vector(1, 1, 0), Vector(2, 1, 0), Vector(2, 2, 1)])
+        self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
+        self.assertFalse(Path.Geom.isVertical(Part.Edge(bezier)))
+
+        bezier.setPoles([Vector(), Vector(1, 1, 1), Vector(2, 2, 2), Vector(0, 0, 3)])
+        self.assertFalse(Path.Geom.isHorizontal(Part.Edge(bezier)))
+        self.assertTrue(Path.Geom.isVertical(Part.Edge(bezier)))
+
+        # horizontal straight bspline
+        spline = Part.BSplineCurve()
+        spline.interpolate([Vector(10, 0, 0), Vector(20, 0, 0)])
+        edge = Part.Edge(spline)
+        self.assertTrue(Path.Geom.isHorizontal(edge))
+        self.assertFalse(Path.Geom.isVertical(edge))
+
+        # vertical straight bspline
+        spline = Part.BSplineCurve()
+        spline.interpolate([Vector(10, 0, 0), Vector(10, 0, 20)])
+        edge = Part.Edge(spline)
+        self.assertTrue(Path.Geom.isVertical(edge))
+        self.assertFalse(Path.Geom.isHorizontal(edge))
+
+        # inclined straight bspline
+        spline = Part.BSplineCurve()
+        spline.interpolate([Vector(10, 0, 0), Vector(20, 10, 20)])
+        edge = Part.Edge(spline)
+        self.assertFalse(Path.Geom.isVertical(edge))
+        self.assertFalse(Path.Geom.isHorizontal(edge))
+
+        # horizontal bspline (circle)
+        edge_circle = Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 0, 1)))
+        edge_bspline = edge_circle.toNurbs().Edges[0]
+        self.assertTrue(Path.Geom.isHorizontal(edge_bspline))
+        self.assertFalse(Path.Geom.isVertical(edge_bspline))
+
+        # vertical bspline (circle)
+        edge_circle = Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 0)))
+        edge_bspline = edge_circle.toNurbs().Edges[0]
+        self.assertTrue(Path.Geom.isVertical(edge_bspline))
+        self.assertFalse(Path.Geom.isHorizontal(edge_bspline))
+
+        # inclined bspline (circle)
+        edge_circle = Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1)))
+        edge_bspline = edge_circle.toNurbs().Edges[0]
+        self.assertFalse(Path.Geom.isVertical(edge_bspline))
+        self.assertFalse(Path.Geom.isHorizontal(edge_bspline))
 
     def test04(self):
         """Verify isVertical/isHorizontal for faces"""
