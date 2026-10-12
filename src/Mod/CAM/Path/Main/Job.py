@@ -989,6 +989,114 @@ class ObjectJob:
         return PathUtil.isValidBaseObject(obj)
 
 
+# Operation properties holding points picked in the 3D view, in the Job's coordinates.
+WORLD_POINTS = ("StartPoint", "EndPoint")
+# Operation and dressup properties holding points in the frame the operation generates in: the
+# Job's coordinates for ordinary Z-up milling, the work plane's for an indexed operation.
+FRAME_POINTS = ("CustomPoint1", "CustomPoint2", "PatternCenterCustom", "Centre")
+FRAME_POINT_LISTS = ("Locations", "Positions")
+# Operation and dressup properties holding heights, along the tool axis of the frame the
+# operation generates in.
+MODEL_HEIGHTS = (
+    "StartDepth",
+    "FinalDepth",
+    "SafeHeight",
+    "ClearanceHeight",
+    "ClearanceHeightOut",
+    "RetractHeight",
+    "DressupStartDepth",
+    "IgnoreOuterAbove",
+)
+
+
+def _operationsOf(job):
+    """The job's operations and dressups."""
+    from PathScripts import PathUtils
+
+    for obj in job.Document.Objects:
+        if not hasattr(obj, "Proxy") or not hasattr(obj, "Path"):
+            continue
+        if PathUtils.findParentJob(obj) == job:
+            yield obj
+
+
+def touchOperations(job):
+    """touchOperations(job) ... mark every operation and dressup of the job to be recomputed:
+    one made from the stock rather than from the model's geometry, a facing say, is not linked
+    to what moved."""
+    for obj in _operationsOf(job):
+        obj.touch()
+
+
+def _moveInFrame(op, move):
+    """_moveInFrame(op, move) ... move, the Placement the model was moved by, expressed in the
+    frame op generates in. None when that frame is a work plane attached to the model: it moved
+    with the model, so nothing measured in it has moved."""
+    workplane = PathUtil.workplaneObjectForOp(op)
+    if workplane is not None and getattr(workplane, "AttachmentSupport", None):
+        return None
+    frame = PathUtil.workplaneForOp(op)
+    if frame.isIdentity(1e-9):
+        return move
+    return frame.inverse().multiply(move).multiply(frame)
+
+
+def carryOperationPoints(job, move):
+    """carryOperationPoints(job, move) ... keep the points the job's operations and dressups have
+    on the model, such as their start and end points, where they are on it when the Job's origin
+    changes or the model is moved: moved by move, the Placement the model was moved by.
+
+    Start and end points are picked in the 3D view and kept in the Job's coordinates, so they
+    move with the model whatever frame the operation generates in. The other points are kept in
+    that frame: they move only as the model moves in the frame, and not at all when the frame is
+    a work plane attached to the model. Points in lists keep their Z."""
+    for obj in _operationsOf(job):
+        for name in WORLD_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, move.multVec(value))
+        inFrame = _moveInFrame(obj, move)
+        if inFrame is None:
+            continue
+        for name in FRAME_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, inFrame.multVec(value))
+        for name in FRAME_POINT_LISTS:
+            values = getattr(obj, name, None)
+            if values and all(isinstance(v, FreeCAD.Vector) for v in values):
+                moved = []
+                for value in values:
+                    at = inFrame.multVec(value)
+                    moved.append(FreeCAD.Vector(at.x, at.y, value.z))
+                setattr(obj, name, moved)
+
+
+def carryOperationHeights(job, move):
+    """carryOperationHeights(job, move) ... when the model is moved by move, the Placement it was
+    moved by, raise or lower with it the heights the job's operations and dressups were given by
+    hand, such as a typed in final depth.
+
+    A height is a distance along the tool axis of the frame the operation generates in, so it
+    changes by the move's component along that axis: the whole of a move up or down for ordinary
+    Z-up milling, nothing when the frame is a work plane attached to the model, which moved with
+    it, and nothing when the model was turned. Heights calculated from the stock and model by
+    expression are left to be calculated again: every operation is marked to be recomputed."""
+    for obj in _operationsOf(job):
+        inFrame = _moveInFrame(obj, move)
+        dz = 0.0
+        if inFrame is not None and inFrame.Rotation.isIdentity(1e-9):
+            dz = inFrame.Base.z
+        if abs(dz) > 1e-9:
+            calculated = {name for name, _ in obj.ExpressionEngine}
+            for name in MODEL_HEIGHTS:
+                if name in calculated or not hasattr(obj, name):
+                    continue
+                height = getattr(obj, name)
+                setattr(obj, name, getattr(height, "Value", height) + dz)
+        obj.touch()
+
+
 def Create(name, base, templateFile=None):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""

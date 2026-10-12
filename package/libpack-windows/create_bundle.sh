@@ -188,7 +188,6 @@ if [[ "${sign_available}" == "1" ]]; then
     echo "Azure Artifact Signing access confirmed. Signing binaries..."
     shopt -s nullglob
     files=(
-        "${sign_dir}"/*.exe
         "${sign_dir}"/bin/*.exe
         "${sign_dir}"/bin/*.dll
         "${sign_dir}"/bin/*.pyd

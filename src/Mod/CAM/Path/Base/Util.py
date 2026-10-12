@@ -217,6 +217,20 @@ def workplaneForOp(op):
     return FreeCAD.Placement()
 
 
+def workplaneObjectForOp(op):
+    """workplaneObjectForOp(op) ... returns the named work plane object op works in,
+    or None.
+
+    None for an operation in the Job's own XY, and for a document restored but
+    not yet migrated that still carries the older vector or placement form. A
+    dressup's is its base operation's, as in workplaneForOp(). Read this, not
+    ``op.Workplane``, for the same reason workplaneForOp() exists."""
+    wp = getattr(baseOp(op), "Workplane", None)
+    if hasattr(wp, "Placement") and hasattr(wp, "Document"):
+        return wp
+    return None
+
+
 def toolAxisForOp(op):
     """toolAxisForOp(op) ... returns the effective tool axis of op as a unit Vector.
 
