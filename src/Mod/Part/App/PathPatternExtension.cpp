@@ -381,9 +381,9 @@ PathPatternExtension::PathPatternExtension()
 
 bool PathPatternExtension::identityTransformSuppressed() const
 {
-    return (ReversePath.getValue() ? EndOffset.getValue() : StartOffset.getValue())
+    return true; /*(ReversePath.getValue() ? EndOffset.getValue() : StartOffset.getValue())
         > Precision::Confusion()
-        || Align.getValue();
+        || Align.getValue();*/
 }
 
 std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
