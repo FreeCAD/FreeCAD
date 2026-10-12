@@ -586,7 +586,7 @@ Set to 0 to redraw as fast as the graphics driver allows.</string>
         <item row="7" column="0" colspan="2">
          <widget class="Gui::PrefCheckBox" name="checkSectionCaps">
           <property name="toolTip">
-           <string>Fill the clipped faces of solids in the part's own material, outlined.</string>
+           <string>Fill the clipped faces of solids in the part's own material, hatched and outlined.</string>
           </property>
           <property name="text">
            <string>Section caps</string>

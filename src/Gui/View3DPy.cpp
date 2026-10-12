@@ -333,7 +333,7 @@ void View3DInventorPy::init_type()
         "setSectionCapping",
         &View3DInventorPy::setSectionCapping,
         "setSectionCapping(on=True): fill the cuts of the active clip planes in each part's\n"
-        "material, outlined.  Opaque closed solids only; changes no document object."
+        "material, hatched and outlined.  Opaque closed solids only; changes no document object."
     );
     add_noargs_method(
         "isSectionCapping",
@@ -343,7 +343,7 @@ void View3DInventorPy::init_type()
     add_noargs_method(
         "getSectionCaps",
         &View3DInventorPy::getSectionCaps,
-        "getSectionCaps() -> [{key, component, plane, status, color}]: what the cap\n"
+        "getSectionCaps() -> [{key, component, plane, status, color, hatch}]: what the cap\n"
         "renderer did per occurrence and plane in the last frame (not proof of pixels)"
     );
     add_noargs_method(
@@ -2709,6 +2709,7 @@ Py::Object View3DInventorPy::getSectionCaps()
         d.setItem("plane", Py::Long(rec.plane));
         d.setItem("status", Py::String(rec.status));
         d.setItem("color", Py::TupleN(Py::Float(c[0]), Py::Float(c[1]), Py::Float(c[2])));
+        d.setItem("hatch", Py::String(rec.hatch));
         out.append(d);
     }
     return out;

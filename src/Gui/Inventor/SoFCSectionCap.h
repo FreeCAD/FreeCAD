@@ -49,11 +49,13 @@ struct GuiExport SectionCapRecord
     std::string component;  ///< the object that owns the geometry
     int plane {0};
     SbColor color {0.0f, 0.0f, 0.0f};  ///< the part's color, if capped
+    std::string hatch;                 ///< its hatch, if capped
     std::string status;                ///< "capped", "skipped: not cut", "unsupported: ..."
 };
 
 /** Fills the cut faces of the active clip planes in the part's own material,
- * using the stencil buffer, and outlines them.
+ * using the stencil buffer, hatches and outlines them. Each part gets its own
+ * hatch.
  *
  * Must be the last child of the viewer's view provider root, so that every clip
  * plane is in the traversal state. Open and transparent meshes are reported in
@@ -117,9 +119,12 @@ private:
     static std::uint64_t geometrySignature(SoNode* root);
     static void checkClosed(Group& group, std::vector<float>& patch);
     static const std::vector<float>& outlineOf(Group& group, const SbPlane& plane);
+    int hatchFor(const std::string& key);
 
     SoNode* scene {nullptr};
     Resolver resolve;
+    std::map<std::string, int> hatchOf;  // by key, so a part keeps its hatch
+    std::vector<int> hatchUse;
 
     std::vector<Group> groups;
     std::map<std::string, std::size_t> groupIndex;

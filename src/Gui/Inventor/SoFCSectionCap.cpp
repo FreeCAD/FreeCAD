@@ -175,6 +175,60 @@ std::string keyForPath(
     return key;
 }
 
+/// FNV-1a, so the hatches are the same on every run.
+std::uint64_t digest(const std::string& key)
+{
+    std::uint64_t h = 14695981039346656037ULL;
+    for (unsigned char c : key) {
+        h ^= c;
+        h *= 1099511628211ULL;
+    }
+    return h;
+}
+
+using Stipple = std::array<GLubyte, 128>;
+
+/// A 32x32 polygon stipple where on(x, y); rows start at the bottom.
+template<class On>
+Stipple stipple(On on)
+{
+    Stipple bits {};
+    for (int y = 0; y < 32; ++y) {
+        for (int x = 0; x < 32; ++x) {
+            if (on(x, y)) {
+                bits[y * 4 + x / 8] |= static_cast<GLubyte>(0x80 >> (x % 8));
+            }
+        }
+    }
+    return bits;
+}
+
+/// Hatches for the caps, 8 px apart, ordered so that neighbours differ the most.
+const std::vector<std::pair<const char*, Stipple>>& hatches()
+{
+    static const std::vector<std::pair<const char*, Stipple>> list = [] {
+        auto m = [](int a) {
+            return ((a % 8) + 8) % 8;
+        };
+        auto dot = [m](int x, int y, int ox, int oy) {
+            return m(x - ox) < 2 && m(y - oy) < 2;
+        };
+        // x - y = k rises like '/'; the '/' dots sit halfway between its lines
+        return std::vector<std::pair<const char*, Stipple>> {
+            {"diag45", stipple([=](int x, int y) { return m(x - y) == 0; })},
+            {"horizontal", stipple([=](int, int y) { return m(y) == 0; })},
+            {"dots", stipple([=](int x, int y) { return dot(x, y, 4, 4); })},
+            {"diag135", stipple([=](int x, int y) { return m(x + y) == 0; })},
+            {"vertical", stipple([=](int x, int) { return m(x) == 0; })},
+            {"diag45_dots", stipple([=](int x, int y) { return m(x - y) == 0 || dot(x, y, 6, 2); })},
+            {"diagcross", stipple([=](int x, int y) { return m(x - y) == 0 || m(x + y) == 0; })},
+            {"horizontal_dots", stipple([=](int x, int y) { return m(y) == 0 || dot(x, y, 4, 4); })},
+            {"cross", stipple([=](int x, int y) { return m(x) == 0 || m(y) == 0; })},
+        };
+    }();
+    return list;
+}
+
 }  // namespace
 
 void SoFCSectionCap::initClass()
@@ -213,6 +267,27 @@ void SoFCSectionCap::setResolver(Resolver r)
     resolve = std::move(r);
     proxyValid = false;
     touch();
+}
+
+int SoFCSectionCap::hatchFor(const std::string& key)
+{
+    auto [it, added] = hatchOf.emplace(key, 0);
+    if (added) {
+        // the least used hatch, starting at the key's digest
+        const int n = static_cast<int>(hatches().size());
+        hatchUse.resize(n);
+        const int start = static_cast<int>(digest(key) % n);
+        int best = start;
+        for (int k = 1; k < n; ++k) {
+            const int i = (start + k) % n;
+            if (hatchUse[i] < hatchUse[best]) {
+                best = i;
+            }
+        }
+        ++hatchUse[best];
+        it->second = best;
+    }
+    return it->second;
 }
 
 void SoFCSectionCap::GLRender(SoGLRenderAction* action)
@@ -319,6 +394,8 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
                 continue;
             }
             rec.color = group.material.diffuse;
+            const auto& pattern = hatches()[hatchFor(group.key)];
+            rec.hatch = pattern.first;
 
             int rect[4];
             screenRect(group.box, viewProj, region, rect);
@@ -383,6 +460,14 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             glNormal3f(n[0], n[1], n[2]);
             quad();
             glDisable(GL_LIGHTING);
+
+            // the part's hatch, in a darker shade
+            const SbColor ink = m.diffuse * 0.4f;
+            glEnable(GL_POLYGON_STIPPLE);
+            glPolygonStipple(pattern.second.data());
+            glColor3f(ink[0], ink[1], ink[2]);
+            quad();
+            glDisable(GL_POLYGON_STIPPLE);
             glDisable(GL_POLYGON_OFFSET_FILL);
 
             // outline: where the plane crosses the part's triangles

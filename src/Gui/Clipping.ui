@@ -222,7 +222,7 @@
    <item row="4" column="0">
     <widget class="QCheckBox" name="checkBoxCaps">
      <property name="toolTip">
-      <string>Fill the clipped faces of solids in this view in the part's own material, outlined.</string>
+      <string>Fill the clipped faces of solids in this view in the part's own material, hatched and outlined.</string>
      </property>
      <property name="text">
       <string>Section caps</string>
