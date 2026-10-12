@@ -1591,16 +1591,19 @@ class TaskPanel:
                 tabwidget.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
             self.form = self._withDeprecationBanner(tabwidget)
         elif taskPanelLayout == 2:
-            forms = [self._deprecationBannerForm(obj)]
+            forms = []
             for page in self.featurePages:
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
+            # The banner sits in the first box: a box of its own stays visible when empty.
+            forms[0] = self._withDeprecationBanner(forms[0])
             self.form = forms
         elif taskPanelLayout == 3:
-            forms = [self._deprecationBannerForm(obj)]
+            forms = []
             for page in reversed(self.featurePages):
                 page.form.setWindowTitle(page.getTitle(obj))
                 forms.append(page.form)
+            forms[0] = self._withDeprecationBanner(forms[0])
             self.form = forms
         self.updateDeprecationBanner()
 
@@ -1622,13 +1625,6 @@ class TaskPanel:
         layout.addWidget(self.deprecationBanner)
         layout.addWidget(widget)
         return wrapper
-
-    def _deprecationBannerForm(self, obj):
-        """_deprecationBannerForm(obj) ... the banner as its own task box, for the layouts
-        that show each page as a separate box."""
-        self.deprecationBanner = makeDeprecationBanner()
-        self.deprecationBanner.setWindowTitle(translate("PathOp", "Deprecated"))
-        return self.deprecationBanner
 
     def updateDeprecationBanner(self):
         """updateDeprecationBanner() ... show or hide the banner from the op's
