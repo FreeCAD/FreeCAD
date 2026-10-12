@@ -22,6 +22,19 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cctype>
+#include <iterator>
+#include <cmath>
+#include <numbers>
+#include <limits>
+#include <sstream>
+#include <stdexcept>
+#include <map>
+#include <vector>
+
+#include <QObject>
+
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -56,29 +69,29 @@
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include <BRepAlgoAPI_Common.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <IntCurvesFace_ShapeIntersector.hxx>
+#include <Standard_Failure.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <Geom_Line.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <Precision.hxx>
 
 #include <App/VarSet.h>
 #include <App/PropertyLinks.h>
 #include <App/DocumentObject.h>
 #include "App/Document.h"
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Tools.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
-#include <QObject>
+#include <Mod/Spreadsheet/App/Sheet.h>
+#include <App/PropertyGeo.h>
+
 #include "Feature.h"
-
-#include <algorithm>
-#include <iterator>
-#include <cmath>
-#include <numbers>
-#include <limits>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-
 #include "ThreadUtils.h"
 
 using namespace PartDesign;
@@ -94,15 +107,37 @@ bool isWhitworthThread(const std::string& threadType)
 {
     return threadType == "BSP" || threadType == "BSW" || threadType == "BSF";
 }
+
+const ThreadUtils::ThreadDefinition& checkedThreadDefinition(
+    const std::vector<ThreadUtils::ThreadDefinition>& definitions,
+    int threadType
+)
+{
+    if (threadType < 0 || static_cast<size_t>(threadType) >= definitions.size()) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
+    }
+    return definitions[threadType];
 }
 
+double parseThreadValue(const std::string& value)
+{
+    try {
+        const double number = std::stod(value);
+        if (std::isfinite(number)) {
+            return number;
+        }
+    }
+    catch (const std::invalid_argument&) {
+    }
+    catch (const std::out_of_range&) {
+    }
+    throw Base::ValueError(
+        QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid numeric value in thread definition")
+    );
+}
+}  // namespace
+
 const char* ThreadUtils::ThreadClass_None_Enums[] = {"None", nullptr};
-
-const char* ThreadUtils::ThreadClass_ISOmetric_Enums[]
-    = {"4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H", "8G", "8H", nullptr};
-
-const char* ThreadUtils::ThreadClass_ISOmetricfine_Enums[]
-    = {"4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H", "8G", "8H", nullptr};
 
 // ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
 // Table 1 - Fundamentral deviations for internal threads ...
@@ -121,18 +156,6 @@ const double ThreadUtils::ThreadRunout[ThreadRunout_size_utils][2] = {
     {1.25, 6.2}, {1.5, 7.3},  {1.75, 8.3}, {2.0, 9.3},  {2.5, 11.2}, {3.0, 13.1},
     {3.5, 15.2}, {4.0, 16.8}, {4.5, 18.4}, {5.0, 20.8}, {5.5, 22.4}, {6.0, 24.0}
 };
-
-/* Details from https://en.wikipedia.org/wiki/Unified_Thread_Standard */
-
-const char* ThreadUtils::ThreadClass_UNC_Enums[] = {"1B", "2B", "3B", nullptr};
-
-const char* ThreadUtils::ThreadClass_UNF_Enums[] = {"1B", "2B", "3B", nullptr};
-
-const char* ThreadUtils::ThreadClass_UNEF_Enums[] = {"1B", "2B", "3B", nullptr};
-
-const char* ThreadUtils::ThreadClass_BSW_Enums[] = {"Medium", "Normal", nullptr};
-
-const char* ThreadUtils::ThreadClass_BSF_Enums[] = {"Medium", "Normal", nullptr};
 
 const char* ThreadUtils::ThreadDirectionEnums[] = {"Right", "Left", nullptr};
 
@@ -360,15 +383,13 @@ const std::vector<ThreadUtils::ThreadDescription> ThreadUtils::threadDescription
     },
     // ISO 4570:2002
     {
-        {"5v1", 5.334, 0.705, 0},
-        {"5v2", 5.370, 1.058, 0},
-        {"6v1", 6.160, 0.800, 0},
-        {"8v1", 7.798, 0.794, 0},
-        {"9v1", 9.525, 0.794, 0},   {"10v2", 10.414, 0.907, 0}, {"12v1", 12.319, 0.977, 0},
-        {"13v1", 12.700, 1.270, 0}, {"8v2", 7.938, 1.058, 0},   {"10v1", 9.800, 1.000, 0},
-        {"11v1", 11.113, 1.270, 0}, {"13v2", 12.700, 0.794, 0}, {"15v1", 15.137, 1.000, 0},
-        {"16v1", 15.875, 0.941, 0}, {"17v1", 17.137, 1.000, 0}, {"17v2", 17.463, 1.058, 0},
-        {"17v3", 17.463, 1.588, 0}, {"19v1", 19.050, 1.588, 0}, {"20v1", 20.642, 1.000, 0},
+        {"5v1", 5.334, 0.705, 0},   {"5v2", 5.370, 1.058, 0},   {"6v1", 6.160, 0.800, 0},
+        {"8v1", 7.798, 0.794, 0},   {"9v1", 9.525, 0.794, 0},   {"10v2", 10.414, 0.907, 0},
+        {"12v1", 12.319, 0.977, 0}, {"13v1", 12.700, 1.270, 0}, {"8v2", 7.938, 1.058, 0},
+        {"10v1", 9.800, 1.000, 0},  {"11v1", 11.113, 1.270, 0}, {"13v2", 12.700, 0.794, 0},
+        {"15v1", 15.137, 1.000, 0}, {"16v1", 15.875, 0.941, 0}, {"17v1", 17.137, 1.000, 0},
+        {"17v2", 17.463, 1.058, 0}, {"17v3", 17.463, 1.588, 0}, {"19v1", 19.050, 1.588, 0},
+        {"20v1", 20.642, 1.000, 0},
     }
 };
 
@@ -393,21 +414,6 @@ const char* ThreadUtils::ThreadTypeEnums[] = {
 const char* ThreadUtils::ThreadTypeNameEnums[] = {
     "None",
     "ISO metric regular",
-    "ISO metric fine",
-    "UTS coarse",
-    "UTS fine",
-    "UTS extra fine",
-    "ANSI pipes",
-    "ISO/BSP pipes",
-    "BSW whitworth",
-    "BSF whitworth fine",
-    "ISO tyre valves",
-    nullptr
-};
-
-const char* ThreadTypeName2Enums[] = {
-    "ISO metric regular",
-    "None",
     "ISO metric fine",
     "UTS coarse",
     "UTS fine",
@@ -456,40 +462,20 @@ std::vector<std::string> ThreadUtils::getThreadTypeNameEnums() const
     return result;
 }
 
-std::vector<std::string> ThreadUtils::getThreadTypeName2Enums()
-{
-    std::vector<std::string> result;
-
-    for (int i = 0; ThreadTypeName2Enums[i] != nullptr; ++i) {
-        result.push_back(std::string(ThreadTypeName2Enums[i]));
-    }
-
-
-    return result;
-}
-
 std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType) const
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    std::string currentThread = currentThreads[threadType];
-    int currentThreadTypeIndex = threadTypeFromString(currentThread);
-
-    std::vector<std::string> sizes;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            sizes = definition.sizes;
-            break;
-        }
-    }
-    if (sizes.empty()) {
-        return {"6.0"};
-    }
-
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     std::set<double> uniqueDiameters;
-
-    for (const auto& size : sizes) {
-        uniqueDiameters.insert(std::stod(size));
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
+    for (size_t row = 0; row < rowCount; ++row) {
+        if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
+            continue;
+        }
+        parseThreadValue(definition.pitches[row]);
+        uniqueDiameters.insert(parseThreadValue(definition.sizes[row]));
+    }
+    if (uniqueDiameters.empty()) {
+        return {"6.0"};
     }
 
     std::vector<std::string> designations;
@@ -507,33 +493,14 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType) c
 
 std::vector<std::string> ThreadUtils::getThreadMinorDiameters(const int threadType)
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    std::string currentThread = currentThreads[threadType];
-    const ThreadDefinition* selectedDefinition = nullptr;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            selectedDefinition = &definition;
-            break;
-        }
-    }
-
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     std::set<double> uniqueMinorDiameters;
-
-    if (selectedDefinition) {
-        const size_t rowCount = std::min(
-            selectedDefinition->sizes.size(),
-            selectedDefinition->pitches.size()
-        );
-        for (size_t row = 0; row < rowCount; ++row) {
-            if (selectedDefinition->sizes[row].empty()
-                || selectedDefinition->pitches[row].empty()) {
-                continue;
-            }
-            uniqueMinorDiameters.insert(
-                getMinorDiameterForRow(*selectedDefinition, row, false)
-            );
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
+    for (size_t row = 0; row < rowCount; ++row) {
+        if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
+            continue;
         }
+        uniqueMinorDiameters.insert(getMinorDiameterForRow(definition, row, false));
     }
 
     if (uniqueMinorDiameters.empty()) {
@@ -555,24 +522,24 @@ std::vector<std::string> ThreadUtils::getThreadMinorDiameters(const int threadTy
 std::optional<double> ThreadUtils::estimateKnownMinorDiameter(
     const std::string& threadDefinitionId,
     double majorDiameter,
-    double pitch) const
+    double pitch
+) const
 {
-    double Rmaj = majorDiameter / 2.0;
+    const double majorRadius = majorDiameter / 2.0;
     double rootRadius;
 
-    if (threadDefinitionId == "BSP" || threadDefinitionId == "BSW"
-        || threadDefinitionId == "BSF") {
-        double H = 0.960491 * pitch;
-        rootRadius = Rmaj - (2.0 * H / 3.0);
+    if (threadDefinitionId == "BSP" || threadDefinitionId == "BSW" || threadDefinitionId == "BSF") {
+        const double triangleHeight = 0.960491 * pitch;
+        rootRadius = majorRadius - (2.0 * triangleHeight / 3.0);
     }
-    else if (threadDefinitionId == "ISOMetricProfile"
-             || threadDefinitionId == "ISOMetricFineProfile"
-             || threadDefinitionId == "UNC" || threadDefinitionId == "UNF"
-             || threadDefinitionId == "UNEF" || threadDefinitionId == "NPT"
-             || threadDefinitionId == "ISOTyre") {
-        double H = std::sqrt(3.0) / 2.0 * pitch;
-        double h = 5.0 * H / 8.0;
-        rootRadius = Rmaj - h;
+    else if (
+        threadDefinitionId == "ISOMetricProfile" || threadDefinitionId == "ISOMetricFineProfile"
+        || threadDefinitionId == "UNC" || threadDefinitionId == "UNF" || threadDefinitionId == "UNEF"
+        || threadDefinitionId == "NPT" || threadDefinitionId == "ISOTyre"
+    ) {
+        const double triangleHeight = std::sqrt(3.0) / 2.0 * pitch;
+        const double profileHeight = 5.0 * triangleHeight / 8.0;
+        rootRadius = majorRadius - profileHeight;
     }
     else {
         return std::nullopt;
@@ -591,10 +558,7 @@ ThreadUtils::ResolvedThreadSelection ThreadUtils::resolveThreadSelection(
     int pitchIndex
 ) const
 {
-    const std::vector<std::string> currentThreads = getThreadTypeNameEnums();
-    if (threadType < 0 || static_cast<size_t>(threadType) >= currentThreads.size()) {
-        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
-    }
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
 
     const std::vector<std::string> diameters = getThreadDiameters(threadType);
     if (sizeIndex < 0 || static_cast<size_t>(sizeIndex) >= diameters.size()) {
@@ -606,30 +570,20 @@ ThreadUtils::ResolvedThreadSelection ThreadUtils::resolveThreadSelection(
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread pitch out of range"));
     }
 
-    const double selectedDiameter = std::stod(diameters[sizeIndex]);
-    const double selectedPitch = std::stod(pitches[pitchIndex]);
-    const std::string& currentThread = currentThreads[threadType];
-
-    for (const auto& definition : getThreadDefinitions()) {
-        if (definition.name != currentThread) {
+    const double selectedDiameter = parseThreadValue(diameters[sizeIndex]);
+    const double selectedPitch = parseThreadValue(pitches[pitchIndex]);
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
+    for (size_t row = 0; row < rowCount; ++row) {
+        if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
             continue;
         }
 
-        const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
-        for (size_t row = 0; row < rowCount; ++row) {
-            if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
-                continue;
-            }
-
-            const double rowDiameter = std::stod(definition.sizes[row]);
-            const double rowPitch = std::stod(definition.pitches[row]);
-            if (std::abs(rowDiameter - selectedDiameter) < threadDefinitionTolerance
-                && std::abs(rowPitch - selectedPitch) < threadDefinitionTolerance) {
-                return {&definition, row, selectedDiameter, selectedPitch};
-            }
+        const double rowDiameter = parseThreadValue(definition.sizes[row]);
+        const double rowPitch = parseThreadValue(definition.pitches[row]);
+        if (std::abs(rowDiameter - selectedDiameter) < threadDefinitionTolerance
+            && std::abs(rowPitch - selectedPitch) < threadDefinitionTolerance) {
+            return {&definition, row, selectedDiameter, selectedPitch};
         }
-
-        break;
     }
 
     throw Base::ValueError(
@@ -647,21 +601,15 @@ std::optional<Part::TopoShape> ThreadUtils::prepareThreadProfile(
     const gp_Vec& zDir
 ) const
 {
-    const ResolvedThreadSelection selection = resolveThreadSelection(
-        threadType,
-        sizeIndex,
-        pitchIndex
-    );
+    const ResolvedThreadSelection selection = resolveThreadSelection(threadType, sizeIndex, pitchIndex);
     const ThreadDefinition& definition = *selection.definition;
 
     const ThreadDefinition::Profile* profile = nullptr;
-    if (!isInternalThread
-        && definition.externalProfileStatus == ThreadDefinition::ProfileStatus::Valid
+    if (!isInternalThread && definition.externalProfileStatus == ThreadDefinition::ProfileStatus::Valid
         && definition.externalProfile) {
         profile = &*definition.externalProfile;
     }
-    else if (definition.profileStatus == ThreadDefinition::ProfileStatus::Valid
-             && definition.profile) {
+    else if (definition.profileStatus == ThreadDefinition::ProfileStatus::Valid && definition.profile) {
         profile = &*definition.profile;
     }
 
@@ -670,11 +618,14 @@ std::optional<Part::TopoShape> ThreadUtils::prepareThreadProfile(
     }
 
     if (selection.pitch <= Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Thread pitch must be greater than zero"));
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread pitch must be greater than zero")
+        );
     }
-    if (xDir.Magnitude() <= Precision::Confusion()
-        || zDir.Magnitude() <= Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Thread profile directions must be non-zero"));
+    if (xDir.Magnitude() <= Precision::Confusion() || zDir.Magnitude() <= Precision::Confusion()) {
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread profile directions must be non-zero")
+        );
     }
 
     const gp_Dir radialDirection(xDir);
@@ -704,14 +655,9 @@ std::optional<Part::TopoShape> ThreadUtils::prepareThreadProfile(
     );
 
     Part::TopoShape transformed;
-    transformed.makeElementTransform(
-        profile->wire,
-        transform,
-        nullptr,
-        Part::CopyType::copy
-    );
-    if (transformed.isNull() || transformed.shapeType() != TopAbs_WIRE
-        || !transformed.isValid() || !transformed.isClosed()) {
+    transformed.makeElementTransform(profile->wire, transform, nullptr, Part::CopyType::copy);
+    if (transformed.isNull() || transformed.shapeType() != TopAbs_WIRE || !transformed.isValid()
+        || !transformed.isClosed()) {
         throw Base::CADKernelError(
             QT_TRANSLATE_NOOP("Exception", "Thread profile transformation failed")
         );
@@ -732,12 +678,11 @@ double ThreadUtils::getMinorDiameterForRow(
 
     if (row < definition.minorDiameters.size() && !definition.minorDiameters[row].empty()) {
         try {
-            const double value = std::abs(std::stod(definition.minorDiameters[row]));
-            const double majorDiameter = std::stod(definition.sizes[row]);
+            const double value = std::abs(parseThreadValue(definition.minorDiameters[row]));
+            const double majorDiameter = parseThreadValue(definition.sizes[row]);
             if (value <= Precision::Confusion() || value >= majorDiameter) {
                 throw Base::ValueError(
-                    "Thread definition '" + definition.id
-                    + "' contains an invalid minor diameter"
+                    "Thread definition '" + definition.id + "' contains an invalid minor diameter"
                 );
             }
             return value;
@@ -747,14 +692,13 @@ double ThreadUtils::getMinorDiameterForRow(
         }
         catch (const std::exception&) {
             throw Base::ValueError(
-                "Thread definition '" + definition.id
-                + "' contains an invalid minor diameter"
+                "Thread definition '" + definition.id + "' contains an invalid minor diameter"
             );
         }
     }
 
-    const double majorDiameter = std::stod(definition.sizes[row]);
-    const double pitch = std::stod(definition.pitches[row]);
+    const double majorDiameter = parseThreadValue(definition.sizes[row]);
+    const double pitch = parseThreadValue(definition.pitches[row]);
     if (majorDiameter <= Precision::Confusion() || pitch <= Precision::Confusion()) {
         throw Base::ValueError(
             "Thread definition '" + definition.id
@@ -762,11 +706,8 @@ double ThreadUtils::getMinorDiameterForRow(
         );
     }
 
-    std::optional<double> minorDiameter = estimateKnownMinorDiameter(
-        definition.id,
-        majorDiameter,
-        pitch
-    );
+    std::optional<double> minorDiameter
+        = estimateKnownMinorDiameter(definition.id, majorDiameter, pitch);
 
     if (!minorDiameter) {
         const ThreadDefinition::Profile* profile = nullptr;
@@ -775,8 +716,9 @@ double ThreadUtils::getMinorDiameterForRow(
             && definition.externalProfile) {
             profile = &*definition.externalProfile;
         }
-        else if (definition.profileStatus == ThreadDefinition::ProfileStatus::Valid
-                 && definition.profile) {
+        else if (
+            definition.profileStatus == ThreadDefinition::ProfileStatus::Valid && definition.profile
+        ) {
             profile = &*definition.profile;
         }
 
@@ -794,119 +736,69 @@ double ThreadUtils::getMinorDiameterForRow(
     *minorDiameter += minorDiameterFuseOverlap;
     if (*minorDiameter <= Precision::Confusion() || *minorDiameter >= majorDiameter) {
         throw Base::ValueError(
-            "Thread definition '" + definition.id
-            + "' produces an invalid minor diameter"
+            "Thread definition '" + definition.id + "' produces an invalid minor diameter"
         );
     }
 
     return *minorDiameter;
 }
 
-double ThreadUtils::getMinorDiameter(
-    const int threadType,
-    const int size,
-    const int pitch
-) const
+double ThreadUtils::getMinorDiameter(const int threadType, const int size, const int pitch) const
 {
     const ResolvedThreadSelection selection = resolveThreadSelection(threadType, size, pitch);
-    return getMinorDiameterForRow(
-        *selection.definition,
-        selection.row,
-        true
-    );
+    return getMinorDiameterForRow(*selection.definition, selection.row, true);
 }
 
 std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, const int threadDiameter) const
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    std::string currentThread = currentThreads[threadType];
-    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     std::vector<std::string> pitches;
-
-    std::vector<std::string> diameters = getThreadDiameters(threadType);
-    std::string targetDiameter = diameters[threadDiameter];
-
-    double targeDiameterDouble = std::stod(targetDiameter);
-
-    std::vector<std::string> pitchesDefinitions;
-    std::vector<std::string> sizes;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            sizes = definition.sizes;
-            pitchesDefinitions = definition.pitches;
-            break;
+    const auto diameters = getThreadDiameters(threadType);
+    if (threadDiameter < 0 || static_cast<size_t>(threadDiameter) >= diameters.size()) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
+    }
+    const double targetDiameter = parseThreadValue(diameters[threadDiameter]);
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
+    for (size_t row = 0; row < rowCount; ++row) {
+        if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
+            continue;
         }
-    }
-    if (sizes.empty()) {
-        return {"0.0"};
-    }
-    if (pitchesDefinitions.empty()) {
-        return {"0.0"};
-    }
-
-
-    size_t index = 0;
-    for (const auto& size : sizes) {
-        if (std::abs(std::stod(size) - targeDiameterDouble) < 0.001) {
+        if (std::abs(parseThreadValue(definition.sizes[row]) - targetDiameter)
+            < threadDefinitionTolerance) {
+            parseThreadValue(definition.pitches[row]);
             std::ostringstream oss;
-            oss << std::noshowpoint << pitchesDefinitions[index] << " mm";
+            oss << std::noshowpoint << definition.pitches[row] << " mm";
             pitches.push_back(oss.str());
         }
-        ++index;
+    }
+    if (pitches.empty()) {
+        return {"0.0"};
     }
     return pitches;
 }
 
 double ThreadUtils::getThreadPitch(const int threadType, const int threadDiameter, const int threadPitch) const
 {
-    try {
-        const std::vector<std::string> pitches = getThreadPitches(threadType, threadDiameter);
-        if (pitches.empty()) {
-            return 0.0;
-        }
-        if (threadPitch < 0 || static_cast<size_t>(threadPitch) >= pitches.size()) {
-            return 0.0;
-        }
+    const auto pitches = getThreadPitches(threadType, threadDiameter);
+    if (threadPitch < 0 || static_cast<size_t>(threadPitch) >= pitches.size()) {
+        return 0.0;
+    }
 
-        const double pitch = std::stod(pitches[threadPitch]);
-        if (!std::isfinite(pitch) || pitch <= 0.0) {
-            throw Base::ValueError(QT_TRANSLATE_NOOP(
-                "Exception", "Thread error: Thread pitch must be finite and greater than zero"
-            ));
-        }
-        return pitch;
-    }
-    catch (const std::invalid_argument&) {
+    const double pitch = parseThreadValue(pitches[threadPitch]);
+    if (pitch <= 0.0) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Invalid numeric value in thread diameter or pitch"
+            "Exception",
+            "Thread error: Thread pitch must be finite and greater than zero"
         ));
     }
-    catch (const std::out_of_range&) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Numeric value in thread diameter or pitch is out of range"
-        ));
-    }
+    return pitch;
 }
 
 std::vector<std::string> ThreadUtils::getThreadClasses(const int threadType, const bool isInternal) const
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    std::string currentThread = currentThreads[threadType];
-    int currentThreadTypeIndex = threadTypeFromString(currentThread);
-    
-    std::vector<std::string> clearances;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            if(isInternal){
-                clearances = definition.internalClearances;
-            } else {
-                clearances = definition.externalClearances;
-            }
-            break;
-        }
-    }
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
+    const auto& clearances = isInternal ? definition.internalClearances
+                                        : definition.externalClearances;
     if (clearances.empty()) {
         return {"None"};
     }
@@ -916,20 +808,7 @@ std::vector<std::string> ThreadUtils::getThreadClasses(const int threadType, con
 
 bool ThreadUtils::isThreadConical(const int threadType) const
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    std::string currentThread = currentThreads[threadType];
-    int currentThreadTypeIndex = threadTypeFromString(currentThread);
-
-    bool isConical = false;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            isConical = definition.isConical;
-            break;
-        }
-    }
-    
-    return isConical;
+    return checkedThreadDefinition(getThreadDefinitions(), threadType).isConical;
 }
 
 std::string ThreadUtils::getThreadDesignations(
@@ -939,12 +818,10 @@ std::string ThreadUtils::getThreadDesignations(
 )
 {
     try {
-        const ResolvedThreadSelection selection = resolveThreadSelection(
-            threadType,
-            threadDiameter,
-            threadPitch
-        );
-        if (selection.row < selection.definition->designations.size()) {
+        const ResolvedThreadSelection selection
+            = resolveThreadSelection(threadType, threadDiameter, threadPitch);
+        if (selection.row < selection.definition->designations.size()
+            && !selection.definition->designations[selection.row].empty()) {
             return selection.definition->designations[selection.row];
         }
     }
@@ -986,7 +863,7 @@ static FaceType getFaceType(const TopoDS_Face& face)
     }
 }
 
-static gp_Pnt toPnt(gp_Vec dir)
+static gp_Pnt toPnt(const gp_Vec& dir)
 {
     return {dir.X(), dir.Y(), dir.Z()};
 }
@@ -994,18 +871,23 @@ static gp_Pnt toPnt(gp_Vec dir)
 double ThreadUtils::getThreadClassClearance(
     int threadType,
     int threadSize,
-    App::PropertyEnumeration& ThreadClass
+    const App::PropertyEnumeration& threadClass
 ) const
 {
-    double pitch = threadDescription[threadType][threadSize].pitch;
-
-    if (ThreadClass.getValueAsString()[1] == 'G' || 
-        ThreadClass.getValueAsString()[1] == 'g' ) {
-        for (auto it : ThreadClass_ISOmetric_data) {
-            double p = it[0];
-            if (pitch <= p) {
-                return it[1];
-            }
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
+    const std::string className = threadClass.isValid() ? threadClass.getValueAsString() : "";
+    if (className.size() < 2 || (className[1] != 'G' && className[1] != 'g')) {
+        return 0.0;
+    }
+    const int legacyType = threadTypeFromString(definition.name);
+    if (legacyType < 0 || static_cast<size_t>(legacyType) >= std::size(threadDescription)
+        || threadSize < 0 || static_cast<size_t>(threadSize) >= threadDescription[legacyType].size()) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
+    }
+    const double pitch = threadDescription[legacyType][threadSize].pitch;
+    for (const auto& data : ThreadClass_ISOmetric_data) {
+        if (pitch <= data[0]) {
+            return data[1];
         }
     }
 
@@ -1018,37 +900,38 @@ void ThreadUtils::rotateToNormal(
     TopoDS_Shape& helixShape
 ) const
 {
-    auto getRotationAxis = [](const gp_Dir& dir1, const gp_Dir& dir2, gp_Dir& dir3, double& angle) {
-        if (dir1.IsEqual(dir2, Precision::Angular())) {
-            return false;
-        }
-
-        angle = acos(dir1 * dir2);
-        if (dir1.IsOpposite(dir2, Precision::Angular())) {
-            gp_XYZ xyz(dir1.XYZ());
-            if (fabs(xyz.X()) <= fabs(xyz.Y()) && fabs(xyz.X()) <= fabs(xyz.Z())) {
-                xyz.SetX(1.0);
+    const auto getRotationAxis =
+        [](const gp_Dir& dir1, const gp_Dir& dir2, gp_Dir& dir3, double& angle) {
+            if (dir1.IsEqual(dir2, Precision::Angular())) {
+                return false;
             }
-            else if (fabs(xyz.Y()) <= fabs(xyz.X()) && fabs(xyz.Y()) <= fabs(xyz.Z())) {
-                xyz.SetY(1.0);
+
+            angle = acos(dir1 * dir2);
+            if (dir1.IsOpposite(dir2, Precision::Angular())) {
+                gp_XYZ xyz(dir1.XYZ());
+                if (fabs(xyz.X()) <= fabs(xyz.Y()) && fabs(xyz.X()) <= fabs(xyz.Z())) {
+                    xyz.SetX(1.0);
+                }
+                else if (fabs(xyz.Y()) <= fabs(xyz.X()) && fabs(xyz.Y()) <= fabs(xyz.Z())) {
+                    xyz.SetY(1.0);
+                }
+                else {
+                    xyz.SetZ(1.0);
+                }
+                dir3 = dir1.Crossed(gp_Dir(xyz));
             }
             else {
-                xyz.SetZ(1.0);
+                dir3 = dir1.Crossed(dir2);
             }
-            dir3 = dir1.Crossed(gp_Dir(xyz));
-        }
-        else {
-            dir3 = dir1.Crossed(dir2);
-        }
-        return true;
-    };
+            return true;
+        };
     double angle;
     gp_Dir rotAxis;
     if (getRotationAxis(helixAxis, normalAxis, rotAxis, angle)) {
-        gp_Pnt origo(0.0, 0.0, 0.0);
+        const gp_Pnt origin(0.0, 0.0, 0.0);
         gp_Trsf mov = helixShape.Location().Transformation();
-        mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
-        TopLoc_Location loc2(mov);
+        mov.SetRotation(gp_Ax1(origin, rotAxis), angle);
+        const TopLoc_Location loc2(mov);
         helixShape.Move(loc2);
     }
 }
@@ -1070,15 +953,12 @@ Part::TopoShape ThreadUtils::makeLegacyThreadProfile(
         const double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
         const double crestArcX = majorRadius - radius * 0.58284013094;
 
-        const gp_Pnt p1 = toPnt(
-            (majorRadius - 5.0 * height / 6.0 + marginX) * xDir + marginZ * zDir
-        );
+        const gp_Pnt p1 = toPnt((majorRadius - 5.0 * height / 6.0 + marginX) * xDir + marginZ * zDir);
         const gp_Pnt p2 = toPnt(crestArcX * xDir + 3.0 * pitch / 8.0 * zDir);
         const gp_Pnt crest = toPnt(majorRadius * xDir + pitch / 2.0 * zDir);
         const gp_Pnt p3 = toPnt(crestArcX * xDir + 5.0 * pitch / 8.0 * zDir);
         const gp_Pnt p4 = toPnt(
-            (majorRadius - 5.0 * height / 6.0 + marginX) * xDir
-            + (pitch - marginZ) * zDir
+            (majorRadius - 5.0 * height / 6.0 + marginX) * xDir + (pitch - marginZ) * zDir
         );
 
         wireBuilder.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
@@ -1092,9 +972,7 @@ Part::TopoShape ThreadUtils::makeLegacyThreadProfile(
         const double profileDepth = 7.0 * height / 8.0;
         const double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
 
-        const gp_Pnt p1 = toPnt(
-            (majorRadius - profileDepth + marginX) * xDir + marginZ * zDir
-        );
+        const gp_Pnt p1 = toPnt((majorRadius - profileDepth + marginX) * xDir + marginZ * zDir);
         const gp_Pnt p2 = toPnt(majorRadius * xDir + 7.0 * pitch / 16.0 * zDir);
         const gp_Pnt p3 = toPnt(majorRadius * xDir + 9.0 * pitch / 16.0 * zDir);
         const gp_Pnt p4 = toPnt(
@@ -1103,9 +981,7 @@ Part::TopoShape ThreadUtils::makeLegacyThreadProfile(
 
         wireBuilder.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
         if (threadType == "ISOTyre") {
-            const gp_Pnt crest = toPnt(
-                (majorRadius + pitch / 32.0) * xDir + pitch / 2.0 * zDir
-            );
+            const gp_Pnt crest = toPnt((majorRadius + pitch / 32.0) * xDir + pitch / 2.0 * zDir);
             const Handle(Geom_TrimmedCurve) crestArc = GC_MakeArcOfCircle(p2, crest, p3).Value();
             wireBuilder.Add(BRepBuilderAPI_MakeEdge(crestArc).Edge());
         }
@@ -1125,9 +1001,7 @@ Part::TopoShape ThreadUtils::makeLegacyThreadProfile(
 
     Part::TopoShape profile(wireBuilder.Wire());
     if (!profile.isValid() || !profile.isClosed()) {
-        throw Base::CADKernelError(
-            QT_TRANSLATE_NOOP("Exception", "Legacy thread profile is invalid")
-        );
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Legacy thread profile is invalid"));
     }
     return profile;
 }
@@ -1148,27 +1022,21 @@ Part::TopoShape ThreadUtils::makeExtendedWhitworthThreadProfile(
     const double sharpRootRadius = majorRadius - 5.0 * height / 6.0;
     const double finishedRootRadius = majorRadius - 2.0 * height / 3.0;
     const double crestTangentRadius = majorRadius - arcRadius * tangentOffsetFactor;
-    const double rootTangentRadius = finishedRootRadius
-        + arcRadius * tangentOffsetFactor;
+    const double rootTangentRadius = finishedRootRadius + arcRadius * tangentOffsetFactor;
     const double rootCircleCenterRadius = finishedRootRadius + arcRadius;
-    const double hiddenTailRadius = sharpRootRadius
-        + std::tan(Base::toRadians(62.5)) * marginZ;
+    const double hiddenTailRadius = sharpRootRadius + std::tan(Base::toRadians(62.5)) * marginZ;
 
     if (hiddenTailRadius >= finishedRootRadius - Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception",
-            "Whitworth thread profile has no room for root overlap"
-        ));
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Whitworth thread profile has no room for root overlap")
+        );
     }
 
     const auto profilePoint = [&xDir, &zDir](double radius, double axial) {
         return toPnt(radius * xDir + axial * zDir);
     };
 
-    const double rootTangentAngle = std::atan2(
-        pitch / 8.0,
-        rootTangentRadius - rootCircleCenterRadius
-    );
+    const double rootTangentAngle = std::atan2(pitch / 8.0, rootTangentRadius - rootCircleCenterRadius);
     const double lowerRootMidAngle = (std::numbers::pi + rootTangentAngle) / 2.0;
     const double upperRootMidAngle = -lowerRootMidAngle;
     const auto rootArcPoint = [&](double centerAxial, double angle) {
@@ -1181,15 +1049,9 @@ Part::TopoShape ThreadUtils::makeExtendedWhitworthThreadProfile(
     const gp_Pnt rootStart = profilePoint(finishedRootRadius, 0.0);
     const gp_Pnt lowerRootMid = rootArcPoint(0.0, lowerRootMidAngle);
     const gp_Pnt lowerRootTangent = profilePoint(rootTangentRadius, pitch / 8.0);
-    const gp_Pnt lowerCrestTangent = profilePoint(
-        crestTangentRadius,
-        3.0 * pitch / 8.0
-    );
+    const gp_Pnt lowerCrestTangent = profilePoint(crestTangentRadius, 3.0 * pitch / 8.0);
     const gp_Pnt crest = profilePoint(majorRadius, pitch / 2.0);
-    const gp_Pnt upperCrestTangent = profilePoint(
-        crestTangentRadius,
-        5.0 * pitch / 8.0
-    );
+    const gp_Pnt upperCrestTangent = profilePoint(crestTangentRadius, 5.0 * pitch / 8.0);
     const gp_Pnt upperRootTangent = profilePoint(rootTangentRadius, 7.0 * pitch / 8.0);
     const gp_Pnt upperRootMid = rootArcPoint(pitch, upperRootMidAngle);
     const gp_Pnt rootEnd = profilePoint(finishedRootRadius, pitch);
@@ -1197,18 +1059,18 @@ Part::TopoShape ThreadUtils::makeExtendedWhitworthThreadProfile(
     const gp_Pnt hiddenTailStart = profilePoint(hiddenTailRadius, 0.0);
 
     BRepBuilderAPI_MakeWire wireBuilder;
-    const Handle(Geom_TrimmedCurve) lowerRootArc =
-        GC_MakeArcOfCircle(rootStart, lowerRootMid, lowerRootTangent).Value();
+    const Handle(Geom_TrimmedCurve)
+        lowerRootArc = GC_MakeArcOfCircle(rootStart, lowerRootMid, lowerRootTangent).Value();
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(lowerRootArc).Edge());
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(lowerRootTangent, lowerCrestTangent).Edge());
 
-    const Handle(Geom_TrimmedCurve) crestArc =
-        GC_MakeArcOfCircle(lowerCrestTangent, crest, upperCrestTangent).Value();
+    const Handle(Geom_TrimmedCurve)
+        crestArc = GC_MakeArcOfCircle(lowerCrestTangent, crest, upperCrestTangent).Value();
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(crestArc).Edge());
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(upperCrestTangent, upperRootTangent).Edge());
 
-    const Handle(Geom_TrimmedCurve) upperRootArc =
-        GC_MakeArcOfCircle(upperRootTangent, upperRootMid, rootEnd).Value();
+    const Handle(Geom_TrimmedCurve)
+        upperRootArc = GC_MakeArcOfCircle(upperRootTangent, upperRootMid, rootEnd).Value();
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(upperRootArc).Edge());
 
     wireBuilder.Add(BRepBuilderAPI_MakeEdge(rootEnd, hiddenTailEnd).Edge());
@@ -1217,18 +1079,16 @@ Part::TopoShape ThreadUtils::makeExtendedWhitworthThreadProfile(
     wireBuilder.Build();
 
     if (!wireBuilder.IsDone()) {
-        throw Base::CADKernelError(QT_TRANSLATE_NOOP(
-            "Exception",
-            "Extended Whitworth thread profile could not be built"
-        ));
+        throw Base::CADKernelError(
+            QT_TRANSLATE_NOOP("Exception", "Extended Whitworth thread profile could not be built")
+        );
     }
 
     Part::TopoShape profile(wireBuilder.Wire());
     if (!profile.isValid() || !profile.isClosed()) {
-        throw Base::CADKernelError(QT_TRANSLATE_NOOP(
-            "Exception",
-            "Extended Whitworth thread profile is invalid"
-        ));
+        throw Base::CADKernelError(
+            QT_TRANSLATE_NOOP("Exception", "Extended Whitworth thread profile is invalid")
+        );
     }
 
     return profile;
@@ -1249,9 +1109,7 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
         );
     }
     if (normalizedProfile.IsNull()) {
-        throw Base::ValueError(
-            QT_TRANSLATE_NOOP("Exception", "Thread profile must not be null")
-        );
+        throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Thread profile must not be null"));
     }
 
     const Part::TopoShape profile(normalizedProfile);
@@ -1262,14 +1120,10 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
     }
 
     const Base::BoundBox3d bounds = profile.getBoundBox();
-    const double normalizedTolerance = std::max(
-        threadDefinitionTolerance,
-        Precision::Confusion() / pitch
-    );
-    if (std::abs(bounds.MinZ) > normalizedTolerance
-        || std::abs(bounds.MaxZ) > normalizedTolerance
-        || bounds.MinY < -normalizedTolerance
-        || bounds.MaxY > 1.0 + normalizedTolerance) {
+    const double normalizedTolerance
+        = std::max(threadDefinitionTolerance, Precision::Confusion() / pitch);
+    if (std::abs(bounds.MinZ) > normalizedTolerance || std::abs(bounds.MaxZ) > normalizedTolerance
+        || bounds.MinY < -normalizedTolerance || bounds.MaxY > 1.0 + normalizedTolerance) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
             "Exception",
             "Thread profile must be normalized in the XY plane with Y in the range 0..1"
@@ -1278,43 +1132,31 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
 
     const auto findIntersections = [&](const NormalizedThreadSupport& support) {
         if (!std::isfinite(support.xAtYZero) || !std::isfinite(support.slope)) {
-            throw Base::ValueError(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Thread support line contains invalid values"
-            ));
+            throw Base::ValueError(
+                QT_TRANSLATE_NOOP("Exception", "Thread support line contains invalid values")
+            );
         }
 
-        const gp_Pln supportPlane(
-            gp_Pnt(support.xAtYZero, 0.0, 0.0),
-            gp_Dir(1.0, -support.slope, 0.0)
-        );
+        const gp_Pln supportPlane(gp_Pnt(support.xAtYZero, 0.0, 0.0), gp_Dir(1.0, -support.slope, 0.0));
         const Handle(Geom_Plane) supportSurface = new Geom_Plane(supportPlane);
         std::vector<double> phases;
 
-        for (BRepTools_WireExplorer explorer(normalizedProfile); explorer.More();
-             explorer.Next()) {
+        for (BRepTools_WireExplorer explorer(normalizedProfile); explorer.More(); explorer.Next()) {
             Standard_Real firstParameter;
             Standard_Real lastParameter;
-            const Handle(Geom_Curve) curve = BRep_Tool::Curve(
-                explorer.Current(),
-                firstParameter,
-                lastParameter
-            );
+            const Handle(Geom_Curve)
+                curve = BRep_Tool::Curve(explorer.Current(), firstParameter, lastParameter);
             if (curve.IsNull()) {
                 continue;
             }
 
-            const Handle(Geom_TrimmedCurve) trimmedCurve = new Geom_TrimmedCurve(
-                curve,
-                firstParameter,
-                lastParameter
-            );
+            const Handle(Geom_TrimmedCurve)
+                trimmedCurve = new Geom_TrimmedCurve(curve, firstParameter, lastParameter);
             const GeomAPI_IntCS intersections(trimmedCurve, supportSurface);
             if (!intersections.IsDone()) {
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Thread profile/support intersection failed"
-                ));
+                throw Base::CADKernelError(
+                    QT_TRANSLATE_NOOP("Exception", "Thread profile/support intersection failed")
+                );
             }
             if (intersections.NbSegments() > 0) {
                 throw Base::ValueError(QT_TRANSLATE_NOOP(
@@ -1323,12 +1165,10 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
                 ));
             }
 
-            for (Standard_Integer pointIndex = 1;
-                 pointIndex <= intersections.NbPoints();
+            for (Standard_Integer pointIndex = 1; pointIndex <= intersections.NbPoints();
                  ++pointIndex) {
                 const gp_Pnt point = intersections.Point(pointIndex);
-                if (std::abs(point.Z()) <= normalizedTolerance
-                    && point.Y() >= -normalizedTolerance
+                if (std::abs(point.Z()) <= normalizedTolerance && point.Y() >= -normalizedTolerance
                     && point.Y() <= 1.0 + normalizedTolerance) {
                     phases.push_back(std::clamp(point.Y(), 0.0, 1.0));
                 }
@@ -1383,7 +1223,8 @@ static double getThreadTaperSlope(bool tapered, double taperedAngle)
     }
     if (!std::isfinite(taperedAngle) || taperedAngle <= 0.0 || taperedAngle >= 180.0) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Tapered angle must be between 0 and 180 degrees"
+            "Exception",
+            "Thread error: Tapered angle must be between 0 and 180 degrees"
         ));
     }
     return std::tan(Base::toRadians(90.0 - taperedAngle));
@@ -1394,7 +1235,8 @@ static void validateThreadRadii(double firstRadius, double lastRadius)
     if (!std::isfinite(firstRadius) || !std::isfinite(lastRadius)
         || std::min(firstRadius, lastRadius) <= Precision::Confusion()) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Thread geometry reaches the cone apex or contains an invalid radius"
+            "Exception",
+            "Thread error: Thread geometry reaches the cone apex or contains an invalid radius"
         ));
     }
 }
@@ -1415,27 +1257,20 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     double supportTaperSlope
 ) const
 {
-    const ResolvedThreadSelection selection = resolveThreadSelection(
-        threadType,
-        sizeIndex,
-        pitchIndex
-    );
+    const ResolvedThreadSelection selection = resolveThreadSelection(threadType, sizeIndex, pitchIndex);
     const ThreadDefinition& definition = *selection.definition;
 
     const ThreadDefinition::Profile* selectedProfile = nullptr;
-    if (!isInternalThread
-        && definition.externalProfileStatus == ThreadDefinition::ProfileStatus::Valid
+    if (!isInternalThread && definition.externalProfileStatus == ThreadDefinition::ProfileStatus::Valid
         && definition.externalProfile) {
         selectedProfile = &*definition.externalProfile;
     }
-    else if (definition.profileStatus == ThreadDefinition::ProfileStatus::Valid
-             && definition.profile) {
+    else if (definition.profileStatus == ThreadDefinition::ProfileStatus::Valid && definition.profile) {
         selectedProfile = &*definition.profile;
     }
 
     if (!std::isfinite(supportDiameter) || !std::isfinite(usefulThreadLength)
-        || !std::isfinite(supportTaperSlope)
-        || supportDiameter <= Precision::Confusion()
+        || !std::isfinite(supportTaperSlope) || supportDiameter <= Precision::Confusion()
         || usefulThreadLength <= Precision::Confusion()) {
         throw Base::ValueError(QT_TRANSLATE_NOOP(
             "Exception",
@@ -1473,12 +1308,8 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
 
         gp_Trsf normalization;
         normalization.SetScale(gp_Pnt(0.0, 0.0, 0.0), 1.0 / selection.pitch);
-        normalizedProfile.makeElementTransform(
-            physicalProfile,
-            normalization,
-            nullptr,
-            Part::CopyType::copy
-        );
+        normalizedProfile
+            .makeElementTransform(physicalProfile, normalization, nullptr, Part::CopyType::copy);
     }
 
     const double clearance = useCustomThreadClearance
@@ -1516,12 +1347,12 @@ TopoDS_Shape ThreadUtils::makeThread(
     const int threadSize,  // TODO: change to ThreadDiameterIndex
     const int threadPitch,
     const int leftHanded,
-    App::PropertyEnumeration& ThreadClass,
+    App::PropertyEnumeration& threadClass,
     const bool isInternalThread,
     const bool tapered,
     const double taperedAngle,
-    const bool UseCustomThreadClearance,
-    const double CustomThreadClearance,
+    const bool useCustomThreadClearance,
+    const double customThreadClearance,
     const double farEndTrim,
     const double usefulThreadLength
 )
@@ -1538,70 +1369,72 @@ TopoDS_Shape ThreadUtils::makeThread(
 
 
     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
+    const std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
     if (static_cast<size_t>(threadType) >= currentThreads.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
     }
 
-    std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
+    const std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
     if (static_cast<size_t>(threadSize) >= threadDiameters.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
 
-    std::vector<std::string> threadPitches = getThreadPitches(threadType, threadSize);
+    const std::vector<std::string> threadPitches = getThreadPitches(threadType, threadSize);
     if (static_cast<size_t>(threadPitch) >= threadPitches.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread pitch out of range"));
     }
 
-    std::string currentThread = currentThreads[threadType];
-    int currentThreadTypeIndex = threadTypeFromString(currentThread);
-    double Rmaj = std::stod(threadDiameters[threadSize]) / 2.0;
-    double Pitch = getThreadPitch(threadType, threadSize, threadPitch);
-    if (Pitch <= Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Thread pitch must be greater than zero"));
+    const std::string& currentThread = currentThreads[threadType];
+    const int currentThreadTypeIndex = threadTypeFromString(currentThread);
+    double majorRadius = parseThreadValue(threadDiameters[threadSize]) / 2.0;
+    const double pitch = getThreadPitch(threadType, threadSize, threadPitch);
+    if (pitch <= Precision::Confusion()) {
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread pitch must be greater than zero")
+        );
     }
 
     double clearance;
-    if (UseCustomThreadClearance) {
-        clearance = CustomThreadClearance / 2;
+    if (useCustomThreadClearance) {
+        clearance = customThreadClearance / 2;
     }
     else {
-        clearance = getThreadClassClearance(threadType, threadSize, ThreadClass) / 2;
+        clearance = getThreadClassClearance(threadType, threadSize, threadClass) / 2;
     }
 
-    double RmajC;
-    if (isInternalThread){
-        RmajC = Rmaj + clearance;
-    } else {
-        RmajC = Rmaj - clearance;
+    double correctedMajorRadius;
+    if (isInternalThread) {
+        correctedMajorRadius = majorRadius + clearance;
+    }
+    else {
+        correctedMajorRadius = majorRadius - clearance;
     }
 
     if (!std::isfinite(farEndTrim) || farEndTrim < 0.0) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception",
-            "Thread far-end trim must not be negative"
-        ));
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread far-end trim must not be negative")
+        );
     }
     if (!std::isfinite(length) || length <= Precision::Confusion()
         || !std::isfinite(usefulThreadLength) || usefulThreadLength < 0.0
         || usefulThreadLength + farEndTrim > length + Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Invalid generated or useful thread length"
-        ));
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid generated or useful thread length")
+        );
     }
     const double taperSlope = getThreadTaperSlope(tapered, taperedAngle);
     if (usefulThreadLength > 0.0) {
-        const double nominalDepth = usefulThreadLength + Pitch;
-        validateThreadRadii(Rmaj, Rmaj - nominalDepth * taperSlope);
-        validateThreadRadii(RmajC, RmajC - nominalDepth * taperSlope);
+        const double nominalDepth = usefulThreadLength + pitch;
+        validateThreadRadii(majorRadius, majorRadius - nominalDepth * taperSlope);
+        validateThreadRadii(correctedMajorRadius, correctedMajorRadius - nominalDepth * taperSlope);
     }
     const double radialExtension = (usefulThreadLength + farEndTrim) * taperSlope;
-    Rmaj -= radialExtension;
-    RmajC -= radialExtension;
-    validateThreadRadii(Rmaj, Rmaj + length * taperSlope);
-    validateThreadRadii(RmajC, RmajC + length * taperSlope);
+    majorRadius -= radialExtension;
+    correctedMajorRadius -= radialExtension;
+    validateThreadRadii(majorRadius, majorRadius + length * taperSlope);
+    validateThreadRadii(correctedMajorRadius, correctedMajorRadius + length * taperSlope);
 
-    std::string threadTypeStr = ThreadTypeEnums[currentThreadTypeIndex];
+    const std::string threadTypeStr = ThreadTypeEnums[currentThreadTypeIndex];
 
     Part::TopoShape threadProfile;
     const auto preparedProfile = prepareThreadProfile(
@@ -1609,7 +1442,7 @@ TopoDS_Shape ThreadUtils::makeThread(
         threadSize,
         threadPitch,
         isInternalThread,
-        RmajC,
+        correctedMajorRadius,
         xDir,
         zDir
     );
@@ -1620,85 +1453,66 @@ TopoDS_Shape ThreadUtils::makeThread(
         if (isWhitworthThread(threadTypeStr)) {
 
             if (useExtendedWhitworthRoot) {
-                threadProfile = makeExtendedWhitworthThreadProfile(
-                    RmajC,
-                    Pitch,
-                    xDir,
-                    zDir
-                );
+                threadProfile
+                    = makeExtendedWhitworthThreadProfile(correctedMajorRadius, pitch, xDir, zDir);
             }
             else {
-                threadProfile = makeLegacyThreadProfile(
-                    threadTypeStr,
-                    RmajC,
-                    Pitch,
-                    xDir,
-                    zDir
-                );
+                threadProfile
+                    = makeLegacyThreadProfile(threadTypeStr, correctedMajorRadius, pitch, xDir, zDir);
             }
         }
         else {
-            threadProfile = makeLegacyThreadProfile(
-                threadTypeStr,
-                RmajC,
-                Pitch,
-                xDir,
-                zDir
-            );
+            threadProfile
+                = makeLegacyThreadProfile(threadTypeStr, correctedMajorRadius, pitch, xDir, zDir);
         }
     }
     const TopoDS_Wire threadWire = TopoDS::Wire(threadProfile.getShape());
 
     gp_Trsf profileToLocal;
-    profileToLocal.SetTransformation(
-        gp_Ax3(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(zDir), gp_Dir(xDir))
-    );
-    const TopoDS_Shape localProfile = BRepBuilderAPI_Transform(
-        threadWire, profileToLocal, true
-    ).Shape();
+    profileToLocal.SetTransformation(gp_Ax3(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(zDir), gp_Dir(xDir)));
+    const TopoDS_Shape localProfile
+        = BRepBuilderAPI_Transform(threadWire, profileToLocal, true).Shape();
     Bnd_Box profileBounds;
     BRepBndLib::Add(localProfile, profileBounds);
     double minX, minY, minZ, maxX, maxY, maxZ;
     profileBounds.Get(minX, minY, minZ, maxX, maxY, maxZ);
     validateThreadRadii(minX, minX + length * taperSlope);
 
-    double threadDepth = length;
-    double helixLength = threadDepth;
-    double holeDepth = threadDepth;
-    std::string threadDepthMethod("Dimension");
-    std::string depthMethod("Dimension");
-    double helixAngle = tapered ?  90 - taperedAngle : 0.0;
+    const double threadDepth = length;
+    const double helixLength = threadDepth;
+    const double helixAngle = tapered ? 90 - taperedAngle : 0.0;
 
-    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Rmaj, helixAngle, leftHanded);
+    TopoDS_Shape helix
+        = TopoShape().makeLongHelix(pitch, helixLength, majorRadius, helixAngle, leftHanded);
 
-    gp_Pnt origo(0.0, 0.0, 0.0);
-    gp_Dir dir_axis1(0.0, 0.0, 1.0);
-    gp_Dir dir_axis2(1.0, 0.0, 0.0);
+    const gp_Pnt origin(0.0, 0.0, 0.0);
+    const gp_Dir helixAxis(0.0, 0.0, 1.0);
+    const gp_Dir rotationAxis(1.0, 0.0, 0.0);
 
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
-    TopLoc_Location loc1(mov);
+    mov.SetRotation(gp_Ax1(origin, rotationAxis), std::numbers::pi);
+    const TopLoc_Location loc1(mov);
     helix.Move(loc1);
 
-    rotateToNormal(dir_axis1, zDir, helix);
+    rotateToNormal(helixAxis, zDir, helix);
 
-    BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
-    mkPS.SetTolerance(Precision::Confusion());
-    mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-    mkPS.SetMode(true);
-    mkPS.Add(threadWire);
-    if (!mkPS.IsReady()) {
+    BRepOffsetAPI_MakePipeShell pipeShellBuilder(TopoDS::Wire(helix));
+    pipeShellBuilder.SetTolerance(Precision::Confusion());
+    pipeShellBuilder.SetTransitionMode(BRepBuilderAPI_Transformed);
+    pipeShellBuilder.SetMode(true);
+    pipeShellBuilder.Add(threadWire);
+    if (!pipeShellBuilder.IsReady()) {
         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
     }
-    TopoDS_Shape shell = mkPS.Shape();
+    const TopoDS_Shape shell = pipeShellBuilder.Shape();
 
-    TopTools_ListOfShape sim;
-    mkPS.Simulate(2, sim);
-    std::vector<TopoDS_Wire> frontwires, backwires;
-    frontwires.push_back(TopoDS::Wire(sim.First()));
-    backwires.push_back(TopoDS::Wire(sim.Last()));
-    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+    TopTools_ListOfShape simulatedSections;
+    pipeShellBuilder.Simulate(2, simulatedSections);
+    std::vector<TopoDS_Wire> frontWires, backWires;
+    frontWires.push_back(TopoDS::Wire(simulatedSections.First()));
+    backWires.push_back(TopoDS::Wire(simulatedSections.Last()));
+    const TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontWires);
+    const TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backWires);
 
     BRepBuilderAPI_Sewing sewer;
     sewer.SetTolerance(Precision::Confusion());
@@ -1707,16 +1521,16 @@ TopoDS_Shape ThreadUtils::makeThread(
     sewer.Add(shell);
     sewer.Perform();
 
-    BRepBuilderAPI_MakeSolid mkSolid;
-    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-    if (!mkSolid.IsDone()) {
+    BRepBuilderAPI_MakeSolid solidBuilder;
+    solidBuilder.Add(TopoDS::Shell(sewer.SewedShape()));
+    if (!solidBuilder.IsDone()) {
         throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
     }
-    TopoDS_Shape result = mkSolid.Shape();
+    TopoDS_Shape result = solidBuilder.Shape();
 
-    BRepClass3d_SolidClassifier SC(result);
-    SC.PerformInfinitePoint(Precision::Confusion());
-    if (SC.State() == TopAbs_IN) {
+    BRepClass3d_SolidClassifier solidClassifier(result);
+    solidClassifier.PerformInfinitePoint(Precision::Confusion());
+    if (solidClassifier.State() == TopAbs_IN) {
         result.Reverse();
     }
 
@@ -1848,20 +1662,20 @@ bool ThreadUtils::isConicalFace(const App::PropertyLinkSub& lateralFace) const
 
 int ThreadUtils::findNearestThreadSize(const int threadType, const double diameter)
 {
-    std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
+    const std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
 
     if (threadDiameters.empty()) {
         return -1;
     }
 
     int bestIndex = 0;
-    double bestDistance = std::abs(std::stod(threadDiameters[0]) - diameter);
+    double bestDistance = std::abs(parseThreadValue(threadDiameters[0]) - diameter);
 
     for (size_t i = 1; i < threadDiameters.size(); ++i) {
 
-        double currentDiameter = std::stod(threadDiameters[i]);
+        const double currentDiameter = parseThreadValue(threadDiameters[i]);
 
-        double distance = std::abs(currentDiameter - diameter);
+        const double distance = std::abs(currentDiameter - diameter);
 
         if (distance < bestDistance) {
             bestDistance = distance;
@@ -1876,67 +1690,54 @@ std::optional<ThreadUtils::ThreadSizeSelection> ThreadUtils::findNearestMinorThr
     const double diameter
 ) const
 {
-    const std::vector<std::string> currentThreads = getThreadTypeNameEnums();
-    if (threadType < 0 || static_cast<size_t>(threadType) >= currentThreads.size()) {
+    const auto& definitions = getThreadDefinitions();
+    if (threadType < 0 || static_cast<size_t>(threadType) >= definitions.size()) {
         return std::nullopt;
     }
 
-    const std::string& currentThread = currentThreads[threadType];
+    const auto& definition = definitions[threadType];
     const std::vector<std::string> diameters = getThreadDiameters(threadType);
     std::optional<ThreadSizeSelection> bestSelection;
     double bestDistance = std::numeric_limits<double>::max();
 
-    for (const auto& definition : getThreadDefinitions()) {
-        if (definition.name != currentThread) {
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
+    for (size_t row = 0; row < rowCount; ++row) {
+        if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
             continue;
         }
 
-        const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
-        for (size_t row = 0; row < rowCount; ++row) {
-            if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
-                continue;
-            }
+        const double majorDiameter = parseThreadValue(definition.sizes[row]);
+        const double rowPitch = parseThreadValue(definition.pitches[row]);
 
-            const double majorDiameter = std::stod(definition.sizes[row]);
-            const double rowPitch = std::stod(definition.pitches[row]);
-
-            int sizeIndex = -1;
-            for (size_t i = 0; i < diameters.size(); ++i) {
-                if (std::abs(std::stod(diameters[i]) - majorDiameter)
-                    < threadDefinitionTolerance) {
-                    sizeIndex = static_cast<int>(i);
-                    break;
-                }
-            }
-            if (sizeIndex < 0) {
-                continue;
-            }
-
-            const std::vector<std::string> pitches = getThreadPitches(threadType, sizeIndex);
-            int pitchIndex = -1;
-            for (size_t i = 0; i < pitches.size(); ++i) {
-                if (std::abs(std::stod(pitches[i]) - rowPitch) < threadDefinitionTolerance) {
-                    pitchIndex = static_cast<int>(i);
-                    break;
-                }
-            }
-            if (pitchIndex < 0) {
-                continue;
-            }
-
-            const double minorDiameter = getMinorDiameterForRow(
-                definition,
-                row,
-                false
-            );
-            const double distance = std::abs(minorDiameter - diameter);
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestSelection = ThreadSizeSelection {sizeIndex, pitchIndex, minorDiameter};
+        int sizeIndex = -1;
+        for (size_t i = 0; i < diameters.size(); ++i) {
+            if (std::abs(parseThreadValue(diameters[i]) - majorDiameter) < threadDefinitionTolerance) {
+                sizeIndex = static_cast<int>(i);
+                break;
             }
         }
+        if (sizeIndex < 0) {
+            continue;
+        }
 
-        break;
+        const std::vector<std::string> pitches = getThreadPitches(threadType, sizeIndex);
+        int pitchIndex = -1;
+        for (size_t i = 0; i < pitches.size(); ++i) {
+            if (std::abs(parseThreadValue(pitches[i]) - rowPitch) < threadDefinitionTolerance) {
+                pitchIndex = static_cast<int>(i);
+                break;
+            }
+        }
+        if (pitchIndex < 0) {
+            continue;
+        }
+
+        const double minorDiameter = getMinorDiameterForRow(definition, row, false);
+        const double distance = std::abs(minorDiameter - diameter);
+        if (distance < bestDistance) {
+            bestDistance = distance;
+            bestSelection = ThreadSizeSelection {sizeIndex, pitchIndex, minorDiameter};
+        }
     }
 
     return bestSelection;
@@ -1948,7 +1749,7 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
         return false;
     }
 
-    TopoDS_Face face = getSelectedFace(faceProp);
+    const TopoDS_Face face = getSelectedFace(faceProp);
 
     if (face.IsNull()) {
         return false;
@@ -1956,7 +1757,7 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
 
     BRepAdaptor_Surface surface(face);
 
-    GeomAbs_SurfaceType surfaceType = surface.GetType();
+    const GeomAbs_SurfaceType surfaceType = surface.GetType();
 
 
     if (surfaceType != GeomAbs_Cylinder && surfaceType != GeomAbs_Cone) {
@@ -1969,13 +1770,13 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
 
     if (surfaceType == GeomAbs_Cylinder) {
 
-        gp_Cylinder cylinder = surface.Cylinder();
+        const gp_Cylinder cylinder = surface.Cylinder();
 
         axis = cylinder.Axis();
     }
     else if (surfaceType == GeomAbs_Cone) {
 
-        gp_Cone cone = surface.Cone();
+        const gp_Cone cone = surface.Cone();
 
         axis = cone.Axis();
     }
@@ -1985,9 +1786,9 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
 
     BRepTools::UVBounds(face, u1, u2, v1, v2);
 
-    Standard_Real u = (u1 + u2) * 0.5;
+    const Standard_Real u = (u1 + u2) * 0.5;
 
-    Standard_Real v = (v1 + v2) * 0.5;
+    const Standard_Real v = (v1 + v2) * 0.5;
 
     gp_Pnt point;
     gp_Vec du;
@@ -2015,11 +1816,11 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
 
     axisDirection.Normalize();
 
-    gp_Vec axisToPoint(axis.Location(), point);
+    const gp_Vec axisToPoint(axis.Location(), point);
 
-    Standard_Real axialDistance = axisToPoint.Dot(axisDirection);
+    const Standard_Real axialDistance = axisToPoint.Dot(axisDirection);
 
-    gp_Pnt axisPoint = axis.Location().Translated(axisDirection * axialDistance);
+    const gp_Pnt axisPoint = axis.Location().Translated(axisDirection * axialDistance);
 
     gp_Vec radial(axisPoint, point);
 
@@ -2031,7 +1832,7 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
     radial.Normalize();
 
 
-    double dot = normal.Dot(radial);
+    const double dot = normal.Dot(radial);
 
     constexpr double tolerance = 1e-9;
 
@@ -2046,9 +1847,9 @@ bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const Top
     return false;
 }
 
-App::DocumentObjectExecReturn* ThreadUtils::validateParameters(const App::PropertyLinkSub& LateralFace)
+App::DocumentObjectExecReturn* ThreadUtils::validateParameters(const App::PropertyLinkSub& lateralFace)
 {
-    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
+    const TopoDS_Face threadedFace = getSelectedFace(lateralFace);
 
     if (threadedFace.IsNull()) {
         return new App::DocumentObjectExecReturn(
@@ -2083,30 +1884,30 @@ gp_Vec ThreadUtils::computePerpendicular(const gp_Vec& zDir) const
     return xDir;
 }
 
-gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
+gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& lateralFace)
 {
-    return getLateralFaceAxis(getSelectedFace(LateralFace)).Location();
+    return getLateralFaceAxis(getSelectedFace(lateralFace)).Location();
 }
 
-gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace) const
+gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& lateralFace) const
 {
-    if (LateralFace.getValue() == nullptr) {
+    if (lateralFace.getValue() == nullptr) {
         throw Base::ValueError("LateralFace property is null or not assigned.");
     }
 
-    return gp_Vec(getLateralFaceAxis(getSelectedFace(LateralFace)).Direction());
+    return gp_Vec(getLateralFaceAxis(getSelectedFace(lateralFace)).Direction());
 }
 
 double ThreadUtils::getThroughAllLength(TopoShape base) const
 {
     Bnd_Box box;
-    
+
     if (!base.isNull()) {
         BRepBndLib::Add(base.getShape(), box);
     }
-    
+
     box.SetGap(0.0);
-    
+
     return 2.02 * sqrt(box.SquareExtent());
 }
 
@@ -2115,7 +1916,7 @@ ThreadUtils::ThreadLibrary::ThreadLibrary()
 
 void ThreadUtils::ThreadLibrary::readThreadDefinitions()
 {
-    std::vector<std::string> dirs {
+    const std::vector<std::string> dirs {
         App::Application::getResourceDir() + "Mod/PartDesign/Resources/Thread",
         App::Application::getUserAppDataDir() + "PartDesign/Thread"
     };
@@ -2124,9 +1925,7 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
     definitions.clear();
 
     for (const auto& dir : dirs) {
-        std::vector<Base::FileInfo> files {Base::FileInfo(dir).getDirectoryContent()};
-
-        Base::FileInfo fi(dir);
+        const std::vector<Base::FileInfo> files {Base::FileInfo(dir).getDirectoryContent()};
 
         for (const auto& file : files) {
             if (file.extension() == "FCStd") {
@@ -2144,10 +1943,12 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
                     definitions.push_back(std::move(*definition));
                 }
                 catch (const Base::Exception& e) {
-                    std::cerr << "Failed reading '" << file.filePath() << "': " << e.what() << '\n';
+                    Base::Console()
+                        .error("Failed reading '%s': %s\n", file.filePath().c_str(), e.what());
                 }
                 catch (const std::exception& e) {
-                    std::cerr << "Failed reading '" << file.filePath() << "': " << e.what() << '\n';
+                    Base::Console()
+                        .error("Failed reading '%s': %s\n", file.filePath().c_str(), e.what());
                 }
             }
         }
@@ -2201,7 +2002,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
 std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDocument(
     App::Document* doc,
     const std::string& source
-)
+) const
 {
     if (!doc) {
         return std::nullopt;
@@ -2366,18 +2167,12 @@ std::optional<ThreadUtils::ThreadDefinition::Profile> readThreadProfile(
         return std::nullopt;
     }
 
-    Profile profile {
-        Part::TopoShape(copy.Shape()),
-        bounds.MinX,
-        bounds.MaxX,
-        bounds.MinY,
-        bounds.MaxY
-    };
+    Profile profile {Part::TopoShape(copy.Shape()), bounds.MinX, bounds.MaxX, bounds.MinY, bounds.MaxY};
     status = ProfileStatus::Valid;
     return profile;
 }
 
-}
+}  // namespace
 
 void ThreadUtils::findThreadProfiles(
     App::Document* doc,
@@ -2514,21 +2309,23 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Docu
         auto* isConicalProp = dynamic_cast<App::PropertyBool*>(propIsConical);
         if (isConicalProp) {
             definition.isConical = isConicalProp->getValue();
-        } else {
-            Base::Console().log("Property 'isConical' found in VarSet but is not bool. Defaulting to false.\n");
+        }
+        else {
+            Base::Console().log(
+                "Property 'isConical' found in VarSet but is not bool. Defaulting to false.\n"
+            );
             definition.isConical = false;
         }
-    } else {
+    }
+    else {
         definition.isConical = false;
     }
 
     return definition;
 }
 
-#include <Mod/Spreadsheet/App/Sheet.h>
-#include <map>
 
-void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefinition& definition)
+void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefinition& definition) const
 {
     std::vector<std::string> sizes;
     std::vector<std::string> minorDiameters;
@@ -2538,14 +2335,12 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
     std::vector<std::string> internalClearances;
     std::vector<std::string> externalClearances;
 
-    App::DocumentObject* obj = doc->getObject("Spreadsheet");
-
     const std::map<std::string, std::vector<std::string>*> columnTargets = {
-        {"designation",    &designations},
-        {"size",           &sizes},
-        {"minordiameter",  &minorDiameters},
-        {"pitch",          &pitches},
-        {"tapdrill",       &tapDrills},
+        {"designation", &designations},
+        {"size", &sizes},
+        {"minordiameter", &minorDiameters},
+        {"pitch", &pitches},
+        {"tapdrill", &tapDrills},
         {"internalclearance", &internalClearances},
         {"externalclearance", &externalClearances}
     };
@@ -2553,7 +2348,11 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
     auto sanitizeString = [](std::string str, bool lower) -> std::string {
         str.erase(std::remove(str.begin(), str.end(), '\''), str.end());
         str.erase(std::remove(str.begin(), str.end(), '\"'), str.end());
-        if(lower) std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        if (lower) {
+            std::transform(str.begin(), str.end(), str.begin(), [](unsigned char ch) {
+                return static_cast<char>(std::tolower(ch));
+            });
+        }
         return str;
     };
 
@@ -2561,6 +2360,9 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
         if (docObj && docObj->getTypeId().isDerivedFrom(Spreadsheet::Sheet::getClassTypeId())) {
             auto* sheet = static_cast<Spreadsheet::Sheet*>(docObj);
             auto [start, end] = sheet->getUsedRange();
+            if (!start.isValid() || !end.isValid()) {
+                continue;
+            }
 
             std::map<std::string, int> headerToCol;
 
@@ -2583,25 +2385,66 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
             }
 
             for (int row = 1; row <= end.row(); ++row) {
+                // Collect a complete record before appending any row-associated fields.
+                std::map<std::string, std::string> values;
                 for (const auto& [name, target] : columnTargets) {
+                    std::string value;
                     auto colIt = resolvedColumns.find(name);
-                    if (colIt == resolvedColumns.end()) {
-                        continue;
-                    }
-
-                    if (auto* cell = sheet->getCell(App::CellAddress(row, colIt->second))) {
-                        std::string value;
-                        if (cell->getStringContent(value) && !value.empty()) {
-                            target->push_back(sanitizeString(value, false));
+                    if (colIt != resolvedColumns.end()) {
+                        if (auto* cell = sheet->getCell(App::CellAddress(row, colIt->second))) {
+                            cell->getStringContent(value);
                         }
+                    }
+                    values[name] = sanitizeString(value, false);
+                }
+
+                // Clearance columns contain independent enumeration options, not row data.
+                for (const auto& name : {"internalclearance", "externalclearance"}) {
+                    if (!values[name].empty()) {
+                        columnTargets.at(name)->push_back(values[name]);
+                    }
+                }
+
+                const bool hasRowData = std::any_of(values.begin(), values.end(), [](const auto& item) {
+                    return item.first != "internalclearance" && item.first != "externalclearance"
+                        && !item.second.empty();
+                });
+                if (!hasRowData) {
+                    continue;
+                }
+                if (values["size"].empty() || values["pitch"].empty()) {
+                    Base::Console().warning(
+                        "Thread definition '%s', spreadsheet '%s', row %d: "
+                        "missing size or pitch; skipping row.\n",
+                        definition.id.c_str(),
+                        sheet->getNameInDocument(),
+                        row + 1
+                    );
+                    continue;
+                }
+                try {
+                    if (parseThreadValue(values["size"]) <= 0.0
+                        || parseThreadValue(values["pitch"]) <= 0.0) {
+                        throw Base::ValueError("Size and pitch must be greater than zero");
+                    }
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().warning(
+                        "Thread definition '%s', spreadsheet '%s', row %d: %s; skipping row.\n",
+                        definition.id.c_str(),
+                        sheet->getNameInDocument(),
+                        row + 1,
+                        e.what()
+                    );
+                    continue;
+                }
+                for (const auto& [name, target] : columnTargets) {
+                    if (name != "internalclearance" && name != "externalclearance") {
+                        target->push_back(values[name]);
                     }
                 }
             }
         }
-    }
-
-    if (!obj) {
-        return;
     }
 
     definition.designations = std::move(designations);
@@ -2615,7 +2458,7 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
 
 gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const
 {
-    TopoDS_Face face = getSelectedFace(lateralFace);
+    const TopoDS_Face face = getSelectedFace(lateralFace);
 
     if (face.IsNull()) {
         throw Base::RuntimeError("Thread error: selected face is null");
@@ -2635,10 +2478,10 @@ gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace,
 
     for (int i = 1; i <= vertices.Extent(); ++i) {
         const TopoDS_Vertex vertex = TopoDS::Vertex(vertices(i));
-        gp_Pnt point = BRep_Tool::Pnt(vertex);
+        const gp_Pnt point = BRep_Tool::Pnt(vertex);
 
-        gp_Vec toPoint(axisOrigin, point);
-        double projection = toPoint.Dot(gp_Vec(zDir));
+        const gp_Vec toPoint(axisOrigin, point);
+        const double projection = toPoint.Dot(gp_Vec(zDir));
 
         if (projection < minProjection) {
             minProjection = projection;
@@ -2650,7 +2493,7 @@ gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace,
         throw Base::RuntimeError("Thread error: could not determine thread start point");
     }
 
-    gp_Pnt startPoint = axisOrigin.Translated(minProjection * gp_Vec(zDir));
+    const gp_Pnt startPoint = axisOrigin.Translated(minProjection * gp_Vec(zDir));
 
     return startPoint;
 }
@@ -2667,11 +2510,9 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     double taperedAngle
 )
 {
-    if (!std::isfinite(majorDiameter) || !std::isfinite(minorDiameter)
-        || !std::isfinite(length) || length <= Precision::Confusion()
-        || majorDiameter <= Precision::Confusion()
-        || minorDiameter <= Precision::Confusion()
-        || minorDiameter >= majorDiameter) {
+    if (!std::isfinite(majorDiameter) || !std::isfinite(minorDiameter) || !std::isfinite(length)
+        || length <= Precision::Confusion() || majorDiameter <= Precision::Confusion()
+        || minorDiameter <= Precision::Confusion() || minorDiameter >= majorDiameter) {
         throw Base::ValueError(
             QT_TRANSLATE_NOOP("Exception", "Invalid major or minor thread diameter")
         );
@@ -2680,10 +2521,10 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     gp_Vec zDir = getThreadZAxis(lateralFace);
     zDir.Normalize();
 
-    gp_Ax2 axis(startPoint, gp_Dir(zDir));
+    const gp_Ax2 axis(startPoint, gp_Dir(zDir));
 
-    double majorRadius = majorDiameter / 2.0;
-    double minorRadius = minorDiameter / 2.0;
+    const double majorRadius = majorDiameter / 2.0;
+    const double minorRadius = minorDiameter / 2.0;
 
     const bool conicalSupport = isConicalFace(lateralFace);
     const double outerSlope = conicalSupport ? std::tan(getConicalAngle(lateralFace)) : 0.0;
@@ -2693,9 +2534,9 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     validateThreadRadii(majorRadius, outerEndRadius);
     validateThreadRadii(minorRadius, innerEndRadius);
     if (innerEndRadius >= outerEndRadius - Precision::Confusion()) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception", "Thread error: Reduced thread base exceeds the support radius"
-        ));
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP("Exception", "Thread error: Reduced thread base exceeds the support radius")
+        );
     }
 
     const auto makeVolume = [&](double firstRadius, double lastRadius) -> TopoDS_Shape {
@@ -2714,31 +2555,22 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
         throw Base::RuntimeError("Thread error: failed to create thread reduction volume");
     }
 
-    BRepAlgoAPI_Cut result(base.getShape(), ring.Shape());
-    result.Build();
+    Part::TopoShape result;
+    result.makeElementBoolean(Part::OpCodes::Cut, {base, Part::TopoShape(ring.Shape())}, nullptr, 0.0);
 
-    if (!result.IsDone() || result.Shape().IsNull()) {
+    if (result.isNull()) {
         throw Base::RuntimeError("Thread error: failed to reduce external thread base");
     }
 
-    return Part::TopoShape(result.Shape());
+    return result;
 }
 
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <GeomAbs_SurfaceType.hxx>
-#include <IntCurvesFace_ShapeIntersector.hxx>
-#include <Standard_Failure.hxx>
 
-gp_Dir ThreadUtils::getThreadAxisDir(const App::PropertyLinkSub& LateralFace)
+gp_Dir ThreadUtils::getThreadAxisDir(const App::PropertyLinkSub& lateralFace)
 {
-    return getLateralFaceAxis(getSelectedFace(LateralFace)).Direction();
+    return getLateralFaceAxis(getSelectedFace(lateralFace)).Direction();
 }
 
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <App/PropertyGeo.h>
-#include "BRepBuilderAPI_MakeFace.hxx"
 
 static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
 {
@@ -2757,15 +2589,15 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
         || obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Line"))
         || obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Plane"))) {
 
-        App::Property* rawPlacement = obj->getPropertyByName("Placement");
+        const App::Property* rawPlacement = obj->getPropertyByName("Placement");
         if (!rawPlacement
             || !rawPlacement->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
             return TopoDS_Shape();
         }
 
-        auto* propPlacement = static_cast<App::PropertyPlacement*>(rawPlacement);
-        Base::Placement trsf = propPlacement->getValue();
-        Base::Vector3d pos = trsf.getPosition();
+        const auto* propPlacement = static_cast<const App::PropertyPlacement*>(rawPlacement);
+        const Base::Placement trsf = propPlacement->getValue();
+        const Base::Vector3d pos = trsf.getPosition();
 
         if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPoint"))
             || obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Point"))) {
@@ -2775,13 +2607,13 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
 
         if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumLine"))
             || obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Line"))) {
-            Base::Rotation rot = trsf.getRotation();
+            const Base::Rotation rot = trsf.getRotation();
             Base::Vector3d dir(0, 0, 1);
             rot.multVec(dir, dir);
 
-            gp_Pnt pnt(pos.x, pos.y, pos.z);
-            gp_Dir direction(dir.x, dir.y, dir.z);
-            gp_Lin line(pnt, direction);
+            const gp_Pnt pnt(pos.x, pos.y, pos.z);
+            const gp_Dir direction(dir.x, dir.y, dir.z);
+            const gp_Lin line(pnt, direction);
 
             BRepBuilderAPI_MakeEdge mkEdge(line, -1000.0, 1000.0);
             return mkEdge.Edge();
@@ -2789,13 +2621,13 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
 
         if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPlane"))
             || obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Plane"))) {
-            Base::Rotation rot = trsf.getRotation();
+            const Base::Rotation rot = trsf.getRotation();
             Base::Vector3d normal(0, 0, 1);
             rot.multVec(normal, normal);
 
-            gp_Pnt pnt(pos.x, pos.y, pos.z);
-            gp_Dir dirNormal(normal.x, normal.y, normal.z);
-            gp_Pln plane(pnt, dirNormal);
+            const gp_Pnt pnt(pos.x, pos.y, pos.z);
+            const gp_Dir dirNormal(normal.x, normal.y, normal.z);
+            const gp_Pln plane(pnt, dirNormal);
 
             BRepBuilderAPI_MakeFace mkFace(plane, -1000.0, 1000.0, -1000.0, 1000.0);
             return mkFace.Face();
@@ -2836,12 +2668,6 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
     return subShape;
 }
 
-#include <GeomAPI_ExtremaCurveCurve.hxx>
-#include <Geom_Line.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <Precision.hxx>
-#include <vector>
 
 std::vector<gp_Pnt> ThreadUtils::findLineCurveIntersections(
     const gp_Lin& line,
@@ -2916,7 +2742,7 @@ gp_Pnt ThreadUtils::getPlaneLineIntersection(const gp_Pln& plane, const gp_Lin& 
 
     const double t = numerator / denominator;
 
-    gp_Pnt intersection = lineOrigin.Translated(gp_Vec(lineDir) * t);
+    const gp_Pnt intersection = lineOrigin.Translated(gp_Vec(lineDir) * t);
 
     const double distanceToPlane = plane.Distance(intersection);
 
@@ -2930,11 +2756,11 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
 {
     gp_Vec zDir = getThreadZAxis(lateralFace);
     zDir.Normalize();
-    gp_Pnt axisOrigin = getThreadStartPoint(lateralFace, gp_Dir(zDir));
+    const gp_Pnt axisOrigin = getThreadStartPoint(lateralFace, gp_Dir(zDir));
 
-    gp_Dir axisDir = getThreadAxisDir(lateralFace);
-    gp_Ax1 threadAxis(axisOrigin, axisDir);
-    gp_Lin axisLine(threadAxis);
+    const gp_Dir axisDir = getThreadAxisDir(lateralFace);
+    const gp_Ax1 threadAxis(axisOrigin, axisDir);
+    const gp_Lin axisLine(threadAxis);
 
     auto* obj = startPlane.getValue();
     if (obj == nullptr) {
@@ -2949,7 +2775,7 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
 
     switch (shape.ShapeType()) {
         case TopAbs_VERTEX: {
-            gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+            const gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
             if (axisLine.Distance(pt) > Precision::Confusion() * 10) {
                 throw Base::ValueError(
                     QT_TRANSLATE_NOOP("Exception", "Selected point does not lie on the thread axis.")
@@ -2961,7 +2787,8 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
         case TopAbs_EDGE: {
             BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
 
-            std::vector<gp_Pnt> intersections = findLineCurveIntersections(axisLine, curveAdaptor);
+            const std::vector<gp_Pnt> intersections
+                = findLineCurveIntersections(axisLine, curveAdaptor);
 
             if (intersections.empty()) {
                 throw Base::ValueError("Selected edge does not intersect the thread axis.");
@@ -2971,14 +2798,13 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
         }
 
         case TopAbs_FACE: {
-            TopoDS_Face face = TopoDS::Face(shape);
+            const TopoDS_Face face = TopoDS::Face(shape);
             BRepAdaptor_Surface surfAdaptor(face);
 
             if (surfAdaptor.GetType() == GeomAbs_Plane) {
-                gp_Pln plane = surfAdaptor.Plane();
+                const gp_Pln plane = surfAdaptor.Plane();
 
-                gp_Pnt intersection =
-                    getPlaneLineIntersection(plane, axisLine);
+                const gp_Pnt intersection = getPlaneLineIntersection(plane, axisLine);
 
                 return intersection;
             }
@@ -2995,8 +2821,8 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
             double minDistance = std::numeric_limits<double>::max();
 
             for (int i = 1; i <= intersector.NbPnt(); ++i) {
-                gp_Pnt pnt = intersector.Pnt(i);
-                double dist = pnt.Distance(axisOrigin);
+                const gp_Pnt pnt = intersector.Pnt(i);
+                const double dist = pnt.Distance(axisOrigin);
 
                 if (dist < minDistance) {
                     minDistance = dist;
@@ -3013,7 +2839,7 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
 
 gp_Pnt ThreadUtils::getThreadFarPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const
 {
-    TopoDS_Face face = getSelectedFace(lateralFace);
+    const TopoDS_Face face = getSelectedFace(lateralFace);
 
     if (face.IsNull()) {
         throw Base::RuntimeError("Thread error: selected face is null");
@@ -3033,10 +2859,10 @@ gp_Pnt ThreadUtils::getThreadFarPoint(const App::PropertyLinkSub& lateralFace, c
 
     for (int i = 1; i <= vertices.Extent(); ++i) {
         const TopoDS_Vertex vertex = TopoDS::Vertex(vertices(i));
-        gp_Pnt point = BRep_Tool::Pnt(vertex);
+        const gp_Pnt point = BRep_Tool::Pnt(vertex);
 
-        gp_Vec toPoint(axisOrigin, point);
-        double projection = toPoint.Dot(gp_Vec(zDir));
+        const gp_Vec toPoint(axisOrigin, point);
+        const double projection = toPoint.Dot(gp_Vec(zDir));
 
         if (projection > maxProjection) {
             maxProjection = projection;
@@ -3048,7 +2874,7 @@ gp_Pnt ThreadUtils::getThreadFarPoint(const App::PropertyLinkSub& lateralFace, c
         throw Base::RuntimeError("Thread error: could not determine thread end point");
     }
 
-    gp_Pnt endPoint = axisOrigin.Translated(maxProjection * gp_Vec(zDir));
+    const gp_Pnt endPoint = axisOrigin.Translated(maxProjection * gp_Vec(zDir));
 
     return endPoint;
 }
@@ -3062,9 +2888,9 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
     gp_Vec zDir = getThreadZAxis(lateralFace);
     zDir.Normalize();
 
-    gp_Dir axisDir = getThreadAxisDir(lateralFace);
-    gp_Ax1 threadAxis(startPoint, axisDir);
-    gp_Lin axisLine(threadAxis);
+    const gp_Dir axisDir = getThreadAxisDir(lateralFace);
+    const gp_Ax1 threadAxis(startPoint, axisDir);
+    const gp_Lin axisLine(threadAxis);
 
     auto* obj = upToGeometry.getValue();
     if (obj == nullptr) {
@@ -3079,7 +2905,7 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
 
     switch (shape.ShapeType()) {
         case TopAbs_VERTEX: {
-            gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+            const gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
             if (axisLine.Distance(pt) > Precision::Confusion() * 10) {
                 throw Base::ValueError(
                     QT_TRANSLATE_NOOP("Exception", "Selected point does not lie on the thread axis.")
@@ -3091,7 +2917,8 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
         case TopAbs_EDGE: {
             BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
 
-            std::vector<gp_Pnt> intersections = findLineCurveIntersections(axisLine, curveAdaptor);
+            const std::vector<gp_Pnt> intersections
+                = findLineCurveIntersections(axisLine, curveAdaptor);
 
             if (intersections.empty()) {
                 throw Base::ValueError("Selected edge does not intersect the thread axis.");
@@ -3109,18 +2936,20 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
                 }
             }
             if (!found) {
-                throw Base::ValueError("Selected end edge does not intersect the thread axis ahead of the start.");
+                throw Base::ValueError(
+                    "Selected end edge does not intersect the thread axis ahead of the start."
+                );
             }
             return bestPoint;
         }
 
         case TopAbs_FACE: {
-            TopoDS_Face face = TopoDS::Face(shape);
+            const TopoDS_Face face = TopoDS::Face(shape);
             BRepAdaptor_Surface surfAdaptor(face);
 
             if (surfAdaptor.GetType() == GeomAbs_Plane) {
-                gp_Pln plane = surfAdaptor.Plane();
-                gp_Pnt intersection = getPlaneLineIntersection(plane, axisLine);
+                const gp_Pln plane = surfAdaptor.Plane();
+                const gp_Pnt intersection = getPlaneLineIntersection(plane, axisLine);
                 return intersection;
             }
 
@@ -3136,7 +2965,7 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
             double minDistance = std::numeric_limits<double>::max();
 
             for (int i = 1; i <= intersector.NbPnt(); ++i) {
-                gp_Pnt pnt = intersector.Pnt(i);
+                const gp_Pnt pnt = intersector.Pnt(i);
                 const double dist = gp_Vec(startPoint, pnt).Dot(gp_Vec(axisDir));
 
                 if (dist > Precision::Confusion() && dist < minDistance) {
@@ -3145,7 +2974,9 @@ gp_Pnt ThreadUtils::getThreadEndPoint(
                 }
             }
             if (minDistance == std::numeric_limits<double>::max()) {
-                throw Base::ValueError("Selected end surface does not intersect the thread axis ahead of the start.");
+                throw Base::ValueError(
+                    "Selected end surface does not intersect the thread axis ahead of the start."
+                );
             }
 
             return bestPoint;
@@ -3161,8 +2992,8 @@ double ThreadUtils::getUpToGeometryLength(
     const App::PropertyLinkSub& startPlane
 )
 {
-    gp_Pnt startPoint = getThreadStartPoint(lateralFace, startPlane);
-    gp_Pnt endPoint = getThreadEndPoint(lateralFace, upToGeometry, startPoint);
+    const gp_Pnt startPoint = getThreadStartPoint(lateralFace, startPlane);
+    const gp_Pnt endPoint = getThreadEndPoint(lateralFace, upToGeometry, startPoint);
 
     return gp_Vec(startPoint, endPoint).Dot(getThreadZAxis(lateralFace).Normalized());
 }
@@ -3174,75 +3005,57 @@ double ThreadUtils::getUpToFirstLength(
     const int threadType,
     const int threadSize,
     const bool isInternalThread,
-    const bool UseCustomThreadClearance,
-    const double CustomThreadClearance,
-    App::PropertyEnumeration& ThreadClass,
+    const bool useCustomThreadClearance,
+    const double customThreadClearance,
+    App::PropertyEnumeration& threadClass,
     const bool tapered,
     const double taperedAngle
 )
 {
-    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
-    if (threadType < 0 || static_cast<size_t>(threadType) >= currentThreads.size()) {
-        throw Base::IndexError("Thread type out of range.");
+    const auto diameters = getThreadDiameters(threadType);
+    if (threadSize < 0 || static_cast<size_t>(threadSize) >= diameters.size()) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
-    std::string currentThread = currentThreads[threadType];
-
-    std::vector<std::string> sizes, pitches;
-    const auto& definitions = getThreadDefinitions();
-    for (const auto& definition : definitions) {
-        if (definition.name == currentThread) {
-            sizes = definition.sizes;
-            pitches = definition.pitches;
-            break;
-        }
-    }
-
-    if (sizes.empty() || pitches.empty()
-        || threadSize < 0
-        || static_cast<size_t>(threadSize) >= sizes.size()
-        || static_cast<size_t>(threadSize) >= pitches.size()) {
-        throw Base::ValueError("Thread size out of range for selected thread type.");
-    }
-
-    double Rmaj = std::stod(sizes[threadSize]) / 2.0;
+    const double majorRadius = parseThreadValue(diameters[threadSize]) / 2.0;
 
     double clearance;
-    if (UseCustomThreadClearance) {
-        clearance = CustomThreadClearance / 2.0;
+    if (useCustomThreadClearance) {
+        clearance = customThreadClearance / 2.0;
     }
     else {
-        clearance = getThreadClassClearance(threadType, threadSize, ThreadClass) / 2.0;
+        clearance = getThreadClassClearance(threadType, threadSize, threadClass) / 2.0;
     }
 
-    double RmajC = isInternalThread ? (Rmaj + clearance) : (Rmaj - clearance);
+    const double correctedMajorRadius = isInternalThread ? (majorRadius + clearance)
+                                                         : (majorRadius - clearance);
 
     gp_Vec zDirVec = getThreadZAxis(lateralFace);
     zDirVec.Normalize();
-    gp_Dir zDir(zDirVec);
+    const gp_Dir zDir(zDirVec);
 
-    gp_Pnt startPoint = getThreadStartPoint(lateralFace, startFace);
+    const gp_Pnt startPoint = getThreadStartPoint(lateralFace, startFace);
 
     double guideLength = base.isNull() ? 1.0e6 : getThroughAllLength(base);
     if (guideLength <= Precision::Confusion()) {
         guideLength = 1.0e6;
     }
 
-    gp_Ax2 axis(startPoint, zDir);
+    const gp_Ax2 axis(startPoint, zDir);
 
-    validateThreadRadii(RmajC, RmajC);
+    validateThreadRadii(correctedMajorRadius, correctedMajorRadius);
     const double radialSlope = -getThreadTaperSlope(tapered, taperedAngle);
     if (radialSlope < 0.0) {
-        guideLength = std::min(guideLength, RmajC / -radialSlope);
+        guideLength = std::min(guideLength, correctedMajorRadius / -radialSlope);
     }
 
     TopoDS_Shape guideShape;
     if (std::abs(guideLength * radialSlope) > Precision::Confusion()) {
-        const double R2 = std::max(0.0, RmajC + guideLength * radialSlope);
-        BRepPrimAPI_MakeCone mkCone(axis, RmajC, R2, guideLength);
+        const double endRadius = std::max(0.0, correctedMajorRadius + guideLength * radialSlope);
+        BRepPrimAPI_MakeCone mkCone(axis, correctedMajorRadius, endRadius, guideLength);
         guideShape = mkCone.Shape();
     }
     else {
-        BRepPrimAPI_MakeCylinder mkCyl(axis, RmajC, guideLength);
+        BRepPrimAPI_MakeCylinder mkCyl(axis, correctedMajorRadius, guideLength);
         guideShape = mkCyl.Shape();
     }
 
@@ -3262,7 +3075,7 @@ double ThreadUtils::getUpToFirstLength(
         return guideLength;
     }
 
-    TopoDS_Shape overlap = common.Shape();
+    const TopoDS_Shape overlap = common.Shape();
 
     TopTools_IndexedMapOfShape vertices;
     TopExp::MapShapes(overlap, TopAbs_VERTEX, vertices);
@@ -3275,9 +3088,9 @@ double ThreadUtils::getUpToFirstLength(
     bool found = false;
 
     for (int i = 1; i <= vertices.Extent(); ++i) {
-        gp_Pnt point = BRep_Tool::Pnt(TopoDS::Vertex(vertices(i)));
-        gp_Vec toPoint(startPoint, point);
-        double projection = toPoint.Dot(gp_Vec(zDir));
+        const gp_Pnt point = BRep_Tool::Pnt(TopoDS::Vertex(vertices(i)));
+        const gp_Vec toPoint(startPoint, point);
+        const double projection = toPoint.Dot(gp_Vec(zDir));
 
         if (projection > Precision::Confusion() && projection < minProjection) {
             minProjection = projection;

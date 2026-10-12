@@ -24,9 +24,11 @@
 
 #pragma once
 
+#include <memory>
+
+
 #include "TaskDressUpParameters.h"
 #include "ViewProviderThread.h"
-#include <memory>
 
 class Ui_TaskThreadParameters;
 
@@ -40,7 +42,7 @@ namespace Gui
 class LinearGizmo;
 class RotationalGizmo;
 class GizmoContainer;
-}
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -50,7 +52,7 @@ class TaskThreadParameters: public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
+    TaskThreadParameters(ViewProviderDressUp* threadView, QWidget* parent = nullptr);
     ~TaskThreadParameters() override;
 
     enum threadSelectionModes
@@ -68,6 +70,7 @@ public:
     void QLineEditSelected(const QString& text);
     bool getModelThread() const;
     bool getCosmeticThreaded() const;
+    /// Legacy declaration retained for source compatibility; no implementation is provided.
     void cosmeticChanged();
 
     void apply() override;
@@ -75,7 +78,7 @@ public:
 protected:
     void changeEvent(QEvent* e) override;
     void setThreadSelectionMode(threadSelectionModes mode);
-    void changedObject(const App::Document&, const App::Property& Prop);
+    void changedObject(const App::Document&, const App::Property& property);
     void setThreadSelectionGate();
     void setLinkSubText(QLineEdit* edit, const App::PropertyLinkSub& prop);
 
@@ -87,7 +90,7 @@ private Q_SLOTS:
     void depthTypeChanged(int index);
     void threadClassChanged(int index);
     void threadDirectionChanged(int index);
-    void CustomClearanceCheckValuesChanged();
+    void useCustomThreadClearanceChanged();
     void threadModelChanged();
     void customThreadClearanceChanged(double value);
     void taperedCheckChanged();
@@ -97,12 +100,12 @@ private:
     class Observer: public App::DocumentObserver
     {
     public:
-        Observer(TaskThreadParameters* _owner, PartDesign::Thread* _thread);
+        Observer(TaskThreadParameters* taskPanel, const PartDesign::Thread* threadObject);
 
     private:
-        void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
+        void slotChangedObject(const App::DocumentObject& object, const App::Property& property) override;
         TaskThreadParameters* owner;
-        PartDesign::Thread* thread;
+        const PartDesign::Thread* thread;
     };
 
     std::unique_ptr<Ui_TaskThreadParameters> ui;
@@ -117,7 +120,7 @@ class TaskDlgThreadParameters: public TaskDlgDressUpParameters
     Q_OBJECT
 
 public:
-    explicit TaskDlgThreadParameters(ViewProviderThread* DressUpView);
+    explicit TaskDlgThreadParameters(ViewProviderThread* threadView);
     ~TaskDlgThreadParameters() override;
 
     /// is called by the framework if the dialog is accepted (Ok)
@@ -127,4 +130,4 @@ public:
     bool reject() override;
 };
 
-}
+}  // namespace PartDesignGui

@@ -1,16 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <cmath>
+#include <numbers>
+
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePad.h>
-#include <Mod/PartDesign/App/FeatureThread.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -25,17 +19,19 @@
 #include <BRepTools_WireExplorer.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <GeomAbs_SurfaceType.hxx>
-
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePad.h>
+#include <Mod/PartDesign/App/FeatureThread.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/Constraint.h>
-
-#include <cmath>
-#include <numbers>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -191,11 +187,7 @@ protected:
         const double hiddenRoot = finishedRoot - 0.1;
 
         const auto circlePoint = [rootCenter, radius](double centerY, double angle) {
-            return gp_Pnt(
-                rootCenter + radius * std::cos(angle),
-                centerY + radius * std::sin(angle),
-                0.0
-            );
+            return gp_Pnt(rootCenter + radius * std::cos(angle), centerY + radius * std::sin(angle), 0.0);
         };
 
         const gp_Pnt rootStart(finishedRoot, 0.0, 0.0);
@@ -209,14 +201,14 @@ protected:
         const gp_Pnt hiddenStart(hiddenRoot, 0.0, 0.0);
 
         BRepBuilderAPI_MakeWire builder;
-        builder.Add(BRepBuilderAPI_MakeEdge(
-            GC_MakeArcOfCircle(rootStart, lowerMid, lowerTangent).Value()
-        ).Edge());
+        builder.Add(
+            BRepBuilderAPI_MakeEdge(GC_MakeArcOfCircle(rootStart, lowerMid, lowerTangent).Value()).Edge()
+        );
         builder.Add(BRepBuilderAPI_MakeEdge(lowerTangent, crest).Edge());
         builder.Add(BRepBuilderAPI_MakeEdge(crest, upperTangent).Edge());
-        builder.Add(BRepBuilderAPI_MakeEdge(
-            GC_MakeArcOfCircle(upperTangent, upperMid, rootEnd).Value()
-        ).Edge());
+        builder.Add(
+            BRepBuilderAPI_MakeEdge(GC_MakeArcOfCircle(upperTangent, upperMid, rootEnd).Value()).Edge()
+        );
         builder.Add(BRepBuilderAPI_MakeEdge(rootEnd, hiddenEnd).Edge());
         builder.Add(BRepBuilderAPI_MakeEdge(hiddenEnd, hiddenStart).Edge());
         builder.Add(BRepBuilderAPI_MakeEdge(hiddenStart, rootStart).Edge());
@@ -228,18 +220,19 @@ protected:
     {
         auto* base = _doc->addObject<PartDesign::Feature>("Base");
         _body->addObject(base);
-        base->Shape.setValue(BRepPrimAPI_MakeCylinder(
-            gp_Ax2(gp_Pnt(2.0, 3.0, 4.0), direction), 12.0, 30.0
-        ).Shape());
+        base->Shape.setValue(
+            BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(2.0, 3.0, 4.0), direction), 12.0, 30.0).Shape()
+        );
         auto* thread = _doc->addObject<PartDesign::Thread>("Thread");
         _body->addObject(thread);
         thread->BaseFeature.setValue(base);
-        for (TopExp_Explorer explorer(base->Shape.getValue(), TopAbs_FACE);
-             explorer.More(); explorer.Next()) {
+        for (TopExp_Explorer explorer(base->Shape.getValue(), TopAbs_FACE); explorer.More();
+             explorer.Next()) {
             const auto face = TopoDS::Face(explorer.Current());
             if (BRepAdaptor_Surface(face).GetType() == GeomAbs_Cylinder) {
                 thread->LateralFace.setValue(
-                    base, {"Face" + std::to_string(base->Shape.getShape().findShape(face))}
+                    base,
+                    {"Face" + std::to_string(base->Shape.getShape().findShape(face))}
                 );
                 break;
             }
@@ -383,7 +376,7 @@ protected:
             if (surface.GetType() == GeomAbs_Cylinder) {
                 int idx = topo.findShape(face);
                 if (idx > 0) {
-                return "Face" + std::to_string(idx);
+                    return "Face" + std::to_string(idx);
                 }
             }
         }
@@ -391,10 +384,7 @@ protected:
         return std::nullopt;
     }
 
-    std::optional<std::string> getLateralFaceName(
-        PartDesign::Pad* pad,
-        double expectedRadius
-    )
+    std::optional<std::string> getLateralFaceName(PartDesign::Pad* pad, double expectedRadius)
     {
         const TopoDS_Shape& shape = Part::Feature::getShape(pad, Part::ShapeOption::NoFlag);
         const Part::TopoShape& topo = pad->Shape.getShape();
@@ -517,8 +507,7 @@ TEST_F(ThreadTest, ThreadEndTrimsFollowMetricProfileSupportIntersection)
 
     constexpr double pitch = 2.0;
     constexpr double expectedPhase = 1.0 / 8.0;
-    constexpr double supportX = -0.75
-        + 0.75 * (expectedPhase - 0.001) / (0.4375 - 0.001);
+    constexpr double supportX = -0.75 + 0.75 * (expectedPhase - 0.001) / (0.4375 - 0.001);
     const PartDesign::ThreadUtils::NormalizedThreadSupport support {supportX, 0.0};
     const auto trims = PartDesign::ThreadUtils::calculateThreadEndTrims(
         getProfileWire(profile),
@@ -540,12 +529,8 @@ TEST_F(ThreadTest, ThreadEndTrimsFollowRoundedWhitworthRootIntersection)
         0.0
     };
     const TopoDS_Wire profile = makeRoundedWhitworthRootProfile();
-    const auto trims = PartDesign::ThreadUtils::calculateThreadEndTrims(
-        profile,
-        pitch,
-        support,
-        support
-    );
+    const auto trims
+        = PartDesign::ThreadUtils::calculateThreadEndTrims(profile, pitch, support, support);
 
     BRepTools_WireExplorer explorer(profile);
     ASSERT_TRUE(explorer.More());
@@ -558,8 +543,7 @@ TEST_F(ThreadTest, ThreadEndTrimsFollowRoundedWhitworthRootIntersection)
         - radialDistance * radialDistance;
     ASSERT_GT(intersectionTerm, 0.0);
 
-    const double expected =
-        (rootCircle.Location().Y() + std::sqrt(intersectionTerm)) * pitch;
+    const double expected = (rootCircle.Location().Y() + std::sqrt(intersectionTerm)) * pitch;
     EXPECT_NEAR(trims.nearEnd, expected, 1e-6);
     EXPECT_NEAR(trims.farEnd, expected, 1e-6);
     EXPECT_NEAR(expected, 0.0558318, 1e-6);
@@ -635,9 +619,7 @@ TEST_F(ThreadTest, ThreadExtentUpToGeometryTracksReferencesOnRotatedAxis)
     EXPECT_NEAR(extent.direction.Dot(direction), 1.0, 1e-7);
     EXPECT_NEAR(extent.length, 12.0, 1e-7);
 
-    end->Shape.setValue(BRepBuilderAPI_MakeVertex(
-        origin.Translated(gp_Vec(direction) * 20.0)
-    ).Shape());
+    end->Shape.setValue(BRepBuilderAPI_MakeVertex(origin.Translated(gp_Vec(direction) * 20.0)).Shape());
     EXPECT_NEAR(thread->resolveThreadExtent().length, 15.0, 1e-7);
     thread->UpToGeometry.setValue(nullptr);
     EXPECT_NEAR(thread->resolveThreadExtent().length, 25.0, 1e-7);
@@ -843,8 +825,8 @@ TEST_F(ThreadTest, ExternalThreadModeledOnCone)
     thread->BaseFeature.setValue(base);
 
     std::optional<std::string> lateralFace;
-    for (TopExp_Explorer explorer(base->Shape.getValue(), TopAbs_FACE);
-         explorer.More(); explorer.Next()) {
+    for (TopExp_Explorer explorer(base->Shape.getValue(), TopAbs_FACE); explorer.More();
+         explorer.Next()) {
         const auto face = TopoDS::Face(explorer.Current());
         if (BRepAdaptor_Surface(face).GetType() == GeomAbs_Cone) {
             const int index = base->Shape.getShape().findShape(face);
@@ -890,8 +872,7 @@ TEST_F(ThreadTest, ExternalThreadModeledOnCone)
     ASSERT_FALSE(shape.isNull());
     EXPECT_TRUE(shape.isValid());
     int solids = 0;
-    for (TopExp_Explorer explorer(shape.getShape(), TopAbs_SOLID);
-         explorer.More(); explorer.Next()) {
+    for (TopExp_Explorer explorer(shape.getShape(), TopAbs_SOLID); explorer.More(); explorer.Next()) {
         ++solids;
     }
     EXPECT_EQ(solids, 1);

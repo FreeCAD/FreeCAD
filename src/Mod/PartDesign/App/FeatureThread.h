@@ -25,6 +25,7 @@
 
 #pragma once
 
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
@@ -109,11 +110,11 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     void updatePreviewShape() override;
-    
+
 private:
     ThreadExtent resolveThreadExtent(const Part::TopoShape& base);
     ThreadUtils threadUtils;
     Part::TopoShape reducedBasePreviewShape;
 };
 
-}
+}  // namespace PartDesign

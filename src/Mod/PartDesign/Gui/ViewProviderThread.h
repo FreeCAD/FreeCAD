@@ -24,12 +24,14 @@
 
 #pragma once
 
-#include "ViewProviderDressUp.h"
+#include <vector>
+#include <memory>
+
+
 #include <Gui/ViewProviderTextureExtension.h>
 #include <App/Material.h>
 
-#include <vector>
-#include <memory>
+#include "ViewProviderDressUp.h"
 
 class SoTexture2Transform;
 class SoSeparator;
@@ -42,7 +44,7 @@ namespace App
 {
 class DocumentObject;
 class Property;
-}
+}  // namespace App
 
 namespace PartDesign
 {
@@ -69,7 +71,7 @@ class PartDesignGuiExport ViewProviderThread: public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderThread();
-    
+
     /// destructor
     ~ViewProviderThread() override;
     bool onDelete(const std::vector<std::string>& arg) override;
@@ -93,6 +95,8 @@ protected:
 private:
     friend class TaskDlgThreadParameters;
 
+    bool isThreadVisible() const;
+
     std::unique_ptr<Gui::ViewProviderTextureExtension> textureExtension;
     Gui::CoinPtr<PartGui::SoPreviewShape> pcReducedBasePreview;
     Gui::CoinPtr<SoToggleSwitch> pcReducedBaseToggle;
@@ -102,47 +106,48 @@ private:
     PartDesignGui::ViewProvider* getBaseFeatureViewProvider() const;
     void syncExternalPreviewVisibility();
     void restoreBaseVisibility();
-    std::optional<gp_Dir> getThreadNormal(const PartDesign::Thread* pcThread) const;
-    std::optional<gp_Pnt> getThreadOrigin(const PartDesign::Thread* pcThread) const;
-    std::vector<gp_Pnt> getThreadLocations(const PartDesign::Thread* pcThread) const;
+    std::optional<gp_Dir> getThreadNormal(const PartDesign::Thread* thread) const;
+    std::optional<gp_Pnt> getThreadOrigin(const PartDesign::Thread* thread) const;
+    std::vector<gp_Pnt> getThreadLocations(const PartDesign::Thread* thread) const;
     App::Material getGlobalMaterial();
-    TopoDS_Shape getCurrentlyVisibleShape(const PartDesign::Thread* pcThread) const;
+    TopoDS_Shape getCurrentlyVisibleShape(const PartDesign::Thread* thread) const;
     void updateThreadClipper(const gp_Pnt& origin, const gp_Dir& direction, double length);
-    void updateThreadDirection(const PartDesign::Thread* pcThread);
-    void applyThreadPhaseOffset(const PartDesign::Thread* pcThread);
+    void updateThreadDirection(const PartDesign::Thread* thread);
+    void applyThreadPhaseOffset(const PartDesign::Thread* thread);
 
     std::vector<TopoDS_Face> collectBoreFaces(
-        const PartDesign::Thread* pcThread, const gp_Pnt& threadOrigin
+        const PartDesign::Thread* thread,
+        const gp_Pnt& threadOrigin
     ) const;
     bool generateBoreMeshData(
-        const PartDesign::Thread* pcThread,
+        const PartDesign::Thread* thread,
         const gp_Pnt& threadOriginPnt,
         std::vector<SbVec3f>& vertices,
         std::vector<SbVec3f>& normals,
         std::vector<int>& indices,
         std::vector<SbVec2f>& uvs
-    );
-    std::pair<gp_Dir, gp_Dir> buildOrthonormalFrame(const gp_Dir& axis);
+    ) const;
+    std::pair<gp_Dir, gp_Dir> buildOrthonormalFrame(const gp_Dir& axis) const;
     SbVec2f addVertex(
         std::vector<SbVec3f>& vertices,
         std::vector<SbVec3f>& normals,
         const gp_Pnt& pt,
         const gp_Pnt& origin,
         const gp_Dir& axis,
-        const gp_Dir& x_dir,
-        const gp_Dir& y_dir,
+        const gp_Dir& xDir,
+        const gp_Dir& yDir,
         double surfaceSlope,
         double threadPitch,
         bool reverseNormal
-    );
+    ) const;
     void handleSeamTriangle(
         std::vector<SbVec3f>& vertices,
         std::vector<SbVec3f>& normals,
         std::vector<SbVec2f>& uvs,
         std::array<int, 3>& triIndices
-    );
+    ) const;
     std::map<const PartDesign::Thread*, SoSwitch*> m_threadOverlays;
     void clearThreadTextures();
 };
 
-}
+}  // namespace PartDesignGui

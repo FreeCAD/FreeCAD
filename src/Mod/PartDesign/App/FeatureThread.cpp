@@ -22,27 +22,24 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <BRepAlgoAPI_Common.hxx>
-#include <BRepPrimAPI_MakeCylinder.hxx>
-#include <BRepPrimAPI_MakeSphere.hxx>
-#include <gp_Lin.hxx>
-
-#include "FeatureThread.h"
-#include "FeatureDressUp.h"
-#include "ThreadUtils.h"
-
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <TopExp_Explorer.hxx>
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
-#include <Base/Tools.h>
+#include <stdexcept>
 
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
+#include <gp_Lin.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+
+#include "FeatureThread.h"
+#include "FeatureDressUp.h"
+#include "ThreadUtils.h"
 
 namespace PartDesign
 {
@@ -55,32 +52,86 @@ Thread::Thread()
 
     threadUtils.executeReadThreadDefinitions();
 
-    ADD_PROPERTY_TYPE(ThreadType, (0L), "Thread", App::Prop_None, "Thread type");
+    ADD_PROPERTY_TYPE(
+        ThreadType,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread type")
+    );
     ThreadType.setEnums(threadUtils.getThreadTypeEnums());
 
-    ADD_PROPERTY_TYPE(ThreadTypeName, (0L), "Thread", App::Prop_None, "Thread type name");
+    ADD_PROPERTY_TYPE(
+        ThreadTypeName,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread type name")
+    );
     ThreadTypeName.setEnums(threadUtils.getThreadTypeNameEnums());
 
-    ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Thread", App::Prop_None, "Thread major diameter");
+    ADD_PROPERTY_TYPE(
+        ThreadDiameter,
+        (0.0),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread major diameter")
+    );
 
-    ADD_PROPERTY_TYPE(ThreadSize, (0L), "Thread", App::Prop_None, "Thread size");
+    ADD_PROPERTY_TYPE(
+        ThreadSize,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread size")
+    );
     ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
 
-    ADD_PROPERTY_TYPE(ThreadSizePitch, (0L), "Thread", App::Prop_None, "Thread size");
+    ADD_PROPERTY_TYPE(
+        ThreadSizePitch,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread size")
+    );
     ThreadSizePitch.setEnums(
         threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
     );
 
-    ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Thread", App::Prop_None, "Thread direction");
+    ADD_PROPERTY_TYPE(
+        ThreadDirection,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread direction")
+    );
     ThreadDirection.setEnums(ThreadUtils::ThreadDirectionEnums);
     ThreadDirection.setReadOnly(true);
 
-    ADD_PROPERTY_TYPE(DepthType, (0L), "Thread", App::Prop_None, "Type");
+    ADD_PROPERTY_TYPE(
+        DepthType,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Type")
+    );
     DepthType.setEnums(ThreadUtils::DepthTypeEnums);
 
-    ADD_PROPERTY_TYPE(Depth, (25.0), "Thread", App::Prop_None, "Length");
+    ADD_PROPERTY_TYPE(
+        Depth,
+        (25.0),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Length")
+    );
 
-    ADD_PROPERTY_TYPE(ThreadClass, (0L), "Thread", App::Prop_None, "Thread class");
+    ADD_PROPERTY_TYPE(
+        ThreadClass,
+        (0L),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread class")
+    );
     ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
 
     ADD_PROPERTY_TYPE(
@@ -88,7 +139,7 @@ Thread::Thread()
         (false),
         "Thread",
         App::Prop_None,
-        "Use custom thread clearance"
+        QT_TRANSLATE_NOOP("App::Property", "Use custom thread clearance")
     );
 
     ADD_PROPERTY_TYPE(
@@ -96,19 +147,31 @@ Thread::Thread()
         (0.0),
         "Thread",
         App::Prop_None,
-        "Custom thread clearance (overrides ThreadClass)"
+        QT_TRANSLATE_NOOP("App::Property", "Custom thread clearance (overrides ThreadClass)")
     );
 
-    ADD_PROPERTY_TYPE(ThreadDesignation, ("---"), "Thread", App::Prop_None, "Name");
+    ADD_PROPERTY_TYPE(
+        ThreadDesignation,
+        ("---"),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Name")
+    );
 
-    ADD_PROPERTY_TYPE(LateralFace, (nullptr), "Thread", (App::PropertyType)(App::Prop_None), "LateralFace");
+    ADD_PROPERTY_TYPE(
+        LateralFace,
+        (nullptr),
+        "Thread",
+        (App::PropertyType)(App::Prop_None),
+        QT_TRANSLATE_NOOP("App::Property", "LateralFace")
+    );
 
     ADD_PROPERTY_TYPE(
         StartPlane,
         (nullptr),
         "Thread",
         App::Prop_None,
-        "Reference geometry where thread will start"
+        QT_TRANSLATE_NOOP("App::Property", "Reference geometry where thread will start")
     );
 
     ADD_PROPERTY_TYPE(
@@ -116,21 +179,57 @@ Thread::Thread()
         (nullptr),
         "Thread",
         App::Prop_None,
-        "Reference geometry where thread will end"
+        QT_TRANSLATE_NOOP("App::Property", "Reference geometry where thread will end")
     );
 
-    ADD_PROPERTY_TYPE(ModelThread, (false), "Thread", App::Prop_None, "Model actual thread");
+    ADD_PROPERTY_TYPE(
+        ModelThread,
+        (false),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Model actual thread")
+    );
 
-    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Thread", App::Prop_None, "Texture the thread");
+    ADD_PROPERTY_TYPE(
+        CosmeticThread,
+        (true),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Texture the thread")
+    );
 
-    ADD_PROPERTY_TYPE(Tapered, (false), "Thread", App::Prop_None, "Tapered");
+    ADD_PROPERTY_TYPE(
+        Tapered,
+        (false),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Tapered")
+    );
 
-    ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Thread", App::Prop_None, "Tapered angle");
+    ADD_PROPERTY_TYPE(
+        TaperedAngle,
+        (90.0),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Tapered angle")
+    );
     TaperedAngle.setReadOnly(true);
 
-    ADD_PROPERTY_TYPE(Diameter, (0.0), "Thread", App::Prop_None, "Diameter");
+    ADD_PROPERTY_TYPE(
+        Diameter,
+        (0.0),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Diameter")
+    );
 
-    ADD_PROPERTY_TYPE(IsInternal, (false), "Thread", App::Prop_None, "Thread is internal");
+    ADD_PROPERTY_TYPE(
+        IsInternal,
+        (false),
+        "Thread",
+        App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "Thread is internal")
+    );
 }
 
 Thread::ThreadExtent Thread::resolveThreadExtent()
@@ -148,7 +247,7 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
     const gp_Pnt farPoint = threadUtils.getThreadFarPoint(LateralFace, direction);
     const double cylinderHeight = nearPoint.Distance(farPoint);
 
-    std::string method(DepthType.getValueAsString());
+    const std::string method(DepthType.getValueAsString());
     double length = 0.0;
 
     if (method == "Dimension") {
@@ -175,7 +274,7 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
             : cylinderHeight;
     }
     else if (method == "UpToGeometry") {
-        //TODO: limit UpToGeometry to not be upper than startplane
+        // TODO: limit UpToGeometry to not be upper than startplane
         length = threadUtils.getUpToGeometryLength(UpToGeometry, LateralFace, StartPlane);
     }
     else {
@@ -185,16 +284,14 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
     }
 
     if (!std::isfinite(length) || length <= Precision::Confusion()) {
-        throw Base::ValueError(
-            QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid Thread depth")
-        );
+        throw Base::ValueError(QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid Thread depth"));
     }
 
     return {origin, direction, length};
 }
 
 App::DocumentObjectExecReturn* Thread::execute()
-{
+try {
     AddSubShape.setValue(Part::TopoShape());
     reducedBasePreviewShape = Part::TopoShape();
 
@@ -202,12 +299,12 @@ App::DocumentObjectExecReturn* Thread::execute()
     try {
         base = getBaseTopoShape();
     }
-    catch (Base::Exception& e) {
+    catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
     base.setTransform(Base::Matrix4D());
 
-    bool isThreadEmpty = (LateralFace.getValue() == nullptr);
+    const bool isThreadEmpty = (LateralFace.getValue() == nullptr);
 
     if ((!ModelThread.getValue() && !CosmeticThread.getValue()) || isThreadEmpty) {
         this->positionByBaseFeature();
@@ -215,7 +312,7 @@ App::DocumentObjectExecReturn* Thread::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    auto res = threadUtils.validateParameters(LateralFace);
+    auto* const res = threadUtils.validateParameters(LateralFace);
     if (res != App::DocumentObject::StdReturn) {
         Base::Console().error("Failed to create thread:\n%s\n", res->Why.c_str());
         return res;
@@ -246,26 +343,18 @@ App::DocumentObjectExecReturn* Thread::execute()
         nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
         if (nearestSize < 0 || nearestSize >= static_cast<int>(diameters.size())) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Thread error: Thread size index out of definition range."
-                )
+                QT_TRANSLATE_NOOP("Exception", "Thread error: Thread size index out of definition range.")
             );
         }
         definedDiameter = std::stod(diameters[nearestSize]);
     }
     else {
-        const auto selection = threadUtils.findNearestMinorThreadSize(
-            ThreadType.getValue(),
-            diameter
-        );
+        const auto selection = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
         if (!selection) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Thread error: No thread definition found for the selected type."
-                )
-            );
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Thread error: No thread definition found for the selected type."
+            ));
         }
         nearestSize = selection->sizeIndex;
         nearestPitch = selection->pitchIndex;
@@ -273,15 +362,15 @@ App::DocumentObjectExecReturn* Thread::execute()
     }
 
     if (nearestSize < 0) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Thread error: No thread definition found for the selected type.")
-        );
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Thread error: No thread definition found for the selected type."
+        ));
     }
 
     const bool isCylindricalSupport = !threadUtils.isConicalFace(LateralFace);
     const bool sizeMismatch = nearestSize != ThreadSize.getValue();
-    const bool pitchMismatch = IsInternal.getValue()
-        && nearestPitch != ThreadSizePitch.getValue();
+    const bool pitchMismatch = IsInternal.getValue() && nearestPitch != ThreadSizePitch.getValue();
     const bool diameterMismatch = std::abs(diameter - definedDiameter) > Precision::Confusion();
     if (ModelThread.getValue() && isCylindricalSupport
         && (sizeMismatch || pitchMismatch || diameterMismatch)) {
@@ -293,32 +382,32 @@ App::DocumentObjectExecReturn* Thread::execute()
             formattedDiameter.pop_back();
         }
         const std::string threadKind = IsInternal.getValue() ? "internal" : "external";
-        std::string msg = "Thread error: Selected " + threadKind
-                        + " thread does not match the support diameter "
-                        + formattedDiameter + " mm.";
+        const std::string msg = "Thread error: Selected " + threadKind
+            + " thread does not match the support diameter " + formattedDiameter + " mm.";
         return new App::DocumentObjectExecReturn(msg.c_str());
     }
 
-    double conicalAngle = threadUtils.getConicalAngle(LateralFace);
+    const double conicalAngle = threadUtils.getConicalAngle(LateralFace);
 
     try {
         const ThreadExtent extent = resolveThreadExtent(base);
         const gp_Pnt startPoint = extent.origin;
         const double length = extent.length;
-        gp_Vec zDir(extent.direction);
-        gp_Vec xDir = threadUtils.computePerpendicular(zDir);
+        const gp_Vec zDir(extent.direction);
+        const gp_Vec xDir = threadUtils.computePerpendicular(zDir);
 
-        gp_Dir axisDir(zDir);
-        gp_Pnt nearPoint = threadUtils.getThreadStartPoint(LateralFace, axisDir);
-        gp_Pnt farPoint  = threadUtils.getThreadFarPoint(LateralFace, axisDir);
-        double cylinderHeight = nearPoint.Distance(farPoint);
+        const gp_Dir axisDir(zDir);
+        const gp_Pnt nearPoint = threadUtils.getThreadStartPoint(LateralFace, axisDir);
+        const gp_Pnt farPoint = threadUtils.getThreadFarPoint(LateralFace, axisDir);
+        const double cylinderHeight = nearPoint.Distance(farPoint);
 
-        double projStart = gp_Vec(nearPoint, startPoint).Dot(gp_Vec(axisDir));
+        const double projStart = gp_Vec(nearPoint, startPoint).Dot(gp_Vec(axisDir));
 
         if (projStart < -Precision::Confusion()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Thread error: Start point is above the top of the cylinder face")
-            );
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Thread error: Start point is above the top of the cylinder face"
+            ));
         }
 
         if (length > cylinderHeight) {
@@ -342,12 +431,10 @@ App::DocumentObjectExecReturn* Thread::execute()
 
             const double usefulThreadLength = length - selectedPitch;
             if (usefulThreadLength <= Precision::Confusion()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP(
-                        "Exception",
-                        "Thread error: Thread depth must be greater than the selected pitch"
-                    )
-                );
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Thread error: Thread depth must be greater than the selected pitch"
+                ));
             }
 
             std::optional<double> externalMinorDiameter;
@@ -357,11 +444,10 @@ App::DocumentObjectExecReturn* Thread::execute()
                 ? -std::tan(Base::toRadians(90.0 - TaperedAngle.getValue()))
                 : 0.0;
             const double supportEndRadius = diameter / 2.0 + length * faceSlope;
-            if (!std::isfinite(supportEndRadius)
-                || supportEndRadius <= Precision::Confusion()) {
-                throw Base::ValueError(QT_TRANSLATE_NOOP(
-                    "Exception", "Thread error: Requested depth reaches the cone apex or has an invalid support radius"
-                ));
+            if (!std::isfinite(supportEndRadius) || supportEndRadius <= Precision::Confusion()) {
+                throw Base::ValueError(
+                    QT_TRANSLATE_NOOP("Exception", "Thread error: Requested depth reaches the cone apex or has an invalid support radius")
+                );
             }
             double supportDiameter = diameter;
             if (!IsInternal.getValue()) {
@@ -399,15 +485,15 @@ App::DocumentObjectExecReturn* Thread::execute()
             }
             if (trimmingEnd - trimmingStart <= Precision::Confusion()) {
                 throw Base::ValueError(QT_TRANSLATE_NOOP(
-                    "Exception", "Thread error: Thread depth does not overlap the selected face"
+                    "Exception",
+                    "Thread error: Thread depth does not overlap the selected face"
                 ));
             }
-            const double entranceExtension = limitInternalToolToFace
-                    && StartPlane.getValue() == nullptr
+            const double entranceExtension = limitInternalToolToFace && StartPlane.getValue() == nullptr
                 ? selectedPitch
                 : 0.0;
-            const double generatedThreadLength = usefulThreadLength
-                + endTrims.nearEnd + endTrims.farEnd + entranceExtension;
+            const double generatedThreadLength = usefulThreadLength + endTrims.nearEnd
+                + endTrims.farEnd + entranceExtension;
 
             if (!IsInternal.getValue()) {
 
@@ -429,43 +515,44 @@ App::DocumentObjectExecReturn* Thread::execute()
 
 
             TopoDS_Shape thread = threadUtils.makeThread(
-                    xDir, 
-                    zDir, 
-                    generatedThreadLength,
-                    ThreadType.getValue(),
-                    ThreadSize.getValue(),
-                    ThreadSizePitch.getValue(),
-                    ThreadDirection.getValue(),
-                    ThreadClass,
-                    IsInternal.getValue(),
-                    Tapered.getValue(),
-                    TaperedAngle.getValue(),
-                    UseCustomThreadClearance.getValue(),
-                    CustomThreadClearance.getValue(),
-                    endTrims.farEnd,
-                    usefulThreadLength
+                xDir,
+                zDir,
+                generatedThreadLength,
+                ThreadType.getValue(),
+                ThreadSize.getValue(),
+                ThreadSizePitch.getValue(),
+                ThreadDirection.getValue(),
+                ThreadClass,
+                IsInternal.getValue(),
+                Tapered.getValue(),
+                TaperedAngle.getValue(),
+                UseCustomThreadClearance.getValue(),
+                CustomThreadClearance.getValue(),
+                endTrims.farEnd,
+                usefulThreadLength
             );
 
-                gp_Vec zDirUnit = zDir;
-                zDirUnit.Normalize();
-                gp_Pnt bottomPoint = startPoint.Translated(
-                    zDirUnit * (usefulThreadLength + endTrims.farEnd)
-                );
+            gp_Vec zDirUnit = zDir;
+            zDirUnit.Normalize();
+            const gp_Pnt bottomPoint = startPoint.Translated(
+                zDirUnit * (usefulThreadLength + endTrims.farEnd)
+            );
 
-                double projBottom = gp_Vec(nearPoint, bottomPoint).Dot(gp_Vec(axisDir));
+            const double projBottom = gp_Vec(nearPoint, bottomPoint).Dot(gp_Vec(axisDir));
 
-                if (projBottom > cylinderHeight - selectedPitch + endTrims.farEnd
-                    + Precision::Confusion()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Thread error: Thread bottom point is below the base of the cylinder face")
-                    );
-                }
-                
-                gp_Trsf translation;
-                translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), bottomPoint);
-                TopLoc_Location locTrans(translation);
-                thread.Move(locTrans);
-                
+            if (projBottom
+                > cylinderHeight - selectedPitch + endTrims.farEnd + Precision::Confusion()) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                    "Exception",
+                    "Thread error: Thread bottom point is below the base of the cylinder face"
+                ));
+            }
+
+            gp_Trsf translation;
+            translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), bottomPoint);
+            const TopLoc_Location locTrans(translation);
+            thread.Move(locTrans);
+
             if (thread.IsNull()) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Thread error: Resulting shape is empty")
@@ -489,9 +576,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             double zMax;
             threadBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 
-            const gp_Pnt trimmingOrigin = startPoint.Translated(
-                zDirUnit * trimmingEnd
-            );
+            const gp_Pnt trimmingOrigin = startPoint.Translated(zDirUnit * trimmingEnd);
             const gp_Dir trimmingDirection(zDirUnit.Reversed());
             const gp_Lin trimmingAxis(trimmingOrigin, trimmingDirection);
 
@@ -527,7 +612,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             }
             thread = trimOperation.Shape();
 
-            Part::TopoShape protoThread(thread);
+            const Part::TopoShape protoThread(thread);
 
 
             if (base.isNull()) {
@@ -550,12 +635,12 @@ App::DocumentObjectExecReturn* Thread::execute()
                 result.makeElementBoolean(maker, {base, protoThread}, nullptr, FuzzyTolerance.getValue());
                 result = getSolid(result);
             }
-            catch (Standard_Failure& e) {
+            catch (const Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Thread error: boolean operation failed")
                 );
             }
-            catch (Base::Exception& e) {
+            catch (const Base::Exception& e) {
                 return new App::DocumentObjectExecReturn(e.what());
             }
 
@@ -573,22 +658,31 @@ App::DocumentObjectExecReturn* Thread::execute()
             }
             this->Shape.setValue(result);
             AddSubShape.setValue(protoThread);
-
-        } else {
+        }
+        else {
             this->positionByBaseFeature();
             this->Shape.setValue(base);
         }
 
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure& e) {
+    catch (const Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
-    catch (Base::Exception& e) {
+    catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
     return App::DocumentObject::StdReturn;
+}
+catch (const Base::Exception& e) {
+    return new App::DocumentObjectExecReturn(e.what());
+}
+catch (const Standard_Failure& e) {
+    return new App::DocumentObjectExecReturn(e.GetMessageString());
+}
+catch (const std::exception& e) {
+    return new App::DocumentObjectExecReturn(e.what());
 }
 
 const Part::TopoShape& Thread::getReducedBasePreviewShape() const
@@ -607,7 +701,7 @@ void Thread::updatePreviewShape()
 }
 
 void Thread::onChanged(const App::Property* prop)
-{
+try {
     if (prop == &ThreadType || prop == &IsInternal) {
         std::string type;
 
@@ -615,41 +709,38 @@ void Thread::onChanged(const App::Property* prop)
             type = ThreadType.getValueAsString();
             if (prop == &ThreadType) {
                 ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+                if (!ThreadSize.isValid() && ThreadSize.hasEnums()) {
+                    ThreadSize.setValue(0L);
+                }
+                if (ThreadSize.isValid()) {
+                    ThreadSizePitch.setEnums(
+                        threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
+                    );
+                    if (!ThreadSizePitch.isValid() && ThreadSizePitch.hasEnums()) {
+                        ThreadSizePitch.setValue(0L);
+                    }
+                }
             }
         }
+        else {
+            ThreadSize.setEnums(std::vector<std::string> {});
+            ThreadSizePitch.setEnums(std::vector<std::string> {});
+            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
+            ThreadDesignation.setValue("---");
+            DressUp::onChanged(prop);
+            return;
+        }
 
-        if (type == "None") {
+        if (type == "None" || type == "BSP" || type == "NPT" || type == "ISOTyre") {
             ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
         }
-        else if (type == "ISOMetricProfile") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "ISOMetricFineProfile") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "UNC") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "UNF") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "UNEF") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "BSP") {
-            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
-        }
-        else if (type == "NPT") {
-            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
-        }
-        else if (type == "BSW") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "BSF") {
-            ThreadClass.setEnums(threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue()));
-        }
-        else if (type == "ISOTyre") {
-            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
+        else if (
+            type == "ISOMetricProfile" || type == "ISOMetricFineProfile" || type == "UNC"
+            || type == "UNF" || type == "UNEF" || type == "BSW" || type == "BSF"
+        ) {
+            ThreadClass.setEnums(
+                threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue())
+            );
         }
 
         if (prop == &ThreadType) {
@@ -661,9 +752,18 @@ void Thread::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &ThreadSize) {
+        if (!ThreadType.isValid() || !ThreadSize.isValid()) {
+            ThreadSizePitch.setEnums(std::vector<std::string> {});
+            ThreadDesignation.setValue("---");
+            DressUp::onChanged(prop);
+            return;
+        }
         ThreadSizePitch.setEnums(
             threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue())
         );
+        if (!ThreadSizePitch.isValid() && ThreadSizePitch.hasEnums()) {
+            ThreadSizePitch.setValue(0L);
+        }
         ThreadDesignation.setValue(threadUtils.getThreadDesignations(
             ThreadType.getValue(),
             ThreadSize.getValue(),
@@ -703,7 +803,7 @@ void Thread::onChanged(const App::Property* prop)
 
         double diameter = 0.0;
         try {
-            auto res = threadUtils.validateParameters(LateralFace);
+            auto* const res = threadUtils.validateParameters(LateralFace);
             if (res != App::DocumentObject::StdReturn) {
                 return;
             }
@@ -716,14 +816,14 @@ void Thread::onChanged(const App::Property* prop)
         }
         catch (const Standard_Failure& e) {
             Base::Console().warning(
-                "Thread::onChanged: OCCT exception ao calcular diâmetro: %s\n",
+                "Thread::onChanged: OCCT exception while calculating diameter: %s\n",
                 e.GetMessageString()
             );
             DressUp::onChanged(prop);
             return;
         }
         catch (const Base::Exception& e) {
-            Base::Console().warning("Thread::onChanged: erro ao calcular diâmetro: %s\n", e.what());
+            Base::Console().warning("Thread::onChanged: Failed to calculate diameter: %s\n", e.what());
             DressUp::onChanged(prop);
             return;
         }
@@ -739,8 +839,8 @@ void Thread::onChanged(const App::Property* prop)
         try {
             base = getBaseTopoShape();
         }
-        catch (Base::Exception& e) {
-            Base::Console().warning("Thread::onChanged: erro ao obter base: %s\n", e.what());
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Thread::onChanged: Failed to obtain base shape: %s\n", e.what());
             DressUp::onChanged(prop);
             return;
         }
@@ -749,7 +849,7 @@ void Thread::onChanged(const App::Property* prop)
             DressUp::onChanged(prop);
             return;
         }
-        bool isInternal = threadUtils.isInternalFace(LateralFace, base.getShape());
+        const bool isInternal = threadUtils.isInternalFace(LateralFace, base.getShape());
 
         IsInternal.setValue(isInternal);
 
@@ -759,28 +859,34 @@ void Thread::onChanged(const App::Property* prop)
             nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
         }
         else {
-            const auto selection = threadUtils.findNearestMinorThreadSize(
-                ThreadType.getValue(),
-                diameter
-            );
+            const auto selection
+                = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
             if (selection) {
                 nearestSize = selection->sizeIndex;
                 nearestPitch = selection->pitchIndex;
             }
         }
 
-        if (nearestSize >= 0 && nearestSize != ThreadSize.getValue()) {
+        const auto sizes = threadUtils.getThreadDiameters(ThreadType.getValue());
+        if (nearestSize >= 0 && static_cast<size_t>(nearestSize) < sizes.size()
+            && nearestSize != ThreadSize.getValue()) {
             ThreadSize.setValue(nearestSize);
         }
-        if (nearestPitch >= 0 && nearestPitch != ThreadSizePitch.getValue()) {
-            ThreadSizePitch.setValue(nearestPitch);
+        if (nearestPitch >= 0 && ThreadSize.isValid()) {
+            const auto pitches
+                = threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue());
+            if (static_cast<size_t>(nearestPitch) < pitches.size()
+                && nearestPitch != ThreadSizePitch.getValue()) {
+                ThreadSizePitch.setValue(nearestPitch);
+            }
         }
-    } else if (prop == &Tapered) {
+    }
+    else if (prop == &Tapered) {
         TaperedAngle.setReadOnly(!Tapered.getValue());
         if (!this->testStatus(App::ObjectStatus::Restore)
             && !this->testStatus(App::ObjectStatus::Remove) && !this->isRestoring()) {
             if (Tapered.getValue()) {
-                bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
+                const bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
                 if (isConical && TaperedAngle.getValue() == 90) {
                     TaperedAngle.setValue(threadUtils.getThreadProfileAngle());
                 }
@@ -793,10 +899,22 @@ void Thread::onChanged(const App::Property* prop)
 
     DressUp::onChanged(prop);
 }
+catch (const Base::Exception& e) {
+    Base::Console().warning("Thread::onChanged: %s\n", e.what());
+    DressUp::onChanged(prop);
+}
+catch (const Standard_Failure& e) {
+    Base::Console().warning("Thread::onChanged: %s\n", e.GetMessageString());
+    DressUp::onChanged(prop);
+}
+catch (const std::exception& e) {
+    Base::Console().warning("Thread::onChanged: %s\n", e.what());
+    DressUp::onChanged(prop);
+}
 
 Base::Vector3d Thread::guessNormalDirection() const
 {
-    Base::Vector3d zDir(0.0, 0.0, 1.0);
+    const Base::Vector3d zDir(0.0, 0.0, 1.0);
     return zDir;
 }
 
@@ -806,18 +924,19 @@ std::vector<gp_Pnt> Thread::getThreadLocations() const
         gp_Vec zDir = threadUtils.getThreadZAxis(LateralFace);
         zDir.Normalize();
         return {threadUtils.getThreadStartPoint(LateralFace, gp_Dir(zDir))};
-    }     
-    catch (const Standard_Failure&) { return {}; }
-    catch (const Base::Exception&) { return {}; }
+    }
+    catch (const Standard_Failure&) {
+        return {};
+    }
+    catch (const Base::Exception&) {
+        return {};
+    }
 }
 
 double Thread::getThreadPitch() const
 {
-    return threadUtils.getThreadPitch(
-        ThreadType.getValue(),
-        ThreadSize.getValue(),
-        ThreadSizePitch.getValue()
-    );
+    return threadUtils
+        .getThreadPitch(ThreadType.getValue(), ThreadSize.getValue(), ThreadSizePitch.getValue());
 }
 
 std::optional<gp_Dir> Thread::getThreadNormal() const
@@ -830,8 +949,12 @@ std::optional<gp_Dir> Thread::getThreadNormal() const
         zDir.Normalize();
         return gp_Dir(zDir);
     }
-    catch (const Standard_Failure&) { return std::nullopt; }
-    catch (const Base::Exception&) { return std::nullopt; }
+    catch (const Standard_Failure&) {
+        return std::nullopt;
+    }
+    catch (const Base::Exception&) {
+        return std::nullopt;
+    }
 }
 
 std::optional<gp_Pnt> Thread::getThreadOrigin() const
@@ -841,8 +964,12 @@ std::optional<gp_Pnt> Thread::getThreadOrigin() const
         zDir.Normalize();
         return threadUtils.getThreadStartPoint(LateralFace, gp_Dir(zDir));
     }
-    catch (const Standard_Failure&) { return std::nullopt; }
-    catch (const Base::Exception&) { return std::nullopt; }
+    catch (const Standard_Failure&) {
+        return std::nullopt;
+    }
+    catch (const Base::Exception&) {
+        return std::nullopt;
+    }
 }
 
-}
+}  // namespace PartDesign

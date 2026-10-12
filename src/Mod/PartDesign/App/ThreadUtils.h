@@ -24,6 +24,7 @@
 
 #pragma once
 
+
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS_Wire.hxx>
 
@@ -47,19 +48,19 @@ public:
         const int threadSize,
         const int threadPitch,
         const int leftHanded,
-        App::PropertyEnumeration& ThreadClass,
+        App::PropertyEnumeration& threadClass,
         const bool isInternalThread,
         const bool tapered,
         const double taperedAngle,
-        const bool UseCustomThreadClearance,
-        const double CustomThreadClearance,
+        const bool useCustomThreadClearance,
+        const double customThreadClearance,
         const double farEndTrim,
         const double usefulThreadLength = 0.0
     );
-    App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
+    App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& lateralFace);
     bool isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid);
-    gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace) const;
-    gp_Pnt getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace);
+    gp_Vec getThreadZAxis(const App::PropertyLinkSub& lateralFace) const;
+    gp_Pnt getThreadAxisOrigin(const App::PropertyLinkSub& lateralFace);
     gp_Vec computePerpendicular(const gp_Vec&) const;
     gp_Pnt getThreadStartPoint(
         const App::PropertyLinkSub& lateralFace,
@@ -75,21 +76,11 @@ public:
     };
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
-    std::vector<std::string> getDepthTypeEnums();
-    std::vector<std::string> getThreadClass_None_Enums();
-    std::vector<std::string> getThreadClass_ISOmetric_Enums();
-    std::vector<std::string> getThreadClass_ISOmetricfine_Enums();
-    std::vector<std::string> getThreadClass_UNC_Enums();
-    std::vector<std::string> getThreadClass_UNF_Enums();
-    std::vector<std::string> getThreadClass_UNEF_Enums();
-    std::vector<std::string> getThreadClass_BSW_Enums();
-    std::vector<std::string> getThreadClass_BSF_Enums();
-    std::vector<std::string> getThreadDirectionEnums();
     std::vector<std::string> getThreadDiameters(const int threadType) const;
     std::vector<std::string> getThreadMinorDiameters(const int threadType);
     double getMinorDiameter(const int threadType, const int size, const int pitch) const;
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
-    gp_Dir getThreadAxisDir(const App::PropertyLinkSub& LateralFace);
+    gp_Dir getThreadAxisDir(const App::PropertyLinkSub& lateralFace);
     /// Major/minor diameters are measured at startPoint; length follows the face axis.
     Part::TopoShape reduceExternalThreadBase(
         Part::TopoShape base,
@@ -144,7 +135,11 @@ public:
     );
 
     double getThroughAllLength(TopoShape base) const;
-    double getUpToGeometryLength(const App::PropertyLinkSub& upToGeometry, const App::PropertyLinkSub& lateralFace, const App::PropertyLinkSub& startPlane);
+    double getUpToGeometryLength(
+        const App::PropertyLinkSub& upToGeometry,
+        const App::PropertyLinkSub& lateralFace,
+        const App::PropertyLinkSub& startPlane
+    );
     double getUpToFirstLength(
         const App::PropertyLinkSub& lateralFace,
         const App::PropertyLinkSub& startFace,
@@ -152,9 +147,9 @@ public:
         const int threadType,
         const int threadSize,
         const bool isInternalThread,
-        const bool UseCustomThreadClearance,
-        const double CustomThreadClearance,
-        App::PropertyEnumeration& ThreadClass,
+        const bool useCustomThreadClearance,
+        const double customThreadClearance,
+        App::PropertyEnumeration& threadClass,
         const bool tapered,
         const double taperedAngle
     );
@@ -175,21 +170,7 @@ public:
 
     static const char* ThreadClass_None_Enums[];
 
-    static const char* ThreadClass_ISOmetric_Enums[];
     static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size_utils][2];
-
-    static const char* ThreadClass_ISOmetricfine_Enums[];
-
-    static const char* ThreadClass_UNC_Enums[];
-
-    static const char* ThreadClass_UNF_Enums[];
-
-    static const char* ThreadClass_UNEF_Enums[];
-
-
-    static const char* ThreadClass_BSW_Enums[];
-
-    static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
 
@@ -285,7 +266,6 @@ public:
     {
         return library.getDefinitions();
     }
-    std::vector<std::string> getThreadTypeName2Enums();
     double getCylinderDiameter(const TopoDS_Face& face);
     double getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace);
     double getLateralFaceDiameter(
@@ -304,6 +284,7 @@ public:
         const int threadType,
         const double diameter
     ) const;
+
 private:
     struct ResolvedThreadSelection
     {
@@ -313,11 +294,7 @@ private:
         double pitch;
     };
 
-    ResolvedThreadSelection resolveThreadSelection(
-        int threadType,
-        int sizeIndex,
-        int pitchIndex
-    ) const;
+    ResolvedThreadSelection resolveThreadSelection(int threadType, int sizeIndex, int pitchIndex) const;
     std::optional<Part::TopoShape> prepareThreadProfile(
         int threadType,
         int sizeIndex,
@@ -353,10 +330,9 @@ private:
     double getThreadClassClearance(
         int threadType,
         int threadSize,
-        App::PropertyEnumeration& ThreadClass
+        const App::PropertyEnumeration& threadClass
     ) const;
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
-    static const char* ThreadDepthTypeEnums[];
 
     // TODO: ThreadLibrary should be static member or singleton to improve performance
     class ThreadLibrary
@@ -377,11 +353,11 @@ private:
         std::optional<ThreadDefinition> readThreadDocument(
             App::Document* doc,
             const std::string& source
-        );
-        void findSpreadsheets(App::Document* doc, ThreadDefinition& definition);
+        ) const;
+        void findSpreadsheets(App::Document* doc, ThreadDefinition& definition) const;
     };
 
     ThreadLibrary library;
 };
 
-}
+}  // namespace PartDesign
