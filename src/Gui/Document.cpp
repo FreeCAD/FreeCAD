@@ -1689,7 +1689,6 @@ bool Document::save()
             }
 
             if (docs.size() == 1 && docs.front() == getDocument() && !isModified()
-                && !getDocument()->isTouched() && !dmap[getDocument()]
                 && !isOlderVersion(getDocument())) {
                 return true;
             }
