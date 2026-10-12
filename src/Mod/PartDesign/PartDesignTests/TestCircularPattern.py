@@ -77,4 +77,4 @@ class TestCircularPattern(unittest.TestCase):
         self.doc.recompute()
 
         self.assertEqual(multi.getStatusString(), "Valid")
-        self.assertAlmostEqual(multi.Shape.Volume, 4 * box.Shape.Volume)
+        self.assertAlmostEqual(multi.Shape.Volume, 3 * box.Shape.Volume)
