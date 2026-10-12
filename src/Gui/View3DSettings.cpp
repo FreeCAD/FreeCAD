@@ -404,10 +404,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "SectionCaps") == 0) {
-        // 0 = off, 1 = single color, 2 = a color per part
+        // 0 = off, 1 = single color, 2 = a color per part, 3 = the part's material
         const long mode = rGrp.GetInt("SectionCaps", 1);
         for (auto _viewer : _viewers) {
             _viewer->setSectionCapColored(mode == 2);
+            _viewer->setSectionCapShaded(mode == 3);
             _viewer->setSectionCapping(mode != 0);
         }
     }

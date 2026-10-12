@@ -125,6 +125,8 @@ public:
     Py::Object setSectionCapHatched(const Py::Tuple& args);
     Py::Object setSectionCapColor(const Py::Tuple& args);
     Py::Object isSectionCapHatched();
+    Py::Object setSectionCapShaded(const Py::Tuple& args);
+    Py::Object isSectionCapShaded();
     Py::Object getSectionCapStatus();
     Py::Object getSectionCaps();
     Py::Object graphicsView();

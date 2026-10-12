@@ -26,6 +26,7 @@
 #endif
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <map>
@@ -300,9 +301,10 @@ void SoFCSectionCap::setResolver(Resolver r)
     touch();
 }
 
-void SoFCSectionCap::setStyle(bool perPart, bool hatching, const SbColor& color)
+void SoFCSectionCap::setStyle(bool perPart, bool hatching, const SbColor& color, bool shade)
 {
-    colored = perPart;
+    shaded = shade;
+    colored = perPart && !shade;
     hatched = hatching;
     singleColor = color;
     allocated.clear();
@@ -346,7 +348,7 @@ SectionCapStyle SoFCSectionCap::styleFor(const Group& group)
     }
     usedCombos.insert({chosen % nc, chosen / nc});
     SectionCapStyle style;
-    style.color = colored ? palette()[chosen % nc] : singleColor;
+    style.color = shaded ? group.material.diffuse : (colored ? palette()[chosen % nc] : singleColor);
     style.hatch = hatched ? hatches()[chosen / nc] : std::string("none");
     allocated[group.key] = style;
     return style;
@@ -383,6 +385,8 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     viewProj.multRight(SoProjectionMatrixElement::get(state));
     const SbViewportRegion& region = SoViewportRegionElement::get(state);
     const SbColor hatchColor = colored ? SbColor(0.15f, 0.15f, 0.15f) : singleColor * 0.5f;
+    SbVec3f viewDir;
+    view.inverse().multDirMatrix(SbVec3f(0, 0, -1), viewDir);
 
     // GL state is changed and drawn outside the scene graph's caching
     SoCacheElement::invalidate(state);
@@ -498,12 +502,35 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
                 }
                 glEnd();
             };
-            glColor3f(rec.style.color[0], rec.style.color[1], rec.style.color[2]);
-            quad();
+            if (shaded) {
+                // lit like a face of the part lying in the plane, facing the viewer
+                const SbVec3f n = normal.dot(viewDir) < 0.0f ? normal : -normal;
+                auto rgba = [](const SbColor& c) {
+                    return std::array<GLfloat, 4> {c[0], c[1], c[2], 1.0f};
+                };
+                glEnable(GL_LIGHTING);
+                glDisable(GL_COLOR_MATERIAL);  // else the current color replaces the diffuse
+                // n already faces the viewer; two-sided lighting would flip it for a
+                // quad that happens to be wound clockwise on screen
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, rgba(group.material.ambient).data());
+                glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, rgba(group.material.diffuse).data());
+                glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, rgba(group.material.specular).data());
+                glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, rgba(group.material.emission).data());
+                glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, group.material.shininess * 128.0f);
+                glNormal3f(n[0], n[1], n[2]);
+                quad();
+                glDisable(GL_LIGHTING);
+            }
+            else {
+                glColor3f(rec.style.color[0], rec.style.color[1], rec.style.color[2]);
+                quad();
+            }
             if (stipplePattern(rec.style.hatch, stipple)) {
+                const SbColor hatch = shaded ? SbColor(group.material.diffuse * 0.4f) : hatchColor;
                 glEnable(GL_POLYGON_STIPPLE);
                 glPolygonStipple(stipple);
-                glColor3f(hatchColor[0], hatchColor[1], hatchColor[2]);
+                glColor3f(hatch[0], hatch[1], hatch[2]);
                 quad();
                 glDisable(GL_POLYGON_STIPPLE);
             }
@@ -625,6 +652,22 @@ void SoFCSectionCap::updateProxy()
                 return;
             }
             Group& group = cap->groups[cap->lastGroup];
+            // the material of most triangles (faces, not edges, which use the line color)
+            Material m;
+            float transparency = 0.0f;
+            action->getMaterial(
+                m.ambient,
+                m.diffuse,
+                m.specular,
+                m.emission,
+                m.shininess,
+                transparency,
+                v1->getMaterialIndex()
+            );
+            auto& vote = group.materials[m.diffuse.getPackedValue()];
+            if (vote.second++ == 0) {
+                vote.first = m;
+            }
             const SbMatrix& model = action->getModelMatrix();
             for (const SoPrimitiveVertex* v : {v1, v2, v3}) {
                 SbVec3f world;
@@ -638,6 +681,16 @@ void SoFCSectionCap::updateProxy()
         this
     );
     collect.apply(scene);
+    for (Group& group : groups) {
+        int most = 0;
+        for (const auto& [color, vote] : group.materials) {
+            if (vote.second > most) {
+                most = vote.second;
+                group.material = vote.first;
+            }
+        }
+        group.materials.clear();
+    }
     // drop groups with lines and points only
     groups.erase(
         std::remove_if(groups.begin(), groups.end(), [](const Group& g) { return g.tris.empty(); }),

@@ -483,6 +483,9 @@ public:
     /// A hatch pattern per instance.
     void setSectionCapHatched(bool hatched);
     bool isSectionCapHatched() const;
+    /// The part's own material, lit with the plane normal.
+    void setSectionCapShaded(bool shaded);
+    bool isSectionCapShaded() const;
     /// Null while section caps are off.
     const Gui::Inventor::SoFCSectionCap* getSectionCap() const;
 
@@ -721,6 +724,7 @@ private:
     Gui::Inventor::SoFCSectionCap* pcSectionCap {nullptr};
     bool sectionCapColored {false};
     bool sectionCapHatched {false};
+    bool sectionCapShaded {false};
     SbColor sectionCapColor {0.45f, 0.47f, 0.50f};
 
     RenderType renderType;

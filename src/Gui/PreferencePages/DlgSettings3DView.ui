@@ -599,7 +599,7 @@ Set to 0 to redraw as fast as the graphics driver allows.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Fill the clipped faces of solids: in a single color, or each part in its own color.</string>
+           <string>Fill the clipped faces of solids: in a single color, each part in its own color, or in the part's own material.</string>
           </property>
           <property name="currentIndex">
            <number>1</number>
@@ -623,6 +623,11 @@ Set to 0 to redraw as fast as the graphics driver allows.</string>
           <item>
            <property name="text">
             <string>Color per part</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Part material</string>
            </property>
           </item>
          </widget>

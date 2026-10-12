@@ -231,7 +231,7 @@
      <item>
       <widget class="QComboBox" name="comboCaps">
        <property name="toolTip">
-        <string>Fill the clipped faces of solids in this view: in a single color, or each part in its own color.</string>
+        <string>Fill the clipped faces of solids in this view: in a single color, each part in its own color, or in the part's own material.</string>
        </property>
        <item>
         <property name="text">
@@ -246,6 +246,11 @@
        <item>
         <property name="text">
          <string>Color per part</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Part material</string>
         </property>
        </item>
       </widget>

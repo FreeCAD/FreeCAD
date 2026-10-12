@@ -81,7 +81,8 @@ public:
     void setScene(SoNode* scene);
     void setResolver(Resolver resolve);
     /// A color per instance (else the single color), optionally a hatch per instance.
-    void setStyle(bool perPart, bool hatching, const SbColor& color);
+    /// shaded: the part's own material, lit with the plane normal (overrides perPart)
+    void setStyle(bool perPart, bool hatching, const SbColor& color, bool shaded = false);
 
     const std::vector<SectionCapRecord>& lastRecords() const
     {
@@ -99,6 +100,14 @@ protected:
     ~SoFCSectionCap() override;
 
 private:
+    struct Material
+    {
+        SbColor ambient {0.2f, 0.2f, 0.2f};
+        SbColor diffuse {0.8f, 0.8f, 0.8f};
+        SbColor specular {0.0f, 0.0f, 0.0f};
+        SbColor emission {0.0f, 0.0f, 0.0f};
+        float shininess {0.2f};
+    };
     struct Group
     {
         std::string key;
@@ -107,6 +116,8 @@ private:
         SbBox3f box;
         bool transparent {false};
         bool closed {true};
+        Material material;
+        std::map<std::uint32_t, std::pair<Material, int>> materials;  // votes, by diffuse
     };
 
     void updateProxy();
@@ -118,6 +129,7 @@ private:
     Resolver resolve;
     bool colored {false};
     bool hatched {false};
+    bool shaded {false};
     SbColor singleColor {0.45f, 0.47f, 0.50f};
     std::map<std::string, SectionCapStyle> allocated;
     std::set<std::pair<int, int>> usedCombos;  // (color, hatch)

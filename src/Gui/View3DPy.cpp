@@ -362,6 +362,16 @@ void View3DInventorPy::init_type()
         "isSectionCapHatched(): whether section caps are hatched"
     );
     add_varargs_method(
+        "setSectionCapShaded",
+        &View3DInventorPy::setSectionCapShaded,
+        "setSectionCapShaded(shaded=True): section caps in the part's own material, lit"
+    );
+    add_noargs_method(
+        "isSectionCapShaded",
+        &View3DInventorPy::isSectionCapShaded,
+        "isSectionCapShaded(): whether section caps use the part's own material"
+    );
+    add_varargs_method(
         "setSectionCapColor",
         &View3DInventorPy::setSectionCapColor,
         "setSectionCapColor((r, g, b)): the single section cap color, components 0..1"
@@ -2749,6 +2759,17 @@ Py::Object View3DInventorPy::setSectionCapHatched(const Py::Tuple& args)
 Py::Object View3DInventorPy::isSectionCapHatched()
 {
     return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapHatched());
+}
+
+Py::Object View3DInventorPy::setSectionCapShaded(const Py::Tuple& args)
+{
+    getView3DInventorPtr()->getViewer()->setSectionCapShaded(optionalFlag(args));
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isSectionCapShaded()
+{
+    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapShaded());
 }
 
 Py::Object View3DInventorPy::setSectionCapColor(const Py::Tuple& args)

@@ -203,7 +203,10 @@ Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* pa
         QSignalBlocker blocker(d->ui.comboCaps);
         QSignalBlocker blockerHatch(d->ui.checkCapsHatching);
         d->ui.comboCaps->setCurrentIndex(
-            !viewer->isSectionCapping() ? 0 : (viewer->isSectionCapColored() ? 2 : 1)
+            !viewer->isSectionCapping()         ? 0
+                : viewer->isSectionCapShaded()  ? 3
+                : viewer->isSectionCapColored() ? 2
+                                                : 1
         );
         d->ui.checkCapsHatching->setChecked(viewer->isSectionCapHatched());
         d->ui.checkCapsHatching->setEnabled(viewer->isSectionCapping());
@@ -302,10 +305,11 @@ void Clipping::onActiveDocument(const App::Document& doc)
 
 void Clipping::onComboCapsChanged(int index)
 {
-    // 0 = off, 1 = single color, 2 = a color per part; this view only
+    // 0 = off, 1 = single color, 2 = a color per part, 3 = the part's material; this view only
     if (d->view) {
         View3DInventorViewer* viewer = d->view->getViewer();
         viewer->setSectionCapColored(index == 2);
+        viewer->setSectionCapShaded(index == 3);
         viewer->setSectionCapping(index != 0);
     }
     d->ui.checkCapsHatching->setEnabled(index != 0);
