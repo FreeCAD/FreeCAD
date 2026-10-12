@@ -45,6 +45,10 @@ public:
     {
         return originalTransformation;
     }
+    bool deleteOriginalTransformation() const override
+    {
+        return suppressOriginalTransformation;
+    }
 
     /** @name methods override feature */
     //@{
@@ -72,6 +76,7 @@ protected:
 private:
     std::vector<bool> generatedSuppression;
     bool originalTransformation = true;
+    bool suppressOriginalTransformation = true;
 };
 
 }  // namespace PartDesign
