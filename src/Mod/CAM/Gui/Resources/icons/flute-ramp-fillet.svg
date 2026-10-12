@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RampType dropdown icon: Fillet (quarter-ellipse, f = sqrt(1-(1-t)^2)).
+     Drawn as a true elliptical arc (not a sampled polyline, and not a
+     line+arc hybrid) since the curve's near-vertical entry slope doesn't
+     approximate cleanly with short line segments at icon size, and a
+     straight lead-in visually kinked at the seam (curvature jumped from
+     zero to nonzero there even though direction matched).  A single arc
+     keeps curvature varying continuously the whole way, matching the exact
+     real math with no seam.  viewBox height matches the combo's iconSize
+     (16px) exactly, no extra vertical scaling; content occupies y=2..14,
+     leaving a real 2px margin top and bottom.  Ellipse center (22,2),
+     radii (20,12). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <path fill="none" stroke="#3d85c6" stroke-width="2" stroke-linecap="round"
+    d="M 2,2 A 20,12 0 0,0 22,14"/>
+</svg>

@@ -231,7 +231,7 @@
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0" columnminimumwidth="0,0">
+     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1" columnminimumwidth="0,0">
       <property name="verticalSpacing">
        <number>12</number>
       </property>

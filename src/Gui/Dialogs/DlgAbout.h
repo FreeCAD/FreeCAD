@@ -54,6 +54,7 @@ private:
 class GuiExport LicenseView: public Gui::MDIView
 {
     Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     explicit LicenseView(QWidget* parent = nullptr);

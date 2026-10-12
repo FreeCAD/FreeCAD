@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -33,6 +35,7 @@ import os
 import sys
 import subprocess
 import shutil
+from traceback import format_exception_only
 
 import FreeCAD
 
@@ -233,13 +236,14 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh for the analysis
         self.mesh = None
-        mesh, message = membertools.get_mesh_to_solve(self.analysis)
-        if mesh is not None:
-            self.mesh = mesh
-        else:
+        try:
+            self.mesh = membertools.get_mesh_to_solve(self.analysis)
+        except Exception as e:
             # the prerequisites will run anyway and they will print a message box anyway
             # thus do not print one here, but print a console warning
-            FreeCAD.Console.PrintWarning(f"{message} The prerequisite check will fail.\n")
+            FreeCAD.Console.PrintWarning(
+                f"{''.join(format_exception_only(e))} The prerequisite check will fail.\n"
+            )
 
         ## @var members
         # members of the analysis. All except the solver and the mesh

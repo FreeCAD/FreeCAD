@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2022 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import os
 import time
@@ -141,7 +138,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     if strategy is None:
         strategy = PARAMS.GetInt("ImportStrategy", 0)
     if shapemode is None:
-        shapemode = PARAMS.GetInt("ShapeMode", 0)
+        shapemode = PARAMS.GetInt("ShapeMode", 1)
     if switchwb is None:
         switchwb = PARAMS.GetBool("SwitchWB", True)
     if silent:
@@ -161,7 +158,13 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         dlg.checkLoadMaterials.setChecked(materials)
         dlg.checkLoadLayers.setChecked(layers)
         dlg.comboSingleDoc.setCurrentIndex(1 - int(singledoc))
+
+        from PySide import QtCore, QtGui
+
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.ArrowCursor)
         result = dlg.exec_()
+        QtGui.QApplication.restoreOverrideCursor()
+
         if not result:
             return None, None, None
         strategy = dlg.comboStrategy.currentIndex()

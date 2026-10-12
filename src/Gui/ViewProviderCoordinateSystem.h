@@ -94,6 +94,11 @@ public:
         return false;
     }
 
+    bool canDropObjects() const override
+    {
+        return false;
+    }
+
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 

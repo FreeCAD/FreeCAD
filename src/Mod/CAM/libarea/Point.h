@@ -32,7 +32,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 #include <cmath>
-#include "kurve/geometry.h"
+
+namespace heeks
+{
 
 class Point
 {
@@ -80,6 +82,11 @@ public:
     {
         return !(*this == p);
     }
+    // Exact coordinate equality (operator== is tolerance-based)
+    bool exactlyEquals(const Point& p) const
+    {
+        return x == p.x && y == p.y;
+    }
     double dist(const Point& p) const
     {
         double dx = p.x - x;
@@ -117,13 +124,8 @@ public:
         }
         Rotate(cos(angle), sin(angle));
     }
-    void Transform(const geoff_geometry::Matrix& m)
-    {
-        geoff_geometry::Point p(x, y);
-        p = p.Transform(m);
-        x = p.x;
-        y = p.y;
-    }
 };
 
 const Point operator*(const double& d, const Point& p);
+
+}  // namespace heeks

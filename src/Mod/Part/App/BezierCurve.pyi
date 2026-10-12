@@ -77,39 +77,39 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def increase(self, Int: int = ..., /) -> None:
+    def increase(self, degree: int, /) -> None:
         """
-        Increases the degree of this Bezier curve to Degree.
+        Increases the degree of this Bezier curve to degree.
         As a result, the poles and weights tables are modified.
         """
         ...
 
-    def insertPoleAfter(self, index: int, /) -> None:
+    def insertPoleAfter(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
-        Inserts after the pole of index.
-        """
-        ...
-
-    def insertPoleBefore(self, index: int, /) -> None:
-        """
-        Inserts before the pole of index.
+        Inserts a pole after the pole of the given index.
         """
         ...
 
-    def removePole(self, Index: int, /) -> None:
+    def insertPoleBefore(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
-        Removes the pole of index Index from the table of poles of this Bezier curve.
+        Inserts a pole before the pole of the given index.
+        """
+        ...
+
+    def removePole(self, index: int, /) -> None:
+        """
+        Removes the pole at the given index from the table of poles of this Bezier curve.
         If this Bezier curve is rational, it can become non-rational.
         """
         ...
 
-    def segment(self) -> None:
+    def segment(self, u1: float, u2: float, /) -> None:
         """
-        Modifies this Bezier curve by segmenting it.
+        Modifies this Bezier curve by segmenting it between u1 and u2.
         """
         ...
 
-    def setPole(self, pole: Vector, /) -> None:
+    def setPole(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier curve.
         """
@@ -137,14 +137,14 @@ class BezierCurve(BoundedCurve):
         """
         ...
 
-    def setWeight(self, id: int, weight: float, /) -> None:
+    def setWeight(self, index: int, weight: float, /) -> None:
         """
-        (id, weight) Set a weight of the Bezier curve.
+        (index, weight) Set a weight of the Bezier curve.
         """
         ...
 
     @constmethod
-    def getWeight(self, id: int, /) -> float:
+    def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the Bezier curve.
         """
@@ -158,13 +158,13 @@ class BezierCurve(BoundedCurve):
         ...
 
     @constmethod
-    def getResolution(self, Tolerance3D: float, /) -> float:
+    def getResolution(self, tolerance_3d: float, /) -> float:
         """
         Computes for this Bezier curve the parametric tolerance (UTolerance)
-        for a given 3D tolerance (Tolerance3D).
+        for a given 3D tolerance (tolerance_3d).
         If f(t) is the equation of this Bezier curve, the parametric tolerance
         ensures that:
-        |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < Tolerance3D
+        |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < tolerance_3d
         """
         ...
 

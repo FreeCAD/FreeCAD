@@ -178,7 +178,7 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
 
     Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd = mgr.getCommandByName("Assembly_LinkSelectLinked");
-    if (cmd) {
+    if (cmd && cmd->getAction()) {
         QAction* action = cmd->getAction()->action();
         if (action) {
             menu->addAction(action);

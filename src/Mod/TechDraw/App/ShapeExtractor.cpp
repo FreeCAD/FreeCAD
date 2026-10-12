@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -285,7 +287,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
             }
         }
         catch (...) {
-            Base::Console().error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
+            Base::Console().error("ShapeExtractor failed to retrieve shape from {}\n", xLink->getNameInDocument());
             return TopoDS_Shape();
         }
         if (checkShape(linkedObject, ts.getShape())) {
@@ -417,8 +419,8 @@ bool ShapeExtractor::isDraftPoint(const App::DocumentObject* obj)
 
 bool ShapeExtractor::isDatumPoint(const App::DocumentObject* obj)
 {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string pointToken("Point");
+    const auto objTypeName = obj->getTypeId().getName();
+    constexpr std::string_view pointToken {"Point"};
     if (objTypeName.find(pointToken) != std::string::npos) {
         return true;
     }
@@ -485,7 +487,7 @@ bool ShapeExtractor::checkShape(const App::DocumentObject* shapeObj, TopoDS_Shap
         // this is ok for devs, but there must be a better way to inform the user from somewhere deep in the
         // call stack. notification area from App?
         Base::Console().warning(
-            "ShapeExtractor found a problem shape in %s.  Results may be incorrect.\n",
+            "ShapeExtractor found a problem shape in {}.  Results may be incorrect.\n",
             shapeObj->getNameInDocument());
         return false;
     }

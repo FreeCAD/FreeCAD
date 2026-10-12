@@ -697,6 +697,155 @@
         </property>
        </widget>
       </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Information layer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="Gui::PrefColorButton" name="InformationColor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Color of arc and line helpers and also bspline polygon, comb...</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>InformationColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="3">
+       <widget class="QComboBox" name="InformationPattern">
+        <property name="toolTip">
+         <string>Line pattern of information edges</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="4">
+       <widget class="Gui::PrefSpinBox" name="InformationWidth">
+        <property name="toolTip">
+         <string>Width of information edges</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">px</string>
+        </property>
+        <property name="suffix">
+         <string notr="true"> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>99</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>InformationWidth</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QLabel" name="labelGridLineColor">
+        <property name="text">
+         <string>Grid and inactive helpers</string>
+        </property>
+        <property name="buddy">
+         <cstring>GridLineColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="Gui::PrefColorButton" name="GridLineColor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Color of sketch grid lines and inactive helper lines</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>178</red>
+          <green>178</green>
+          <blue>178</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>GridLineColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_axislines">
+        <property name="text">
+         <string>Sketcher axes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="3">
+       <widget class="QComboBox" name="AxisLinePattern">
+        <property name="toolTip">
+         <string>Line pattern of sketcher axes</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="4">
+        <widget class="Gui::PrefSpinBox" name="AxisLineWidth">
+         <property name="toolTip">
+          <string>Width of the sketcher axes</string>
+         </property>
+         <property name="suffix">
+           <string notr="true"> px</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+           <number>99</number>
+         </property>
+         <property name="value">
+           <number>2</number>
+         </property>
+         <property name="prefEntry" stdset="0">
+           <cstring>AxisLineWidth</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+           <cstring>Mod/Sketcher/View</cstring>
+         </property>
+        </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -708,6 +857,143 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+          <widget class="QLabel" name="labelOtherItem">
+            <property name="minimumSize">
+            <size>
+              <width>200</width>
+              <height>0</height>
+            </size>
+            </property>
+            <property name="text">
+            <string></string>
+            </property>
+          </widget>
+          </item>
+          <item row="1" column="1">
+          <widget class="QLabel" name="labelOtherColor">
+            <property name="minimumSize">
+            <size>
+              <width>95</width>
+              <height>0</height>
+            </size>
+            </property>
+            <property name="text">
+            <string>Color</string>
+            </property>
+          </widget>
+          </item>
+          <item row="1" column="2">
+          <widget class="QLabel" name="labelOtherSpacing">
+            <property name="minimumSize">
+            <size>
+              <width>105</width>
+              <height>0</height>
+            </size>
+            </property>
+            <property name="text">
+            <string></string>
+            </property>
+          </widget>
+          </item>
+          <item row="1" column="3">
+          <widget class="QLabel" name="labelOtherLinetype">
+            <property name="text">
+            <string>Line Type</string>
+            </property>
+          </widget>
+          </item>
+          <item row="1" column="4">
+          <widget class="QLabel" name="labelOtherWidth">
+            <property name="text">
+            <string>Width</string>
+            </property>
+          </widget>
+          </item>
+          <item row="1" column="5">
+          <spacer name="horizontalSpacer_other">
+            <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+            <size>
+              <width>40</width>
+              <height>20</height>
+            </size>
+            </property>
+          </spacer>
+          </item>
+          <item row="5" column="0">
+          <widget class="QLabel" name="dimensionalConstraintTitle">
+            <property name="minimumSize">
+            <size>
+              <width>200</width>
+              <height>0</height>
+            </size>
+            </property>
+            <property name="text">
+            <string>Dimensional constraints</string>
+            </property>
+          </widget>
+          </item>
+          <item row="5" column="1">
+            <widget class="Gui::PrefColorButton" name="DatumColor">
+              <property name="toolTip">
+              <string>Color of dimensional driving constraints in edit mode</string>
+              </property>
+              <property name="color" stdset="0">
+              <color>
+                <red>255</red>
+                <green>38</green>
+                <blue>0</blue>
+              </color>
+              </property>
+              <property name="prefEntry" stdset="0">
+              <cstring>ConstrainedDimColor</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+              <cstring>View</cstring>
+              </property>
+            </widget>
+          </item>
+          <item row="5" column="3">
+          <widget class="QComboBox" name="DimensionalConstraintLinePattern">
+            <property name="toolTip">
+            <string>Line pattern of dimensional constraints in edit mode</string>
+            </property>
+            <property name="currentIndex">
+            <number>-1</number>
+            </property>
+          </widget>
+          </item>
+          <item row="5" column="4">
+          <widget class="Gui::PrefSpinBox" name="DimensionalConstraintLineWidth">
+            <property name="toolTip">
+            <string>Width of dimensional constraints in edit mode</string>
+            </property>
+            <property name="unit" stdset="0">
+            <string notr="true">px</string>
+            </property>
+            <property name="suffix">
+            <string notr="true"> px</string>
+            </property>
+            <property name="minimum">
+            <number>1</number>
+            </property>
+            <property name="maximum">
+            <number>4</number>
+            </property>
+            <property name="value">
+            <number>2</number>
+            </property>
+            <property name="prefEntry" stdset="0">
+            <cstring>DimensionalConstraintLineWidth</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/View</cstring>
+            </property>
+          </widget>
+        </item>
         <item row="10" column="0">
          <widget class="QLabel" name="label_14">
           <property name="minimumSize">
@@ -735,33 +1021,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ConstrainedIcoColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="label_15">
-          <property name="text">
-           <string>Dimensional constraints</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="Gui::PrefColorButton" name="DatumColor">
-          <property name="toolTip">
-           <string>Color of dimensional driving constraints in edit mode</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>38</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ConstrainedDimColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -965,10 +1224,10 @@
          <string>Color of internal faces formed by intersecting geometry or closed loops in the sketch</string>
         </property>
         <property name="color" stdset="0">
-         <color alpha="62">
-          <red>84</red>
-          <green>171</green>
-          <blue>255</blue>
+         <color alpha="64">
+          <red>245</red>
+          <green>159</green>
+          <blue>0</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">

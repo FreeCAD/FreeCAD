@@ -36,14 +36,25 @@
 
 #include <functional>
 
+#include <QPointer>
+
+#include <Inventor/SbLinear.h>
+#include <Inventor/SbTime.h>
+
 #include <Mod/Part/PartGlobal.h>
 
 class Ui_TaskAttacher;
 class QLineEdit;
+class SoEventCallback;
 
 namespace App
 {
 class Property;
+}
+
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
 namespace Gui
@@ -76,6 +87,14 @@ public:
     ~TaskAttacher() override;
 
     bool getFlip() const;
+
+    /// Resolve a reference relative to the attaching object's coordinate-system container.
+    /// Set rootObj to nullptr if the reference points to a shared container itself.
+    static void resolveAttachmentSupportInContext(
+        App::DocumentObject* context,
+        App::DocumentObject*& rootObj,
+        std::string& sub
+    );
 
     /**
      * @brief getActiveMapMode returns either the default mode for selected
@@ -118,6 +137,7 @@ protected:
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void documentDeleted(const Gui::Document&);
+    void forgetViewProvider();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
@@ -134,6 +154,11 @@ private:
     void updateRefButton(int idx);
     void updateAttachmentOffsetUI();
 
+    void removeSketchFeatureNesting(
+        App::DocumentObject*& rootObj,
+        std::string& sub,
+        App::DocumentObject* supportObj
+    );
     void findCorrectObjAndSubInThisContext(App::DocumentObject*& obj, std::string& sub);
     void handleInitialSelection();
     struct SubAndObjName
@@ -241,6 +266,15 @@ protected:
     std::function<void()> onAccept;
     std::function<void()> onReject;
     bool accepted;
+    int tid;
+
+private:
+    // Double-click accept
+    static void handleMouseButtonCB(void* userdata, SoEventCallback* cb);
+    QPointer<Gui::View3DInventorViewer> dblClickViewer;
+    fastsignals::scoped_connection connectDelObject;
+    SbTime lastClickTime;
+    SbVec2s lastClickPos = SbVec2s(-16000, -16000);
 };
 
 }  // namespace PartGui

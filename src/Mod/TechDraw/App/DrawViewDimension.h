@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -249,6 +251,9 @@ protected:
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
     virtual areaPoint getAreaParameters(ReferenceVector references);
+
+    bool isCircleSpecialCase(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1);
+    pointPair getPointsTwoCircles(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1, bool is3d);
 
     double
     dist2Segs(Base::Vector3d s1, Base::Vector3d e1, Base::Vector3d s2, Base::Vector3d e2) const;

@@ -37,6 +37,7 @@
 #include "ViewProviderBody.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderChamfer.h"
+#include "ViewProviderDefeaturing.h"
 #include "ViewProviderDatumCS.h"
 #include "ViewProviderDatumLine.h"
 #include "ViewProviderDatumPlane.h"
@@ -47,12 +48,15 @@
 #include "ViewProviderGroove.h"
 #include "ViewProviderHelix.h"
 #include "ViewProviderHole.h"
+#include "ViewProviderCircularPattern.h"
 #include "ViewProviderLinearPattern.h"
 #include "ViewProviderLoft.h"
 #include "ViewProviderMirrored.h"
 #include "ViewProviderMultiTransform.h"
+#include "ViewProviderPathPattern.h"
 #include "ViewProviderPad.h"
 #include "ViewProviderPipe.h"
+#include "ViewProviderPointPattern.h"
 #include "ViewProviderPocket.h"
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderPrimitive.h"
@@ -139,12 +143,16 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderGroove        ::init();
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
+    PartDesignGui::ViewProviderDefeaturing   ::init();
     PartDesignGui::ViewProviderDraft         ::init();
     PartDesignGui::ViewProviderThickness     ::init();
     PartDesignGui::ViewProviderTransformed   ::init();
     PartDesignGui::ViewProviderMirrored      ::init();
     PartDesignGui::ViewProviderLinearPattern ::init();
+    PartDesignGui::ViewProviderPathPattern   ::init();
+    PartDesignGui::ViewProviderPointPattern  ::init();
     PartDesignGui::ViewProviderPolarPattern  ::init();
+    PartDesignGui::ViewProviderCircularPattern::init();
     PartDesignGui::ViewProviderScaled        ::init();
     PartDesignGui::ViewProviderMultiTransform::init();
     PartDesignGui::ViewProviderDatum         ::init();

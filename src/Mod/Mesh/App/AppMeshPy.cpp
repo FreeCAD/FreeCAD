@@ -40,7 +40,7 @@
 #include "Core/Iterator.h"
 #include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"
-#include "WildMagic4/Wm4ContBox3.h"
+#include "Wm4ContBox3.h"
 
 #include "Exporter.h"
 #include "Importer.h"

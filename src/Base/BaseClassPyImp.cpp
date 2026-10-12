@@ -58,7 +58,7 @@ PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args) const
     Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
-        res.append(Py::String(it.getName()));
+        res.append(toPyString(it.getName()));
     }
     return Py::new_reference_to(res);
 }

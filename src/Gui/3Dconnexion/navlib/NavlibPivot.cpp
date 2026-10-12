@@ -146,7 +146,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     static unsigned long error_count = 0;  // Limit the number of error messages emitted.
     long error = GetIsViewPerspective(isPerspective);
     if (error && error_count <= 10) {
-        Base::Console().error("GetHitLookAt: NavlibInterface::GetIsViewPerspective error %ld\n", error);
+        Base::Console().error("GetHitLookAt: NavlibInterface::GetIsViewPerspective error {}\n", error);
         error_count++;
     }
 
@@ -224,7 +224,7 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       if (!pViewProvider)
                           return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
-                      boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, true));
+                      boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, nullptr, true));
 
                       return 0l;
                   });
@@ -258,7 +258,7 @@ long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
     static unsigned long error_count = 0;  // Limit the number of error messages emitted.
     long error = GetIsViewPerspective(isPerspective);
     if (error && error_count <= 10) {
-        Base::Console().error("SetHitLookFrom: NavlibInterface::GetIsViewPerspective error %ld\n", error);
+        Base::Console().error("SetHitLookFrom: NavlibInterface::GetIsViewPerspective error {}\n", error);
         error_count++;
     }
 

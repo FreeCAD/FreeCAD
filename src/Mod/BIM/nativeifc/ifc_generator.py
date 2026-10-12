@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2022 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This module contains all the tools to create FreeCAD geometry from IFC objects.
 The only entry point in this module is the generate_geometry() function which is
@@ -362,7 +359,6 @@ def filter_types(elements, obj_ids=[]):
     elements = [e for e in elements if not e.is_a("IfcFeatureElement")]
     elements = [e for e in elements if not e.is_a("IfcOpeningElement")]
     elements = [e for e in elements if not e.is_a("IfcSpace")]
-    elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
     elements = [e for e in elements if not e.id() in obj_ids]
     return elements
 
@@ -419,7 +415,7 @@ def get_geom_iterator(ifcfile, elements, brep_mode):
         else:
             # We print a debug message but we continue
             print("DEBUG: ifc_tools.get_geom_iterator: Iterator could not be set up correctly")
-    cores = multiprocessing.cpu_count()
+    cores = max(1, multiprocessing.cpu_count() - 1)
     iterator = ifcopenshell.geom.iterator(settings, ifcfile, cores, include=elements)
     if not iterator.initialize():
         print("DEBUG: ifc_tools.get_geom_iterator: Invalid iterator")

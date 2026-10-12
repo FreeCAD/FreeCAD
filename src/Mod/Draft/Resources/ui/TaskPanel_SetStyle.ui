@@ -173,6 +173,9 @@
             <property name="suffix">
              <string> px</string>
             </property>
+            <property name="maximum">
+             <number>64</number>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
@@ -197,6 +200,9 @@
            <widget class="QSpinBox" name="PointSize">
             <property name="suffix">
              <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>64</number>
             </property>
            </widget>
           </item>

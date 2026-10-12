@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
@@ -142,8 +144,9 @@ class DataExtraction(_BasePostTaskPanel):
         table = filter.GetOutputDataObject(0)
 
         # add the points
-        points = algo.GetOutputDataObject(0).GetPoints().GetData()
-        table.AddColumn(points)
+        points = algo.GetOutputDataObject(0).GetPoints()
+        if points is not None:
+            table.AddColumn(points.GetData())
 
         # split the components
         splitter = vtkSplitColumnComponents()

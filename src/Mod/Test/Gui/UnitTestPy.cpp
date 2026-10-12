@@ -56,6 +56,7 @@ void UnitTestDialogPy::init_type()
     add_varargs_method("updateGUI", &UnitTestDialogPy::updateGUI, "updateGUI");
     add_varargs_method("addUnitTest", &UnitTestDialogPy::addUnitTest, "addUnitTest");
     add_varargs_method("clearUnitTests", &UnitTestDialogPy::clearUnitTests, "clearUnitTests");
+    behaviors().readyType();
 }
 
 UnitTestDialogPy::UnitTestDialogPy() = default;

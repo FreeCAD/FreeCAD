@@ -184,7 +184,7 @@
 The property of this object will refer to the property of the Variable Set.</string>
        </property>
        <property name="text">
-        <string>Store in Variable Set...</string>
+        <string>Store in Variable Set…</string>
        </property>
       </widget>
      </item>

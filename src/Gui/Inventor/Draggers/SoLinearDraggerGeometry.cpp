@@ -26,6 +26,7 @@
 #include <Inventor/nodes/SoCylinder.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTranslation.h>
 
 #include "SoLinearDraggerGeometry.h"
@@ -108,6 +109,37 @@ void SoArrowGeometry::notify(SoNotList* notList)
 
         tipPosition = {0, cylinderHeight.getValue() + 1.5f * coneHeight.getValue(), 0};
     }
+}
+
+SO_KIT_SOURCE(SoSphereGeometry)
+
+void SoSphereGeometry::initClass()
+{
+    SO_KIT_INIT_CLASS(SoSphereGeometry, SoLinearGeometryKit, "LinearGeometryKit");
+}
+
+SoSphereGeometry::SoSphereGeometry()
+{
+    SO_KIT_CONSTRUCTOR(SoSphereGeometry);
+    SO_KIT_ADD_CATALOG_ENTRY(separator, SoSeparator, false, this, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, false, separator, "", false);
+    SO_KIT_ADD_CATALOG_ENTRY(sphere, SoSphere, false, separator, "", true);
+
+    SO_KIT_ADD_FIELD(radius, (0.7f));
+
+    SO_KIT_INIT_INSTANCE();
+
+    auto sphere = SO_GET_ANY_PART(this, "sphere", SoSphere);
+    sphere->radius.connectFrom(&radius);
+
+    auto lightModel = SO_GET_ANY_PART(this, "lightModel", SoLightModel);
+    lightModel->model = SoLightModel::BASE_COLOR;
+
+    auto pickStyle = SO_GET_ANY_PART(this, "pickStyle", SoPickStyle);
+    pickStyle->style = SoPickStyle::SHAPE_ON_TOP;
+
+    tipPosition = {0, 1, 0};
 }
 
 SO_KIT_SOURCE(SoLinearGeometryBaseKit)

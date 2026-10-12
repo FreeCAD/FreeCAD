@@ -24,12 +24,15 @@
 
 #pragma once
 
-#include <QWidget>
+#include <memory>
+#include <vector>
 #include <App/PropertyStandard.h>  // For Property types
 #include <App/PropertyLinks.h>     // For PropertyLinkSub
-#include <Gui/ComboLinks.h>
+#include <Gui/EditableDatumLabel.h>
 
 #include <Mod/Part/PartGlobal.h>
+
+#include "PatternReferenceWidget.h"
 
 class Ui_PatternParametersWidget;
 
@@ -46,7 +49,8 @@ class DocumentObject;
 namespace Gui
 {
 class QuantitySpinBox;
-}
+class View3DInventorViewer;
+}  // namespace Gui
 class QToolButton;
 
 namespace PartGui
@@ -71,12 +75,16 @@ enum class PatternMode
  * Length/Spacing (including dynamic spacing), and Occurrences. It binds directly
  * to the corresponding properties of a Feature.
  */
-class PartGuiExport PatternParametersWidget: public QWidget
+class PartGuiExport PatternParametersWidget: public PatternReferenceWidget
 {
     Q_OBJECT
 
 public:
-    explicit PatternParametersWidget(PatternType type, QWidget* parent = nullptr);
+    explicit PatternParametersWidget(
+        PatternType type,
+        Gui::View3DInventorViewer* v,
+        QWidget* parent = nullptr
+    );
     ~PatternParametersWidget() override;
 
     /**
@@ -100,6 +108,7 @@ public:
         App::PropertyEnumeration* modeProp,
         App::PropertyQuantity* lengthProp,
         App::PropertyQuantity* offsetProp,
+        App::PropertyFloatList* spacingsOverridesProp,
         App::PropertyFloatList* spacingPatternProp,
         App::PropertyIntegerConstraint* occurrencesProp,
         App::DocumentObject* feature
@@ -115,13 +124,6 @@ public:
      * @param link The PropertyLinkSub representing the custom direction.
      * @param text The user-visible text for the combo box item.
      */
-    void addDirection(
-        App::DocumentObject* linkObj,
-        const std::string& linkSubname,
-        const QString& itemText,
-        int userData = -1
-    );
-
     /**
      * @brief Updates the UI elements to reflect the current values of the bound properties.
      */
@@ -131,14 +133,6 @@ public:
      * @brief Returns the currently selected direction link from the combo box.
      * Returns an empty link if "Select reference..." is chosen.
      */
-    const App::PropertyLinkSub& getCurrentDirectionLink() const;
-
-    /**
-     * @brief Checks if the "Select reference..." item is currently selected.
-     */
-    bool isSelectReferenceMode() const;
-
-    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
     int getMode() const;
     double getExtent() const;
@@ -152,25 +146,23 @@ public:
 
     void applyQuantitySpinboxes() const;
 
-    Gui::ComboLinks dirLinks;
-
-Q_SIGNALS:
-    /**
-     * @brief Emitted when the user selects the "Select reference..." option
-     *        in the direction combo box, indicating the need to enter selection mode.
-     */
-    void requestReferenceSelection();
-
-    /**
-     * @brief Emitted when any parameter value controlled by this widget changes
-     *        that requires a recompute of the feature.
-     */
-    void parametersChanged();
-
+    // Methods for managing on-view labels
+    void updateSpacingLabels(
+        const Base::Vector3d& center,
+        const Base::Vector3d& axis,
+        double radius,
+        double startAngle
+    );
+    void updateSpacingLabels(const Base::Vector3d& startPoint, const Base::Vector3d& direction);
+    void updateSpacingLabels(
+        const Base::Vector3d& startPoint,
+        const Base::Vector3d& direction,
+        const Base::Vector3d& planeNormal
+    );
+    void clearAllSpacingLabels();
 
 private Q_SLOTS:
     // Slots connected to UI elements
-    void onDirectionChanged(int index);
     void onReversePressed();
     void onModeChanged(int index);
     // Note: Spinbox value changes are often handled by direct binding,
@@ -186,6 +178,10 @@ private Q_SLOTS:
     void onAddSpacingButtonClicked();
     void onDynamicSpacingChanged();  // Simplified slot
     void onRemoveSpacingButtonClicked(QWidget* rowWidget);
+
+    // Slots for on-view label interaction
+    void onSpacingLabelClicked(Gui::EditableDatumLabel* label);
+    void onSpacingLabelRightClicked(Gui::EditableDatumLabel* label, const QPoint& globalPos);
 
 private:
     // Initialization and setup
@@ -204,11 +200,11 @@ private:
     std::unique_ptr<Ui_PatternParametersWidget> ui;
 
     // Pointers to bound properties (raw pointers, lifetime managed externally)
-    App::PropertyLinkSub* m_directionProp = nullptr;
     App::PropertyBool* m_reversedProp = nullptr;
     App::PropertyEnumeration* m_modeProp = nullptr;
     App::PropertyQuantity* m_extentProp = nullptr;
     App::PropertyQuantity* m_spacingProp = nullptr;
+    App::PropertyFloatList* m_spacingsOverrideProp = nullptr;
     App::PropertyFloatList* m_spacingPatternProp = nullptr;
     App::PropertyIntegerConstraint* m_occurrencesProp = nullptr;
     App::DocumentObject* m_feature = nullptr;  // Store feature for context
@@ -218,6 +214,10 @@ private:
     // Store pointers to dynamically created widgets for removal and access
     QList<QWidget*> dynamicSpacingRows;
     QList<Gui::QuantitySpinBox*> dynamicSpacingSpinBoxes;
+
+    // Members for on-view labels
+    Gui::View3DInventorViewer* viewer = nullptr;
+    std::vector<std::unique_ptr<Gui::EditableDatumLabel>> spacingLabels;
 
     PatternType type;
 };

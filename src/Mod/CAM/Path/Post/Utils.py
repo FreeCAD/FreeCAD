@@ -1,28 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre yorik@uncreated.net
+# SPDX-FileCopyrightText: 2022 Larry Woestman LarryWoestman2@gmail.com
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 These are common functions and classes for creating custom post processors.
@@ -31,8 +27,9 @@ These are common functions and classes for creating custom post processors.
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
+from Constants import GCODE_DRILL_EXTENDED, GCODE_MOVE_TAP
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 import FreeCAD
 import Path
@@ -55,16 +52,40 @@ if FreeCAD.GuiUp:
     import FreeCADGui
 
 
+def apply_path_substitutions(file_path, job):
+    """Substitute %D, %d, %j and %M in file_path.
+
+    - %D: directory of the job's document
+    - %d: label of the job's document
+    - %j: label of the job
+    - %M: user macro directory
+    """
+    substitutions = {
+        "%D": os.path.dirname(job.Document.FileName or "."),
+        "%d": job.Document.Label,
+        "%j": job.Label,
+        "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
+    }
+    for key, value in substitutions.items():
+        file_path = file_path.replace(key, value)
+
+    Path.Log.debug(f"file_path: {file_path}")
+    return file_path
+
+
 class FilenameGenerator:
     def __init__(self, job, file_extension=None):
         self.job = job
         self._file_extension_override = file_extension
         self.subpartname = ""
         self.sequencenumber = 0
+        self._warned_about_subpart = False
         path, filename, ext = self.get_path_and_filename_default()
 
         self.qualified_path = self._apply_path_substitutions(path)
-        self.qualified_filename = self._apply_filename_substitutions(filename)
+        # The subpart substitutions are resolved in generate_filenames() because
+        # the subpart name is only known once the output sections are built.
+        self.filename_template = filename
         self.extension = ext
 
     def get_path_and_filename_default(self):
@@ -133,17 +154,7 @@ class FilenameGenerator:
 
     def _apply_path_substitutions(self, file_path):
         """Apply substitutions based on job settings and other parameters."""
-        substitutions = {
-            "%D": os.path.dirname(self.job.Document.FileName or "."),
-            "%d": self.job.Document.Label,
-            "%j": self.job.Label,
-            "%M": os.path.dirname(FreeCAD.getUserMacroDir()),
-        }
-        for key, value in substitutions.items():
-            file_path = file_path.replace(key, value)
-
-        Path.Log.debug(f"file_path: {file_path}")
-        return file_path
+        return apply_path_substitutions(file_path, self.job)
 
     def _apply_filename_substitutions(self, file_name):
         Path.Log.debug(f"file_name: {file_name}")
@@ -165,7 +176,7 @@ class FilenameGenerator:
     def generate_filenames(self):
         """Yield filenames indefinitely with proper substitutions."""
         while True:
-            temp_filename = self.qualified_filename
+            temp_filename = self.filename_template
             Path.Log.debug(f"temp_filename: {temp_filename}")
             explicit_sequence = False
             matches = re.findall(r"%S", temp_filename)
@@ -174,7 +185,19 @@ class FilenameGenerator:
                 temp_filename = re.sub(r"%S", str(self.sequencenumber), temp_filename)
                 explicit_sequence = True
 
-            subpart = f"-{self.subpartname}" if self.subpartname else ""
+            explicit_subpart = bool(re.search(r"%[TtWO]", temp_filename))
+            if explicit_subpart and not self.subpartname and not self._warned_about_subpart:
+                self._warned_about_subpart = True
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "CAM_Post",
+                        "The %T, %t, %W and %O substitutions name the section of a split "
+                        "output. The job is not splitting its output, so they are ignored.\n",
+                    )
+                )
+            temp_filename = self._apply_filename_substitutions(temp_filename)
+
+            subpart = f"-{self.subpartname}" if self.subpartname and not explicit_subpart else ""
             sequence = (
                 f"-{self.sequencenumber}" if not explicit_sequence and self.sequencenumber else ""
             )
@@ -190,34 +213,6 @@ class FilenameGenerator:
             yield os.path.normpath(full_path)
 
 
-class GCodeHighlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        super(GCodeHighlighter, self).__init__(parent)
-
-        keywordFormat = QtGui.QTextCharFormat()
-        keywordFormat.setForeground(QtCore.Qt.cyan)
-        keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
-
-        self.highlightingRules = [
-            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
-        ]
-
-        speedFormat = QtGui.QTextCharFormat()
-        speedFormat.setFontWeight(QtGui.QFont.Bold)
-        speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
-
-    def highlightBlock(self, text):
-        for pattern, hlFormat in self.highlightingRules:
-            expression = QtCore.QRegularExpression(pattern)
-            index = expression.match(text)
-            while index.hasMatch():
-                length = index.capturedLength()
-                self.setFormat(index.capturedStart(), length, hlFormat)
-                index = expression.match(text, index.capturedStart() + length)
-
-
 class GCodeEditorDialog(QtGui.QDialog):
     def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
@@ -226,15 +221,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.setWindowTitle(translate("CAM", "CAM Export Gcode"))
         layout = QtGui.QVBoxLayout(self)
 
-        # self.editor = QtGui.QTextEdit()  # without lines enumeration
-        self.editor = CodeEditor()  # with lines enumeration
-
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        font = QtGui.QFont()
-        font.setFamily(p.GetString("Font", "Courier"))
-        font.setFixedPitch(True)
-        font.setPointSize(p.GetInt("FontSize", 10))
-        self.editor.setFont(font)
+        self.editor = CodeEditor()
         self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
@@ -332,30 +319,10 @@ def fmt(num, dec, units):
 
 def editor(gcode):
     """Pops up a handy little editor to look at the code output."""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
-
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
     dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
-    gcodeSize = len(dia.editor.toPlainText())
-    if gcodeSize <= mhs:
-        # because of poor performance, syntax highlighting is
-        # limited to mhs octets (default 512 KB).
-        # It seems than the response time curve has an inflexion near 500 KB
-        # beyond 500 KB, the response time increases exponentially.
-        dia.highlighter = GCodeHighlighter(dia.editor.document())
-    else:
-        FreeCAD.Console.PrintMessage(
-            translate(
-                "Path",
-                "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize),
-            )
-        )
-    result = dia.exec_()
-    if result:  # If user selected 'OK' get modified G Code
+    if dia.exec_():  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()
     else:
         final = gcode
@@ -421,11 +388,24 @@ def cannedCycleTerminator(path):
     # - if retract plane changes
     # - if retract mode (G98/G99) changes
 
+    # Inserted G98/G99/G80 carry the cycle's annotations so posts that key on
+    # them (e.g. linuxcnc rigid tapping on "operation") still recognize them.
+    def modal(name, annotations):
+        cmd = Path.Command(name)
+        if annotations:
+            # Not addAnnotations(): it rejects the numeric values some posts use.
+            cmd.Annotations = dict(annotations)
+        return cmd
+
     result = []
     cycle_active = False
     last_cycle_params = {}
+    last_cycle_annotations = {}
     last_retract_mode = None
     explicit_retract_mode_set = False
+    # Last literal G98/G99 in the path, kept until a G80. Cycles without a
+    # RetractMode annotation (e.g. the deprecated Tapping op) fall back to it.
+    path_retract_mode = None
 
     for command in path.Commands:
         if (
@@ -436,29 +416,33 @@ def cannedCycleTerminator(path):
             cycle_active = False
             last_retract_mode = None
             explicit_retract_mode_set = False
+            path_retract_mode = None
             result.append(command)
         elif command.Name in ["G98", "G99"]:
             # Explicit retract mode in the path - track it
             if cycle_active and last_retract_mode and command.Name != last_retract_mode:
                 # Mode changed while cycle active - terminate
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
             last_retract_mode = command.Name
             explicit_retract_mode_set = True
+            path_retract_mode = command.Name
             result.append(command)
-        elif command.Name in CmdMoveDrill:
+        elif command.Name in CmdMoveDrill + GCODE_DRILL_EXTENDED:
             # Check if this cycle has different parameters than the last one
             current_params = {k: v for k, v in command.Parameters.items() if k not in ["X", "Y"]}
 
             # Get retract mode from annotations
-            current_retract_mode = command.Annotations.get("RetractMode", "G98")
+            current_retract_mode = command.Annotations.get(
+                "RetractMode", path_retract_mode or "G98"
+            )
 
             # Check if we need to terminate the previous cycle
             if cycle_active and (
                 current_params != last_cycle_params or current_retract_mode != last_retract_mode
             ):
                 # Parameters or retract mode changed, terminate previous cycle
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
                 explicit_retract_mode_set = False
 
@@ -467,19 +451,25 @@ def cannedCycleTerminator(path):
             if (
                 not cycle_active or current_retract_mode != last_retract_mode
             ) and not explicit_retract_mode_set:
-                result.append(Path.Command(current_retract_mode))
+                retract = modal(current_retract_mode, command.Annotations)
+                if command.Name in GCODE_MOVE_TAP and result and result[-1].Name == "M29":
+                    # Rigid tap: keep the post's M29 S<rpm> directly before its tap.
+                    result.insert(len(result) - 1, retract)
+                else:
+                    result.append(retract)
 
             # Add the cycle command
             result.append(command)
             cycle_active = True
             last_cycle_params = current_params
+            last_cycle_annotations = command.Annotations
             last_retract_mode = current_retract_mode
             explicit_retract_mode_set = False  # Reset for next cycle
         else:
             # Non-cycle command (not G80 or drill cycle)
             if cycle_active:
                 # Terminate active cycle
-                result.append(Path.Command("G80"))
+                result.append(modal("G80", last_cycle_annotations))
                 cycle_active = False
                 last_retract_mode = None
             explicit_retract_mode_set = False
@@ -487,6 +477,6 @@ def cannedCycleTerminator(path):
 
     # If cycle is still active at the end, terminate it
     if cycle_active:
-        result.append(Path.Command("G80"))
+        result.append(modal("G80", last_cycle_annotations))
 
     return Path.Path(result)

@@ -59,25 +59,6 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="WarningSuppressVelocity">
-        <property name="toolTip">
-         <string>Suppress warning whenever a path selection mode is activated</string>
-        </property>
-        <property name="text">
-         <string>Suppress feed rate warning</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>WarningSuppressVelocity</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/CAM</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="Gui::PrefCheckBox" name="WarningSuppressSelectionMode">
         <property name="toolTip">
          <string>Suppress warning whenever a path selection mode is activated</string>

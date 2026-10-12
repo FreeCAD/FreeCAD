@@ -382,11 +382,6 @@ The smallest value is 0.</source>
       <translation>Netgen 메셔를 사용합니다</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>세밀도:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>매우 거칠게</translation>
@@ -439,6 +434,11 @@ A value in the range of 0.1-1.</source>
 0.1~1 범위의 값을 사용하세요.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -489,8 +489,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>활성 문서가 없습니다</translation>
+      <source>No Active Document</source>
+      <translation>활성 문서 없음</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

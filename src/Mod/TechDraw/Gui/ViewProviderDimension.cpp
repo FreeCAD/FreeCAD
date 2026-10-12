@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -108,6 +110,8 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(LineSpacingFactorISO, (Preferences::LineSpacingISO()), group, App::Prop_None,
                       "Adjusts the gap between dimension line and dimension text");
 
+    ADD_PROPERTY_TYPE(AllowSnap, (Preferences::SnapDimensions()), group, App::Prop_None,
+                      "Dimension will snap to position if true");
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
@@ -234,7 +238,8 @@ void ViewProviderDimension::onChanged(const App::Property* prop)
         (prop == &FlipArrowheads) ||
         (prop == &GapFactorASME) ||
         (prop == &GapFactorISO) ||
-        prop == &LineSpacingFactorISO)  {
+        prop == &LineSpacingFactorISO ||
+        prop == &AllowSnap)  {
         auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);

@@ -63,16 +63,17 @@ public:
     };
 
     /// Construction
-    explicit FileInfo(const char* fileName = "");
-    explicit FileInfo(const std::string& fileName);
+    explicit FileInfo(std::string fileName);
+    explicit FileInfo(const char* fileName = "")
+        : FileInfo(std::string {fileName})
+    {}
     /// Set a new file name
-    void setFile(const char* name);
+    void setFile(std::string name);
     /// Set a new file name
-    void setFile(const std::string& name)
+    void setFile(const char* name)
     {
-        setFile(name.c_str());
+        setFile(std::string {name});
     }
-
 
     /** @name extraction of information */
     //@{
@@ -170,6 +171,12 @@ public:
     static std::string pathToString(const std::filesystem::path& path);
     /// Convert from string to filesystem path
     static std::filesystem::path stringToPath(const std::string& str);
+    /** Reduce an archive entry name to a path that cannot escape the extraction directory.
+     *
+     * @param[in] entryName The raw entry name as stored in the archive.
+     * @return The normalized relative path, or @c std::nullopt if the entry must be skipped.
+     */
+    static std::optional<std::string> safeArchiveEntryPath(const std::string& entryName);
     //@}
 
 private:

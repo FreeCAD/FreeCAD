@@ -32,7 +32,7 @@
 
 
 #include <Base/Console.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+#include <Wm4MeshCurvature.h>
 
 #include "Evaluation.h"
 #include "Iterator.h"
@@ -1753,7 +1753,7 @@ void MeshTopoAlgorithm::FillupHoles(
             if (newFacet._aulPoints[0] >= ctPoints || newFacet._aulPoints[1] >= ctPoints
                 || newFacet._aulPoints[2] >= ctPoints) {
                 Base::Console().log(
-                    "Ignore invalid face <%d, %d, %d> (%d vertices)\n",
+                    "Ignore invalid face <{}, {}, {}> ({} vertices)\n",
                     newFacet._aulPoints[0],
                     newFacet._aulPoints[1],
                     newFacet._aulPoints[2],

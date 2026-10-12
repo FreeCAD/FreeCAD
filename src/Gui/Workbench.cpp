@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+
 #include <QDockWidget>
 #include <QStatusBar>
 
@@ -43,6 +45,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/SuppressibleExtension.h>
 #include <Base/Interpreter.h>
 #include <Gui/ComboView.h>
 #include <Gui/TaskView/TaskView.h>
@@ -657,6 +660,18 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     }
     else if (strcmp(recipient, "Tree") == 0) {
         if (!sels.empty()) {
+            bool hasSuppressible
+                = std::any_of(sels.begin(), sels.end(), [](const SelectionSingleton::SelObj& sel) {
+                      App::DocumentObject* obj = sel.pObject;
+                      if (!obj) {
+                          return false;
+                      }
+                      auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+                      return ext && !ext->Suppressed.testStatus(App::Property::Hidden);
+                  });
+            if (hasSuppressible) {
+                *item << "Std_ToggleSuppress";
+            }
             *item << "Std_ToggleFreeze" << "Separator"
                   << "Std_ToggleVisibility" << "Std_ShowSelection"
                   << "Std_HideSelection"
@@ -699,12 +714,22 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Edit
     auto edit = new MenuItem(menuBar);
     edit->setCommand("&Edit");
+    auto create = new MenuItem;
+    create->setCommand("Create");
+    *create << "Std_Part"
+            << "Std_Group"
+            << "Std_VarSet"
+            << "Std_AnnotationLabel"
+            << "Std_LinkActions"
+            << "Separator"
+            << "Std_TextDocument";
+
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
-          << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
+          << "Std_Paste" << "Std_DuplicateSelection" << "Std_Delete" << "Separator"
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection"
-          << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
-          << "Separator" << "Std_Placement" << "Std_TransformManip" << "Std_Alignment"
-          << "Std_Edit" << "Std_Properties" << "Separator" << "Std_UserEditMode" << "Separator"
+          << "Std_SelectAll" << "Separator" << "Std_TransformManip" << "Std_Placement"
+          << "Std_Alignment" << "Std_SendToPythonConsole" << "Std_Properties" << "Separator"
+          << "Std_Edit" << "Std_UserEditMode" << "Separator" << create << "Separator"
           << "Std_DlgPreferences";
 
     auto axoviews = new MenuItem;
@@ -721,13 +746,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
               << "Std_ViewRight" << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
               << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight" << "Separator"
               << "Std_StoreWorkingView" << "Std_RecallWorkingView";
-
-    // stereo
-    auto view3d = new MenuItem;
-    view3d->setCommand("&Stereo");
-    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
-            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
-            << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 
     // zoom
     auto zoom = new MenuItem;
@@ -748,12 +766,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera"
           << "Std_MainFullscreen" << "Separator" << stdviews << "Std_FreezeViews" << "Std_DrawStyle"
           << "Std_SelBoundingBox"
-          << "Separator" << view3d << zoom << "Std_ViewDockUndockFullscreen" << "Std_AxisCross"
+          << "Separator" << zoom << "Std_ViewDockUndockFullscreen"
+          << "Std_ViewIvIssueCamPos"
+          << "Std_AxisCross"
           << "Std_ToggleClipPlane"
           << "Std_TextureMapping"
-#ifdef BUILD_VR
-          << "Std_ViewVR"
-#endif
           << "Separator" << visu << "Std_ToggleNavigation"
           << "Std_RandomColor"
           << "Std_ToggleTransparency"
@@ -781,13 +798,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
     *tool << "Std_Measure"
           << "Std_MassProperties"
-          << "Std_AnnotationLabel"
           << "Std_UnitsCalculator"
           << "Std_ClarifySelection"
           << "Separator"
           << "Std_ViewLoadImage"
           << "Std_ViewScreenShot"
-          << "Std_TextDocument"
           << "Std_DemoMode"
           << "Separator"
           << "Std_SceneInspector"
@@ -806,12 +821,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_RecentMacros"
            << "Separator"
            << "Std_DlgMacroExecuteDirect"
-           << "Std_MacroAttachDebugger"
-           << "Std_MacroStartDebug"
-           << "Std_MacroStopDebug"
-           << "Std_MacroStepOver"
-           << "Std_MacroStepInto"
-           << "Std_ToggleBreakpoint";
+           << "Std_MacroAttachDebugger";
 
     // Windows
     auto wnd = new MenuItem(menuBar);
@@ -873,7 +883,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem(root);
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Separator"
+          << "Separator" << "Std_DrawStyle" << "Separator"
           << "Std_Measure" << "Std_MassProperties";
 
     // Individual views

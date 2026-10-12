@@ -40,7 +40,7 @@ class Ui_DlgUnitCalculator;
  * The DlgUnitsCalculator provides a unit conversion dialog
  * \author Juergen Riegel
  */
-class DlgUnitsCalculator: public QDialog
+class GuiExport DlgUnitsCalculator: public QDialog
 {
     Q_OBJECT
 

@@ -20,7 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstddef>
 #include <sstream>
+#include <string>
+#include <unordered_set>
 #include <vector>
 #include <tuple>
 
@@ -56,7 +59,9 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
+#include "Base/Tools2D.h"
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -76,6 +81,7 @@
 #include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
+#include "Selection/BoxSelection.h"
 #include "Selection/SelectionView.h"
 #include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
@@ -454,7 +460,7 @@ void StdCmdFreezeViews::onSaveViews()
         getMainWindow(),
         QObject::tr("Save Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -516,7 +522,7 @@ void StdCmdFreezeViews::onRestoreViews()
         getMainWindow(),
         QObject::tr("Restore Frozen Views"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")))
+        FileDialog::FilterList {{QObject::tr("Frozen views"), {"*.cam"}}}
     );
     if (fn.isEmpty()) {
         return;
@@ -1418,17 +1424,7 @@ StdCmdViewHome::StdCmdViewHome()
 void StdCmdViewHome::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
-    std::string default_view = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
-    doCommand(
-        Command::Gui,
-        "Gui.activeDocument().activeView().viewDefaultOrientation('%s',0)",
-        default_view.c_str()
-    );
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewHome\")");
 }
 
 //===========================================================================
@@ -1452,7 +1448,7 @@ StdCmdViewBottom::StdCmdViewBottom()
 void StdCmdViewBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewBottom\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewBottom\")");
 }
 
 bool StdCmdViewBottom::isActive()
@@ -1481,7 +1477,7 @@ StdCmdViewFront::StdCmdViewFront()
 void StdCmdViewFront::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFront\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFront\")");
 }
 
 bool StdCmdViewFront::isActive()
@@ -1510,7 +1506,7 @@ StdCmdViewLeft::StdCmdViewLeft()
 void StdCmdViewLeft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewLeft\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewLeft\")");
 }
 
 bool StdCmdViewLeft::isActive()
@@ -1539,7 +1535,7 @@ StdCmdViewRear::StdCmdViewRear()
 void StdCmdViewRear::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRear\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRear\")");
 }
 
 bool StdCmdViewRear::isActive()
@@ -1568,7 +1564,7 @@ StdCmdViewRight::StdCmdViewRight()
 void StdCmdViewRight::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRight\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRight\")");
 }
 
 bool StdCmdViewRight::isActive()
@@ -1597,7 +1593,7 @@ StdCmdViewTop::StdCmdViewTop()
 void StdCmdViewTop::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTop\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTop\")");
 }
 
 bool StdCmdViewTop::isActive()
@@ -1627,7 +1623,7 @@ StdCmdViewIsometric::StdCmdViewIsometric()
 void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewAxo\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewAxo\")");
 }
 
 bool StdCmdViewIsometric::isActive()
@@ -1655,7 +1651,7 @@ StdCmdViewDimetric::StdCmdViewDimetric()
 void StdCmdViewDimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewDimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewDimetric\")");
 }
 
 bool StdCmdViewDimetric::isActive()
@@ -1683,7 +1679,7 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
 void StdCmdViewTrimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTrimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTrimetric\")");
 }
 
 bool StdCmdViewTrimetric::isActive()
@@ -1762,7 +1758,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
 void StdCmdViewFitAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFit\")");
 }
 
 bool StdCmdViewFitAll::isActive()
@@ -1791,7 +1787,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
 void StdCmdViewFitSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewSelection\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewSelection\")");
 }
 
 bool StdCmdViewFitSelection::isActive()
@@ -2010,11 +2006,6 @@ Action* StdViewDockUndockFullscreen::createAction()
 
 void StdViewDockUndockFullscreen::activated(int iMsg)
 {
-    // Check if main window is in fullscreen mode.
-    if (getMainWindow()->isFullScreen()) {
-        getMainWindow()->showNormal();
-    }
-
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) {  // no active view
         return;
@@ -2032,8 +2023,9 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         return;
     }
 
-    // Change the view mode after an mdi view was already visible doesn't
-    // work well with Qt5 any more because of some strange OpenGL behaviour.
+    // Changing the view mode after an mdi view was already visible causes
+    // the window to reload strangely while flashing to black, identified
+    // as an OpenGL problem.
     // A workaround is to clone the mdi view, set its view mode and delete
     // the original view.
 
@@ -2043,13 +2035,14 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     if (clone) {
         if (mode == MDIView::Child) {
             getMainWindow()->addWindow(clone);
+            getMainWindow()->setActiveWindow(clone);
+            qApp->processEvents();  // let the close and any queued activation settle
+            view->deleteSelf();
         }
         else {
+            view->deleteSelf();
             clone->setCurrentViewMode(mode);
         }
-
-        // destroy the old view
-        view->deleteSelf();
     }
     else {
         // no clone needed, simply change the view mode
@@ -2077,35 +2070,6 @@ bool StdViewDockUndockFullscreen::isActive()
 
     return true;
 }
-
-
-//===========================================================================
-// Std_ViewVR
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewVR)
-
-StdCmdViewVR::StdCmdViewVR()
-    : Command("Std_ViewVR")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("FreeCAD VR");
-    sToolTipText = QT_TR_NOOP("Extends the FreeCAD 3D Window to a VR device");
-    sWhatsThis = "Std_ViewVR";
-    sStatusTip = sToolTipText;
-    eType = Alter3DView;
-}
-
-void StdCmdViewVR::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewVR\")");
-}
-
-bool StdCmdViewVR::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("ViewVR");
-}
-
 
 //===========================================================================
 // Std_ViewScreenShot
@@ -2152,8 +2116,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QStringLiteral("%1 %2 (*.%3)")
-                          .arg((*it).toUpper(), QObject::tr("files"), (*it).toLower());
+            filter << QStringLiteral("%1 files (*.%2)").arg(it->toUpper(), it->toLower());
             if (ext == *it) {
                 selFilter = filter.last();
             }
@@ -2233,29 +2196,27 @@ void StdViewScreenShot::activated(int iMsg)
             }
             hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
+            std::string imageFile = Base::Tools::escapeEncodeFilename(fn.toStdString());
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
-                // Replace newline escape sequence through '\\n' string to build one big string,
-                // otherwise Python would interpret it as an invalid command.
-                // Python does the decoding for us.
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
-
-                comment = lines.join(QLatin1String("\\n"));
+                std::string escapedComment = Base::Tools::escapeEncodeString(
+                    comment.toUtf8().toStdString()
+                );
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background,
-                    comment.toUtf8().constData()
+                    escapedComment.c_str()
                 );
             }
             else {
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background
@@ -2446,6 +2407,7 @@ StdCmdAxisCross::StdCmdAxisCross()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_AxisCross";
     sPixmap = "Std_AxisCross";
+    eType = Alter3DView;
     sAccel = "A,C";
 }
 
@@ -2502,7 +2464,7 @@ StdCmdViewExample1::StdCmdViewExample1()
 void StdCmdViewExample1::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example1\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example1\")");
 }
 
 bool StdCmdViewExample1::isActive()
@@ -2530,7 +2492,7 @@ StdCmdViewExample2::StdCmdViewExample2()
 void StdCmdViewExample2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example2\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example2\")");
 }
 
 bool StdCmdViewExample2::isActive()
@@ -2558,154 +2520,12 @@ StdCmdViewExample3::StdCmdViewExample3()
 void StdCmdViewExample3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example3\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example3\")");
 }
 
 bool StdCmdViewExample3::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("Example3");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoOff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoOff)
-
-StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
-    : Command("Std_ViewIvStereoOff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Off");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing off");
-    sWhatsThis = "Std_ViewIvStereoOff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoOff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoOff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Mono\")");
-}
-
-bool StdCmdViewIvStereoOff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoOff");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoRedGreen
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
-
-StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
-    : Command("Std_ViewIvStereoRedGreen")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Re&d/Cyan");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to red/cyan");
-    sWhatsThis = "Std_ViewIvStereoRedGreen";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoRedGreen";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoRedGreen::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Anaglyph\")");
-}
-
-bool StdCmdViewIvStereoRedGreen::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoRedGreen");
-}
-
-//===========================================================================
-// Std_ViewIvStereoQuadBuff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
-
-StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
-    : Command("Std_ViewIvStereoQuadBuff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Quad Buffer");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to quad buffer");
-    sWhatsThis = "Std_ViewIvStereoQuadBuff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoQuadBuff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoQuadBuff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"QuadBuffer\")");
-}
-
-bool StdCmdViewIvStereoQuadBuff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoQuadBuff");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedRows
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
-
-StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
-    : Command("Std_ViewIvStereoInterleavedRows")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Rows");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved rows");
-    sWhatsThis = "Std_ViewIvStereoInterleavedRows";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedRows";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedRows::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedRows\")");
-}
-
-bool StdCmdViewIvStereoInterleavedRows::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedRows");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedColumns
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
-
-StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
-    : Command("Std_ViewIvStereoInterleavedColumns")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Columns");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved columns");
-    sWhatsThis = "Std_ViewIvStereoInterleavedColumns";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedColumns";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedColumns::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedColumns\")");
-}
-
-bool StdCmdViewIvStereoInterleavedColumns::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedColumns");
 }
 
 
@@ -2757,7 +2577,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     command += camera;
     command += "\")";
 
-    Base::Console().message("%s\n", camera.c_str());
+    Base::Console().message("{}\n", camera);
     getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
 }
 
@@ -3014,224 +2834,16 @@ StdBoxSelection::StdBoxSelection()
     eType = AlterSelection;
 }
 
-using SelectionMode = enum
-{
-    CENTER,
-    INTERSECT
-};
-
-static std::vector<std::string> getBoxSelection(
-    ViewProviderDocumentObject* vp,
-    SelectionMode mode,
-    bool selectElement,
-    const Base::ViewProjMethod& proj,
-    const Base::Polygon2d& polygon,
-    const Base::Matrix4D& mat,
-    bool transform = true,
-    int depth = 0
-)
-{
-    std::vector<std::string> ret;
-    auto obj = vp->getObject();
-    if (!obj || !obj->isAttachedToDocument()) {
-        return ret;
-    }
-
-    // DO NOT check this view object Visibility, let the caller do this. Because
-    // we may be called by upper object hierarchy that manages our visibility.
-
-    auto bbox3 = vp->getBoundingBox(nullptr, transform);
-    if (!bbox3.IsValid()) {
-        return ret;
-    }
-
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
-
-    // check if both two boundary points are inside polygon, only
-    // valid since we know the given polygon is a box.
-    if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-        && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
-        ret.emplace_back("");
-        return ret;
-    }
-
-    if (!bbox.Intersect(polygon)) {
-        return ret;
-    }
-
-    const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
-    if (subs.empty()) {
-        if (!selectElement) {
-            if (mode == INTERSECT || polygon.Contains(bbox.GetCenter())) {
-                ret.emplace_back("");
-            }
-            return ret;
-        }
-        Base::PyGILStateLocker lock;
-        PyObject* pyobj = nullptr;
-        Base::Matrix4D matCopy(mat);
-        obj->getSubObject(nullptr, &pyobj, &matCopy, transform, depth);
-        if (!pyobj) {
-            return ret;
-        }
-        Py::Object pyobject(pyobj, true);
-        if (!PyObject_TypeCheck(pyobj, &Data::ComplexGeoDataPy::Type)) {
-            return ret;
-        }
-        auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
-        for (auto type : data->getElementTypes()) {
-            size_t count = data->countSubElements(type);
-            if (!count) {
-                continue;
-            }
-            for (size_t i = 1; i <= count; ++i) {
-                std::string element(type);
-                element += std::to_string(i);
-                std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
-                if (!segment) {
-                    continue;
-                }
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Line> lines;
-                data->getLinesFromSubElement(segment.get(), points, lines);
-                if (lines.empty()) {
-                    if (points.empty()) {
-                        continue;
-                    }
-                    auto v = proj(points[0]);
-                    if (polygon.Contains(Base::Vector2d(v.x, v.y))) {
-                        ret.push_back(element);
-                    }
-                    continue;
-                }
-                Base::Polygon2d loop;
-                // TODO: can we assume the line returned above are in proper
-                // order if the element is a face?
-                auto v = proj(points[lines.front().I1]);
-                loop.Add(Base::Vector2d(v.x, v.y));
-                for (auto& line : lines) {
-                    for (auto i = line.I1; i < line.I2; ++i) {
-                        auto v = proj(points[i + 1]);
-                        loop.Add(Base::Vector2d(v.x, v.y));
-                    }
-                }
-                if (!polygon.Intersect(loop)) {
-                    continue;
-                }
-                if (mode == CENTER && !polygon.Contains(loop.CalcBoundBox().GetCenter())) {
-                    continue;
-                }
-                ret.push_back(element);
-            }
-            break;
-        }
-        return ret;
-    }
-
-    size_t count = 0;
-    for (auto& sub : subs) {
-        App::DocumentObject* parent = nullptr;
-        std::string childName;
-        Base::Matrix4D smat(mat);
-        auto sobj
-            = obj->resolve(sub.c_str(), &parent, &childName, nullptr, nullptr, &smat, transform, depth + 1);
-        if (!sobj) {
-            continue;
-        }
-        int vis;
-        if (!parent || (vis = parent->isElementVisible(childName.c_str())) < 0) {
-            vis = sobj->Visibility.getValue() ? 1 : 0;
-        }
-
-        if (!vis) {
-            continue;
-        }
-
-        auto svp = freecad_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(sobj)
-        );
-        if (!svp) {
-            continue;
-        }
-
-        const auto& sels
-            = getBoxSelection(svp, mode, selectElement, proj, polygon, smat, false, depth + 1);
-        if (sels.size() == 1 && sels[0].empty()) {
-            ++count;
-        }
-        for (auto& sel : sels) {
-            ret.emplace_back(sub + sel);
-        }
-    }
-    if (count == subs.size()) {
-        ret.resize(1);
-        ret[0].clear();
-    }
-    return ret;
-}
-
 static void doSelect(void* ud, SoEventCallback* cb)
 {
     bool selectElement = ud ? true : false;
     auto viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
 
     viewer->setSelectionEnabled(true);
+    cb->setHandled();
 
-    SelectionMode selectionMode = CENTER;
-
-    std::vector<SbVec2f> picked = viewer->getGLPolygon();
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    SbViewVolume vv = cam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2d polygon;
-    if (picked.size() == 2) {
-        SbVec2f pt1 = picked[0];
-        SbVec2f pt2 = picked[1];
-        polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
-        polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
-        polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
-
-        // when selecting from right to left then select by intersection
-        // otherwise if the center is inside the rectangle
-        if (picked[0][0] > picked[1][0]) {
-            selectionMode = INTERSECT;
-        }
-    }
-    else {
-        for (const auto& it : picked) {
-            polygon.Add(Base::Vector2d(it[0], it[1]));
-        }
-    }
-
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc) {
-        cb->setHandled();
-
-        const SoEvent* ev = cb->getEvent();
-        if (ev && !ev->wasCtrlDown()) {
-            Gui::Selection().clearSelection(doc->getName());
-        }
-
-        const std::vector<App::DocumentObject*> objects = doc->getObjects();
-        for (auto obj : objects) {
-            if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
-                continue;
-            }
-
-            auto vp = freecad_cast<ViewProviderDocumentObject*>(
-                Application::Instance->getViewProvider(obj)
-            );
-            if (!vp || !vp->isVisible()) {
-                continue;
-            }
-
-            Base::Matrix4D mat;
-            for (auto& sub : getBoxSelection(vp, selectionMode, selectElement, proj, polygon, mat)) {
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
-            }
-        }
-    }
+    const SoEvent* ev = cb->getEvent();
+    applyBoxSelection(viewer, viewer->getPolygon(), selectElement, ev && ev->wasCtrlDown());
 }
 
 void StdBoxSelection::activated(int iMsg)
@@ -3964,7 +3576,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Toggle Overl&ay for All Panels");
-    sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
+    sToolTipText = QT_TR_NOOP("Toggles overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -4272,7 +3884,7 @@ void StdCmdToggleBottomPanels::activated(int iMsg)
         // No visible bottom panels: restore the previously hidden ones. The default covers a fresh
         // install with no saved state.
         const auto savedNames = QString::fromStdString(
-            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view;;Selection view")
+            hGrp->GetASCII("HiddenBottomWidgets", "Python console;;Report view")
         );
         QStringList panelNamesToRestore = savedNames.split(QStringLiteral(";;"));
 
@@ -4352,7 +3964,7 @@ StdStoreWorkingView::StdStoreWorkingView()
 void StdStoreWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StoreWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"StoreWorkingView\")");
 }
 
 bool StdStoreWorkingView::isActive()
@@ -4380,7 +3992,7 @@ StdRecallWorkingView::StdRecallWorkingView()
 void StdRecallWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"RecallWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"RecallWorkingView\")");
 }
 
 bool StdRecallWorkingView::isActive()
@@ -4404,15 +4016,21 @@ StdCmdAlignToSelection::StdCmdAlignToSelection()
     eType = Alter3DView;
 }
 
-void StdCmdAlignToSelection::activated(int iMsg)
+void StdCmdAlignToSelection::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"AlignToSelection\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->alignToSelection();
+    }
+    else {
+        Base::Console().developerError("StdCmdAlignToSelection", "active view is not a 3D view");
+    }
 }
 
 bool StdCmdAlignToSelection::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
@@ -4539,6 +4157,33 @@ void StdCmdClarifySelection::activated(int iMsg)
         };
 
         selections.push_back(pickData);
+
+        // Split a dotted container path (e.g. "Body.Pad.Face1") so getRelatedElements
+        // dispatches on the leaf object's view provider, not the outer container's.
+        std::string subObjPath;
+        std::string pickedElement = pickData.subName;
+        auto lastDot = pickData.subName.find_last_of('.');
+        if (lastDot != std::string::npos) {
+            subObjPath = pickData.subName.substr(0, lastDot + 1);
+            pickedElement = pickData.subName.substr(lastDot + 1);
+        }
+        auto* subObj = obj->getSubObject(subObjPath.c_str());
+        auto* subVP = subObj ? Application::Instance->getViewProvider(subObj) : nullptr;
+        if (!subVP) {
+            subVP = vp;
+        }
+        for (const auto& [relElement, relSubName] :
+             subVP->getRelatedElements(pickedElement, pp->getPoint())) {
+            selections.push_back(
+                PickData {
+                    .obj = obj,
+                    .element = relElement,
+                    .docName = obj->getDocument()->getName(),
+                    .objName = obj->getNameInDocument(),
+                    .subName = subObjPath + relSubName
+                }
+            );
+        }
     }
 
     if (selections.empty()) {
@@ -4594,7 +4239,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewDimetric());
     rcCmdMgr.addCommand(new StdCmdViewTrimetric());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
-    rcCmdMgr.addCommand(new StdCmdViewVR());
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());
     rcCmdMgr.addCommand(new StdCmdViewRotateLeft());
     rcCmdMgr.addCommand(new StdCmdViewRotateRight());
@@ -4607,12 +4251,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
     rcCmdMgr.addCommand(new StdCmdViewExample3());
-
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoQuadBuff());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoRedGreen());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedColumns());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedRows());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoOff());
 
     rcCmdMgr.addCommand(new StdCmdViewIvIssueCamPos());
 

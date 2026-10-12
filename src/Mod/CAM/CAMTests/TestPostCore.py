@@ -25,6 +25,7 @@ import Path.Post.Command as PathCommand
 import Path.Post.PostList as PostList
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import unittest
@@ -281,6 +282,43 @@ class TestPathPostUtils(unittest.TestCase):
         self.assertEqual(result.Commands[5].Name, "G81")
         self.assertEqual(result.Commands[6].Name, "G80")  # Final termination
         self.assertEqual(len(result.Commands), 7)
+
+    def test090_canned_cycle_inserted_commands_carry_annotations(self):
+        """Inserted G98/G99/G80 carry the cycle's annotations (linuxcnc rigid tapping keys on them)"""
+        annotations = {"RetractMode": "G99", "operation": "tapping", "rigid": "True"}
+        cmd1 = Path.Command("G84", {"X": 0.0, "Y": 0.0, "Z": -5.0, "R": 1.0, "F": 1.25})
+        cmd1.Annotations = annotations
+        cmd2 = Path.Command("G84", {"X": 5.0, "Y": 0.0, "Z": -5.0, "R": 1.0, "F": 1.25})
+        cmd2.Annotations = annotations
+
+        result = PostUtils.cannedCycleTerminator(Path.Path([cmd1, cmd2, Path.Command("G0 Z10")]))
+
+        self.assertEqual([c.Name for c in result.Commands], ["G99", "G84", "G84", "G80", "G0"])
+        for i in (0, 3):
+            self.assertEqual(result.Commands[i].Annotations.get("operation"), "tapping")
+            self.assertEqual(result.Commands[i].Annotations.get("rigid"), "True")
+
+    def test100_canned_cycle_unannotated_keeps_path_retract_mode(self):
+        """Cycles without a RetractMode annotation use the last literal G98/G99, not G98"""
+        # Shape of the deprecated Tapping op: one G99, then a G0 before every hole.
+        commands = [Path.Command("G99")]
+        for x in (0.0, 5.0):
+            commands.append(Path.Command("G0", {"X": x, "Y": 0.0, "Z": 10.0}))
+            commands.append(Path.Command("G84", {"X": x, "Y": 0.0, "Z": -5.0, "R": 1.0}))
+        commands.append(Path.Command("G80"))
+
+        result = PostUtils.cannedCycleTerminator(Path.Path(commands))
+
+        names = [c.Name for c in result.Commands]
+        self.assertNotIn("G98", names)
+        for i, name in enumerate(names):
+            if name == "G84":
+                self.assertEqual(names[i - 1], "G99", f"G84 at {i} not preceded by G99: {names}")
+
+        # A G80 in the path ends the explicit mode; later bare cycles default to G98 again.
+        later = Path.Command("G81", {"X": 0.0, "Y": 0.0, "Z": -1.0, "R": 1.0})
+        result = PostUtils.cannedCycleTerminator(Path.Path(commands + [later]))
+        self.assertEqual(result.Commands[-3].Name, "G98")
 
 
 class TestBuildPostList(unittest.TestCase):
@@ -1030,16 +1068,17 @@ class TestJobPropertyOverrides(unittest.TestCase):
             self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
             self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 500)
 
-            # Test 3: Invalid JSON is handled gracefully
+            # Test 3: Invalid JSON is an error
             machine3 = self._create_test_machine()  # Fresh machine instance
             MachineFactory.get_machine = lambda name: machine3
             self.job.PostProcessorPropertyOverrides = (
                 '{"pierce_delay": 1800,'  # Missing closing brace
             )
             processor = PostProcessor(self.job, "", "", "mm")
-            processor.export2()
-            # Should fall back to machine defaults
-            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+            with self.assertRaisesRegex(
+                CAMValueError, "Invalid PostProcessorPropertyOverrides JSON"
+            ) as e:
+                processor.export2()
 
             # Test 4: Unknown keys are ignored
             machine4 = self._create_test_machine()  # Fresh machine instance
@@ -1065,7 +1104,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
         Expected:
             - Override values are reflected in the final G-code output
         """
-        from Path.Post.scripts.generic_plasma_post import GenericPlasma
+        from Path.Post.scripts.generic_sheet_cutting_post import GenericSheetCutting
         from Machine.models.machine import MachineFactory
 
         # Reset job overrides to clean state
@@ -1073,7 +1112,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         # Create machine with plasma postprocessor
         machine = self._create_test_machine(pierce_delay=1000)
-        machine.postprocessor_file_name = "generic_plasma"
+        machine.postprocessor_file_name = "generic_sheet_cutting"
 
         # Add M3/M4 commands to trigger plasma behavior
         plasma_commands = [
@@ -1096,7 +1135,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with no overrides (machine defaults)
             self.job.PostProcessorPropertyOverrides = "{}"
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
@@ -1106,7 +1145,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with pierce_delay override
             self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
@@ -1185,3 +1224,42 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         finally:
             os.unlink(template_path)
+
+    def test_job_property_overrides_beat_merge_machine_config(self):
+        """
+        Regression test: job-level overrides must win even for properties
+        that _merge_machine_config() also sets directly from the live
+        machine model (e.g. f_for_rapid_moves, tool_change).
+        """
+        from Path.Post.Processor import PostProcessor
+        from Machine.models.machine import MachineFactory
+
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        machine = self._create_test_machine()
+        # Machine-level config: opposite of what we will override to.
+        machine.processing.f_for_rapid_moves = True
+        machine.processing.tool_change = True
+
+        original_get_machine = MachineFactory.get_machine
+        MachineFactory.get_machine = lambda name: machine
+
+        try:
+            self.job.PostProcessorPropertyOverrides = (
+                '{"f_for_rapid_moves": false, "tool_change": false}'
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor._machine = machine
+            processor.export2()
+
+            self.assertFalse(
+                processor.values["F_FOR_RAPID_MOVES"],
+                "job override of f_for_rapid_moves must win over machine.processing",
+            )
+            self.assertFalse(
+                processor.values["TOOL_CHANGE"],
+                "job override of tool_change must win over machine.processing",
+            )
+
+        finally:
+            MachineFactory.get_machine = original_get_machine

@@ -38,7 +38,7 @@ constexpr int iconMargin = 2;
 }  // namespace
 
 Gui::InputHintWidget::InputHintWidget(QWidget* parent)
-    : StatusBarLabel(parent, "InputHintEnabled")
+    : StatusBarLabel(parent)
 {
     setMinimumHeight(iconSize + iconMargin * 2);
 }
@@ -115,12 +115,22 @@ void Gui::InputHintWidget::clearHints()
 std::optional<const char*> Gui::InputHintWidget::getCustomIconPath(const InputHint::UserInput key)
 {
     switch (key) {
+        case InputHint::UserInput::Mouse:
+            return ":/icons/user-input/mouse.svg";
         case InputHint::UserInput::MouseLeft:
             return ":/icons/user-input/mouse-left.svg";
         case InputHint::UserInput::MouseRight:
             return ":/icons/user-input/mouse-right.svg";
         case InputHint::UserInput::MouseMove:
             return ":/icons/user-input/mouse-move.svg";
+        case InputHint::UserInput::MouseMoveLeft:
+            return ":/icons/user-input/mouse-move-left.svg";
+        case InputHint::UserInput::MouseMoveMiddle:
+            return ":/icons/user-input/mouse-move-middle.svg";
+        case InputHint::UserInput::MouseMoveRight:
+            return ":/icons/user-input/mouse-move-right.svg";
+        case InputHint::UserInput::MouseDoubleLeft:
+            return ":/icons/user-input/mouse-double-left.svg";
         case InputHint::UserInput::MouseMiddle:
             return ":/icons/user-input/mouse-middle.svg";
         case InputHint::UserInput::MouseScroll:

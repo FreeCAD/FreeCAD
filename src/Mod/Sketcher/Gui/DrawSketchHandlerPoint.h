@@ -32,7 +32,6 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "GeometryCreationMode.h"
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
@@ -42,8 +41,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerPoint;
 
@@ -79,11 +76,13 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                editPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                editPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                               : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(editPoint);
             } break;
             default:
                 break;

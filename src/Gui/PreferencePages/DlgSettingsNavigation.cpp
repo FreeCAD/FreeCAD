@@ -35,6 +35,7 @@
 #include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/SpaceMouseParameter.h>
 
 #include "DlgSettingsNavigation.h"
 #include "ui_DlgSettingsNavigation.h"
@@ -58,8 +59,14 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q3(1)
 {
     ui->setupUi(this);
+    ui->comboOrbitStyle->setItemData(0, int(NavigationStyle::RoundedArcball));
+    ui->comboOrbitStyle->setItemData(1, int(NavigationStyle::Trackball));
+    ui->comboOrbitStyle->setItemData(2, int(NavigationStyle::TrackballClassic));
+    ui->comboOrbitStyle->setItemData(3, int(NavigationStyle::FreeTurntable));
+    ui->comboOrbitStyle->setItemData(4, int(NavigationStyle::Turntable));
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
+    ui->checkBoxTouchpadScrollPans->setChecked(NavigationStyle::touchpadScrollPansByDefault());
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
@@ -67,6 +74,9 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->spaceMouseDevice->setHidden(true);
     ui->legacySpaceMouseDevices->setHidden(true);
 #endif
+    ui->legacySpaceMouseDevices->setChecked(
+        SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()
+    );
 }
 
 /**
@@ -85,14 +95,15 @@ void DlgSettingsNavigation::saveSettings()
         = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
-    int index = ui->comboOrbitStyle->currentIndex();
-    hGrp->SetInt("OrbitStyle", index);
-    index = ui->comboRotationMode->currentIndex();
+    int orbitStyle = ui->comboOrbitStyle->currentData().toInt();
+    hGrp->SetInt("OrbitStyle", orbitStyle);
+    int index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
+    ui->checkBoxTouchpadScrollPans->onSave();
     ui->rotationCenterSize->onSave();
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
@@ -144,6 +155,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
+    ui->checkBoxTouchpadScrollPans->onRestore();
     ui->rotationCenterSize->onRestore();
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
@@ -164,16 +176,18 @@ void DlgSettingsNavigation::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string model
-        = hGrp->GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII(
+        "NavigationStyle",
+        std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+    );
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) {
         ui->comboNavigationStyle->setCurrentIndex(index);
     }
 
-    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
-    index = Base::clamp(index, 0, ui->comboOrbitStyle->count() - 1);
-    ui->comboOrbitStyle->setCurrentIndex(index);
+    int orbitStyle = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
+    orbitStyle = std::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
+    ui->comboOrbitStyle->setCurrentIndex(ui->comboOrbitStyle->findData(orbitStyle));
 
     index = hGrp->GetInt("RotationMode", 0);
     ui->comboRotationMode->setCurrentIndex(index);
@@ -194,11 +208,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
 
     // we purposely allow all available fonts on the system
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     ui->naviCubeFontName->addItems(familyNames);
 
     // mark this combobox to be excluded from preference search
@@ -358,7 +368,10 @@ void DlgSettingsNavigation::retranslate()
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
         QByteArray data(style.first.getName());
-        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
+        QString name = QApplication::translate(
+            std::string {style.first.getName()}.c_str(),
+            style.second.c_str()
+        );
 
         ui->comboNavigationStyle->addItem(name, data);
     }

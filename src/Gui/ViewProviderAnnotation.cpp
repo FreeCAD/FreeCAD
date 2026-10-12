@@ -26,7 +26,11 @@
 #include <QFontMetrics>
 #include <QImage>
 #include <QPainter>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -35,28 +39,87 @@
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/sensors/SoIdleSensor.h>
 
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <App/Annotation.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
 
 #include "ViewProviderAnnotation.h"
+#include "Selection/SelectionColors.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "SoFCSelection.h"
 #include "Tools.h"
+#include "TranslateManip.h"
+#include "Utilities.h"
+#include "ViewParams.h"
 #include "Window.h"
 
 
 using namespace Gui;
+
+namespace
+{
+
+SoSeparator* createLabelDragHandle(SoImage* image, SoImage* hitProxy)
+{
+    auto* handle = new SoSeparator();
+    auto* pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::BOUNDING_BOX_ON_TOP;
+    handle->addChild(pickStyle);
+    handle->addChild(hitProxy);
+
+    // Let the transparent proxy own picking for the full label bounds.
+    // The rendered image is visual-only so it cannot compete with the dragger path.
+    auto* visual = new SoSeparator();
+    auto* visualPickStyle = new SoPickStyle();
+    visualPickStyle->style = SoPickStyle::UNPICKABLE;
+    visual->addChild(visualPickStyle);
+    visual->addChild(image);
+    handle->addChild(visual);
+
+    return handle;
+}
+
+bool projectPointerToPlane(
+    SoDragger& drag,
+    const Base::Vector3d& planePoint,
+    const Base::Vector3d& planeNormal,
+    Base::Vector3d& intersection
+)
+{
+    const SoEvent* event = drag.getEvent();
+    if (!event) {
+        return false;
+    }
+
+    SbViewVolume viewVolume = drag.getViewVolume();
+    SbLine pointerLine;
+    viewVolume.projectPointToLine(event->getNormalizedPosition(drag.getViewportRegion()), pointerLine);
+
+    SbVec3f point;
+    const SbPlane dragPlane(Base::convertTo<SbVec3f>(planeNormal), Base::convertTo<SbVec3f>(planePoint));
+    if (!dragPlane.intersect(pointerLine, point)) {
+        return false;
+    }
+
+    intersection = Base::convertTo<Base::Vector3d>(point);
+    return true;
+}
+
+}  // namespace
 
 const char* ViewProviderAnnotation::JustificationEnums[] = {"Left", "Right", "Center", nullptr};
 const char* ViewProviderAnnotation::RotationAxisEnums[] = {"X", "Y", "Z", nullptr};
@@ -195,18 +258,9 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
     auto textsep = new SoFCSelection();
 
     // set selection/highlight colors
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    SbColor highlightColor = textsep->colorHighlight.getValue();
-    auto highlight = (unsigned long)(highlightColor.getPackedValue());
-    highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-    highlightColor.setPackedValue((uint32_t)highlight, transparency);
+    SbColor highlightColor = SelectionColors::defaultHighlightColor();
     textsep->colorHighlight.setValue(highlightColor);
-    // Do the same with the selection color
-    SbColor selectionColor = textsep->colorSelection.getValue();
-    auto selection = (unsigned long)(selectionColor.getPackedValue());
-    selection = hGrp->GetUnsigned("SelectionColor", selection);
-    selectionColor.setPackedValue((uint32_t)selection, transparency);
+    SbColor selectionColor = SelectionColors::defaultSelectionColor();
     textsep->colorSelection.setValue(selectionColor);
 
     textsep->objectName = pcObject->getNameInDocument();
@@ -294,6 +348,8 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     pCoords->ref();
     pImage = new SoImage();
     pImage->ref();
+    pImageHitProxy = new SoImage();
+    pImageHitProxy->ref();
 
     BackgroundColor.touch();
 
@@ -307,6 +363,7 @@ ViewProviderAnnotationLabel::~ViewProviderAnnotationLabel()
     pTextTranslation->unref();
     pCoords->unref();
     pImage->unref();
+    pImageHitProxy->unref();
 }
 
 void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
@@ -356,30 +413,44 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
     // plain image
     SoSeparator* textsep = new SoAnnotation();
+    auto pickStyleObj = new SoPickStyle();
+    pickStyleObj->style = SoPickStyle::SHAPE_ON_TOP;
+    textsep->addChild(pickStyleObj);
     textsep->addChild(pBaseTranslation);
-    textsep->addChild(pImage);
+    textsep->addChild(createLabelDragHandle(pImage, pImageHitProxy));
 
     // image with line
     SoSeparator* linesep = new SoAnnotation();
+    auto pickStyleLine = new SoPickStyle();
+    pickStyleLine->style = SoPickStyle::SHAPE_ON_TOP;
+    linesep->addChild(pickStyleLine);
     linesep->addChild(pBaseTranslation);
-    linesep->addChild(pColor);
-    linesep->addChild(pCoords);
-    linesep->addChild(new SoLineSet());
+
+    // Keep the leader as visual-only so it cannot steal label-corner drags.
+    auto lineVisual = new SoSeparator();
+    auto linePickStyle = new SoPickStyle();
+    linePickStyle->style = SoPickStyle::UNPICKABLE;
+    lineVisual->addChild(linePickStyle);
+    lineVisual->addChild(pColor);
+    lineVisual->addChild(pCoords);
+    lineVisual->addChild(new SoLineSet());
     auto ds = new SoDrawStyle();
     ds->pointSize.setValue(3.0f);
-    linesep->addChild(ds);
-    linesep->addChild(new SoPointSet());
+    lineVisual->addChild(ds);
+    lineVisual->addChild(new SoPointSet());
+    linesep->addChild(lineVisual);
+
     linesep->addChild(pTextTranslation);
-    linesep->addChild(pImage);
+    linesep->addChild(createLabelDragHandle(pImage, pImageHitProxy));
 
     addDisplayMaskMode(linesep, "Line");
     addDisplayMaskMode(textsep, "Object");
 
-    // Use the image node as the transform handle
+    // Use the image bounds as the transform handle
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(true);
-    sa.setNode(this->pImage);
+    sa.setNode(this->pImageHitProxy);
     sa.apply(pcRoot);
     SoPath* imagePath = sa.getPath();
     if (imagePath) {
@@ -416,16 +487,44 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* drag)
 {
+    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
+    that->dragState.reset();
+    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+        const Base::Vector3d basePosition = obj->BasePosition.getValue();
+        const Base::Vector3d startTextPosition = obj->TextPosition.getValue();
+        const Base::Vector3d pickedPoint = Base::convertTo<Base::Vector3d>(
+            drag->getWorldStartingPoint()
+        );
+
+        DragState state;
+        state.basePosition = basePosition;
+        state.currentTextPosition = startTextPosition;
+        state.pickOffset = pickedPoint - (basePosition + startTextPosition);
+        state.planePoint = pickedPoint;
+        state.planeNormal = Base::convertTo<Base::Vector3d>(
+            drag->getViewVolume().getProjectionDirection()
+        );
+        that->dragState = state;
+    }
+
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand(
         QT_TRANSLATE_NOOP("Command", "Transform")
     );
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragFinishCallback(void* data, SoDragger*)
 {
+    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
+    if (that->dragState) {
+        if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+            obj->TextPosition.setValue(that->dragState->currentTextPosition);
+        }
+        that->dragState.reset();
+    }
+
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
@@ -433,17 +532,29 @@ void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
 void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
 {
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    const SbMatrix& mat = drag->getMotionMatrix();
-    App::DocumentObject* obj = that->getObject();
-    if (obj && obj->is<App::AnnotationLabel>()) {
-        static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
+    if (!that->dragState) {
+        return;
     }
+
+    DragState& state = *that->dragState;
+    Base::Vector3d pointerPosition;
+    if (projectPointerToPlane(*drag, state.planePoint, state.planeNormal, pointerPosition)) {
+        that->previewTextPosition(state, pointerPosition - state.pickOffset - state.basePosition);
+    }
+}
+
+void ViewProviderAnnotationLabel::previewTextPosition(DragState& state, const Base::Vector3d& textPosition)
+{
+    state.currentTextPosition = textPosition;
+    pCoords->point.set1Value(1, SbVec3f(textPosition.x, textPosition.y, textPosition.z));
+    pTextTranslation->translation.setValue(textPosition.x, textPosition.y, textPosition.z);
 }
 
 void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
 {
     if (s.empty()) {
         pImage->image = SoSFImage();
+        pImageHitProxy->image = SoSFImage();
         this->hide();
         return;
     }
@@ -466,17 +577,23 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
         lines << line;
     }
 
-    QImage image(w + 10, h + 10, QImage::Format_ARGB32_Premultiplied);
+    constexpr int textPadding = 5;
+    constexpr qreal frameWidth = 2.0;
+    constexpr qreal cornerRadius = 5.0;
+
+    QImage image(w + 2 * textPadding, h + 2 * textPadding, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
 
     bool drawFrame = this->Frame.getValue();
     if (drawFrame) {
-        painter.setPen(QPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(QPen(QColor(0, 0, 127), frameWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.setBrush(QBrush(brush, Qt::SolidPattern));
-        QRectF rectangle(0.0, 0.0, w + 10, h + 10);
-        painter.drawRoundedRect(rectangle, 5, 5);
+        const QRectF rectangle
+            = QRectF(image.rect())
+                  .adjusted(frameWidth / 2.0, frameWidth / 2.0, -frameWidth / 2.0, -frameWidth / 2.0);
+        painter.drawRoundedRect(rectangle, cornerRadius, cornerRadius);
     }
 
     painter.setPen(front);
@@ -493,10 +610,88 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     }
     QString text = lines.join(QLatin1String("\n"));
     painter.setFont(font);
-    painter.drawText(5, 5, w, h, align, text);
+    painter.drawText(textPadding, textPadding, w, h, align, text);
     painter.end();
 
     SoSFImage sfimage;
     Gui::BitmapFactory().convert(image, sfimage);
     pImage->image = sfimage;
+
+    QImage hitProxy(image.size(), QImage::Format_ARGB32_Premultiplied);
+    hitProxy.fill(Qt::transparent);
+
+    SoSFImage sfHitProxy;
+    Gui::BitmapFactory().convert(hitProxy, sfHitProxy);
+    pImageHitProxy->image = sfHitProxy;
+}
+
+// ----------------------------------------------------------------------------
+
+AnnotationBuilder::AnnotationBuilder(
+    Gui::ViewProviderDocumentObject* vp,
+    const AnnotationBuilder::Info& s,
+    const SbVec3f& p,
+    const SbVec3f& n
+)
+    : vp(vp)
+    , p(p)
+    , n(n)
+    , info(s)
+{}
+
+void AnnotationBuilder::schedule(
+    Gui::ViewProviderDocumentObject* vp,
+    const SoPickedPoint* point,
+    const AnnotationBuilder::Info& info
+)
+{
+    SbVec3f pt = point->getPoint();
+    SbVec3f nl = point->getNormal();
+    auto anno = new AnnotationBuilder(vp, info, pt, nl);
+    auto sensor = new SoIdleSensor(AnnotationBuilder::run, anno);
+    sensor->schedule();
+}
+
+void AnnotationBuilder::run(void* data, SoSensor* sensor)
+{
+    auto self = static_cast<AnnotationBuilder*>(data);
+    self->show();
+    delete self;
+    delete sensor;
+}
+
+void AnnotationBuilder::show()
+{
+    App::Document* doc = vp->getObject()->getDocument();
+
+    auto groups = doc->getObjectsOfType<App::DocumentObjectGroup>();
+    App::DocumentObjectGroup* group = nullptr;
+    const std::string internalname = info.group;
+    auto it = std::find_if(groups.begin(), groups.end(), [internalname](auto grp) {
+        return internalname == grp->getNameInDocument();
+    });
+    if (it != groups.end()) {
+        group = *it;
+    }
+    else {
+        group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
+    }
+
+    auto anno = group->addObject<App::AnnotationLabel>(internalname.c_str());
+    group->purgeTouched();
+
+    std::istringstream inp(info.text);
+    std::string line;
+    std::vector<std::string> text;
+    while (std::getline(inp, line, '\n')) {
+        text.push_back(line);
+    }
+    anno->LabelText.setValues(text);
+
+    std::stringstream str;
+    str << info.label;
+    str << " (" << group->Group.getSize() << ")";
+    anno->Label.setValue(str.str());
+    anno->BasePosition.setValue(p[0], p[1], p[2]);
+    anno->TextPosition.setValue(n[0], n[1], n[2]);
 }

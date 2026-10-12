@@ -24,6 +24,7 @@
 
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
@@ -43,6 +44,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
+    BaseFeature.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllowCompound, (true), "Base", App::Prop_None, "Allow multiple solids in Body");
 
     _GroupTouched.setStatus(App::Property::Output, true);
@@ -326,13 +328,27 @@ void Body::setBaseProperty(App::DocumentObject* feature)
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
         // NULL is ok here, it just means we made the current one fiature the base solid
-        static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+        auto* pdFeature = static_cast<PartDesign::Feature*>(feature);
+        App::DocumentObject* oldBase = pdFeature->BaseFeature.getValue();
+        pdFeature->BaseFeature.setValue(prevSolidFeature);
+        pdFeature->onBaseFeatureRerouted(
+            oldBase,
+            prevSolidFeature,
+            PartDesign::Feature::BaseFeatureChange::Insertion
+        );
 
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
         if (nextSolidFeature) {
             assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
+            auto* nextPD = static_cast<PartDesign::Feature*>(nextSolidFeature);
+            App::DocumentObject* nextBase = nextPD->BaseFeature.getValue();
+            nextPD->BaseFeature.setValue(feature);
+            nextPD->onBaseFeatureRerouted(
+                nextBase,
+                feature,
+                PartDesign::Feature::BaseFeatureChange::Insertion
+            );
         }
     }
 }
@@ -351,6 +367,11 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // Check if the next feature is pointing to the one being deleted
         if (nextPD->BaseFeature.getValue() == feature) {
             nextPD->BaseFeature.setValue(prevSolidFeature);
+            nextPD->onBaseFeatureRerouted(
+                feature,
+                prevSolidFeature,
+                PartDesign::Feature::BaseFeatureChange::Removal
+            );
         }
     }
 
@@ -381,16 +402,16 @@ App::DocumentObjectExecReturn* Body::execute()
 {
     Part::BodyBase::execute();
     /*
-    Base::Console().error("Body '%s':\n", getNameInDocument());
+    Base::Console().error("Body '{}':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
-    Base::Console().error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    Base::Console().error("   Tip: {}\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
     Base::Console().error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++)
-    { if (*m == NULL) continue; Base::Console().error("      %s", (*m)->getNameInDocument()); if
+    { if (*m == NULL) continue; Base::Console().error("      {}", (*m)->getNameInDocument()); if
     (Body::isSolidFeature(*m)) { App::DocumentObject* baseFeature =
     static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue(); Base::Console().error(", Base:
-    %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument()); } else {
+    {}\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument()); } else {
             Base::Console().error("\n");
         }
     }
@@ -443,6 +464,7 @@ void Body::onChanged(const App::Property* prop)
         && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
+            bool createdBaseFeature = false;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
@@ -450,6 +472,7 @@ void Body::onChanged(const App::Property* prop)
                 if (!first || !first->isDerivedFrom<FeatureBase>()) {
                     bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
+                    createdBaseFeature = true;
 
                     if (!Tip.getValue()) {
                         Tip.setValue(bf);
@@ -462,6 +485,15 @@ void Body::onChanged(const App::Property* prop)
 
             if (bf && (bf->BaseFeature.getValue() != BaseFeature.getValue())) {
                 bf->BaseFeature.setValue(BaseFeature.getValue());
+                bf->recomputeFeature();
+            }
+            if (bf && createdBaseFeature) {
+                if (auto* base = freecad_cast<App::GeoFeature*>(BaseFeature.getValue())) {
+                    // Initial placement is derived from the current global placements. Set the
+                    // Body placement before assigning BaseFeature to keep the source feature's
+                    // global position when the internal FeatureBase is created.
+                    bf->Placement.setValue(this->globalPlacement().inverse() * base->globalPlacement());
+                }
             }
         }
         else if (prop == &Group) {

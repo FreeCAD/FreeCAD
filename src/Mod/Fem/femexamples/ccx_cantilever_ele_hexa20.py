@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
@@ -63,7 +65,7 @@ hexa20 elements and face load
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -74,7 +76,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup cantilever faceload
-    doc = setup_with_faceload(doc, solvertype)
+    doc = setup_with_faceload(doc, solvertype, test_mode)
     femmesh_obj = doc.getObject(get_meshname())
 
     # delete explanation object wrongly added with setup faceload

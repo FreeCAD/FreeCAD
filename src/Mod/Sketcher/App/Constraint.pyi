@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from Base.Metadata import export
+from Base.Quantity import Quantity
 from Base.Persistence import Persistence
-from typing import Final
+from typing import Final, overload
 
 @export(
     Include="Mod/Sketcher/App/Constraint.h",
@@ -18,6 +19,83 @@ class Constraint(Persistence):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, constraint_type: str, elements: list[int], /) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        elements: list[int],
+        text: str,
+        font: str,
+        is_text_height: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def __init__(self, constraint_type: str, first_index: int, /) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        first_index: int,
+        second: int | float | Quantity,
+        activated: bool = ...,
+        driving: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        first_index: int,
+        first_position: int,
+        second: int | float | Quantity,
+        activated: bool = ...,
+        driving: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        first_index: int,
+        first_position: int,
+        second: int,
+        value: int | float | Quantity,
+        activated: bool = ...,
+        driving: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        first_index: int,
+        first_position: int,
+        second: int,
+        second_position: int,
+        third: int | float | Quantity,
+        activated: bool = ...,
+        driving: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        constraint_type: str,
+        first_index: int,
+        first_position: int,
+        second: int,
+        second_position: int,
+        third: int,
+        third_position: int | float | Quantity,
+        activated: bool = ...,
+        driving: bool = ...,
+        /,
+    ) -> None: ...
 
     Type: Final[str] = ""
     """Get the constraint type"""

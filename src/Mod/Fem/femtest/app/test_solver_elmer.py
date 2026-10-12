@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -101,7 +103,7 @@ class TestSolverElmer(unittest.TestCase):
         # set up the Elmer static analysis example
         from femexamples.boxanalysis_static import setup
 
-        setup(self.document, "elmer")
+        setup(self.document, "elmer", test_mode=True)
 
         # for information:
         # elmer needs gmsh mesho object
@@ -141,7 +143,7 @@ class TestSolverElmer(unittest.TestCase):
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_faceload import setup
 
-        setup(self.document, "elmer")
+        setup(self.document, "elmer", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -150,7 +152,7 @@ class TestSolverElmer(unittest.TestCase):
         self.set_unit_schema(1)  # SI-units m/kg/s
         from femexamples.ccx_cantilever_faceload import setup
 
-        setup(self.document, "elmer")
+        setup(self.document, "elmer", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -159,7 +161,7 @@ class TestSolverElmer(unittest.TestCase):
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_nodeload import setup
 
-        setup(self.document, "elmer")
+        setup(self.document, "elmer", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -168,7 +170,7 @@ class TestSolverElmer(unittest.TestCase):
         self.set_unit_schema(0)  # mm/kg/s
         from femexamples.ccx_cantilever_prescribeddisplacement import setup
 
-        setup(self.document, "elmer")
+        setup(self.document, "elmer", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

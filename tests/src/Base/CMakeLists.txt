@@ -7,22 +7,30 @@ add_executable(Base_tests_run
         Color.cpp
         Console.cpp
         CoordinateSystem.cpp
+        CrashReporter_tests.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        Exception.cpp
         FileLock.cpp
         FileInfo.cpp
         InputSource.cpp
         Handle.cpp
         Matrix.cpp
+        NumericFormatting.cpp
+        NumericInput.cpp
+        OkLch.cpp
         Parameter.cpp
+        ParameterObserver.cpp
         Placement.cpp
         Persistence.cpp
+        PyException.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
         SchemaTests.cpp
         ServiceProvider.cpp
         Stream.cpp
+        StringUtils.cpp
         TimeInfo.cpp
         Tools.cpp
         Tools2D.cpp
@@ -38,15 +46,21 @@ add_executable(Base_tests_run
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp
+        XMLParser.cpp
         XMLTools.cpp
 )
 
 setup_qt_test(InventorBuilder)
 
 target_link_libraries(Base_tests_run PRIVATE
-    GTest::gtest_main
     GTest::gmock_main
-    ${Google_Tests_LIBS}
     FreeCADApp
+    ${Python3_LIBRARIES}
     ICU::uc ICU::i18n
 )
+
+# CrashReporter_tests decides what the Reader inside FreeCADBase is capable of from this define,
+# so the two targets have to agree on it. FreeCADBase sets it PRIVATE, which does not propagate.
+if(cpptrace_FOUND)
+    target_compile_definitions(Base_tests_run PRIVATE FC_HAVE_CPPTRACE)
+endif()

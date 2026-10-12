@@ -147,6 +147,12 @@ bool AbstractSplitView::onMsg(const char* pMsg)
         viewAll();
         return true;
     }
+    else if (strcmp("ViewHome", pMsg) == 0) {
+        for (auto* view : _viewer) {
+            view->viewHome();
+        }
+        return true;
+    }
     else if (strcmp("ViewBottom", pMsg) == 0) {
         SbRotation rot(Camera::rotation(Camera::Bottom));
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end();
@@ -227,6 +233,9 @@ bool AbstractSplitView::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("ViewFit", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewHome", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewBottom", pMsg) == 0) {

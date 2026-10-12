@@ -78,9 +78,9 @@ QWidget* WidgetFactoryInst::createWidget(const char* sName, QWidget* parent) con
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().warning("\"%s\" is not registered\n", sName);
+        Base::Console().warning("\"{}\" is not registered\n", sName);
 #else
-        Base::Console().log("\"%s\" is not registered\n", sName);
+        Base::Console().log("\"{}\" is not registered\n", sName);
 #endif
         return nullptr;
     }
@@ -88,14 +88,14 @@ QWidget* WidgetFactoryInst::createWidget(const char* sName, QWidget* parent) con
     try {
 #ifdef FC_DEBUG
         const char* cName = qobject_cast<QWidget*>(w)->metaObject()->className();
-        Base::Console().log("Widget of type '%s' created.\n", cName);
+        Base::Console().log("Widget of type '{}' created.\n", cName);
 #endif
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().error("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().error("{} does not inherit from \"QWidget\"\n", sName);
 #else
-        Base::Console().log("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().log("{} does not inherit from \"QWidget\"\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -124,21 +124,21 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage(
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().warning("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().warning("Cannot create an instance of \"{}\"\n", sName);
 #else
-        Base::Console().log("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().log("Cannot create an instance of \"{}\"\n", sName);
 #endif
         return nullptr;
     }
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
 #ifdef FC_DEBUG
-        Base::Console().log("Preference page of type '%s' created.\n", w->metaObject()->className());
+        Base::Console().log("Preference page of type '{}' created.\n", w->metaObject()->className());
 #endif
     }
     else {
 #ifdef FC_DEBUG
-        Base::Console().error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
+        Base::Console().error("{} does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -179,7 +179,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
+        Base::Console().error("{} does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
 #endif
         delete w;
         return nullptr;
@@ -407,6 +407,7 @@ void PyResource::init_type()
     add_varargs_method("setValue", &PyResource::setValue);
     add_varargs_method("show", &PyResource::show);
     add_varargs_method("connect", &PyResource::connect);
+    behaviors().readyType();
 }
 
 PyResource::PyResource()
@@ -577,14 +578,14 @@ Py::Object PyResource::value(const Py::Tuple& args)
             int nSize = str.count();
             Py::List slist(nSize);
             for (int i = 0; i < nSize; ++i) {
-                slist.setItem(i, Py::String(str[i].toLatin1()));
+                slist.setItem(i, Py::String(str[i].toStdString()));
             }
             item = slist;
         } break;
         case QMetaType::QByteArray:
             break;
         case QMetaType::QString:
-            item = Py::String(v.toString().toLatin1());
+            item = Py::String(v.toString().toStdString());
             break;
         case QMetaType::Double:
             item = Py::Float(v.toDouble());

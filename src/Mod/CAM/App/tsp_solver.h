@@ -55,6 +55,23 @@ struct TSPTunnel
     {}
 };
 
+struct TSPPair
+{
+    double x, y;        // Primary point (current orientation, may be swapped)
+    double xAlt, yAlt;  // Alternative point (current orientation, may be swapped)
+    bool flipped;       // Whether the pair has been flipped from its original orientation
+    int index;          // Original index in input array
+
+    TSPPair(double x_, double y_, double xAlt_, double yAlt_)
+        : x(x_)
+        , y(y_)
+        , xAlt(xAlt_)
+        , yAlt(yAlt_)
+        , flipped(false)
+        , index(-1)
+    {}
+};
+
 class TSPSolver
 {
 public:
@@ -73,6 +90,16 @@ public:
     static std::vector<TSPTunnel> solveTunnels(
         std::vector<TSPTunnel> tunnels,
         bool allowFlipping = false,
+        const TSPPoint* routeStartPoint = nullptr,
+        const TSPPoint* routeEndPoint = nullptr
+    );
+
+    // Solves TSP for pairs (each element has a primary and alternative entry point)
+    // Each pair has (x,y) and (xAlt,yAlt); the solver picks whichever entry point produces
+    // a shorter route, swapping the pair's coordinates in-place when the alt is chosen.
+    // Returns vector of pairs in optimized order (pairs may be flipped)
+    static std::vector<TSPPair> solvePairs(
+        std::vector<TSPPair> pairs,
         const TSPPoint* routeStartPoint = nullptr,
         const TSPPoint* routeEndPoint = nullptr
     );

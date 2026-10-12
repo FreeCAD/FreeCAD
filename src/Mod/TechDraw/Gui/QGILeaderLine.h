@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -35,7 +37,6 @@
 #include "QGIView.h"
 #include "QGIUserTypes.h"
 
-
 namespace TechDraw
 {
 class DrawLeaderLine;
@@ -68,6 +69,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     void drawBorder() override;
     void updateView(bool update = false) override;

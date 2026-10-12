@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -563,7 +565,7 @@ class MeshSetsGetter:
 
     def get_rotation1D_elements(self):
         for femobj in self.member.geos_beamrotation:
-            # geos_beamrotation is overriden by another function in meshtools and the key
+            # geos_beamrotation is overridden by another function in meshtools and the key
             # "Object" might be removed. Check the key until the other function is fixed.
             if "Object" in femobj:
                 obj = femobj["Object"]

@@ -107,8 +107,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-import DraftGeomUtils
 import WorkingPlane
+from draftgeoutils import general as geo_general
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
 from draftutils import utils
@@ -395,10 +395,10 @@ def measure_one_obj_edge(obj, subelement, dim_point, diameter=False):
         n = int(subelement[4:]) - 1
         edge = obj.Shape.Edges[n]
 
-        if DraftGeomUtils.geomType(edge) == "Line":
+        if geo_general.geomType(edge) == "Line":
             start = edge.Vertexes[0].Point
             end = edge.Vertexes[-1].Point
-        elif DraftGeomUtils.geomType(edge) == "Circle":
+        elif geo_general.geomType(edge) == "Circle":
             center = edge.Curve.Center
             radius = edge.Curve.Radius
             axis = edge.Curve.Axis

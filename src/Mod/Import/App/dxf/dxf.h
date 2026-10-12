@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <format>
 #include <iosfwd>
 #include <list>
 #include <map>
@@ -650,6 +651,7 @@ private:
     // Readers for specific entity types
     bool ReadLine();
     bool ReadText();
+    bool ReadSolid();
     bool ReadArc();
     bool ReadCircle();
     bool ReadEllipse();
@@ -743,18 +745,21 @@ protected:
     // popup "Notification" show up in black in the output window and an information icon in the
     // notification popup "Log" goes to a log somewhere and not to the screen/user at all
 
-    template<typename... args>
-    static void ImportError(const char* format, args&&... argValues)
+    template<typename... Args>
+    static void ImportError(std::format_string<Args...> format, Args&&... argValues)
     {
-        Base::ConsoleSingleton::instance().warning(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance()
+            .send<Base::LogStyle::Warning>("", format, std::forward<Args>(argValues)...);
+    }
+
+    template<typename... Args>
+    static void ImportObservation(std::format_string<Args...> format, Args&&... argValues)
+    {
+        Base::ConsoleSingleton::instance()
+            .send<Base::LogStyle::Message>("", format, std::forward<Args>(argValues)...);
     }
     template<typename... args>
-    static void ImportObservation(const char* format, args&&... argValues)
-    {
-        Base::ConsoleSingleton::instance().message(format, std::forward<args>(argValues)...);
-    }
-    template<typename... args>
-    void UnsupportedFeature(const char* format, args&&... argValues);
+    void UnsupportedFeature(std::format_string<args...> format, args&&... argValues);
 
 private:
     std::string m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
@@ -944,6 +949,13 @@ public:
         const double /*rotation*/
     )
     {}
+    virtual void OnReadSolid(
+        const Base::Vector3d& /*first*/,
+        const Base::Vector3d& /*second*/,
+        const Base::Vector3d& /*third*/,
+        const Base::Vector3d& /*fourth*/
+    )
+    {}
     virtual void OnReadArc(
         const Base::Vector3d& /*start*/,
         const Base::Vector3d& /*end*/,
@@ -997,7 +1009,7 @@ protected:
     {
         PyObject* result = ::PyObject_GetAttrString(o, attr_name);
         if (result == nullptr) {
-            ImportError("Unable to get Attribute '%s'\n", attr_name);
+            ImportError("Unable to get Attribute '{}'\n", attr_name);
             PyErr_Clear();
         }
         return result;
@@ -1005,7 +1017,7 @@ protected:
     static void PyObject_SetAttrString(PyObject* o, const char* attr_name, PyObject* v)
     {
         if (::PyObject_SetAttrString(o, attr_name, v) != 0) {
-            ImportError("Unable to set Attribute '%s'\n", attr_name);
+            ImportError("Unable to set Attribute '{}'\n", attr_name);
             PyErr_Clear();
         }
     }

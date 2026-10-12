@@ -22,6 +22,8 @@
  **************************************************************************/
 
 #include <filesystem>
+#include <algorithm>
+#include <vector>
 #include <boost/version.hpp>
 #include <boost/tokenizer.hpp>
 #include <QDir>
@@ -65,17 +67,18 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     auto fi = QFileInfo(macosVersionFile);
     if (fi.exists() && fi.isReadable()) {
         auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QStringLiteral("macOS ") + matches.captured(1);
-                        break;
+        if (plistFile.open(QIODevice::ReadOnly)) {
+            while (!plistFile.atEnd()) {
+                auto line = plistFile.readLine();
+                if (line.contains("ProductUserVisibleVersion")) {
+                    auto nextLine = plistFile.readLine();
+                    if (nextLine.contains("<string>")) {
+                        QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
+                        auto matches = re.match(QString::fromUtf8(nextLine));
+                        if (matches.hasMatch()) {
+                            productName = QStringLiteral("macOS ") + matches.captured(1);
+                            break;
+                        }
                     }
                 }
             }
@@ -108,16 +111,18 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     return productName.toStdString();
 }
 
-void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string& path)
+static std::string getModuleInfoString(const std::string& path)
 {
     QString modPath = QString::fromStdString(path);
     QFileInfo mod(modPath);
     if (mod.isHidden()) {  // Ignore hidden directories
-        return;
+        return {};
     }
+
     std::string addonName = mod.isDir() ? QDir(modPath).dirName().toStdString()
                                         : mod.fileName().toStdString();
     std::string versionString;
+    std::stringstream str;
     try {
         auto metadataFile = std::filesystem::path(mod.absoluteFilePath().toStdString())
             / "package.xml";
@@ -145,6 +150,7 @@ void ProgramInformation::addModuleInfo(std::stringstream& str, const std::string
     }
 
     str << "\n";
+    return str.str();
 }
 
 std::string ProgramInformation::getValueOrEmpty(
@@ -244,15 +250,9 @@ void ProgramInformation::getBuildInformation(
     const auto buildDate = getValueOrEmpty(mConfig, "BuildRevisionDate");
     str << "Build date: " << buildDate << "\n";
 
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
+    const auto buildType = getValueOrEmpty(mConfig, "BuildType");
+    str << "Build type: " << (buildType.empty() ? "Unknown" : buildType) << '\n';
+
     const auto buildRevisionBranch = getValueOrEmpty(mConfig, "BuildRevisionBranch");
     if (!buildRevisionBranch.empty()) {
         str << "Branch: " << buildRevisionBranch << '\n';
@@ -268,7 +268,16 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << fcCoin3dVersion << ", ";
+    str << "Coin " << fcCoin3dVersion;
+    if (*fcCoin3dSource) {
+        str << " (" << fcCoin3dSource << ")";
+    }
+    str << ", ";
+    str << "Pivy " << fcPivyVersion;
+    if (*fcPivySource) {
+        str << " (" << fcPivySource << ")";
+    }
+    str << ", ";
     str << "Vtk " << fcVtkVersion << ", ";
     str << "boost " << BOOST_LIB_VERSION << ", ";
     str << "Eigen3 " << fcEigen3Version << ", ";
@@ -278,6 +287,7 @@ void ProgramInformation::getLibraryVersions(std::stringstream& str)
     str << "SMESH " << SMESH_VERSION_STR << ", ";
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
+    str << "Clipper2 " << fcClipper2Version << ", ";
     getIfcInfo(str);
 #if defined(OCC_VERSION_STRING_EXT)
     str << "OCC " << OCC_VERSION_STRING_EXT << '\n';
@@ -302,7 +312,7 @@ void ProgramInformation::getIfcInfo(std::stringstream& str)
     catch (const Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().log("%s\n", e.what());
+        Base::Console().log("{}\n", e.what());
     }
 }
 
@@ -335,14 +345,17 @@ void ProgramInformation::getVerboseAddOnsInfo(
 {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    std::stringstream tmp;
+    std::vector<std::string> addons;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
             if (!fs::is_directory(mod)) {
                 continue;  // Ignore files, only show directories
             }
             auto dirName = mod.path().string();
-            addModuleInfo(tmp, dirName);
+            auto moduleInfo = getModuleInfoString(dirName);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
+            }
         }
     }
     const auto additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
@@ -351,13 +364,18 @@ void ProgramInformation::getVerboseAddOnsInfo(
         boost::char_separator<char> sep(";");
         boost::tokenizer<boost::char_separator<char>> mods(additionalModules, sep);
         for (const auto& mod : mods) {
-            addModuleInfo(tmp, mod);
+            auto moduleInfo = getModuleInfoString(mod);
+            if (!moduleInfo.empty()) {
+                addons.push_back(std::move(moduleInfo));
+            }
         }
     }
 
-    std::string addons = tmp.str();
+    std::sort(addons.begin(), addons.end());
     if (!addons.empty()) {
         str << "Installed mods:\n";
-        str << addons;
+        for (const auto& addon : addons) {
+            str << addon;
+        }
     }
 }

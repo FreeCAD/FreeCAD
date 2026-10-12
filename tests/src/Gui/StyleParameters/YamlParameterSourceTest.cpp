@@ -24,14 +24,19 @@
 #include <filesystem>
 #include <fstream>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <Gui/Application.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 #include <Gui/StyleParameters/Value.h>
+
 #include <src/TempDirectory.h>
 
+#include "ValueMatchers.h"
+
 using namespace Gui::StyleParameters;
+using namespace Gui::StyleParameters::Matchers;
 
 // Alias to avoid ambiguity with ParameterGrp::Manager() from Base/Parameter.h.
 using StyleParameterManager = Gui::StyleParameters::ParameterManager;
@@ -144,8 +149,9 @@ TEST_F(YamlParameterSourceTest, SequenceResolvesToTupleValue)
 
     const auto& tuple = result->get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
-    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 10.0);
-    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 20.0);
+    EXPECT_EQ(tuple.kind, TupleKind::Generic);
+    EXPECT_THAT(tuple, HasNumericElement(0, 10.0));
+    EXPECT_THAT(tuple, HasNumericElement(1, 20.0));
 }
 
 TEST_F(YamlParameterSourceTest, MapResolvesToNamedTupleValue)
@@ -163,10 +169,8 @@ TEST_F(YamlParameterSourceTest, MapResolvesToNamedTupleValue)
 
     const auto& tuple = result->get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
-    ASSERT_NE(tuple.find("top"), nullptr);
-    EXPECT_DOUBLE_EQ(tuple.find("top")->get<Numeric>().value, 10.0);
-    ASSERT_NE(tuple.find("right"), nullptr);
-    EXPECT_DOUBLE_EQ(tuple.find("right")->get<Numeric>().value, 20.0);
+    EXPECT_THAT(tuple, HasNumericField("top", 10.0));
+    EXPECT_THAT(tuple, HasNumericField("right", 20.0));
 }
 
 TEST_F(YamlParameterSourceTest, MixedFileLoadsAllParameters)

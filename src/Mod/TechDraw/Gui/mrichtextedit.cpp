@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-only WITH Digia-Qt-LGPL-exception-1.1
+
 /*
 ** Copyright (C) 2013 Jiří Procházka (Hobrasoft)
 ** Contact: http://www.hobrasoft.cz/
@@ -253,7 +255,7 @@ void MRichTextEdit::textSource() {
     pte->setPlainText( f_textedit->toHtml() );
     QGridLayout *gl = new QGridLayout(dialog);
     gl->addWidget(pte, 0,0, 1,1);
-    dialog->setWindowTitle(tr("Document source"));
+    dialog->setWindowTitle(tr("Document Source"));
     dialog->setMinimumWidth (400);
     dialog->setMinimumHeight(600);
     dialog->exec();

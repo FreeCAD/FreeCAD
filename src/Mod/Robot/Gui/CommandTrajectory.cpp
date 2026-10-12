@@ -26,6 +26,7 @@
 #include <QMessageBox>
 
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -302,7 +303,7 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
 void CmdRobotSetDefaultValues::activated(int)
 {
 
-    bool ok;
+    bool ok {};
     QString text = QInputDialog::getText(
         nullptr,
         QObject::tr("Set default speed"),
@@ -313,7 +314,8 @@ void CmdRobotSetDefaultValues::activated(int)
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok && !text.isEmpty()) {
-        doCommand(Doc, "_DefSpeed = '%s'", text.toLatin1().constData());
+        std::string encoded = Base::Tools::escapeEncodeString(text.toStdString());
+        doCommand(Doc, "_DefSpeed = '%s'", encoded.c_str());
     }
 
     QStringList items;
@@ -330,7 +332,7 @@ void CmdRobotSetDefaultValues::activated(int)
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok && !item.isEmpty()) {
-        doCommand(Doc, "_DefCont = %s", item.toLatin1().constData());
+        doCommand(Doc, "_DefCont = %s", item.toUtf8().constData());
     }
 
     text.clear();
@@ -345,7 +347,8 @@ void CmdRobotSetDefaultValues::activated(int)
         Qt::MSWindowsFixedSizeDialogHint
     );
     if (ok && !text.isEmpty()) {
-        doCommand(Doc, "_DefAcceleration = '%s'", text.toLatin1().constData());
+        std::string encoded = Base::Tools::escapeEncodeString(text.toStdString());
+        doCommand(Doc, "_DefAcceleration = '%s'", encoded.c_str());
     }
 
 

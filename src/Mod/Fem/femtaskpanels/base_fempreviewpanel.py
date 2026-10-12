@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
@@ -121,7 +123,7 @@ class _TaskPanel:
         self.gmsh_obj = _get_parent_gmsh_obj(obj)
 
         # we do not derive from this task panel to enable deriving from
-        # annother base task panel for functionality, and adding this only
+        # another base task panel for functionality, and adding this only
         # for visualization button purposes
         self.tool = gmshtools.GmshPreviewTools(self.gmsh_obj, obj)
         self.logtask = _LogTask(self.gmsh_obj)

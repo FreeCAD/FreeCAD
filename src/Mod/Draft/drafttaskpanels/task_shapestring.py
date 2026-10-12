@@ -192,6 +192,8 @@ class ShapeStringTaskPanel:
             self.point = point
         else:
             self.point = self.wp.get_global_coords(point)
+        self.pointPicked = True
+        self.update_hints()
 
     def set_point_x(self, val):
         self.set_point_coord("x", val)
@@ -210,9 +212,10 @@ class ShapeStringTaskPanel:
         if self.pointPicked:
             Gui.HintManager.hide()
         else:
-            Gui.HintManager.show(
+            hints = [
                 Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
-            )
+            ] + gui_tool_utils._get_hint_mod_snap()
+            Gui.HintManager.show(*hints)
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
@@ -232,7 +235,7 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         """Create object in the current document."""
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
-        cmd = "Draft.make_shapestring("
+        cmd = "Draft.make_shape_string("
         cmd += "String=" + self.quote_string(self.text) + ", "
         cmd += "FontFile=" + self.quote_string(self.font_file) + ", "
         cmd += "Size=" + str(self.height) + ", "

@@ -4,15 +4,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>True</source>
+      <translation>Waar</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>False</source>
+      <translation>Onwaar</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="601"/>
+      <source>Null</source>
+      <translation>Null</translation>
     </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Oorsprong</translation>
     </message>
@@ -20,13 +35,13 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-Het is aanbevolen dat de gebruiker met de rechter muis knop de hoofdmap van het document aan klikt en Markeren selecteert om te herberekenen. De gebruiker zou daarna op de vernieuw-knop moeten drukken in de hoofd werkbalk.
+Het is aanbevolen dat de gebruiker met de rechter muis knop de hoofdmap van het document aan klikt en Markeren selecteert om te herberekenen. De gebruiker zou daarna op de vernieuw-knop moeten drukken in de hoofdwerkbalk.
 </translation>
     </message>
   </context>
@@ -71,11 +86,10 @@ Het is aanbevolen dat de gebruiker met de rechter muis knop de hoofdmap van het 
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Bewaart de laatste keuze van de gebruiker om KopierBijVerandering instelling toe te passen op alle linken die naar hetzelfde configureerbare object linken</translation>
     </message>
   </context>
 </TS>

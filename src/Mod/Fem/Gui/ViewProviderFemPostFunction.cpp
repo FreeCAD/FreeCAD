@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -287,6 +289,3 @@ ViewProviderFemPostSphereFunction::ViewProviderFemPostSphereFunction()
 }
 
 ViewProviderFemPostSphereFunction::~ViewProviderFemPostSphereFunction() = default;
-
-
-#include "moc_ViewProviderFemPostFunction.cpp"

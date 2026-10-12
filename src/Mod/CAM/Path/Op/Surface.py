@@ -515,7 +515,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "HandleMultipleFeatures": "Collectively",
             "PatternCenterAt": "CenterOfMass",
             "GapSizes": "No gaps identified.",
-            "StepOver": 100.0,
+            "StepOver": 50.0,
             "CutPatternAngle": 0.0,
             "CutterTilt": 0.0,
             "StartIndex": 0.0,
@@ -704,10 +704,15 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def opUpdateDepths(self, obj):
         if hasattr(obj, "Base") and obj.Base:
-            base, sublist = obj.Base[0]
+            # Read base geometry through baseShapes() rather than from obj.Base
+            # directly, so that an operation with a rotated workplane computes
+            # its depth in the frame its path is generated in. With no rotation
+            # active baseShapes() yields obj.Base unchanged.
+            baseShapes = list(self.baseShapes(obj))
+            base, sublist = baseShapes[0]
             fbb = base.Shape.getElement(sublist[0]).BoundBox
             zmin = fbb.ZMax
-            for base, sublist in obj.Base:
+            for base, sublist in baseShapes:
                 for sub in sublist:
                     try:
                         fbb = base.Shape.getElement(sub).BoundBox
@@ -827,8 +832,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 Path.Command(
                     "G0",
                     {
-                        "X": obj.StartPoint.x,
-                        "Y": obj.StartPoint.y,
+                        "X": self.startPoint(obj).x,
+                        "Y": self.startPoint(obj).y,
                         "F": self.horizRapid,
                     },
                 )
@@ -1608,7 +1613,7 @@ class ObjectSurface(PathOp.ObjectOp):
         ALL = []
         PTS = []
         optLinTrans = obj.OptimizeStepOverTransitions
-        safe = math.ceil(obj.SafeHeight.Value)
+        safe = Path.Geom.ceil(obj.SafeHeight.Value)
 
         if optLinTrans is True:
             for P in LN:
@@ -1667,7 +1672,7 @@ class ObjectSurface(PathOp.ObjectOp):
     def _planarMultipassProcess(self, obj, PNTS, lMax):
         output = []
         optimize = obj.OptimizeLinearPaths
-        safe = math.ceil(obj.SafeHeight.Value)
+        safe = Path.Geom.ceil(obj.SafeHeight.Value)
         lenPNTS = len(PNTS)
         prcs = True
         onHold = False

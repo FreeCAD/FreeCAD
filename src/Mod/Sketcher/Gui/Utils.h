@@ -29,12 +29,9 @@
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
-#include <QMap>
-#include <QString>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
-#include "GeometryCreationMode.h"
 
 namespace App
 {
@@ -170,23 +167,6 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
     return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::PointPos::none);
 }
 
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
-inline GeometryCreationMode currentGeometryCreationMode()
-{
-    return geometryCreationMode;
-}
-
-inline bool isConstructionMode()
-{
-    return geometryCreationMode == GeometryCreationMode::Construction;
-}
-
-inline const char* constructionModeAsBooleanText()
-{
-    return geometryCreationMode == GeometryCreationMode::Construction ? "True" : "False";
-}
-
 /* helper functions ======================================================*/
 
 // Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
@@ -252,8 +232,6 @@ inline void scrollTo(QListWidget* list, int i, bool select)
         list->scrollTo(index, QAbstractItemView::PositionAtCenter);
     }
 }
-
-QMap<QString, QString> findAvailableFontFiles();
 
 }  // namespace SketcherGui
 

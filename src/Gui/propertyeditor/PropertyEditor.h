@@ -129,11 +129,7 @@ protected:
         const QStyleOptionViewItem& options,
         const QModelIndex& index
     ) const override;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStyleOptionViewItem viewOptions() const override;
-#else
     void initViewItemOption(QStyleOptionViewItem* option) const override;
-#endif
     void contextMenuEvent(QContextMenuEvent* event) override;
     bool event(QEvent*) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -148,13 +144,26 @@ private:
     void recomputeDocument(App::Document*);
     std::unordered_set<App::Property*> acquireSelectedProperties() const;
     void removeProperties(const std::unordered_set<App::Property*>& props);
+
+    void getPropUsesObj(
+        int level,
+        const App::DocumentObject* obj,
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
+    ) const;
+    void getPropUsesDoc(
+        int level,
+        const App::Document* doc,
+        const std::set<App::ObjectIdentifier>& ids,
+        QString& content
+    ) const;
+    QString getPropUses(App::Property* prop) const;
+    void reportPropUses(App::Property* prop) const;
     bool removeSelectedDynamicProperties();
 
     // check if mouse_pos is around right or bottom side of a cell
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
-
-    App::Document* propertyDocument(App::PropertyContainer* cont) const;
 
 private:
     PropertyItemDelegate* delegate;

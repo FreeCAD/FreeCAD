@@ -32,6 +32,7 @@
 #include <BRepGProp_Face.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <gp_Pnt.hxx>
 
 #include <QEventLoop>
@@ -895,7 +896,7 @@ App::DocumentObjectExecReturn* Feature::execute()
         fRMS = sqrt(fRMS);
     }
 
-    Base::Console().message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+    Base::Console().message("RMS value for '{}' with search radius [{:.4f},{:.4f}] is: {:.4f}\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
 #else
     unsigned long count = actual->countPoints();
@@ -980,7 +981,7 @@ App::DocumentObjectExecReturn* Feature::execute()
     }
 
     Base::Console().message(
-        "RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        "RMS value for '{}' with search radius [{:.4f},{:.4f}] is: {:.4f}\n",
         this->Label.getValue(),
         -this->SearchRadius.getValue(),
         this->SearchRadius.getValue(),

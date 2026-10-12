@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -700,7 +702,7 @@ class _MeshBoundaryLayer(CommandManager):
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "2D Boundary Layer")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshBoundaryLayer",
-            "Adds a structured layer of mesh elmenets on 2D model boundaries",
+            "Adds a structured layer of mesh elements on 2D model boundaries",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -962,7 +964,7 @@ class _MeshTransfiniteCurve(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshTransfiniteCurve",
-            "Creates a fixed amount of nodes on an endge with a structured algorithm",
+            "Creates a fixed number of nodes on an edge with a structured algorithm",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -993,7 +995,7 @@ class _MeshTransfiniteVolume(CommandManager):
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshTransfiniteVolume",
-            "Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces",
+            "Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"

@@ -1,39 +1,62 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2021 Russell Johnson (russ4262) <russ4262@gmail.com>
+# SPDX-FileCopyrightText: 2023 Robert Schöftner <rs@unfoo.net>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2023 Robert Schöftner <rs@unfoo.net>                    *
-# *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Part
+import Path
 import Path.Op.Profile as PathProfile
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
-from CAMTests.TestPathAdaptive import getGcodeMoves
+from itertools import zip_longest
+from numbers import Number
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Profile as PathProfileGui
+
+
+def yieldGcode(commands, includeRapids=True, includeLines=True, includeArcs=True):
+    last = FreeCAD.Vector(0.0, 0.0, 0.0)
+    for c in commands:
+        p = c.Parameters
+        name = c.Name
+        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
+            gcode = {"name": name}
+            gcode["X"] = p.get("X", last.x)
+            gcode["Y"] = p.get("Y", last.y)
+            gcode["Z"] = p.get("Z", last.z)
+            yield (gcode)
+        elif includeArcs and name in ["G2", "G3", "G02", "G03"]:
+            gcode = {"name": name}
+            gcode["X"] = p.get("X", last.x)
+            gcode["Y"] = p.get("Y", last.y)
+            gcode["Z"] = p.get("Z", last.z)
+            gcode["I"] = p.get("I", 0)
+            gcode["J"] = p.get("J", 0)
+            gcode["K"] = p.get("K", 0)
+            yield (gcode)
+        last.x = p.get("X", last.x)
+        last.y = p.get("Y", last.y)
+        last.z = p.get("Z", last.z)
 
 
 class TestPathProfile(PathTestBase):
@@ -101,9 +124,127 @@ class TestPathProfile(PathTestBase):
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        pass
+
+    def checkGcode(self, expected, actual, tol=0.01, includeRapids=True):
+        egen = yieldGcode(expected, includeRapids=includeRapids)
+        agen = yieldGcode(actual, includeRapids=includeRapids)
+
+        e_strs = []
+        a_strs = []
+        error = None
+        for i, (e, a) in enumerate(zip_longest(egen, agen, fillvalue={})):
+            line = f"{i + 1:2}  "
+            e_str = line + (" ".join([f"{k}: {v:.4}" for k, v in e.items()]))
+            a_str = line + (" ".join([f"{k}: {v:.4}" for k, v in a.items()]))
+            if e:
+                e_strs.append(e_str)
+            if a:
+                a_strs.append(a_str)
+
+            def v_eq(x, y):
+                if isinstance(x, Number) and isinstance(y, Number):
+                    return abs(x - y) < tol
+                return x == y
+
+            if (
+                len(e.keys()) != len(a.keys()) or any(not v_eq(e.get(k), a.get(k)) for k in e)
+            ) and error is None:
+                error = f"Incorrect gcode at line {i+1}\nExpected: {e_str}\nActual  : {a_str}\n"
+
+        e_str = "\n".join(e_strs)
+        a_str = "\n".join(a_strs)
+        self.assertTrue(
+            error is None,
+            f"{error}\nExpected:\n{e_str}\nActual:\n{a_str}",
+        )
 
     # Unit tests
+    def testStartPointKeptWhenOriginChanges(self):
+        """The start point stays where it is on the model when the Job's origin changes or the
+        model is moved."""
+        profile = PathProfile.Create("ProfileStartPoint")
+        profile.StartPoint = FreeCAD.Vector(10, 20, 5)
+        move = FreeCAD.Placement(FreeCAD.Vector(7, -2, 3), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, move)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(17, 18, 8), 1e-9))
+        turn = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90))
+        PathJob.carryOperationPoints(self.job, turn)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(-18, 17, 8), 1e-9))
+        self.doc.removeObject(profile.Name)
+
+    def testTypedHeightsFollowModel(self):
+        """Heights typed in go up and down with the model; calculated ones are left to the
+        operation."""
+        profile = PathProfile.Create("ProfileTypedHeights")
+        self.doc.recompute()
+        profile.setExpression("FinalDepth", None)
+        profile.FinalDepth = 3
+        start = profile.StartDepth.Value
+        down = FreeCAD.Placement(FreeCAD.Vector(0, 0, -2), FreeCAD.Rotation())
+        PathJob.carryOperationHeights(self.job, down)
+        self.assertRoughly(profile.FinalDepth.Value, 1)
+        self.assertRoughly(profile.StartDepth.Value, start)
+        self.doc.removeObject(profile.Name)
+
+    def testAttachedWorkplaneKeepsFrameValues(self):
+        """On a work plane attached to the model, the start point picked in the 3D view moves
+        with the model, while a typed depth and a point kept in the plane's frame stay as they
+        are: the plane moved with the model."""
+        import Path.Main.Workplane as PathWorkplane
+        import Path.Op.Slot as PathSlot
+
+        plane = PathWorkplane.createWorkplane(self.job, self.doc.Body, "Face6", label="Side")
+        profile = PathProfile.Create("ProfileOnPlane")
+        slot = PathSlot.Create("SlotOnPlane")
+        self.doc.recompute()
+        for op in (profile, slot):
+            op.Workplane = plane
+            op.setExpression("FinalDepth", None)
+            op.FinalDepth = -3
+        profile.StartPoint = FreeCAD.Vector(10, 20, 5)
+        slot.CustomPoint1 = FreeCAD.Vector(1, 2, 0)
+        up = FreeCAD.Placement(FreeCAD.Vector(0, 0, 4), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, up)
+        PathJob.carryOperationHeights(self.job, up)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(10, 20, 9), 1e-9))
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 2, 0), 1e-9))
+        self.assertRoughly(profile.FinalDepth.Value, -3)
+        self.assertRoughly(slot.FinalDepth.Value, -3)
+        for obj in (profile, slot, plane):
+            self.doc.removeObject(obj.Name)
+
+    def testUnattachedWorkplaneSeesTheMoveInItsFrame(self):
+        """On a work plane set where it is, not attached to the model, the model moves in the
+        plane's frame: a typed depth changes by the move along the plane's tool axis, and a
+        point kept in the frame moves with the model there."""
+        import Path.Main.Workplane as PathWorkplane
+        import Path.Op.Slot as PathSlot
+
+        # +Z of the plane is -Y of the Job; +Z of the Job is +Y of the plane
+        tilt = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90))
+        plane = PathWorkplane.createWorkplane(self.job, placement=tilt, label="Tilted")
+        # set where it is, not attached to the model
+        plane.AttachmentSupport = None
+        plane.Placement = tilt
+        slot = PathSlot.Create("SlotTilted")
+        self.doc.recompute()
+        slot.Workplane = plane
+        slot.setExpression("FinalDepth", None)
+        slot.FinalDepth = -3
+        slot.CustomPoint1 = FreeCAD.Vector(1, 2, 0)
+        up = FreeCAD.Placement(FreeCAD.Vector(0, 0, 4), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, up)
+        PathJob.carryOperationHeights(self.job, up)
+        self.assertRoughly(slot.FinalDepth.Value, -3)
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 6, 0), 1e-9))
+        back = FreeCAD.Placement(FreeCAD.Vector(0, -4, 0), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, back)
+        PathJob.carryOperationHeights(self.job, back)
+        self.assertRoughly(slot.FinalDepth.Value, 1)
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 6, 4), 1e-9))
+        for obj in (slot, plane):
+            self.doc.removeObject(obj.Name)
+
     def test00(self):
         """test00() Empty test."""
         return
@@ -125,29 +266,25 @@ class TestPathProfile(PathTestBase):
         profile.processHoles = True
         profile.UseComp = True
         profile.Direction = "CW"
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
 
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test01_moves: " + operationMoves + "\n")
-
         expected_moves = (
-            "G1 X16.47 Y16.47 Z10.0;  G3 I-2.48 J-2.48 K0.0 X13.93 Y17.5 Z10.0;  "
-            "G1 X-13.93 Y17.5 Z10.0;  G3 I-0.06 J-3.51 K0.0 X-17.5 Y13.93 Z10.0;  "
-            "G1 X-17.5 Y-13.93 Z10.0;  G3 I3.51 J-0.06 K0.0 X-13.93 Y-17.5 Z10.0;  "
-            "G1 X13.93 Y-17.5 Z10.0;  G3 I0.06 J3.51 K0.0 X17.5 Y-13.93 Z10.0;  "
-            "G1 X17.5 Y13.93 Z10.0;  G3 I-3.51 J0.06 K0.0 X16.47 Y16.47 Z10.0;  "
-            "G1 X23.54 Y23.54 Z10.0;  G2 I-9.55 J-9.55 K0.0 X27.5 Y14.0 Z10.0;  "
-            "G1 X27.5 Y-14.0 Z10.0;  G2 I-13.5 J0.0 K0.0 X14.0 Y-27.5 Z10.0;  "
-            "G1 X-14.0 Y-27.5 Z10.0;  G2 I0.0 J13.5 K0.0 X-27.5 Y-14.0 Z10.0;  "
-            "G1 X-27.5 Y14.0 Z10.0;  G2 I13.5 J-0.0 K0.0 X-14.0 Y27.5 Z10.0;  "
-            "G1 X14.0 Y27.5 Z10.0;  G2 I-0.0 J-13.5 K0.0 X23.54 Y23.54 Z10.0"
+            "G1 X16.47 Y16.47 Z10.0;  G3 I-2.475 J-2.475 K0.0 X14 Y17.5 Z10.0;  "
+            "G1 X-14   Y17.5  Z10.0;  G3 I0      J-3.5   K0.0 X-17.5 Y14    Z10.0;  "
+            "G1 X-17.5 Y-14   Z10.0;  G3 I3.5    J0      K0.0 X-14   Y-17.5 Z10.0;  "
+            "G1 X14    Y-17.5 Z10.0;  G3 I0      J3.5    K0.0 X17.5  Y-14   Z10.0;  "
+            "G1 X17.5  Y14    Z10.0;  G3 I-3.5   J0      K0.0 X16.47 Y16.47 Z10.0;  "
+            "G1 X23.54 Y23.54 Z10.0;  G2 I-9.54  J-9.54  K0.0 X27.5  Y14    Z10.0;  "
+            "G1 X27.5  Y-14   Z10.0;  G2 I-13.5  J0.0    K0.0 X14.0  Y-27.5 Z10.0;  "
+            "G1 X-14   Y-27.5 Z10.0;  G2 I0.0    J13.5   K0.0 X-27.5 Y-14   Z10.0;  "
+            "G1 X-27.5 Y14    Z10.0;  G2 I13.5   J0.0    K0.0 X-14.0 Y27.5  Z10.0;  "
+            "G1 X14.0  Y27.5  Z10.0;  G2 I0.0    J-13.5  K0.0 X23.54 Y23.54 Z10.0"
         )
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
-        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False, tol=0.02)
 
     def test02(self):
         """test02() Verify path generated on Face18, outside, without compensation."""
@@ -164,30 +301,25 @@ class TestPathProfile(PathTestBase):
         profile.processHoles = True
         profile.UseComp = False
         profile.Direction = "CW"
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
-
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test02_moves: " + operationMoves + "\n")
 
         expected_moves = (
             "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  "
             "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  "
             "G1 X-20.0 Y-14.0 Z10.0;  G3 I6.0 J0.0 K0.0 X-14.0 Y-20.0 Z10.0;  "
-            "G1 X14.0 Y-20.0 Z10.0;  G3 I-0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  "
-            "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J-0.0 K0.0 X18.24 Y18.24 Z10.0;  "
+            "G1 X14.0 Y-20.0 Z10.0;  G3 I0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  "
+            "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J0.0 K0.0 X18.24 Y18.24 Z10.0;  "
             "G1 X21.78 Y21.78 Z10.0;  G2 I-7.78 J-7.78 K0.0 X25.0 Y14.0 Z10.0;  "
             "G1 X25.0 Y-14.0 Z10.0;  G2 I-11.0 J0.0 K0.0 X14.0 Y-25.0 Z10.0;  "
             "G1 X-14.0 Y-25.0 Z10.0;  G2 I0.0 J11.0 K0.0 X-25.0 Y-14.0 Z10.0;  "
-            "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
-            "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
+            "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
+            "G1 X14.0 Y25.0 Z10.0;  G2 I0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
         )
-
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
-        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False)
 
     def test03(self):
         """test03() Verify path generated on Face18, outside,
@@ -208,29 +340,235 @@ class TestPathProfile(PathTestBase):
         profile.UseComp = True
         profile.Direction = "CW"
         profile.OffsetExtra = -profile.OpToolDiameter / 2.0
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
-
-        moves = getGcodeMoves(profile.Path.Commands, includeRapids=False)
-        operationMoves = ";  ".join(moves)
-        # FreeCAD.Console.PrintMessage("test03_moves: " + operationMoves + "\n")
 
         expected_moves = (
             "G1 X18.24 Y18.24 Z10.0;  G3 I-4.24 J-4.24 K0.0 X14.0 Y20.0 Z10.0;  "
             "G1 X-14.0 Y20.0 Z10.0;  G3 I0.0 J-6.0 K0.0 X-20.0 Y14.0 Z10.0;  "
             "G1 X-20.0 Y-14.0 Z10.0;  G3 I6.0 J0.0 K0.0 X-14.0 Y-20.0 Z10.0;  "
-            "G1 X14.0 Y-20.0 Z10.0;  G3 I-0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  "
-            "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J-0.0 K0.0 X18.24 Y18.24 Z10.0;  "
+            "G1 X14.0 Y-20.0 Z10.0;  G3 I0.0 J6.0 K0.0 X20.0 Y-14.0 Z10.0;  "
+            "G1 X20.0 Y14.0 Z10.0;  G3 I-6.0 J0.0 K0.0 X18.24 Y18.24 Z10.0;  "
             "G1 X21.78 Y21.78 Z10.0;  G2 I-7.78 J-7.78 K0.0 X25.0 Y14.0 Z10.0;  "
             "G1 X25.0 Y-14.0 Z10.0;  G2 I-11.0 J0.0 K0.0 X14.0 Y-25.0 Z10.0;  "
             "G1 X-14.0 Y-25.0 Z10.0;  G2 I0.0 J11.0 K0.0 X-25.0 Y-14.0 Z10.0;  "
-            "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J-0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
-            "G1 X14.0 Y25.0 Z10.0;  G2 I-0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
+            "G1 X-25.0 Y14.0 Z10.0;  G2 I11.0 J0.0 K0.0 X-14.0 Y25.0 Z10.0;  "
+            "G1 X14.0 Y25.0 Z10.0;  G2 I0.0 J-11.0 K0.0 X21.78 Y21.78 Z10.0"
+        )
+        expected_commands = [Path.Command(x) for x in expected_moves.split(";  ")]
+        self.checkGcode(expected_commands, profile.Path.Commands, includeRapids=False)
+
+
+class TestPathOpenProfile(PathTestBase):
+    """Unit tests for profiling open edges (edges of geometry)."""
+
+    @classmethod
+    def setUpClass(cls):
+        """setUpClass()...
+        This method is called upon instantiation of this test class.
+        Set up the triangle geometry and job for all tests in this class.
+        """
+        # Create a new document (becomes active document)
+        cls.doc = FreeCAD.newDocument("TestPathOpenProfile")
+        FreeCAD.setActiveDocument(cls.doc.Name)
+
+        # Create a triangular solid
+        triangle_base = 20.0
+        triangle_height = 30.0
+        extrude_height = 10.0
+
+        # Create triangle vertices (base on X-axis, apex pointing up in Y)
+        v1 = FreeCAD.Vector(0, 0, 0)
+        v2 = FreeCAD.Vector(triangle_base, 0, 0)
+        v3 = FreeCAD.Vector(triangle_base / 2.0, triangle_height, 0)
+
+        # Create triangle wire and extrude to make solid
+        triangle_wire = Part.makePolygon([v1, v2, v3, v1])
+        triangle_face = Part.Face(triangle_wire)
+        triangle_solid = triangle_face.extrude(FreeCAD.Vector(0, 0, extrude_height))
+
+        # Add triangle part to document
+        triangle_part = cls.doc.addObject("Part::Feature", "Triangle")
+        triangle_part.Shape = triangle_solid
+
+        # Create a job for the triangle
+        job = PathJob.Create("TriangleJob", [triangle_part], None)
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        # Find edges that pass through (0, 0, extrude_height) - the top vertex at origin
+        # We want the 2 top edges (not the vertical edge)
+        target_point = FreeCAD.Vector(0, 0, extrude_height)
+        tolerance = 0.001
+
+        # Loop through all edges and find top edges at the target point
+        edges_at_origin = []
+        for i, edge in enumerate(triangle_solid.Edges):
+            # Check if either vertex of the edge is at the target point
+            if (
+                edge.Vertexes[0].Point.distanceToPoint(target_point) < tolerance
+                or edge.Vertexes[1].Point.distanceToPoint(target_point) < tolerance
+            ):
+                # Filter out vertical edges - we only want edges on the top face
+                # Top face edges have both vertices at Z = extrude_height
+                v0_z = edge.Vertexes[0].Point.z
+                v1_z = edge.Vertexes[1].Point.z
+                if (
+                    abs(v0_z - extrude_height) < tolerance
+                    and abs(v1_z - extrude_height) < tolerance
+                ):
+                    # Both vertices at top Z level - this is a top edge
+                    edges_at_origin.append(f"Edge{i+1}")
+
+        # Save triangle geometry for test assertions
+        cls.triangle_part = triangle_part
+        cls.triangle_edges = edges_at_origin
+        cls.triangle_base = triangle_base
+        cls.triangle_height = triangle_height
+
+        # Create profile operation for the two edges
+        cls.profile = PathProfile.Create("TriangleProfile", parentJob=job)
+        cls.profile.Base = [(triangle_part, edges_at_origin)]
+        cls.profile.Label = "triangle_profile"
+        cls.profile.Comment = "Profile two edges of a triangle."
+
+        # Set operation properties
+        cls.profile.Direction = "CCW"
+        cls.profile.Side = "Outside"
+
+        # Set depth properties for open edge profiling
+        # Clear expressions first, then set values
+        cls.profile.setExpression("FinalDepth", None)
+        cls.profile.setExpression("StartDepth", None)
+        cls.profile.setExpression("StepDown", None)
+
+        cls.profile.FinalDepth.Value = 0.0
+        cls.profile.StartDepth.Value = extrude_height
+        cls.profile.StepDown.Value = extrude_height + 1
+
+        _addViewProvider(cls.profile)
+
+    @classmethod
+    def tearDownClass(cls):
+        """tearDownClass()...
+        Cleanup after all tests in this class have been executed.
+        """
+        # Close the document without saving
+        FreeCAD.closeDocument(cls.doc.Name)
+
+    def setUp(self):
+        """setUp()...
+        This method is called prior to each test() method.
+        """
+
+    def tearDown(self):
+        """tearDown()...
+        This method is called after each test() method.
+        """
+
+    def testOpenProfileSetup(self):
+        """Verify Profile Base contains 2 edges of the triangle."""
+
+        # Verify profile.Base has correct structure: [(part, edges_tuple)]
+        self.assertEqual(len(self.profile.Base), 1, "Profile.Base should have 1 entry")
+        _, edges = self.profile.Base[0]
+
+        # Assert we are profiling 2 edges
+        self.assertEqual(len(edges), 2, "Profile Base should contain 2 edges")
+
+    def test02(self):
+        """test02() Recompute and verify gcode moves for triangle profile."""
+        import math
+        import Path.Base.Language as PathLanguage
+
+        # Perform recompute to generate the path
+        self.doc.recompute()
+
+        # Process non-rapid move commands and calculate lengths
+        move_lengths = []
+        last = FreeCAD.Vector(0.0, 0.0, 0.0)
+        path_start = None
+        path_end = None
+
+        for cmd in self.profile.Path.Commands:
+            instr = PathLanguage.Maneuver.InstructionFromCommand(cmd, last)
+            if instr.isMove() and not instr.isRapid() and last.z == instr.positionEnd().z:
+                if path_start is None:
+                    path_start = last
+                path_end = instr.positionEnd()
+                length = instr.pathLength()
+                move_lengths.append(length)
+            last = instr.positionEnd()
+
+        # Check expected move count: 2 offset triangle legs and an arc between
+        self.assertGreater(len(move_lengths), 2, "Should have at least 3 moves")
+
+        # Check path offset by comparing distances to triangle vertices
+        # Triangle edge goes from (triangle_base, 0) to (triangle_base/2, triangle_height)
+        # Use path Z coordinates to ignore Z in distance calculation
+        triangle_start = FreeCAD.Vector(self.triangle_base, 0, path_end.z)
+        triangle_end = FreeCAD.Vector(self.triangle_base / 2.0, self.triangle_height, path_start.z)
+
+        # Calculate distances (Z already matches, so this is XY distance)
+        start_to_end = path_start.distanceToPoint(triangle_end)
+        end_to_start = path_end.distanceToPoint(triangle_start)
+
+        # Path should be offset from triangle edges by approximately the tool radius
+        tool_radius = self.profile.OpToolDiameter.Value / 2.0
+        tolerance = tool_radius * 0.1  # 10% tolerance
+
+        self.assertAlmostEqual(
+            start_to_end,
+            tool_radius,
+            delta=tolerance,
+            msg=f"Path start offset from triangle end (d={start_to_end:.2f}) should be ~tool radius ({tool_radius:.2f})",
+        )
+        self.assertAlmostEqual(
+            end_to_start,
+            tool_radius,
+            delta=tolerance,
+            msg=f"Path end offset from triangle start (d={end_to_start:.2f}) should be ~tool radius ({tool_radius:.2f})",
         )
 
-        self.assertTrue(
-            expected_moves == operationMoves,
-            "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
+        # Check lengths of leg moves
+        leg_length = math.hypot(self.triangle_base / 2.0, self.triangle_height)
+        expected_straight_total = leg_length + self.triangle_base
+
+        first_move = move_lengths[0]
+        last_move = move_lengths[-1]
+        straight_total = first_move + last_move
+
+        self.assertAlmostEqual(
+            straight_total,
+            expected_straight_total,
+            delta=expected_straight_total * 0.01,
+            msg=f"Straight segments ({straight_total:.2f}) should equal triangle legs ({expected_straight_total:.2f})",
+        )
+
+        # Check lengths of arc moves
+        arc_moves = move_lengths[1:-1]
+        arc_total = sum(arc_moves)
+
+        # Calculate expected arc angle and length
+        left_leg = FreeCAD.Vector(self.triangle_base / 2.0, self.triangle_height, 0).normalize()
+        base = FreeCAD.Vector(self.triangle_base, 0, 0).normalize()
+        left_normal = FreeCAD.Vector(-left_leg.y, left_leg.x, 0)
+        base_normal = FreeCAD.Vector(base.y, -base.x, 0)
+        dot_product = left_normal.dot(base_normal)
+        dot_product = max(-1.0, min(1.0, dot_product))
+        arc_angle = math.acos(dot_product)
+
+        tool_radius = self.profile.OpToolDiameter.Value / 2.0
+        expected_arc_length = tool_radius * arc_angle
+
+        # Assert: arc segment total ≈ expected arc length
+        self.assertAlmostEqual(
+            arc_total,
+            expected_arc_length,
+            delta=expected_arc_length * 0.01,
+            msg=f"Arc length ({arc_total:.2f}) should equal radius × angle ({expected_arc_length:.2f})",
         )
 
 

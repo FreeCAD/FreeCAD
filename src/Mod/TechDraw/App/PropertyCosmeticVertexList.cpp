@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -158,7 +160,7 @@ void PropertyCosmeticVertexList::Restore(Base::XMLReader &reader)
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
-            Base::Console().error("CosmeticVertex \"%s\" within a PropertyCosmeticVertexList was subject to a partial restore.\n", reader.localName());
+            Base::Console().error("CosmeticVertex \"{}\" within a PropertyCosmeticVertexList was subject to a partial restore.\n", reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the CosmeticVertex class
                 values.push_back(newG);

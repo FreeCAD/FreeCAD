@@ -29,8 +29,14 @@
 
 #include "Console.h"
 #include "PyObjectBase.h"
+#include "Translation.h"
 
 #include "Exception.h"
+
+// Base does not link against Qt; lupdate still extracts the marked strings.
+#ifndef QT_TRANSLATE_NOOP
+# define QT_TRANSLATE_NOOP(context, sourceText) sourceText
+#endif
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
 
@@ -87,6 +93,15 @@ void Exception::reportException() const
 
     _FC_ERR(fileName.c_str(), lineNum, msg);
     hasBeenReported = true;
+}
+
+std::string Exception::getTranslatedMessage() const
+{
+    if (isTranslatable) {
+        return Translation::translate("Exceptions", errorMessage);
+    }
+
+    return errorMessage;
 }
 
 PyObject* Exception::getPyObject()
@@ -232,15 +247,26 @@ void FileException::setFileName(const std::string& fileName)
 {
     file.setFile(fileName);
     _sErrMsgAndFileName = getMessage();
-    if (!getFile().empty()) {
+    if (const std::string path = file.filePath(); !path.empty()) {
         _sErrMsgAndFileName += ": ";
-        _sErrMsgAndFileName += fileName;
+        _sErrMsgAndFileName += path;
     }
 }
 
 std::string FileException::getFileName() const
 {
     return file.fileName();
+}
+
+std::string FileException::getTranslatedMessage() const
+{
+    std::string message = Exception::getTranslatedMessage();
+    if (const std::string path = file.filePath(); !path.empty()) {
+        message += ": ";
+        message += path;
+    }
+
+    return message;
 }
 
 const char* FileException::what() const noexcept
@@ -286,6 +312,118 @@ void FileException::setPyObject(PyObject* pydict)
 PyObject* FileException::getPyExceptionType() const
 {
     return PyExc_IOError;
+}
+
+// ---------------------------------------------------------
+
+namespace
+{
+constexpr const char* fileNotFoundMsg = QT_TRANSLATE_NOOP("Exceptions", "File not found");
+constexpr const char* fileReadPermissionMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "No permission to read the file");
+constexpr const char* fileWritePermissionMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "No write permission for the file or the file is read-only");
+constexpr const char* fileFormatMsg = QT_TRANSLATE_NOOP("Exceptions", "File format not supported");
+constexpr const char* fileReadMsg = QT_TRANSLATE_NOOP("Exceptions", "Error reading from file");
+constexpr const char* fileWriteMsg = QT_TRANSLATE_NOOP("Exceptions", "Error writing to file");
+constexpr const char* directoryNotFoundMsg
+    = QT_TRANSLATE_NOOP("Exceptions", "Directory does not exist");
+}  // namespace
+
+FileNotFoundException::FileNotFoundException(const std::string& fileName)
+    : FileException(fileNotFoundMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileNotFoundException::FileNotFoundException(const FileInfo& file)
+    : FileException(fileNotFoundMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+FileReadPermissionException::FileReadPermissionException(const std::string& fileName)
+    : FileException(fileReadPermissionMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileReadPermissionException::FileReadPermissionException(const FileInfo& file)
+    : FileException(fileReadPermissionMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+FileWritePermissionException::FileWritePermissionException(const std::string& fileName)
+    : FileException(fileWritePermissionMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileWritePermissionException::FileWritePermissionException(const FileInfo& file)
+    : FileException(fileWritePermissionMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+FileFormatException::FileFormatException(const std::string& fileName)
+    : FileException(fileFormatMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileFormatException::FileFormatException(const FileInfo& file)
+    : FileException(fileFormatMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+FileReadException::FileReadException(const std::string& fileName)
+    : FileException(fileReadMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileReadException::FileReadException(const FileInfo& file)
+    : FileException(fileReadMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+FileWriteException::FileWriteException(const std::string& fileName)
+    : FileException(fileWriteMsg, fileName)
+{
+    setTranslatable(true);
+}
+
+FileWriteException::FileWriteException(const FileInfo& file)
+    : FileException(fileWriteMsg, file)
+{
+    setTranslatable(true);
+}
+
+// ---------------------------------------------------------
+
+DirectoryNotFoundException::DirectoryNotFoundException(const std::string& dirName)
+    : FileException(directoryNotFoundMsg, dirName)
+{
+    setTranslatable(true);
+}
+
+DirectoryNotFoundException::DirectoryNotFoundException(const FileInfo& directory)
+    : FileException(directoryNotFoundMsg, directory)
+{
+    setTranslatable(true);
 }
 
 // ---------------------------------------------------------

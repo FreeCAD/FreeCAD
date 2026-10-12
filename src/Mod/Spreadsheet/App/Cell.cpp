@@ -73,19 +73,19 @@ public:
 ///////////////////////////////////////////////////////////
 
 // clang-format off
-const int Cell::EXPRESSION_SET       = 1;
-const int Cell::ALIGNMENT_SET        = 4;
-const int Cell::STYLE_SET            = 8;
-const int Cell::BACKGROUND_COLOR_SET = 0x10;
-const int Cell::FOREGROUND_COLOR_SET = 0x20;
-const int Cell::DISPLAY_UNIT_SET     = 0x40;
-const int Cell::COMPUTED_UNIT_SET    = 0x80;
-const int Cell::ALIAS_SET            = 0x100;
-const int Cell::SPANS_SET            = 0x200;
-const int Cell::MARK_SET             = 0x40000000;
-const int Cell::EXCEPTION_SET        = 0x20000000;
-const int Cell::PARSE_EXCEPTION_SET  = 0x80000000;
-const int Cell::RESOLVE_EXCEPTION_SET= 0x01000000;
+const unsigned int Cell::EXPRESSION_SET       = 1;
+const unsigned int Cell::ALIGNMENT_SET        = 4;
+const unsigned int Cell::STYLE_SET            = 8;
+const unsigned int Cell::BACKGROUND_COLOR_SET = 0x10;
+const unsigned int Cell::FOREGROUND_COLOR_SET = 0x20;
+const unsigned int Cell::DISPLAY_UNIT_SET     = 0x40;
+const unsigned int Cell::COMPUTED_UNIT_SET    = 0x80;
+const unsigned int Cell::ALIAS_SET            = 0x100;
+const unsigned int Cell::SPANS_SET            = 0x200;
+const unsigned int Cell::MARK_SET             = 0x40000000;
+const unsigned int Cell::EXCEPTION_SET        = 0x20000000;
+const unsigned int Cell::PARSE_EXCEPTION_SET  = 0x80000000;
+const unsigned int Cell::RESOLVE_EXCEPTION_SET= 0x01000000;
 
 /* Alignment */
 const int Cell::ALIGNMENT_LEFT       = 0x01;
@@ -374,7 +374,7 @@ void Cell::setContent(const char* value)
                             }
                         }
                     }
-                    else if (const auto number = freecad_cast<NumberExpression*>(parsedExpr.get())) {
+                    else if (freecad_cast<NumberExpression*>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
                         newExpr = std::move(parsedExpr);
@@ -420,6 +420,18 @@ void Cell::setAlignment(int _alignment)
     }
 }
 
+void Cell::_setAlignment(int _alignment)
+{
+    if (_alignment != alignment) {
+        alignment = _alignment;
+        setUsed(
+            ALIGNMENT_SET,
+            alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
+        );
+        setDirty();
+    }
+}
+
 /**
  * Get alignment.
  *
@@ -449,6 +461,15 @@ void Cell::setStyle(const std::set<std::string>& _style)
     }
 }
 
+void Cell::_setStyle(const std::set<std::string>& _style)
+{
+    if (_style != style) {
+        style = _style;
+        setUsed(STYLE_SET, !style.empty());
+        setDirty();
+    }
+}
+
 /**
  * Get the style of the cell.
  *
@@ -475,6 +496,15 @@ void Cell::setForeground(const Base::Color& color)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setForeground(const Base::Color& color)
+{
+    if (color != foregroundColor) {
+        foregroundColor = color;
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
+        setDirty();
     }
 }
 
@@ -516,6 +546,15 @@ void Cell::setBackground(const Base::Color& color)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setBackground(const Base::Color& color)
+{
+    if (color != backgroundColor) {
+        backgroundColor = color;
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
+        setDirty();
     }
 }
 
@@ -571,6 +610,27 @@ void Cell::setDisplayUnit(const std::string& unit)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setDisplayUnit(const std::string& unit)
+{
+    DisplayUnit newDisplayUnit;
+    if (!unit.empty()) {
+        std::shared_ptr<App::UnitExpression> e(
+            ExpressionParser::parseUnit(owner->sheet(), unit.c_str())
+        );
+
+        if (!e) {
+            throw Base::UnitsMismatchError("Invalid unit");
+        }
+        newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+    }
+
+    if (newDisplayUnit != displayUnit) {
+        displayUnit = std::move(newDisplayUnit);
+        setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+        setDirty();
     }
 }
 
@@ -638,6 +698,13 @@ void Cell::setComputedUnit(const Base::Unit& unit)
     setDirty();
 
     signaller.tryInvoke();
+}
+
+void Cell::_setComputedUnit(const Base::Unit& unit)
+{
+    computedUnit = unit;
+    setUsed(COMPUTED_UNIT_SET, computedUnit != Base::Unit());
+    setDirty();
 }
 
 /**
@@ -908,7 +975,7 @@ void Cell::save(std::ostream& os, const char* indent, bool noContent) const
  *
  */
 
-void Cell::setUsed(int mask, bool state)
+void Cell::setUsed(unsigned int mask, bool state)
 {
     if (state) {
         used |= mask;
@@ -923,7 +990,7 @@ void Cell::setUsed(int mask, bool state)
  *
  */
 
-bool Cell::isUsed(int mask) const
+bool Cell::isUsed(unsigned int mask) const
 {
     return (used & mask) == mask;
 }

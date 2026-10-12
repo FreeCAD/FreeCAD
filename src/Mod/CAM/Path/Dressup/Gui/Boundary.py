@@ -292,7 +292,8 @@ class CommandPathDressupPathBoundary:
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Path Boundary Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Boundary")
-        FreeCADGui.doCommand("Path.Dressup.Gui.Boundary.Create(App.ActiveDocument.%s)" % op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.Boundary.Create(base)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

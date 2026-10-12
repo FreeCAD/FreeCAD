@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, sequence_protocol
+from typing import Any
+
+from Base.Metadata import constmethod, export, sequence_protocol
 from Base.Persistence import Persistence
 
 @export(
@@ -20,3 +22,8 @@ class PropertySheet(Persistence):
     Author: Eivind Kvedalen (eivind@kvedalen.name)
     License: LGPL-2.1-or-later
     """
+
+    @constmethod
+    def keys(self) -> Any:
+        """Get all cell names"""
+        ...

@@ -490,7 +490,9 @@ def approximateWire(wire, tolerance=0.01):
 
             if isinstance(edge.Curve, Part.BSplineCurve):
                 # Convert BSpline to arcs
-                curves = edge.Curve.toBiArcs(tolerance)
+                curve = edge.Curve
+                trimmed_curve = curve.trim(*edge.ParameterRange)
+                curves = trimmed_curve.toBiArcs(tolerance)
                 for curve in curves:
                     processed_edges.append(curve.toShape())
             else:
@@ -1078,6 +1080,9 @@ class svgHandler(xml.sax.ContentHandler):
                 sh = transformCopyShape(sh, self.transform)
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
+            if sh.Faces:
+                # transformCopyShape results in a B-spline face, we want a planar face:
+                return Part.makeFace(sh.Wires, "Part::FaceMakerBullseye")
             return sh
         elif utils.get_type(sh) in ["Dimension", "LinearDimension"]:
             pts = []

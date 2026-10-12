@@ -75,15 +75,15 @@ PyMOD_INIT_FUNC(PathGui)
     CreatePathCommands();
 
     // addition objects
-    PathGui::ViewProviderPath ::init();
-    PathGui::ViewProviderPathCompound ::init();
-    PathGui::ViewProviderPathCompoundPython ::init();
-    PathGui::ViewProviderPathShape ::init();
-    PathGui::ViewProviderPathPython ::init();
-    PathGui::ViewProviderArea ::init();
-    PathGui::ViewProviderAreaPython ::init();
-    PathGui::ViewProviderAreaView ::init();
-    PathGui::ViewProviderAreaViewPython ::init();
+    PathGui::ViewProviderPath::init();
+    PathGui::ViewProviderPathCompound::init();
+    PathGui::ViewProviderPathCompoundPython::init();
+    PathGui::ViewProviderPathShape::init();
+    PathGui::ViewProviderPathPython::init();
+    PathGui::ViewProviderArea::init();
+    PathGui::ViewProviderAreaPython::init();
+    PathGui::ViewProviderAreaView::init();
+    PathGui::ViewProviderAreaViewPython::init();
 
     // add resources and reloads the translators
     loadPathResource();

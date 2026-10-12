@@ -452,6 +452,7 @@ def deduplicate_repeated_commands(gcode: List[str]) -> List[str]:
                 params = " ".join(words[1:])
                 if params:  # Only if there are parameters
                     result.append(params)
+
             else:
                 # Different command - output full line
                 result.append(line)

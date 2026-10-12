@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2022 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This is the main NativeIFC module"""
 
@@ -67,6 +64,7 @@ SHORT = False  # If True, only Step ID attribute is created
 ROUND = 8  # rounding value for placements
 DEFAULT_SHAPEMODE = "Coin"  # Can be Shape, Coin or None
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+PRESERVED_BUILDINGPART_PROPERTIES = {"Height", "LevelOffset"}
 
 
 def create_document(document, filename=None, shapemode=0, strategy=0, silent=False):
@@ -579,8 +577,11 @@ def add_object(document, otype=None, oname="IfcObject"):
             obj.ViewObject.ShowLabel = False
             obj.ViewObject.Proxy = ifc_viewproviders.ifc_vp_buildingpart(obj.ViewObject)
             obj.ViewObject.Proxy.attach(obj.ViewObject)
-        for p in obj.PropertiesList:
-            if obj.getGroupOfProperty(p) in ["BuildingPart", "IFC Attributes", "Children"]:
+        for p in list(obj.PropertiesList):
+            group = obj.getGroupOfProperty(p)
+            if group == "IFC Attributes" or group == "Children":
+                obj.removeProperty(p)
+            elif (group == "BuildingPart") and (p not in PRESERVED_BUILDINGPART_PROPERTIES):
                 obj.removeProperty(p)
         obj.Proxy = ifc_objects.ifc_object(otype)
     else:  # default case, standard IFC object
@@ -824,9 +825,88 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
     elif ifcentity.is_a("IfcControl"):
         ifc_psets.show_psets(obj)
 
+    restore_storey_data(obj, ifcentity, ifcfile)
+
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
         obj.setExpression("Label2", "Description")
+
+
+def get_quantity_value(ifcentity, quantity_name):
+    """Returns the raw value of a matching IfcElementQuantity item, if any."""
+
+    for rel in getattr(ifcentity, "IsDefinedBy", []):
+        if not rel.is_a("IfcRelDefinesByProperties"):
+            continue
+        pset = rel.RelatingPropertyDefinition
+        if not pset or not pset.is_a("IfcElementQuantity"):
+            continue
+        for quantity in getattr(pset, "Quantities", []):
+            if quantity.Name != quantity_name:
+                continue
+            for attr in (
+                "LengthValue",
+                "AreaValue",
+                "VolumeValue",
+                "CountValue",
+                "TimeValue",
+                "WeightValue",
+            ):
+                if hasattr(quantity, attr):
+                    return getattr(quantity, attr)
+    return None
+
+
+def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, scale=None):
+    """Restores a FreeCAD property from the exporter's FreeCADPropertySet."""
+
+    if property_name not in obj.PropertiesList:
+        return False
+    if not pset:
+        pset = ifc_psets.get_pset("FreeCADPropertySet", ifcentity)
+    if not pset:
+        return False
+    for prop in getattr(pset, "HasProperties", []):
+        if prop.Name != f"FreeCAD_{property_name}" or not getattr(prop, "NominalValue", None):
+            continue
+        value = prop.NominalValue.wrappedValue
+        ptype = obj.getTypeIdOfProperty(property_name)
+        if ptype in ["App::PropertyLength", "App::PropertyDistance"]:
+            if scale is None:
+                scale = 1 / get_scale(ifcfile)
+            value = value * scale
+        elif ptype == "App::PropertyBool":
+            value = value in [".T.", True]
+        setattr(obj, property_name, value)
+        return True
+    return False
+
+
+def restore_storey_data(obj, ifcentity, ifcfile):
+    """Restores storey level metadata not covered by geometry import."""
+
+    if not ifcentity.is_a("IfcBuildingStorey"):
+        return
+
+    elevation = getattr(ifcentity, "Elevation", None)
+    if elevation is not None and "Placement" in obj.PropertiesList:
+        obj.Placement.Base.z = elevation * (1 / get_scale(ifcfile))
+
+    if "LevelOffset" in obj.PropertiesList:
+        restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
+
+    if ("Height" in obj.PropertiesList) and not restore_freecad_property(
+        obj, ifcentity, "Height", ifcfile
+    ):
+        quantity = get_quantity_value(ifcentity, "Height")
+        if quantity is not None:
+            obj.Height = quantity * (1 / get_scale(ifcfile))
+
+    if ("Elevation" in obj.PropertiesList) and ("Placement" in obj.PropertiesList):
+        obj.setExpression("Elevation", "Placement.Base.z")
+
+    if ("RefElevation" in obj.PropertiesList) and ("Elevation" in obj.PropertiesList):
+        obj.setExpression("RefElevation", "Elevation.Value")
 
 
 def remove_unused_properties(obj):
@@ -971,8 +1051,6 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
         elements = [e for e in elements if not e.is_a("IfcSpace")]
     # skip projects
     elements = [e for e in elements if not e.is_a("IfcProject")]
-    # skip furniture for now, they can be lazy loaded probably
-    elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
     return elements
 
 
@@ -1295,6 +1373,10 @@ def aggregate(obj, parent, mode=None):
         else:
             newobj = exobj
         create_relationship(obj, newobj, parent, product, ifcfile, mode)
+        if new:
+            for prop in PRESERVED_BUILDINGPART_PROPERTIES:
+                if (prop in obj.PropertiesList) and (prop in newobj.PropertiesList):
+                    setattr(newobj, prop, obj.getPropertyByName(prop))
     base = getattr(obj, "Base", None)
     if base:
         # make sure the base is used only by this object before deleting

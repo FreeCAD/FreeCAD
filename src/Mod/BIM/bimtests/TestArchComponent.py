@@ -1,30 +1,28 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 # Unit tests for the ArchComponent module
 
 import Arch
+import ArchComponent
 import Draft
 import Part
 import FreeCAD as App
@@ -38,7 +36,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
     def testAdd(self):
         App.Console.PrintLog("Checking Arch Add...\n")
-        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        l = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
         w = Arch.makeWall(l, width=0.2, height=2)
         sb = Part.makeBox(1, 1, 1)
         b = App.ActiveDocument.addObject("Part::Feature", "Box")
@@ -49,9 +47,80 @@ class TestArchComponent(TestArchBase.TestArchBase):
         r = w.Shape.Volume > 1.5
         self.assertTrue(r, "Arch Add failed")
 
+    def testMakeProjectedHorizontalAreaFace(self):
+        """Projected horizontal analysis face should preserve union semantics."""
+
+        face_a = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(0, 0, 0),
+                        App.Vector(2, 0, 0),
+                        App.Vector(2, 1, 0),
+                        App.Vector(0, 1, 0),
+                        App.Vector(0, 0, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+        face_b = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(1, 0, 0),
+                        App.Vector(3, 0, 0),
+                        App.Vector(3, 1, 0),
+                        App.Vector(1, 1, 0),
+                        App.Vector(1, 0, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+        face_c = Part.makeFace(
+            [
+                Part.makePolygon(
+                    [
+                        App.Vector(0, 1, 0),
+                        App.Vector(3, 1, 0),
+                        App.Vector(3, 2, 0),
+                        App.Vector(0, 2, 0),
+                        App.Vector(0, 1, 0),
+                    ]
+                )
+            ],
+            "Part::FaceMakerCheese",
+        )
+
+        # Seed element maps so the test verifies the transient fuse drops
+        # naming metadata, not just that the projected faces union geometrically.
+        face_a.ElementMap = {"FaceA": "FaceA"}
+        face_b.ElementMap = {"FaceB": "FaceB"}
+        face_c.ElementMap = {"FaceC": "FaceC"}
+        self.assertGreater(face_a.ElementMapSize, 0)
+        self.assertGreater(face_b.ElementMapSize, 0)
+        self.assertGreater(face_c.ElementMapSize, 0)
+
+        single = ArchComponent._make_projected_horizontal_area_face([face_a])
+        overlapping_union = ArchComponent._make_projected_horizontal_area_face([face_a, face_b])
+        fused = ArchComponent._make_projected_horizontal_area_face([face_a, face_b, face_c])
+
+        self.assertIsNotNone(single)
+        self.assertEqual(0, single.ElementMapSize)
+        self.assertAlmostEqual(2.0, single.Area, places=7)
+        self.assertIsNotNone(overlapping_union)
+        self.assertEqual(0, overlapping_union.ElementMapSize)
+        self.assertAlmostEqual(3.0, overlapping_union.Area, places=7)
+        self.assertEqual(1, len(overlapping_union.Faces))
+        self.assertAlmostEqual(8.0, overlapping_union.Faces[0].OuterWire.Length, places=7)
+        self.assertIsNotNone(fused)
+        self.assertEqual(0, fused.ElementMapSize)
+        self.assertAlmostEqual(6.0, fused.Area, places=7)
+
     def testRemove(self):
         App.Console.PrintLog("Checking Arch Remove...\n")
-        l = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
+        l = Draft.make_line(App.Vector(0, 0, 0), App.Vector(2, 0, 0))
         w = Arch.makeWall(l, width=0.2, height=2, align="Right")
         sb = Part.makeBox(1, 1, 1)
         b = App.ActiveDocument.addObject("Part::Feature", "Box")
@@ -91,14 +160,14 @@ class TestArchComponent(TestArchBase.TestArchBase):
             points.append(App.Vector(x, y, 0))
 
         # Create Draft objects
-        bspline = Draft.makeBSpline(points, closed=False)
-        closingLine = Draft.makeLine(points[-1], points[0])
+        bspline = Draft.make_bspline(points, closed=False)
+        closingLine = Draft.make_line(points[-1], points[0])
         doc.recompute()
 
         # Create sketch
-        # We do this because Draft.make_wires does not support B-splines
+        # We do this because Draft.make_wire does not support B-splines
         # and we need a closed wire for the slab
-        sketch = Draft.makeSketch([bspline, closingLine], autoconstraints=True, delete=True)
+        sketch = Draft.make_sketch([bspline, closingLine], autoconstraints=True, delete=True)
         if sketch is None:
             self.fail("Sketch creation failed")
         sketch.recompute()
@@ -168,7 +237,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         ]
 
         # Create wire with automatic face creation
-        wire = Draft.makeWire(points, closed=True, face=True)
+        wire = Draft.make_wire(points, closed=True, face=True)
         if not wire:
             self.fail(f"Wire creation failed with points: {points}\n")
         doc.recompute()
@@ -230,7 +299,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         """
 
         # Create a basic wall
-        wall_base = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
+        wall_base = Draft.make_line(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
         wall = Arch.makeWall(wall_base, width=200, height=2500)
 
         # Create a window to be added to the wall
@@ -239,7 +308,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         # Create a Draft Rectangle for the window's Base. Arch.makeWindow can work with
         # either a Wire or a Face.
-        window_base = Draft.makeRectangle(length=window_width, height=window_height)
+        window_base = Draft.make_rectangle(length=window_width, height=window_height)
 
         window = Arch.makeWindow(baseobj=window_base)
         window.Width = window_width  # Manually set as makeWindow(base) doesn't
@@ -273,7 +342,6 @@ class TestArchComponent(TestArchBase.TestArchBase):
         white-box testing on the internal calculator.
         """
         import math
-        import ArchComponent
 
         tolerance = Part.Precision.confusion()
 
@@ -290,7 +358,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
             return not (is_vertical(normal_z) or is_horizontal(normal_z))
 
         with self.subTest(case="Standard Wall"):
-            line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+            line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
             wall = Arch.makeWall(line, width=2, height=10)
             self.document.recompute()
 
@@ -313,7 +381,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         with self.subTest(case="Closed Extrusion"):
             points = [App.Vector(0, 0, 0), App.Vector(10, 0, 0), App.Vector(5, 5, 0)]
-            bspline = Draft.makeBSpline(points, closed=True)
+            bspline = Draft.make_bspline(points, closed=True)
             structure = Arch.makeStructure(bspline, height=10)
             self.document.recompute()
 
@@ -334,7 +402,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
             )
 
         with self.subTest(case="Cylinder"):
-            circle = Draft.makeCircle(radius=5)
+            circle = Draft.make_circle(radius=5)
             struct = Arch.makeStructure(circle, height=20)
             self.document.recompute()
 
@@ -359,10 +427,10 @@ class TestArchComponent(TestArchBase.TestArchBase):
         with self.subTest(case="Generic Vertical Surface"):
             # Create two B-spline curves, vertically aligned
             points1 = [App.Vector(0, 0, 0), App.Vector(5, 5, 0), App.Vector(10, 0, 0)]
-            bspline1 = Draft.makeBSpline(points1, closed=False)
+            bspline1 = Draft.make_bspline(points1, closed=False)
 
             points2 = [App.Vector(0, 0, 20), App.Vector(5, 5, 20), App.Vector(10, 0, 20)]
-            bspline2 = Draft.makeBSpline(points2, closed=False)
+            bspline2 = Draft.make_bspline(points2, closed=False)
 
             # Create a ruled surface (Loft)
             loft = self.document.addObject("Part::Loft", "GenericVerticalLoft")
@@ -428,7 +496,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         Verify that VerticalArea property updates correctly even when the result is zero.
         """
 
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
         wall = Arch.makeWall(line, width=2, height=10)
         self.document.recompute()
 
@@ -479,9 +547,9 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # Create generic geometry (Ruled Surface / Loft)
         # Reuse the B-Spline logic that triggers the fallback projection path
         points1 = [App.Vector(40, 0, 0), App.Vector(45, 5, 0), App.Vector(50, 0, 0)]
-        bspline1 = Draft.makeBSpline(points1, closed=False)
+        bspline1 = Draft.make_bspline(points1, closed=False)
         points2 = [App.Vector(40, 0, 10), App.Vector(45, 5, 10), App.Vector(50, 0, 10)]
-        bspline2 = Draft.makeBSpline(points2, closed=False)
+        bspline2 = Draft.make_bspline(points2, closed=False)
 
         loft = self.document.addObject("Part::Loft", "IntegrationLoft")
         loft.Sections = [bspline1, bspline2]
@@ -740,13 +808,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()
@@ -781,13 +849,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()
@@ -819,13 +887,13 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         # Create the host wall
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(4000, 0, 0))
         wall = Arch.makeWall(line, width=200, height=3000, align="Center")
         self.document.recompute()
         initial_volume = wall.Shape.Volume
 
         # Create a prototype window
-        rect = Draft.makeRectangle(length=1000, height=1500)
+        rect = Draft.make_rectangle(length=1000, height=1500)
         rect.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
         rect.Placement.Base = App.Vector(0, 0, 0)
         self.document.recompute()

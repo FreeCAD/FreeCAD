@@ -337,7 +337,7 @@ class SH3DImporter:
             self._refresh()
 
         if App.GuiUp and self.preferences["FIT_VIEW"]:
-            Gui.SendMsgToActiveView("ViewFit")
+            Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
         # Importing <doorOrWindow> elements ...
         if self.preferences["IMPORT_DOORS_AND_WINDOWS"]:
@@ -540,7 +540,6 @@ class SH3DImporter:
         Returns the first level if only one defined or level_id is None
 
         Args:
-            levels (list): The list of imported levels
             level_id (string): the level @id
 
         Returns:
@@ -732,9 +731,6 @@ class SH3DImporter:
             parent (Element): the parent of the elements to be imported.
                 Usually the <home> element.
             xpath (str): the xpath of the elements to be imported.
-            update_progress (bool, optional): whether to update the
-                progress. Set to false when importing a group of elements.
-                Defaults to True.
         """
         elements = parent.findall(xpath)
         # Is it a real tag name or an xpath expression?
@@ -1005,7 +1001,6 @@ class BaseHandler:
             None
 
         Args:
-            levels (list): The list of imported levels
             level_id (string): the level @id
 
         Returns:
@@ -1306,7 +1301,6 @@ class LevelHandler(BaseHandler):
             """Return the Part.Extrude suitable for fusion by the make_multi_fuse tool.
 
             Args:
-                floor (Arch.Floor): the Arch Floor for which to create the Slab
                 obj_to_extrude (Part): the space or wall to project onto the XY
                 plane to create the slab
 
@@ -2015,7 +2009,7 @@ class WallHandler(BaseHandler):
         section_start = self._get_section(wall_details, True, prev_wall_details, a1, a2)
         section_end = self._get_section(wall_details, False, next_wall_details, a1, a2)
 
-        spine = Draft.makeLine(start, end)
+        spine = Draft.make_line(start, end)
 
         return section_start, section_end, spine
 
@@ -2042,15 +2036,15 @@ class WallHandler(BaseHandler):
             self._debug_vector(end - center, "end-center", BLUE, center)
 
         placement = App.Placement(center, App.Rotation())
-        # BEWARE: makeCircle always draws counter-clockwise (i.e. in positive
+        # BEWARE: make_circle always draws counter-clockwise (i.e. in positive
         # direction in xYz coordinate system). We therefore need to invert
         # the start and end angle (as in SweetHome the wall is drawn in
         # clockwise fashion).
         length = abs(radius * math.radians(a2 - a1))
         if invert_angle:
-            spine = Draft.makeCircle(radius, placement, False, a1, a2)
+            spine = Draft.make_circle(radius, placement, False, a1, a2)
         else:
-            spine = Draft.makeCircle(radius, placement, False, a2, a1)
+            spine = Draft.make_circle(radius, placement, False, a2, a1)
 
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
@@ -2114,7 +2108,7 @@ class WallHandler(BaseHandler):
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
-            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=True)
+            section = Draft.make_rectangle([i_start, i_end, i_end_z, i_start_z], face=True)
             if debug_geometry:
                 _log(f"section: {section}")
         else:
@@ -2122,7 +2116,7 @@ class WallHandler(BaseHandler):
             height = height_start if at_start else height_end
             center = start if at_start else end
             z_rotation = a1 if at_start else a2
-            section = Draft.makeRectangle(thickness, height, face=True)
+            section = Draft.make_rectangle(thickness, height, face=True)
             Draft.move([section], App.Vector(-thickness / 2, 0, 0))
             Draft.rotate([section], 90, ORIGIN, X_NORM)
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
@@ -2314,7 +2308,6 @@ class WallHandler(BaseHandler):
             floor (Arch::Level): the level the wall belongs to. Used to group
                 the resulting Facebinders
             wall (Arch::Wall): the wall to paint
-            elm (Element): the xml element for the wall to be imported
             left_face_name (str): the name of the left face suitable for selecting
             right_face_name (str): the name of the right face suitable for selecting
         """
@@ -2360,7 +2353,6 @@ class WallHandler(BaseHandler):
         Args:
             floor (Slab): the Slab the wall belongs to
             wall (Wall): the Arch wall
-            elm (Element): the wall being imported (with child baseboards)
             left_face (Part.Face): the left hand side of the wall
             right_face (Part.Face): the right hand side of the wall
 

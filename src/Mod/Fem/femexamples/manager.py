@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
@@ -258,7 +260,7 @@ def run_example(example, solver=None, base_name=None, run_solver=False, blocking
         if solver is not None:
             base_name += "_" + solver
 
-    # We support rigth now:
+    # As of now, we support:
     # 1. Multiple analysis objects, each having a mesh and solver object
     # 2. Or multiple mesh objects outside of analysis
 

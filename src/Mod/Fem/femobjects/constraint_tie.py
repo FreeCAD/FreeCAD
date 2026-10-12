@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -104,6 +106,24 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
                 group="Geometry",
                 doc="Number of connected sectors used for results display",
                 value=1,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBoolList",
+                name="ReversedMaster",
+                group="Geometry",
+                doc="Use reversed normal direction for master references",
+                value=[False],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBoolList",
+                name="ReversedSlave",
+                group="Geometry",
+                doc="Use reversed normal direction for slave references",
+                value=[False],
             )
         )
 

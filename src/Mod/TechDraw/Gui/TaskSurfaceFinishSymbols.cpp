@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 edi                                                *
  *                                                                         *
@@ -421,6 +423,7 @@ bool TaskSurfaceFinishSymbols::accept()
         page->addView(surfaceSymbol);
     }
 
+    surfaceSymbol->recomputeFeature();
     Gui::Command::commitCommand(tid);
     return true;
 }

@@ -90,6 +90,7 @@ struct DocumentP
     bool _isModified;
     bool _isTransacting;
     bool _isActive;
+    bool _restoredGuiDocument;
     bool _changeViewTouchDocument;
     bool _editWantsRestore;
     bool _editWantsRestorePrevious;
@@ -264,6 +265,14 @@ struct DocumentP
         _editObjs.insert(sobjs.begin(), sobjs.end());
     }
 
+    void resetFailedEditing()
+    {
+        _editViewProvider = nullptr;
+        _editViewProviderParent = nullptr;
+        _editObjs.clear();
+        _editingObject = nullptr;
+    }
+
     bool tryStartEditing(
         ViewProviderDocumentObject* vp,
         App::DocumentObject* obj,
@@ -283,15 +292,35 @@ struct DocumentP
 
     bool tryStartEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
     {
+        try {
+            return startEditing(svp, sobj, ModNum);
+        }
+        catch (const Base::Exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (const std::exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (...) {
+            resetFailedEditing();
+            FC_ERR("startEditing: Unknown C++ exception");
+            return false;
+        }
+    }
+
+    bool startEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
+    {
         _editingObject = sobj;
         _editMode = ModNum;
         _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
                                   // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
-            _editViewProviderParent = nullptr;
-            _editObjs.clear();
-            _editingObject = nullptr;
+            resetFailedEditing();
             FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
             return false;
         }
@@ -436,6 +465,7 @@ Document::Document(App::Document* pcDocument, Application* app)
     d->_isModified = false;
     d->_isTransacting = false;
     d->_isActive = false;
+    d->_restoredGuiDocument = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -538,12 +568,8 @@ Document::Document(App::Document* pcDocument, Application* app)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
     );
-    if (hGrp->GetBool("UsingUndo", true)) {
-        d->_pcDocument->setUndoMode(1);
-        // set the maximum stack size
-        d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
-    }
 
+    d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
     d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
 
@@ -608,7 +634,15 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
         return trySetEdit(p, ModNum, subname);
     }
     catch (const Base::Exception& e) {
-        FC_ERR("" << e.what());
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (const std::exception& e) {
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (...) {
+        FC_ERR("setEdit: Unknown C++ exception");
         return false;
     }
 }
@@ -963,7 +997,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 {
     auto pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
-        std::string cName = Obj.getViewProviderNameStored();
+        std::string_view cName {Obj.getViewProviderNameStored()};
         for (;;) {
             if (cName.empty()) {
                 // handle document object with no view provider specified
@@ -971,7 +1005,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 return;
             }
             Base::Type type = Base::Type::getTypeIfDerivedFrom(
-                cName.c_str(),
+                cName,
                 ViewProviderDocumentObject::getClassTypeId(),
                 true
             );
@@ -1675,7 +1709,7 @@ bool Document::save()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromStdString(e.getTranslatedMessage()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1712,7 +1746,7 @@ bool Document::saveAs()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringList(QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")))
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
 
     if (!fn.isEmpty()) {
@@ -1739,7 +1773,7 @@ bool Document::saveAs()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromUtf8(e.getTranslatedMessage().c_str()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1842,7 +1876,7 @@ bool Document::saveCopy()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringList(QObject::tr("%1 document (*.FCStd)").arg(exe))
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
     if (!fn.isEmpty()) {
         const char* DocName = App::GetApplication().getDocumentName(getDocument());
@@ -1891,7 +1925,7 @@ void Document::Save(Base::Writer& writer) const
         );
         if (hGrp->GetBool("SaveThumbnail", true)) {
             int size = hGrp->GetInt("ThumbnailSize", 256);
-            size = Base::clamp<int>(size, 64, 512);
+            size = std::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
 
             View3DInventorViewer* view = nullptr;
@@ -1915,6 +1949,7 @@ void Document::Save(Base::Writer& writer) const
  */
 void Document::Restore(Base::XMLReader& reader)
 {
+    d->_restoredGuiDocument = false;
     reader.addFile("GuiDocument.xml", this);
 
     // hide all elements to avoid to update the 3d view when loading data files
@@ -1931,6 +1966,8 @@ void Document::Restore(Base::XMLReader& reader)
  */
 void Document::RestoreDocFile(Base::Reader& reader)
 {
+    d->_restoredGuiDocument = true;
+
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader
         = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
@@ -2008,7 +2045,7 @@ void Document::RestoreDocFile(Base::Reader& reader)
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
     }
@@ -2051,6 +2088,15 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         ViewProvider* viewProvider = getViewProvider(act);
         if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
+
+    if (!d->_restoredGuiDocument) {
+        for (auto* mdiView : getMDIViews()) {
+            if (auto* view3D = freecad_cast<View3DInventor*>(mdiView)) {
+                view3D->viewAll();
+                break;
+            }
         }
     }
 
@@ -2681,7 +2727,7 @@ MDIView* Document::getActiveView() const
     MDIView* active = getMainWindow()->activeWindow();
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // check whether the active view is part of this document
     bool ok = false;
@@ -2786,7 +2832,7 @@ void Document::setActiveWindow(Gui::MDIView* view)
     }
 
     // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews(true);
+    std::list<MDIView*> mdis = getMDIViews();
 
     // this document is not active
     if (std::ranges::find(mdis, active) == mdis.end()) {
@@ -3044,7 +3090,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childRootNode == childGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "group of '%s' to itself\n",
+                                    "group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3057,7 +3103,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childFrontNode == frontGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "foreground group of '%s' to itself\n",
+                                    "foreground group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }
@@ -3070,7 +3116,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                             if (childBackNode == backGroup) {
                                 Base::Console().warning(
                                     "Document::handleChildren3D: Do not add "
-                                    "background group of '%s' to itself\n",
+                                    "background group of '{}' to itself\n",
                                     it->getNameInDocument()
                                 );
                             }

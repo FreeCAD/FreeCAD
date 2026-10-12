@@ -82,8 +82,8 @@ public:
     // Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    /// Provides preview shape
-    Part::TopoShape getPreviewShape() const override;
+    void toggleVisibility() override;
+
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 
@@ -105,6 +105,7 @@ protected:
 
     void attachPreview() override;
     void updatePreview() override;
+    virtual void updatePreviewColor();
 
     virtual void makeChildrenVisible();
     bool onDelete(const std::vector<std::string>&) override;

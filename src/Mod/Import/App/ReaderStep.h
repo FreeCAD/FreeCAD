@@ -25,6 +25,7 @@
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
+#include <Message_ProgressRange.hxx>
 #include <Resource_FormatType.hxx>
 #include <TDocStd_Document.hxx>
 #include <StepData_StepModel.hxx>
@@ -41,7 +42,10 @@ public:
     {
         codePage = cp;
     }
-    void read(Handle(TDocStd_Document) hDoc);
+    void read(
+        Handle(TDocStd_Document) hDoc,
+        const Message_ProgressRange& theProgress = Message_ProgressRange()
+    );
 
 private:
     Base::FileInfo file;

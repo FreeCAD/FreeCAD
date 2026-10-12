@@ -22,6 +22,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
 
@@ -136,8 +137,8 @@ class ObjectDressup:
 
         if skipped:
             Path.Log.warning(
-                translate("CAM_DressupZCorrect", "Incorrect lines in file: %s\n%s")
-                % (filename, skipped)
+                translate("CAM_DressupZCorrect", "Skipped non-data lines in file: %s (lines %s)")
+                % (filename, ", ".join(str(n) for n in skipped))
             )
 
         if len(pointlist) < 3:
@@ -149,16 +150,26 @@ class ObjectDressup:
             return
 
         cols = list(zip(*pointlist))
-        yindex = list(sorted(set(cols[1])))
+        xlist = list(sorted(set(cols[0])))
+        ylist = list(sorted(set(cols[1])))
 
         Path.Log.debug(pointlist)
         Path.Log.debug("cols: {}".format(cols))
-        Path.Log.debug("yindex: {}".format(yindex))
+        Path.Log.debug("yindex: {}".format(ylist))
 
-        array = []
-        for y in yindex:
-            points = sorted([p for p in pointlist if p[1] == y])
-            array.append([FreeCAD.Vector(p[0], p[1], p[2]) for p in points])
+        array = [[None for xi in range(len(xlist))] for yi in range(len(ylist))]
+        for yi in range(len(ylist)):
+            for xi in range(len(xlist)):
+                for p in pointlist:
+                    if xlist[xi] == p[0] and ylist[yi] == p[1]:
+                        array[yi][xi] = FreeCAD.Vector(p[0], p[1], p[2])
+                        break
+            if None in array[yi]:  # fill missed probe positions
+                zlist = [p.z for p in array[yi] if p]
+                averageZ = sum(zlist) / len(zlist)
+                for xi in range(len(xlist)):
+                    if array[yi][xi] is None:
+                        array[yi][xi] = FreeCAD.Vector(xlist[xi], ylist[yi], averageZ)
 
         intSurf = Part.BSplineSurface()
         try:
@@ -178,9 +189,26 @@ class ObjectDressup:
             obj.Path = Path.Path()
             return
 
-        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = obj.Base.Path
         if not path.Commands:
             obj.Path = Path.Path()
+            return
+
+        PathDressup.placeWithBase(obj)
+        # The probe map is world geometry and the path is in the base
+        # operation's frame. On a plane parallel to the table a frame point
+        # maps to its world X, Y for the lookup, and the correction is along
+        # the tool axis either way. A tilted plane has no such lookup.
+        frame = PathUtil.workplaneForOp(obj)
+        z_up = FreeCAD.Vector(0, 0, 1)
+        if not frame.Rotation.multVec(z_up).isEqual(z_up, 1e-6):
+            Path.Log.warning(
+                translate(
+                    "CAM_DressupZCorrect",
+                    "Z correction needs a work plane parallel to the table; path left unchanged",
+                )
+            )
+            obj.Path = path
             return
 
         self._getinterpSurface(obj)
@@ -221,9 +249,10 @@ class ObjectDressup:
                         pointlist = [v.Point for v in edge.Vertexes]
 
                 for point in pointlist:
-                    if not bb.isInside(FreeCAD.Vector(point.x, point.y, 0)):
+                    world = frame.multVec(point)
+                    if not bb.isInside(FreeCAD.Vector(world.x, world.y, 0)):
                         obj.Path = path
-                        pointStr = f"({round(point.x, 3)}, {round(point.y, 3)})"
+                        pointStr = f"({round(world.x, 3)}, {round(world.y, 3)})"
                         bbMin = f"XMin={round(bb.XMin, 3)}, YMin={round(bb.YMin, 3)}"
                         bbMax = f"XMax={round(bb.XMax, 3)}, YMax={round(bb.YMax, 3)}"
                         Path.Log.warning(
@@ -235,11 +264,12 @@ class ObjectDressup:
                         )
                         return
 
-                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+                    offset = self._bilinearInterpolate(surface, world.x, world.y)
                     commandparams = {"X": point.x, "Y": point.y, "Z": point.z + offset}
                     if "F" in newparams.keys():
                         commandparams["F"] = newparams["F"]
                     newcommand = Path.Command("G1", commandparams)
+                    newcommand.Annotations = cmd.Annotations
                     newcommandlist.append(newcommand)
                     currLocation.update(newcommand.Parameters)
                     currLocation["Z"] = zval
@@ -310,11 +340,16 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
+        path = self.form.ProbePointFileName.text().strip()
+        if not os.path.exists(path):
+            path = os.path.dirname(path)
+        if not os.path.exists(path):
+            path = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
             translate("CAM_Probe", "Select Probe Point File"),
-            None,
-            translate("CAM_Probe", "All Files (*.*)"),
+            path,
+            translate("CAM_Probe", "All Files (*)"),
         )
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
@@ -399,10 +434,10 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
-        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"obj.Base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False")
+        FreeCADGui.doCommand("obj.Base.Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

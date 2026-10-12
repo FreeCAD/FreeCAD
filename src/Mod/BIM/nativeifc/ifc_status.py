@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2024 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """This contains nativeifc status widgets and functionality"""
 
@@ -75,12 +72,12 @@ def set_properties_editor(statuswidget):
             pTabCornerWidget = QtGui.QWidget()
             pButton1 = QtGui.QToolButton(pTabCornerWidget)
             pButton1.setText("")
-            pButton1.setToolTip(translate("BIM", "Add IFC property..."))
+            pButton1.setToolTip(translate("BIM", "Add IFC property…"))
             pButton1.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
             pButton1.clicked.connect(on_add_property)
             pButton2 = QtGui.QToolButton(pTabCornerWidget)
             pButton2.setText("")
-            pButton2.setToolTip(translate("BIM", "Add standard IFC Property Set..."))
+            pButton2.setToolTip(translate("BIM", "Add standard IFC Property Set…"))
             pButton2.setIcon(QtGui.QIcon(":/icons/BIM_IfcProperties.svg"))
             pButton2.clicked.connect(on_add_pset)
             pHLayout = QtGui.QHBoxLayout(pTabCornerWidget)

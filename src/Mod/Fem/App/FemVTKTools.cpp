@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2017 Qingfeng Xia  <qingfeng.xia at oxford uni>         *
@@ -76,6 +78,10 @@
 #include "FemAnalysis.h"
 #include "FemResultObject.h"
 #include "FemVTKTools.h"
+#include <SMESH_Group.hxx>
+#include <SMESHDS_GroupBase.hxx>
+#include <SMESHDS_Group.hxx>
+#include <vtkVertex.h>
 
 
 namespace Fem
@@ -154,7 +160,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
 {
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     const vtkIdType nCells = dataset->GetNumberOfCells();
-    Base::Console().log("%d nodes/points and %d cells/elements found!\n", nPoints, nCells);
+    Base::Console().log("{} nodes/points and {} cells/elements found!\n", nPoints, nCells);
     Base::Console().log("Build SMESH mesh out of the vtk mesh data.\n", nPoints, nCells);
 
     // Now fill the SMESH datastructure
@@ -174,7 +180,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
         switch (cell->GetCellType()) {
             // 0D vertex
             case VTK_VERTEX:
-                // we ignore it, internally we do not store separate data for a vertex
+                meshds->Add0DElementWithID(ids[0], iCell + 1);
                 break;
             // 1D edges
             case VTK_LINE:  // seg2
@@ -319,32 +325,164 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     }
 }
 
-FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
+struct group_definition
+{
+    std::set<int> elements;
+    int dimension;
+};
+
+void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* mesh, std::string arrayname)
+{
+    auto cell_data = grid->GetCellData();
+    vtkAbstractArray* cell_array = nullptr;
+
+    if (cell_data->HasArray(arrayname.c_str())) {
+        cell_array = cell_data->GetAbstractArray(arrayname.c_str());
+    }
+    else {
+        Base::Console().error("Array {} does not exist, cannot create groups\n", arrayname);
+        return;
+    }
+
+    // only support single component tuples
+    if (cell_array->GetNumberOfComponents() != 1) {
+        Base::Console().error("Only single component data can be converted into groups\n", arrayname);
+        return;
+    }
+
+    // do we have a integer cell type?
+    if (cell_array && cell_array->IsA("vtkIntArray")) {
+        std::map<vtkTypeInt64, group_definition> int_group_map;
+        auto intarray = vtkIntArray::SafeDownCast(cell_array);
+
+        // extract the groups with the respective elements
+        for (int i = 0; i < intarray->GetNumberOfTuples(); i++) {
+
+            // remember: element ids in SMESH are continuous from nodes to cells.
+            // in VTK nodes and cells have separated 0 started indexes
+            vtkTypeInt64 value = intarray->GetValue(i);
+            if (value < 0) {
+                // -1 means no group
+                continue;
+            }
+            if (int_group_map.contains(value)) {
+                auto dim = grid->GetCell(i)->GetCellDimension();
+                if (int_group_map[value].dimension != dim) {
+                    Base::Console().error("Cells in group are not of same dimension\n", arrayname);
+                    return;
+                }
+                int_group_map[value].elements.insert(i + 1);
+            }
+            else {
+                auto dim = grid->GetCell(i)->GetCellDimension();
+                std::set<int> elementset;
+                elementset.insert(i + 1);
+                int_group_map[value] = group_definition(elementset, dim);
+            }
+        }
+        // add it to the mesh
+        for (auto& item : int_group_map) {
+            std::string element_type;
+            switch (item.second.dimension) {
+                case 0:
+                    element_type = "0DElement";
+                    break;
+                case 1:
+                    element_type = "Edge";
+                    break;
+                case 2:
+                    element_type = "Face";
+                    break;
+                case 3:
+                    element_type = "Volume";
+                    break;
+            }
+            auto group_id
+                = mesh->addGroup(element_type, std::to_string(item.first).c_str(), item.first);
+            mesh->addGroupElements(group_id, item.second.elements);
+        }
+    }
+
+    // seems we have a string cell type
+    std::map<std::string, group_definition> string_group_map;
+    if (cell_array && cell_array->IsA("vtkStringArray")) {
+        auto strarray = vtkStringArray::SafeDownCast(cell_array);
+
+        // extract the groups with the respective elements
+        for (int i = 0; i < strarray->GetNumberOfTuples(); i++) {
+
+            auto value = strarray->GetValue(i);
+            if (value.empty()) {
+                // empty strings mean no group
+                continue;
+            }
+
+            if (string_group_map.contains(value)) {
+                auto dim = grid->GetCell(i)->GetCellDimension();
+                if (string_group_map[value].dimension != dim) {
+                    Base::Console().error("Cells in group are not of same dimension\n", arrayname);
+                    return;
+                }
+                string_group_map[value].elements.insert(i + 1);
+            }
+            else {
+                auto dim = grid->GetCell(i)->GetCellDimension();
+                std::set<int> elementset;
+                elementset.insert(i + 1);
+                string_group_map[value] = group_definition(elementset, dim);
+            }
+        }
+        // add it to the mesh
+        for (auto& item : string_group_map) {
+            std::string element_type;
+            switch (item.second.dimension) {
+                case 0:
+                    element_type = "0DElement";
+                    break;
+                case 1:
+                    element_type = "Edge";
+                    break;
+                case 2:
+                    element_type = "Face";
+                    break;
+                case 3:
+                    element_type = "Volume";
+                    break;
+            }
+            std::string name(item.first);
+            auto group_id = mesh->addGroup(element_type, name);
+            mesh->addGroupElements(group_id, item.second.elements);
+        }
+    }
+}
+
+FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh, const char* group_array)
 {
     Base::TimeElapsed Start;
     Base::Console().log("Start: read FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
 
+    vtkSmartPointer<vtkDataSet> dataset;
     if (f.hasExtension("vtu")) {
-        vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
+        dataset = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
     }
     else if (f.hasExtension("pvtu")) {
-        vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
+        dataset = readVTKFile<vtkXMLPUnstructuredGridReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
     }
     else if (f.hasExtension("vtk")) {
-        vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkDataSetReader>(filename);
+        dataset = readVTKFile<vtkDataSetReader>(filename);
         if (!dataset.Get()) {
-            Base::Console().error("Failed to load file %s\n", filename);
+            Base::Console().error("Failed to load file {}\n", filename);
             return nullptr;
         }
         importVTKMesh(dataset, mesh);
@@ -355,8 +493,35 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     }
     // Mesh should link to the part feature, in order to set up FemConstraint
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    // load a potential array as groups
+    if (group_array != nullptr) {
+        importVTKCellGroup(dataset, mesh, group_array);
+    }
+
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     return mesh;
+}
+
+
+void exportFemMeshVertices(
+    vtkSmartPointer<vtkCellArray>& elemArray,
+    std::vector<int>& types,
+    const SMDS_ElemIteratorPtr& aVertexIter
+)
+{
+    Base::Console().log("  Start: VTK mesh builder vertices.\n");
+
+    while (aVertexIter->more()) {
+        const SMDS_MeshElement* aVertex = aVertexIter->next();
+        if (aVertex->GetEntityType() == SMDSEntity_0D) {
+            fillVtkArray<vtkVertex>(elemArray, types, aVertex);
+        }
+        else {
+            throw Base::TypeError("Vertex not yet supported by FreeCAD's VTK mesh builder\n");
+        }
+    }
+
+    Base::Console().log("  End: VTK mesh builder edges.\n");
 }
 
 void exportFemMeshEdges(
@@ -494,9 +659,9 @@ void FemVTKTools::exportVTKMesh(
     grid->SetPoints(points);
     // nodes debugging
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
-    Base::Console().log("    Size of nodes in SMESH grid: %i.\n", info.NbNodes());
+    Base::Console().log("    Size of nodes in SMESH grid: {}.\n", info.NbNodes());
     const vtkIdType nNodes = grid->GetNumberOfPoints();
-    Base::Console().log("    Size of nodes in VTK grid: %i.\n", nNodes);
+    Base::Console().log("    Size of nodes in VTK grid: {}.\n", nNodes);
     Base::Console().log("  End: VTK mesh builder nodes.\n");
 
     vtkSmartPointer<vtkCellArray> elemArray = vtkSmartPointer<vtkCellArray>::New();
@@ -516,9 +681,17 @@ void FemVTKTools::exportVTKMesh(
             SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
             exportFemMeshEdges(elemArray, types, aEdgeIter);
         }
+        // try vertices
+        if (elemArray->GetNumberOfCells() == 0) {
+            SMDS_ElemIteratorPtr aVertexIter = meshDS->elementsIterator(SMDSAbs_0DElement);
+            exportFemMeshVertices(elemArray, types, aVertexIter);
+        }
     }
     else {
         // export all elements
+        // vertices
+        SMDS_ElemIteratorPtr aVertexIter = meshDS->elementsIterator(SMDSAbs_0DElement);
+        exportFemMeshVertices(elemArray, types, aVertexIter);
         // edges
         SMDS_EdgeIteratorPtr aEdgeIter = meshDS->edgesIterator();
         exportFemMeshEdges(elemArray, types, aEdgeIter);
@@ -557,7 +730,125 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh, bool h
         Base::Console().error("file name extension is not supported to write VTK\n");
     }
 
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+}
+
+void FemVTKTools::writeVTKMeshWithGroups(
+    std::string Filename,
+    FemMesh* mesh,
+    std::string group_array,
+    std::map<std::string, int> index_map,
+    bool highest
+)
+{
+    Base::TimeElapsed Start;
+    Base::Console().log(
+        "Start: write VTK unstructuredGrid from FemMesh including groups======================\n"
+    );
+    Base::FileInfo f(Filename);
+
+    vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+    exportVTKMesh(mesh, grid, highest);
+
+    // add the groups array!
+    vtkSmartPointer<vtkAbstractArray> cell_array;
+    if (index_map.empty()) {
+        auto cell_sarray = vtkNew<vtkStringArray>();
+        cell_sarray->SetNumberOfComponents(1);
+        cell_sarray->SetName(group_array.c_str());
+        cell_sarray->SetNumberOfTuples(grid->GetNumberOfCells());
+
+        auto smesh = mesh->getSMesh();
+        for (auto& GroupID : smesh->GetGroupIds()) {
+
+            SMESH_Group* group = smesh->GetGroup(GroupID);
+            if (!group) {
+                throw std::runtime_error("VTK group exports: No group for given id.");
+            }
+            SMESHDS_Group* groupDS = dynamic_cast<SMESHDS_Group*>(group->GetGroupDS());
+            if (!groupDS) {
+                throw std::runtime_error("VTK group export: Failed to add group elements.");
+            }
+
+            auto type = groupDS->GetType();
+            if ((type == SMDSAbs_Node) || (type == SMDSAbs_Ball) || (type == SMDSAbs_All)) {
+                // we only support VTK cell type group (0DElement, Edge,Face,Volume)
+                continue;
+            }
+
+            // Traverse the full group
+            auto name = group->GetName();
+            auto aElemIter = groupDS->GetElements();
+            while (aElemIter->more()) {
+                const SMDS_MeshElement* aElem = aElemIter->next();
+                if (aElem->GetID() > grid->GetNumberOfCells()) {
+                    throw std::runtime_error(
+                        "VTK group export: Cells ids need to be continuous and start with index 1."
+                    );
+                }
+                cell_sarray->SetValue(aElem->GetID() - 1, name);
+            }
+        }
+        cell_array = cell_sarray;
+    }
+    else {
+        auto cell_iarray = vtkNew<vtkIntArray>();
+        cell_iarray->SetNumberOfComponents(1);
+        cell_iarray->SetName(group_array.c_str());
+        cell_iarray->SetNumberOfTuples(grid->GetNumberOfCells());
+        for (int i = 0; i < grid->GetNumberOfCells(); i++) {
+            cell_iarray->SetValue(i, -1);
+        }
+
+        auto smesh = mesh->getSMesh();
+        for (auto& GroupID : smesh->GetGroupIds()) {
+
+            SMESH_Group* group = smesh->GetGroup(GroupID);
+            if (!group) {
+                throw std::runtime_error("VTK group export: No group for given id.");
+            }
+            SMESHDS_Group* groupDS = dynamic_cast<SMESHDS_Group*>(group->GetGroupDS());
+            if (!groupDS) {
+                throw std::runtime_error("VTK group export: Failed to add group elements.");
+            }
+
+            if ((groupDS->GetType() == SMDSAbs_Node) || (groupDS->GetType() == SMDSAbs_Ball)
+                || (groupDS->GetType() == SMDSAbs_All)) {
+                // we only support VTK cell type group
+                continue;
+            }
+
+            // Traverse the full group
+            auto id = index_map[group->GetName()];
+            auto aElemIter = groupDS->GetElements();
+            while (aElemIter->more()) {
+                const SMDS_MeshElement* aElem = aElemIter->next();
+                if (aElem->GetID() > grid->GetNumberOfCells()) {
+                    throw std::runtime_error(
+                        "VTK group export: Cells ids need to be continuous and start with index 1."
+                    );
+                }
+                cell_iarray->SetValue(aElem->GetID() - 1, id);
+            }
+        }
+        cell_array = cell_iarray;
+    }
+
+    // set the cell group data to the grid
+    grid->GetCellData()->AddArray(cell_array);
+
+    Base::Console().log("Start: writing mesh data ======================\n");
+    if (f.hasExtension("vtu")) {
+        writeVTKFile<vtkXMLUnstructuredGridWriter>(Filename.c_str(), grid);
+    }
+    else if (f.hasExtension("vtk")) {
+        writeVTKFile<vtkDataSetWriter>(Filename.c_str(), grid);
+    }
+    else {
+        Base::Console().error("file name extension is not supported to write VTK\n");
+    }
+
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
 }
 
 
@@ -660,7 +951,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     }
 
     pcDoc->recompute();
-    Base::Console().log("    %f: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
+    Base::Console().log("    {}: Done \n", Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed()));
     Base::Console().log("End: read FemResult with FemMesh from VTK file ======================\n");
 
     return result;
@@ -695,7 +986,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     FemVTKTools::exportVTKMesh(&fmesh, grid);
 
     Base::Console().log(
-        "    %f: vtk mesh builder finished\n",
+        "    {:f}: vtk mesh builder finished\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
 
@@ -713,7 +1004,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     }
 
     Base::Console().log(
-        "    %f: writing result object to vtk finished\n",
+        "    {:f}: writing result object to vtk finished\n",
         Base::TimeElapsed::diffTimeF(Start, Base::TimeElapsed())
     );
     Base::Console().log("End: write FemResult to VTK unstructuredGrid dataset =======\n");
@@ -843,24 +1134,21 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 // PropertyVectorList will not show up in PropertyEditor
                 vector_list->setValues(vec);
                 Base::Console().log(
-                    "    A PropertyVectorList has been filled with values: %s\n",
-                    it.first.c_str()
+                    "    A PropertyVectorList has been filled with values: {}\n",
+                    it.first
                 );
             }
             else {
                 Base::Console().error(
                     "static_cast<App::PropertyVectorList*>((result->"
-                    "getPropertyByName(\"%s\")) failed.\n",
-                    it.first.c_str()
+                    "getPropertyByName(\"{}\")) failed.\n",
+                    it.first
                 );
                 continue;
             }
         }
         else {
-            Base::Console().message(
-                "    PropertyVectorList NOT found in vkt file data: %s\n",
-                it.first.c_str()
-            );
+            Base::Console().message("    PropertyVectorList NOT found in vkt file data: {}\n", it.first);
         }
     }
 
@@ -874,8 +1162,8 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
             if (!field) {
                 Base::Console().error(
                     "static_cast<App::PropertyFloatList*>((result->"
-                    "getPropertyByName(\"%s\")) failed.\n",
-                    scalar.first.c_str()
+                    "getPropertyByName(\"{}\")) failed.\n",
+                    scalar.first
                 );
                 continue;
             }
@@ -893,15 +1181,12 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 }
             }
             field->setValues(values);
-            Base::Console().log(
-                "    A PropertyFloatList has been filled with vales: %s\n",
-                scalar.first.c_str()
-            );
+            Base::Console().log("    A PropertyFloatList has been filled with vales: {}\n", scalar.first);
         }
         else {
             Base::Console().message(
-                "    PropertyFloatList NOT found in vkt file data %s\n",
-                scalar.first.c_str()
+                "    PropertyFloatList NOT found in vkt file data {}\n",
+                scalar.first
             );
         }
     }
@@ -947,7 +1232,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it.first.c_str()));
         }
         else {
-            Base::Console().error("    PropertyVectorList not found: %s\n", it.first.c_str());
+            Base::Console().error("    PropertyVectorList not found: {}\n", it.first);
         }
 
         if (field && field->getSize() > 0) {
@@ -982,15 +1267,15 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             }
             grid->GetPointData()->AddArray(data);
             Base::Console().log(
-                "    The PropertyVectorList %s was exported to VTK vector list: %s\n",
-                it.first.c_str(),
-                it.second.c_str()
+                "    The PropertyVectorList {} was exported to VTK vector list: {}\n",
+                it.first,
+                it.second
             );
         }
         else if (field) {
             Base::Console().log(
-                "    PropertyVectorList NOT exported to vtk: %s size is: %i\n",
-                it.first.c_str(),
+                "    PropertyVectorList NOT exported to vtk: {} size is: {}\n",
+                it.first,
                 field->getSize()
             );
         }
@@ -1003,7 +1288,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(scalar.first.c_str()));
         }
         else {
-            Base::Console().error("PropertyFloatList %s not found \n", scalar.first.c_str());
+            Base::Console().error("PropertyFloatList {} not found \n", scalar.first);
         }
 
         if (field && field->getSize() > 0) {
@@ -1052,15 +1337,15 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
 
             grid->GetPointData()->AddArray(data);
             Base::Console().log(
-                "    The PropertyFloatList %s was exported to VTK scalar list: %s\n",
-                scalar.first.c_str(),
-                scalar.second.c_str()
+                "    The PropertyFloatList {} was exported to VTK scalar list: {}\n",
+                scalar.first,
+                scalar.second
             );
         }
         else if (field) {
             Base::Console().log(
-                "    PropertyFloatList NOT exported to vtk: %s size is: %i\n",
-                scalar.first.c_str(),
+                "    PropertyFloatList NOT exported to vtk: {} size is: {}\n",
+                scalar.first,
                 field->getSize()
             );
         }
@@ -1667,7 +1952,7 @@ void readResults(
                 }
             }
             catch (const std::out_of_range&) {
-                Base::Console().warning("Invalid node: %d\n", node);
+                Base::Console().warning("Invalid node: {}\n", node);
             }
             ++countNodes;
         }

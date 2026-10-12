@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -108,7 +110,7 @@ void TaskCosVertex::setUiPrimary()
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
     }
-    ui->pbTracker->setText(tr("Point Picker"));
+    ui->pbTracker->setText(tr("Pick Point"));
     ui->pbTracker->setEnabled(true);
     ui->dsbX->setEnabled(true);
     ui->dsbY->setEnabled(true);
@@ -146,14 +148,14 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 void TaskCosVertex::onTrackerClicked(bool clicked)
 {
     Q_UNUSED(clicked);
-//    Base::Console().message("TCV::onTrackerClicked() m_pbTrackerState: %d\n",
+//    Base::Console().message("TCV::onTrackerClicked() m_pbTrackerState: {}\n",
 //                            m_pbTrackerState);
 
     removeTracker();
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick Points"));
+        ui->pbTracker->setText(tr("Pick Point"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -245,7 +247,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick Points"));
+    ui->pbTracker->setText(tr("Pick Point"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);

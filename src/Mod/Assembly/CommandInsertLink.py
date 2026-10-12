@@ -77,7 +77,7 @@ class CommandInsertLink:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Component"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Component"),
             "Accel": "I",
             "ToolTip": tooltip,
             "CmdType": "ForEdit",
@@ -472,9 +472,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         if fixPartPref == 0:  # unset
             msgBox = QtWidgets.QMessageBox()
             msgBox.setWindowTitle("Ground Part?")
-            msgBox.setText(
-                "Do you want to ground the first inserted part automatically?\nYou need at least one grounded part in your assembly."
-            )
+            msgBox.setText("Do you want to ground the first inserted part automatically?")
             msgBox.setIcon(QtWidgets.QMessageBox.Question)
 
             yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)

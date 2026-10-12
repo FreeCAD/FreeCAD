@@ -101,6 +101,8 @@ public:
     /// active transaction.
     Py::Object setAutoCloseOnTransactionChange(const Py::Tuple&);
     Py::Object isAutoCloseOnTransactionChange(const Py::Tuple&);
+    Py::Object setAutoCloseOnResetEdit(const Py::Tuple&);
+    Py::Object isAutoCloseOnResetEdit(const Py::Tuple&);
     Py::Object setAutoCloseOnDeletedDocument(const Py::Tuple&);
     Py::Object isAutoCloseOnDeletedDocument(const Py::Tuple&);
 
@@ -166,6 +168,7 @@ public:
     bool needsFullSpace() const override;
 
     void autoClosedOnTransactionChange() override;
+    void autoClosedOnResetEdit() override;
     void autoClosedOnDeletedDocument() override;
 
 public:

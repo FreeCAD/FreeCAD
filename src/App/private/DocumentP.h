@@ -89,15 +89,15 @@ struct DocumentP
     bool rollback {false};
     bool undoing {false};  ///< document in the middle of undo or redo
     bool committing {false};
+    bool definingTransaction {false};
     bool opentransaction {false};
     std::bitset<32> StatusBits;
-    int iUndoMode {0};
     unsigned int UndoMemSize {0};
     unsigned int UndoMaxStackSize {20};
     unsigned int TransactionLock {0};
     // Id and name that the next transaction will take
     // as soon as there is a change to the document
-    int bookedTransaction { 0 }; 
+    int bookedTransaction {0};
 
     std::string programVersion;
     mutable HasherMap hashers;

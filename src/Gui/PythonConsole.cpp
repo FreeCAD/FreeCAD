@@ -490,6 +490,14 @@ PythonConsole::PythonConsole(QWidget* parent)
     flusher = new QTimer(this);
     connect(flusher, &QTimer::timeout, this, &PythonConsole::flushOutput);
     flusher->start(100);
+
+    clearAction = addAction(
+        QIcon(QStringLiteral(":/icons/edit-delete.svg")),
+        tr("Clear Console"),
+        QKeySequence(Qt::CTRL | Qt::Key_L)
+    );
+    clearAction->setShortcutContext(Qt::WidgetShortcut);
+    QObject::connect(clearAction, &QAction::triggered, this, &PythonConsole::onClearConsole);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -1032,11 +1040,7 @@ void PythonConsole::dropEvent(QDropEvent* e)
     else {
         // always copy text when doing drag and drop
         if (mimeData->hasText()) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QTextCursor cursor = this->cursorForPosition(e->pos());
-#else
             QTextCursor cursor = this->cursorForPosition(e->position().toPoint());
-#endif
             QTextCursor inputLineBegin = this->inputBegin();
 
             if (!cursorBeyond(cursor, inputLineBegin)) {
@@ -1044,15 +1048,6 @@ void PythonConsole::dropEvent(QDropEvent* e)
 
                 QRect newPos = this->cursorRect();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-                QDropEvent newEv(
-                    QPoint(newPos.x(), newPos.y()),
-                    Qt::CopyAction,
-                    mimeData,
-                    e->mouseButtons(),
-                    e->keyboardModifiers()
-                );
-#else
                 QDropEvent newEv(
                     QPoint(newPos.x(), newPos.y()),
                     Qt::CopyAction,
@@ -1060,7 +1055,6 @@ void PythonConsole::dropEvent(QDropEvent* e)
                     e->buttons(),
                     e->modifiers()
                 );
-#endif
                 e->accept();
                 QPlainTextEdit::dropEvent(&newEv);
             }
@@ -1366,8 +1360,8 @@ void PythonConsole::contextMenuEvent(QContextMenuEvent* e)
     a->setShortcut(QKeySequence(QStringLiteral("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
-    a = menu.addAction(tr("Clear Console"), this, &PythonConsole::onClearConsole);
-    a->setEnabled(!document()->isEmpty());
+    clearAction->setEnabled(!document()->isEmpty());
+    menu.addAction(clearAction);
 
     menu.addSeparator();
     menu.addAction(tr("Insert File Name…"), this, &PythonConsole::onInsertFileName);
@@ -1405,7 +1399,7 @@ void PythonConsole::onSaveHistoryAs()
         this,
         tr("Save History"),
         cMacroPath,
-        QStringList(QStringLiteral("%1 (*.FCMacro *.py)").arg(tr("Macro Files")))
+        FileDialog::FilterList {{tr("Macro Files"), {"*.FCMacro", "*.py"}}}
     );
     if (!fn.isEmpty()) {
         int dot = fn.indexOf(QLatin1Char('.'));
@@ -1429,7 +1423,7 @@ void PythonConsole::onInsertFileName()
         Gui::getMainWindow(),
         tr("Insert file name"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.*)").arg(tr("All Files")))
+        FileDialog::FilterList {FileDialog::Filter::AllFiles()}
     );
     if (!fn.isEmpty()) {
         insertPlainText(fn);

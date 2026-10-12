@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2024 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM DrawingView command"""
 
@@ -31,6 +28,8 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+arch_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
 
 class BIM_DrawingView:
@@ -56,29 +55,35 @@ class BIM_DrawingView:
 
         import Draft
 
+        default_line_width = view_params.GetInt("DefaultShapeLineWidth", 2)
+        thickness_ratio = arch_params.GetFloat("CutLineThickness", 2.0)
+        cut_lines_width = default_line_width * thickness_ratio
+
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create 2D View"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
-        FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
         s = FreeCADGui.Selection.getSelection()
-        if len(s) == 1:
-            s = s[0]
-            if Draft.getType(s) == "SectionPlane":
-                FreeCADGui.doCommand(
-                    "vobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
-                )
-                FreeCADGui.doCommand("vobj.Label = " + repr(translate("BIM", "Viewed lines")))
-                FreeCADGui.doCommand("vobj.InPlace = False")
-                FreeCADGui.doCommand("obj.addObject(vobj)")
-                FreeCADGui.doCommand(
-                    "cobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
-                )
-                FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
-                FreeCADGui.doCommand("cobj.InPlace = False")
-                FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
-                FreeCADGui.doCommand("obj.addObject(cobj)")
+        section = None
+        if len(s) == 1 and Draft.getType(s[0]) == "SectionPlane":
+            section = s[0]
+        if section:
+            section_object = "FreeCAD.ActiveDocument.getObject(" + repr(section.Name) + ")"
+            FreeCADGui.doCommand("obj = Arch.make2DDrawing(baseobj=" + section_object + ")")
+        else:
+            FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        if section:
+            FreeCADGui.doCommand("vobj = Draft.make_shape_2d_view(" + section_object + ")")
+            FreeCADGui.doCommand("vobj.Label = " + repr(translate("BIM", "Viewed lines")))
+            FreeCADGui.doCommand("vobj.InPlace = False")
+            FreeCADGui.doCommand("obj.addObject(vobj)")
+            FreeCADGui.doCommand("cobj = Draft.make_shape_2d_view(" + section_object + ")")
+            FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
+            FreeCADGui.doCommand("cobj.InPlace = False")
+            FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
+            FreeCADGui.doCommand("cobj.ViewObject.LineWidth = " + str(cut_lines_width))
+            FreeCADGui.doCommand("obj.addObject(cobj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -124,7 +124,7 @@ public:
         funcs["TreeActiveAutoExpand"] = &TreeParamsP::updateTreeActiveAutoExpand;
         TreeActiveColor = handle->GetUnsigned("TreeActiveColor", 1538528255);
         funcs["TreeActiveColor"] = &TreeParamsP::updateTreeActiveColor;
-        TreeEditColor = handle->GetUnsigned("TreeEditColor", 563609599);
+        TreeEditColor = handle->GetUnsigned("TreeEditColor", 11272191);
         funcs["TreeEditColor"] = &TreeParamsP::updateTreeEditColor;
         SelectingGroupColor = handle->GetUnsigned("SelectingGroupColor", 1082163711);
         funcs["SelectingGroupColor"] = &TreeParamsP::updateSelectingGroupColor;
@@ -289,7 +289,7 @@ public:
     // Auto generated code (Tools/params_utils.py:296)
     static void updateTreeEditColor(TreeParamsP* self)
     {
-        auto v = self->handle->GetUnsigned("TreeEditColor", 2459042047);
+        auto v = self->handle->GetUnsigned("TreeEditColor", 11272191);
         if (self->TreeEditColor != v) {
             self->TreeEditColor = v;
             TreeParams::onTreeEditColorChanged();
@@ -1009,7 +1009,7 @@ const unsigned long& TreeParams::getTreeEditColor()
 // Auto generated code (Tools/params_utils.py:366)
 const unsigned long& TreeParams::defaultTreeEditColor()
 {
-    const static unsigned long def = 2459042047;
+    const static unsigned long def = 11272191;
     return def;
 }
 

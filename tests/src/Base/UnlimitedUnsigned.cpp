@@ -19,7 +19,6 @@
  *                                                                         *
  ***************************************************************************/
 #include <gtest/gtest.h>
-#include <string>
 #include <Base/UnlimitedUnsigned.h>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)

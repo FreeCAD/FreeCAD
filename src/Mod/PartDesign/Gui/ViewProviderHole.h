@@ -87,6 +87,7 @@ private:
     std::unique_ptr<Gui::ViewProviderTextureExtension> textureExtension;
     std::optional<gp_Dir> getHoleNormal(const PartDesign::Hole* pcHole) const;
     std::optional<gp_Pnt> getHoleOrigin(const PartDesign::Hole* pcHole) const;
+    std::vector<gp_Pnt> getHoleLocations(const PartDesign::Hole* pcHole) const;
     App::Material getGlobalMaterial();
     TopoDS_Shape getCurrentlyVisibleShape(const PartDesign::Hole* pcHole) const;
     void updateThreadClipper(const PartDesign::Hole* pcHole);

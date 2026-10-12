@@ -58,7 +58,7 @@ const char* Extrusion::eInnerWireTaperStrings[] = {"Inverted", "SameAsOuter", nu
 
 namespace
 {
-std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye"};
+std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye", "Unified"};
 
 const char* enumToClass(const char* mode)
 {
@@ -74,8 +74,11 @@ const char* enumToClass(const char* mode)
     if (MakerEnums.at(3) == mode) {
         return "Part::FaceMakerBullseye";
     }
+    if (MakerEnums.at(4) == mode) {
+        return "Part::FaceMakerUnified";
+    }
 
-    return "Part::FaceMakerBullseye";
+    return "Part::FaceMakerUnified";
 }
 
 const char* classToEnum(const char* type)
@@ -92,8 +95,11 @@ const char* classToEnum(const char* type)
     if (strcmp(type, "Part::FaceMakerBullseye") == 0) {
         return MakerEnums.at(3).c_str();
     }
+    if (strcmp(type, "Part::FaceMakerUnified") == 0) {
+        return MakerEnums.at(4).c_str();
+    }
 
-    return MakerEnums.at(3).c_str();
+    return MakerEnums.at(4).c_str();
 }
 
 void restoreFaceMakerMode(Extrusion* self)
@@ -349,7 +355,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
         std::vector<TopoShape> drafts;
         ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
         if (drafts.empty()) {
-            Standard_Failure::Raise("Drafting shape failed");
+            throw Standard_Failure("Drafting shape failed");
         }
         else {
             result.makeElementCompound(
@@ -362,7 +368,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
     else {
         // Regular (non-tapered) extrusion!
         if (source.isNull()) {
-            Standard_Failure::Raise("Cannot extrude empty shape");
+            throw Standard_Failure("Cannot extrude empty shape");
         }
 
         // apply reverse part of extrusion by shifting the source shape
@@ -486,8 +492,8 @@ void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
     // default for newly created features
-    this->FaceMakerMode.setValue(MakerEnums.at(3).c_str());
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+    this->FaceMakerMode.setValue(MakerEnums.at(4).c_str());
+    this->FaceMakerClass.setValue("Part::FaceMakerUnified");
 }
 
 void Extrusion::onDocumentRestored()

@@ -3224,8 +3224,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 9,
 10,
 11,
@@ -3344,8 +3344,8 @@ Evolumes
 
 ***********************************************************
 ** constraints sectionprint surface sets
-** ConstraintSectionPrint
-*SURFACE, NAME=SECTIONFACEConstraintSectionPrint
+** SectionPrint
+*SURFACE, NAME=SECTIONFACESectionPrint
 895,S1
 905,S4
 913,S1
@@ -3393,22 +3393,22 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** SectionPrint Constraints
-** ConstraintSectionPrint
-*SECTION PRINT, SURFACE=SECTIONFACEConstraintSectionPrint, NAME=SECTIONPRINTConstraintSectionPrint
+** SectionPrint
+*SECTION PRINT, SURFACE=SECTIONFACESectionPrint, NAME=SECTIONPRINTSectionPrint
 SOF, SOM, SOAREA
 
 ***********************************************************
 ** constraints pressure element face loads
-** ConstraintPressure
+** Pressure
 *DLOAD
 ** ArcExtrude.Face4
 870,P1,100.0
@@ -3438,7 +3438,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

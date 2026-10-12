@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -69,9 +71,11 @@ public:
     void dropObject(App::DocumentObject* docObj) override;
 
     void onChanged(const App::Property *prop) override;
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
 
     QGIView* getQView();
+    static QGIView* getOwnerQView(const QGIView* qgiv);
+
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
     ViewProviderPage* getViewProviderPage() const;

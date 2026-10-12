@@ -209,7 +209,7 @@
    <item>
     <widget class="QLabel" name="labelDownload">
      <property name="text">
-      <string>XML or IFC files of several classification systems can be downloaded from &lt;a href=&quot;https://github.com/Moult/IfcClassification&quot;&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</string>
+      <string>XML or IFC files of several classification systems can be downloaded from &lt;a href=&quot;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&quot;&gt;https://github.com/IfcOpenShell/IfcOpenShell/tree/v0.8.0/src/bonsai/bonsai/bim/data/classifications&lt;/a&gt; and placed in %s</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

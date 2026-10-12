@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -62,6 +64,8 @@ public:
     std::vector<DrawTileWeld*> getTiles() const;
 
     App::PropertyLink *getOwnerProperty() override { return &Leader; }
+
+    bool snapsToPosition() const override { return false; }
 
 protected:
     void onChanged(const App::Property* prop) override;

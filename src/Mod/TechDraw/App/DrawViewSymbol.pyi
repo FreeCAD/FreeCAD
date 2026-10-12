@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
@@ -21,6 +19,6 @@ class DrawViewSymbol(DrawView):
     License: LGPL-2.1-or-later
     """
 
-    def dumpSymbol(self) -> Any:
+    def dumpSymbol(self, filename: str, /) -> None:
         """dumpSymbol(fileSpec) - dump the contents of Symbol to a file"""
         ...

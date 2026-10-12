@@ -62,6 +62,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     void addFile(const QString& filePath);
+    void modifiedFile(const QString& filePath);
 
     void clear();
 
@@ -77,6 +78,8 @@ protected:
     void processNewThumbnail(const QString& file, const QByteArray& thumbnail);
 
 private:
+    void updateFcstdInfo(const QString& filePath);
+
     mutable QMutex _mutex;
     std::vector<FileStats> _fileInfoCache;
     QMap<QString, QByteArray> _imageCache;

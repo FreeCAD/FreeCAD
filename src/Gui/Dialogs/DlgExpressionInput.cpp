@@ -30,12 +30,11 @@
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
 
-#include <fmt/format.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
+#include <App/ExpressionTokenizer.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -43,8 +42,9 @@
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
+#include "NumericLocale.h"
 #include "Application.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Tools.h"
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
@@ -326,8 +326,9 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 {
+    const auto formatting = ::Gui::numericLocaleContextFor(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {
@@ -353,8 +354,9 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 void DlgExpressionInput::checkExpression(const QString& text)
 {
     // now handle expression
+    const auto formatting = ::Gui::numericLocaleContextFor(ui->expression->locale());
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parseUserInput(path.getDocumentObject(), text.toUtf8().constData(), formatting)
     );
 
     if (expr) {
@@ -365,6 +367,7 @@ void DlgExpressionInput::checkExpression(const QString& text)
         }
 
         std::unique_ptr<Expression> result(expr->eval());
+        message = result->toString();
 
         expression = expr;
         okBtn->setEnabled(true);
@@ -376,35 +379,42 @@ void DlgExpressionInput::checkExpression(const QString& text)
         auto* n = freecad_cast<NumberExpression*>(result.get());
         if (n) {
             Base::Quantity value = n->getQuantity();
-            if (!value.isValid()) {
-                THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Not a number"));
-            }
 
-            QString msg = QString::fromStdString(value.getUserString());
-            if (impliedUnit != Base::Unit::One) {
-                if (!value.isDimensionless() && value.getUnit() != impliedUnit) {
-                    THROWMT(
-                        Base::UnitsMismatchError,
-                        QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit")
-                    );
+            Base::Type typePath = getTypePath();
+            if (typePath == App::PropertyString::getClassTypeId()
+                || typePath == App::PropertyMap::getClassTypeId()) {
+                // For string properties just take the result value without further checks
+                message = App::quote(anyToString(result->getValueAsAny()));
+            }
+            else {
+                if (!value.isValid()) {
+                    THROWMT(Base::ValueError, QT_TRANSLATE_NOOP("Exceptions", "Not a Number"));
                 }
 
-                value.setUnit(impliedUnit);
-            }
-            else if (!value.isDimensionless()) {
-                msg += tr(" (Warning: unit discarded)");
+                QString msg = QString::fromStdString(value.getUserString());
+                if (impliedUnit != Base::Unit::One) {
+                    if (!value.isDimensionless() && value.getUnit() != impliedUnit) {
+                        THROWMT(
+                            Base::UnitsMismatchError,
+                            QT_TRANSLATE_NOOP("Exceptions", "Unit mismatch between result and required unit")
+                        );
+                    }
 
-                QPalette p(ui->msg->palette());
-                p.setColor(QPalette::WindowText, Qt::red);
-                ui->msg->setPalette(p);
-            }
+                    value.setUnit(impliedUnit);
+                }
+                else if (!value.isDimensionless()) {
+                    msg += tr(" (Warning: unit discarded)");
 
-            numberRange.throwIfOutOfRange(value);
-            message = msg.toStdString();
+                    QPalette p(ui->msg->palette());
+                    p.setColor(QPalette::WindowText, Qt::red);
+                    ui->msg->setPalette(p);
+                }
+
+                numberRange.throwIfOutOfRange(value);
+                message = msg.toStdString();
+            }
         }
-        else {
-            message = result->toString();
-        }
+
         setMsgText();
     }
 }
@@ -424,6 +434,17 @@ void DlgExpressionInput::textChanged()
     okBtn->setDefault(true);
 
     try {
+        if (text.endsWith(u'.') && ui->expression->textCursor().position() == text.size()) {
+            App::ExpressionTokenizer tokenizer;
+            const QString prefix = tokenizer.perform(text, text.size());
+            if (prefix.size() > 1 && !prefix.front().isDigit() && prefix.endsWith(u'.')) {
+                // Treat member access as unfinished input, but still validate numeric input.
+                message.clear();
+                ui->msg->clear();
+                okBtn->setDisabled(true);
+                return;
+            }
+        }
         checkExpression(text);
         if (varSetsVisible) {
             // If varsets are visible, check whether the varset info also
@@ -621,7 +642,7 @@ void DlgExpressionInput::acceptWithVarSet()
     std::string name = nameProp.toStdString();
     std::string group = nameGroup.toStdString();
     std::string type = getType();
-    auto prop = obj->addDynamicProperty(type.c_str(), name.c_str(), group.c_str());
+    auto prop = obj->addDynamicProperty(type, name.c_str(), group.c_str());
 
     // Set the value of the property in the VarSet
     //
@@ -631,36 +652,22 @@ void DlgExpressionInput::acceptWithVarSet()
     if (const NumberExpression* ne = toNumberExpr(expr)) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = %f",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            ne->getValue()
-        );
+        if (prop->isDerivedFrom<App::PropertyInteger>()) {
+            Gui::cmdAppObjectArgs(obj, "%s = %d", prop->getName(), std::lround(ne->getValue()));
+        }
+        else {
+            Gui::cmdAppObjectArgs(obj, "%s = %f", prop->getName(), ne->getValue());
+        }
     }
     else if (const StringExpression* se = toStringExpr(expr)) {
         // the value is a string: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            se->getText().c_str()
-        );
+        std::string text = Base::Tools::quoted(se->getText());
+        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
     }
     else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
         // the value is a unit number: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            une->toString().c_str()
-        );
+        std::string text = Base::Tools::quoted(une->toString());
+        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
     }
     else {
         // the value is an expression: make an expression binding in the VarSet
@@ -676,13 +683,18 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    if (varSetsVisible) {
-        if (needReportOnVarSet()) {
-            return;
+    try {
+        if (varSetsVisible) {
+            if (needReportOnVarSet()) {
+                return;
+            }
+            acceptWithVarSet();
         }
-        acceptWithVarSet();
+        QDialog::accept();
     }
-    QDialog::accept();
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
 }
 
 static App::Document* getPreselectedDocument()
@@ -842,7 +854,7 @@ void DlgExpressionInput::setupVarSets()
 
 std::string DlgExpressionInput::getType()
 {
-    return determineTypeVarSet().getName();
+    return std::string {determineTypeVarSet().getName()};
 }
 
 void DlgExpressionInput::onCheckVarSets(int state)

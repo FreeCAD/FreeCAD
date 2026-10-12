@@ -4,15 +4,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>True</source>
+      <translation>Verdadero</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>False</source>
+      <translation>Falso</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="601"/>
+      <source>Null</source>
+      <translation>Nulo</translation>
     </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Origen de coordenadas</translation>
     </message>
@@ -20,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -73,7 +88,7 @@ El usuario deberá hacer clic en el botón "Actualizar" en la barra de herramien
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Almacena la última elección del usuario sobre si aplicar la configuración de CopyOnChange a todos los enlaces que apuntan al mismo objeto configurable</translation>

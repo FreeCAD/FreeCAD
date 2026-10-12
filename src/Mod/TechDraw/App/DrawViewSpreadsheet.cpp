@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
@@ -160,7 +162,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string sColStart, sColEnd;
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
-            Base::Console().error("%s - start cell (%s) is invalid\n", getNameInDocument(),
+            Base::Console().error("{} - start cell ({}) is invalid\n", getNameInDocument(),
                                   CellStart.getValue());
             return std::string();
         }
@@ -172,15 +174,15 @@ std::string DrawViewSpreadsheet::getSheetImage()
             iRowStart = std::stoi(rowPart);
         }
         catch (...) {
-            Base::Console().error("%s - start cell (%s) invalid row\n",
-                                    getNameInDocument(), rowPart.c_str());
+            Base::Console().error("{} - start cell ({}) invalid row\n",
+                                    getNameInDocument(), rowPart);
             return std::string();
         }
     }
 
     if (boost::regex_search(scellend, what, re)) {
         if (what.size() < 3) {
-            Base::Console().error("%s - end cell (%s) is invalid\n", getNameInDocument(), CellEnd.getValue());
+            Base::Console().error("{} - end cell ({}) is invalid\n", getNameInDocument(), CellEnd.getValue());
         } else {
             colPart = what[1];
             sColEnd = colPart;
@@ -189,8 +191,8 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 iRowEnd = std::stoi(rowPart);
             }
             catch (...) {
-                Base::Console().error("%s - end cell (%s) invalid row\n",
-                                      getNameInDocument(), rowPart.c_str());
+                Base::Console().error("{} - end cell ({}) invalid row\n",
+                                      getNameInDocument(), rowPart);
                 return std::string();
             }
         }
@@ -201,23 +203,23 @@ std::string DrawViewSpreadsheet::getSheetImage()
     //validate range start column in sheet's available columns
     int iAvailColStart = colInList(availcolumns, sColStart);
     if (iAvailColStart < 0) {               //not found range start column in availcolumns list
-        Base::Console().error("DVS - %s - start Column (%s) is invalid\n",
-                               getNameInDocument(), sColStart.c_str());
+        Base::Console().error("DVS - {} - start Column ({}) is invalid\n",
+                               getNameInDocument(), sColStart);
         return std::string();
     }
 
     //validate range end column in sheet's available columns
     int iAvailColEnd = colInList(availcolumns, sColEnd);
     if (iAvailColEnd < 0) {
-        Base::Console().error("DVS - %s - end Column (%s) is invalid\n",
-                              getNameInDocument(), sColEnd.c_str());
+        Base::Console().error("DVS - {} - end Column ({}) is invalid\n",
+                              getNameInDocument(), sColEnd);
         return std::string();
     }
 
     //check for logical range
     if ( (iAvailColStart > iAvailColEnd) ||
          (iRowStart > iRowEnd) ) {
-        Base::Console().error("%s - cell range is illogical\n", getNameInDocument());
+        Base::Console().error("{} - cell range is illogical\n", getNameInDocument());
         return std::string();
     }
 
@@ -340,15 +342,15 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\""
                            << coloffset + TextSize.getValue() / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\""
                            << coloffset + cellwidth / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
                     result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\""
                            << coloffset + (cellwidth - TextSize.getValue() / 2) << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
@@ -363,7 +365,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                     // Spreadsheet::Cell::ALIGNMENT_LEFT
                     result << "    <text style=\"" << textstyle << "\" x=\""
                            << coloffset + TextSize.getValue() / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                     result << Font.getValue() << "\""
                            << " font-size=\"" << TextSize.getValue() << "\""
                            << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;

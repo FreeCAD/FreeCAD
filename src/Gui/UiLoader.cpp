@@ -34,6 +34,7 @@
 #include <Base/Interpreter.h>
 
 #include "UiLoader.h"
+#include "PySideUicModulePy.h"
 #include "PythonWrapper.h"
 #include "WidgetFactory.h"
 
@@ -106,20 +107,7 @@ Py::Object wrapFromWidgetFactory(
 PySideUicModule::PySideUicModule()
     : Py::ExtensionModule<PySideUicModule>("PySideUic")
 {
-    add_varargs_method(
-        "loadUiType",
-        &PySideUicModule::loadUiType,
-        "PySide lacks the \"loadUiType\" command, so we have to convert the ui file to py code "
-        "in-memory first\n"
-        "and then execute it in a special frame to retrieve the form_class."
-    );
-    add_varargs_method("loadUi", &PySideUicModule::loadUi, "Addition of \"loadUi\" to PySide.");
-    add_varargs_method(
-        "createCustomWidget",
-        &PySideUicModule::createCustomWidget,
-        "Create custom widgets."
-    );
-    initialize("PySideUic helper module");  // register with Python
+    PySideUicModulePy::initialize(*this);
 }
 
 Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
@@ -135,8 +123,8 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
-    str << "import pyside2uic\n"
-        << "from PySide import QtCore, QtGui, QtWidgets\n"
+    str << "from PySide6.QtUiTools import loadUiType\n"
+        << "from PySide6 import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
         << "try:\n"
         << "    from cStringIO import StringIO\n"
@@ -144,18 +132,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    from io import StringIO\n"
         << "\n"
         << "uiFile = \"" << file.c_str() << "\"\n"
-        << "parsed = xml.parse(uiFile)\n"
-        << "widget_class = parsed.find('widget').get('class')\n"
-        << "form_class = parsed.find('class').text\n"
-        << "with open(uiFile, 'r') as f:\n"
-        << "    o = StringIO()\n"
-        << "    frame = {}\n"
-        << "    pyside2uic.compileUi(f, o, indent=0)\n"
-        << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
-        << "    exec(pyc, frame)\n"
-        << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
-        << "    form_class = frame['Ui_%s'%form_class]\n"
-        << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
+        << "form_class, base_class = loadUiType(uiFile)\n";
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -226,7 +203,6 @@ QUiLoader::QUiLoader(QObject* parent)
     Base::PyGILStateLocker lock;
     PythonWrapper wrap;
     wrap.loadUiToolsModule();
-    // PyObject* module = PyImport_ImportModule("PySide2.QtUiTools");
     PyObject* module = PyImport_ImportModule("freecad.UiTools");
     if (module) {
         Py::Tuple args(1);
@@ -579,6 +555,7 @@ void UiLoaderPy::init_type()
     );
     add_varargs_method("setWorkingDirectory", &UiLoaderPy::setWorkingDirectory, "setWorkingDirectory()");
     add_varargs_method("workingDirectory", &UiLoaderPy::workingDirectory, "workingDirectory()");
+    behaviors().readyType();
 }
 
 UiLoaderPy::UiLoaderPy()

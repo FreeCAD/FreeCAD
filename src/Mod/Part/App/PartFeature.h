@@ -199,6 +199,10 @@ public:
         Base::Vector3d& directionX,
         const char* subname
     ) const override;
+    bool getCameraAlignmentDirection(
+        Base::Vector3d& directionZ,
+        const std::vector<std::string>& subnames
+    ) const override;
 
     static void guessNewLink(std::string& replacementName, DocumentObject* base, const char* oldLink);
 

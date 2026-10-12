@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -87,7 +88,11 @@ def createResourceClone(obj, orig, name, icon):
 
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
-        clone.ViewObject.Transparency = 80
+        clone.ViewObject.DisplayMode = "Flat Lines"
+        # clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        clone.ViewObject.Transparency = 0
+        # clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        # clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -250,6 +255,7 @@ class ObjectJob:
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
+        self.setupWorkplanes(obj)
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
         self.setupToolTable(obj)
@@ -308,6 +314,49 @@ class ObjectJob:
         obj.Operations = ops
         obj.setEditorMode("Operations", 2)  # hide
         obj.setEditorMode("Placement", 2)
+
+    def setupWorkplanes(self, obj):
+        """setupWorkplanes(obj) ... set up the Workplanes group for the Job.
+
+        Holds the named frames operations can share. A workplane is a plain
+        Part::LocalCoordinateSystem: it already carries an attachment to the
+        geometry it was derived from, the map modes that describe a plane from
+        a face or three points, an editable offset, and a placement that
+        recomputes when the model moves. None of that needs reimplementing
+        here."""
+        if not hasattr(obj, "Workplanes"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "Workplanes",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Group of named work planes the Operations can share"
+                ),
+            )
+        if getattr(obj, "Workplanes", None):
+            return
+
+        group = obj.Document.addObject("App::DocumentObjectGroup", "Workplanes")
+        group.Label = "Workplanes"
+        obj.Workplanes = group
+        obj.setEditorMode("Workplanes", 2)  # hide
+
+    def adoptOrphanWorkplanes(self, obj):
+        """adoptOrphanWorkplanes(obj) ... file any work plane an operation links
+        to but the group does not hold.
+
+        An operation migrating from an older document may create its work
+        plane before the Job is far enough restored to have a group. Restore
+        order across objects is not guaranteed, so the Job picks them up."""
+        if not getattr(obj, "Workplanes", None) or not getattr(obj, "Operations", None):
+            return
+        held = set(o.Name for o in obj.Workplanes.Group)
+        for op in obj.Operations.Group:
+            workplane = getattr(op, "Workplane", None)
+            if workplane is not None and hasattr(workplane, "Placement"):
+                if workplane.Name not in held:
+                    obj.Workplanes.addObject(workplane)
+                    held.add(workplane.Name)
 
     def setupSetupSheet(self, obj):
         if not getattr(obj, "SetupSheet", None):
@@ -391,8 +440,11 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        if obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = False
+        # I think this is redundant code, and is handled in SetupStockObject,
+        # but leaving here for now just in case
+        # PathStock.ApplyStockViewDefaults(obj.Stock)
+        # if obj.Stock and obj.Stock.ViewObject:
+        #     obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -463,6 +515,15 @@ class ObjectJob:
             PathUtil.clearExpressionEngine(obj.SetupSheet)
             doc.removeObject(obj.SetupSheet.Name)
             obj.SetupSheet = None
+
+        if getattr(obj, "Workplanes", None):
+            Path.Log.debug("taking down workplanes")
+            for workplane in list(obj.Workplanes.Group):
+                PathUtil.clearExpressionEngine(workplane)
+                doc.removeObject(workplane.Name)
+            obj.Workplanes.Group = []
+            doc.removeObject(obj.Workplanes.Name)
+            obj.Workplanes = None
 
         return True
 
@@ -538,6 +599,16 @@ class ObjectJob:
             )
             obj.setEditorMode("CycleTime", 1)  # read-only
 
+        self.setupWorkplanes(obj)
+        self.adoptOrphanWorkplanes(obj)
+        import Path.Main.Workplane as PathWorkplane
+
+        for workplane in PathWorkplane.workplanesOf(obj):
+            PathWorkplane.ensureFixtureProperty(workplane)
+        if FreeCAD.GuiUp:
+            for workplane in PathWorkplane.workplanesOf(obj):
+                PathWorkplane.configureView(workplane)
+
         if not hasattr(obj, "Fixtures"):
             obj.addProperty(
                 "App::PropertyStringList",
@@ -595,6 +666,23 @@ class ObjectJob:
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
+
+        # Re-apply view defaults for older documents that may be missing them.
+        # These are safe to always apply since they restore intended CAM visual behaviour
+        # (stock non-selectable/transparent/dotted, model clones hidden with correct style).
+        if FreeCAD.GuiUp:
+            if getattr(obj, "Stock", None) and obj.Stock.ViewObject:
+                PathStock.ApplyStockViewDefaults(obj.Stock)
+
+            if getattr(obj, "Model", None) and getattr(obj.Model, "Group", None):
+                for base in obj.Model.Group:
+                    if isResourceClone(obj, base, "Model") and base.ViewObject:
+                        # base.ViewObject.Visibility = False
+                        base.ViewObject.DisplayMode = "Flat Lines"
+                        # base.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+                        base.ViewObject.Transparency = 0
+                        # base.ViewObject.LineColor = (0.310, 0.333, 0.357)
+                        # base.ViewObject.ShapeMaterial.Shininess = 0.85
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -742,34 +830,15 @@ class ObjectJob:
 
     def getCycleTime(self):
         seconds = 0
-
-        if len(self.obj.Operations.Group):
-            for op in self.obj.Operations.Group:
-
-                # Skip inactive operations
-                if PathUtil.opProperty(op, "Active") is False:
-                    continue
-
-                # Skip operations that don't have a cycletime attribute
-                if PathUtil.opProperty(op, "CycleTime") is None:
-                    continue
-
-                formattedCycleTime = PathUtil.opProperty(op, "CycleTime")
-                opCycleTime = 0
-                try:
-                    # Convert the formatted time from HH:MM:SS to just seconds
-                    opCycleTime = sum(
-                        x * int(t)
-                        for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":")))
-                    )
-                except Exception:
-                    continue
-
-                if opCycleTime > 0:
-                    seconds = seconds + opCycleTime
-
-        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds))
-        self.obj.CycleTime = cycleTimeString
+        errorStr = ""
+        for op in self.obj.Operations.Group:
+            result = getCycleTimeEstimate(op, formatted=False)
+            if isinstance(result, (int, float)):
+                seconds += result
+            else:
+                errorStr = f" ({op.Label}: {result})"
+        timeStr = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        self.obj.CycleTime = f"{timeStr}{errorStr}"
 
     def addOperation(self, op, before=None, removeBefore=False):
         group = self.obj.Operations.Group
@@ -920,15 +989,112 @@ class ObjectJob:
         return PathUtil.isValidBaseObject(obj)
 
 
-def Instances():
-    """Instances() ... Return all Jobs in the current active document."""
-    if FreeCAD.ActiveDocument:
-        return [
-            job
-            for job in FreeCAD.ActiveDocument.Objects
-            if hasattr(job, "Proxy") and isinstance(job.Proxy, ObjectJob)
-        ]
-    return []
+# Operation properties holding points picked in the 3D view, in the Job's coordinates.
+WORLD_POINTS = ("StartPoint", "EndPoint")
+# Operation and dressup properties holding points in the frame the operation generates in: the
+# Job's coordinates for ordinary Z-up milling, the work plane's for an indexed operation.
+FRAME_POINTS = ("CustomPoint1", "CustomPoint2", "PatternCenterCustom", "Centre")
+FRAME_POINT_LISTS = ("Locations", "Positions")
+# Operation and dressup properties holding heights, along the tool axis of the frame the
+# operation generates in.
+MODEL_HEIGHTS = (
+    "StartDepth",
+    "FinalDepth",
+    "SafeHeight",
+    "ClearanceHeight",
+    "ClearanceHeightOut",
+    "RetractHeight",
+    "DressupStartDepth",
+    "IgnoreOuterAbove",
+)
+
+
+def _operationsOf(job):
+    """The job's operations and dressups."""
+    from PathScripts import PathUtils
+
+    for obj in job.Document.Objects:
+        if not hasattr(obj, "Proxy") or not hasattr(obj, "Path"):
+            continue
+        if PathUtils.findParentJob(obj) == job:
+            yield obj
+
+
+def touchOperations(job):
+    """touchOperations(job) ... mark every operation and dressup of the job to be recomputed:
+    one made from the stock rather than from the model's geometry, a facing say, is not linked
+    to what moved."""
+    for obj in _operationsOf(job):
+        obj.touch()
+
+
+def _moveInFrame(op, move):
+    """_moveInFrame(op, move) ... move, the Placement the model was moved by, expressed in the
+    frame op generates in. None when that frame is a work plane attached to the model: it moved
+    with the model, so nothing measured in it has moved."""
+    workplane = PathUtil.workplaneObjectForOp(op)
+    if workplane is not None and getattr(workplane, "AttachmentSupport", None):
+        return None
+    frame = PathUtil.workplaneForOp(op)
+    if frame.isIdentity(1e-9):
+        return move
+    return frame.inverse().multiply(move).multiply(frame)
+
+
+def carryOperationPoints(job, move):
+    """carryOperationPoints(job, move) ... keep the points the job's operations and dressups have
+    on the model, such as their start and end points, where they are on it when the Job's origin
+    changes or the model is moved: moved by move, the Placement the model was moved by.
+
+    Start and end points are picked in the 3D view and kept in the Job's coordinates, so they
+    move with the model whatever frame the operation generates in. The other points are kept in
+    that frame: they move only as the model moves in the frame, and not at all when the frame is
+    a work plane attached to the model. Points in lists keep their Z."""
+    for obj in _operationsOf(job):
+        for name in WORLD_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, move.multVec(value))
+        inFrame = _moveInFrame(obj, move)
+        if inFrame is None:
+            continue
+        for name in FRAME_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, inFrame.multVec(value))
+        for name in FRAME_POINT_LISTS:
+            values = getattr(obj, name, None)
+            if values and all(isinstance(v, FreeCAD.Vector) for v in values):
+                moved = []
+                for value in values:
+                    at = inFrame.multVec(value)
+                    moved.append(FreeCAD.Vector(at.x, at.y, value.z))
+                setattr(obj, name, moved)
+
+
+def carryOperationHeights(job, move):
+    """carryOperationHeights(job, move) ... when the model is moved by move, the Placement it was
+    moved by, raise or lower with it the heights the job's operations and dressups were given by
+    hand, such as a typed in final depth.
+
+    A height is a distance along the tool axis of the frame the operation generates in, so it
+    changes by the move's component along that axis: the whole of a move up or down for ordinary
+    Z-up milling, nothing when the frame is a work plane attached to the model, which moved with
+    it, and nothing when the model was turned. Heights calculated from the stock and model by
+    expression are left to be calculated again: every operation is marked to be recomputed."""
+    for obj in _operationsOf(job):
+        inFrame = _moveInFrame(obj, move)
+        dz = 0.0
+        if inFrame is not None and inFrame.Rotation.isIdentity(1e-9):
+            dz = inFrame.Base.z
+        if abs(dz) > 1e-9:
+            calculated = {name for name, _ in obj.ExpressionEngine}
+            for name in MODEL_HEIGHTS:
+                if name in calculated or not hasattr(obj, name):
+                    continue
+                height = getattr(obj, name)
+                setattr(obj, name, getattr(height, "Value", height) + dz)
+        obj.touch()
 
 
 def Create(name, base, templateFile=None):

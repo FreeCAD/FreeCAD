@@ -107,8 +107,9 @@ class CommandJobTemplateExport:
 
     def GetJob(self):
         # if there's only one Job in the document ...
-        jobs = PathJob.Instances()
-        if not jobs:
+        from PathScripts.PathUtils import jobInstances
+
+        if not (jobs := jobInstances()):
             return None
         if len(jobs) == 1:
             return jobs[0]
@@ -147,6 +148,14 @@ class CommandJobTemplateExport:
     @classmethod
     def Execute(cls, job, path, dialog=None):
         attrs = job.Proxy.templateAttrs(job)
+
+        # description: override (or remove) using the dialog's edited value
+        if dialog:
+            desc = dialog.description()
+            if desc:
+                attrs[PathJob.JobTemplate.Description] = desc
+            else:
+                attrs.pop(PathJob.JobTemplate.Description, None)
 
         # post processor settings
         if dialog and not dialog.includePostProcessing():

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -55,6 +57,13 @@ ConstraintHeatflux::ConstraintHeatflux()
     ConstraintType.setEnums(ConstraintTypes);
     ADD_PROPERTY_TYPE(CavityRadiation, (false), "ConstraintHeatflux", App::Prop_None, "Cavity radiation");
     ADD_PROPERTY_TYPE(CavityName, ("cav"), "ConstraintHeatflux", App::Prop_None, "Cavity name");
+    ADD_PROPERTY_TYPE(
+        ClosedCavity,
+        (false),
+        "ConstraintHeatflux",
+        App::Prop_None,
+        "Use closed cavity radiation"
+    );
     ADD_PROPERTY_TYPE(
         EnableAmplitude,
         (false),

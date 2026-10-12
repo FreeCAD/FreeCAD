@@ -168,7 +168,8 @@ void GuiDisplay::on_stockModelButton_clicked()
     // stock -> base -> both
     //   ^---------------'
 
-    bool sv, bv;
+    bool sv = false;
+    bool bv = false;
 
     if (stockVisible == baseVisible) {
         sv = true;

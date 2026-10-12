@@ -186,9 +186,7 @@ void Enumeration::setValue(long value, bool checkRange)
         if (checkRange) {
             throw Base::ValueError("Out of range");
         }
-        else {
-            _index = value;
-        }
+        _index = value;
     }
 }
 
@@ -196,12 +194,7 @@ bool Enumeration::isValue(const char* value) const
 {
     int i = getInt();
 
-    if (i == -1) {
-        return false;
-    }
-    else {
-        return enumArray[i]->isEqual(value);
-    }
+    return i != -1 && enumArray[i]->isEqual(value);
 }
 
 bool Enumeration::contains(const char* value) const

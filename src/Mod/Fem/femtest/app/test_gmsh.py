@@ -38,6 +38,13 @@ from . import support_utils as testtools
 from .support_utils import fcc_print
 
 
+def _has_ccx_binary():
+    binary = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetString(
+        "ccxBinaryPath", ""
+    )
+    return shutil.which(binary or "ccx") is not None
+
+
 def generate_gmesh_samples_from_example_doc(doc, datapath):
     # used to process a example file into vtk mesh files and store it in datapath
     # this is intended as manual step to generate the correct meshes to witch the tests
@@ -45,7 +52,7 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
     # are added into the source code
     # Note: Run this from the source folder!
     #
-    # from withing freecad with the example files open, run:
+    # from within freecad with the example files open, run:
     # from femtest.app import test_gmsh
     # test_gmsh.generate_gmesh_samples_from_example_doc(App.ActiveDocument, path_to_src_data_folder)
 
@@ -92,7 +99,7 @@ class TestGMSHBase(unittest.TestCase):
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def load_and_run_example_file(self, name):
         # opens and runs example file to process for testing
@@ -101,7 +108,7 @@ class TestGMSHBase(unittest.TestCase):
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def get_gmsh_objects(self):
         result = []
@@ -118,7 +125,7 @@ class TestGMSHBase(unittest.TestCase):
     # ********************************************************************************************
     def compare_exact_mesh_to_sample(self, mesh_obj):
         # compare generated mesh to sample to be the exact same. This should only be used for
-        # meshing algorithms that gurantee to define exact node counts and locations, as well as
+        # meshing algorithms that guarantee to define exact node counts and locations, as well as
         # elements. If things can vary over gmsh versions this should not be used.
 
         # load the sample mesh we want to compare to
@@ -204,8 +211,8 @@ class TestGMSHBase(unittest.TestCase):
         )
 
     def compare_fuzzy_mesh_to_sample(self, mesh_obj, allowed_diff=0.05):
-        # compare generated mesh to sample to be the roughly the same. This accounts for sligth variations between
-        # gmsh versions. The meshes do not to be the exact same, but can varie sligthly.
+        # compare generated mesh to sample to be the roughly the same. This accounts for slight variations
+        # between gmsh versions. The meshes do not to be the exact same, but can vary slightly.
         #
         # allowed_diff is given as relation to 1 (5% = 0.05)
 
@@ -362,6 +369,7 @@ class TestGMSHRefinements(TestGMSHBase):
         )
 
     # ********************************************************************************************
+    @unittest.skipUnless(_has_ccx_binary(), "CalculiX binary not found")
     def test_GMSHAdaptiv(self):
 
         try:

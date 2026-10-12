@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM Classification command"""
 
@@ -87,7 +84,7 @@ class BIM_Classification:
 
         # add modified search box from bimmaterial
         searchBox = BimMaterial.MatLineEdit(self.form)
-        searchBox.setPlaceholderText(translate("BIM", "Search..."))
+        searchBox.setPlaceholderText(translate("BIM", "Search…"))
         searchBox.setToolTip(translate("BIM", "Searches classes"))
         self.form.search = searchBox
         self.form.horizontalLayout_2.addWidget(searchBox)
@@ -516,11 +513,10 @@ class BIM_Classification:
         preset = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Classification", system + ".xml")
         if not os.path.exists(preset):
             return None
-        import codecs
         import re
 
         d = Item()
-        with codecs.open(preset, "r", "utf-8") as f:
+        with open(preset, "r", encoding="utf-8") as f:
             currentItem = d
             for l in f:
                 if "<Item>" in l:

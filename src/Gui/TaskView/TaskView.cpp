@@ -69,45 +69,6 @@ TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
-// TaskGroup
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskGroup::TaskGroup(QWidget* parent)
-    : QSint::ActionBox(parent)
-{}
-
-TaskGroup::TaskGroup(const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(headerText, parent)
-{}
-
-TaskGroup::TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(icon, headerText, parent)
-{}
-
-TaskGroup::~TaskGroup() = default;
-
-void TaskGroup::actionEvent(QActionEvent* e)
-{
-    QAction* action = e->action();
-    switch (e->type()) {
-        case QEvent::ActionAdded: {
-            this->createItem(action);
-            break;
-        }
-        case QEvent::ActionChanged: {
-            break;
-        }
-        case QEvent::ActionRemoved: {
-            // cannot change anything
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-//**************************************************************************
-//**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -195,13 +156,13 @@ void TaskBox::hideGroupBox()
     myGroup->hide();
 
     m_foldPixmap = QPixmap();
-    setFixedHeight(myHeader->height());
+    setFixedHeight(myScheme->headerSize);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 bool TaskBox::isGroupVisible() const
 {
-    return myGroup->isVisible();
+    return !myGroup->isHidden() || m_foldDirection == 1;
 }
 
 void TaskBox::actionEvent(QActionEvent* e)
@@ -287,7 +248,7 @@ TaskView::TaskView(QWidget* parent)
     connectApplicationActiveDocument = App::GetApplication().signalActiveDocument.connect(
         std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1)
     );
-    connectApplicationDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
+    connectApplicationDeleteDocument = Gui::Application::Instance->signalDeleteDocument.connect(
         std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1)
     );
     connectApplicationClosedView = Gui::Application::Instance->signalCloseView.connect(
@@ -301,6 +262,9 @@ TaskView::TaskView(QWidget* parent)
     );
     connectApplicationInEdit = Gui::Application::Instance->signalInEdit.connect(
         std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1)
+    );
+    connectApplicationResetEdit = Gui::Application::Instance->signalResetEdit.connect(
+        std::bind(&Gui::TaskView::TaskView::slotResetEdit, this, sp::_1)
     );
     // NOLINTEND
 
@@ -324,6 +288,7 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     connectApplicationInEdit.disconnect();
+    connectApplicationResetEdit.disconnect();
     connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
@@ -502,19 +467,48 @@ void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
     }
 }
 
-void TaskView::slotDeletedDocument(const App::Document& doc)
+void TaskView::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
 {
-    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+    App::Document* doc = vp.getDocument()->getDocument();
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end();
-    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
-        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-        removeDialog(foundTaskInfo);
+
+    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnResetEdit()) {
+        foundTaskInfo->ActiveDialog->autoClosedOnResetEdit();
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
     if (!hasDialog) {
         updateWatcher();
     }
+}
+
+void TaskView::slotDeletedDocument(const Gui::Document& guiDoc)
+{
+    const App::Document* doc = guiDoc.getDocument();
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    if (foundTaskInfo != taskInfos.end()
+        && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
+        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
+        // the dialog may have been removed in the meantime
+        foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    }
+
+    // The dialog must not outlive its document, whether or not it asked to be auto-closed:
+    // its content refers to objects that are about to be destroyed, and the TaskInfo is keyed
+    // by the document's address, which a later document may be allocated at. A dialog left
+    // behind would then be shown for that new document and its OK/Cancel would operate on
+    // freed objects.
+    if (foundTaskInfo != taskInfos.end()) {
+        removeDialog(foundTaskInfo);
+    }
+
+    updateWatcher();
 }
 
 void TaskView::slotViewClosed(const Gui::MDIView* view)
@@ -525,8 +519,13 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
     bool hasDialog = foundTaskInfo != taskInfos.end();
     // It can happen that only a view is closed an not the document
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnClosedView()) {
+        App::Document* doc = foundTaskInfo->Document;
         foundTaskInfo->ActiveDialog->autoClosedOnClosedView();
-        removeDialog(foundTaskInfo);
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
@@ -549,8 +548,13 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
         }
 
         if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
+            App::Document* docPtr = foundTaskInfo->Document;
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
-            removeDialog(foundTaskInfo);
+
+            auto refreshedTaskInfo = std::ranges::find(taskInfos, docPtr, &TaskInfo::Document);
+            if (refreshedTaskInfo != taskInfos.end()) {
+                removeDialog(refreshedTaskInfo);
+            }
             hasDialog = false;
         }
     }
@@ -816,6 +820,7 @@ void TaskView::addTaskWatcher()
 {
     if (!showTaskWatcher) {
         setShownTaskInfo(-1);  // Switch to the empty taskwatcher panel
+        Q_EMIT taskUpdate();
         return;
     }
     // add all widgets for all watcher to the task view
@@ -1003,7 +1008,7 @@ void TaskView::clearActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->clearActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
@@ -1011,8 +1016,7 @@ void TaskView::restoreActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())
-        ->restoreActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->restoreActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 

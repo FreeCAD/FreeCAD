@@ -22,8 +22,10 @@
  ****************************************************************************/
 
 
+#include <pybind11/pybind11.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Mod/CAM/libarea/Area.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
@@ -80,7 +82,7 @@ static PyObject* areaSetParams(PyObject*, PyObject* args, PyObject* kwd)
     }
 
 #define AREA_GET(_param) \
-    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param));
+    params.PARAM_FNAME(_param) = PARAM_TYPED(PARAM_CAST_PY_, _param)(PARAM_FNAME(_param), _param);
     // populate 'params' with the CONF variables
     PARAM_FOREACH(AREA_GET, AREA_PARAMS_STATIC_CONF)
 
@@ -567,6 +569,7 @@ return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
 }
 PY_CATCH_OCC
 }
+
 
 PyObject* AreaPy::setDefaultParams(PyObject*, PyObject*)
 {

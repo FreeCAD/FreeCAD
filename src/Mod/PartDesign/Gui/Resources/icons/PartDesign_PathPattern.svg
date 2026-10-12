@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:cc="http://creativecommons.org/ns#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  width="64px"
+  height="64px"
+  version="1.1">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>jrheinlaender</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>LinearPattern</dc:title>
+        <dc:date>2012-09-07</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>agryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient
+      gradientTransform="translate(-1.1650395e-6)"
+      y2="56"
+      x2="56"
+      y1="24"
+      x1="33"
+      gradientUnits="userSpaceOnUse"
+      id="linearGradient4219"
+      xlink:href="#linearGradient4141-2" />
+    <linearGradient
+      id="linearGradient4141-2">
+      <stop
+        style="stop-color:#729fcf"
+        offset="0" />
+      <stop
+        style="stop-color:#3465a4"
+        offset="1" />
+    </linearGradient>
+    <linearGradient
+      gradientTransform="translate(-1.1650395e-6)"
+      xlink:href="#linearGradient4055-3"
+      id="linearGradient4061-9"
+      x1="10"
+      y1="59"
+      x2="9"
+      y2="54"
+      gradientUnits="userSpaceOnUse" />
+    <linearGradient
+      id="linearGradient4055-3">
+      <stop
+        style="stop-color:#204a87"
+        offset="0" />
+      <stop
+        style="stop-color:#3465a4"
+        offset="1" />
+    </linearGradient>
+    <style>
+      .face {
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      .yellow {
+        fill: #edd400;
+        stroke: #302b00;
+      }
+      .yellow-side {
+        fill: #c4a000;
+        stroke: #302b00;
+      }
+      .yellow-top {
+        fill: #fce94f;
+        stroke: #302b00;
+      }
+      .blue {
+        fill: #3465a4;
+        stroke: #0b1521;
+      }
+      .blue-side {
+        fill: #204a87;
+        stroke: #0b1521;
+      }
+      .blue-top {
+        fill: #729fcf;
+        stroke: #0b1521;
+      }
+      .outline {
+        stroke: #0b1521;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      .highlight {
+        fill: none;
+        stroke: #729fcf;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 4;
+      }
+      .highlight-wide {
+        stroke-miterlimit: 7.9;
+      }
+    </style>
+  </defs>
+  <path
+    d="M 61,10.9 46.9,6.9 2.9,34.8 V 48.9 L 38,60.9 h 23 z"
+    class="outline"
+    fill="url(#linearGradient4219)" />
+  <path
+    d="M 59,12.2 46.9,9.3 5,36.1 V 48 L 38.5,59.1 H 58.8 Z"
+    class="highlight" />
+  <path
+    d="M 2.9,60.9 H 38 L 2.9,48.9 Z"
+    class="outline"
+    fill="url(#linearGradient4061-9)" />
+  <path
+    d="M 5,58.9 H 25.7 L 5,51.8 Z"
+    class="highlight highlight-wide" />
+  <path
+    d="m 29.2,9.7 10,3 v 10 l -10,-3 z"
+    class="face blue" />
+  <path
+    d="m 39.2,12.7 8,-5 v 10 l -8,5 z"
+    class="face blue-side" />
+  <path
+    d="m 38.2,4.7 9,3 -8,5 -10,-3 z"
+    class="face blue-top" />
+  <path
+    d="m 17.9,16.4 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 27.9,19.4 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 26.9,11.4 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 7.2,23.8 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 17.2,26.8 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 16.2,18.8 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 3.8,32.1 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 13.8,35.1 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 12.8,27.1 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 11.8,39.1 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 21.8,42.1 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 20.8,34.1 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 24.5,43.2 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 34.5,46.2 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 33.5,38.2 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 37.6,47.4 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 47.6,50.4 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 46.6,42.4 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+</svg>

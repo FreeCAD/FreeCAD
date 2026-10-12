@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -82,6 +84,7 @@ class QGVPage::Private: public ParameterGrp::ObserverType
 public:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
+    ParameterGrp::handle hGrpView;
     QGVPage* page;
     explicit Private(QGVPage* page) : page(page)
     {
@@ -89,6 +92,9 @@ public:
         hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         hGrp->Attach(this);
+
+        hGrpView = Preferences::getPreferenceGroup("View");
+        hGrpView->Attach(this);
     }
     void init()
     {
@@ -104,8 +110,10 @@ public:
     {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
         if (strcmp(Reason, "NavigationStyle") == 0) {
-            std::string model =
-                rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.GetASCII(
+                "NavigationStyle",
+                std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+            );
             page->setNavigationStyle(model);
         }
         else if (strcmp(Reason, "InvertZoom") == 0) {
@@ -125,12 +133,22 @@ public:
                 page->setTransformationAnchor(QGVPage::AnchorViewCenter);
             }
         }
+        else if (strcmp(Reason, "ScreenMode") == 0
+                 || strcmp(Reason, "ScreenVertexSize") == 0
+                 || strcmp(Reason, "ScreenEdgeWidth") == 0) {
+            if (page->getScene()) {
+                page->getScene()->refreshViews();
+            }
+        }
     }
     void detach()
     {
         hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         hGrp->Detach(this);
+
+        hGrpView = Preferences::getPreferenceGroup("View");
+        hGrpView->Detach(this);
     }
 };
 
@@ -446,11 +464,7 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
     }
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-void QGVPage::enterEvent(QEvent* event)
-#else
 void QGVPage::enterEvent(QEnterEvent* event)
-#endif
 {
     if (toolHandler) {
         // if the user interacted with another widget than the mdi, the cursor got unset.
@@ -474,6 +488,15 @@ void QGVPage::mousePressEvent(QMouseEvent* event)
         toolHandler->mousePressEvent(event);
     }
     else {
+        if (event->button() == Qt::RightButton && m_parentMDI) {
+            if (QGraphicsItem* item = itemAt(event->pos())) {
+                m_parentMDI->selectOnRightPress(item);
+            }
+            m_navStyle->handleMousePressEvent(event);
+            // do not call base class because it would clear the 
+            // selection on right click
+            return;
+        }
         m_navStyle->handleMousePressEvent(event);
     }
     QGraphicsView::mousePressEvent(event);
@@ -614,8 +637,10 @@ std::string QGVPage::getNavStyleParameter()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    std::string model =
-        hGrp->GetASCII("NavigationStyle", NavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII(
+        "NavigationStyle",
+        std::string {NavigationStyle::getClassTypeId().getName()}.c_str()
+    );
     return model;
 }
 

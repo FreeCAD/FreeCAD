@@ -1,0 +1,240 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:cc="http://creativecommons.org/ns#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  width="64px"
+  height="64px"
+  version="1.1">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>jrheinlaender</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>PointPattern</dc:title>
+        <dc:date>2012-09-07</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>agryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient
+      id="linearGradient2"
+      x1="16"
+      y1="41"
+      x2="16"
+      y2="49"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(9,5)">
+      <stop
+        offset="0"
+        style="stop-color:#ef2929" />
+      <stop
+        offset="1"
+        style="stop-color:#a40000" />
+    </linearGradient>
+    <linearGradient
+      id="linearGradient3"
+      xlink:href="#linearGradient2"
+      x1="16"
+      y1="41"
+      x2="16"
+      y2="49"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(9,5)" />
+    <linearGradient
+      id="linearGradient4"
+      xlink:href="#linearGradient2"
+      x1="16"
+      y1="41"
+      x2="16"
+      y2="49"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(24,-25)" />
+    <linearGradient
+      id="linearGradient4219"
+      xlink:href="#linearGradient4141-2"
+      x1="33"
+      y1="24"
+      x2="56"
+      y2="56"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(-1.1650395e-6)" />
+    <linearGradient id="linearGradient4141-2">
+      <stop
+        offset="0"
+        style="stop-color:#729fcf" />
+      <stop
+        offset="1"
+        style="stop-color:#3465a4" />
+    </linearGradient>
+    <linearGradient
+      id="linearGradient4061-9"
+      xlink:href="#linearGradient4055-3"
+      x1="10"
+      y1="59"
+      x2="9"
+      y2="54"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(-1.1650395e-6)" />
+    <linearGradient id="linearGradient4055-3">
+      <stop
+        offset="0"
+        style="stop-color:#204a87" />
+      <stop
+        offset="1"
+        style="stop-color:#3465a4" />
+    </linearGradient>
+    <style>
+      .face {
+        fill-rule: evenodd;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      .yellow {
+        fill: #edd400;
+        stroke: #302b00;
+      }
+      .yellow-side {
+        fill: #c4a000;
+        stroke: #302b00;
+      }
+      .yellow-top {
+        fill: #fce94f;
+        stroke: #302b00;
+      }
+      .blue {
+        fill: #3465a4;
+        stroke: #0b1521;
+      }
+      .blue-side {
+        fill: #204a87;
+        stroke: #0b1521;
+      }
+      .blue-top {
+        fill: #729fcf;
+        stroke: #0b1521;
+      }
+      .outline {
+        fill-rule: evenodd;
+        stroke: #0b1521;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+      }
+      .highlight {
+        fill: none;
+        stroke: #729fcf;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: miter;
+        stroke-miterlimit: 4;
+      }
+      .highlight-wide {
+        stroke-miterlimit: 7.9;
+      }
+      .point {
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 1;
+      }
+      .point-fill {
+        stroke: #ef2929;
+      }
+      .point-outline {
+        fill: none;
+        stroke: #660000;
+      }
+    </style>
+  </defs>
+  <path
+    d="M 61,10.9 46.9,6.9 2.9,34.8 V 48.9 L 38,60.9 h 23 z"
+    class="outline"
+    fill="url(#linearGradient4219)" />
+  <path
+    d="M 59,12.2 46.9,9.3 5,36.1 V 48 L 38.5,59.1 H 58.8 Z"
+    class="highlight" />
+  <path
+    d="M 2.9,60.9 H 38 L 2.9,48.9 Z"
+    class="outline"
+    fill="url(#linearGradient4061-9)" />
+  <path
+    d="M 5,58.9 H 25.7 L 5,51.8 Z"
+    class="highlight highlight-wide" />
+  <path
+    d="m 3,28 10,3 v 10 l -10,-3 z"
+    class="face blue" />
+  <path
+    d="m 13,31 8,-5 v 10 l -8,5 z"
+    class="face blue-side" />
+  <path
+    d="m 12,23 9,3 -8,5 -10,-3 z"
+    class="face blue-top" />
+  <path
+    d="m 25.4,40.2 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 35.4,43.2 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 34.4,35.2 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <path
+    d="m 40.9,9.1 10,3 v 10 l -10,-3 z"
+    class="face yellow" />
+  <path
+    d="m 50.9,12.1 8,-5 v 10 l -8,5 z"
+    class="face yellow-side" />
+  <path
+    d="m 49.9,4.1 9,3 -8,5 -10,-3 z"
+    class="face yellow-top" />
+  <circle
+    cx="25"
+    cy="50"
+    r="3"
+    class="point point-fill"
+    fill="url(#linearGradient3)" />
+  <circle
+    cx="25"
+    cy="50"
+    r="5"
+    class="point point-outline" />
+  <circle
+    cx="40"
+    cy="20"
+    r="3"
+    class="point point-fill"
+    fill="url(#linearGradient4)" />
+  <circle
+    cx="40"
+    cy="20"
+    r="5"
+    class="point point-outline" />
+</svg>

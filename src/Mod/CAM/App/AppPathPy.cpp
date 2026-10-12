@@ -62,7 +62,7 @@
         else { \
             str += "No OCCT Exception Message"; \
         } \
-        Base::Console().error(str.c_str()); \
+        Base::Console().error("{}", str); \
         PyErr_SetString(Part::PartExceptionOCCError, str.c_str()); \
     } \
     catch (Base::Exception & e) \
@@ -80,7 +80,7 @@
         str += "STL exception thrown ("; \
         str += e.what(); \
         str += ")"; \
-        Base::Console().error(str.c_str()); \
+        Base::Console().error("{}", str); \
         PyErr_SetString(Base::PyExc_FC_GeneralError, str.c_str()); \
     } \
     catch (const char* e) \
@@ -283,6 +283,18 @@ private:
 
     Py::Object fromShape(const Py::Tuple& args)
     {
+        if (!Base::warnDeprecatedPythonApi(
+                "Method",
+                "PathApp.fromShape",
+                Base::PythonApiDeprecation {
+                    .deprecatedIn = "26.3",
+                    .removedIn = "27.2",
+                    .replacement = "fromShapes",
+                }
+            )) {
+            throw Py::Exception();
+        }
+
         PyObject* pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
             throw Py::Exception();

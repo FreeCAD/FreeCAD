@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -27,9 +25,10 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import Path.Dressup.Utils as PathDressup
 
 if False:
@@ -56,7 +55,7 @@ class PathDressupTagTaskPanel:
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
-        self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
+        self.getPoint = PathGetPoint.TaskPanel(self.form.cbTagGeneration, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
             FreeCAD.ActiveDocument.openTransaction("Edit HoldingTags Dress-up")
@@ -117,7 +116,7 @@ class PathDressupTagTaskPanel:
     def getTags(self, includeCurrent):
         tags = []
         index = self.form.lwTags.currentRow()
-        for i in range(0, self.form.lwTags.count()):
+        for i in range(self.form.lwTags.count()):
             item = self.form.lwTags.item(i)
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
@@ -132,6 +131,8 @@ class PathDressupTagTaskPanel:
         height = FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value
         angle = self.form.dsbAngle.value()
         radius = FreeCAD.Units.Quantity(self.form.ifRadius.text()).Value
+        minCount = self.form.sbMinCount.value()
+        maxCount = self.form.sbMaxCount.value()
 
         tags = self.getTags(True)
         positions = []
@@ -159,13 +160,21 @@ class PathDressupTagTaskPanel:
         if disabled != self.obj.Disabled:
             self.obj.Disabled = disabled
             self.isDirty = True
+        if minCount != self.obj.Proxy.minCount:
+            self.obj.Proxy.minCount = minCount
+            self.isDirty = True
+        if maxCount != self.obj.Proxy.maxCount:
+            self.obj.Proxy.maxCount = maxCount
+            self.isDirty = True
 
     def updateTagsView(self):
         Path.Log.track()
         self.form.lwTags.blockSignals(True)
         self.form.lwTags.clear()
         for i, pos in enumerate(self.Positions):
-            lbl = "%d: (%.2f, %.2f)" % (i, pos.x, pos.y)
+            posX = FreeCAD.Units.Quantity(pos.x, FreeCAD.Units.Length).UserString
+            posY = FreeCAD.Units.Quantity(pos.y, FreeCAD.Units.Length).UserString
+            lbl = f"{i}: ({posX}, {posY})"
             item = QtGui.QListWidgetItem(lbl)
             item.setData(self.DataX, pos.x)
             item.setData(self.DataY, pos.y)
@@ -183,36 +192,43 @@ class PathDressupTagTaskPanel:
         self.form.lwTags.blockSignals(False)
         self.whenTagSelectionChanged()
         self.viewProvider.updatePositions(self.Positions, self.Disabled)
+        self.updateButtonEnable()
+
+    def updateButtonEnable(self):
+        if self.Disabled:
+            self.form.pbSwitch.setText("Enable All")
+        else:
+            self.form.pbSwitch.setText("Disable All")
 
     def generateNewTags(self):
-        count = self.form.sbCount.value()
-        Path.Log.track(count)
-        if not self.obj.Proxy.generateTags(self.obj, count):
+        self.getFields()
+        if not self.obj.Proxy.generateTags(self.obj):
             self.obj.Proxy.execute(self.obj)
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
 
     def copyNewTags(self):
-        sel = self.form.cbSource.currentText()
-        tags = [o for o in FreeCAD.ActiveDocument.Objects if sel == o.Label]
-        if 1 == len(tags):
-            if not self.obj.Proxy.copyTags(self.obj, tags[0]):
+        objs = FreeCAD.ActiveDocument.Objects
+        tags = [o for o in objs if "DressupTag" in o.Name and self.obj.Name != o.Name]
+        tagsLabels = [t.Label for t in tags]
+        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
+        form.setWindowTitle("Dressup Tag")
+        form.label.setText("Copy tags from")
+        form.uiToolController.addItems(tagsLabels)
+        r = form.exec()
+        if r:
+            index = form.uiToolController.currentIndex()
+            if not self.obj.Proxy.copyTags(self.obj, tags[index]):
                 self.obj.Proxy.execute(self.obj)
             self.Positions = self.obj.Positions
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
-        else:
-            Path.Log.error("Cannot copy tags - internal error")
 
     def updateModel(self):
         self.getFields()
         self.updateTagsView()
         self.isDirty = True
-
-    def whenCountChanged(self):
-        count = self.form.sbCount.value()
-        self.form.pbGenerate.setEnabled(count)
 
     def selectTagWithId(self, index):
         Path.Log.track(index)
@@ -220,8 +236,7 @@ class PathDressupTagTaskPanel:
 
     def whenTagSelectionChanged(self):
         index = self.form.lwTags.currentRow()
-        count = self.form.lwTags.count()
-        self.form.pbDelete.setEnabled(index != -1 and count > 2)
+        self.form.pbRemove.setEnabled(index != -1)
         self.form.pbEdit.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
@@ -231,19 +246,34 @@ class PathDressupTagTaskPanel:
     def updateTagsViewWith(self, tags):
         self.tags = tags
         self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in tags]
-        self.Disabled = [i for (i, t) in enumerate(self.tags) if not t[2]]
+        self.Disabled = [i for i, t in enumerate(tags) if not t[2]]
         self.updateTagsView()
 
-    def deleteSelectedTag(self):
+    def removeSelectedTag(self):
         self.updateTagsViewWith(self.getTags(False))
 
+    def clearTagsList(self):
+        self.updateTagsViewWith([])  # remove all tags
+
+    def switchTags(self):
+        if self.Disabled:  # enable all tags
+            self.Disabled = []
+        else:  # disable all tags
+            tags = self.getTags(True)
+            self.Disabled = list(range(len(tags)))
+        self.updateTagsView()
+
     def addNewTagAt(self, point, obj):
+        # The pick is a world point; the path and the tag positions are in
+        # the base operation's frame.
+        if point:
+            point = PathUtil.workplaneForOp(self.obj).inverse().multVec(point)
         if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
-            Path.Log.info("addNewTagAt(%.2f, %.2f)" % (point.x, point.y))
+            Path.Log.info(f"addNewTagAt({point.x:.2f}, {point.y:.2f})")
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            Path.Log.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            Path.Log.notice(f"ignore new tag at {point} (obj={obj}, on-path=0")
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -274,7 +304,6 @@ class PathDressupTagTaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.form.sbCount.setValue(len(self.Positions))
         self.form.ifHeight.setText(
             FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString
         )
@@ -285,38 +314,34 @@ class PathDressupTagTaskPanel:
         self.form.ifRadius.setText(
             FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString
         )
+        self.form.sbMinCount.setValue(self.obj.Proxy.minCount)
+        self.form.sbMaxCount.setValue(self.obj.Proxy.maxCount)
 
     def setupUi(self):
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
 
         self.setFields()
-        self.whenCountChanged()
+        self.updateButtonEnable()
 
         if self.obj.Proxy.supportsTagGeneration(self.obj):
-            self.form.sbCount.valueChanged.connect(self.whenCountChanged)
             self.form.pbGenerate.clicked.connect(self.generateNewTags)
-        else:
-            self.form.cbTagGeneration.setEnabled(False)
 
-        enableCopy = False
-        for tags in sorted(
-            [o.Label for o in FreeCAD.ActiveDocument.Objects if "DressupTag" in o.Name]
-        ):
-            if tags != self.obj.Label:
-                enableCopy = True
-                self.form.cbSource.addItem(tags)
-        if enableCopy:
-            self.form.gbCopy.setEnabled(True)
+        objs = FreeCAD.ActiveDocument.Objects
+        if any(o for o in objs if "DressupTag" in o.Name and self.obj.Name != o.Name):
             self.form.pbCopy.clicked.connect(self.copyNewTags)
+        else:
+            self.form.pbCopy.hide()
 
         self.form.lwTags.itemChanged.connect(self.whenTagsViewChanged)
         self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
         self.form.lwTags.itemActivated.connect(self.editTag)
 
-        self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.form.pbClear.clicked.connect(self.clearTagsList)
+        self.form.pbRemove.clicked.connect(self.removeSelectedTag)
         self.form.pbEdit.clicked.connect(self.editSelectedTag)
         self.form.pbAdd.clicked.connect(self.addNewTag)
+        self.form.pbSwitch.clicked.connect(self.switchTags)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 
@@ -519,9 +544,7 @@ class PathDressupTagViewProvider:
         return -1
 
     def allow(self, doc, obj, sub):
-        if obj == self.obj:
-            return True
-        return False
+        return obj == self.obj
 
     def addSelection(self, doc, obj, sub, point):
         Path.Log.track(doc, obj, sub, point)
@@ -572,7 +595,8 @@ class CommandPathDressupTag:
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Tag Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Tags")
-        FreeCADGui.doCommand("Path.Dressup.Gui.Tags.Create(App.ActiveDocument.%s)" % op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.Tags.Create(base)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

@@ -76,7 +76,8 @@ class CommandPathDressupArray:
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Path Array Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.Array")
-        FreeCADGui.doCommand("Path.Dressup.Gui.Array.Create(App.ActiveDocument.%s)" % op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.Array.Create(base)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

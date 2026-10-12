@@ -36,7 +36,7 @@ from femtools import femutils as utils
 
 
 def find_parent_gmsh(obj):
-    # searches uptream for the parent gmsh mesh object
+    # searches upstream for the parent gmsh mesh object
     for parent in obj.InList:
         if utils.is_of_type(parent, "Fem::FemMeshGmsh"):
             return parent

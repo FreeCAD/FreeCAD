@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 edi                                                *
  *                                                                         *
@@ -21,6 +23,8 @@
  ***************************************************************************/
 
 # include <QApplication>
+# include <QLabel>
+# include <QLineEdit>
 # include <QMessageBox>
 # include <cmath>
 # include <sstream>
@@ -51,7 +55,6 @@
 # include <Mod/TechDraw/App/Preferences.h>
 # include <Mod/TechDraw/App/LineGroup.h>
 
-#include "DlgTemplateField.h"
 #include "DrawGuiUtil.h"
 #include "TaskCustomizeFormat.h"
 #include "TaskSelectLineAttributes.h"
@@ -111,17 +114,32 @@ void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
     }
 
     std::string prefixText(prefixFormat);
-    if (prefixFormat.find("%s") != std::string::npos) {
-        DlgTemplateField ui(Gui::getMainWindow());
-        ui.setFieldName(QObject::tr("Repeat count").toStdString());
-        ui.setFieldContent("1");
-        if (ui.exec() != QDialog::Accepted) {
+    if (prefixFormat.find("%s") == 0) {
+        QDialog dialog(Gui::getMainWindow());
+        dialog.setWindowTitle(QObject::tr("Prefix Text"));
+
+        QLineEdit edit(&dialog);
+        edit.setAlignment(Qt::AlignRight);
+        QLabel label(QString::fromStdString(prefixFormat.c_str() + 2), &dialog);
+
+        auto hlayout = new QHBoxLayout();
+        hlayout->addWidget(&edit);
+        hlayout->addWidget(&label);
+
+        QDialogButtonBox box(&dialog);
+        box.setStandardButtons(QDialogButtonBox::Ok);
+
+        QVBoxLayout vlayout;
+        vlayout.addLayout(hlayout);
+        vlayout.addWidget(&box);
+        dialog.setLayout(&vlayout);
+
+        QObject::connect(&box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+        if (dialog.exec() != QDialog::Accepted) {
             return;
         }
 
-        QString numberFromDialog = ui.getFieldContent();
-        QString qPrefixText = QStringLiteral("%1× ").arg(numberFromDialog);
-        prefixText = qPrefixText.toStdString();
+        prefixText.replace(0, strlen("%s"), edit.text().toStdString());
     }
     size_t prefixSize = prefixText.capacity();
 
@@ -304,7 +322,7 @@ CmdTechDrawExtensionInsertPrefixGroup::CmdTechDrawExtensionInsertPrefixGroup()
 
 void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -328,7 +346,7 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
         execRemovePrefixChar(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -513,7 +531,7 @@ CmdTechDrawExtensionIncreaseDecreaseGroup::CmdTechDrawExtensionIncreaseDecreaseG
 
 void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -531,7 +549,7 @@ void CmdTechDrawExtensionIncreaseDecreaseGroup::activated(int iMsg)
         execIncreaseDecreaseDecimal(this, -1);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -801,7 +819,7 @@ CmdTechDrawExtensionPosChainDimensionGroup::CmdTechDrawExtensionPosChainDimensio
 
 void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionPosChainDimensionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionPosChainDimensionGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -822,7 +840,7 @@ void CmdTechDrawExtensionPosChainDimensionGroup::activated(int iMsg)
         execPosObliqueChainDimension(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1129,7 +1147,7 @@ CmdTechDrawExtensionCascadeDimensionGroup::CmdTechDrawExtensionCascadeDimensionG
 
 void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1150,7 +1168,7 @@ void CmdTechDrawExtensionCascadeDimensionGroup::activated(int iMsg)
         execCascadeObliqueDimension(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1500,7 +1518,7 @@ CmdTechDrawExtensionCreateChainDimensionGroup::CmdTechDrawExtensionCreateChainDi
 
 void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1521,7 +1539,7 @@ void CmdTechDrawExtensionCreateChainDimensionGroup::activated(int iMsg)
         execCreateObliqueChainDimension(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -1869,7 +1887,7 @@ CmdTechDrawExtensionCreateCoordDimensionGroup::CmdTechDrawExtensionCreateCoordDi
 
 void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionCascadeDimansionGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -1890,7 +1908,7 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::activated(int iMsg)
         execCreateObliqueCoordDimension(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 
@@ -2107,7 +2125,7 @@ CmdTechDrawExtensionChamferDimensionGroup::CmdTechDrawExtensionChamferDimensionG
 
 void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionIncreaseDecreaseGroup - activated({})\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
@@ -2125,7 +2143,7 @@ void CmdTechDrawExtensionChamferDimensionGroup::activated(int iMsg)
         execCreateVertChamferDimension(this);
         break;
     default:
-        Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+        Base::Console().message("CMD::CVGrp - invalid iMsg: {}\n", iMsg);
     };
 }
 

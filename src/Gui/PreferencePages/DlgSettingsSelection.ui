@@ -30,9 +30,9 @@
         </property>
         <property name="color">
          <color>
-          <red>28</red>
-          <green>173</green>
-          <blue>28</blue>
+          <red>0</red>
+          <green>171</green>
+          <blue>255</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">
@@ -135,9 +135,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
         <property name="color">
          <color>
-          <red>225</red>
-          <green>225</green>
-          <blue>20</blue>
+          <red>10</red>
+          <green>200</green>
+          <blue>255</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # ***************************************************************************
@@ -21,7 +20,10 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # * *************************************************************************
 
+import re
+
 import FreeCAD
+import Constants
 import Path
 import unittest
 from Path.Post.Processor import PostProcessor
@@ -48,22 +50,30 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = False
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
-
         # Create post processor
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = machine
         processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = False
+        processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
+        processor.values["FILTER_INEFFICIENT_MOVES"] = False
+        processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
+
+        # Create a simple path with G43 command
+        commands = [Path.Command("G43", {"H": 1})]
+        sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        processor._expand_tool_change(sections)
+        result = processor._convert_job_sections(sections)[0][1]
+
+        extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
 
         # Should return None (suppressed)
-        self.assertIsNone(
-            result, "G43 command should be suppressed when output_tool_length_offset is False"
+        self.assertEqual(
+            extant_g43,
+            [],
+            f"G43 command should be suppressed when output_tool_length_offset is False, saw\n{extant_g43}\nin---\n{result}\n---",
         )
 
     def test_g43_output_enabled(self):
@@ -72,45 +82,33 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = True
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
-
         # Create post processor
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = machine
         processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = True
+        processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
+        processor.values["FILTER_INEFFICIENT_MOVES"] = False
+        processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
+
+        # Create a simple path with G43 command
+        commands = [Path.Command("G43", {"H": 1})]
+        sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        processor._expand_tool_change(sections)
+        result = processor._convert_job_sections(sections)[0][1]
 
-        # Should return the G43 command
-        self.assertIsNotNone(
-            result, "G43 command should be output when output_tool_length_offset is True"
+        extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
+
+        # Should return None (suppressed)
+        self.assertNotEqual(
+            extant_g43,
+            [],
+            f"G43 command when output_tool_length_offset is True in---\n{result}\n---",
         )
-        self.assertIn("G43", result, "Result should contain G43 command")
+
         self.assertIn("H1", result, "Result should contain H parameter")
-
-    def test_machine_config_mapping(self):
-        """Test that machine config field is properly mapped to processor values."""
-        # Create machine config with G43 disabled
-        machine = Machine("Test Machine")
-        machine.output.output_tool_length_offset = False
-
-        # Create post processor
-        processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
-        processor._machine = machine
-
-        # Simulate the mapping that happens in export2
-        if hasattr(machine.output, "output_tool_length_offset"):
-            processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = machine.output.output_tool_length_offset
-
-        # Check that the value was mapped correctly
-        self.assertFalse(
-            processor.values["OUTPUT_TOOL_LENGTH_OFFSET"],
-            "Machine config field should be mapped to processor values",
-        )
 
 
 class TestToolProcessing(unittest.TestCase):
@@ -142,6 +140,7 @@ class TestToolProcessing(unittest.TestCase):
         # Create tool controller
         self.tc1 = PathToolController.Create("TC_Test_Tool1", tool1, 1)
         self.tc1.Label = "TC: 6mm Endmill"
+        self.tc1.SpindleSpeed = 1000.0
 
         # Create job
         self.job = PathJob.Create("TestJob", [base_obj], None)
@@ -230,7 +229,10 @@ class TestToolProcessing(unittest.TestCase):
                 "properties": {
                     "preamble": "G17 G54 G40 G49 G80 G90",
                     "postamble": "M05\nG17 G54 G90 G80 G40\nM2",
-                    "supported_commands": "G0\nG00\nG1\nG01\nG2\nG02\nG3\nG03\nG73\nG74\nG81\nG82\nG83\nG84\nG38.2\nG54\nG55\nG56\nG57\nG58\nG59\nG59.1\nG59.2\nG59.3\nG59.4\nG59.5\nG59.6\nG59.7\nG59.8\nG59.9\nM0\nM00\nM1\nM01\nM3\nM03\nM4\nM04\nM6\nM06",
+                    "supported_commands": Constants.GCODE_SUPPORTED
+                    + Constants.GCODE_FIXTURES
+                    + Constants.MCODE_SUPPORTED
+                    + Constants.GCODE_NON_CONFORMING,
                 },
             },
             "processing": {"tool_change": True, "early_tool_prep": False},
@@ -361,12 +363,15 @@ class TestToolProcessing(unittest.TestCase):
 
         # Create a second operation using the second tool
         profile_op2 = self.doc.addObject("Path::FeaturePython", "TestProfile2")
+        profile_op2.addProperty("App::PropertyLink", "ToolController", "Base", "Tool controller")
+        profile_op2.ToolController = tc2
         profile_op2.Label = "TestProfile2"
         profile_op2.Path = Path.Path(
             [
                 Path.Command("G0", {"X": 50.0, "Y": 50.0, "Z": 5.0}),
                 Path.Command("G1", {"X": 60.0, "Y": 50.0, "Z": -5.0, "F": 100.0}),
                 Path.Command("G0", {"X": 50.0, "Y": 50.0, "Z": 5.0}),
+                Path.Command("(END)"),  # to find end of relevant gcode
             ]
         )
         self.job.Operations.addObject(profile_op2)
@@ -385,43 +390,39 @@ class TestToolProcessing(unittest.TestCase):
             # Test with early_tool_prep enabled
             results_with = self._run_export2(machine_with_prep)
             gcode_with = self._get_all_gcode(results_with)
+            # remove pre/post stuff that we don't care about
+            starting_with_toolcontroller = re.search(
+                r"\(TC: 6mm Endmill\).+\(END\)", gcode_with, re.DOTALL
+            ).group(0)
+
+            # Note the "bare" T2
+            expected = """(TC: 6mm Endmill)
+M6 T1
+G43 H1
+M3 S1000
+T2
+G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y0.000 Z-5.000 F6000.000
+G0 X0.000 Y0.000 Z5.000
+(TC: 3mm Endmill)
+M6 T2
+G43 H2
+G0 X50.000 Y50.000 Z5.000
+G1 X60.000 Y50.000 Z-5.000 F6000.000
+G0 X50.000 Y50.000 Z5.000
+(END)"""
+            self.assertEqual(expected, starting_with_toolcontroller)
 
             # Test without early_tool_prep
             results_without = self._run_export2(machine_no_prep)
+            gcode_with = self._get_all_gcode(results_without)
+            starting_with_toolcontroller = re.search(
+                r"\(TC: 6mm Endmill\).+\(END\)", gcode_with, re.DOTALL
+            ).group(0)
 
-            lines_with = [line.strip() for line in gcode_with.split("\n") if line.strip()]
-
-            # Find M6 commands in output with early_tool_prep enabled
-            m6_lines_with = [i for i, line in enumerate(lines_with) if "M6" in line]
-
-            # With early_tool_prep, should have standalone T commands (tool prep)
-            # Look for lines that start with T followed by a digit
-            import re
-
-            standalone_t_with = [line for line in lines_with if re.match(r"^T\d+$", line)]
-
-            # Should have standalone T commands when early_tool_prep is enabled
-            # Note: early_tool_prep only works when there are multiple tools
-            if len(m6_lines_with) >= 2:
-                self.assertGreater(
-                    len(standalone_t_with),
-                    0,
-                    "Should have standalone T prep commands when early_tool_prep is enabled with multiple tools",
-                )
-
-                # Verify the early prep command appears after first M6
-                first_m6_idx = m6_lines_with[0]
-                # Look for standalone T command shortly after first M6
-                found_early_prep = False
-                for i in range(first_m6_idx + 1, min(first_m6_idx + 20, len(lines_with))):
-                    line = lines_with[i]
-                    if re.match(r"^T\d+$", line):
-                        found_early_prep = True
-                        break
-
-                self.assertTrue(
-                    found_early_prep, "Should have early tool prep command shortly after first M6"
-                )
+            # remove the T2 line, otherwise the same
+            expected = re.sub(r"\nT2\n", "\n", expected)
+            self.assertEqual(expected, starting_with_toolcontroller)
 
         finally:
             # Clean up the second tool controller and operation
@@ -436,7 +437,10 @@ class TestToolProcessing(unittest.TestCase):
         machine_config = self._get_full_machine_config()
         # Add pre/post tool change blocks to postprocessor properties
         machine_config["postprocessor"]["properties"]["pre_tool_change"] = "(pretoolchange)"
-        machine_config["postprocessor"]["properties"]["post_tool_change"] = "(posttoolchange)"
+        machine_config["postprocessor"]["properties"][
+            "post_tool_change"
+        ] = "(posttoolchange)\n(ptc2)"
+        machine_config["postprocessor"]["properties"]["tool_return"] = "(toolreturn)"
         machine = Machine.from_dict(machine_config)
 
         # Add a second tool controller to trigger tool changes
@@ -502,7 +506,28 @@ class TestToolProcessing(unittest.TestCase):
 
             for pre_idx, post_idx in zip(pretool_indices, posttool_indices):
                 self.assertLess(
-                    pre_idx, post_idx, "Pre-tool-change should come before post-tool-change"
+                    pre_idx,
+                    post_idx,
+                    f"Pre-tool-change should come before post-tool-change in---\n{all_output}\n--",
+                )
+
+            # POST_TOOL_CHANGE immediately after M6
+            m6_indices = [i for i, line in enumerate(lines) if line.startswith("M6")]
+            for pre_idx, post_idx in zip(m6_indices, posttool_indices):
+                self.assertEqual(
+                    post_idx - pre_idx,
+                    1,
+                    f"M6 immediately before post-tool-change in---\n{all_output}\n--",
+                )
+
+            # TOOL_RETURN after G43
+            m3_indices = [i for i, line in enumerate(lines) if line.startswith("M3")]
+            toolreturn_indices = [i for i, line in enumerate(lines) if "(toolreturn)" in line]
+            for pre_idx, post_idx in zip(m3_indices, toolreturn_indices):
+                self.assertEqual(
+                    post_idx - pre_idx,
+                    1,
+                    f"toolreturn immediately after G43 in---\n{all_output}\n--",
                 )
 
             # Verify tool change commands (M6) are present
@@ -536,7 +561,6 @@ class TestToolProcessing(unittest.TestCase):
 
         # With tool list enabled, header should contain tool information in comments
         # Look for specific tool listing format: (T<number>=toolname)
-        import re
 
         tool_pattern = re.compile(r"\(T\d+=.*?\)")
 

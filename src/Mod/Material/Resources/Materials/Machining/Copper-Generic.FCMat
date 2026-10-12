@@ -1,0 +1,31 @@
+General:
+  UUID: "ba9971df-938c-47cc-b330-c6759415de7c"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Name: "Copper (Generic)"
+  Description: >-
+    Generic prototype for unleaded annealed copper alloys, suitable as a
+    starter material for CAM exploration. Pure copper is notoriously gummy;
+    specific free-machining alloys (e.g. tellurium copper C145, sulfur copper
+    C147) can run substantially faster. Specific copper alloys are available
+    in the Supplemental Materials addon.
+    Surface speeds: conservative values for uncoated bits roughing pure
+    annealed copper, consistent with common engineering practice.
+    Unit cutting force and chip thickness exponent: published Kienzle-model
+    reference values for the copper class.
+Inherits:
+  Copper:
+    UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Copper"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    SurfaceSpeedHSS: '75 m/min'
+    SurfaceSpeedCarbide: '150 m/min'
+    UnitCuttingForce: '1500 N/mm^2'
+    ChipThicknessExponent: 0.18

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com>   *
@@ -72,7 +74,7 @@ class TestSolverZ88(unittest.TestCase):
     def test_ccx_cantilever_ele_hexa20(self):
         from femexamples.ccx_cantilever_ele_hexa20 import setup
 
-        setup(self.document, "z88")
+        setup(self.document, "z88", test_mode=True)
         self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

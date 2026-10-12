@@ -169,6 +169,7 @@ class ProcessingOptions:
     tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
+    f_for_rapid_moves = False
     xy_before_z_after_tool_change: bool = (
         False  # Decompose first move after tool change: XY first, then Z
     )
@@ -189,14 +190,50 @@ class BaseFrame:
     orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
 
+class RotationStrategy(Enum):
+    """How the machine handles an operation on a tilted work plane.
+
+    An operation on a work plane is stored plane-relative; the post has to
+    express it in something the control runs. Which of these the control
+    does decides what the post emits. A machine with rotary axes and NONE
+    refuses to post such an operation rather than guess.
+
+    NONE           : not declared; indexed operations cannot be posted.
+    DWO            : dynamic work offset (Haas G254, Fanuc G54.2/G54.4).
+                     The post commands the rotary positions and emits the
+                     path rotated into the frame the machine reaches; the
+                     control applies the pivot offsets.
+    TWP            : tilted work plane (Fanuc G68.2, Haas G268, Heidenhain
+                     PLANE SPATIAL). The post declares the plane and emits
+                     the path in the plane's own coordinates; the control
+                     positions the rotaries and applies the pivot.
+    POST_TRANSFORM : no control support; the post itself would rotate every
+                     coordinate about the machine's measured pivots. Declared
+                     here so a machine can say so; not emitted yet.
+    """
+
+    NONE = "none"
+    DWO = "dwo"
+    TWP = "twp"
+    POST_TRANSFORM = "post_transform"
+
+
 @dataclass
 class Kinematics:
     """Machine kinematics configuration."""
 
     base_frame: BaseFrame = field(default_factory=BaseFrame)
     tcp_supported: bool = False
-    dwo_supported: bool = False
+    # Which strategy the control can run is the machine's to declare; how the
+    # strategy is spelled (the plane command, whether it positions the
+    # rotaries) is the post-processor's, since that is the control family.
+    rotation_strategy: RotationStrategy = RotationStrategy.NONE
     notes: str = ""
+
+    @property
+    def dwo_supported(self) -> bool:
+        """Older spelling of ``rotation_strategy == DWO``; kept for readers of it."""
+        return self.rotation_strategy == RotationStrategy.DWO
 
 
 @dataclass
@@ -274,6 +311,26 @@ class LinearAxis:
         )
 
 
+class WrapStrategy(Enum):
+    """How rotary-axis G-code values should wrap.
+
+    UNWOUND : emit monotonic A across full revolutions (e.g. 4613.86°).
+              Right for controllers that treat the rotary as a linear
+              axis (no wrap awareness).
+    MODULO  : emit A in [0, 360). Right for indexers and any controller
+              where direction across the wrap is irrelevant.
+    REZERO  : emit A in [0, 360) and inject `G92 A0` at every full
+              revolution to keep modal A small while preserving direction.
+              A `G92.1` is appended at end of path to clear the offset.
+              Right for shortest-path wrapping rotaries (LinuxCNC
+              ANGULAR / wrapped_rotary) when continuous direction matters.
+    """
+
+    UNWOUND = "unwound"
+    MODULO = "modulo"
+    REZERO = "rezero"
+
+
 @dataclass
 class RotaryAxis:
     """Represents a single rotary axis in a machine configuration"""
@@ -290,6 +347,7 @@ class RotaryAxis:
     joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
+    wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
 
     def __post_init__(self):
         """Normalize rotation vector and validate parameters after initialization"""
@@ -334,6 +392,7 @@ class RotaryAxis:
             "joint_origin": self.joint_origin,
             "solution_preference": self.solution_preference,
             "allow_flip": self.allow_flip,
+            "wrap_strategy": self.wrap_strategy.value,
         }
 
     @classmethod
@@ -355,6 +414,7 @@ class RotaryAxis:
             data.get("joint_origin", [0, 0, 0]),
             data.get("solution_preference", "shortest"),
             data.get("allow_flip", True),
+            WrapStrategy(data.get("wrap_strategy", "unwound")),
         )
 
 
@@ -365,6 +425,18 @@ class ToolheadType(Enum):
     LASER = "laser"  # Laser cutting/engraving
     WATERJET = "waterjet"  # Waterjet cutting
     PLASMA = "plasma"  # Plasma cutting
+    WIRE_EDM = "wire_edm"  # Wire electrical discharge machining
+
+    @property
+    def display_name(self) -> str:
+        """Human-readable label for UI display."""
+        return {
+            ToolheadType.ROTARY: "Rotary",
+            ToolheadType.LASER: "Laser",
+            ToolheadType.WATERJET: "Waterjet",
+            ToolheadType.PLASMA: "Plasma",
+            ToolheadType.WIRE_EDM: "Wire EDM",
+        }[self]
 
 
 @dataclass
@@ -451,6 +523,20 @@ class ToolheadCapabilities:
                 has_probing=False,
                 has_auto_focus=False,
             ),
+            ToolheadType.WIRE_EDM: cls(
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=True,
+                uses_coolant=False,
+                uses_assist_gas=False,
+                uses_water=True,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
+            ),
         }
         return capabilities.get(toolhead_type, capabilities[ToolheadType.ROTARY])
 
@@ -519,6 +605,10 @@ class Toolhead:
     def is_plasma(self) -> bool:
         """Check if this is a plasma toolhead."""
         return self.toolhead_type == ToolheadType.PLASMA
+
+    def is_wire_edm(self) -> bool:
+        """Check if this is a wire EDM toolhead."""
+        return self.toolhead_type == ToolheadType.WIRE_EDM
 
     def can_use_coolant(self) -> bool:
         """Check if this toolhead can use coolant."""
@@ -596,22 +686,24 @@ class Toolhead:
             focus_data = data["laser_focus_range"]
             laser_focus_range = (focus_data[0], focus_data[1])
 
+        # Keyword arguments so that adding or reordering a dataclass field
+        # cannot silently shift every loaded value onto the wrong field.
         return cls(
-            data["name"],
-            toolhead_type,
-            data.get("id"),
-            data.get("max_power_kw", 0),
-            data.get("max_rpm", 0),
-            data.get("min_rpm", 0),
-            data.get("tool_change", "manual"),
-            data.get("coolant_flood", False),
-            data.get("coolant_mist", False),
-            data.get("coolant_delay", 0.0),
-            data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
-            data.get("laser_wavelength"),
-            laser_focus_range,
-            data.get("waterjet_pressure"),
-            data.get("plasma_amperage"),
+            name=data["name"],
+            toolhead_type=toolhead_type,
+            id=data.get("id"),
+            max_power_kw=data.get("max_power_kw", 0),
+            max_rpm=data.get("max_rpm", 0),
+            min_rpm=data.get("min_rpm", 0),
+            tool_change=data.get("tool_change", "manual"),
+            coolant_flood=data.get("coolant_flood", False),
+            coolant_mist=data.get("coolant_mist", False),
+            coolant_delay=data.get("coolant_delay", 0.0),
+            toolhead_wait=data.get("toolhead_wait", data.get("spindle_wait", 0.0)),
+            laser_wavelength=data.get("laser_wavelength"),
+            laser_focus_range=laser_focus_range,
+            waterjet_pressure=data.get("waterjet_pressure"),
+            plasma_amperage=data.get("plasma_amperage"),
         )
 
 
@@ -824,7 +916,18 @@ class Machine:
         tool_change="manual",
     ):
         """Add a toolhead to the configuration"""
-        self.toolheads.append(Toolhead(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
+        # Keyword arguments: Toolhead takes toolhead_type as its second
+        # positional field, so a positional call here shifts every value.
+        self.toolheads.append(
+            Toolhead(
+                name=name,
+                id=id,
+                max_power_kw=max_power_kw,
+                max_rpm=max_rpm,
+                min_rpm=min_rpm,
+                tool_change=tool_change,
+            )
+        )
         return self
 
     def save(self, filepath):
@@ -1050,6 +1153,7 @@ class Machine:
                 "max_velocity": axis_obj.max_velocity,
                 "solution_preference": axis_obj.solution_preference,
                 "allow_flip": axis_obj.allow_flip,
+                "wrap_strategy": axis_obj.wrap_strategy.value,
             }
 
         data = {
@@ -1066,6 +1170,7 @@ class Machine:
                     },
                     "tcp_supported": self.kinematics.tcp_supported,
                     "dwo_supported": self.kinematics.dwo_supported,
+                    "rotation_strategy": self.kinematics.rotation_strategy.value,
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
@@ -1480,6 +1585,7 @@ class Machine:
 
                 # Legacy support for prefer_positive
                 prefer_positive = axis_data.get("prefer_positive", True)
+                wrap_strategy = WrapStrategy(axis_data.get("wrap_strategy", "unwound"))
 
                 config.rotary_axes[axis_name] = RotaryAxis(
                     name=axis_name,
@@ -1494,6 +1600,7 @@ class Machine:
                     joint_origin=joint_origin,
                     solution_preference=solution_preference,
                     allow_flip=allow_flip,
+                    wrap_strategy=wrap_strategy,
                 )
 
         # Parse kinematics if present
@@ -1505,7 +1612,12 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            config.kinematics.dwo_supported = kinematics_data.get("dwo_supported", False)
+            # A file from before rotation_strategy existed said only whether
+            # DWO was supported; that flag still selects the strategy.
+            strategy = kinematics_data.get("rotation_strategy")
+            if strategy is None:
+                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
+            config.kinematics.rotation_strategy = RotationStrategy(strategy)
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
@@ -1731,7 +1843,7 @@ class MachineFactory:
         """Register a directory containing addon machine definition files.
 
         Called by ``_scan_installed_addon_dirs()`` when an addon's
-        ``package.xml`` declares ``<Machine>`` content.  May also be
+        ``package.xml`` declares ``<machine>`` content.  May also be
         called directly via ``Path.Preferences.addAddonAssetPath()``
         for programmatic registration.
 
@@ -1899,7 +2011,7 @@ class MachineFactory:
     def _scan_installed_addon_dirs(cls) -> None:
         """Scan FreeCAD Mod directories for machine addons via package.xml content.
 
-        Finds every installed addon whose package.xml declares a ``<Machine>``
+        Finds every installed addon whose package.xml declares a ``<machine>``
         content element inside ``<content>`` and registers the corresponding
         subdirectory.
 
@@ -1933,8 +2045,8 @@ class MachineFactory:
                         continue
 
                     content = meta.Content
-                    if "Machine" in content:
-                        for item in content["Machine"]:
+                    if "machine" in content:
+                        for item in content["machine"]:
                             subdir = item.Subdirectory or item.Name
                             machines_dir = entry / subdir
                             if machines_dir.is_dir():
@@ -2002,7 +2114,7 @@ class MachineFactory:
         Returns:
             list: List of (name, path) tuples for discovered machine files
         """
-        machines = [("<any>", None)]
+        machines = []
         try:
             asset_base = cls.get_config_directory()
             if asset_base.exists():
@@ -2019,10 +2131,10 @@ class MachineFactory:
         """Get list of available machines from the asset directory.
 
         Scans the Machine subdirectory of the asset path for .fcm files
-        and extracts machine names. Returns ["<any>"] plus discovered machine names.
+        and extracts machine names, including addon machines.
 
         Returns:
-            list: List of machine names starting with "<any>"
+            list: List of machine names
         """
         machines = cls.list_configuration_files()
         names = [name for name, path in machines]

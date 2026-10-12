@@ -50,7 +50,7 @@ DlgActiveBody::DlgActiveBody(QWidget* parent, App::Document*& doc, const QString
     connect(ui->bodySelect, &QListWidget::itemDoubleClicked, this, &DlgActiveBody::accept);
 
     if (!infoText.isEmpty()) {
-        ui->label->setText(infoText + QStringLiteral("\n\n") + tr("Please select"));
+        ui->label->setText(infoText + QStringLiteral("\n\n") + tr("Select an active body"));
     }
 
     auto bodies = _doc->getObjectsOfType(PartDesign::Body::getClassTypeId());

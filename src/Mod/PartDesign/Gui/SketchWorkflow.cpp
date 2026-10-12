@@ -28,6 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <QApplication>
 #include <QMessageBox>
 
 
@@ -41,11 +42,15 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/Attacher.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/Gui/TaskAttacher.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/Link.h>
 #include <App/Origin.h>
 #include <App/Datums.h>
@@ -107,7 +112,8 @@ public:
                 msg.pDocName = faceSelection.getDocName();
                 msg.pObjectName = tip->getNameInDocument();
                 msg.pSubName = elements[0].c_str();
-                msg.pTypeName = tip->getTypeId().getName();
+                msg.TypeName = tip->getTypeId().getName();
+                msg.pTypeName = msg.TypeName.c_str();
 
                 faceSelection = Gui::SelectionObject {msg};
 
@@ -210,6 +216,13 @@ public:
         return faceFilter.match() || planeFilter.match() || sketchFilter.match();
     }
 
+    // True only when a single planar face or datum plane is selected (not a sketch).
+    // Used for the fast-path that skips the attachment dialog.
+    bool isSingleFaceOrPlane()
+    {
+        return (faceFilter.match() || planeFilter.match()) && !sketchFilter.match();
+    }
+
     std::string getSupport() const
     {
         return supportString;
@@ -230,6 +243,27 @@ public:
 
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
+            if (auto* supportBody = PartDesign::Body::findBodyOf(selectedObject);
+                supportBody && supportBody != activeBody) {
+                auto* rootObj = selectedObject;
+                auto sub = faceSelObject.getSubNames().front();
+                // The face filter resolves Body.Pad.Face1 to Pad:Face1 for validation.
+                // Fetch the original path to retain body/part and link placements in the support.
+                auto selection = Gui::Selection().getSelectionEx(
+                    nullptr,
+                    App::DocumentObject::getClassTypeId(),
+                    Gui::ResolveMode::NoResolve,
+                    true
+                );
+                if (!selection.empty()) {
+                    rootObj = selection.front().getObject();
+                    sub = selection.front().getSubNames().front();
+                }
+                PartGui::TaskAttacher::resolveAttachmentSupportInContext(activeBody, rootObj, sub);
+                App::PropertyLinkSubList support;
+                support.setValue(rootObj, sub.c_str());
+                supportString = support.getPyReprString();
+            }
         }
         else if (planeFilter.match()) {
             SupportPlaneValidator validator(planeFilter.Result[0][0]);
@@ -255,6 +289,7 @@ public:
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(Feat, "Label = 'Sketch'");
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         if (sketchFilter.match()) {
             FCMD_OBJ_CMD(
@@ -398,7 +433,7 @@ public:
             tryFindBasePlanes();
         }
         catch (const Base::Exception& ex) {
-            Base::Console().error("%s\n", ex.what());
+            Base::Console().error("{}\n", ex.what());
         }
     }
 
@@ -533,17 +568,7 @@ private:
     {
         createBodyOrThrow();
 
-        bool useAttachment = App::GetApplication()
-                                 .GetParameterGroupByPath(
-                                     "User parameter:BaseApp/Preferences/Mod/PartDesign"
-                                 )
-                                 ->GetBool("NewSketchUseAttachmentDialog", false);
-        if (useAttachment) {
-            createSketchAndShowAttachment();
-        }
-        else {
-            findAndSelectPlane();
-        }
+        createSketchAndShowAttachment();
     }
 
     void createBodyOrThrow()
@@ -584,31 +609,53 @@ private:
     {
         setOriginTemporaryVisibility();
 
+        // A selected sketch from prior work should not become an attachment reference.
+        bool hasSketch = Gui::Selection().countObjectsOfType<Part::Part2DObject>() > 0;
+
         // Create sketch
         App::Document* doc = activeBody->getDocument();
         std::string FeatName = doc->getUniqueObjectName("Sketch");
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto sketch = doc->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(sketch, "Label = 'Sketch'");
 
-        PartDesign::Body* partDesignBody = activeBody;
-        auto onAccept = [partDesignBody, sketch]() {
+        // The attachment dialog can outlive the body and sketch (e.g. they are deleted while it
+        // is open), so the callbacks look them up by name instead of holding raw pointers.
+        auto onAccept = [bodyRef = App::DocumentObjectT(activeBody),
+                         sketchRef = App::DocumentObjectT(sketch)]() {
+            auto* partDesignBody = bodyRef.getObjectAs<PartDesign::Body>();
+            if (!partDesignBody) {
+                return;
+            }
+
             resetOriginVisibility(partDesignBody);
 
             Gui::Selection().clearSelection();
 
-            PartDesignGui::setEdit(sketch, partDesignBody);
+            if (auto* sketchObj = sketchRef.getObject()) {
+                PartDesignGui::setEdit(sketchObj, partDesignBody);
+            }
         };
-        auto onReject = [partDesignBody]() {
-            resetOriginVisibility(partDesignBody);
+        auto onReject = [bodyRef = App::DocumentObjectT(activeBody)]() {
+            if (auto* partDesignBody = bodyRef.getObjectAs<PartDesign::Body>()) {
+                resetOriginVisibility(partDesignBody);
+            }
         };
 
-        Gui::Selection().clearSelection();
+        if (hasSketch) {
+            // TaskAttacher consumes preselection on construction. A sketch must be chosen
+            // explicitly in the editor, so prevent it from being used as an initial support.
+            Gui::Selection().clearSelection();
+        }
 
-        // Open attachment dialog
+        // TaskAttacher consumes the remaining preselection, resolves its support paths and
+        // suggests the attachment mode. Keep that logic in the editor instead of duplicating it.
         auto* vps = dynamic_cast<SketcherGui::ViewProviderSketch*>(
             Gui::Application::Instance->getViewProvider(sketch)
         );
         vps->showAttachmentEditor(onAccept, onReject);
+        // The editor has consumed the preselection; it can now be cleared.
+        Gui::Selection().clearSelection();
     }
 
     static void resetOriginVisibility(PartDesign::Body* partDesignBody)
@@ -758,17 +805,8 @@ private:
             return;
         }
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
-        auto* plane = static_cast<App::Plane*>(features.front());
-        auto* lcs = plane->getLCS();
-
-        std::string supportString;
-        if (lcs) {
-            supportString = Gui::Command::getObjectCmd(lcs, "(") + ",['"
-                + plane->getNameInDocument() + "'])";
-        }
-        else {
-            supportString = Gui::Command::getObjectCmd(plane, "(", ",[''])");
-        }
+        const std::string supportString
+            = Gui::SelectionObject(features.front()).getAsPropertyLinkSubString();
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {
@@ -777,6 +815,7 @@ private:
 
         FCMD_OBJ_CMD(partDesignBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = doc->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(Feat, "Label = 'Sketch'");
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(
             Feat,
@@ -845,18 +884,41 @@ void SketchWorkflow::tryCreateSketch()
         return;
     }
 
+    bool useAttachment = App::GetApplication()
+                             .GetParameterGroupByPath(
+                                 "User parameter:BaseApp/Preferences/Mod/PartDesign"
+                             )
+                             ->GetBool("NewSketchUseAttachmentDialog", false);
+
+    bool shiftHeld = QApplication::queryKeyboardModifiers() & Qt::ShiftModifier;
+
     auto filters = getFilters();
     SketchPreselection sketchOnFace {guidocument, activeBody, filters};
 
-    if (sketchOnFace.matches()) {
-        // create Sketch on Face or Plane
-        sketchOnFace.createSupport();
-        sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+    // Fast path: single face or datum plane, preference off, Shift not held.
+    // If the face turns out to be non-planar or otherwise invalid, fall through
+    // to the attachment dialog instead of showing an error.
+    // A selected sketch, multiple references, no selection, Shift, or preference on
+    // all go through the attachment dialog.
+    if (!useAttachment && !shiftHeld && sketchOnFace.isSingleFaceOrPlane()) {
+        try {
+            sketchOnFace.createSupport();
+            sketchOnFace.createSketchOnSupport(sketchOnFace.getSupport());
+            return;
+        }
+        catch (const WrongSupportException&) {
+            // Fall through to attachment dialog
+        }
+        catch (const WrongSelectionException&) {
+            // Fall through to attachment dialog
+        }
+        catch (const SupportNotPlanarException&) {
+            // Fall through to attachment dialog
+        }
     }
-    else {
-        SketchRequestSelection requestSelection {guidocument, activeBody};
-        requestSelection.findSupport();
-    }
+
+    SketchRequestSelection requestSelection {guidocument, activeBody};
+    requestSelection.findSupport();
 }
 
 std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
@@ -902,6 +964,7 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> Ske
     // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
     Gui::SelectionFilter FaceFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
+    // With an active body, these filters already return support paths relative to that body.
     Gui::SelectionFilter PlaneFilter("SELECT App::Plane COUNT 1", activeBody);
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
     Gui::SelectionFilter SketchFilter("SELECT Part::Part2DObject COUNT 1", activeBody);

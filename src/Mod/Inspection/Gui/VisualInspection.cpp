@@ -27,6 +27,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -74,23 +75,16 @@ private:
 /* TRANSLATOR InspectionGui::DlgVisualInspectionImp */
 
 /**
- *  Constructs a VisualInspection as a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'.
+ *  Constructs a VisualInspection as a child of 'parent'.
  */
-VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
-    : QDialog(parent, fl)
+VisualInspection::VisualInspection(QWidget* parent)
+    : QWidget(parent)
     , ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Visual Inspection"));
     connect(ui->treeWidgetActual, &QTreeWidget::itemClicked, this, &VisualInspection::onActivateItem);
     connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked, this, &VisualInspection::onActivateItem);
-    connect(
-        ui->buttonBox,
-        &QDialogButtonBox::helpRequested,
-        Gui::getMainWindow(),
-        &Gui::MainWindow::whatsThis
-    );
-
     // FIXME: Not used yet
     ui->textLabel2->hide();
     ui->thickness->hide();
@@ -100,10 +94,6 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     ui->thickness->setRange(0, std::numeric_limits<double>::max());
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-    // disable Ok button and enable of at least one item in each view is on
-    buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
-    buttonOk->setDisabled(true);
-
     if (!doc) {
         ui->treeWidgetActual->setDisabled(true);
         ui->treeWidgetNominal->setDisabled(true);
@@ -180,8 +170,8 @@ void VisualInspection::saveSettings()
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 {
     if (item) {
-        SingleSelectionItem* sel = static_cast<SingleSelectionItem*>(item);
-        SingleSelectionItem* cmp = sel->getCompetitiveItem();
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(item);
+        auto* cmp = sel ? sel->getCompetitiveItem() : nullptr;
         if (cmp && cmp->checkState(0) == Qt::Checked) {
             cmp->setCheckState(0, Qt::Unchecked);
         }
@@ -189,8 +179,8 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 
     bool ok = false;
     for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; ++it) {
-        SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-        if (sel->checkState(0) == Qt::Checked) {
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+        if (sel && sel->checkState(0) == Qt::Checked) {
             ok = true;
             break;
         }
@@ -199,113 +189,152 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
     if (ok) {
         ok = false;
         for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; ++it) {
-            SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked) {
+            const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+            if (sel && sel->checkState(0) == Qt::Checked) {
                 ok = true;
                 break;
             }
         }
     }
 
-    buttonOk->setEnabled(ok);
+    if (acceptable != ok) {
+        acceptable = ok;
+        Q_EMIT acceptabilityChanged(acceptable);
+    }
 }
 
-void VisualInspection::accept()
+bool VisualInspection::isAcceptable() const
+{
+    return acceptable;
+}
+
+bool VisualInspection::accept()
 {
     onActivateItem(nullptr);
-    if (buttonOk->isEnabled()) {
-        QDialog::accept();
-        saveSettings();
+    if (!acceptable) {
+        return false;
+    }
 
-        // collect all nominal geometries
-        QStringList nominalNames;
-        for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
-            SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked) {
-                nominalNames << sel->data(0, Qt::UserRole).toString();
-            }
-        }
+    saveSettings();
 
-        double searchRadius = ui->searchRadius->value().getValue();
-        double thickness = ui->thickness->value().getValue();
-
-        // open a new command
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Visual Inspection"));
-
-        // create a group
-        Gui::Command::runCommand(
-            Gui::Command::App,
-            "App_activeDocument___InspectionGroup=App.ActiveDocument."
-            "addObject(\"Inspection::Group\",\"Inspection\")"
-        );
-
-        // for each actual geometry create an inspection feature
-        for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
-            SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked) {
-                QString actualName = sel->data(0, Qt::UserRole).toString();
-                Gui::Command::doCommand(
-                    Gui::Command::App,
-                    "App_activeDocument___InspectionGroup.newObject("
-                    "\"Inspection::Feature\",\"%s_Inspect\")",
-                    (const char*)actualName.toLatin1()
-                );
-                Gui::Command::doCommand(
-                    Gui::Command::App,
-                    "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
-                    "App_activeDocument___activeObject___Nominals=list()\n"
-                    "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
-                    "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
-                    (const char*)actualName.toLatin1(),
-                    searchRadius,
-                    thickness
-                );
-                for (const auto& it : nominalNames) {
-                    Gui::Command::doCommand(
-                        Gui::Command::App,
-                        "App_activeDocument___activeObject___Nominals.append("
-                        "App.ActiveDocument.%s)\n",
-                        (const char*)it.toLatin1()
-                    );
-                }
-                Gui::Command::doCommand(
-                    Gui::Command::App,
-                    "App.ActiveDocument.ActiveObject.Nominals=App_"
-                    "activeDocument___activeObject___Nominals\n"
-                    "del App_activeDocument___activeObject___Nominals\n"
-                );
-            }
-        }
-
-        Gui::Command::runCommand(Gui::Command::App, "del App_activeDocument___InspectionGroup\n");
-
-        doc->commitCommand();
-        doc->getDocument()->recompute();
-
-        // hide the checked features
-        for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
-            SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked) {
-                Gui::Command::doCommand(
-                    Gui::Command::App,
-                    "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
-                );
-            }
-        }
-
-        for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
-            SingleSelectionItem* sel = (SingleSelectionItem*)*it;
-            if (sel->checkState(0) == Qt::Checked) {
-                Gui::Command::doCommand(
-                    Gui::Command::App,
-                    "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                    (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
-                );
-            }
+    // collect all nominal geometries
+    QStringList nominalNames;
+    for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+        if (sel && sel->checkState(0) == Qt::Checked) {
+            nominalNames << sel->data(0, Qt::UserRole).toString();
         }
     }
+
+    double searchRadius = ui->searchRadius->value().getValue();
+    double thickness = ui->thickness->value().getValue();
+
+    // open a new command
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Visual Inspection"));
+
+    // create a group
+    Gui::Command::runCommand(
+        Gui::Command::App,
+        "App_activeDocument___InspectionGroup=App.ActiveDocument."
+        "addObject(\"Inspection::Group\",\"Inspection\")"
+    );
+
+    // for each actual geometry create an inspection feature
+    for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+        if (sel && sel->checkState(0) == Qt::Checked) {
+            QString actualName = sel->data(0, Qt::UserRole).toString();
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                "App_activeDocument___InspectionGroup.newObject("
+                "\"Inspection::Feature\",\"%s_Inspect\")",
+                (const char*)actualName.toLatin1()
+            );
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
+                "App_activeDocument___activeObject___Nominals=list()\n"
+                "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
+                "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
+                (const char*)actualName.toLatin1(),
+                searchRadius,
+                thickness
+            );
+            for (const auto& it : nominalNames) {
+                Gui::Command::doCommand(
+                    Gui::Command::App,
+                    "App_activeDocument___activeObject___Nominals.append("
+                    "App.ActiveDocument.%s)\n",
+                    (const char*)it.toLatin1()
+                );
+            }
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                "App.ActiveDocument.ActiveObject.Nominals=App_"
+                "activeDocument___activeObject___Nominals\n"
+                "del App_activeDocument___activeObject___Nominals\n"
+            );
+        }
+    }
+
+    Gui::Command::runCommand(Gui::Command::App, "del App_activeDocument___InspectionGroup\n");
+
+    doc->commitCommand();
+    doc->getDocument()->recompute();
+
+    // hide the checked features
+    for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+        if (sel && sel->checkState(0) == Qt::Checked) {
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
+                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+            );
+        }
+    }
+
+    for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
+        const auto* sel = dynamic_cast<const SingleSelectionItem*>(*it);
+        if (sel && sel->checkState(0) == Qt::Checked) {
+            Gui::Command::doCommand(
+                Gui::Command::App,
+                "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
+                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+            );
+        }
+    }
+    return true;
+}
+
+/* TRANSLATOR InspectionGui::TaskVisualInspection */
+
+TaskVisualInspection::TaskVisualInspection()
+    : widget(new VisualInspection())
+{
+    addTaskBox(Gui::BitmapFactory().pixmap("InspectionWorkbench"), widget);
+
+    connect(widget, &VisualInspection::acceptabilityChanged, this, [this](bool acceptable) {
+        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(acceptable);
+    });
+}
+
+TaskVisualInspection::~TaskVisualInspection() = default;
+
+QDialogButtonBox::StandardButtons TaskVisualInspection::getStandardButtons() const
+{
+    return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+}
+
+bool TaskVisualInspection::accept()
+{
+    return widget->accept();
+}
+
+void TaskVisualInspection::modifyStandardButtons(QDialogButtonBox* box)
+{
+    box->button(QDialogButtonBox::Ok)->setEnabled(widget->isAcceptable());
 }
 
 #include "moc_VisualInspection.cpp"

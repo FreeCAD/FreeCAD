@@ -120,7 +120,7 @@ PyObject* TopoShapeShellPy::add(PyObject* args)
             }
         }
         else {
-            Standard_Failure::Raise("cannot add empty shape");
+            throw Standard_Failure("cannot add empty shape");
         }
     }
     catch (Standard_Failure& e) {

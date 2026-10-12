@@ -222,6 +222,13 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::TwoPlanes) {
         print(tr("Nominal distance: %1").arg(lengthStr(measurement->planePlaneDistance())));
     }
+    else if (mtype == MeasureType::TwoDiscs) {
+        print(tr("Nominal distance: %1, Axis distance: %2")
+                  .arg(
+                      lengthStr(measurement->planePlaneDistance()),
+                      lengthStr(measurement->discAxisDistance())
+                  ));
+    }
     else if (mtype == MeasureType::Cone || mtype == MeasureType::Plane) {
         print(tr("Area: %1").arg(areaStr(measurement->area())));
     }
@@ -232,7 +239,7 @@ void QuickMeasure::printResult()
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
     }
-    else if (mtype == MeasureType::Cylinder) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Disc) {
         print(tr("Area: %1, Diameter: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->diameter())));
     }

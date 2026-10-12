@@ -110,6 +110,7 @@ public:
 
     const char* MyOp = 0;
     App::StringHasherRef MyHasher;
+    ElementMapPolicy MyElementMapPolicy = ElementMapPolicy::Propagate;
 
 protected:
     std::vector<TopoShape> mySourceShapes;  // wire or compound

@@ -54,11 +54,13 @@ public:
     );
 
 public Q_SLOTS:
+    void onOrientationChanged();
     void onDiscard();
 
 private:
     Spreadsheet::Sheet* sheet;
     Ui::DlgSheetConf* ui;
+    App::Range originalRange;
 };
 
 }  // namespace SpreadsheetGui

@@ -36,6 +36,7 @@
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
+#include "SoScreenSpaceScale.h"
 #include "ViewProviderMassPropertiesResult.h"
 
 
@@ -93,6 +94,7 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     // clang-format off
     MeasureGui::DimensionLinear::initClass();
+    MeasureGui::SoScreenSpaceScale::initClass();
 
     MeasureGui::ViewProviderMeasureGroup               ::init();
     MeasureGui::ViewProviderMeasureBase                ::init();

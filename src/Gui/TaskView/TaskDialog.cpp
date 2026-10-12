@@ -49,6 +49,7 @@ TaskDialog::TaskDialog()
     , pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
+    , autoCloseResetEdit(false)
     , autoCloseDeletedDocument(false)
     , autoCloseClosedView(false)
 {}
@@ -106,7 +107,7 @@ void TaskDialog::associateToObject3dView(App::DocumentObject* obj)
         return;
     }
 
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
     auto* vp = Gui::Application::Instance->getViewProvider(obj);
     auto* vpdo = static_cast<Gui::ViewProviderDocumentObject*>(vp);
     auto* view = guiDoc->openEditingView3D(vpdo);
@@ -128,6 +129,9 @@ void TaskDialog::closed()
 {}
 
 void TaskDialog::autoClosedOnTransactionChange()
+{}
+
+void TaskDialog::autoClosedOnResetEdit()
 {}
 
 void TaskDialog::autoClosedOnDeletedDocument()

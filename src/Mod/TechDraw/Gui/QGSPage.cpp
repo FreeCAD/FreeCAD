@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -24,6 +26,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
+#include <QGraphicsView>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -60,13 +63,16 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "QGICMark.h"
 #include "QGIDrawingTemplate.h"
+#include "QGIEdge.h"
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
 #include "QGIRichAnno.h"
 #include "QGISVGTemplate.h"
 #include "QGITemplate.h"
 #include "QGIUserTypes.h"
+#include "QGIVertex.h"
 #include "QGIViewAnnotation.h"
 #include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
@@ -80,6 +86,7 @@
 #include "QGIWeldSymbol.h"
 #include "QGSPage.h"
 #include "Rez.h"
+#include "ScreenScalable.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
@@ -303,34 +310,6 @@ std::vector<QGIView*> QGSPage::getViews() const
     return result;
 }
 
-int QGSPage::addQView(QGIView* view)
-{
-    QGIView* existing = getQGIVByName(view->getViewName());
-    if (!existing) { //don't add twice!
-        addItem(view);
-
-        TechDraw::DrawView *viewObj = view->getViewObject();
-        // Preserve the desired position, as addToGroup() adjusts the child view's position
-        QPointF viewPos(Rez::guiX(viewObj->X.getValue()), -Rez::guiX(viewObj->Y.getValue()));
-        // Find if it belongs to a parent
-        QGIView *parent = findParent(view);
-        if (parent) {
-            parent->addToGroup(view);
-        }
-        view->setPos(viewPos);
-
-        auto viewProvider = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(viewObj));
-        if (viewProvider) {
-            view->setZValue(viewProvider->StackOrder.getValue());
-        }
-
-        view->updateView(true);
-    } else {
-        Base::Console().message("QGSP::addQView - qview already exists\n");
-    }
-    return 0;
-}
-
 int QGSPage::removeQView(QGIView* view)
 {
     if (view) {
@@ -437,6 +416,10 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     else if (freecad_cast<TechDraw::DrawHatch*>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
+    }
+
+    if (qview) {
+        qview->updatePositionFromFeatureXY();
     }
 
     return (qview != nullptr);
@@ -558,7 +541,6 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     auto qview(new QGIViewClip);
     qview->setViewFeature(view);
     addItemToScene(qview);
-    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->installSceneEventFilter(qview);
     return qview;
 }
@@ -870,6 +852,29 @@ void QGSPage::refreshViews()
             itemView->updateView(true);
         }
     }
+
+    updateScreenScale();
+}
+
+void QGSPage::updateScreenScale()
+{
+    double scale = 1.0;
+    if (PreferencesGui::screenMode()) {
+        const QList<QGraphicsView*> allViews = views();
+        
+        if (!allViews.empty()) {
+            double zoom = allViews.first()->transform().m11();
+            scale = 1.0 / zoom;
+        }
+    }
+
+    const QList<QGraphicsItem*> allItems = items();
+
+    for (auto* item : allItems) {
+        if (auto* scalable = dynamic_cast<ScreenScalable*>(item)) {
+            scalable->setScreenScale(scale);
+        }
+    }
 }
 
 void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
@@ -1009,6 +1014,8 @@ void QGSPage::redrawAllViews()
     for (std::vector<QGIView*>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         (*it)->updateView(true);
     }
+
+    updateScreenScale();
 }
 
 //NOTE: this doesn't add missing views.   see fixOrphans()
@@ -1022,6 +1029,8 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
             (*it)->updateView(true);
         }
     }
+
+    updateScreenScale();
 }
 
 // RichTextAnno needs to know when it is rendering an Svg as the font size
@@ -1207,15 +1216,12 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        Base::Console().error("QGSP::ppxml - failed to open file for writing: %s\n",
+        Base::Console().error("QGSP::ppxml - failed to open file for writing: {}\n",
                               qPrintable(fileName));
     }
 
     QTextStream stream(&outFile);
     stream.setGenerateByteOrderMark(false);
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    stream.setCodec("UTF-8");
-#endif
 
     stream << exportDoc.toByteArray();
     outFile.close();

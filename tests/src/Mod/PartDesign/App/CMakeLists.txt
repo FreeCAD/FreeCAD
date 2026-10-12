@@ -5,6 +5,9 @@ add_executable(PartDesign_tests_run
         DatumPlane.cpp
         ShapeBinder.cpp
         Pad.cpp
+        Pipe.cpp
+        Revolution.cpp
+        GeoFeatureGroupExtension.cpp
 )
 
 set(PartDesignTestData_Files

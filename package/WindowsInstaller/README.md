@@ -12,7 +12,6 @@ To set up your system for building an NSIS installer:
 3. Download these special release files of NSIS that support logging:</br>
    https://nsis.sourceforge.io/Special_Builds#Advanced_logging</br>
    and copy the contained files into the corresponding NSIS installations folders
-4. Download and install the nsProcess plugin from https://nsis.sourceforge.io/NsProcess_plugin -- you will need the version that supports Unicode, so make sure to follow the appropriate instructions on their site to install that one (as of this writing it involves manually copying and renaming the plugin DLL file).
 
 ## Build the installer
 Next, update the installer settings for the current version of FreeCAD. Starting from the *package/WindowsInstaller* folder in the FreeCAD source tree:

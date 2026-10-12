@@ -8,13 +8,6 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 NEW)
 endif()
 
-# FindPythonInterp and FindPythonLibs modules are deprecated, but are still in use by
-# all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
-# supported
-if(POLICY CMP0148)
-    cmake_policy(SET CMP0148 OLD)
-endif()
-
 # The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
 # 3.28 to control whether this gives a warning (the OLD behavior) or a fatal error (NEW)
 if(POLICY CMP0153)
@@ -36,8 +29,16 @@ if(POLICY CMP0177)
     cmake_policy(SET CMP0177 NEW)
 endif()
 
+# Make CMake output a bit more focused
+set(CMAKE_REQUIRED_QUIET TRUE)
+
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
+
+# FreeCAD does not use C++20 modules. Keep CMake 3.28+ from enabling module
+# dependency scanning on C++20 targets, especially with toolchains that do not
+# provide a scanner such as clang-scan-deps.
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
@@ -48,30 +49,18 @@ if(FREECAD_USE_CCACHE)
     endif()
 endif()
 
-project(FreeCAD)
+# Version and Package Name are set in the version.json file and propagate to all other
+# files with version information in them either via CMake or via the sync_version.py
+# script (in src/Tools/)
+file(READ "${CMAKE_SOURCE_DIR}/version.json" VERSION_JSON)
+string(JSON _PROJECT_NAME GET ${VERSION_JSON} "name")
+string(JSON PACKAGE_VERSION_MAJOR GET ${VERSION_JSON} "version_major")
+string(JSON PACKAGE_VERSION_MINOR GET ${VERSION_JSON} "version_minor")
+string(JSON PACKAGE_VERSION_PATCH GET ${VERSION_JSON} "version_patch")
+string(JSON PACKAGE_VERSION_SUFFIX GET ${VERSION_JSON} "version_suffix")
+string(JSON PACKAGE_BUILD_VERSION GET ${VERSION_JSON} "build_version")
 
-# Sanitizer support
-option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF) 
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
-    option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
-    option(FREECAD_USE_SANITIZER_UBSAN "Enable UndefinedBehaviorSanitizer (UBSan)" OFF)
-    option(FREECAD_USE_SANITIZER_MSAN "Enable MemorySanitizer (MSan)" OFF)
-endif()
-
-mark_as_advanced(
-    FREECAD_USE_SANITIZER_ASAN
-    FREECAD_USE_SANITIZER_LSAN
-    FREECAD_USE_SANITIZER_TSAN
-    FREECAD_USE_SANITIZER_UBSAN
-    FREECAD_USE_SANITIZER_MSAN
-)
-
-set(PACKAGE_VERSION_MAJOR "1")
-set(PACKAGE_VERSION_MINOR "2")
-set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
-set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
-set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
+project(${_PROJECT_NAME})
 string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
@@ -92,11 +81,18 @@ InitializeFreeCADBuildOptions()
 CheckInterModuleDependencies()
 FreeCADLibpackChecks()
 SetupDoxygen()
-SetupLibFmt()
+SetupJSON()
+SetupKDTree()
 SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
+SetupClipper2()
+
+find_package(Qt6 REQUIRED COMPONENTS Core)
+set(FREECAD_QT_MAJOR_VERSION 6)
+
 find_package(ICU REQUIRED COMPONENTS uc i18n)
+find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
     SetupPCL()
@@ -118,8 +114,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
             find_package(NETGEN REQUIRED)
         endif()
     endif()
-    # not needed at the moment
-    #find_package(OpenCV REQUIRED)
     SetupSwig()
     SetupEigen()
     # This file is included directly due to some cMake macros that are defined within.
@@ -128,24 +122,29 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupCoin3D()
-        SetupPivy()
+        SetupCoinPivy()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
 
-    # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
+    # SetupCoinPivy can overwrite find_package(Boost) output so keep this after.
     SetupBoost()
 
     if(BUILD_BIM)
         SetupLark()
+        find_python_runtime_dep(ifcopenshell ifcopenshell ifcopenshell_VERSION "IFC files support disabled.")
     endif()
-endif()
+    if(BUILD_ASSEMBLY)
+        find_python_runtime_dep(av av av_VERSION "Assembly simulation video export will not work properly.")
+        find_python_runtime_dep(pillow PIL pillow_VERSION "Assembly simulation video export will not work properly.")
+    endif()
 
-if(BUILD_VR)
-    find_package(Rift)
-endif(BUILD_VR)
+    # HDF5 might have been imported by any of the above dependencies (SMESH, VTK, ...)
+    # and added _FORTIFY_SOURCE defines to the build. Clean them at the end of import chains
+    # to make sure nothing will reinstate them.
+    hdf5_clean_fortify_source()
+endif()
 
 SetLibraryVersions()
 SetGlobalCompilerAndLinkerSettings()
@@ -164,6 +163,7 @@ endif()
 if (ENABLE_DEVELOPER_TESTS)
     include(CTest)
     enable_testing()
+    find_package(GTest REQUIRED)
     add_subdirectory(tests)
 endif()
 

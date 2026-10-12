@@ -28,6 +28,7 @@
 // standard
 #include <cinttypes>
 #include <cmath>
+#include <format>
 #include <iomanip>
 #include <map>
 #include <sstream>
@@ -37,9 +38,6 @@
 
 // boost
 #include <boost/algorithm/string/predicate.hpp>
-
-// fmt
-#include <fmt/format.h>
 
 // Qt (should never include GUI files, only QtCore)
 #include <QByteArray>

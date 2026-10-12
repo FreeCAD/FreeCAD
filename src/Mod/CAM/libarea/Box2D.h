@@ -33,6 +33,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>  // for memcpy() prototype
 #include <cmath>     // for sqrt() prototype
 
+namespace heeks
+{
+
 class CBox2D
 {
 public:
@@ -160,3 +163,5 @@ public:
         return (m_maxxy.y);
     }
 };
+
+}  // namespace heeks

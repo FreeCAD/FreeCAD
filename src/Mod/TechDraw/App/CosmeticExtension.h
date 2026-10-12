@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -95,6 +97,7 @@ public:
     virtual void            clearGeomFormats();
 
     void deleteCosmeticElements(std::vector<std::string> removables);
+    void refreshAllCosmetic();
 
     TechDraw::DrawViewPart* getOwner();
 

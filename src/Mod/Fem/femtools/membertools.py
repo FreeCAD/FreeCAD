@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -32,6 +34,7 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
+from FreeCAD import Base
 from . import femutils
 
 
@@ -144,11 +147,11 @@ def get_mesh_to_solve(analysis):
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
-                return (None, "FEM: multiple mesh in analysis not yet supported!")
+                raise Base.FreeCADError("FEM: multiple meshes in analysis are not supported yet")
     if mesh_to_solve is not None:
-        return (mesh_to_solve, "")
+        return mesh_to_solve
     else:
-        return (None, "FEM: no mesh object found in analysis.")
+        raise Base.FreeCADError("FEM: no mesh object found in analysis.")
 
 
 class AnalysisMember:

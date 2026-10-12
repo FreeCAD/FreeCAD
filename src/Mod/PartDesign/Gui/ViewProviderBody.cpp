@@ -27,6 +27,7 @@
 #include <QMenu>
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <App/VarSet.h>
@@ -37,6 +38,7 @@
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderDatum.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
@@ -51,6 +53,25 @@ using namespace PartDesignGui;
 namespace sp = std::placeholders;
 
 const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through", "Tip", nullptr};
+
+namespace
+{
+
+bool hasBaseFeatureShape(const App::DocumentObject* object)
+{
+    if (!Part::Feature::getTopoShape(object, Part::ShapeOption::ResolveLink).isNull()) {
+        return true;
+    }
+    auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+        App::GeoFeature::getPropertyOfGeometry(object)
+    );
+    if (shapeProperty) {
+        return !shapeProperty->getShape().isNull();
+    }
+    return false;
+}
+
+}  // namespace
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody, PartGui::ViewProviderPart)
 
@@ -280,14 +301,14 @@ bool ViewProviderBody::doubleClicked()
 //    //Base::Console().error("ViewProviderBody::updateTree()\n");
 //    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
-//    //Base::Console().error("Body is %s\n", active ? "active" : "inactive");
+//    //Base::Console().error("Body is {}\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
 //    std::vector<App::DocumentObject*> features = body->Group.getValues();
 //    bool highlight = true;
 //    App::DocumentObject* tip = body->Tip.getValue();
 //    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f !=
 //    features.end(); f++) {
-//        //Base::Console().error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ?
+//        //Base::Console().error("Highlighting {}: {}\n", (*f)->getNameInDocument(), highlight ?
 //        "true" : "false"); Gui::ViewProviderDocumentObject* vp =
 //        dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
 //        if (vp != NULL)
@@ -358,7 +379,7 @@ void ViewProviderBody::onChanged(const App::Property* prop)
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             }
             else {
-                Base::Console().message("Set override mode: %s\n", getOverrideMode().c_str());
+                Base::Console().message("Set override mode: {}\n", getOverrideMode());
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
@@ -527,19 +548,13 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     else if (obj->isDerivedFrom<Part::Part2DObject>()) {
         return true;
     }
-    else if (!obj->isDerivedFrom<Part::Feature>()) {
+    else if (!hasBaseFeatureShape(obj)) {
         return false;
     }
     else if (PartDesign::Body::findBodyOf(obj)) {
         return false;
     }
     else if (obj->isDerivedFrom(Part::BodyBase::getClassTypeId())) {
-        return false;
-    }
-
-    App::Part* actPart = PartDesignGui::getActivePart();
-    App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
-    if (partOfBaseFeature && partOfBaseFeature != actPart) {
         return false;
     }
 

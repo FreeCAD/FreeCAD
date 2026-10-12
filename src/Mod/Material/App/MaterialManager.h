@@ -38,6 +38,7 @@
 
 namespace fs = std::filesystem;
 
+class QFileInfo;
 class QMutex;
 
 namespace App

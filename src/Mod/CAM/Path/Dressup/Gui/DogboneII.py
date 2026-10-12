@@ -249,7 +249,8 @@ class SelObserver(object):
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand("Gui.Selection.addSelection(FreeCAD.ActiveDocument." + obj + ")")
+        FreeCADGui.doCommand(f"obj = FreeCAD.ActiveDocument.getObject('{obj}')")
+        FreeCADGui.doCommand("Gui.Selection.addSelection(obj)")
         FreeCADGui.updateGui()
 
 
@@ -347,9 +348,8 @@ class CommandDressupDogboneII(object):
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
         FreeCADGui.addModule("Path.Dressup.Gui.DogboneII")
-        FreeCADGui.doCommand(
-            "Path.Dressup.Gui.DogboneII.Create(FreeCAD.ActiveDocument.%s)" % op.Name
-        )
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.DogboneII.Create(base)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 

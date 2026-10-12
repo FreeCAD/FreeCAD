@@ -37,7 +37,7 @@ class FemMesh(ComplexGeoData):
         """Update the internal mesh structure"""
         ...
 
-    def addHypothesis(self, hypothesis: object, shape: TopoShape, /) -> None:
+    def addHypothesis(self, hypothesis: object, shape: TopoShape = ..., /) -> None:
         """Add hypothesis"""
         ...
 
@@ -89,21 +89,41 @@ class FemMesh(ComplexGeoData):
         """Add list of volumes by list of node indices and list of nodes per volume."""
         ...
 
-    def read(self, file_name: str, /) -> None:
+    def read(self, file_name: str, vtk_cell_group_array: str = ...) -> None:
         """
         Read in a various FEM mesh file formats.
 
-
         Supported formats: DAT, INP, MED, STL, UNV, VTK, Z88
+
+        vtk_cell_group_array: If provided uses the given cell group array to create mesh groups.
         """
         ...
 
     @constmethod
-    def write(self, file_name: str, /) -> None:
+    def write(
+        self,
+        file_name: str,
+        highest: bool = ...,
+        vtk_cell_group_array: str = ...,
+        vtk_group_id_map: dict = ...,
+    ) -> None:
         """
         Write out various FEM mesh file formats.
 
         Supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+
+        highest: Export highest mesh elements only when true (default), all mesh elements if false
+
+        vtk_cell_group_array: When writing a VTK file the cell groups will be stored in a array with this name.
+                              By default it is a string array with the group name written for each group element.
+        vtk_group_id_map:     When writing VTK with groups, the groupname can be mapped to a integer ID under
+                              which it will be stored (lessmemory usage then string). When reloading the group
+                              name is equal to the int ID as string.
+
+        Note on VTK group saving: The following limitations apply
+            1. Only element/cell groups are supported, no node groups and no mixed groups
+            2. Elements can only be in a single group, groups can not overlap
+            3. Element IDs in the mesh need to be continuous and start with ID 1
         """
         ...
 
@@ -241,7 +261,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> None:
+    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> int:
         """
         Add a group to mesh with specific name and type
 
@@ -274,7 +294,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def renameGroup(self) -> Any:
+    def renameGroup(self, group_id: int, name: str, /) -> None:
         """Rename a group with a given group ID
         renameGroup(id, name)
         groupid: int

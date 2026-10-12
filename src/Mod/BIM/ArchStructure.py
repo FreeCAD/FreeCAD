@@ -42,6 +42,7 @@ import FreeCAD
 import ArchComponent
 import ArchCommands
 import ArchProfile
+import ArchSketchObject
 import Draft
 import DraftVecUtils
 
@@ -236,7 +237,6 @@ class _CommandStructure:
         self.Profile = None
         self.bpoint = None
         self.precastvalues = None
-        self.wp = None
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel, "Structure")
@@ -262,6 +262,7 @@ class _CommandStructure:
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -281,14 +282,33 @@ class _CommandStructure:
             movecallback=self.update,
             extradlg=[self.taskbox(), self.precast.form, self.dents.form],
             title=title,
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if self.mode == StructureMode.BEAM and (self.bpoint is None):
+            label = translate("Arch", "%1 pick first point")
+        elif self.mode == StructureMode.BEAM:
+            label = translate("Arch", "%1 pick next point")
+        else:
+            label = translate("Arch", "%1 pick base point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"
 
         self.mode = StructureMode.BEAM if self.modeb.isChecked() else StructureMode.COLUMN
         if point is None:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
@@ -307,8 +327,10 @@ class _CommandStructure:
                 extradlg=[self.taskbox(), self.precast.form, self.dents.form],
                 title=translate("Arch", "Next Point") + ":",
                 mode="line",
+                hints=self.get_hints(),
             )
             return
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
@@ -775,7 +797,7 @@ class _Structure(ArchComponent.Component):
                 "Structure",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height or extrusion depth of this element. Keep 0 for automatic",
+                    "The height or extrusion depth of this element.\nKeep 0 to automatically match the height of the enclosing Level or Building.",
                 ),
                 locked=True,
             )
@@ -927,6 +949,26 @@ class _Structure(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchEdges", 0)
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
+
+        if (
+            obj.Document.getProgramVersion().split()[0] < "1.1"
+            and obj.Base is not None
+            and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+            and obj.Normal.Length == 0  # Automatic normal.
+            and obj.Length
+            == 0  # We should be dealing with columns, their obj.Length is normally 0.
+            # Can't compare distance of nodes with obj.Height as nodes may have beeen moved.
+            and len(obj.Nodes) == 2
+            and (obj.Nodes[1] - obj.Nodes[0]).Length > 1e-5
+        ):
+            obj.Normal = (obj.Nodes[1] - obj.Nodes[0]).normalize()
+            from draftutils.messages import _log
+
+            _log(
+                "v26.3, "
+                + obj.Name
+                + ", updated 'Normal' property based on 'Nodes' to prevent flipping"
+            )
 
         # set a flag to indicate onDocumentRestored() is run
 
@@ -1115,35 +1157,20 @@ class _Structure(ArchComponent.Component):
                                 baseShapeWires = structureBaseShapeWires.get("slabWires")
                                 faceMaker = structureBaseShapeWires.get("faceMaker")
                         elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                            skGeom = obj.Base.GeometryFacadeList
-                            skGeomEdges = []
                             skPlacement = (
                                 obj.Base.Placement
                             )  # Get Sketch's placement to restore later
-                            # Get ArchSketch edges to construct ArchStructure
-                            # No need to test obj.ArchSketchData ...
-                            for ig, geom in enumerate(skGeom):
-                                # Construction mode edges should be ignored if
-                                # ArchSketchEdges, otherwise, ArchSketchEdges data
-                                # needs to take out those in Construction before
-                                # using as parameters.
-                                if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                    ig
-                                ) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
-                                    # as Base at the moment
-                                    if isinstance(
-                                        geom.Geometry,
-                                        (
-                                            Part.LineSegment,
-                                            Part.Circle,
-                                            Part.ArcOfCircle,
-                                            Part.Ellipse,
-                                            Part.BSplineCurve,
-                                        ),
-                                    ):
-                                        skGeomEdgesI = geom.Geometry.toShape()
-                                        skGeomEdges.append(skGeomEdgesI)
+                            skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                                obj.Base,
+                                obj.ArchSketchEdges,
+                                (
+                                    Part.LineSegment,
+                                    Part.Circle,
+                                    Part.ArcOfCircle,
+                                    Part.Ellipse,
+                                    Part.BSplineCurve,
+                                ),
+                            )
                             clusterTransformed = []
                             for cluster in Part.getSortedClusters(skGeomEdges):
                                 edgesTransformed = []

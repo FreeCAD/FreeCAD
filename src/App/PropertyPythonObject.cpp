@@ -151,14 +151,16 @@ bool isAllowedModule(const std::string& moduleName)
     // This is populated during startup by FreeCADInit.py and includes built-in workbenches,
     // user addons, and any additional configured module paths.
     Py::Module freecad(PyImport_ImportModule("FreeCAD"), true);
-    if (!freecad.hasAttr("__ModDirs__")) {
-        throw Py::RuntimeError("FreeCAD.__ModDirs__ not set -- FreeCADInit.py has not run yet");
+    if (!freecad.hasAttr("__ModDirs__") or !freecad.hasAttr("__MacroDirs__")) {
+        throw Py::RuntimeError("FreeCAD.__ModDirs__ or FreeCAD.__MacroDirs__ not set -- FreeCADInit.py has not run yet");
     }
-    Py::List modDirs(freecad.getAttr("__ModDirs__"));
+    Py::List allowedDirs(freecad.getAttr("__ModDirs__"));
+    allowedDirs.extend(freecad.getAttr("__MacroDirs__"));
+    const int allowedDirsSize = static_cast<int>(allowedDirs.size());
 
     auto isUnderFreeCAD = [&](const std::string& path) {
-        for (int i = 0; i < static_cast<int>(modDirs.size()); ++i) {
-            if (isUnderDirectory(path, Py::String(modDirs[i]).as_std_string())) {
+        for (int i = 0; i < allowedDirsSize; ++i) {
+            if (isUnderDirectory(path, Py::String(allowedDirs[i]).as_std_string())) {
                 return true;
             }
         }
@@ -274,8 +276,8 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
-                              typestr.as_string().c_str());
+        Base::Console().error("PropertyPythonObject::toString(): failed for {}\n",
+                              typestr.as_string());
         Base::PyException e;  // extract the Python error text
         e.reportException();
     }
@@ -420,7 +422,7 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
         e.clear();
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
     }
     catch (...) {
         Base::Console().error("Critical error in PropertyPythonObject::restoreObject\n");
@@ -482,10 +484,10 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                 std::string moduleName = reader.getAttribute<const char*>("module");
                 if (!isAllowedModule(moduleName)) {
                     Base::Console().warning(
-                        "PropertyPythonObject::Restore: blocked import of module '%s' during"
+                        "PropertyPythonObject::Restore: blocked import of module '{}' during"
                         " document restore. Only modules from FreeCAD or installed addons"
                         " are permitted.\n",
-                        moduleName.c_str());
+                        moduleName);
                     throw Py::ImportError("module not permitted: " + moduleName);
                 }
                 Py::Module mod(PyImport_ImportModule(moduleName.c_str()), true);
@@ -524,8 +526,8 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         else if (!load_failed) {
             Base::Console().warning(
-                "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
-                buffer.c_str());
+                "PropertyPythonObject::Restore: unsupported serialisation: {}\n",
+                buffer);
         }
         restoreObject(reader);
         hasSetValue();

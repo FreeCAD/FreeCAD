@@ -188,6 +188,7 @@ bool FileLock::isLocked() const
 # include <cerrno>
 
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <unistd.h>
 
 using namespace Base;
@@ -224,7 +225,7 @@ bool FileLock::tryLock(int timeoutMs)
     }
 
     if (_fd < 0) {
-        _fd = ::open(_path.c_str(), O_RDWR | O_CREAT, 0666);
+        _fd = ::open(_path.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
         if (_fd < 0) {
             return false;
         }

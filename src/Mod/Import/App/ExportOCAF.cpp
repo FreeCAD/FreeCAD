@@ -63,8 +63,6 @@ ExportOCAF::ExportOCAF(Handle(TDocStd_Document) hDoc, bool explicitPlacement)
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
     if (keepExplicitPlacement) {
-        // rootLabel = aShapeTool->NewShape();
-        // TDataStd_Name::Set(rootLabel, "ASSEMBLY");
         Part::Interface::writeStepAssembly(Part::Interface::Assembly::Auto);
     }
     else {
@@ -104,12 +102,10 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
                     break;
                 }
             }
-
             if (accept) {
                 keepObjects.push_back(it);
             }
         }
-
         entries.swap(keepObjects);
     }
 
@@ -262,14 +258,6 @@ int ExportOCAF::saveShape(
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), true));
 
-
-    /*
-        if (keepExplicitPlacement) {
-            aShapeTool->AddComponent(aShapeTool->BaseLabel(), shapeLabel, aLoc);
-            XCAFDoc_Location::Set(shapeLabel,MyLoc);
-        }
-    */
-
     // Add color information
     Quantity_ColorRGBA col;
 
@@ -294,7 +282,6 @@ int ExportOCAF::saveShape(
                 // If faceLabel is null we check if for the current face a label already
                 // exists. If yes then faceLabel is equal to shapeLabel.
                 TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
-                // TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
                 if (!faceLabel.IsNull()) {
                     aShapeTool->SetShape(faceLabel, xp.Current());
                 }

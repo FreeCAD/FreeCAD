@@ -6,13 +6,15 @@ on:
     branches: [main, releases/*]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   backport:
     name: Create backport pull request
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     # Run the action if a PR is merged with backport labels
     # OR
@@ -27,16 +29,30 @@ jobs:
         )
       )
     steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
-          token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          egress-policy: audit
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.BACKPORT_CLIENT_ID }}
+          private-key: ${{ secrets.BACKPORT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          repository: ${{ github.event.pull_request.base.repo.full_name }}
+          ref: ${{ github.event.pull_request.base.ref }}
 
       - name: Create backport pull requests
-        uses: korthout/backport-action@01619ebc9a6e3f6820274221b9956b3e7365000a # v4.1.0
+        uses: korthout/backport-action@8560fb503c275d433c56f05a2f64850093baa9f7 # v4.7.0
         with:
           # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
-          github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          github_token: ${{ steps.app-token.outputs.token }}
           github_workspace: ${{ github.workspace }}
 
           # permit PRs with merge commits to be backported

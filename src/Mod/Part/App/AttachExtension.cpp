@@ -231,7 +231,7 @@ void AttachExtension::initBase(bool force)
             "BaseAttacherType",
             "Class name of attach engine object driving the attachment for base geometry."
         )) {
-        props.attacherType->setValue(_baseProps.attacher->getTypeId().getName());
+        props.attacherType->setValue(std::string {_baseProps.attacher->getTypeId().getName()}.c_str());
     }
     else if (!props.attacherType) {
         return;
@@ -287,16 +287,16 @@ void AttachExtension::setAttacher(AttachEngine* pAttacher, bool base)
         if (base) {
             initBase(true);
         }
-        const char* typeName = props.attacher->getTypeId().getName();
-        if (strcmp(props.attacherType->getValue(), typeName)
-            != 0) {  // make sure we need to change, to break recursive
-                     // onChange->changeAttacherType->onChange...
-            props.attacherType->setValue(typeName);
+        const auto typeName = props.attacher->getTypeId().getName();
+        if (props.attacherType->getValue() == typeName) {
+            // make sure we need to change, to break recursive
+            // onChange->changeAttacherType->onChange...
+            props.attacherType->setValue(std::string {typeName}.c_str());
         }
         // Also update the visible AttacherEngine property for non-base attachers
         // to keep it in sync with AttacherType (fixes issue #15716)
         if (!base) {
-            const char* enumVal = classToEnum(typeName);
+            const char* enumVal = classToEnum(std::string {typeName}.c_str());
             if (strcmp(AttacherEngine.getValueAsString(), enumVal) != 0) {
                 AttacherEngine.setValue(enumVal);
             }
@@ -319,7 +319,7 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
 
     // check if we need to actually change anything
     if (prop.attacher) {
-        if (strcmp(prop.attacher->getTypeId().getName(), typeName) == 0) {
+        if (prop.attacher->getTypeId().getName() == typeName) {
             return false;
         }
     }
@@ -457,12 +457,12 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             }
             catch (Base::Exception& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.what());
+                Base::Console().error("PositionBySupport: {}\n", e.what());
                 // set error message - how?
             }
             catch (Standard_Failure& e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().error("PositionBySupport: %s\n", e.GetMessageString());
+                Base::Console().error("PositionBySupport: {}\n", e.GetMessageString());
             }
 
             updateSinglePropertyStatus(bAttached);
@@ -508,15 +508,22 @@ bool AttachExtension::extensionHandleChangedPropertyName(
         // At one point, the type of Support changed from PropertyLinkSub to its present type
         // of PropertyLinkSubList. Later, the property name changed to AttachmentSupport
         App::PropertyLinkSub tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName) == 0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this->getExtendedContainer());
             tmp.Restore(reader);
-            AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
-            this->MapMode.setValue(Attacher::mmFlatFace);
+            if (tmp.getValue()) {
+                AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
+                this->MapMode.setValue(Attacher::mmFlatFace);
+            }
             return true;
         }
         if (AttachmentSupport.getClassTypeId() == type) {
-            AttachmentSupport.Restore(reader);
+            App::PropertyLinkSubList tmp;
+            tmp.setContainer(this->getExtendedContainer());
+            tmp.Restore(reader);
+            if (!tmp.getValues().empty()) {
+                AttachmentSupport.Paste(tmp);
+            }
             return true;
         }
     }
@@ -575,7 +582,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
      */
 
     App::DocumentObject* owner = getExtendedObject();
-    Base::Console().message("Converting attachment offset of %s\n", owner->getNameInDocument());
+    Base::Console().message("Converting attachment offset of {}\n", owner->getNameInDocument());
 
     try {
         // extract current attachment offset values
@@ -705,7 +712,7 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
     catch (const Base::Exception& e) {
         Base::Console().error(
-            "Error converting legacy attachment offset of %s: %s\n",
+            "Error converting legacy attachment offset of {}: {}\n",
             owner->getNameInDocument(),
             e.what()
         );

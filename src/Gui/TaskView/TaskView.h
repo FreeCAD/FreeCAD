@@ -42,6 +42,7 @@ class Property;
 
 namespace Gui
 {
+class Document;
 class MDIView;
 class ControlSingleton;
 class ViewProviderDocumentObject;
@@ -62,20 +63,6 @@ class GuiExport TaskContent {
     public :
         // TaskContent();
         //~TaskContent();
-};
-
-class GuiExport TaskGroup: public QSint::ActionBox, public TaskContent
-{
-    Q_OBJECT
-
-public:
-    explicit TaskGroup(QWidget* parent = nullptr);
-    explicit TaskGroup(const QString& headerText, QWidget* parent = nullptr);
-    explicit TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent = nullptr);
-    ~TaskGroup() override;
-
-protected:
-    void actionEvent(QActionEvent*) override;
 };
 
 /// Father class of content with header and Icon
@@ -221,7 +208,8 @@ private:
     void tryRestoreWidth();
     void slotActiveDocument(const App::Document&);
     void slotInEdit(const Gui::ViewProviderDocumentObject&);
-    void slotDeletedDocument(const App::Document&);
+    void slotResetEdit(const Gui::ViewProviderDocumentObject&);
+    void slotDeletedDocument(const Gui::Document&);
     void slotViewClosed(const Gui::MDIView*);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
@@ -259,6 +247,7 @@ protected:
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
     Connection connectApplicationInEdit;
+    Connection connectApplicationResetEdit;
     Connection connectShowTaskWatcherSetting;
 };
 

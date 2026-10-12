@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -49,6 +51,7 @@ public:
     App::PropertyEnumeration ConstraintType;
     App::PropertyBool CavityRadiation;
     App::PropertyString CavityName;
+    App::PropertyBool ClosedCavity;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

@@ -120,6 +120,7 @@ std::string Property::getFileName(const char* postfix, const char* prefix) const
 static constexpr auto mapProps = std::to_array<std::tuple<Property::Status, PropertyType>>({
     {App::Property::PropReadOnly,    Prop_ReadOnly},
     {App::Property::PropHidden,      Prop_Hidden},
+    {App::Property::PropInput,       Prop_Input},
     {App::Property::PropOutput,      Prop_Output},
     {App::Property::PropTransient,   Prop_Transient},
     {App::Property::PropNoRecompute, Prop_NoRecompute},
@@ -175,6 +176,14 @@ const boost::any Property::getPathValue(const ObjectIdentifier& path) const
 void Property::getPaths(std::vector<ObjectIdentifier>& paths) const
 {
     paths.emplace_back(getContainer(), getName());
+}
+
+void Property::getPathsForCompletion(
+    std::vector<ObjectIdentifier>& paths,
+    const std::string&
+) const
+{
+    getPaths(paths);
 }
 
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier& p) const

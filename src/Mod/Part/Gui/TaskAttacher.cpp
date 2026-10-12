@@ -24,15 +24,23 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <sstream>
+#include <vector>
+#include <QApplication>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QTimer>
 #include <Standard_Failure.hxx>
+
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoEventCallback.h>
 
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
 #include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
@@ -40,13 +48,20 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Base/Tools.h>
 #include <Mod/Part/App/AttachExtension.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 
@@ -323,16 +338,19 @@ TaskAttacher::~TaskAttacher()
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 {
     if (ViewProvider == &view) {
-        ViewProvider = nullptr;
-        // if the object gets deleted we need to clear all overrides so it does not segfault
-        overrides.clear();
-        this->setDisabled(true);
+        forgetViewProvider();
     }
 }
 
 void TaskAttacher::documentDeleted(const Gui::Document&)
 {
+    forgetViewProvider();
+}
+
+void TaskAttacher::forgetViewProvider()
+{
     ViewProvider = nullptr;
+    overrides.clear();
     this->setDisabled(true);
 }
 
@@ -447,115 +465,138 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
     }
 }
 
+void TaskAttacher::removeSketchFeatureNesting(
+    App::DocumentObject*& rootObj,
+    std::string& sub,
+    App::DocumentObject* supportObj
+)
+{
+    auto* supportBody = App::GeoFeatureGroupExtension::getGroupOfObject(supportObj);
+    if (!supportBody || !supportBody->isDerivedFrom<Part::BodyBase>()
+        || !supportObj->isDerivedFrom<Part::Part2DObject>()) {
+        return;
+    }
+
+    std::vector<int> offsets;
+    const auto path = rootObj->getSubObjectList(sub.c_str(), &offsets);
+    if (path.size() < 2) {
+        return;
+    }
+
+    // Offsets point past each object name. Keep the sketch name and any geometry suffix together.
+    const size_t sketchIndex = path.size() - 1;
+    const auto sketchReference = sub.substr(offsets[sketchIndex - 1]);
+    const auto geometryReference = sub.substr(offsets[sketchIndex]);
+
+    // Features such as Pad only nest their profile in the tree; both remain body siblings.
+    // Walk towards the root until a container or link must be retained.
+    for (size_t ancestorIndex = sketchIndex; ancestorIndex > 0;) {
+        --ancestorIndex;
+        const auto* ancestor = path[ancestorIndex];
+        const bool isSiblingFeature = ancestor->isDerivedFrom<Part::Feature>()
+            && App::GeoFeatureGroupExtension::getGroupOfObject(ancestor) == supportBody;
+        const bool isLink = ancestor->getLinkedObject() != ancestor;
+        if (isSiblingFeature && !isLink) {
+            continue;
+        }
+
+        // For example, join "Body." and "Sketch.Edge1", dropping the intervening "Pad.".
+        const auto containerPrefix = sub.substr(0, offsets[ancestorIndex]);
+        sub = containerPrefix + sketchReference;
+        return;
+    }
+
+    // The root was also a sibling feature. Reference the sketch directly within the same body.
+    rootObj = supportObj;
+    sub = geometryReference;
+    auto* attachingBody = App::GeoFeatureGroupExtension::getGroupOfObject(ViewProvider->getObject());
+    if (supportBody != attachingBody) {
+        rootObj = supportBody;
+        sub = std::string(supportObj->getNameInDocument()) + "." + geometryReference;
+    }
+}
+
+void TaskAttacher::resolveAttachmentSupportInContext(
+    App::DocumentObject* context,
+    App::DocumentObject*& rootObj,
+    std::string& sub
+)
+{
+    if (!rootObj) {
+        return;
+    }
+
+    // Attachment supports must retain containers whose placements the context does not supply.
+    // For a sketch in BodyA, BodyA.Pad.Face1 becomes Pad:Face1, while
+    // BodyB.Pad.Face1 remains BodyB:Pad.Face1. Shared outer Parts are stripped as well.
+    // For a sketch outside both bodies, both body prefixes must remain.
+    // Here ":" separates the stored root object from its subname.
+
+    // Body/Part nesting is normally shallow, so a vector with linear lookup is sufficient.
+    std::vector<App::DocumentObject*> contextGroups;
+    for (auto* group = context; group;
+         group = App::GeoFeatureGroupExtension::getGroupOfObject(group)) {
+        contextGroups.push_back(group);
+    }
+
+    auto prependContainer = [&rootObj, &sub](App::DocumentObject* container) {
+        sub = std::string(rootObj->getNameInDocument()) + "." + sub;
+        rootObj = container;
+    };
+
+    if (auto* datum = dynamic_cast<App::DatumElement*>(rootObj)) {
+        if (auto* lcs = datum->getLCS(); lcs && !lcs->isOrigin() && lcs->hasObject(datum)) {
+            prependContainer(lcs);
+        }
+    }
+
+    // A face picked before the editor opens may only name its feature, without its body.
+    // Recover the coordinate-system path, stopping before a shared ancestor.
+    auto* linkedObj = rootObj->getLinkedObject();
+    if (linkedObj->isDerivedFrom<Part::Feature>()
+        || linkedObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        while (auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(rootObj)) {
+            if (std::ranges::find(contextGroups, group) != contextGroups.end()) {
+                break;
+            }
+            prependContainer(group);
+        }
+    }
+
+    // Make a rooted selection relative to the attaching context, not the original rootObj.
+    // With context BodyA, Part:BodyA.Pad.Face1 becomes Pad:Face1 because Part and BodyA
+    // already contribute to the attaching object's placement. An external BodyB remains.
+    while (std::ranges::find(contextGroups, rootObj->getLinkedObject()) != contextGroups.end()) {
+        auto dot = sub.find('.');
+        if (dot == std::string::npos) {
+            rootObj = nullptr;
+            return;
+        }
+        auto* child = rootObj->getSubObject(sub.substr(0, dot + 1).c_str());
+        if (!child || child == rootObj) {
+            rootObj = nullptr;
+            return;
+        }
+        rootObj = child;
+        sub.erase(0, dot + 1);
+    }
+}
+
 void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootObj, std::string& sub)
 {
-    // The reference that we store must take into account the hierarchy of geoFeatures. For example:
-    // - Part
-    // - - Cube
-    // - Sketch
-    // if sketch is attached to Cube.Face1 then it must store Part:Cube.Face3 as Sketch is outside
-    // of Part.
-    // - Part
-    // - - Cube
-    // - - Sketch
-    // In this example it must store Cube:Face3 because Sketch is inside Part, sibling of Cube.
-    // So placement of Part is already taken into account.
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Sketch
-    // In this example it must store Part2:Cube.Face3 since Part1 is already taken into account.
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Part3
-    // - - - Sketch
-    // In this example it's not possible because Sketch has Part3 placement. So it should be
-    // rejected So we need to take the selection object and subname, and process them to get the
-    // correct obj/sub based on attached and attaching objects positions.
-
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
-    if (!rootObj || names.size() < 2) {
+    if (!rootObj) {
         return;
     }
-    names.insert(names.begin(), rootObj->getNameInDocument());
-
-    App::Document* doc = rootObj->getDocument();
-    App::DocumentObject* attachingObj = ViewProvider->getObject();     // Attaching object
-    App::DocumentObject* subObj = rootObj->getSubObject(sub.c_str());  // Object being attached.
-    if (!subObj || subObj == rootObj) {
-        // Case of root object. We don't need to modify it.
-        return;
-    }
-    if (subObj == attachingObj) {
-        // prevent self-referencing
+    auto* attachingObj = ViewProvider->getObject();
+    auto* subObj = rootObj->getSubObject(sub.c_str());
+    auto* context = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
+    if (subObj == attachingObj
+        || (!context && rootObj->getDocument() != attachingObj->getDocument())) {
         rootObj = nullptr;
         return;
     }
-
-    // Check if attachingObj is a root object. if so we keep the full path.
-    auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(attachingObj);
-    if (!group) {
-        if (attachingObj->getDocument() != rootObj->getDocument()) {
-            // If it's not in same document then it's not a good selection
-            rootObj = nullptr;
-        }
-        // if it's same document we keep the rootObj and sub unchanged.
-        return;
-    }
-
-    bool groupPassed = false;
-    for (size_t i = 0; i < names.size(); ++i) {
-        App::DocumentObject* obj = doc->getObject(names[i].c_str());
-        if (!obj) {
-            Base::Console().translatedUserError(
-                "TaskAttacher",
-                "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group "
-                "'%s'.\n",
-                attachingObj->getFullLabel(),
-                subObj->getFullLabel(),
-                group->getFullLabel()
-            );
-            rootObj = nullptr;
-            return;
-        }
-
-        if (groupPassed) {
-            rootObj = obj;
-
-            // Rebuild 'sub' starting from the next element after the current 'name'
-            sub = "";
-            for (size_t j = i + 1; j < names.size(); ++j) {
-                sub += names[j];
-                if (j != names.size() - 1) {
-                    sub += ".";  // Add a period between elements
-                }
-            }
-            return;
-        }
-
-        // In case the attaching object is in a link to a part.
-        // For instance :
-        // - Part1
-        // - - LinkToPart2
-        // - - - Cube
-        // - - - Sketch
-        obj = obj->getLinkedObject();
-
-        if (obj == group) {
-            groupPassed = true;
-        }
-    }
-
-    // if we reach this point it means that attaching object's group is outside of
-    // the scope of the attached object. For instance:
-    // - Part1
-    // - - Part2
-    // - - - Cube
-    // - - Part3
-    // - - - Sketch
-    // In this case the selection is not acceptable.
-    rootObj = nullptr;
+    removeSketchFeatureNesting(rootObj, sub, subObj);
+    resolveAttachmentSupportInContext(context, rootObj, sub);
 }
 
 void TaskAttacher::handleInitialSelection()
@@ -569,6 +610,7 @@ void TaskAttacher::handleInitialSelection()
         return;
     }
     std::vector<SubAndObjName> subAndObjNamePairs;
+    auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
 
     auto sel = Gui::Selection().getSelectionEx(
         "",
@@ -576,11 +618,22 @@ void TaskAttacher::handleInitialSelection()
         Gui::ResolveMode::NoResolve
     );
     for (auto& selObj : sel) {
-        std::vector<std::string> subs = selObj.getSubNames();
+        const auto& subs = selObj.getSubNames();
         std::string objName = selObj.getFeatName();
-        for (auto& sub : subs) {
-            SubAndObjName objSubName = {objName, sub};
-            subAndObjNamePairs.push_back(objSubName);
+        auto* selectedObj = selObj.getObject();
+        if (subs.empty()) {
+            // A whole-object selection has no subnames. Exclude the attaching object's container.
+            if (selectedObj != group) {
+                subAndObjNamePairs.push_back({objName, ""});
+            }
+            continue;
+        }
+        for (const auto& sub : subs) {
+            // Also exclude the container selected through a path, or a face of its own shape.
+            if (group && selectedObj->getSubObject(sub.c_str()) == group) {
+                continue;
+            }
+            subAndObjNamePairs.push_back({objName, sub});
         }
     }
     addToReference(subAndObjNamePairs);
@@ -1467,18 +1520,132 @@ TaskDlgAttacher::TaskDlgAttacher(
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
+    // The dialog is not tied to edit mode, so it stays open if the object is deleted, e.g. by
+    // undoing its creation while the dialog is shown. Forget the view provider when that happens,
+    // and cancel the dialog once the deletion has completed, as there is nothing left to attach.
+    connectDelObject = ViewProvider->getDocument()->signalDeletedObject.connect(
+        [this](const Gui::ViewProviderDocumentObject& vp) {
+            if (&vp != this->ViewProvider) {
+                return;
+            }
+            this->ViewProvider = nullptr;
+            QTimer::singleShot(0, this, [this]() {
+                App::Document* doc = App::GetApplication().getDocument(getDocumentName().c_str());
+                // the dialog may have been closed in the meantime, don't reject another one
+                if (doc && Gui::Control().activeDialog(doc) == this) {
+                    Gui::Control().reject(doc);
+                }
+            });
+        }
+    );
+
     if (createBox) {
         parameter = new TaskAttacher(ViewProvider, nullptr, QString(), tr("Attachment"));
         Content.push_back(parameter);
     }
+
+    // Double-click on a valid attachment element in the 3D view confirms the dialog
+    if (onAccept) {
+        auto* view3d = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view3d) {
+            dblClickViewer = view3d->getViewer();
+            dblClickViewer->addEventCallback(
+                SoMouseButtonEvent::getClassTypeId(),
+                &TaskDlgAttacher::handleMouseButtonCB,
+                this
+            );
+        }
+    }
+
+    // Status-bar input hints
+    using enum Gui::InputHint::UserInput;
+    std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 select reference"),
+            .sequences = {MouseLeft},
+        },
+    };
+    if (onAccept) {
+        hints.push_back({
+            .message = tr("%1 select and confirm"),
+            .sequences = {MouseDoubleLeft},
+        });
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
+    Gui::getMainWindow()->hideHints();
+    if (dblClickViewer) {
+        // Re-enable selection in case it was disabled for a double-click that never completed
+        dblClickViewer->setSelectionEnabled(true);
+        dblClickViewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            &TaskDlgAttacher::handleMouseButtonCB,
+            this
+        );
+    }
     if (accepted && onAccept) {
         onAccept();
     }
-};
+}
+
+void TaskDlgAttacher::handleMouseButtonCB(void* userdata, SoEventCallback* cb)
+{
+    auto* self = static_cast<TaskDlgAttacher*>(userdata);
+    const SoEvent* ev = cb->getEvent();
+    if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId())) {
+        return;
+    }
+    const auto* mbe = static_cast<const SoMouseButtonEvent*>(ev);
+
+    if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 || mbe->getState() != SoButtonEvent::DOWN) {
+        return;
+    }
+    if (!self->ViewProvider) {
+        return;
+    }
+
+    const SbVec2s pos = mbe->getPosition();
+    const SbTime now = SbTime::getTimeOfDay();
+    const float dci = static_cast<float>(QApplication::doubleClickInterval()) / 1000.0F;
+    constexpr int dblClickRadius = 5;
+
+    const bool inWindow = SbVec2f(pos - self->lastClickPos).length() < dblClickRadius
+        && (now - self->lastClickTime).getValue() < dci;
+
+    auto* pcAttach = self->ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    const bool validState = pcAttach && !pcAttach->AttachmentSupport.getValues().empty()
+        && pcAttach->MapMode.getValue() != mmDeactivated;
+
+    if (inWindow && validState && self->dblClickViewer) {
+        // Block SoFCUnifiedSelection from processing second click (would add the parent object instead)
+        self->dblClickViewer->setSelectionEnabled(false);
+
+        // Anti-retrigger: park tracking far away and reset time
+        self->lastClickTime = SbTime();
+        self->lastClickPos = SbVec2s(-16000, -16000);
+
+        QTimer::singleShot(
+            0,
+            [doc = App::DocumentT(self->ViewProvider->getDocument()->getDocument()),
+             viewer = self->dblClickViewer]() {
+                if (viewer) {
+                    viewer->setSelectionEnabled(true);
+                }
+                if (App::Document* appDoc = doc.getDocument()) {
+                    Gui::Control().accept(appDoc);
+                }
+            }
+        );
+        return;
+    }
+
+    // Not a double-click
+    self->lastClickTime = now;
+    self->lastClickPos = pos;
+}
 
 //==== calls from the TaskView ===============================================================
 
@@ -1501,8 +1668,12 @@ bool TaskDlgAttacher::accept()
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider) {
+        if (!document) {
             return true;
+        }
+        if (!ViewProvider) {
+            // The attached object was deleted while the dialog was open: nothing to apply
+            return reject();
         }
 
         Part::AttachExtension* pcAttach
@@ -1547,6 +1718,10 @@ bool TaskDlgAttacher::accept()
             AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str()
         );
         Gui::cmdAppObject(obj, "recompute()");
+
+        if (!obj->isValid()) {
+            throw Base::RuntimeError(obj->getStatusString());
+        }
 
         document->commitCommand();
     }

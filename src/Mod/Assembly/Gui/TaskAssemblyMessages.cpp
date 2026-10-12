@@ -53,21 +53,21 @@ TaskAssemblyMessages::~TaskAssemblyMessages()
 void TaskAssemblyMessages::updateToolTip(const QString& link)
 {
     if (link == QStringLiteral("#conflicting")) {
-        setLinkTooltip(tr("Click to select these conflicting joints."));
+        setLinkTooltip(tr("Selects these conflicting joints"));
     }
     else if (link == QStringLiteral("#redundant")) {
-        setLinkTooltip(tr("Click to select these redundant joints."));
+        setLinkTooltip(tr("Selects these redundant joints"));
     }
     else if (link == QStringLiteral("#dofs")) {
-        setLinkTooltip(tr(
-            "The assembly has unconstrained components giving rise to those "
-            "Degrees Of Freedom.\nClick to select these unconstrained components.\nNote: Currently "
-            "this selects only unconnected parts, not constrained parts that still have free "
-            "DoF."
-        ));
+        setLinkTooltip(
+            tr("The assembly has unconstrained components giving rise to those "
+               "Degrees Of Freedom.\nSelects these unconstrained components.\nNote: Currently "
+               "this selects only unconnected parts, not constrained parts that still have free "
+               "DoF.")
+        );
     }
     else if (link == QStringLiteral("#malformed")) {
-        setLinkTooltip(tr("Click to select these malformed joints."));
+        setLinkTooltip(tr("Selects these malformed joints"));
     }
 }
 

@@ -150,7 +150,8 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
         color.a = 1.0;  // The default color sets fully transparent, not opaque
     };
     auto intRandom = [](int min, int max) -> int {
-        static std::mt19937 generator;
+        static std::random_device rd;
+        static std::mt19937 generator(rd());
         std::uniform_int_distribution<int> distribution(min, max);
         return distribution(generator);
     };
@@ -634,10 +635,10 @@ void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::Materia
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto material = _localManager->getMaterial(uuid);
         if (!material->isOldFormat()) {
@@ -654,10 +655,10 @@ void MaterialManager::validateMigration(const std::shared_ptr<Materials::Materia
         auto uuid = it.getUUID();
         auto path = it.getPath();
         auto name = it.getName();
-        Base::Console().log("\t('%s', '%s', '%s')\n",
-                            uuid.toStdString().c_str(),
-                            path.toStdString().c_str(),
-                            name.toStdString().c_str());
+        Base::Console().log("\t('{}', '{}', '{}')\n",
+                            uuid.toStdString(),
+                            path.toStdString(),
+                            name.toStdString());
 
         auto material = _localManager->getMaterial(uuid);
         if (!material->isOldFormat()) {

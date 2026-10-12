@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RampType dropdown icon: S-Curve (smoothstep, f = t*t*(3-2t)).  viewBox
+     height matches the combo's iconSize (16px) exactly so there is no extra
+     vertical scaling; the curve occupies y=2..14, leaving a real 2px margin
+     top and bottom.  Widened slightly further than the others so the subtle
+     zero-slope lead-in/out reads clearly at icon size. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <polyline fill="none" stroke="#3d85c6" stroke-width="2" stroke-linecap="round"
+    points="2.0,2.0 3.2,2.1 4.5,2.5 5.8,3.1 7.0,3.9 8.2,4.8 9.5,5.8 10.8,6.9 12.0,8.0 13.2,9.1 14.5,10.2 15.8,11.2 17.0,12.1 18.2,12.9 19.5,13.5 20.8,13.9 22.0,14.0"/>
+</svg>

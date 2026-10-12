@@ -381,11 +381,6 @@ Der kleinste Wert ist 0.</translation>
       <translation>Netgen Netzgenerator verwenden</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Feinheit:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Sehr grob</translation>
@@ -438,6 +433,11 @@ A value in the range of 0.1-1.</source>
 Ein Wert im Bereich von 0.1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Feinheit</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -488,7 +488,7 @@ Ein Wert im Bereich von 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>

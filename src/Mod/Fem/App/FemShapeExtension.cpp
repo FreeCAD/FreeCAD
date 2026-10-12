@@ -100,7 +100,7 @@ CylinderExtension::CylinderExtension()
         (Base::Vector3d(0.0, 0.0, 1.0)),
         "Cylinder",
         (App::PropertyType)(App::Prop_None),
-        "The axis along wich the cylinder is defined"
+        "The axis along which the cylinder is defined"
     );
 
     EXTENSION_ADD_PROPERTY_TYPE(

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
@@ -27,6 +29,7 @@ set(Assembly_Scripts
     CommandCreateJoint.py
     CommandCreateView.py
     CommandCreateSimulation.py
+    CommandCreateSnapshot.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py
@@ -55,7 +58,9 @@ SET(AssemblyScripts_SRCS
 SET(AssemblyTests_SRCS
     AssemblyTests/__init__.py
     AssemblyTests/TestCore.py
+    AssemblyTests/TestCommandCreateView.py
     AssemblyTests/TestCommandInsertLink.py
+    AssemblyTests/TestSimulationExport.py
     AssemblyTests/mocks/__init__.py
     AssemblyTests/mocks/MockGui.py
 )
@@ -79,8 +84,16 @@ ADD_CUSTOM_TARGET(AssemblyTests ALL
     SOURCES ${test_files}
 )
 
+# Target AssemblyScripts handles copying AssemblyTests_SRCS and AssemblyScripts_SRCS
 fc_copy_sources(AssemblyScripts "${CMAKE_BINARY_DIR}/Mod/Assembly" ${all_files})
-fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${test_files})
+
+# Target AssemblyTests should only handle copying the remaining Assembly_Scripts
+# to avoid racing with AssemblyScripts over the same files.
+fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${Assembly_Scripts})
+
+# Ensure AssemblyScripts finishes its directory creation and copying before
+# AssemblyTests begins.
+add_dependencies(AssemblyTests AssemblyScripts)
 
 INSTALL(
     FILES

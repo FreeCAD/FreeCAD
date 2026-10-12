@@ -39,6 +39,7 @@ import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
 import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -233,7 +234,8 @@ class CAMSanity:
         else:
             if os.path.isfile(obj.LastPostProcessOutput):
                 data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
-                data["linecount"] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+                with open(obj.LastPostProcessOutput) as gcode_file:
+                    data["linecount"] = str(sum(1 for _ in gcode_file))
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
@@ -261,12 +263,20 @@ class CAMSanity:
         }
 
         data["cycletotal"] = str(obj.CycleTime)
-        data["jobMinZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
-        ).UserString
-        data["jobMaxZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
-        ).UserString
+        # Z in Job coordinates: an operation on a work plane stores its path
+        # in the plane's frame, so the placed path is the one that says where
+        # the tool goes. The Job's own Path is empty; its range is its
+        # operations'.
+        placed = {}
+        for op in obj.Operations.Group:
+            path = PathUtils.getPathWithPlacement(op)
+            if path.BoundBox.isValid():
+                placed[op.Name] = path.BoundBox
+        if placed:
+            zmin = min(bb.ZMin for bb in placed.values())
+            zmax = max(bb.ZMax for bb in placed.values())
+            data["jobMinZ"] = FreeCAD.Units.Quantity(zmin, FreeCAD.Units.Length).UserString
+            data["jobMaxZ"] = FreeCAD.Units.Quantity(zmax, FreeCAD.Units.Length).UserString
         data["jobDescription"] = obj.Description
 
         data["operations"] = []
@@ -288,13 +298,9 @@ class CAMSanity:
                 oplabel = "{} (INACTIVE)".format(oplabel)
                 ctime = "00:00:00"
 
-            if op.Path.BoundBox.isValid():
-                zmin = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMin, FreeCAD.Units.Length
-                ).UserString
-                zmax = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMax, FreeCAD.Units.Length
-                ).UserString
+            if op.Name in placed:
+                zmin = FreeCAD.Units.Quantity(placed[op.Name].ZMin, FreeCAD.Units.Length).UserString
+                zmax = FreeCAD.Units.Quantity(placed[op.Name].ZMax, FreeCAD.Units.Length).UserString
             else:
                 zmin = ""
                 zmax = ""
@@ -557,8 +563,12 @@ class CAMSanity:
                             postprocessor.apply_configuration_bundle(overrides=overrides)
                         pp_squawks = postprocessor.get_sanity_checks(self.job)
                         all_squawks.extend(pp_squawks)
-            except Exception as e:
-                Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+            except FileNotFoundError as e:
+                if "Available machines:" in str(e):
+                    # a missing machine means "don't do sanity"
+                    Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+                else:
+                    raise e
 
         critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
         Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")

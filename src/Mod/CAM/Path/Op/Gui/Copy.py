@@ -116,7 +116,7 @@ selection = FreeCADGui.Selection.getSelection()
 proj = selection[0].InList[0] #get the group that the selectied object is inside
 
 if len(selection) != 1:
-    FreeCAD.Console.PrintError(translate("CAM_Copy", "Please select one toolpath object")+"\n")
+    FreeCAD.Console.PrintError(translate("CAM_Copy", "Select one toolpath object")+"\n")
     selGood = False
 
 if not selection[0].isDerivedFrom("Path::Feature"):

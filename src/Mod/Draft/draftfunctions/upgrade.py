@@ -38,7 +38,9 @@ import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 from draftfunctions import draftify
-from draftgeoutils.geometry import is_straight_line
+from draftgeoutils import faces as geo_faces
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
 from draftmake import make_block
 from draftmake import make_wire
 from draftutils import gui_utils
@@ -50,7 +52,6 @@ from draftutils.translate import translate
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Arch = lz.LazyLoader("Arch", globals(), "Arch")
 
 _DEBUG = False
@@ -138,7 +139,7 @@ def upgrade(objects, delete=False, force=None):
             return False
         if len(obj.Shape.Edges) == 1:
             return False
-        if is_straight_line(obj.Shape):
+        if geo_geometry.is_straight_line(obj.Shape):
             return False
         if utils.get_type(obj) == "Wire":
             obj.Closed = True
@@ -247,17 +248,17 @@ def upgrade(objects, delete=False, force=None):
                 done_list.append(obj)
         if not faces:
             return False
-        if not DraftGeomUtils.is_coplanar(faces, 1e-3):
+        if not geo_faces.is_coplanar(faces, 1e-3):
             return False
         fuse_face = faces.pop(0)
         for face in faces:
             fuse_face = fuse_face.fuse(face)
-        face = DraftGeomUtils.concatenate(fuse_face)
+        face = geo_faces.concatenate(fuse_face)
         # check if concatenate failed
         if face.isEqual(fuse_face):
             return False
         # several coplanar and non-curved faces, they can become a Draft Wire
-        if len(face.Wires) == 1 and not DraftGeomUtils.hasCurves(face):
+        if len(face.Wires) == 1 and not geo_general.hasCurves(face):
             newobj = make_wire.make_wire(face.Wires[0], closed=True, face=True)
         # if not possible, we do a non-parametric union
         else:
@@ -522,7 +523,7 @@ def upgrade(objects, delete=False, force=None):
         # higher value to let that function throw the exception when
         # joinFaces is called if the precision is insufficient.
         if faces:
-            faces_coplanarity = DraftGeomUtils.is_coplanar(faces, 1e-3)
+            faces_coplanarity = geo_faces.is_coplanar(faces, 1e-3)
 
         parent = get_parent(objects[0])
         same_parent = True
@@ -642,7 +643,7 @@ def upgrade(objects, delete=False, force=None):
                 and not objects[0].isDerivedFrom("Part::Part2DObjectPython")
                 and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]
             ):
-                edge_type = DraftGeomUtils.geomType(objects[0].Shape.Edges[0])
+                edge_type = geo_general.geomType(objects[0].Shape.Edges[0])
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
                     result = _draftify(objects[0])

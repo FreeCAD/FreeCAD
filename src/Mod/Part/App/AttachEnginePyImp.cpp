@@ -326,7 +326,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
             Py::Object submod(module.getAttr("AttachEngineResources"));
             Py::Callable method(submod.getAttr("getModeStrings"));
             Py::Tuple arg(2);
-            arg.setItem(0, Py::String(this->getAttachEnginePtr()->getTypeId().getName()));
+            arg.setItem(0, Base::toPyString(this->getAttachEnginePtr()->getTypeId().getName()));
             arg.setItem(1, Py::Long(mmode));
             Py::List strs = method.apply(arg);
             assert(strs.size() == 2);
@@ -348,7 +348,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
         }
         catch (Base::Exception& e) {
             Base::Console().warning("AttachEngine.getModeInfo: error obtaining GUI strings:");
-            Base::Console().warning(e.what());
+            Base::Console().warning("{}", e.what());
             Base::Console().warning("\n");
         }
 
@@ -447,7 +447,7 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
         }
         catch (Base::Exception& e) {
             Base::Console().warning("AttachEngine.getRefTypeInfo: error obtaining GUI strings:");
-            Base::Console().warning(e.what());
+            Base::Console().warning("{}", e.what());
             Base::Console().warning("\n");
         }
 

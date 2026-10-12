@@ -52,10 +52,11 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         pass
 
     def setUp(self):
-        self.maxDiff = None
         self.post.reinitialize()
+        self.maxDiff = None
         self.post._machine = Machine.create_3axis_config()
         self.post._machine.name = "Test Marlin Machine"
+        self.post.apply_configuration_bundle()
         toolhead = Toolhead(
             name="Default Toolhead",
             toolhead_type=ToolheadType.ROTARY,
@@ -112,7 +113,9 @@ class TestMarlinPost(PathTestUtils.PathTestBase):
         lines = gcode.splitlines()
         dwell_re = re.compile(r"\bG0?4\b")
         dwell_lines = [l for l in lines if dwell_re.search(l)]
-        self.assertTrue(len(dwell_lines) > 0, "Expected at least one G4 dwell line")
+        self.assertTrue(
+            len(dwell_lines) > 0, f"Expected at least one G4 dwell line in---\n{gcode}\n---"
+        )
         for line in dwell_lines:
             self.assertIn("S", line, f"Dwell line should use S: {line}")
             self.assertNotIn(" P", line, f"Dwell line should not use P: {line}")

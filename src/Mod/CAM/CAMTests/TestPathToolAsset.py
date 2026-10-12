@@ -5,7 +5,7 @@ from typing import Any, List, Mapping
 from Path.Tool.assets import Asset, AssetUri
 
 
-class TestAsset(Asset):
+class _TestAsset(Asset):
     asset_type: str = "test_asset"
 
     @classmethod
@@ -30,12 +30,12 @@ class TestPathToolAsset(unittest.TestCase):
             Asset()  # type: ignore
 
     def test_asset_can_be_instantiated_and_has_members(self):
-        asset = TestAsset()
+        asset = _TestAsset()
         self.assertIsInstance(asset, Asset)
         self.assertEqual(asset.asset_type, "test_asset")
         self.assertEqual(asset.to_bytes(), b"dummy_serialized_data")
-        self.assertEqual(TestAsset.dependencies(b"some_data"), [])
-        self.assertEqual(TestAsset.from_bytes(b"some_data", "some_id", {}), "dummy_object")
+        self.assertEqual(_TestAsset.dependencies(b"some_data"), [])
+        self.assertEqual(_TestAsset.from_bytes(b"some_data", "some_id", {}), "dummy_object")
         self.assertEqual(asset.get_id(), "dummy_id")
 
 

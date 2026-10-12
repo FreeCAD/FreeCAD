@@ -22,20 +22,16 @@
 17, 4000, 500, 500
 18, 2000, 500, 500
 19, 4000, 500, 750
-20, 2000, 500, 750
-21, 6000, 500, 500
-22, 6000, 500, 750
-23, 4000, 500, 250
-24, 6000, 500, 250
-25, 2000, 500, 250
+20, 6000, 500, 500
+21, 4000, 500, 250
 
 
 ** Face elements
 *Element, TYPE=S8R, ELSET=Efaces
-1, 1, 5, 17, 8, 6, 18, 23, 9
+1, 1, 5, 17, 8, 6, 18, 21, 9
 2, 5, 2, 14, 17, 7, 15, 19, 18
-3, 17, 14, 4, 11, 19, 16, 13, 21
-4, 8, 17, 11, 3, 23, 21, 12, 10
+3, 17, 14, 4, 11, 19, 16, 13, 20
+4, 8, 17, 11, 3, 21, 20, 12, 10
 
 ** Define element set Eall
 *ELSET, ELSET=Eall
@@ -50,8 +46,8 @@ Efaces
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 5,
@@ -81,23 +77,23 @@ Efaces
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
 *STEP, INC=2000
 *STATIC
-
+1.0,1.0,1e-05,1.0
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
-ConstraintFixed,4
-ConstraintFixed,5
-ConstraintFixed,6
+Fixed,1
+Fixed,2
+Fixed,3
+Fixed,4
+Fixed,5
+Fixed,6
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** Force
 *CLOAD
 ** node loads on shape: CanileverPlate:Edge3
 3,3,-750000
@@ -116,7 +112,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1
@@ -125,8 +121,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.21.0
-**   written on    --> Tue Mar 28 05:28:22 2023
+**   written by    --> FreeCAD 1.2.0
+**   written on    --> Fri Apr 24 14:26:05 2026
 **   file name     --> ccx_cantilever_ele_quad8.FCStd
 **   analysis name --> Analysis
 **

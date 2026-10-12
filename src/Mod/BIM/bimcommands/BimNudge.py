@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """BIM nudge commands"""
 
@@ -151,7 +148,7 @@ class BIM_Nudge_Up(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Up", "Nudge Up"),
-            "Accel": "Alt+Up",
+            "Accel": "Alt+'",
         }
 
     def Activated(self):
@@ -171,7 +168,7 @@ class BIM_Nudge_Down(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Down", "Nudge Down"),
-            "Accel": "Alt+Down",
+            "Accel": "Alt+;",
         }
 
     def Activated(self):
@@ -191,7 +188,7 @@ class BIM_Nudge_Left(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Left", "Nudge Left"),
-            "Accel": "Alt+Left",
+            "Accel": "Alt+[",
         }
 
     def Activated(self):
@@ -211,7 +208,7 @@ class BIM_Nudge_Right(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Right", "Nudge Right"),
-            "Accel": "Alt+Right",
+            "Accel": "Alt+]",
         }
 
     def Activated(self):

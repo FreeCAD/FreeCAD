@@ -223,6 +223,8 @@ class DressupArray:
                 obj.Path = Path.Path()
             return
 
+        PathDressup.placeWithBase(obj)
+
         # use seed if specified, otherwise default to object name for consistency during recomputes
         seed = obj.JitterSeed or obj.Name
 
@@ -302,7 +304,7 @@ class PathArray:
 
         # build copies
         # initially output contains original base path, copies are added on top of that
-        output = PathUtils.getPathWithPlacement(base).toGCode()
+        output = base.Path.copy()
 
         random.seed(self.seed)
 
@@ -317,11 +319,9 @@ class PathArray:
 
                 pl = FreeCAD.Placement()
                 pl.move(pos)
-                np = Path.Path(
-                    [cm.transform(pl) for cm in PathUtils.getPathWithPlacement(base).Commands]
-                )
+                np = [cm.transform(pl) for cm in base.Path.Commands]
 
-                output += np.toGCode()
+                output.addCommands(np)
 
         elif self.arrayType == "Linear2D":
             if self.swapDirection:
@@ -345,13 +345,8 @@ class PathArray:
                         # do not process the index 0,0. It will be processed by the base Paths themselves
                         if not (i == 0 and j == 0):
                             pl.move(pos)
-                            np = Path.Path(
-                                [
-                                    cm.transform(pl)
-                                    for cm in PathUtils.getPathWithPlacement(base).Commands
-                                ]
-                            )
-                            output += np.toGCode()
+                            np = [cm.transform(pl) for cm in base.Path.Commands]
+                            output.addCommands(np)
             else:
                 for i in range(self.copiesX + 1):
                     for j in range(self.copiesY + 1):
@@ -373,13 +368,8 @@ class PathArray:
                         # do not process the index 0,0. It will be processed by the base Paths themselves
                         if not (i == 0 and j == 0):
                             pl.move(pos)
-                            np = Path.Path(
-                                [
-                                    cm.transform(pl)
-                                    for cm in PathUtils.getPathWithPlacement(base).Commands
-                                ]
-                            )
-                            output += np.toGCode()
+                            np = [cm.transform(pl) for cm in base.Path.Commands]
+                            output.addCommands(np)
             # Eif
         else:
             for i in range(self.copies):
@@ -389,11 +379,11 @@ class PathArray:
 
                 pl = FreeCAD.Placement()
                 pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
-                np = PathUtils.applyPlacementToPath(pl, PathUtils.getPathWithPlacement(base))
-                output += np.toGCode()
+                np = PathUtils.applyPlacementToPath(pl, base.Path)
+                output.addCommands(np.Commands)
 
         # return output
-        return Path.Path(output)
+        return output
 
 
 def Create(base, name="DressupArray"):

@@ -40,8 +40,8 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+#include <format>
 # include <optional>
-# include <random>
 # include <memory>
 # include <utility>
 # include <set>
@@ -52,7 +52,6 @@
 # include <map>
 # include <tuple>
 # include <vector>
-# include <fmt/format.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -74,10 +73,12 @@
 
 #include <App/MaterialPy.h>
 #include <App/MetadataPy.h>
-// FreeCAD Base header
+// FreeCAD Base headers
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/CrashReporter/Manager.h>
+#include <Base/CrashReporter/Writer.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
@@ -85,15 +86,19 @@
 #include <Base/ExceptionFactory.h>
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/CrashReporter/CrashFramePy.h>
+#include <Base/CrashReporter/CrashReportPy.h>
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
+#include <Base/NumericFormatting.h>
 #include <Base/QuantityPy.h>
-#include <Base/Parameter.h>
+#include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/PrecisionPy.h>
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
+#include <Base/ConsoleModulePy.h>
 #include <Base/UniqueNameManager.h>
 #include <Base/TimeInfo.h>
 #include <Base/SystemHandler.h>
@@ -103,6 +108,7 @@
 #include <Base/TypePy.h>
 #include <Base/UnitPy.h>
 #include <Base/UnitsApi.h>
+#include <Base/UnitsModulePy.h>
 #include <Base/VectorPy.h>
 
 #include "Annotation.h"
@@ -110,6 +116,7 @@
 #include "ApplicationDirectories.h"
 #include "ApplicationDirectoriesPy.h"
 #include "ApplicationPy.h"
+#include "FreeCADModulePy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "ConsoleQtBridge.h"
@@ -120,6 +127,7 @@
 #include "DocumentObjectGroupPy.h"
 #include "DocumentObserver.h"
 #include "DocumentPy.h"
+#include "DocumentSettingsPy.h"
 #include "ExpressionParser.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
@@ -154,10 +162,7 @@
 #include "Transactions.h"
 #include "VRMLObject.h"
 
-// If you stumble here, run the target "BuildExtractRevision" on Windows systems
-// or the Python script "SubWCRev.py" on Linux based systems which builds
-// src/Build/Version.h. Or create your own from src/Build/Version.h.in!
-#include <Build/Version.h>
+#include <Base/Version.h>
 #include "Branding.h"
 
 
@@ -344,23 +349,6 @@ DocumentObject* RecomputeRequest::resolveDocumentObject() const
 // Construction and destruction
 
 // clang-format off
-PyDoc_STRVAR(FreeCAD_doc,
-     "The functions in the FreeCAD module allow working with documents.\n"
-     "The FreeCAD instance provides a list of references of documents which\n"
-     "can be addressed by a string. Hence the document name must be unique.\n"
-     "\n"
-     "The document has the read-only attribute FileName which points to the\n"
-     "file the document should be stored to.\n"
-    );
-
-PyDoc_STRVAR(Console_doc,
-    "FreeCAD Console module.\n\n"
-    "The Console module contains functions to manage log entries, messages,\n"
-    "warnings and errors.\n"
-    "There are also functions to get/set the status of the observers used as\n"
-    "logging interfaces."
-    );
-
 PyDoc_STRVAR(Base_doc,
     "The Base module contains the classes for the geometric basics\n"
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
@@ -380,19 +368,18 @@ init_freecad_base_module(void)
     return PyModule_Create(&BaseModuleDef);
 }
 
-// Set in inside Application
-static PyMethodDef* ApplicationMethods = nullptr;
-
 PyMODINIT_FUNC
 init_freecad_module(void)
 {
     static struct PyModuleDef FreeCADModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "FreeCAD", FreeCAD_doc, -1,
-        ApplicationMethods,
+        "FreeCAD", App::FreeCADModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
-    return PyModule_Create(&FreeCADModuleDef);
+    PyObject* module = PyModule_Create(&FreeCADModuleDef);
+    App::FreeCADModulePy::addModuleMethods(module);
+    return module;
 }
 
 PyMODINIT_FUNC
@@ -437,7 +424,6 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    ApplicationMethods = ApplicationPy::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -449,11 +435,12 @@ void Application::setupPythonTypes()
     // clang-format off
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "__FreeCADConsole__", Console_doc, -1,
-        Base::ConsoleSingleton::Methods,
+        "__FreeCADConsole__", Base::ConsoleModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
+    Base::ConsoleModulePy::addModuleMethods(pConsoleModule);
 
     // fake Image module
     PyObject* imageModule = init_image_module();
@@ -470,6 +457,8 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::PlacementPy::Type, pAppModule, "Placement");
     Base::InterpreterSingleton::addType(&Base::RotationPy::Type, pAppModule, "Rotation");
     Base::InterpreterSingleton::addType(&Base::AxisPy::Type, pAppModule, "Axis");
+    Base::InterpreterSingleton::addType(&Base::CrashReportPy::Type, pAppModule, "CrashReport");
+    Base::InterpreterSingleton::addType(&Base::CrashFramePy::Type, pAppModule, "CrashFrame");
 
     // Note: Create an own module 'Base' which should provide the python
     // binding classes from the base module. At a later stage we should
@@ -509,6 +498,7 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&PropertyContainerPy::Type, pAppModule, "PropertyContainer");
     Base::InterpreterSingleton::addType(&ExtensionContainerPy::Type, pAppModule, "ExtensionContainer");
     Base::InterpreterSingleton::addType(&DocumentPy::Type, pAppModule, "Document");
+    Base::InterpreterSingleton::addType(&DocumentSettingsPy::Type, pAppModule, "DocumentSettings");
     Base::InterpreterSingleton::addType(&DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::InterpreterSingleton::addType(&DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::InterpreterSingleton::addType(&GeoFeaturePy::Type, pAppModule, "GeoFeature");
@@ -520,6 +510,10 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&GeoFeatureGroupExtensionPy::Type, pAppModule, "GeoFeatureGroupExtension");
     Base::InterpreterSingleton::addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
     Base::InterpreterSingleton::addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
+
+    Base::ParameterGrpPy::init_type();
+    Base::InterpreterSingleton::addType(Base::ParameterGrpPy::type_object(),
+        pAppModule, "ParameterGrp");
 
     //insert Base and Console
     Py_INCREF(pBaseModule);
@@ -535,11 +529,12 @@ void Application::setupPythonTypes()
     //insert Units module
     static struct PyModuleDef UnitsModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "Units", "The Unit API", -1,
-        Base::UnitsApi::Methods,
+        "Units", Base::UnitsModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
+    Base::UnitsModulePy::addModuleMethods(pUnitsModule);
     Base::InterpreterSingleton::addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
     // make sure to set the 'nb_true_divide' slot
     Base::InterpreterSingleton::addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
@@ -554,6 +549,7 @@ void Application::setupPythonTypes()
     Base::Vector2dPy::init_type();
     Base::InterpreterSingleton::addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+
     // clang-format on
 }
 
@@ -729,12 +725,7 @@ Document* Application::getDocument(const char *Name) const
 }
 Document* Application::getDocumentOrActive(const char *Name) const
 {
-    if (!Base::Tools::isNullOrEmpty(Name)) {
-        return getDocument(Name);
-    }
-    else {
-        return getActiveDocument();
-    }
+    return !Base::Tools::isNullOrEmpty(Name) ? getDocument(Name) : getActiveDocument();
 }
 
 const char * Application::getDocumentName(const Document* doc) const
@@ -818,6 +809,15 @@ bool Application::isAsyncRecomputeEnabled()
     );
     bool enableAsyncRecompute = hGrp->GetBool("EnableAsyncRecompute", true);
     return enableAsyncRecompute;
+}
+
+bool Application::isFineGrainedRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute", true);
+    return enableFineGrainedRecompute;
 }
 
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
@@ -1044,7 +1044,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -1052,7 +1052,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: {} [{}]\n", name, e.what());
             }
             catch (...) {
                 if (errs) {
@@ -1154,10 +1154,10 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
-        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
+        Base::Console().log("{} restore time: {}\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("{} postprocess time: {}\n", doc.getDocumentName(), timing.d2.count());
     }
-    PropertyLinkBase::updateAllElementReferences();
+    PropertyLinkBase::updateAllElementReferences(openedDocs);
     _isRestoring = false;
 
     signalFinishOpenDocument();
@@ -1342,19 +1342,18 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-int64_t Application::applicationPid()
+int64_t Application::uniqueInstanceId()
 {
-    static int64_t randomNumber = []() {
+    static int64_t uniqueId = []() {
         const auto tp = std::chrono::high_resolution_clock::now();
         const auto dur = tp.time_since_epoch();
-        const auto seed = dur.count();
-        std::mt19937 generator(static_cast<unsigned>(seed));
-        constexpr int64_t minValue {1};
-        constexpr int64_t maxValue {1000000};
-        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
-        return distribution(generator);
+        // Mix up the bits. Smallest implementation of a xorshift64 there is.
+        auto hash = static_cast<int64_t>(dur.count());
+        hash ^= hash << 7;
+        hash ^= hash >> 9;
+        return hash & 0x7FFFFFFFFFFFFFFFULL;
     }();
-    return randomNumber;
+    return uniqueId;
 }
 
 std::string Application::getHomePath()
@@ -1375,15 +1374,12 @@ std::string Application::getNameWithVersion()
     auto minor = config["BuildVersionMinor"];
     auto point = config["BuildVersionPoint"];
     auto suffix = config["BuildVersionSuffix"];
-    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
+    return std::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 bool Application::isDevelopmentVersion()
 {
-    static std::string suffix = []() constexpr {
-        return FCVersionSuffix;
-    }();
-    return suffix == "dev";
+    return Base::FCVersionInfo::IsDevelopmentVersion();
 }
 
 const std::unique_ptr<ApplicationDirectories>& Application::directories() {
@@ -1728,7 +1724,7 @@ namespace {
     // Given a description string and a list of extensions, construct a type string that Qt's file
     // dialogs will recognize
     void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
-        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+        description = std::format("{} (*.{})", description, Base::Tools::joinFormatted(extensions, " *."));
     }
 }
 
@@ -2021,9 +2017,9 @@ void Application::destruct()
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().log("Saving %s...\n", it.first.c_str());
+                Base::Console().log("Saving {}...\n", it.first);
                 it.second->SaveDocument();
-                Base::Console().log("Saving %s...done\n", it.first.c_str());
+                Base::Console().log("Saving {}...done\n", it.first);
             }
         }
     }
@@ -2114,12 +2110,22 @@ void initExceptions()
 void Application::init(int argc, char ** argv)
 {
     try {
+        // Establish the initial Base snapshot before application or GUI preferences can override it.
+        Base::publishNumericLocaleContext(
+            Base::createNumericLocaleContext()
+        );
+
         Base::SystemHandler::installNewHandler();
         Base::SystemHandler::installSegfaultHandler();
 
         initTypes();
 
         initConfig(argc,argv);
+
+        // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
+        // things that might crash...
+        initCrashReporter();
+
         initApplication();
         initExceptions();
     }
@@ -2162,6 +2168,7 @@ void Application::initTypes()
     App::PropertyPercent            ::init();
     App::PropertyEnumeration        ::init();
     App::PropertyIntegerList        ::init();
+    App::PropertyIntPairList        ::init();
     App::PropertyIntegerSet         ::init();
     App::PropertyMap                ::init();
     App::PropertyString             ::init();
@@ -2240,6 +2247,8 @@ void Application::initTypes()
     App::PropertyFrequency                  ::init();
     App::PropertyForce                      ::init();
     App::PropertyHeatFlux                   ::init();
+    App::PropertyMassMomentOfInertia        ::init();
+    App::PropertyAreaMomentOfInertia        ::init();
     App::PropertyInverseArea                ::init();
     App::PropertyInverseLength              ::init();
     App::PropertyInverseVolume              ::init();
@@ -2430,8 +2439,8 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     ("log-file", boost::program_options::value<std::string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", boost::program_options::value<std::string>(),"User config file to load/save user settings")
     ("system-cfg,s", boost::program_options::value<std::string>(),"System config file to load/save system settings")
-    ("run-test,t", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
-    ("run-open,r", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
+    ("run-test,t", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -t for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.")
+    ("run-open,r", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -r for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional module paths")
     ("macro-path,E", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional macro paths")
     ("python-path,P", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional python paths")
@@ -2658,15 +2667,32 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     }
 
     if (vm.contains("run-test") || vm.contains("run-open")) {
-        std::string testCase = vm.contains("run-open") ? vm["run-open"].as<std::string>() : vm["run-test"].as<std::string>();
+        std::vector<std::string> testCases;
+        bool runAll = false;
+        bool printAll = false;
+        for (const char* key : {"run-open", "run-test"}) {
+            if (vm.contains(key)) {
+                auto v = vm[key].as<std::vector<std::string>>();
+                for (const auto& s : v) {
+                    if (s == "0") {
+                        runAll = true;
+                    }
+                    else if (s.empty()) {
+                        printAll = true;
+                    }
+                }
+                testCases.insert(testCases.end(), v.begin(), v.end());
+            }
+        }
 
-        if ( "0" == testCase) {
-            testCase = "TestApp.All";
+        if (printAll) {
+            testCases = {"TestApp.PrintAll"};
         }
-        else if (testCase.empty()) {
-            testCase = "TestApp.PrintAll";
+        else if (runAll) {
+            testCases = {"TestApp.All"};
         }
-        mConfig["TestCase"] = std::move(testCase);
+
+        mConfig["TestCase"] = boost::join(testCases, ",");
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         mConfig["ExitTests"] = vm.contains("run-open") ? "no" : "yes";
@@ -2724,23 +2750,26 @@ void Application::initConfig(int argc, char ** argv)
     // only for 'BuildVersionMajor'.
     if (Application::Config().find("BuildVersionMajor") == Application::Config().end()) {
         std::stringstream str;
-        str << FCVersionMajor
-            << "." << FCVersionMinor
-            << "." << FCVersionPoint;
+        str << Base::FCVersionInfo::VersionMajor()
+            << "." << Base::FCVersionInfo::VersionMinor()
+            << "." << Base::FCVersionInfo::VersionPoint();
         Application::Config()["ExeVersion"         ] = str.str();
-        Application::Config()["BuildVersionMajor"  ] = FCVersionMajor;
-        Application::Config()["BuildVersionMinor"  ] = FCVersionMinor;
-        Application::Config()["BuildVersionPoint"  ] = FCVersionPoint;
-        Application::Config()["BuildVersionSuffix" ] = FCVersionSuffix;
-        Application::Config()["BuildRevision"      ] = FCRevision;
-        Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
-        Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
-#if defined(FCRepositoryHash)
-        Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
-#endif
-#if defined(FCRepositoryBranch)
-        Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
-#endif
+        Application::Config()["BuildVersionMajor"  ] = Base::FCVersionInfo::VersionMajor();
+        Application::Config()["BuildVersionMinor"  ] = Base::FCVersionInfo::VersionMinor();
+        Application::Config()["BuildVersionPoint"  ] = Base::FCVersionInfo::VersionPoint();
+        Application::Config()["BuildVersionSuffix" ] = Base::FCVersionInfo::VersionSuffix();
+        Application::Config()["BuildRevision"      ] = Base::FCVersionInfo::Revision();
+        Application::Config()["BuildRepositoryURL" ] = Base::FCVersionInfo::RepositoryURL();
+        Application::Config()["BuildRevisionDate"  ] = Base::FCVersionInfo::RevisionDate();
+        if (auto hash = Base::FCVersionInfo::RepositoryHash(); !hash.empty()) {
+            Application::Config()["BuildRevisionHash"] = hash;
+        }
+        if (auto branch = Base::FCVersionInfo::RepositoryBranch(); !branch.empty()) {
+            Application::Config()["BuildRevisionBranch"] = branch;
+        }
+        if (auto type = Base::FCVersionInfo::BuildType(); !type.empty()) {
+            Application::Config()["BuildType"] = type;
+        }
     }
 
     _argc = argc;
@@ -2803,7 +2832,6 @@ void Application::initConfig(int argc, char ** argv)
 
         auto moduleName = "FreeCAD";
         PyImport_AddModule(moduleName);
-        ApplicationMethods = ApplicationPy::Methods;
         PyObject *pyModule = init_freecad_module();
         PyDict_SetItemString(sysModules, moduleName, pyModule);
         Py_DECREF(pyModule);
@@ -2851,24 +2879,24 @@ void Application::initConfig(int argc, char ** argv)
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
-                              mConfig["ExeName"].c_str(),
-                              mConfig["ExeVersion"].c_str(),
-                              mConfig["BuildVersionMajor"].c_str(),
-                              mConfig["BuildVersionMinor"].c_str(),
-                              mConfig["BuildVersionPoint"].c_str(),
-                              mConfig["BuildVersionSuffix"].c_str(),
-                              mConfig["BuildRevision"].c_str(),
-                              mConfig["CopyrightInfo"].c_str());
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n{}",
+                              mConfig["ExeName"],
+                              mConfig["ExeVersion"],
+                              mConfig["BuildVersionMajor"],
+                              mConfig["BuildVersionMinor"],
+                              mConfig["BuildVersionPoint"],
+                              mConfig["BuildVersionSuffix"],
+                              mConfig["BuildRevision"],
+                              mConfig["CopyrightInfo"]);
         else
-            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n",
-                              mConfig["ExeName"].c_str(),
-                              mConfig["ExeVersion"].c_str(),
-                              mConfig["BuildVersionMajor"].c_str(),
-                              mConfig["BuildVersionMinor"].c_str(),
-                              mConfig["BuildVersionPoint"].c_str(),
-                              mConfig["BuildVersionSuffix"].c_str(),
-                              mConfig["BuildRevision"].c_str());
+            Base::Console().message("{} {}, Libs: {}.{}.{}{}R{}\n",
+                              mConfig["ExeName"],
+                              mConfig["ExeVersion"],
+                              mConfig["BuildVersionMajor"],
+                              mConfig["BuildVersionMinor"],
+                              mConfig["BuildVersionPoint"],
+                              mConfig["BuildVersionSuffix"],
+                              mConfig["BuildRevision"]);
 
         if (SafeMode::SafeModeEnabled()) {
             Base::Console().message("FreeCAD is running in _SAFE_MODE_.\n"
@@ -2949,12 +2977,17 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
+    mConfig["COIN3D_VERSION"] = fcCoin3dVersion;
+    mConfig["COIN3D_SOURCE"] = fcCoin3dSource;
+    mConfig["PIVY_VERSION"] = fcPivyVersion;
+    mConfig["PIVY_SOURCE"] = fcPivySource;
     mConfig["EIGEN_VERSION"] = fcEigen3Version;
     mConfig["PYSIDE_VERSION"] = fcPysideVersion;
 #ifdef SMESH_VERSION_STR
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
 #endif
     mConfig["XERCESC_VERSION"] = fcXercescVersion;
+    mConfig["CLIPPER2_VERSION"] = fcClipper2Version;
 
 
     logStatus();
@@ -2969,6 +3002,26 @@ void Application::SaveEnv(const char* s)
 {
     if (auto c = getenvUTF8(s)) {
         mConfig[s] = c.value();
+    }
+}
+
+void Application::initCrashReporter()
+{
+    // Make sure anything that escapes doesn't abort startup: this is non-fatal
+    try {
+        const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
+        Base::CrashReporter::Writer::prewarm();
+        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(
+            crashReportsDirectory,
+            {},
+            App::ProgramInformation::prettyProductInfoWrapper());
+    } catch (Base::Exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n{}\n", e.getMessage());
+    } catch (std::exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n{}\n", e.what());
+    } catch (...) {
+        Base::Console().warning("Crash reporting failed during startup\n");
     }
 }
 
@@ -3042,11 +3095,11 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (auto cannonicalPath = file.getCannonicalPath()) {
                 file = Base::FileInfo(*cannonicalPath);
             } else {
-                Base::Console().error("Failed to process symlink file: %s\n", file.filePath());
+                Base::Console().error("Failed to process symlink file: {}\n", file.filePath());
             }
         }
 
-        Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().log("Init:     Processing file: {}\n",file.filePath());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("fcbak")
@@ -3082,10 +3135,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().log("Command line open: {}.open(u\"{}\")\n",mods.front(),escapedstr);
                 }
                 else if (file.exists()) {
-                    Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().warning("File format not supported: {} \n", file.filePath());
                 }
             }
         }
@@ -3093,10 +3146,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().error("Exception while processing file: {} [{}]\n", file.filePath(), e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().error("Unknown exception while processing file: {} \n", file.filePath());
         }
     }
 
@@ -3138,14 +3191,14 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().warning("File format not supported: %s \n", output.c_str());
+                Base::Console().warning("File format not supported: {} \n", output);
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().error("Exception while saving to file: {} [{}]\n", output, e.what());
         }
         catch (...) {
-            Base::Console().error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().error("Unknown exception while saving to file: {} \n", output);
         }
     }
 }
@@ -3169,7 +3222,7 @@ void Application::runApplication()
         Base::Console().log("Exiting on purpose\n");
     }
     else {
-        Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().log("Unknown Run mode ({}) in main()?!?\n\n", mConfig["RunMode"]);
     }
 }
 
@@ -3219,10 +3272,10 @@ void Application::logStatus()
 {
     const std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().log("Time = %s\n", time_str.c_str());
+    Base::Console().log("Time = {}\n", time_str);
 
     for (const auto & It : mConfig) {
-        Base::Console().log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().log("{} = {}\n", It.first, It.second);
     }
 }
 
@@ -3255,9 +3308,9 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
-                              e.what(), mConfig["SystemParameter"].c_str());
+                              e.what(), mConfig["SystemParameter"]);
         _pcSysParamMngr->CreateDocument();
     }
 
@@ -3265,17 +3318,9 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            const auto it = mConfig.find("UserParameterTemplate");
-            if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
-                }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
-                }
+            const char* userParamPath = getUserParameterTemplatePath();
+            if (userParamPath) {
+                _pcUserParamMngr->LoadDocument(userParamPath);
             }
 
             // Configuration file optional when using as Python module
@@ -3289,11 +3334,29 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().error("%s in file %s.\n"
+        Base::Console().error("{} in file {}.\n"
                               "Continue with an empty configuration.\n",
-                              e.what(), mConfig["UserParameter"].c_str());
+                              e.what(), mConfig["UserParameter"]);
         _pcUserParamMngr->CreateDocument();
     }
+}
+
+const char* Application::getUserParameterTemplatePath()
+{
+    const auto it = mConfig.find("UserParameterTemplate");
+    if (it != mConfig.end()) {
+        QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        const QFileInfo fi(path);
+        if (fi.exists()) {
+            const char* templatePath = path.toUtf8().constData();
+            return templatePath;
+        }
+    }
+    return nullptr;
 }
 
 #if defined(_MSC_VER) && BOOST_VERSION < 108200

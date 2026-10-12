@@ -22,7 +22,7 @@ import FreeCADGui
 import os
 import importlib
 import sys
-from PySide2 import QtGui
+from PySide6 import QtGui
 
 
 def init_gui():

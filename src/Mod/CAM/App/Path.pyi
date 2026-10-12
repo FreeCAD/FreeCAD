@@ -3,9 +3,11 @@
 from __future__ import annotations
 from typing import Any, Final, overload, Union
 
+from Base.BoundBox import BoundBox
 from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 
+from .Area import Area
 from .Command import Command
 
 @export(
@@ -49,7 +51,7 @@ class Path(Persistence):
         """sets the contents of the path from a gcode string"""
         ...
 
-    def getClearedArea(self) -> Any:
+    def getClearedArea(self, diameter: float, zmax: float, bbox: BoundBox, /) -> Area:
         """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
         ...
 
@@ -64,10 +66,8 @@ class Path(Persistence):
         ...
 
     @constmethod
-    def getCycleTime(
-        self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /
-    ) -> float:
-        """return the cycle time estimation for this path in s"""
+    def getCycleTime(self, h_feed: float, v_feed: float, rapid: float, /) -> float:
+        """Return the cycle time estimation for this path in s. Parameter F from command overrides feeds from arguments."""
         ...
     Length: Final[float]
     """the total length of this path in mm"""

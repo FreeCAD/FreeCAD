@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -38,7 +40,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Quad8",
         "constraints": ["fixed", "force"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }

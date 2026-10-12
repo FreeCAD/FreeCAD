@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 IF (BUILD_GUI)
-    PYSIDE_WRAP_RC(OpenSCAD_QRC_SRCS Resources/OpenSCAD.qrc)
+    PYSIDE_WRAP_RC(
+        RELATIVE OpenSCAD_QRC_SRCS_REL
+        ABSOLUTE OpenSCAD_QRC_SRCS
+        RESOURCES Resources/OpenSCAD.qrc
+    )
 ENDIF (BUILD_GUI)
 
 SET(OpenSCAD_SRCS
@@ -68,7 +72,8 @@ SET(OpenSCADGuiIcon_SVG
 )
 
 ADD_CUSTOM_TARGET(OpenSCAD ALL
-    SOURCES ${all_files} ${OpenSCAD_QRC_SRCS} ${OpenSCADGuiIcon_SVG}
+    DEPENDS ${OpenSCAD_QRC_SRCS}
+    SOURCES ${all_files} ${OpenSCADGuiIcon_SVG}
 )
 
 ADD_CUSTOM_TARGET(OpenSCADTests ALL
@@ -83,9 +88,9 @@ fc_copy_sources(OpenSCADTests "${CMAKE_BINARY_DIR}/Mod/OpenSCAD" ${OpenSCADTests
 
 IF (BUILD_GUI)
     fc_target_copy_resource(OpenSCAD
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/OpenSCAD
-        OpenSCAD_rc.py)
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        "${CMAKE_BINARY_DIR}/Mod/OpenSCAD"
+        ${OpenSCAD_QRC_SRCS_REL})
 ENDIF (BUILD_GUI)
 
 INSTALL(

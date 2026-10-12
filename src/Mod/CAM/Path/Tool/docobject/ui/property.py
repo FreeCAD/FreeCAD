@@ -30,6 +30,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui, QtCore
 from typing import Optional
+from ...toolbit.util import at_tool_precision
 
 
 class BasePropertyEditorWidget(QtGui.QWidget):
@@ -120,18 +121,21 @@ class QuantityPropertyEditorWidget(BasePropertyEditorWidget):
 
     def updateWidget(self):
         value: FreeCAD.Units.Quantity = self._obj.getPropertyByName(self._prop_name)
-        # Block signals temporarily to prevent feedback loops
+        # Block signals temporarily to prevent feedback loops. A value
+        # at_tool_precision rejects would otherwise leave them blocked for good.
         self._editor_widget.blockSignals(True)
-        self._editor_widget.setProperty("value", value)
-        self._editor_widget.blockSignals(False)
+        try:
+            self._editor_widget.setProperty("value", at_tool_precision(value))
+        finally:
+            self._editor_widget.blockSignals(False)
         self._editor_widget.setEnabled(not self._is_read_only)
 
     def updateProperty(self):
         current_value = self._obj.getPropertyByName(self._prop_name)
-        new_value_str: str = self._editor_widget.property("value").UserString
-        new_value = FreeCAD.Units.Quantity(new_value_str)
-        if new_value_str != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+        # Via UserString this would round to the decimals on display.
+        new_value = self._editor_widget.property("value")
+        if new_value != current_value:
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
 
@@ -160,7 +164,7 @@ class BoolPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: bool = self._obj.getPropertyByName(self._prop_name)
         new_value: bool = bool(index)
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
     def updateProperty(self):
@@ -191,7 +195,7 @@ class IntPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: int = self._obj.getPropertyByName(self._prop_name)
         new_value: int = self._editor_widget.value()
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
 
@@ -231,7 +235,7 @@ class EnumPropertyEditorWidget(BasePropertyEditorWidget):
         current_value: str = self._obj.getPropertyByName(self._prop_name)
         new_value: str = self._editor_widget.itemText(index)
         if new_value != current_value:
-            self._obj.setPropertyByName(self._prop_name, new_value)
+            setattr(self._obj, self._prop_name, new_value)
             self.propertyChanged.emit()
 
     def updateProperty(self):

@@ -1128,7 +1128,11 @@ void DlgMacroExecuteImp::onAddonsButtonClicked()
  */
 void DlgMacroExecuteImp::onFolderButtonClicked()
 {
-    QString path = QString::fromStdString(App::Application::getUserMacroDir());
+    std::string macroDir = App::GetApplication()
+                               .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                               ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+    std::ranges::replace(macroDir, '/', PATHSEP);
+    QString path = QString::fromStdString(macroDir);
     QUrl url = QUrl::fromLocalFile(path);
     QDesktopServices::openUrl(url);
 }

@@ -1,28 +1,25 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2021 Russell Johnson (russ4262) <russ4262@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
+import Constants
 import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
@@ -228,9 +225,9 @@ class TestPathAdaptive(PathTestBase):
         for result in results:
             self.checkAdaptiveErrors(result)
 
-        # Return total cleared area and the configured instance
+        # Return total cleared area, the configured instance, and raw results
         total_cleared = sum(r.ClearedArea for r in results)
-        return total_cleared, a2d
+        return total_cleared, a2d, results
 
     def _calculateCornerUnclearableArea(self, tool_diameter):
         """Calculate unclearable area in a single corner due to circular tool."""
@@ -243,7 +240,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive clearing
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, results = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d
         )
 
@@ -251,7 +248,11 @@ class TestPathAdaptive(PathTestBase):
         corner_unclearable_area = self._calculateCornerUnclearableArea(a2d.toolDiameter)
         total_unclearable_area = 4 * corner_unclearable_area
         expected_area = dims["path_width"] * dims["path_height"] - total_unclearable_area
-        delta = corner_unclearable_area / 2.0
+        # allowed perimeter_error = the area error from the perimeter being offset by 1 on each side
+        perimeter_error = (
+            (dims["path_width"] * 2 + dims["path_height"] * 2) * 2 / results[0].clipperScale
+        )
+        delta = corner_unclearable_area / 2.0 + perimeter_error
         self.assertAlmostEqual(
             total_cleared,
             expected_area,
@@ -296,7 +297,7 @@ class TestPathAdaptive(PathTestBase):
         ]
 
         # Execute adaptive clearing with pre-cleared area
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d, clearedArea
         )
 
@@ -345,7 +346,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive clearing outside
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ClearingOutside, stockPath2d, path2d
         )
 
@@ -368,7 +369,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 40.0, 40.0)
 
         # Execute adaptive profiling
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ProfilingInside, stockPath2d, path2d, stepOverFactor=0.5
         )
 
@@ -416,7 +417,7 @@ class TestPathAdaptive(PathTestBase):
         stockPath2d, path2d, dims = self._createRectangleGeometry(50.0, 50.0, 15.0, 15.0)
 
         # Execute adaptive profiling
-        total_cleared, a2d = self._executeAdaptive(
+        total_cleared, a2d, _ = self._executeAdaptive(
             area.AdaptiveOperationType.ProfilingOutside, stockPath2d, path2d, stepOverFactor=0.5
         )
 
@@ -476,14 +477,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -509,14 +509,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -536,14 +535,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = True
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -576,14 +574,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -618,14 +615,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -660,14 +656,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -702,14 +697,13 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            20.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -762,19 +756,14 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        adaptive.StepDown.Value = (
-            5.0  # Have to set expression to None before numerical value assignment
-        )
-        # Don't use helix entry- ensures helix moves are counted in the path
-        # boundary calculation. This should be unnecessary, as the helices are
-        # grown out of the cut area, and thus must be inside of it.
-        adaptive.UseHelixArcs = False
+        adaptive.StepDown.Value = 5.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -785,7 +774,7 @@ class TestPathAdaptive(PathTestBase):
         # - bounding box at Z=5 stays within Face10
         # - No toolpaths at Z=0
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_LINE]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -831,16 +820,15 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 10)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
-        adaptive.StepDown.Value = (
-            5.0  # Have to set expression to None before numerical value assignment
-        )
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 5.0
         # Add some Z stock to leave so we avoid Face3 in this stepdown at Z=10
-        adaptive.setExpression("ZStockToLeave", None)
+        adaptive.clearExpression("ZStockToLeave")
         adaptive.ZStockToLeave.Value = 1
 
         _addViewProvider(adaptive)
@@ -864,7 +852,10 @@ class TestPathAdaptive(PathTestBase):
         foffset = self.doc.Fusion.Shape.getElement("Face3").makeOffset2D(moffset)
         # NOTE: Face3 is at Z=10, and the only feed moves will be at Z=10
         lastpt = FreeCAD.Vector(0, 0, 10)
-        for p in [c.Parameters for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]:
+        parameters = [
+            c.Parameters for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_STRAIGHT
+        ]
+        for p in parameters:
             pt = FreeCAD.Vector(lastpt)
             if "X" in p:
                 pt.x = p.get("X")
@@ -892,19 +883,14 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        adaptive.StepDown.Value = (
-            5.0  # Have to set expression to None before numerical value assignment
-        )
-        # Don't use helix entry- ensures helix moves are counted in the path
-        # boundary calculation. This should be unnecessary, as the helices are
-        # grown out of the cut area, and thus must be inside of it.
-        adaptive.UseHelixArcs = False
+        adaptive.StepDown.Value = 5.0
 
         _addViewProvider(adaptive)
         self.doc.recompute()
@@ -919,7 +905,7 @@ class TestPathAdaptive(PathTestBase):
         # - [Should maybe check] At least one move Z = [10,5] is within the model
         # - [Should maybe check] No moves at Z = 0 are within the model
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G0", "G00", "G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_LINE]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -973,19 +959,14 @@ class TestPathAdaptive(PathTestBase):
         # Set additional operation properties
         setDepthsAndHeights(adaptive, 15, 5)
         adaptive.FinishingProfile = False
-        adaptive.HelixAngle = 75.0
+        adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
-        adaptive.setExpression("StepDown", None)
+        # Have to clear expression before numerical value assignment
+        adaptive.clearExpression("StepDown")
         adaptive.ModelAwareExperiment = True
-        adaptive.StepDown.Value = (
-            5.0  # Have to set expression to None before numerical value assignment
-        )
-        # Don't use helix entry- ensures helix moves are counted in the path
-        # boundary calculation. This should be unnecessary, as the helices are
-        # grown out of the cut area, and thus must be inside of it.
-        adaptive.UseHelixArcs = False
+        adaptive.StepDown.Value = 5.0
 
         # Create and assign new stock that will create different bounds at
         # different stepdowns
@@ -1001,7 +982,7 @@ class TestPathAdaptive(PathTestBase):
         # - Bounding box at Z=10 does not cut the region to the right
         # - Bounding box at Z=5 and Z=0 are outside of stock
 
-        paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
+        paths = [c for c in adaptive.Path.Commands if c.Name in Constants.GCODE_MOVE_STRAIGHT]
         toolr = adaptive.OpToolDiameter.Value / 2
         tol = adaptive.Tolerance
 
@@ -1089,18 +1070,23 @@ def getPathBoundaries(paths, zLevels):
     return zDict
 
 
-def setDepthsAndHeights(op, strDep=20.0, finDep=0.0):
+def setDepthsAndHeights(op, strDep=20.0, finDep=0.0, safHgt=None, clrHgt=None):
     """setDepthsAndHeights(op, strDep=20.0, finDep=0.0)... Sets default depths and heights for `op` passed to it"""
 
     # Set start and final depth in order to eliminate effects of stock (and its default values)
-    op.setExpression("StartDepth", None)
+    op.clearExpression("StartDepth")
     op.StartDepth.Value = strDep
-    op.setExpression("FinalDepth", None)
+    op.clearExpression("FinalDepth")
     op.FinalDepth.Value = finDep
 
     # Set step down so as to only produce one layer path
-    op.setExpression("StepDown", None)
+    op.clearExpression("StepDown")
     op.StepDown.Value = 20.0
+
+    op.clearExpression("SafeHeight")
+    op.SafeHeight = safHgt if safHgt is not None else op.StartDepth.Value + 1
+    op.clearExpression("ClearanceHeight")
+    op.ClearanceHeight = clrHgt if clrHgt is not None else op.SafeHeight.Value + 1
 
     # Set Heights
     # default values used
@@ -1114,30 +1100,38 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
     # NOTE: Can NOT just check "if p.get("X")" or similar- that chokes when X is
     # zero. That becomes especially obvious when Z=0, and moves end up on the
     # wrong depth
-    gcode_list = list()
+    def _round(value, decimals):
+        rval = round(value, decimals)
+        if rval == 0:
+            rval = 0.0  # exclude value -0.0
+        return rval
+
+    gcode_list = []
     last = FreeCAD.Vector(0.0, 0.0, 0.0)
     for c in cmdList:
         p = c.Parameters
         name = c.Name
-        if (includeRapids and name in ["G0", "G00"]) or (includeLines and name in ["G1", "G01"]):
+        if (includeRapids and name in Constants.GCODE_MOVE_RAPID) or (
+            includeLines and name in Constants.GCODE_MOVE_STRAIGHT
+        ):
             gcode = name
             x = last.x
             y = last.y
             z = last.z
             if "X" in p:
-                x = round(p["X"], 2)
+                x = _round(p["X"], 2)
             gcode += " X" + str(x)
             if "Y" in p:
-                y = round(p["Y"], 2)
+                y = _round(p["Y"], 2)
             gcode += " Y" + str(y)
             if "Z" in p:
-                z = round(p["Z"], 2)
+                z = _round(p["Z"], 2)
             gcode += " Z" + str(z)
             last.x = x
             last.y = y
             last.z = z
             gcode_list.append(gcode)
-        elif includeArcs and name in ["G2", "G3", "G02", "G03"]:
+        elif includeArcs and name in Constants.GCODE_MOVE_ARC:
             gcode = name
             x = last.x
             y = last.y
@@ -1146,23 +1140,23 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
             j = 0.0
             k = 0.0
             if "I" in p:
-                i = round(p["I"], 2)
+                i = _round(p["I"], 2)
             gcode += " I" + str(i)
             if "J" in p:
-                j = round(p["J"], 2)
+                j = _round(p["J"], 2)
             gcode += " J" + str(j)
             if "K" in p:
-                k = round(p["K"], 2)
+                k = _round(p["K"], 2)
             gcode += " K" + str(k)
 
             if "X" in p:
-                x = round(p["X"], 2)
+                x = _round(p["X"], 2)
             gcode += " X" + str(x)
             if "Y" in p:
-                y = round(p["Y"], 2)
+                y = _round(p["Y"], 2)
             gcode += " Y" + str(y)
             if "Z" in p:
-                z = round(p["Z"], 2)
+                z = _round(p["Z"], 2)
             gcode += " Z" + str(z)
 
             gcode_list.append(gcode)
@@ -1175,12 +1169,11 @@ def getGcodeMoves(cmdList, includeRapids=True, includeLines=True, includeArcs=Tr
 def pathOriginatesInBox(cmd, minPoint, maxPoint):
     p = cmd.Parameters
     name = cmd.Name
-    if name in ["G0", "G00", "G1", "G01"]:
-        if "X" in p and "Y" in p:
-            x = p.get("X")
-            y = p.get("Y")
-            if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
-                return True
+    if name in Constants.GCODE_MOVE_LINE and "X" in p and "Y" in p:
+        x = p.get("X")
+        y = p.get("Y")
+        if x > minPoint.x and y > minPoint.y and x < maxPoint.x and y < maxPoint.y:
+            return True
     return False
 
 

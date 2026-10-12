@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="64px" height="64px" viewBox="0 0 64 64" version="1.1"
+     id="CAM_FeedsSpeeds">
+  <defs id="defs">
+    <!-- Gray aluminium tool body: top-left light -> bottom-right shadow -->
+    <linearGradient id="toolGrad" x1="36" y1="8" x2="56" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="0.45" style="stop-color:#d3d7cf;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#888a85;stop-opacity:1"/>
+    </linearGradient>
+    <!-- Top face of the cylinder -->
+    <linearGradient id="topGrad" x1="38" y1="8" x2="52" y2="14" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#b8bcb4;stop-opacity:1"/>
+    </linearGradient>
+    <clipPath id="bodyClip">
+      <path d="M 40,10 L 50,10 L 50,46 Q 50,49 47,49 L 43,49 Q 40,49 40,46 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============ SPEED LINES (green feed/motion, haloed double-stroke) ============ -->
+  <g stroke-linecap="round" fill="none">
+    <!-- dark-green halo underlay -->
+    <g stroke="#172a04" stroke-width="8">
+      <path d="M 8,20 L 34,20"/>
+      <path d="M 5,32 L 33,32"/>
+      <path d="M 8,44 L 34,44"/>
+    </g>
+    <!-- bright-green core -->
+    <g stroke="#73d216" stroke-width="4">
+      <path d="M 8,20 L 34,20"/>
+      <path d="M 5,32 L 33,32"/>
+      <path d="M 8,44 L 34,44"/>
+    </g>
+  </g>
+
+  <!-- ============ ENDMILL (vertical fluted tool, flat bottom) ============ -->
+  <!-- body (flat-bottom endmill) -->
+  <path d="M 40,10 L 50,10 L 50,46 Q 50,49 47,49 L 43,49 Q 40,49 40,46 Z"
+        style="fill:url(#toolGrad);stroke:#2e3436;stroke-width:2;stroke-linejoin:round;stroke-linecap:round"/>
+  <!-- diagonal flutes, clipped to body -->
+  <g clip-path="url(#bodyClip)" stroke="#2e3436" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85">
+    <path d="M 38,22 L 52,14"/>
+    <path d="M 38,30 L 52,22"/>
+    <path d="M 38,38 L 52,30"/>
+    <path d="M 38,46 L 52,38"/>
+  </g>
+  <!-- inner gloss highlight on the left edge -->
+  <path d="M 41.5,12 L 41.5,43" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+  <!-- top face ellipse (reads as a round cutter) -->
+  <ellipse cx="45" cy="10" rx="5" ry="2"
+           style="fill:url(#topGrad);stroke:#2e3436;stroke-width:2"/>
+</svg>

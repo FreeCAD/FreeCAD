@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -241,15 +243,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "R-tree",
                     "HXT",
                 ],
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyBool",
-                name="GroupsOfNodes",
-                group="Mesh Parameters",
-                doc="For each group create not only the elements but the nodes too",
-                value=True,
             )
         )
         prop.append(

@@ -372,6 +372,8 @@ class ObjectDressup:
         if not obj.Base.isDerivedFrom("Path::Feature"):
             return
 
+        PathDressup.placeWithBase(obj)
+
         if obj.Base.Path.Commands:
 
             firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
@@ -379,7 +381,7 @@ class ObjectDressup:
 
             queue = []
 
-            for curCommand in PathUtils.getPathWithPlacement(obj.Base).Commands:
+            for curCommand in obj.Base.Path.Commands:
                 replace = None
                 # don't worry about non-move commands, just add to output
                 if curCommand.Name not in movecommands + rapidcommands:
@@ -613,14 +615,14 @@ class CommandDressupDragknife:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.Dragknife.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.Dragknife.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
+        FreeCADGui.doCommand("base.Visibility = False")
         FreeCADGui.doCommand("obj.filterAngle = 20")
         FreeCADGui.doCommand("obj.offset = 2")
         FreeCADGui.doCommand("obj.pivotheight = 4")

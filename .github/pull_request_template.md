@@ -9,6 +9,27 @@ This template provides guidance on creating a PR that can be reviewed and approv
 Unless you know exactly what you're doing, please leave the checkbox 'Allow edits by maintainers' enabled.  This will allow maintainers to help you.
 -->
 
+<!--
+FreeCAD does not accept raw and unverified AI output in PRs and no AI output in issues, PRs and their comments.
+Please check the following box:
+-->
+
+- [ ] This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR is done by me personally.
+
+<!--
+If your work has been assisted by AI, please disclose the used technology in the PR description (in natural language) and with git trailers in the commit messages:
+
+Assisted-by [Model-Family] ([Version/ID])
+
+Examples:
+
+Assisted-by: gemini-2.5-pro (rev-1)
+Assisted-by: GPT-4o-2024-08-06
+
+The complete AI policy can be found in the root of the source tree (AI_POLICY.md) or at https://github.com/FreeCAD/FreeCAD/blob/main/AI_POLICY.md.
+-->
+
+
 ## Issues
 <!-- link to individual issues this PR closes by referencing the issue number (e.g., fixes #1234, closes #4321). -->
 

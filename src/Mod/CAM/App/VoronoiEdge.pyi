@@ -3,6 +3,7 @@
 from typing import Any, Final
 
 from Base.BaseClass import BaseClass
+from Part.TopoShapeEdge import TopoShapeEdge
 from Base.Metadata import constmethod, export
 
 @export(
@@ -56,7 +57,9 @@ class VoronoiEdge(BaseClass):
         ...
 
     @constmethod
-    def toShape(self) -> Any:
+    def toShape(
+        self, z0: float = 0.0, z1: float = 0.0, dbg: bool = False, /
+    ) -> TopoShapeEdge | None:
         """Returns a shape for the edge"""
         ...
 
@@ -66,7 +69,7 @@ class VoronoiEdge(BaseClass):
         ...
 
     @constmethod
-    def getSegmentAngle(self) -> Any:
+    def getSegmentAngle(self) -> float | None:
         """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
         ...
     Index: Final[int]

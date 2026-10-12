@@ -46,6 +46,15 @@
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
+namespace {
+
+QPointF getLocalPosition(const QMouseEvent* event)
+{
+  return event->position();
+}
+
+}
+
 class EventFilterP {
 public:
   QList<InputDevice *> devices;
@@ -66,15 +75,12 @@ public:
   void trackPointerPosition(QMouseEvent * event)
   {
     assert(this->windowsize[1] != -1);
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
     this->globalmousepos = event->globalPosition().toPoint();
-#else
-    this->globalmousepos = event->globalPos();
-#endif
 
-    SbVec2s mousepos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
-    // the following corrects for high-dpi displays (e.g. mac retina)
-    mousepos *= quarterwidget->devicePixelRatio();
+    SbVec2s mousepos = InputDevice::toDevicePixelPosition(
+        getLocalPosition(event),
+        this->windowsize,
+        quarterwidget->devicePixelRatio());
     Q_FOREACH(InputDevice * device, this->devices) {
       device->setMousePosition(mousepos);
     }

@@ -57,6 +57,7 @@ enum class MeasureElementType
     SURFACE,
     TORUS,
     SPHERE,
+    CONE,
 };
 
 
@@ -121,7 +122,7 @@ public:
     static const std::vector<MeasureType*> getMeasureTypes();
     static Py::Tuple getSelectionPy(const App::MeasureSelection& selection);
     static std::vector<MeasureType*> getValidMeasureTypes(App::MeasureSelection selection,
-                                                          std::string mode);
+                                                          std::string modeIdentifier);
 
 
 private:

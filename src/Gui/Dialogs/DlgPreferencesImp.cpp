@@ -49,6 +49,7 @@
 #include <QTimer>
 #include <QToolButton>
 #include <QToolTip>
+#include <QTextDocument>
 #include <QProcess>
 #include <QPushButton>
 #include <QWindow>
@@ -68,6 +69,7 @@
 #include "Dialogs/DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
 #include "BitmapFactory.h"
+#include "FuzzyMatcher.h"
 #include "MainWindow.h"
 #include "Tools.h"
 #include "WidgetFactory.h"
@@ -524,7 +526,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
             = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
+            Base::Console().warning("{} is not a preference page\n", pageName);
             return;
         }
 
@@ -550,11 +552,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
+        Base::Console().error("Base exception thrown for '{}'\n", pageName);
         e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '{}' ({})\n", pageName, e.what());
     }
 }
 
@@ -831,6 +833,13 @@ void DlgPreferencesImp::restoreDefaults()
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
         mgr->Clear();
 
+        // Restore the default preferences template if any
+        const char* templatePath = App::Application::getUserParameterTemplatePath();
+        if (templatePath) {
+            mgr->LoadDocument(templatePath);
+            restartRequired = true;  // the reloaded preferences are not applied until restart.
+        }
+
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
             ->SetBool("SaveUserParameter", saveParameter);
@@ -919,7 +928,7 @@ void DlgPreferencesImp::applyChanges()
                     ui->groupWidgetStack->setCurrentIndex(i);
                     pagesStackWidget->setCurrentIndex(j);
 
-                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromLatin1(e.what()));
+                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromLatin1(e.what()));
 
                     this->invalidParameter = true;
 
@@ -958,8 +967,8 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
-        QMessageBox restartBox(parentWidget());  // current window likely already closed, cant
-                                                 // parent to it
+        QMessageBox restartBox(parentWidget());  // current window likely already closed,
+                                                 // can't parent to it
 
         restartBox.setIcon(QMessageBox::Warning);
         restartBox.setWindowTitle(tr("Restart Required"));
@@ -1460,7 +1469,7 @@ void PreferencesSearchController::collectSearchResults(
 
     // First, check if the page display name itself matches (highest priority)
     int pageScore = 0;
-    if (fuzzyMatch(searchText, pageDisplayName, pageScore)) {
+    if (Gui::FuzzyMatcher::match(searchText, pageDisplayName, pageScore)) {
         SearchResult result {
             .groupName = groupName,
             .pageName = pageName,
@@ -1642,26 +1651,26 @@ void PreferencesSearchController::searchWidgetType(
     for (WidgetType* widget : widgets) {
         QString widgetText;
 
-        // Get text based on widget type
+        // Get text based on widget type and strip any rich text formatting
         if constexpr (std::is_same_v<WidgetType, QLabel>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QGroupBox>) {
-            widgetText = widget->title();
+            widgetText = toPlainText(widget->title());
         }
         else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QPushButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
 
         if (!widgetText.isEmpty()) {
             int score = 0;
-            if (fuzzyMatch(searchText, widgetText, score)) {
+            if (Gui::FuzzyMatcher::match(searchText, widgetText, score)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
@@ -1677,16 +1686,17 @@ void PreferencesSearchController::searchWidgetType(
             }
         }
 
-        // search tooltip text for all widget types
-        QString tooltip = widget->toolTip();
-        if (!tooltip.isEmpty()) {
+        // normalise text and search tooltip text for all widget types
+        QString plainTooltip = toPlainText(widget->toolTip());
+        if (!plainTooltip.isEmpty()) {
+
             int tooltipScore = 0;
-            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+            if (Gui::FuzzyMatcher::match(searchText, plainTooltip, tooltipScore)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
                     .widget = widget,
-                    .matchText = QStringLiteral("Tooltip: ") + tooltip,
+                    .matchText = QStringLiteral("Tooltip: ") + plainTooltip,
                     .groupBoxName = findGroupBoxForWidget(widget),
                     .tabName = tabName,
                     .pageDisplayName = pageDisplayName,
@@ -1713,10 +1723,10 @@ void PreferencesSearchController::searchWidgetType(
             }
 
             for (int i = 0; i < widget->count(); ++i) {
-                QString itemText = widget->itemText(i);
+                QString itemText = toPlainText(widget->itemText(i));
                 if (!itemText.isEmpty()) {
                     int itemScore = 0;
-                    if (fuzzyMatch(searchText, itemText, itemScore)) {
+                    if (Gui::FuzzyMatcher::match(searchText, itemText, itemScore)) {
                         SearchResult result {
                             .groupName = groupName,
                             .pageName = pageName,
@@ -1805,108 +1815,14 @@ void PreferencesSearchController::configurePopupSize()
     m_searchResultsList->move(globalPos);
 }
 
-// Fuzzy search implementation
-
-bool PreferencesSearchController::isExactMatch(const QString& searchText, const QString& targetText)
+QString PreferencesSearchController::toPlainText(const QString& text)
 {
-    return targetText.toLower().contains(searchText.toLower());
-}
-
-bool PreferencesSearchController::fuzzyMatch(
-    const QString& searchText,
-    const QString& targetText,
-    int& score
-)
-{
-    if (searchText.isEmpty()) {
-        score = 0;
-        return true;
+    if (Qt::mightBeRichText(text)) {
+        QTextDocument doc;
+        doc.setHtml(text);
+        return doc.toPlainText();
     }
-
-    const QString lowerSearch = searchText.toLower();
-    const QString lowerTarget = targetText.toLower();
-
-    // First check for exact substring match (highest score)
-    if (lowerTarget.contains(lowerSearch)) {
-        // Score based on how early the match appears and how much of the string it covers
-        int matchIndex = lowerTarget.indexOf(lowerSearch);
-        int coverage = (lowerSearch.length() * 100) / lowerTarget.length();  // Percentage coverage
-        score = 1000 - matchIndex + coverage;  // Higher score for earlier matches and better coverage
-        return true;
-    }
-
-    // For fuzzy matching, require minimum search length to avoid too many false positives
-    if (lowerSearch.length() < 3) {
-        score = 0;
-        return false;
-    }
-
-    // Fuzzy matching: check if all characters appear in order
-    int searchIndex = 0;
-    int targetIndex = 0;
-    int consecutiveMatches = 0;
-    int maxConsecutive = 0;
-    int firstMatchIndex = -1;
-    int lastMatchIndex = -1;
-
-    while (searchIndex < lowerSearch.length() && targetIndex < lowerTarget.length()) {
-        if (lowerSearch[searchIndex] == lowerTarget[targetIndex]) {
-            if (firstMatchIndex == -1) {
-                firstMatchIndex = targetIndex;
-            }
-            lastMatchIndex = targetIndex;
-            searchIndex++;
-            consecutiveMatches++;
-            maxConsecutive = qMax(maxConsecutive, consecutiveMatches);
-        }
-        else {
-            consecutiveMatches = 0;
-        }
-        targetIndex++;
-    }
-
-    // Check if all search characters were found
-    if (searchIndex == lowerSearch.length()) {
-        // Calculate match density - how spread out are the matches?
-        int matchSpan = lastMatchIndex - firstMatchIndex + 1;
-        int density = (lowerSearch.length() * 100) / matchSpan;  // Characters per span
-
-        // Require minimum density - matches shouldn't be too spread out
-        if (density < 20) {  // Less than 20% density is too sparse
-            score = 0;
-            return false;
-        }
-
-        // Require minimum coverage of search term
-        int coverage = (lowerSearch.length() * 100) / lowerTarget.length();
-        if (coverage < 15 && lowerTarget.length() > 20) {  // For long strings, require better coverage
-            score = 0;
-            return false;
-        }
-
-        // Calculate score based on:
-        // - Match density (how compact the matches are)
-        // - Consecutive matches bonus
-        // - Coverage (how much of target string is the search term)
-        // - Position bonus (earlier matches are better)
-        int densityScore = qMin(density, 100);  // Cap at 100
-        int consecutiveBonus = (maxConsecutive * 30) / lowerSearch.length();
-        int coverageScore = qMin(coverage * 2, 100);        // Coverage is important
-        int positionBonus = qMax(0, 50 - firstMatchIndex);  // Earlier is better
-
-        score = densityScore + consecutiveBonus + coverageScore + positionBonus;
-
-        // Minimum score threshold for fuzzy matches
-        if (score < 80) {
-            score = 0;
-            return false;
-        }
-
-        return true;
-    }
-
-    score = 0;
-    return false;
+    return text;
 }
 
 void PreferencesSearchController::ensureSearchBoxFocus()
@@ -2017,11 +1933,7 @@ bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 
 bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint globalPos = mouseEvent->globalPos();
-#else
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
-#endif
     const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 

@@ -68,34 +68,32 @@ def writeUnits(ifcfile, unit="metre"):
     return ifcfile
 
 
-def writeQuantities(ifcfile, obj, product, history, scale):
+def writeQuantities(ifcfile, obj, product, history, scale, ifctype=None):
     "append quantities to the given object"
 
-    if hasattr(obj, "IfcData"):
-        quantities = []
-        if (
-            ("ExportHeight" in obj.IfcData)
-            and obj.IfcData["ExportHeight"]
-            and hasattr(obj, "Height")
-        ):
+    quantities = []
+    ifcdata = getattr(obj, "IfcData", {})
+    if ifcdata or (ifctype == "IfcBuildingStorey"):
+        export_height = False
+        if hasattr(obj, "Height"):
+            export_height = (ifctype == "IfcBuildingStorey") or (
+                ("ExportHeight" in ifcdata) and ifcdata["ExportHeight"]
+            )
+        if export_height:
             quantities.append(
                 ifcfile.createIfcQuantityLength("Height", None, None, obj.Height.Value * scale)
             )
-        if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj, "Width"):
+        if ("ExportWidth" in ifcdata) and ifcdata["ExportWidth"] and hasattr(obj, "Width"):
             quantities.append(
                 ifcfile.createIfcQuantityLength("Width", None, None, obj.Width.Value * scale)
             )
-        if (
-            ("ExportLength" in obj.IfcData)
-            and obj.IfcData["ExportLength"]
-            and hasattr(obj, "Length")
-        ):
+        if ("ExportLength" in ifcdata) and ifcdata["ExportLength"] and hasattr(obj, "Length"):
             quantities.append(
                 ifcfile.createIfcQuantityLength("Length", None, None, obj.Length.Value * scale)
             )
         if (
-            ("ExportHorizontalArea" in obj.IfcData)
-            and obj.IfcData["ExportHorizontalArea"]
+            ("ExportHorizontalArea" in ifcdata)
+            and ifcdata["ExportHorizontalArea"]
             and hasattr(obj, "HorizontalArea")
         ):
             quantities.append(
@@ -104,8 +102,8 @@ def writeQuantities(ifcfile, obj, product, history, scale):
                 )
             )
         if (
-            ("ExportVerticalArea" in obj.IfcData)
-            and obj.IfcData["ExportVerticalArea"]
+            ("ExportVerticalArea" in ifcdata)
+            and ifcdata["ExportVerticalArea"]
             and hasattr(obj, "VerticalArea")
         ):
             quantities.append(
@@ -114,8 +112,8 @@ def writeQuantities(ifcfile, obj, product, history, scale):
                 )
             )
         if (
-            ("ExportVolume" in obj.IfcData)
-            and obj.IfcData["ExportVolume"]
+            ("ExportVolume" in ifcdata)
+            and ifcdata["ExportVolume"]
             and obj.isDerivedFrom("Part::Feature")
         ):
             quantities.append(

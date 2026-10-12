@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -92,7 +94,7 @@ void loadTechDrawResource()
         int rc = QFontDatabase::addApplicationFont(fontFile);
         if (rc < 0) {
             Base::Console().warning(
-                "TechDraw failed to load font file: %d from: %s\n", rc, qPrintable(fontFile));
+                "TechDraw failed to load font file: {} from: {}\n", rc, qPrintable(fontFile));
         }
     }
 }

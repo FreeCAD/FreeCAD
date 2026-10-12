@@ -44,6 +44,21 @@
         }
       },
       {
+        "name": "rel-with-deb-info",
+        "displayName": "RelWithDebInfo",
+        "description": "Default RelWithDebInfo profile",
+        "binaryDir": "${sourceDir}/build/relWithDebInfo",
+        "inherits": [
+          "common"
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "RelWithDebInfo"
+          }
+        }
+      },
+      {
         "name": "release",
         "displayName": "Release",
         "description": "Default release profile",
@@ -79,11 +94,11 @@
             "type": "BOOL",
             "value": "OFF"
           },
-          "FREECAD_USE_EXTERNAL_FMT": {
+          "FREECAD_USE_EXTERNAL_SMESH": {
             "type": "BOOL",
             "value": "ON"
           },
-          "FREECAD_USE_EXTERNAL_SMESH": {
+          "FREECAD_USE_EXTERNAL_JSON": {
             "type": "BOOL",
             "value": "ON"
           },
@@ -229,6 +244,16 @@
         ]
       },
       {
+        "name": "conda-rel-with-deb-info",
+        "hidden": true,
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "rel-with-deb-info",
+          "conda"
+        ]
+      },
+      {
         "name": "conda-release",
         "hidden": true,
         "displayName": "Conda Release",
@@ -236,7 +261,13 @@
         "inherits": [
           "release",
           "conda"
-        ]
+        ],
+        "cacheVariables": {
+            "FREECAD_WARN_ERROR": {
+            "type": "BOOL",
+            "value": "ON"
+          }
+        }
       },
       {
         "name": "conda-linux-debug",
@@ -244,6 +275,15 @@
         "description": "Conda debug profile",
         "inherits": [
           "conda-debug",
+          "conda-linux"
+        ]
+      },
+      {
+        "name": "conda-linux-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
           "conda-linux"
         ]
       },
@@ -266,6 +306,15 @@
         ]
       },
       {
+        "name": "conda-macos-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
+          "conda-macos"
+        ]
+      },
+      {
         "name": "conda-macos-release",
         "displayName": "Conda Release",
         "description": "Conda release profile",
@@ -281,13 +330,16 @@
         "inherits": [
           "conda-debug",
           "conda-windows"
-        ],
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": {
-            "type": "STRING",
-            "value": "RelWithDebInfo"
-          }
-        }
+        ]
+      },
+      {
+        "name": "conda-windows-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
+          "conda-windows"
+        ]
       },
       {
         "name": "conda-windows-release",
@@ -387,17 +439,9 @@
                     "type": "BOOL",
                     "value": "TRUE"
                 },
-                "FREECAD_USE_EXTERNAL_FMT": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
                 "FREECAD_USE_PCL": {
                     "type": "BOOL",
                     "value": "OFF"
-                },
-                "FREECAD_QT_VERSION": {
-                    "type": "STRING",
-                    "value": "6"
                 },
                 "OpenGL_GL_PREFERENCE": {
                     "type": "STRING",
@@ -416,10 +460,6 @@
                     "value": "/usr/src/CXX"
                 },
                 "ENABLE_DEVELOPER_TESTS": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
-                "FREECAD_USE_EXTERNAL_GTEST": {
                     "type": "BOOL",
                     "value": "TRUE"
                 },

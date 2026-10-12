@@ -1023,10 +1023,8 @@ PyObject* MetadataPy::getFirstSupportedFreeCADVersion(PyObject* p)
     if (result != App::Meta::Version()) {
         return Py::new_reference_to(Py::String(result.str()));
     }
-    else {
-        Py_INCREF(Py_None);
-        return Py_None;
-    }
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* p)
@@ -1053,10 +1051,8 @@ PyObject* MetadataPy::getLastSupportedFreeCADVersion(PyObject* p)
     if (result != App::Meta::Version()) {
         return Py::new_reference_to(Py::String(result.str()));
     }
-    else {
-        Py_INCREF(Py_None);
-        return Py_None;
-    }
+    Py_INCREF(Py_None);
+    return Py_None;
 }
 
 PyObject* MetadataPy::supportsCurrentFreeCAD(PyObject* p)

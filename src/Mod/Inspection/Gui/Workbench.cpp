@@ -53,8 +53,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
-    // Gui::ToolBarItem* insp = new Gui::ToolBarItem(root);
-    // insp->setCommand( "Inspection Tools" );
-    //*insp << "Inspection_VisualInspection";
+    Gui::ToolBarItem* insp = new Gui::ToolBarItem(root);
+    insp->setCommand("Inspection");
+    *insp << "Inspection_VisualInspection"
+          << "Inspection_InspectElement";
     return root;
 }

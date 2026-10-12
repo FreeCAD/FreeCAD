@@ -31,7 +31,12 @@ using namespace Gui;
 
 NavigationAnimation::NavigationAnimation(NavigationStyle* navigation)
     : navigation(navigation)
-{}
+{
+    auto* animation = static_cast<QVariantAnimation*>(this);
+    QObject::connect(animation, &QVariantAnimation::finished, animation, [this]() {
+        Q_EMIT completed();
+    });
+}
 
 void NavigationAnimation::updateCurrentValue(const QVariant& value)
 {
@@ -105,7 +110,12 @@ void FixedTimeAnimation::update(const QVariant& value)
     SbRotation rotation(rotationAxis, angle - prevAngle);
 
     camera->position = camera->position.getValue() - prevTranslation;
-    navigation->reorientCamera(camera, rotation, rotationCenter);
+    navigation->reorientCamera(
+        camera,
+        rotation,
+        rotationCenter,
+        NavigationStyle::OrientationChangeSource::Programmatic
+    );
     camera->position = camera->position.getValue() + translation;
 
     prevAngle = angle;
@@ -124,7 +134,11 @@ void FixedTimeAnimation::onStop(bool finished)
         }
 
         // Set exact target orientation
-        camera->orientation = targetOrientation;
+        navigation->setCameraOrientationValue(
+            camera,
+            targetOrientation,
+            NavigationStyle::OrientationChangeSource::Programmatic
+        );
         camera->position = camera->position.getValue() + targetTranslation - prevTranslation;
     }
 }
@@ -167,7 +181,11 @@ void SpinningAnimation::update(const QVariant& value)
     }
 
     SbRotation deltaRotation = SbRotation(rotationAxis, value.toFloat() - prevAngle);
-    navigation->reorientCamera(camera, deltaRotation);
+    navigation->reorientCamera(
+        camera,
+        deltaRotation,
+        NavigationStyle::OrientationChangeSource::Interactive
+    );
 
     prevAngle = value.toFloat();
 }

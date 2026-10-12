@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 Furgo
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 Furgo                                              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Defines the base class for Arch module unit tests."""
 
@@ -36,7 +33,7 @@ class TestArchBase(unittest.TestCase):
         uniquely-named document and cleaning up any potential leftovers from a previously failed
         run.
         """
-        self.doc_name = self.__class__.__name__
+        self.doc_name = f"{self.__class__.__name__}_{self._testMethodName}"
 
         # Close any document of the same name that might have been left over from a crashed or
         # aborted test run. FreeCAD.getDocument() raises a NameError if the document is not found,
@@ -52,6 +49,8 @@ class TestArchBase(unittest.TestCase):
         # Create a fresh document for the current test.
         self.document = FreeCAD.newDocument(self.doc_name)
         self.assertEqual(self.document.Name, self.doc_name)
+        FreeCAD.setActiveDocument(self.document.Name)
+        self.assertEqual(FreeCAD.ActiveDocument.Name, self.doc_name)
 
     def tearDown(self):
         """Close the test document after all tests in the class are complete."""

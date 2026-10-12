@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -37,7 +39,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderF
 ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {
     sPixmap = "FEM_ConstraintHeatflux";
-    loadSymbol((resourceSymbolDir + "ConstraintHeatFlux.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintHeatFlux.iv");
     ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.0f);
 }
 

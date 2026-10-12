@@ -47,7 +47,9 @@ def setFeedRate(commandlist, ToolController):
 
     Every motion command in the list will have a feed rate parameter added or overwritten based
     on the information stored in the tool controller. If a motion is a plunge (vertical) motion, the
-    VertFeed value will be used, otherwise the HorizFeed value will be used instead."""
+    VertFeed value will be used, otherwise the HorizFeed value will be used instead.
+
+    Tapping cycles are left untouched, as their F word is the thread pitch."""
 
     def _isVertical(currentposition, command):
         x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
@@ -62,6 +64,10 @@ def setFeedRate(commandlist, ToolController):
 
     for command in commandlist:
         if command.Name not in Path.Geom.CmdMoveAll:
+            continue
+
+        # On tapping cycles the F word is the thread pitch, not a feed rate
+        if command.Name in Path.Geom.CmdMoveTap:
             continue
 
         # Canned drill cycles (G73, G81, G82, G83, G85) are vertical cutting operations

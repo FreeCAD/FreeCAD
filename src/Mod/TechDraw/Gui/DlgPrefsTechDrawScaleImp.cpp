@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
@@ -67,6 +69,9 @@ void DlgPrefsTechDrawScaleImp::saveSettings()
     ui->pdsbTemplateMark->onSave();
     ui->pdsbSymbolScale->onSave();
     ui->cbLegacyScale->onSave();
+    ui->cbScreenMode->onSave();
+    ui->pdsbScreenVertexSize->onSave();
+    ui->pdsbScreenEdgeWidth->onSave();
 }
 
 void DlgPrefsTechDrawScaleImp::loadSettings()
@@ -81,6 +86,9 @@ void DlgPrefsTechDrawScaleImp::loadSettings()
     ui->pdsbTemplateMark->onRestore();
     ui->pdsbSymbolScale->onRestore();
     ui->cbLegacyScale->onRestore();
+    ui->cbScreenMode->onRestore();
+    ui->pdsbScreenVertexSize->onRestore();
+    ui->pdsbScreenEdgeWidth->onRestore();
 }
 
 /**

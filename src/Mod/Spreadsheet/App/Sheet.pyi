@@ -21,131 +21,145 @@ class Sheet(DocumentObject):
     License: LGPL-2.1-or-later
     """
 
-    def set(self) -> Any:
+    def set(self, address: str, contents: str, /) -> None:
         """Set data into a cell"""
         ...
 
-    def get(self) -> Any:
+    def get(self, address: str, address_to: str | None = ..., /) -> Any:
         """Get evaluated cell contents"""
         ...
 
-    def getContents(self) -> Any:
+    def getContents(self, address: str, /) -> str:
         """Get cell contents"""
         ...
 
-    def clear(self) -> Any:
+    def clear(self, address: str, all: bool = ..., /) -> None:
         """Clear a cell"""
         ...
 
-    def clearAll(self) -> Any:
+    def clearAll(self) -> None:
         """Clear all cells in the spreadsheet"""
         ...
 
-    def importFile(self) -> Any:
+    def importFile(
+        self,
+        filename: str,
+        delimiter: str = ...,
+        quote_char: str = ...,
+        escape_char: str = ...,
+        /,
+    ) -> bool:
         """Import file into spreadsheet"""
         ...
 
-    def exportFile(self) -> Any:
+    def exportFile(
+        self,
+        filename: str,
+        delimiter: str = ...,
+        quote_char: str = ...,
+        escape_char: str = ...,
+        /,
+    ) -> bool:
         """Export file from spreadsheet"""
         ...
 
-    def mergeCells(self) -> Any:
+    def mergeCells(self, range: str, /) -> None:
         """Merge given cell area into one cell"""
         ...
 
-    def splitCell(self) -> Any:
+    def splitCell(self, address: str, /) -> None:
         """Split a previously merged cell"""
         ...
 
-    def insertColumns(self) -> Any:
+    def insertColumns(self, column: str, count: int, /) -> None:
         """Insert a given number of columns into the spreadsheet."""
         ...
 
-    def removeColumns(self) -> Any:
+    def removeColumns(self, column: str, count: int, /) -> None:
         """Remove a given number of columns from the spreadsheet."""
         ...
 
-    def insertRows(self) -> Any:
+    def insertRows(self, row: str, count: int, /) -> None:
         """Insert a given number of rows into the spreadsheet."""
         ...
 
-    def removeRows(self) -> Any:
+    def removeRows(self, row: str, count: int, /) -> None:
         """Remove a given number of rows from the spreadsheet."""
         ...
 
-    def setAlignment(self) -> Any:
+    def setAlignment(self, cell: str, value: str | set[str], options: str = ..., /) -> None:
         """Set alignment of the cell"""
         ...
 
-    def getAlignment(self) -> Any:
+    def getAlignment(self, address: str, /) -> set[str] | None:
         """Get alignment of the cell"""
         ...
 
-    def setStyle(self) -> Any:
+    def setStyle(self, cell: str, value: str | set[str], options: str = ..., /) -> None:
         """Set style of the cell"""
         ...
 
-    def getStyle(self) -> Any:
+    def getStyle(self, address: str, /) -> set[str] | None:
         """Get style of the cell"""
         ...
 
-    def setDisplayUnit(self) -> Any:
+    def setDisplayUnit(self, cell: str, value: str, /) -> None:
         """Set display unit for cell"""
         ...
 
-    def setAlias(self) -> Any:
+    def setAlias(self, address: str, value: str | None, /) -> None:
         """Set alias for cell address"""
         ...
 
-    def getAlias(self) -> Any:
+    def getAlias(self, address: str, /) -> str | None:
         """Get alias for cell address"""
         ...
 
-    def getCellFromAlias(self) -> Any:
+    def getCellFromAlias(self, alias: str, /) -> str | None:
         """Get cell address given an alias"""
         ...
 
-    def getDisplayUnit(self) -> Any:
+    def getDisplayUnit(self, address: str, /) -> str | None:
         """Get display unit for cell"""
         ...
 
-    def setForeground(self) -> Any:
+    def setForeground(self, address: str, value: tuple[float, ...], /) -> None:
         """Set foreground color of the cell"""
         ...
 
-    def clearForeground(self) -> Any:
+    def clearForeground(self, address: str, /) -> None:
         """Clears foreground color of the cell"""
         ...
 
-    def getForeground(self) -> Any:
+    def getForeground(self, address: str, /) -> tuple[float, float, float, float] | None:
         """Get foreground color of the cell"""
         ...
 
-    def setBackground(self) -> Any:
+    def setBackground(self, address: str, value: tuple[float, ...], /) -> None:
         """Set background color of the cell"""
         ...
 
-    def clearBackground(self) -> Any:
+    def clearBackground(self, address: str, /) -> None:
         """Clears background color of the cell"""
         ...
 
-    def getBackground(self) -> Any:
+    def getBackground(self, address: str, /) -> tuple[float, float, float, float] | None:
         """Get background color of the cell"""
         ...
 
-    def setColumnWidth(self) -> Any:
+    def setColumnWidth(self, column: str, width: int, /) -> None:
         """Set given spreadsheet column to given width"""
         ...
 
-    def getColumnWidth(self) -> Any:
+    def getColumnWidth(self, column: str, /) -> int:
         """Get given spreadsheet column width"""
         ...
 
-    def setRowHeight(self) -> Any:
+    def setRowHeight(self, row: str, height: int, /) -> None:
         """Set given spreadsheet row to given height"""
         ...
 
-    def getRowHeight(self) -> Any:
+    def getRowHeight(self, row: str, /) -> int:
         """Get given spreadsheet row height"""
         ...
 
@@ -153,7 +167,7 @@ class Sheet(DocumentObject):
         """touch cells in the given range"""
         ...
 
-    def recomputeCells(self, address: str, address_to: str | None = None, /) -> Any:
+    def recomputeCells(self, address: str, address_to: str | None = ..., /) -> None:
         """
         Manually recompute cells in the given range with the given order without
         following dependency order.
@@ -173,7 +187,7 @@ class Sheet(DocumentObject):
         """
         ...
 
-    def getUsedRange(self) -> tuple[str, str]:
+    def getUsedRange(self) -> tuple[str, str] | None:
         """
         Get a the total range of the used cells in a sheet, as a pair of strings
         representing the lowest row and column that are used, and the highest row and

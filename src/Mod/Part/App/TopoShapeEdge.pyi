@@ -4,9 +4,11 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
+from Geometry import Geometry
 from Wire import Wire
 from Vertex import Vertex
 from TopoShape import TopoShape
+from TopoShapeFace import TopoShapeFace
 from typing import Final, Tuple, Dict, List, overload
 
 @export(
@@ -23,6 +25,15 @@ class TopoShapeEdge(TopoShape):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     Licence: LGPL
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, curve: Geometry, first: float = ..., last: float = ..., /) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, start: Vertex, end: Vertex, /) -> None: ...
 
     Tolerance: float = 0.0
     """Set or get the tolerance of the vertex"""
@@ -256,7 +267,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def parameterAt(self, vertex: object, /) -> float:
+    def parameterAt(self, vertex: object, face: TopoShapeFace = None, /) -> float:
         """
         Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
@@ -482,9 +493,9 @@ class TopoShapeEdge(TopoShape):
         self,
         Angular: float,
         Curvature: float,
-        Minimum: int = ...,
         First: float = ...,
         Last: float = ...,
+        Minimum: int = ...,
     ) -> List[Vector]: ...
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
@@ -557,7 +568,7 @@ class TopoShapeEdge(TopoShape):
         ...
 
     @constmethod
-    def curveOnSurface(self, idx: int, /) -> Tuple[object, object, object, float, float]:
+    def curveOnSurface(self, idx: int, /) -> Tuple[object, object, object, float, float] | None:
         """
         Returns the 2D curve, the surface, the placement and the parameter range of index idx.
         curveOnSurface(idx) -> None or tuple

@@ -1,0 +1,23 @@
+/** \defgroup TUX Tux
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief UX enhancements by triplus
+ *
+ * %The Tux module provides a collection of minor UX enhancements to FreeCAD.
+ * Created by triplus, the name is likely an abbreviation of "Triplus + UX".
+ *
+ * \section tux_navigation_indicator Navigation Indicator
+ *
+ * Displays the current navigation mode in the status bar and allows switching
+ * between different navigation styles (Blender, CAD, Gesture, Maya, Touchpad, etc.).
+ *
+ * Original discussion and design at:
+ * https://forum.freecad.org/viewtopic.php?t=17323
+ *
+ * \section tux_persistent_toolbars Persistent Toolbars
+ *
+ * Saves and restores toolbar positions for different workbenches, preserving
+ * customized layouts across FreeCAD sessions.
+ *
+ * Original discussion and design at:
+ * https://forum.freecad.org/viewtopic.php?t=16954
+ */

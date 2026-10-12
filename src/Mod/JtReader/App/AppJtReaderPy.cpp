@@ -96,7 +96,7 @@ private:
         PyMem_Free(Name);
 
 
-        // Base::Console().log("Open in Mesh with %s",Name);
+        // Base::Console().log("Open in Mesh with {}",Name);
         Base::FileInfo file(EncodedName);
         if (file.hasExtension("jt")) {
             TestJtReader reader;
@@ -105,7 +105,30 @@ private:
 
 #ifdef JTREADER_HAVE_TKJT
             JtReaderNS::TKJtReader jtReader;
-            jtReader.open(EncodedName);
+            try {
+                jtReader.open(EncodedName);
+            }
+            catch (const Standard_Failure& e) {
+                Base::Console().warning(
+                    "JtReader: error reading '{}': {}\n",
+                    file.fileName(),
+                    e.GetMessageString()
+                );
+                return Py::None();
+            }
+            catch (const std::exception& e) {
+                Base::Console().warning("JtReader: error reading '{}': {}\n", file.fileName(), e.what());
+                return Py::None();
+            }
+
+            if (jtReader.shapeCount() == 0) {
+                Base::Console().warning(
+                    "JtReader: no geometry could be imported from '{}'. "
+                    "The file may use unsupported features.\n",
+                    file.fileName()
+                );
+                return Py::None();
+            }
 
             App::Document* doc = App::GetApplication().newDocument();
             std::string objname = file.fileNamePure();
@@ -143,7 +166,30 @@ private:
 
 #ifdef JTREADER_HAVE_TKJT
             JtReaderNS::TKJtReader jtReader;
-            jtReader.open(EncodedName);
+            try {
+                jtReader.open(EncodedName);
+            }
+            catch (const Standard_Failure& e) {
+                Base::Console().warning(
+                    "JtReader: error reading '{}': {}\n",
+                    file.fileName(),
+                    e.GetMessageString()
+                );
+                return Py::None();
+            }
+            catch (const std::exception& e) {
+                Base::Console().warning("JtReader: error reading '{}': {}\n", file.fileName(), e.what());
+                return Py::None();
+            }
+
+            if (jtReader.shapeCount() == 0) {
+                Base::Console().warning(
+                    "JtReader: no geometry could be imported from '{}'. "
+                    "The file may use unsupported features.\n",
+                    file.fileName()
+                );
+                return Py::None();
+            }
 
             std::string objname = file.fileNamePure();
             auto iv = dynamic_cast<App::InventorObject*>(

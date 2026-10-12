@@ -64,6 +64,10 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
+    /// Default reference for direct API calls: follow model containers, not linked occurrences.
+    /// Tree clicks and callers editing a particular link must supply that occurrence explicitly.
+    App::SubObjectT getDefaultEditReference() const;
+
     virtual void attach(App::DocumentObject* pcObject);
     virtual void reattach(App::DocumentObject*);
     void update(const App::Property*) override;
@@ -160,7 +164,7 @@ public:
     bool removeDynamicProperty(const char* prop) override;
 
     App::Property* addDynamicProperty(
-        const char* type,
+        std::string_view type,
         const char* name = nullptr,
         const char* group = nullptr,
         const char* doc = nullptr,
@@ -203,6 +207,14 @@ public:
     void startDefaultEditMode();
 
 protected:
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = 0,
+        const Base::Matrix4D* mat = 0,
+        bool transform = true,
+        const View3DInventorViewer* viewer = 0,
+        int depth = 0
+    ) const override;
+
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
       an image view, an SVG view or something else.

@@ -93,7 +93,15 @@ public:
 
         // search for the placement property
         std::map<std::string, App::Property*>::iterator jt;
-        jt = std::find_if(props.begin(), props.end(), find_placement(propertyName));
+        std::string name = propertyName;
+        if (name == "Placement") {
+            // Links synchronize Placement and LinkPlacement, but only one alias is visible.
+            auto* placement = obj->getPlacementProperty();
+            if (placement && !placement->testStatus(App::Property::Hidden)) {
+                name = placement->getName();
+            }
+        }
+        jt = std::find_if(props.begin(), props.end(), find_placement(name));
         if (jt != props.end()) {
             return dynamic_cast<App::PropertyPlacement*>(jt->second);
         }
@@ -659,7 +667,7 @@ void Placement::onSelectedVertexClicked()
             axis = Base::Vector3d(picked[0] - picked[1]);
         }
         double length = axis.Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {  // copy to clipboard on
                                                                        // Shift+click
             QLocale loc;
@@ -710,14 +718,14 @@ void Placement::onSelectedVertexClicked()
         double angle;
         rot.getRawValue(tmp, angle);
         double length = (a - c).Length();
-        Base::Console().message("Distance: %.8f\n", length);
+        Base::Console().message("Distance: {:.8f}\n", length);
         Base::Vector3d v1(a - b);
         Base::Vector3d v2(c - b);
         v1.Normalize();
         v2.Normalize();
         double targetAngle = Base::toDegrees(v2.GetAngle(v1));
         Base::Console().message(
-            "Target angle: %.8f degrees, complementary: %.8f degrees\n",
+            "Target angle: {:.8f} degrees, complementary: {:.8f} degrees\n",
             targetAngle,
             90.0 - targetAngle
         );
@@ -1320,6 +1328,7 @@ void TaskPlacementPy::init_type()
     add_varargs_method("getStandardButtons", &TaskPlacementPy::getStandardButtons,
                        "getStandardButtons()");
     // clang-format on
+    behaviors().readyType();
 }
 
 PyObject* TaskPlacementPy::PyMake(struct _typeobject* type, PyObject* args, PyObject* kwds)

@@ -616,8 +616,10 @@ void DlgCustomToolbarsImp::addCustomToolbar(const QString& name)
     QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
-        QToolBar* bar = getMainWindow()->addToolBar(name);
+        auto* bar = new ToolBar(getMainWindow());
+        bar->setWindowTitle(name);
         bar->setObjectName(name);
+        getMainWindow()->addToolBar(bar);
     }
 }
 
@@ -656,11 +658,7 @@ void DlgCustomToolbarsImp::renameCustomToolbar(const QString& old_name, const QS
 QList<QAction*> DlgCustomToolbarsImp::getActionGroup(QAction* action)
 {
     QList<QAction*> group;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QList<QWidget*> widgets = action->associatedWidgets();
-#else
     QList<QObject*> widgets = action->associatedObjects();
-#endif
     for (const auto& widget : widgets) {
         auto tb = qobject_cast<QToolButton*>(widget);
         if (tb) {
@@ -677,11 +675,7 @@ QList<QAction*> DlgCustomToolbarsImp::getActionGroup(QAction* action)
 void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>& group)
 {
     // See also ActionGroup::addTo()
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QList<QWidget*> widgets = action->associatedWidgets();
-#else
     QList<QObject*> widgets = action->associatedObjects();
-#endif
     for (const auto& widget : widgets) {
         auto tb = qobject_cast<QToolButton*>(widget);
         if (tb) {

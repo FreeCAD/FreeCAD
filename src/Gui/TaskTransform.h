@@ -27,12 +27,22 @@
 #include "TaskView/TaskView.h"
 #include "ViewProviderDragger.h"
 
+#include <Inventor/nodes/SoSeparator.h>
+
+#include <Base/Bitmask.h>
 #include <Base/ServiceProvider.h>
 
 #include <App/Application.h>
 #include <App/Services.h>
 
+#include <QString>
+
+#include <array>
+#include <optional>
+#include <string>
+
 class SoDragger;
+class SoTransform;
 
 namespace Gui
 {
@@ -52,7 +62,8 @@ public:
     {
         None,
         SelectTransformOrigin,
-        SelectAlignTarget
+        SelectAlignTarget,
+        SelectCustomCS
     };
     enum class PlacementMode
     {
@@ -63,13 +74,27 @@ public:
     enum class PositionMode
     {
         Local,
-        Global
+        Global,
+        Custom
     };
+    enum class ReferencePlacementOption
+    {
+        None = 0,
+        UseSubObjectPlacement = 1 << 0,
+        UseSnapPosition = 1 << 1
+    };
+    using ReferencePlacementOptions = Base::Flags<ReferencePlacementOption>;
 
     struct CoordinateSystem
     {
         std::array<std::string, 3> labels;
         Base::Placement origin;
+    };
+    struct ReferencePlacement
+    {
+        Base::Placement documentPlacement;
+        Base::Placement objectPlacement;
+        QString label;
     };
 
     Q_ENUM(SelectionMode)
@@ -94,6 +119,7 @@ private Q_SLOTS:
     void onPlacementModeChange(int index);
 
     void onPickTransformOrigin();
+    void onPickCoordinateSystemReference();
     void onTransformOriginReset();
     void onAlignRotationChanged();
 
@@ -115,6 +141,7 @@ private:
 
     CoordinateSystem globalCoordinateSystem() const;
     CoordinateSystem localCoordinateSystem() const;
+    CoordinateSystem customCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
     Base::Rotation::EulerSequence eulerSequence() const;
@@ -136,6 +163,11 @@ private:
 
     void resetReferencePlacement();
     void resetReferenceRotation();
+    std::optional<ReferencePlacement> referencePlacementFromSelection(
+        const SelectionChanges& msg,
+        ReferencePlacementOptions options
+    ) const;
+    void setCustomCoordinateSystemFromSelection(const SelectionChanges& msg);
 
     ViewProviderDragger::DraggerComponents getRelevantComponents();
     void moveObjectToDragger(
@@ -144,12 +176,18 @@ private:
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
+    void showCoordinateSystemIndicator();
+    void hideCoordinateSystemIndicator();
+    void updateCoordinateSystemIndicator();
+
     ViewProviderDragger* vp;
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;
 
     CoinPtr<SoTransformDragger> dragger;
+    CoinPtr<SoSeparator> csIndicatorRoot;
+    CoinPtr<SoTransform> csIndicatorTransform;
 
     Ui_TaskTransformDialog* ui;
 
@@ -158,6 +196,7 @@ private:
     PositionMode positionMode {PositionMode::Local};
 
     std::optional<Base::Placement> customTransformOrigin {};
+    std::optional<Base::Placement> customCoordinateSystemPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
@@ -195,3 +234,5 @@ private:
     TaskTransform* transform;
 };
 }  // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::TaskTransform::ReferencePlacementOption)

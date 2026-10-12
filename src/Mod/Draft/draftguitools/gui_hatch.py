@@ -50,16 +50,11 @@ class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
 
         import FreeCADGui
 
-        if FreeCADGui.Selection.getSelection():
-            task = FreeCADGui.Control.showDialog(
-                Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0])
-            )
-            task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
-            task.setAutoCloseOnDeletedDocument(True)
-        else:
-            FreeCAD.Console.PrintError(
-                translate("Draft", "Choose a base object before using this command") + "\n"
-            )
+        task = FreeCADGui.Control.showDialog(
+            Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0])
+        )
+        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
 
 class Draft_Hatch_TaskPanel:
@@ -105,13 +100,15 @@ class Draft_Hatch_TaskPanel:
             FreeCAD.ActiveDocument.openTransaction("Create Hatch")
             FreeCADGui.addModule("Draft")
             cmd = "Draft.make_hatch("
-            cmd += 'baseobject=FreeCAD.ActiveDocument.getObject("' + self.baseobj.Name
-            cmd += '"),filename=' + repr(self.form.File.property("fileName"))
-            cmd += ",pattern=" + repr(self.form.Pattern.currentText())
-            cmd += ",scale=" + str(self.form.Scale.value())
-            cmd += ",rotation=" + str(self.form.Rotation.value())
-            cmd += ",translate=" + str(self.form.Translate.isChecked()) + ")"
-            FreeCADGui.doCommand(cmd)
+            cmd += "FreeCADGui.Selection.getSelectionEx('', 0)"
+            cmd += ", filename=" + repr(self.form.File.property("fileName"))
+            cmd += ", pattern=" + repr(self.form.Pattern.currentText())
+            cmd += ", scale=" + str(self.form.Scale.value())
+            cmd += ", rotation=" + str(self.form.Rotation.value())
+            cmd += ", translate=" + str(self.form.Translate.isChecked())
+            cmd += ")"
+            FreeCADGui.doCommand("hatch = " + cmd)
+            FreeCADGui.doCommand("Draft.autogroup(hatch)")
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.reject()

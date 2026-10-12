@@ -36,6 +36,8 @@ void PythonStdout::init_type()
     add_varargs_method("write", &PythonStdout::write, "write()");
     add_varargs_method("flush", &PythonStdout::flush, "flush()");
     add_noargs_method("isatty", &PythonStdout::isatty, "isatty()");
+    behaviors().supportGetattr();
+    behaviors().readyType();
 }
 
 PythonStdout::PythonStdout(PythonConsole* pc)
@@ -97,6 +99,8 @@ void PythonStderr::init_type()
     add_varargs_method("write", &PythonStderr::write, "write()");
     add_varargs_method("flush", &PythonStderr::flush, "flush()");
     add_noargs_method("isatty", &PythonStderr::isatty, "isatty()");
+    behaviors().supportGetattr();
+    behaviors().readyType();
 }
 
 PythonStderr::PythonStderr(PythonConsole* pc)
@@ -158,6 +162,8 @@ void OutputStdout::init_type()
     add_varargs_method("write", &OutputStdout::write, "write()");
     add_varargs_method("flush", &OutputStdout::flush, "flush()");
     add_noargs_method("isatty", &OutputStdout::isatty, "isatty()");
+    behaviors().supportGetattr();
+    behaviors().readyType();
 }
 
 OutputStdout::OutputStdout() = default;
@@ -188,7 +194,7 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().message("%s", string);
+        Base::Console().message("{}", string);
         Py_DECREF(unicode);
     }
 
@@ -217,6 +223,8 @@ void OutputStderr::init_type()
     add_varargs_method("write", &OutputStderr::write, "write()");
     add_varargs_method("flush", &OutputStderr::flush, "flush()");
     add_noargs_method("isatty", &OutputStderr::isatty, "isatty()");
+    behaviors().supportGetattr();
+    behaviors().readyType();
 }
 
 OutputStderr::OutputStderr() = default;
@@ -247,7 +255,7 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().error("%s", string);
+        Base::Console().error("{}", string);
         Py_DECREF(unicode);
     }
 
@@ -275,6 +283,7 @@ void PythonStdin::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     add_varargs_method("readline", &PythonStdin::readline, "readline()");
+    behaviors().readyType();
 }
 
 PythonStdin::PythonStdin(PythonConsole* pc)

@@ -121,7 +121,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
 
-        obj = Draft.make_arc_3points([a, b, c])
+        obj = Draft.make_arc_3_points([a, b, c])
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_ellipse(self):
@@ -254,7 +254,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         fontfile = App.getResourceDir() + "Mod/TechDraw/Resources/fonts/osifont-lgpl3fe.ttf"
         _msg("  text='{0}'".format(text))
         _msg("  fontfile='{0}'".format(fontfile))
-        obj = Draft.make_shapestring(text, fontfile)
+        obj = Draft.make_shape_string(text, fontfile)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_facebinder(self):
@@ -293,7 +293,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         d = Vector(9, 0, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
-        obj = Draft.make_bezcurve([a, b, c, d], degree=3)
+        obj = Draft.make_bez_curve([a, b, c, d], degree=3)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_bezcurve(self):
@@ -309,7 +309,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
         _msg("  e={0}, f={1}".format(e, f))
-        obj = Draft.make_bezcurve([a, b, c, d, e, f])
+        obj = Draft.make_bez_curve([a, b, c, d, e, f])
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_label(self):
@@ -325,6 +325,17 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         obj = Draft.make_label(target_point=target_point, distance=distance, placement=placement)
         self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_label_custom_text_updates_text_immediately(self):
+        """Change label custom text without waiting for recompute."""
+        operation = "Draft Label custom text update"
+        _msg("  Test '{}'".format(operation))
+        obj = Draft.make_label(custom_text="Original")
+        self.doc.recompute()
+        self.assertEqual(list(obj.Text), ["Original"], "'{}' setup failed".format(operation))
+
+        obj.CustomText = ["Foo"]
+        self.assertEqual(list(obj.Text), ["Foo"], "'{}' failed".format(operation))
 
     def test_layer(self):
         """Create a layer, and add a rectangle to it."""
@@ -345,7 +356,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         _msg("  Test '{}'".format(operation))
         placement = App.Placement(Vector(10, 20, 0), App.Rotation())
         _msg("  placement={}".format(placement))
-        obj = Draft.make_workingplaneproxy(placement)
+        obj = Draft.make_working_plane_proxy(placement)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_hatch(self):

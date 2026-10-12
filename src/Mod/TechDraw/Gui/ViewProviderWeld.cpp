@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
@@ -92,7 +94,7 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren() const
 
 bool ViewProviderWeld::setEdit(int ModNum)
 {
-//    Base::Console().message("VPW::setEdit(%d)\n", ModNum);
+//    Base::Console().message("VPW::setEdit({})\n", ModNum);
     if (ModNum != ViewProvider::Default ) {
         return ViewProviderDrawingView::setEdit(ModNum);
     }

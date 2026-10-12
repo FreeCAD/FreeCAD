@@ -167,7 +167,7 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
 
 void TaskAppearance::onChangePlotActivated(const QString& s)
 {
-    Base::Console().log("Plot = %s\n", (const char*)s.toLatin1());
+    Base::Console().log("Plot = {}\n", s.toStdString());
 }
 
 /**
