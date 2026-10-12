@@ -14,14 +14,12 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <title
-     id="title1">vertex-selection</title>
   <sodipodi:namedview
      id="namedview1"
      inkscape:document-units="px"
      inkscape:zoom="11.313708"
-     inkscape:cx="28.0633"
-     inkscape:cy="32.350135"
+     inkscape:cx="28.107496"
+     inkscape:cy="32.350137"
      showgrid="true"
      pagecolor="#ffffff"
      bordercolor="#000000"
@@ -30,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:current-layer="layer-pointer">
+     inkscape:current-layer="svg1">
     <!-- 2.6667 units = 1 pixel at 24px; edges on these lines render crisp -->
     <inkscape:grid
        id="grid24px"
@@ -58,6 +56,8 @@
        enabled="true"
        visible="true" />
   </sodipodi:namedview>
+  <title
+     id="title1">vertex-selection</title>
   <defs
      id="defs1">
     <!-- front face: dark teal at bottom to light teal at top -->
@@ -137,17 +137,14 @@
      id="layer-cube">
     <path
        id="cube-top"
-       inkscape:label="top face"
        style="fill:#8ae8e9;stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
        d="M 10,19 24,6 H 62 L 48,19 Z" />
     <path
        id="cube-right"
-       inkscape:label="right face"
        style="fill:url(#gradRight);stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
        d="M 48,19 62,6 V 44 L 48,58 Z" />
     <path
        id="cube-front"
-       inkscape:label="front face"
        style="fill:url(#gradFront);stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
        d="M 10,19 H 48 V 58 H 10 Z" />
   </g>
@@ -155,52 +152,46 @@
      inkscape:groupmode="layer"
      inkscape:label="Cube highlights"
      id="layer-cube-highlights"
-     style="display:inline"
-     transform="translate(4)">
+     style="display:inline">
     <!-- inset bevel rims, 2 units inside each shaded face -->
     <path
        id="front-rim"
-       inkscape:label="front rim"
-       style="fill:none;stroke:#8ae8e9;stroke-width:2;stroke-linejoin:miter"
-       d="M 8,21 H 42 V 56 H 8 Z" />
+       style="fill:none;stroke:#8ae8e9;stroke-linejoin:miter;stroke-width:2.0"
+       d="M 12 21 L 46 21 L 46 56 L 12 56 Z" />
     <path
        id="right-rim"
-       inkscape:label="right rim"
-       style="fill:none;stroke:#16b8ba;stroke-width:2;stroke-linejoin:miter"
-       d="m 46,20 10,-9.3 v 32.5 l -10,10 z" />
+       style="fill:none;stroke:#16b8ba;stroke-linejoin:miter;stroke-width:2.0"
+       d="M 50 20 L 60 10.7 L 60 43.2 L 50 53.2 Z" />
   </g>
   <g
      inkscape:groupmode="layer"
      inkscape:label="Vertex"
      id="layer-vertex"
-     style="display:inline"
-     transform="translate(-34)">
+     style="display:inline">
     <circle
        id="vertex"
        inkscape:label="vertex dot"
        style="fill:url(#gradVertex);stroke:#280000;stroke-width:2"
-       cx="44"
-       cy="19"
+       cx="10.0"
+       cy="19.0"
        r="7.5" />
     <circle
        id="vertex-rim"
        inkscape:label="vertex rim"
        style="fill:none;stroke:#ff7f7f;stroke-width:1.5;stroke-opacity:0.9"
-       cx="44"
-       cy="19"
+       cx="10.0"
+       cy="19.0"
        r="5.5" />
   </g>
   <g
      inkscape:groupmode="layer"
      inkscape:label="Pointer"
-     id="layer-pointer"
-     transform="rotate(-15.012973,16.107102,16.981579)">
+     id="layer-pointer">
     <!-- tail shortened so it stays clear of the cube's bottom outline -->
     <path
        id="pointer"
-       inkscape:label="pointer"
-       style="fill:url(#gradPointer);stroke:#0b1521;stroke-width:2;stroke-linejoin:round"
-       d="m 15,27 v 26 l 6,-5.5 4,8 5,-2 -4,-8 h 8 z" />
+       style="fill:url(#gradPointer);stroke:#0b1521;stroke-linejoin:round;stroke-width:1.999999747132984"
+       d="M 17.6329 26.9448 L 24.3679 52.0574 L 28.7384 45.1909 L 34.6742 51.8816 L 38.9855 48.6547 L 33.0497 41.9639 L 40.7766 39.8916 Z" />
   </g>
   <metadata
      id="metadata1">
