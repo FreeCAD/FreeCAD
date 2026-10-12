@@ -442,7 +442,7 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             }
         };
 
-        for (const Group& group : groups) {
+        for (Group& group : groups) {
             SectionCapRecord& rec = records.emplace_back();
             rec.key = group.key;
             rec.component = group.component;
@@ -488,6 +488,8 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             glDepthFunc(GL_LEQUAL);
             glStencilFunc(GL_EQUAL, 1, 0x1);
             glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+            glEnable(GL_POLYGON_OFFSET_FILL);  // behind its outline
+            glPolygonOffset(1.0f, 1.0f);
 
             SbVec3f center = group.box.getCenter();
             center = center - normal * (normal.dot(center) - plane.getDistanceFromOrigin());
@@ -505,8 +507,9 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
             if (shaded) {
                 // lit like a face of the part lying in the plane, facing the viewer
                 const SbVec3f n = normal.dot(viewDir) < 0.0f ? normal : -normal;
+                // a step darker than the part's faces, so the cut still reads as one
                 auto rgba = [](const SbColor& c) {
-                    return std::array<GLfloat, 4> {c[0], c[1], c[2], 1.0f};
+                    return std::array<GLfloat, 4> {0.8f * c[0], 0.8f * c[1], 0.8f * c[2], 1.0f};
                 };
                 glEnable(GL_LIGHTING);
                 glDisable(GL_COLOR_MATERIAL);  // else the current color replaces the diffuse
@@ -534,6 +537,19 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
                 quad();
                 glDisable(GL_POLYGON_STIPPLE);
             }
+            glDisable(GL_POLYGON_OFFSET_FILL);
+
+            // outline: where the plane crosses the part's triangles
+            glDisable(GL_STENCIL_TEST);
+            glLineWidth(2.0f);
+            glColor3f(0.1f, 0.1f, 0.1f);
+            const std::vector<float>& outline = outlineOf(group, plane);
+            glBegin(GL_LINES);
+            for (std::size_t i = 0; i + 2 < outline.size(); i += 3) {
+                glVertex3f(outline[i], outline[i + 1], outline[i + 2]);
+            }
+            glEnd();
+            glEnable(GL_STENCIL_TEST);
 
             // 3. clear the bit inside this group's rectangle
             glStencilMask(0x1);
@@ -723,6 +739,41 @@ void SoFCSectionCap::updateProxy()
     closedCache.swap(closed);
     proxySignature = signature;
     proxyValid = true;
+}
+
+const std::vector<float>& SoFCSectionCap::outlineOf(Group& group, const SbPlane& plane)
+{
+    // cached per plane: it only changes while the plane is moved
+    const SbVec3f n = plane.getNormal();
+    const float dist = plane.getDistanceFromOrigin();
+    for (const auto& [key, segments] : group.outlines) {
+        if (key[0] == n[0] && key[1] == n[1] && key[2] == n[2] && key[3] == dist) {
+            return segments;
+        }
+    }
+    if (group.outlines.size() > 8) {
+        group.outlines.clear();
+    }
+    auto& [key, segments] = group.outlines.emplace_back();
+    key = {n[0], n[1], n[2], dist};
+    // where the plane crosses each triangle; a half-open sign test gives zero or two points
+    for (std::size_t i = 0; i + 8 < group.tris.size(); i += 9) {
+        const float* t = &group.tris[i];
+        float d[3];
+        for (int k = 0; k < 3; ++k) {
+            d[k] = n[0] * t[3 * k] + n[1] * t[3 * k + 1] + n[2] * t[3 * k + 2] - dist;
+        }
+        for (int k = 0; k < 3; ++k) {
+            const int j = (k + 1) % 3;
+            if ((d[k] > 0.0f) != (d[j] > 0.0f)) {
+                const float f = d[k] / (d[k] - d[j]);
+                for (int c = 0; c < 3; ++c) {
+                    segments.push_back(t[3 * k + c] + f * (t[3 * j + c] - t[3 * k + c]));
+                }
+            }
+        }
+    }
+    return segments;
 }
 
 void SoFCSectionCap::checkClosed(Group& group, std::vector<float>& patch)

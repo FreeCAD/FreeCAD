@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <map>
@@ -34,6 +35,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
 
+class SbPlane;
 class SoGLRenderAction;
 
 namespace Gui
@@ -117,12 +119,14 @@ private:
         bool transparent {false};
         bool closed {true};
         Material material;
+        std::vector<std::pair<std::array<float, 4>, std::vector<float>>> outlines;  // per plane
         std::map<std::uint32_t, std::pair<Material, int>> materials;  // votes, by diffuse
     };
 
     void updateProxy();
     static std::uint64_t geometrySignature(SoNode* root);
     static void checkClosed(Group& group, std::vector<float>& patch);
+    static const std::vector<float>& outlineOf(Group& group, const SbPlane& plane);
     SectionCapStyle styleFor(const Group& group);
 
     SoNode* scene {nullptr};
