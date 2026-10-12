@@ -2513,13 +2513,23 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
         if (profile) {
             if (auto* sketch = profile->getVerifiedSketch(/* silent =*/true)) {
                 FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+                FCMD_OBJ_CMD(
+                    feat,
+                    "BinormalAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['H_Axis'])"
+                );
                 hasDirection = true;
             }
         }
+        FCMD_OBJ_CMD(feat, "StartAtShape = False");
         if (!hasDirection) {
             FCMD_OBJ_CMD(
                 feat,
                 "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
+            );
+            FCMD_OBJ_CMD(
+                feat,
+                "BinormalAxis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())
+                                   << ",[''])"
             );
         }
 
