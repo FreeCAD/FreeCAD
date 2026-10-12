@@ -914,7 +914,7 @@ TopoDS_Shape Part::Tools::validateFace(const TopoDS_Face& face)
 {
     BRepCheck_Analyzer aChecker(face);
     if (!aChecker.IsValid()) {
-        TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+        TopoDS_Wire outerwire = BRepTools::OuterWire(face);
         TopTools_IndexedMapOfShape myMap;
         myMap.Add(outerwire);
 
