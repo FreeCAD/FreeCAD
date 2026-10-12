@@ -1,223 +1,237 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="64px"
-   height="64px"
-   id="svg6248"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
    version="1.1"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
+   id="svg1"
+   sodipodi:docname="foo2.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">vertex-selection</title>
+  <sodipodi:namedview
+     id="namedview1"
+     inkscape:document-units="px"
+     inkscape:zoom="11.313708"
+     inkscape:cx="28.0633"
+     inkscape:cy="32.350135"
+     showgrid="true"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:current-layer="layer-pointer">
+    <!-- 2.6667 units = 1 pixel at 24px; edges on these lines render crisp -->
+    <inkscape:grid
+       id="grid24px"
+       type="xygrid"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="2.6666667"
+       spacingy="2.6666667"
+       empspacing="3"
+       visible="false"
+       enabled="false" />
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
   <defs
-     id="defs6250">
+     id="defs1">
+    <!-- front face: dark teal at bottom to light teal at top -->
     <linearGradient
-       id="linearGradient4027">
-      <stop
-         style="stop-color:#16d0d2;stop-opacity:1"
-         offset="0"
-         id="stop4029" />
-      <stop
-         style="stop-color:#34e0e2;stop-opacity:1"
-         offset="1"
-         id="stop4031" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3253">
-      <stop
-         style="stop-color:#89d5f8;stop-opacity:1;"
-         offset="0"
-         id="stop3255" />
-      <stop
-         style="stop-color:#00899e;stop-opacity:1;"
-         offset="1"
-         id="stop3257" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient6816">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop6818" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop6820" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient6781">
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop6783" />
-      <stop
-         style="stop-color:#3465a4;stop-opacity:0;"
-         offset="1"
-         id="stop6785" />
-    </linearGradient>
-    <radialGradient
-       xlink:href="#linearGradient6816"
-       id="radialGradient6822"
-       cx="33.369828"
-       cy="51.929391"
-       fx="33.369828"
-       fy="51.929391"
-       r="25.198714"
-       gradientTransform="matrix(1.1581633,0,0,0.6558985,-7.29237,16.126077)"
-       gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       xlink:href="#linearGradient3253"
-       id="radialGradient3259"
-       cx="18.417862"
-       cy="17.013988"
-       fx="18.417862"
-       fy="17.013988"
-       r="27.986705"
-       gradientTransform="matrix(0.9724373,-0.105657,5.0523169e-2,0.4650009,-0.3519546,9.5854384)"
-       gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       xlink:href="#linearGradient3253"
-       id="radialGradient3270"
+       id="gradFront"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.9724373,-0.105657,0.05052317,0.4650009,-0.3519546,9.5854384)"
-       cx="18.417862"
-       cy="17.013988"
-       fx="18.417862"
-       fy="17.013988"
-       r="27.986705" />
-    <linearGradient
-       gradientTransform="translate(0,-2)"
-       xlink:href="#linearGradient3777"
-       id="linearGradient3783"
-       x1="53.896763"
-       y1="51.179787"
-       x2="47.502235"
-       y2="21.83742"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3777">
+       x1="22"
+       y1="58"
+       x2="28"
+       y2="19"
+       gradientTransform="translate(4)">
       <stop
-         style="stop-color:#204a87;stop-opacity:1"
          offset="0"
-         id="stop3779" />
+         style="stop-color:#06989a"
+         id="stopFront0" />
       <stop
-         style="stop-color:#3465a4;stop-opacity:1"
          offset="1"
-         id="stop3781" />
+         style="stop-color:#34e0e2"
+         id="stopFront1" />
     </linearGradient>
+    <!-- right face: one step darker than the front, for depth -->
     <linearGradient
-       xlink:href="#linearGradient4027"
-       id="linearGradient4033"
-       x1="26"
-       y1="54"
-       x2="20"
-       y2="20"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       id="linearGradient3765">
-      <stop
-         style="stop-color:#d3d7cf;stop-opacity:1;"
-         offset="0"
-         id="stop3767" />
-      <stop
-         style="stop-color:#ffffff;stop-opacity:1"
-         offset="1"
-         id="stop3769" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient3765"
-       id="linearGradient3771-4"
-       x1="35"
+       id="gradRight"
+       gradientUnits="userSpaceOnUse"
+       x1="51"
        y1="51"
-       x2="31"
-       y2="18"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
-       xlink:href="#linearGradient3873"
-       id="linearGradient4221"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,-2.0691034,0.48906084,0,16.27829,307.86774)"
-       x1="127.49857"
-       y1="8.0178137"
-       x2="129.43178"
-       y2="48.912521" />
-    <linearGradient
-       id="linearGradient3873">
+       x2="51"
+       y2="12"
+       gradientTransform="translate(4)">
       <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
          offset="0"
-         id="stop3875" />
+         style="stop-color:#046a6b"
+         id="stopRight0" />
       <stop
-         style="stop-color:#d3d7cf;stop-opacity:1"
          offset="1"
-         id="stop3877" />
+         style="stop-color:#06989a"
+         id="stopRight1" />
+    </linearGradient>
+    <!-- vertex dot: dark red lower right to bright red upper left -->
+    <linearGradient
+       id="gradVertex"
+       gradientUnits="userSpaceOnUse"
+       x1="49"
+       y1="24"
+       x2="39"
+       y2="14">
+      <stop
+         offset="0"
+         style="stop-color:#a40000"
+         id="stopVertex0" />
+      <stop
+         offset="1"
+         style="stop-color:#ef2929"
+         id="stopVertex1" />
+    </linearGradient>
+    <!-- pointer: white to light grey -->
+    <linearGradient
+       id="gradPointer"
+       gradientUnits="userSpaceOnUse"
+       x1="28"
+       y1="55"
+       x2="18"
+       y2="30">
+      <stop
+         offset="0"
+         style="stop-color:#d3d7cf"
+         id="stopPointer0" />
+      <stop
+         offset="1"
+         style="stop-color:#ffffff"
+         id="stopPointer1" />
     </linearGradient>
   </defs>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Cube"
+     id="layer-cube">
+    <path
+       id="cube-top"
+       inkscape:label="top face"
+       style="fill:#8ae8e9;stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
+       d="M 10,19 24,6 H 62 L 48,19 Z" />
+    <path
+       id="cube-right"
+       inkscape:label="right face"
+       style="fill:url(#gradRight);stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
+       d="M 48,19 62,6 V 44 L 48,58 Z" />
+    <path
+       id="cube-front"
+       inkscape:label="front face"
+       style="fill:url(#gradFront);stroke:#042a2a;stroke-width:2;stroke-linejoin:round"
+       d="M 10,19 H 48 V 58 H 10 Z" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Cube highlights"
+     id="layer-cube-highlights"
+     style="display:inline"
+     transform="translate(4)">
+    <!-- inset bevel rims, 2 units inside each shaded face -->
+    <path
+       id="front-rim"
+       inkscape:label="front rim"
+       style="fill:none;stroke:#8ae8e9;stroke-width:2;stroke-linejoin:miter"
+       d="M 8,21 H 42 V 56 H 8 Z" />
+    <path
+       id="right-rim"
+       inkscape:label="right rim"
+       style="fill:none;stroke:#16b8ba;stroke-width:2;stroke-linejoin:miter"
+       d="m 46,20 10,-9.3 v 32.5 l -10,10 z" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Vertex"
+     id="layer-vertex"
+     style="display:inline"
+     transform="translate(-34)">
+    <circle
+       id="vertex"
+       inkscape:label="vertex dot"
+       style="fill:url(#gradVertex);stroke:#280000;stroke-width:2"
+       cx="44"
+       cy="19"
+       r="7.5" />
+    <circle
+       id="vertex-rim"
+       inkscape:label="vertex rim"
+       style="fill:none;stroke:#ff7f7f;stroke-width:1.5;stroke-opacity:0.9"
+       cx="44"
+       cy="19"
+       r="5.5" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Pointer"
+     id="layer-pointer"
+     transform="rotate(-15.012973,16.107102,16.981579)">
+    <!-- tail shortened so it stays clear of the cube's bottom outline -->
+    <path
+       id="pointer"
+       inkscape:label="pointer"
+       style="fill:url(#gradPointer);stroke:#0b1521;stroke-width:2;stroke-linejoin:round"
+       d="m 15,27 v 26 l 6,-5.5 4,8 5,-2 -4,-8 h 8 z" />
+  </g>
   <metadata
-     id="metadata6253">
+     id="metadata1">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>vertex-selection</dc:title>
+        <dc:date>2026-10-12</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Chris Jones aka github.com/ipatch</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Chris Jones aka github.com/ipatch
+claude opus v5.5</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1"
-     transform="matrix(0.89017797,0,0,0.88946473,3.5143052,3.5185759)">
-    <path
-       style="display:inline;opacity:0.6;fill:none;stroke:#042a2a;stroke-width:6.74293;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 5,17 41,23 59,9 25,5 Z"
-       id="path3961" />
-    <path
-       style="display:inline;opacity:0.6;fill:none;stroke:#042a2a;stroke-width:6.74293;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 59,9 V 43 L 41,59 V 23 Z"
-       id="path2995" />
-    <path
-       style="display:inline;opacity:0.6;fill:none;stroke:#042a2a;stroke-width:6.74292709;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.74292707,13.48585415;stroke-dashoffset:11.86755165;stroke-opacity:1"
-       d="M 25,5 V 39 L 5,53 V 17 Z"
-       id="path2995-1" />
-    <path
-       id="path3825-7"
-       d="M 25,5 59,9 V 43 L 25,39 Z"
-       style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:none;stroke:#042a2a;stroke-width:6.74293;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.74293, 13.4859;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-    <path
-       id="path3825-7-7"
-       d="M 25,5 59,9 V 43 L 25,39 Z"
-       style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:none;stroke:#34e0e2;stroke-width:2.24764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.74293, 13.4859;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-    <path
-       id="path3825"
-       d="m 5,17 36,6 V 59 L 5,53 Z"
-       style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:none;stroke:#042a2a;stroke-width:6.74293;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-    <path
-       style="display:inline;opacity:0.6;fill:none;fill-opacity:1;stroke:#34e0e2;stroke-width:2.24764;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 59,9 V 43 L 41,59 V 23 Z"
-       id="path2995-7" />
-    <path
-       style="display:inline;opacity:0.6;fill:none;stroke:#34e0e2;stroke-width:2.24764;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6.74291968,13.48583937;stroke-dashoffset:11.86753864;stroke-opacity:1"
-       d="M 25,5 V 39 L 5,53 V 17 Z"
-       id="path2995-1-0" />
-    <path
-       id="path3825-9"
-       d="m 5,17 36,6 V 59 L 5,53 Z"
-       style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:url(#linearGradient4033);fill-opacity:1;stroke:#34e0e2;stroke-width:2.24764;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
-    <path
-       style="display:inline;opacity:0.6;fill:none;stroke:#34e0e2;stroke-width:2.24764;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 5,17 25,5 59,9 41,23 Z"
-       id="path3970" />
-    <ellipse
-       style="display:inline;opacity:1;fill:#ef2929;stroke:#cc0000;stroke-width:6.74293;stroke-dasharray:none"
-       id="path1"
-       cx="40.750065"
-       cy="21.741346"
-       rx="6.5032139"
-       ry="6.4134073" />
-  </g>
-  <path
-     style="display:inline;fill:url(#linearGradient4221);fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
-     d="m 39.199488,57.060024 -12,-12 -4,6 -7,-21 21,7 -6,4 12,12 z"
-     id="rect3871" />
 </svg>
