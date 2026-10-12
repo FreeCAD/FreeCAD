@@ -67,92 +67,6 @@ SO_NODE_SOURCE(SoFCSectionCap)
 namespace
 {
 
-/// FNV-1a, so default styles are the same on every run.
-std::uint64_t digest(const std::string& key)
-{
-    std::uint64_t h = 14695981039346656037ULL;
-    for (unsigned char c : key) {
-        h ^= c;
-        h *= 1099511628211ULL;
-    }
-    return h;
-}
-
-const std::vector<SbColor>& palette()
-{
-    static const std::vector<SbColor> colors = {
-        {0.90f, 0.37f, 0.26f},
-        {0.25f, 0.55f, 0.85f},
-        {0.36f, 0.72f, 0.36f},
-        {0.93f, 0.69f, 0.13f},
-        {0.58f, 0.40f, 0.74f},
-        {0.20f, 0.70f, 0.70f},
-        {0.85f, 0.45f, 0.65f},
-        {0.60f, 0.60f, 0.22f},
-        {0.62f, 0.38f, 0.22f},
-        {0.47f, 0.57f, 0.95f},
-        {0.75f, 0.20f, 0.27f},
-        {0.45f, 0.47f, 0.52f},
-    };
-    return colors;
-}
-
-const std::vector<std::string>& hatches()
-{
-    // ordered so that neighbours differ the most
-    static const std::vector<std::string> names = {
-        "diag45",
-        "horizontal",
-        "dots",
-        "diag135",
-        "vertical",
-        "diag45_dots",
-        "diagcross",
-        "horizontal_dots",
-        "cross",
-    };
-    return names;
-}
-
-/// A 32x32 polygon stipple for a hatch name (screen space, 8 px spacing).
-bool stipplePattern(const std::string& hatch, GLubyte out[128])
-{
-    const auto& names = hatches();
-    if (std::find(names.begin(), names.end(), hatch) == names.end()) {
-        return false;  // "none"
-    }
-    std::memset(out, 0, 128);
-    constexpr int s = 8;
-    constexpr int dot = 2;
-    auto mod = [](int a, int m) {
-        return ((a % m) + m) % m;
-    };
-    const bool horizontal = hatch == "horizontal" || hatch == "cross" || hatch == "horizontal_dots";
-    const bool vertical = hatch == "vertical" || hatch == "cross";
-    const bool diag45 = hatch == "diag45" || hatch == "diagcross" || hatch == "diag45_dots";
-    const bool diag135 = hatch == "diag135" || hatch == "diagcross";
-    const bool dots = hatch == "dots" || hatch == "horizontal_dots";
-    const bool diagDots = hatch == "diag45_dots";
-    for (int y = 0; y < 32; ++y) {
-        for (int x = 0; x < 32; ++x) {
-            bool on = (horizontal && mod(y, s) == 0)
-                || (vertical && mod(x, s) == 0)
-                // stipple rows start at the bottom, so x - y = k rises like '/'
-                || (diag45 && mod(x - y, s) == 0) || (diag135 && mod(x + y, s) == 0);
-            if (dots) {
-                on = on || (mod(x - s / 2, s) < dot && mod(y - s / 2, s) < dot);
-            }
-            if (diagDots) {  // on x - y = s/2, halfway between the '/' lines
-                on = on || (mod(x - 3 * s / 4, s) < dot && mod(y - s / 4, s) < dot);
-            }
-            if (on) {
-                out[y * 4 + x / 8] |= static_cast<GLubyte>(0x80 >> (x % 8));
-            }
-        }
-    }
-    return true;
-}
-
 SbVec3f boxCorner(const SbBox3f& box, int i)
 {
     SbVec3f lo, hi;
@@ -301,59 +215,6 @@ void SoFCSectionCap::setResolver(Resolver r)
     touch();
 }
 
-void SoFCSectionCap::setStyle(bool perPart, bool hatching, const SbColor& color, bool shade)
-{
-    shaded = shade;
-    colored = perPart && !shade;
-    hatched = hatching;
-    singleColor = color;
-    allocated.clear();
-    usedCombos.clear();
-    touch();
-}
-
-SectionCapStyle SoFCSectionCap::styleFor(const Group& group)
-{
-    auto found = allocated.find(group.key);
-    if (found != allocated.end()) {
-        return found->second;
-    }
-    // Spread what varies (colors, else hatches) first, then unused (color, hatch)
-    // pairs; both searches start at the key's digest, so the result is the same
-    // on every run.
-    const int nc = colored ? static_cast<int>(palette().size()) : 1;
-    const int nh = hatched ? static_cast<int>(hatches().size()) : 1;
-    const std::uint64_t h = digest(group.key);
-    const int c0 = static_cast<int>(h % nc);
-    const int t0 = static_cast<int>((h >> 32) % nh);
-    auto colorUsed = [this](int c) {
-        auto it = usedCombos.lower_bound({c, 0});
-        return it != usedCombos.end() && it->first == c;
-    };
-    int chosen = c0 + t0 * nc;
-    bool done = false;
-    for (int k = 0; k < nc && !done; ++k) {
-        const int c = (c0 + k) % nc;
-        if (!colorUsed(c)) {
-            chosen = c + t0 * nc;
-            done = true;
-        }
-    }
-    for (int k = 0; k < nc * nh && !done; ++k) {
-        const int idx = (c0 + t0 * nc + k) % (nc * nh);
-        if (!usedCombos.count({idx % nc, idx / nc})) {
-            chosen = idx;
-            done = true;
-        }
-    }
-    usedCombos.insert({chosen % nc, chosen / nc});
-    SectionCapStyle style;
-    style.color = shaded ? group.material.diffuse : (colored ? palette()[chosen % nc] : singleColor);
-    style.hatch = hatched ? hatches()[chosen / nc] : std::string("none");
-    allocated[group.key] = style;
-    return style;
-}
-
 void SoFCSectionCap::GLRender(SoGLRenderAction* action)
 {
     SoState* state = action->getState();
@@ -384,7 +245,6 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     SbMatrix viewProj = view;
     viewProj.multRight(SoProjectionMatrixElement::get(state));
     const SbViewportRegion& region = SoViewportRegionElement::get(state);
-    const SbColor hatchColor = colored ? SbColor(0.15f, 0.15f, 0.15f) : singleColor * 0.5f;
     SbVec3f viewDir;
     view.inverse().multDirMatrix(SbVec3f(0, 0, -1), viewDir);
 
@@ -421,7 +281,6 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
 
-    GLubyte stipple[128];
     for (int p = 0; p < nplanes; ++p) {
         const SbPlane plane = elt->get(p, TRUE);
         const SbVec3f normal = plane.getNormal();
@@ -459,7 +318,7 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
                 rec.status = "skipped: not cut";
                 continue;
             }
-            rec.style = styleFor(group);
+            rec.color = group.material.diffuse;
 
             int rect[4];
             screenRect(group.box, viewProj, region, rect);
@@ -504,44 +363,31 @@ void SoFCSectionCap::GLRender(SoGLRenderAction* action)
                 }
                 glEnd();
             };
-            if (shaded) {
-                // lit like a face of the part lying in the plane, facing the viewer
-                const SbVec3f n = normal.dot(viewDir) < 0.0f ? normal : -normal;
-                // a step darker than the part's faces, so the cut still reads as one
-                auto rgba = [](const SbColor& c) {
-                    return std::array<GLfloat, 4> {0.8f * c[0], 0.8f * c[1], 0.8f * c[2], 1.0f};
-                };
-                glEnable(GL_LIGHTING);
-                glDisable(GL_COLOR_MATERIAL);  // else the current color replaces the diffuse
-                // n already faces the viewer; two-sided lighting would flip it for a
-                // quad that happens to be wound clockwise on screen
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, rgba(group.material.ambient).data());
-                glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, rgba(group.material.diffuse).data());
-                glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, rgba(group.material.specular).data());
-                glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, rgba(group.material.emission).data());
-                glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, group.material.shininess * 128.0f);
-                glNormal3f(n[0], n[1], n[2]);
-                quad();
-                glDisable(GL_LIGHTING);
-            }
-            else {
-                glColor3f(rec.style.color[0], rec.style.color[1], rec.style.color[2]);
-                quad();
-            }
-            if (stipplePattern(rec.style.hatch, stipple)) {
-                const SbColor hatch = shaded ? SbColor(group.material.diffuse * 0.4f) : hatchColor;
-                glEnable(GL_POLYGON_STIPPLE);
-                glPolygonStipple(stipple);
-                glColor3f(hatch[0], hatch[1], hatch[2]);
-                quad();
-                glDisable(GL_POLYGON_STIPPLE);
-            }
+            // lit like a face of the part lying in the plane, facing the viewer, a
+            // step darker so the cut still reads as one
+            const SbVec3f n = normal.dot(viewDir) < 0.0f ? normal : -normal;
+            auto rgba = [](const SbColor& c) {
+                return std::array<GLfloat, 4> {0.65f * c[0], 0.65f * c[1], 0.65f * c[2], 1.0f};
+            };
+            glEnable(GL_LIGHTING);
+            glDisable(GL_COLOR_MATERIAL);  // else the current color replaces the diffuse
+            // n already faces the viewer; two-sided lighting would flip it for a
+            // quad that happens to be wound clockwise on screen
+            glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+            const Material& m = group.material;
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, rgba(m.ambient).data());
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, rgba(m.diffuse).data());
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, rgba(m.specular).data());
+            glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, rgba(m.emission).data());
+            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m.shininess * 128.0f);
+            glNormal3f(n[0], n[1], n[2]);
+            quad();
+            glDisable(GL_LIGHTING);
             glDisable(GL_POLYGON_OFFSET_FILL);
 
             // outline: where the plane crosses the part's triangles
             glDisable(GL_STENCIL_TEST);
-            glLineWidth(2.0f);
+            glLineWidth(1.0f);  // half the default edge width
             glColor3f(0.1f, 0.1f, 0.1f);
             const std::vector<float>& outline = outlineOf(group, plane);
             glBegin(GL_LINES);

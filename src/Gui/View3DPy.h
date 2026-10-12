@@ -120,13 +120,6 @@ public:
     Py::Object hasClippingPlane();
     Py::Object setSectionCapping(const Py::Tuple& args);
     Py::Object isSectionCapping();
-    Py::Object setSectionCapColored(const Py::Tuple& args);
-    Py::Object isSectionCapColored();
-    Py::Object setSectionCapHatched(const Py::Tuple& args);
-    Py::Object setSectionCapColor(const Py::Tuple& args);
-    Py::Object isSectionCapHatched();
-    Py::Object setSectionCapShaded(const Py::Tuple& args);
-    Py::Object isSectionCapShaded();
     Py::Object getSectionCapStatus();
     Py::Object getSectionCaps();
     Py::Object graphicsView();

@@ -60,9 +60,7 @@ void DlgSettings3DViewImp::saveSettings()
     saveMarkerSize();
 
     ui->comboTransparentRender->onSave();
-    ui->comboSectionCaps->onSave();
-    ui->checkSectionCapHatching->onSave();
-    ui->colorSectionCap->onSave();
+    ui->checkSectionCaps->onSave();
     ui->CheckBox_CornerCoordSystem->onSave();
     ui->SpinBox_CornerCoordSystemSize->onSave();
     ui->CheckBox_ShowAxisCross->onSave();
@@ -95,9 +93,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->comboTransparentRender->onRestore();
-    ui->comboSectionCaps->onRestore();
-    ui->checkSectionCapHatching->onRestore();
-    ui->colorSectionCap->onRestore();
+    ui->checkSectionCaps->onRestore();
     ui->xAxisColor->onRestore();
     ui->yAxisColor->onRestore();
     ui->zAxisColor->onRestore();

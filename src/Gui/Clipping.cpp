@@ -200,16 +200,8 @@ Clipping::Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* pa
 
     // reflect the viewer's setting, without changing it
     {
-        QSignalBlocker blocker(d->ui.comboCaps);
-        QSignalBlocker blockerHatch(d->ui.checkCapsHatching);
-        d->ui.comboCaps->setCurrentIndex(
-            !viewer->isSectionCapping()         ? 0
-                : viewer->isSectionCapShaded()  ? 3
-                : viewer->isSectionCapColored() ? 2
-                                                : 1
-        );
-        d->ui.checkCapsHatching->setChecked(viewer->isSectionCapHatched());
-        d->ui.checkCapsHatching->setEnabled(viewer->isSectionCapping());
+        QSignalBlocker blocker(d->ui.checkBoxCaps);
+        d->ui.checkBoxCaps->setChecked(viewer->isSectionCapping());
     }
 }
 
@@ -249,10 +241,8 @@ void Clipping::setupConnections()
             this, &Clipping::onGroupBoxYToggled);
     connect(d->ui.groupBoxZ, &QGroupBox::toggled,
             this, &Clipping::onGroupBoxZToggled);
-    connect(d->ui.comboCaps, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &Clipping::onComboCapsChanged);
-    connect(d->ui.checkCapsHatching, &QCheckBox::toggled,
-            this, &Clipping::onCheckCapsHatchingToggled);
+    connect(d->ui.checkBoxCaps, &QCheckBox::toggled,
+            this, &Clipping::onCheckBoxCapsToggled);
     connect(d->ui.clipX, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &Clipping::onClipXValueChanged);
     connect(d->ui.clipY, qOverload<double>(&QDoubleSpinBox::valueChanged),
@@ -303,22 +293,10 @@ void Clipping::onActiveDocument(const App::Document& doc)
     }
 }
 
-void Clipping::onComboCapsChanged(int index)
-{
-    // 0 = off, 1 = single color, 2 = a color per part, 3 = the part's material; this view only
-    if (d->view) {
-        View3DInventorViewer* viewer = d->view->getViewer();
-        viewer->setSectionCapColored(index == 2);
-        viewer->setSectionCapShaded(index == 3);
-        viewer->setSectionCapping(index != 0);
-    }
-    d->ui.checkCapsHatching->setEnabled(index != 0);
-}
-
-void Clipping::onCheckCapsHatchingToggled(bool on)
+void Clipping::onCheckBoxCapsToggled(bool on)
 {
     if (d->view) {
-        d->view->getViewer()->setSectionCapHatched(on);
+        d->view->getViewer()->setSectionCapping(on);
     }
 }
 

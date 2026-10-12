@@ -220,52 +220,14 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <layout class="QHBoxLayout" name="layoutCaps">
-     <item>
-      <widget class="QLabel" name="labelCaps">
-       <property name="text">
-        <string>Section caps</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboCaps">
-       <property name="toolTip">
-        <string>Fill the clipped faces of solids in this view: in a single color, each part in its own color, or in the part's own material.</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>Off</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Single color</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Color per part</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Part material</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkCapsHatching">
-       <property name="toolTip">
-        <string>Hatch the section caps in this view, a different pattern for each part.</string>
-       </property>
-       <property name="text">
-        <string>Hatching</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QCheckBox" name="checkBoxCaps">
+     <property name="toolTip">
+      <string>Fill the clipped faces of solids in this view in the part's own material, outlined.</string>
+     </property>
+     <property name="text">
+      <string>Section caps</string>
+     </property>
+    </widget>
    </item>
    <item row="5" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -296,8 +258,7 @@
   <tabstop>dirX</tabstop>
   <tabstop>dirY</tabstop>
   <tabstop>dirZ</tabstop>
-  <tabstop>comboCaps</tabstop>
-  <tabstop>checkCapsHatching</tabstop>
+  <tabstop>checkBoxCaps</tabstop>
  </tabstops>
  <resources/>
  <connections>

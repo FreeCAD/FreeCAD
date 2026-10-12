@@ -332,54 +332,18 @@ void View3DInventorPy::init_type()
     add_varargs_method(
         "setSectionCapping",
         &View3DInventorPy::setSectionCapping,
-        "setSectionCapping(on=True): fill the cuts of the active clip planes with section\n"
-        "caps.  Opaque closed solids only; changes no document object."
+        "setSectionCapping(on=True): fill the cuts of the active clip planes in each part's\n"
+        "material, outlined.  Opaque closed solids only; changes no document object."
     );
     add_noargs_method(
         "isSectionCapping",
         &View3DInventorPy::isSectionCapping,
         "isSectionCapping(): whether section caps are on"
     );
-    add_varargs_method(
-        "setSectionCapColored",
-        &View3DInventorPy::setSectionCapColored,
-        "setSectionCapColored(colored=True): a color per instance instead of the single section "
-        "cap color"
-    );
-    add_noargs_method(
-        "isSectionCapColored",
-        &View3DInventorPy::isSectionCapColored,
-        "isSectionCapColored(): whether section caps use a color per instance"
-    );
-    add_varargs_method(
-        "setSectionCapHatched",
-        &View3DInventorPy::setSectionCapHatched,
-        "setSectionCapHatched(hatched=True): a hatch pattern per instance on the section caps"
-    );
-    add_noargs_method(
-        "isSectionCapHatched",
-        &View3DInventorPy::isSectionCapHatched,
-        "isSectionCapHatched(): whether section caps are hatched"
-    );
-    add_varargs_method(
-        "setSectionCapShaded",
-        &View3DInventorPy::setSectionCapShaded,
-        "setSectionCapShaded(shaded=True): section caps in the part's own material, lit"
-    );
-    add_noargs_method(
-        "isSectionCapShaded",
-        &View3DInventorPy::isSectionCapShaded,
-        "isSectionCapShaded(): whether section caps use the part's own material"
-    );
-    add_varargs_method(
-        "setSectionCapColor",
-        &View3DInventorPy::setSectionCapColor,
-        "setSectionCapColor((r, g, b)): the single section cap color, components 0..1"
-    );
     add_noargs_method(
         "getSectionCaps",
         &View3DInventorPy::getSectionCaps,
-        "getSectionCaps() -> [{key, component, plane, status, color, hatch}]: what the cap\n"
+        "getSectionCaps() -> [{key, component, plane, status, color}]: what the cap\n"
         "renderer did per occurrence and plane in the last frame (not proof of pixels)"
     );
     add_noargs_method(
@@ -2715,71 +2679,19 @@ Py::Object View3DInventorPy::hasClippingPlane()
     return Py::Boolean(getView3DInventorPtr()->getViewer()->hasClippingPlane());
 }
 
-namespace
-{
-// an optional bool argument, true by default
-bool optionalFlag(const Py::Tuple& args)
+Py::Object View3DInventorPy::setSectionCapping(const Py::Tuple& args)
 {
     PyObject* on = Py_True;
     if (!PyArg_ParseTuple(args.ptr(), "|O!", &PyBool_Type, &on)) {
         throw Py::Exception();
     }
-    return on == Py_True;
-}
-}  // namespace
-
-Py::Object View3DInventorPy::setSectionCapping(const Py::Tuple& args)
-{
-    getView3DInventorPtr()->getViewer()->setSectionCapping(optionalFlag(args));
+    getView3DInventorPtr()->getViewer()->setSectionCapping(on == Py_True);
     return Py::None();
 }
 
 Py::Object View3DInventorPy::isSectionCapping()
 {
     return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapping());
-}
-
-Py::Object View3DInventorPy::setSectionCapColored(const Py::Tuple& args)
-{
-    getView3DInventorPtr()->getViewer()->setSectionCapColored(optionalFlag(args));
-    return Py::None();
-}
-
-Py::Object View3DInventorPy::isSectionCapColored()
-{
-    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapColored());
-}
-
-Py::Object View3DInventorPy::setSectionCapHatched(const Py::Tuple& args)
-{
-    getView3DInventorPtr()->getViewer()->setSectionCapHatched(optionalFlag(args));
-    return Py::None();
-}
-
-Py::Object View3DInventorPy::isSectionCapHatched()
-{
-    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapHatched());
-}
-
-Py::Object View3DInventorPy::setSectionCapShaded(const Py::Tuple& args)
-{
-    getView3DInventorPtr()->getViewer()->setSectionCapShaded(optionalFlag(args));
-    return Py::None();
-}
-
-Py::Object View3DInventorPy::isSectionCapShaded()
-{
-    return Py::Boolean(getView3DInventorPtr()->getViewer()->isSectionCapShaded());
-}
-
-Py::Object View3DInventorPy::setSectionCapColor(const Py::Tuple& args)
-{
-    float r = 0, g = 0, b = 0;
-    if (!PyArg_ParseTuple(args.ptr(), "(fff)", &r, &g, &b)) {
-        throw Py::Exception();
-    }
-    getView3DInventorPtr()->getViewer()->setSectionCapColor(SbColor(r, g, b));
-    return Py::None();
 }
 
 Py::Object View3DInventorPy::getSectionCaps()
@@ -2790,14 +2702,13 @@ Py::Object View3DInventorPy::getSectionCaps()
         return out;
     }
     for (const auto& rec : cap->lastRecords()) {
-        const SbColor& c = rec.style.color;
+        const SbColor& c = rec.color;
         Py::Dict d;
         d.setItem("key", Py::String(rec.key));
         d.setItem("component", Py::String(rec.component));
         d.setItem("plane", Py::Long(rec.plane));
         d.setItem("status", Py::String(rec.status));
         d.setItem("color", Py::TupleN(Py::Float(c[0]), Py::Float(c[1]), Py::Float(c[2])));
-        d.setItem("hatch", Py::String(rec.style.hatch));
         out.append(d);
     }
     return out;

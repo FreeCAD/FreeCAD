@@ -55,8 +55,7 @@ protected:
     void onGroupBoxXToggled(bool);
     void onGroupBoxYToggled(bool);
     void onGroupBoxZToggled(bool);
-    void onComboCapsChanged(int);
-    void onCheckCapsHatchingToggled(bool);
+    void onCheckBoxCapsToggled(bool);
     void onClipXValueChanged(double);
     void onClipYValueChanged(double);
     void onClipZValueChanged(double);

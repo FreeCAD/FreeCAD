@@ -476,16 +476,6 @@ public:
     /** Section caps for the active clip planes (see SoFCSectionCap). */
     void setSectionCapping(bool on);
     bool isSectionCapping() const;
-    /// A color per instance instead of the single section cap color.
-    void setSectionCapColored(bool colored);
-    bool isSectionCapColored() const;
-    void setSectionCapColor(const SbColor& color);
-    /// A hatch pattern per instance.
-    void setSectionCapHatched(bool hatched);
-    bool isSectionCapHatched() const;
-    /// The part's own material, lit with the plane normal.
-    void setSectionCapShaded(bool shaded);
-    bool isSectionCapShaded() const;
     /// Null while section caps are off.
     const Gui::Inventor::SoFCSectionCap* getSectionCap() const;
 
@@ -681,7 +671,6 @@ private:
     void aboutToDestroyGLContext();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
-    void updateSectionCapStyle();
 
 private:
     NaviCube* naviCube;
@@ -722,10 +711,6 @@ private:
 
     SoClipPlane* pcClipPlane;
     Gui::Inventor::SoFCSectionCap* pcSectionCap {nullptr};
-    bool sectionCapColored {false};
-    bool sectionCapHatched {false};
-    bool sectionCapShaded {false};
-    SbColor sectionCapColor {0.45f, 0.47f, 0.50f};
 
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;

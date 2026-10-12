@@ -4136,7 +4136,6 @@ void View3DInventorViewer::setSectionCapping(bool on)
     if (on) {
         pcSectionCap = new Gui::Inventor::SoFCSectionCap();
         pcSectionCap->ref();
-        pcSectionCap->setStyle(sectionCapColored, sectionCapHatched, sectionCapColor, sectionCapShaded);
         pcSectionCap->setResolver([](SoNode* node, bool& excluded) -> std::string {
             if (!node->isOfType(SoSeparator::getClassTypeId())) {
                 return {};
@@ -4190,53 +4189,6 @@ void View3DInventorViewer::setSectionCapping(bool on)
 bool View3DInventorViewer::isSectionCapping() const
 {
     return pcSectionCap != nullptr;
-}
-
-void View3DInventorViewer::setSectionCapColored(bool colored)
-{
-    sectionCapColored = colored;
-    updateSectionCapStyle();
-}
-
-bool View3DInventorViewer::isSectionCapColored() const
-{
-    return sectionCapColored;
-}
-
-void View3DInventorViewer::setSectionCapColor(const SbColor& color)
-{
-    sectionCapColor = color;
-    updateSectionCapStyle();
-}
-
-void View3DInventorViewer::setSectionCapHatched(bool hatched)
-{
-    sectionCapHatched = hatched;
-    updateSectionCapStyle();
-}
-
-bool View3DInventorViewer::isSectionCapHatched() const
-{
-    return sectionCapHatched;
-}
-
-void View3DInventorViewer::setSectionCapShaded(bool shaded)
-{
-    sectionCapShaded = shaded;
-    updateSectionCapStyle();
-}
-
-bool View3DInventorViewer::isSectionCapShaded() const
-{
-    return sectionCapShaded;
-}
-
-void View3DInventorViewer::updateSectionCapStyle()
-{
-    if (pcSectionCap) {
-        pcSectionCap->setStyle(sectionCapColored, sectionCapHatched, sectionCapColor, sectionCapShaded);
-        redraw();
-    }
 }
 
 const Gui::Inventor::SoFCSectionCap* View3DInventorViewer::getSectionCap() const

@@ -25,7 +25,6 @@
 #include <cstdint>
 #include <functional>
 #include <map>
-#include <set>
 #include <string>
 #include <vector>
 
@@ -43,24 +42,18 @@ namespace Gui
 namespace Inventor
 {
 
-/// How a section cap is filled.
-struct GuiExport SectionCapStyle
-{
-    SbColor color {0.85f, 0.35f, 0.25f};
-    std::string hatch {"none"};
-};
-
 /// What the renderer did for one occurrence and one plane in the last frame.
 struct GuiExport SectionCapRecord
 {
     std::string key;        ///< occurrence
     std::string component;  ///< the object that owns the geometry
     int plane {0};
-    SectionCapStyle style;
+    SbColor color {0.0f, 0.0f, 0.0f};  ///< the part's color, if capped
     std::string status;  ///< "capped", "skipped: not cut", "unsupported: ..."
 };
 
-/** Fills the cut faces of the active clip planes, using the stencil buffer.
+/** Fills the cut faces of the active clip planes in the part's own material,
+ * using the stencil buffer, and outlines them.
  *
  * Must be the last child of the viewer's view provider root, so that every clip
  * plane is in the traversal state. Open and transparent meshes are reported in
@@ -82,9 +75,6 @@ public:
 
     void setScene(SoNode* scene);
     void setResolver(Resolver resolve);
-    /// A color per instance (else the single color), optionally a hatch per instance.
-    /// shaded: the part's own material, lit with the plane normal (overrides perPart)
-    void setStyle(bool perPart, bool hatching, const SbColor& color, bool shaded = false);
 
     const std::vector<SectionCapRecord>& lastRecords() const
     {
@@ -127,16 +117,9 @@ private:
     static std::uint64_t geometrySignature(SoNode* root);
     static void checkClosed(Group& group, std::vector<float>& patch);
     static const std::vector<float>& outlineOf(Group& group, const SbPlane& plane);
-    SectionCapStyle styleFor(const Group& group);
 
     SoNode* scene {nullptr};
     Resolver resolve;
-    bool colored {false};
-    bool hatched {false};
-    bool shaded {false};
-    SbColor singleColor {0.45f, 0.47f, 0.50f};
-    std::map<std::string, SectionCapStyle> allocated;
-    std::set<std::pair<int, int>> usedCombos;  // (color, hatch)
 
     std::vector<Group> groups;
     std::map<std::string, std::size_t> groupIndex;
