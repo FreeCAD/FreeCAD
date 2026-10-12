@@ -142,7 +142,7 @@ def _get_path_circ_ellipse(
         return "edata", edata
 
     # The angle is 0 or 180, coplanar
-    occversion = tuple(map(int, Part.OCC_VERSION.split(".")))
+    occversion = tuple(map(int, Part.OCC_VERSION.split(".")[0:3]))
     done = False
     if occversion >= (7, 1, 0):
         # if using occ >= 7.1, use HLR algorithm
