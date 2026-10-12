@@ -49,7 +49,7 @@ struct GuiExport SectionCapRecord
     std::string component;  ///< the object that owns the geometry
     int plane {0};
     SbColor color {0.0f, 0.0f, 0.0f};  ///< the part's color, if capped
-    std::string status;  ///< "capped", "skipped: not cut", "unsupported: ..."
+    std::string status;                ///< "capped", "skipped: not cut", "unsupported: ..."
 };
 
 /** Fills the cut faces of the active clip planes in the part's own material,
