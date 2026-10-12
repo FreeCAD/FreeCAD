@@ -1170,7 +1170,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="673"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>הערות</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
@@ -1862,7 +1862,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>הערות</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="78"/>
@@ -2689,7 +2689,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="252"/>
       <source> %</source>
-      <translation type="unfinished"> %</translation>
+      <translation> %</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="268"/>
@@ -3518,7 +3518,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>צור אובייקט</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
@@ -4568,7 +4568,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_trimex.py" line="199"/>
       <location filename="../../draftguitools/gui_trimex.py" line="715"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>בחר פאה אחת להבלטה</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="304"/>
@@ -4603,7 +4603,8 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="705"/>
       <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>משיכת פאה
+</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="706"/>
@@ -6148,7 +6149,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>שמור תצוגת מצלמה</translation>
     </message>
     <message>
       <location filename="../../drafttests/test_lines_gui.py" line="56"/>
@@ -6706,12 +6707,12 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="92"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>חיתוך</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="93"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>חיתוך או הרחבה של האובייקט הנבחר</translation>
     </message>
   </context>
   <context>
@@ -9000,7 +9001,7 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>אזהרה</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>
@@ -9029,6 +9030,19 @@ shape. Best for viewing very large files with maximum performance.</source>
 The 'Auto Update' property of the views is ignored.</source>
       <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation type="unfinished">2D View Tools</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation type="unfinished">Tools to create and update 2D Views</translation>
     </message>
   </context>
 </TS>

@@ -4309,12 +4309,12 @@ it has a weld symbol that would become broken.</source>
 protože obsahuje symbol svaru, který by se rozbil.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation type="unfinished">Close open dialog before deleting detail object</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Nemůžete smazat tento názor, protože má jeden nebo více závislých názorů, které by byly porušeny.</translation>
     </message>
@@ -4324,8 +4324,8 @@ protože obsahuje symbol svaru, který by se rozbil.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>

@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>מֶרְחָק</translation>
     </message>
@@ -170,37 +170,37 @@
       <translation>רצועה</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>קישור שבור ב:</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>ערוך ג'וינט</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>בחר 2 אלמנטים מ-2 חלקים נפרדים</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>רדיוס 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>גובה חוט</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>רדיוס גובה</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE מגדיר את תלילות המעבר בין 0 ל-H1 ו-H2 ל-0 בערך
       <translation>הפניה {סדר} של המפרק</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation type="unfinished">List of references to compnents to group together</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>החפץ לקרקע</translation>
     </message>
@@ -1180,7 +1180,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>ייצוא</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="109"/>
@@ -1680,7 +1680,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="101"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
@@ -1698,7 +1698,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="165"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
@@ -1716,7 +1716,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="200"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
@@ -1734,7 +1734,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="233"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
@@ -1752,7 +1752,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="267"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
@@ -1770,7 +1770,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="310"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>הרכבה</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>

@@ -741,8 +741,8 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.cpp" line="47"/>
       <source>Allows referring to a cell by an alias name, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Allows referring to a cell by an alias name, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Umożliwia odwoływanie się do komórki za pomocą nazwy aliasu, 
+np. Spreadsheet.my_alias_name zamiast Spreadsheet.B1.</translation>
     </message>
   </context>
   <context>
@@ -1293,62 +1293,62 @@ Domyślnie %V = %A
     <message>
       <location filename="../../PropertiesDialog.cpp" line="342"/>
       <source>Alias conflicts with a reserved unit token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved unit token used by expressions</translation>
+      <translation>Alias koliduje z zarezerwowanym symbolem jednostki używanym w wyrażeniach</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="343"/>
       <source>Invalid: reserved unit token</source>
-      <translation type="unfinished">Invalid: reserved unit token</translation>
+      <translation>Nieprawidłowość: zarezerwowany symbol jednostki</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="346"/>
       <source>Alias conflicts with a reserved constant token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved constant token used by expressions</translation>
+      <translation>Alias koliduje z zarezerwowanym symbolem stałej używanym w wyrażeniach</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="347"/>
       <source>Invalid: reserved constant token</source>
-      <translation type="unfinished">Invalid: reserved constant token</translation>
+      <translation>Nieprawidłowość: zarezerwowany symbol stałej</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="350"/>
       <source>Alias already defined</source>
-      <translation type="unfinished">Alias already defined</translation>
+      <translation>Alias został już zdefiniowany</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="351"/>
       <source>Invalid: alias already exists</source>
-      <translation type="unfinished">Invalid: alias already exists</translation>
+      <translation>Nieprawidłowość: alias już istnieje</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="354"/>
       <source>Alias cannot look like a cell address such as A1 or C12</source>
-      <translation type="unfinished">Alias cannot look like a cell address such as A1 or C12</translation>
+      <translation>Alias nie może wyglądać jak adres komórki, np. A1 lub C12</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="355"/>
       <source>Invalid: alias matches cell address pattern</source>
-      <translation type="unfinished">Invalid: alias matches cell address pattern</translation>
+      <translation>Nieprawidłowość: alias pasuje do wzorca adresu komórki</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="358"/>
       <source>Alias conflicts with an existing spreadsheet property name</source>
-      <translation type="unfinished">Alias conflicts with an existing spreadsheet property name</translation>
+      <translation>Alias koliduje z istniejącą nazwą właściwości arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="359"/>
       <source>Invalid: conflicts with existing property name</source>
-      <translation type="unfinished">Invalid: conflicts with existing property name</translation>
+      <translation>Nieprawidłowość: konflikt z istniejącą nazwą właściwości</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="362"/>
       <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
-      <translation type="unfinished">Alias must start with a letter and contain only letters, digits, and '_'</translation>
+      <translation>Alias musi zaczynać się od litery i może zawierać tylko litery, cyfry oraz znak "_".</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="363"/>
       <source>Invalid: bad alias syntax</source>
-      <translation type="unfinished">Invalid: bad alias syntax</translation>
+      <translation>Nieprawidłowość: niepoprawna składnia aliasu</translation>
     </message>
   </context>
 </TS>

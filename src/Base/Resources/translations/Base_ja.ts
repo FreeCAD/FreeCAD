@@ -4,37 +4,37 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="92"/>
+      <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>標準（mm, kg, s, °）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="350"/>
+      <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS単位系（m, kg, s, °）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="763"/>
+      <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
       <translation>米国慣用単位（in, lb）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="820"/>
+      <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>土木用 帝国単位 （ft, lb, mph）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>帝国単位（in, lb）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>建築：メートル法（cm, m², m³）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="807"/>
+      <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>建築：国際フィート（ft-in, sqft, cft）</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>パーツ、CNC工作機械（mm、mm/min）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="611"/>
+      <location filename="../../UnitsSchemasData.h" line="627"/>
       <source>FEM (mm, N, s)</source>
       <translation>有限要素法（mm, N, s）</translation>
     </message>

@@ -4,37 +4,37 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="92"/>
+      <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>ມາດຕະຖານ (ມມ, ກກ, ວ, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="350"/>
+      <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (ມ, ກກ, ວ, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="763"/>
+      <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
       <translation>ລະບົບວັດແທກອາເມລິກາ (ນິ້ວ, ປອນ)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="820"/>
+      <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>ລະບົບອັງກິດສຳລັບວິສະວະກຳໂຍທາ (ຟຸດ, ປອນ, ໄມ/ຊມ)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>ລະບົບອັງກິດແບບທົດສະນິຍົມ (ນິ້ວ, ປອນ)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>ການກໍ່ສ້າງແບບເອີຣົບ (ຊມ, ມ², ມ³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="807"/>
+      <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>ການກໍ່ສ້າງແບບອາເມລິກາ (ຟຸດ-ນິ້ວ, ຕາຕະລາງຟຸດ, ກ້ອນຟຸດ)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>ລະບົບເມັດຕຣິກສຳລັບຊິ້ນສ່ວນນ້ອຍ ແລະ CNC (ມມ, ມມ/ນາທີ)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="611"/>
+      <location filename="../../UnitsSchemasData.h" line="627"/>
       <source>FEM (mm, N, s)</source>
       <translation>FEM (ມມ, ນິວຕັນ, ວ)</translation>
     </message>

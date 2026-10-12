@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1283"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation>Создает набор узлов сетки МКЭ (FEM)</translation>
+      <translation>Создаёт набор узлов сетки МКЭ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1321"/>
@@ -1215,7 +1215,7 @@ not belonging to faces and faces not belonging to volumes.</source>
 Это означает объемы для объёмной сетки и грани для оболочечной 
 сетки.
 
-FEM: будут экспортированы только элементы FEM. Это означает 
+МКЭ: будут экспортированы только элементы МКЭ. Это означает 
 только ребра, не принадлежащие граням, и грани, не принадлежащие 
 объёмам.</translation>
     </message>
@@ -1524,11 +1524,11 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation>Объект результата VTK — будет импортирован объект результата FreeCAD FEM VTK (равный объекту, который был экспортирован).
+      <translation>Объект результата VTK: будет импортирован объект результата FreeCAD МКЭ VTK (равный объекту, который был экспортирован).
 
-Объект сетки МКЭ — результаты в файле VTK будут опущены, импортируются только данные сетки и будет создан объект FreeCAD FEM.
+Объект сетки МКЭ: результаты в файле VTK будут опущены, импортируются только данные сетки и будет создан объект МКЭ FreeCAD.
 
-Объект результата FreeCAD — импортированные данные будут преобразованы в объект FreeCAD FEM Result. Примечание: для этого параметра требуются точные имена компонентов, поэтому он корректно работает только с файлами VTK, экспортированных из FreeCAD.</translation>
+Объект результата FreeCAD: импортированные данные будут преобразованы в объект результат МКЭ FreeCAD. Примечание: для этого параметра требуются точные имена компонентов, поэтому он корректно работает только с файлами VTK, экспортированных из FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="53"/>
@@ -3970,7 +3970,7 @@ Example: "F2 + Sin(z)"</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation>Использует поле данных из конвейера постобработки FEM в качестве размера сетки. Это позволяет адаптировать сетку в соответствии с физическим поведением результата.</translation>
+      <translation>Использует поле данных из конвейера постобработки МКЭ в качестве размера сетки. Это позволяет адаптировать сетку в соответствии с физическим поведением результата.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
@@ -4260,7 +4260,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation>FEM Mesh от Gmsh</translation>
+      <translation>МКЭ Сетка через GMSH</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="20"/>
@@ -6174,12 +6174,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="560"/>
       <source>FEM Examples</source>
-      <translation>Примеры FEM</translation>
+      <translation>Примеры МКЭ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="561"/>
       <source>Opens the FEM examples</source>
-      <translation>Открывает примеры МКЭ</translation>
+      <translation>Открывает примеры расчетов МКЭ</translation>
     </message>
   </context>
   <context>
@@ -6213,7 +6213,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="661"/>
       <source>FEM Mesh to Mesh</source>
-      <translation>FEM сетка в сетку</translation>
+      <translation>МКЭ сетка в сетку</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="664"/>
@@ -6231,7 +6231,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
-      <translation>Отображение информации о FEM сетке</translation>
+      <translation>Отображение информации о сетке МКЭ</translation>
     </message>
   </context>
   <context>
@@ -6239,12 +6239,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="784"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation>Сетка из фигуры Gmsh</translation>
+      <translation>Сетка из фигуры через GMSH</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Создать сетку МКЭ из фигуры с помощью генератора сетки Gmsh</translation>
+      <translation>Создать сетку МКЭ из фигуры с помощью генератора сетки GMSH</translation>
     </message>
   </context>
   <context>
@@ -6252,12 +6252,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="845"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation>Сетка из фигуры от Netgen</translation>
+      <translation>Сетка из фигуры через Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="849"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Создает сетку FEM из твердого тела или формы грани с помощью внутренней сетки Netgen</translation>
+      <translation>Создаёт сетку МКЭ из твердого тела или формы грани с помощью встроенного построителя сетки Netgen</translation>
     </message>
   </context>
   <context>
@@ -6270,7 +6270,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1181"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Создает стандартный решатель МКЭ CalculiX с помощью инструментов ccx</translation>
+      <translation>Создаёт стандартный решатель МКЭ CalculiX с помощью инструментов ccx</translation>
     </message>
   </context>
   <context>
@@ -6296,7 +6296,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1238"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation>Создает задачу МКЭ для решателя Elmer</translation>
+      <translation>Создаёт задачу МКЭ для решателя Elmer</translation>
     </message>
   </context>
   <context>
@@ -6309,7 +6309,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1277"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation>Создает задачу МКЭ для решателя Mystran</translation>
+      <translation>Создаёт задачу МКЭ для решателя Mystran</translation>
     </message>
   </context>
   <context>
@@ -6335,7 +6335,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1310"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>Создает задачу для решателя МКЭ Z88</translation>
+      <translation>Создаёт задачу для решателя МКЭ Z88</translation>
     </message>
   </context>
   <context>
@@ -6570,7 +6570,7 @@ Please select a result type first.</source>
       <translation>Нет результирующего объекта</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="200"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
       <source>
 
 Correct module found in: 
@@ -6581,14 +6581,14 @@ Correct module found in:
 {} </translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="208"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
       <source>
 
 Should this module be loaded instead?</source>
       <translation>Следует ли вместо этого загрузить этот модуль?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="225"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6597,17 +6597,17 @@ No matching module was found in the current Python path.</source>
 Соответствующий модуль не найден в текущем пути на Python.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="229"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
       <source>VTK Python module conflict</source>
       <translation>Конфликт модуля VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="255"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>VTK Python Module Conflict</source>
       <translation>Конфликт Модуля VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="258"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Эта функциональность недоступна из-за конфликта модуля VTK python</translation>
     </message>
@@ -6674,7 +6674,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="113"/>
       <source>Different visualizations to show post processing data in</source>
-      <translation>Различные визуализации для отображения данных постобработки</translation>
+      <translation>Различные визуализации для отображения результатов расчета</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
@@ -7221,7 +7221,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="900"/>
       <source>Creates a FEM mesh refinement</source>
-      <translation>Создает сетку ПЭМ</translation>
+      <translation>Выполняет уточнение сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -7472,7 +7472,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1437"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation>Создает набор элементов сетки FEM</translation>
+      <translation>Создает набор элементов сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -7506,7 +7506,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation>Сетка FEM от Netgen</translation>
+      <translation>Сетка МКЭ через Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="20"/>
@@ -7650,7 +7650,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1200"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>Создает задачу для решателя МКЭ CalculiX </translation>
+      <translation>Создаёт задачу для решателя МКЭ CalculiX</translation>
     </message>
   </context>
   <context>
@@ -8489,7 +8489,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1351"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation>Добавляет фильтр постобработки, который добавляет глифы к вершинам сетки для визуализации данных вершин</translation>
+      <translation>Добавляет фильтр постобработки: отображает стрелки в вершинах полигональной сетки для визуализации данных в узлах</translation>
     </message>
   </context>
   <context>
@@ -8712,42 +8712,42 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../Init.py" line="64"/>
       <source>FEM mesh Python</source>
-      <translation>Сетка FEM (Python)</translation>
+      <translation>Сетка МКЭ Python</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="68"/>
       <source>FEM mesh TetGen</source>
-      <translation>Сетка FEM (TetGen)</translation>
+      <translation>Сетка МКЭ TetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="77"/>
       <source>FEM mesh formats</source>
-      <translation>Форматы сетки FEM</translation>
+      <translation>Форматы сетки МКЭ</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="83"/>
       <source>FEM mesh Nastran</source>
-      <translation>Сетка FEM (Nastran)</translation>
+      <translation>Сетка МКЭ Nastran</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="90"/>
       <source>FEM mesh Fenics</source>
-      <translation>Сетка FEM (Fenics)</translation>
+      <translation>Сетка МКЭ Fenics</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="98"/>
       <source>FEM mesh YAML/JSON</source>
-      <translation>Сетка FEM (YAML/JSON)</translation>
+      <translation>Сетка МКЭ YAML/JSON</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="105"/>
       <source>FEM mesh Z88</source>
-      <translation>Сетка FEM (Z88)</translation>
+      <translation>Сетка МКЭ Z88</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="116"/>
       <source>FEM result VTK</source>
-      <translation>Результат FEM (VTK)</translation>
+      <translation>Результат МКЭ VTK</translation>
     </message>
   </context>
   <context>
@@ -8786,7 +8786,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="738"/>
       <source>Remove groups from FEM mesh</source>
-      <translation>Удалить группы из сетки FEM</translation>
+      <translation>Удалить группы из сетки МКЭ</translation>
     </message>
   </context>
   <context>
@@ -8893,7 +8893,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1361"/>
       <source>Creates a FEM solver</source>
-      <translation>Создает решатель FEM</translation>
+      <translation>Создает решатель МКЭ</translation>
     </message>
   </context>
   <context>
@@ -9018,20 +9018,20 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="457"/>
       <source>FEM: wrong ccx binary</source>
-      <translation>FEM: Некорректный двоичный файл ccx </translation>
+      <translation>МКЭ: Некорректный исполняемый файл ccx</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="470"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: Двоичный код CalculiX ccx '{}' не найден.
-Укажите путь к исполняемому файлу CalculiX ccx на вкладке настроек CalculiX FEM. </translation>
+      <translation>МКЭ: Программа CalculiX ccx '{}' не найдена.
+Укажите путь к исполняемому файлу CalculiX ccx на вкладке настроек CalculiX МКЭ.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="482"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: ccx Вывод CalculiX '{} '{} ' не содержит ожидаемой фразы '{}'.
-При запуске исполняемого файла ccx возникают некоторые проблемы.
-Проверьте, работает ли ccx автономно, без FreeCAD. </translation>
+      <translation>МКЭ: CalculiX ccx '{}' Выводит '{}', что не содержит ожидаемой фразы '{}'.
+При запуске исполняемого файла ccx возникли какие-то проблемы.
+Проверьте, работает ли ccx автономно, без FreeCAD.</translation>
     </message>
   </context>
   <context>

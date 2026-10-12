@@ -4421,11 +4421,6 @@ Check one or more edge entities first.</source>
       <translation>Аўтаматычна праверыць мадэль пасля лагічнай аперацыі</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Аўтаматычна ўдасканаліць мадэль пасля лагічнай аперацыі</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Дадаць назву асноўнаму аб'екту</translation>
@@ -4434,33 +4429,6 @@ Check one or more edge entities first.</source>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Налады мадэлі</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Правярае геаметрыю (BRep) пасля кожнай лагічнай аперацыі для выяўлення памылак.
-Заўвага: можа знізіць прадукцыйнасць складаных мадэляў.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Аўтаматычна ачышчае фігуру пасля лагічных аперацый, выдаляючы залішнія рэбры ў адной плоскасці і аб'ядноўваючы сумежныя грані</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Аўтаматычна ўдасканаліць мадэль пасля аперацыі прымянення</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Аўтаматычна запускае этап удакладнення пасля стварэння элементаў праектавання дэталі, каб выдаліць непатрэбныя рэбры і ачысціць геаметрыю</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Задае новыя цела, якія дазваляюць выкарыстоўваць некалькі нязвязаных суцэльных цел (злучэнняў).
-Калі не птушка, цела будзе строга абмежавана адным бесперапынным суцэльным целам.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4638,6 +4606,38 @@ Check one or more edge entities first.</source>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Аўтаматычнае пераключэнне на панэль задач пры ўключэнні варштата праектаванне дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Правярае геаметрыю (BRep) пасля кожнай лагічнай аперацыі для выяўлення памылак.
+Заўвага: можа знізіць прадукцыйнасць складаных мадэляў.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Аўтаматычнае ўдакладненне лагічных вынікаў апрацоўкі дэталяў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Удакладняе лагічныя вынікі апрацоўкі дэталяў, выдаляючы лішнія рэбры і аб'ядноўваючы сумежныя грані</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Аўтаматычнае ўдакладненне функцый праектавання дэталі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Удакладняе функцыі праектавання дэталі пасля яе стварэння шляхам выдалення непатрэбных рэбраў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Задае новыя цела, якія дазваляюць выкарыстоўваць некалькі нязвязаных суцэльных цел (злучэнняў).
+Калі не птушка, цела будзе строга абмежавана адным бесперапынным суцэльным целам.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7831,18 +7831,18 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Для папярэдняга прагляду патрабуецца пастаўшчык прагляду на аснове дэталяў;
 для %1 не знойдзена ніводнага.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>невядомы абьект</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Памылка пры папярэднім праглядзе: %1.
 Звычайна паказвае на памылку з мадэллю.</translation>
@@ -7912,7 +7912,7 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Абраць траекторыю</translation>
     </message>
@@ -7952,22 +7952,22 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>Выраўнаваць да траекторыі</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Выпраўленая колькасць</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Выпраўленая адлегласць</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Выпраўленая колькасці і адлегласць</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8110,7 +8110,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Напрамак 2</translation>
     </message>

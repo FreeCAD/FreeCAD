@@ -462,47 +462,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
       <source>Parameters</source>
       <translation>პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
       <source>Physical Properties</source>
       <translation>ფიზიკური თვისებები</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
       <source>Center of Gravity</source>
       <translation>გრავიტაციის ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
       <source>Center of Volume</source>
       <translation>მოცულობის ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Inertia</source>
       <translation>ინერცია</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="434"/>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
       <source>Close</source>
       <translation>დახურვა</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="437"/>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
       <source>Save</source>
       <translation>შენახვა</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="441"/>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
       <source>Reset</source>
       <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1222"/>
+      <location filename="../../TaskMassProperties.cpp" line="1232"/>
       <source> (Average)</source>
       <translation> (საშუალო)</translation>
     </message>

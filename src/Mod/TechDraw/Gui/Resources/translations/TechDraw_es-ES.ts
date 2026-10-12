@@ -4311,12 +4311,12 @@ it has a weld symbol that would become broken.</source>
 tiene un símbolo de soldadura que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Cierre el cuadro de diálogo abierto antes de eliminar el objeto de detalle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>No se puede borrar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
     </message>
@@ -4326,8 +4326,8 @@ tiene un símbolo de soldadura que se rompería.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
@@ -4731,17 +4731,17 @@ una penalización de rendimiento en modelos complejos.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4874,7 +4874,7 @@ For large amount of faces the detection can become slow.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Identificar caras que representan vacíos</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>

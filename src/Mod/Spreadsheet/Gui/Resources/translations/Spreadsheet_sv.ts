@@ -581,8 +581,8 @@ av egenskapen.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Ange ett uttryck med objektets och egenskapens namn för att dynamiskt
-byta modellkonfiguration. Egenskapen skapas om den inte finns.</translation>
+      <translation>Skriv in ett uttryck för att ange objekt- och egenskapsnamn och dynamiskt
+byta designkonfiguration. Egenskapen skapas om den saknas.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>

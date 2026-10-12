@@ -25,7 +25,7 @@
       <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Yta</translation>
+      <translation>Ansikte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="869"/>
@@ -680,7 +680,7 @@
       <location filename="../../AttacherTexts.cpp" line="452"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Plan utifrån tre punkter</translation>
+      <translation>Flygplan med 3 poäng</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="453"/>
@@ -692,7 +692,7 @@
       <location filename="../../AttacherTexts.cpp" line="461"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till tre punkter</translation>
+      <translation>Normal till 3 poäng</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="462"/>
@@ -1143,7 +1143,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
@@ -1871,8 +1871,8 @@ The camera view determines the direction
 of the projection.</source>
       <translation>Projicerar kanter, trådar eller ytor från en form
 på en yta i en annan form.
-Kameravyn bestämmer
-projektionens riktning.</translation>
+Kameravyn bestämmer projektionens
+riktning.</translation>
     </message>
   </context>
   <context>
@@ -2172,7 +2172,7 @@ projektionens riktning.</translation>
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>Make face</source>
-      <translation>Skapa yta</translation>
+      <translation>Gör ansikte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
@@ -2293,7 +2293,7 @@ projektionens riktning.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="363"/>
       <location filename="../../TaskShapeBuilder.cpp" line="417"/>
       <source>Face</source>
-      <translation>Yta</translation>
+      <translation>Ansikte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="482"/>
@@ -2657,10 +2657,10 @@ Obs! Placeringen uttrycks i det lokala koordinatsystemet för det objekt som fä
 a single object. When importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the placement property.</source>
-      <translation>Behåller placeringsinformationen vid export
-av ett enskilt objekt. När STEP-filen importeras igen
-kodas placeringen in i formens geometri i stället för
-att lagras i placeringsegenskapen.</translation>
+      <translation>Behåller placeringsinformationen när du exporterar
+ett enskilt objekt. När STEP-filen importeras igen
+kodas placeringen i formens geometri i stället för att bevaras
+i placeringsegenskapen.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="139"/>
@@ -2876,8 +2876,8 @@ Om båda längderna är noll används riktningsvektorns längd.</translation>
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Det gick inte att skapa extrudering.
+Ingen form kunde extruderas.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -2972,7 +2972,7 @@ No shape could be extruded.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
@@ -4127,7 +4127,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
       <source>Show faces</source>
-      <translation>Visa ytor</translation>
+      <translation>Visa ansikten</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
@@ -4412,11 +4412,6 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <translation>Kontrollera modell automatiskt efter boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Förfina modell automatiskt efter boolesk operation</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Lägg till namn på basobjekt</translation>
@@ -4425,31 +4420,6 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Modellinställningar</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Validerar geometrin (BRep) efter varje boolesk operation för att identifiera fel. Obs! Detta kan försämra prestandan för komplexa modeller.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Rensar automatiskt formen efter booleska operationer genom att ta bort överflödiga koplanära kanter och sammanfoga angränsande ytor</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Förfina modellen automatiskt efter operationer</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Kör automatiskt en förfiningsomgång efter att Part Design-formelement har skapats för att ta bort onödiga kanter och rensa geometrin</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Anger att nya kroppar får innehålla flera separata solider (sammansatta objekt). Om alternativet avmarkeras begränsas en kropp till en enda sammanhängande solid.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4494,7 +4464,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="217"/>
       <source>Points</source>
-      <translation>Punkter</translation>
+      <translation>Poäng</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="236"/>
@@ -4625,6 +4595,36 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Växla automatiskt till uppgiftspanelen när arbetsbänken Part Design aktiveras</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Validerar geometrin (BRep) efter varje boolesk operation för att identifiera fel. Obs! Detta kan försämra prestandan för komplexa modeller.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation>Automatisk förfining av Part-booleska resultat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Förfinar Part-booleska resultat genom att ta bort överflödiga kanter och sammanfoga angränsande ytor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Automatisk förfining av Part Design-funktioner</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Förfinar Part Design-funktioner efter skapandet genom att ta bort onödiga kanter</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Anger att nya kroppar får innehålla flera separata solider (sammansatta objekt). Om alternativet avmarkeras begränsas en kropp till en enda sammanhängande solid.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -5528,7 +5528,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="930"/>
       <source>Face</source>
-      <translation>Yta</translation>
+      <translation>Ansikte</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="436"/>
@@ -5604,9 +5604,9 @@ för det objekt som fästs.</translation>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>Extra kontroll av booleska operationer som ibland kan hitta fel som
-standardkontrollen av BRep-geometri missar. Dessa fel innebär inte alltid
-att det kontrollerade objektet är oanvändbart. Standard: false</translation>
+      <translation>En extra kontroll av booleska operationer som ibland kan hitta fel som
+den vanliga BRep-geometrikontrollen missar. Felen innebär inte alltid
+att det kontrollerade objektet är oanvändbart. Standardvärde: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
@@ -5782,7 +5782,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
-      <translation>Kontrollen pågår…</translation>
+      <translation>Kontrollen körs…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="455"/>
@@ -5977,7 +5977,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -6006,7 +6006,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from vertices</source>
-      <translation>Yta från hörnpunkter</translation>
+      <translation>Ansikte från hörn</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
@@ -6250,7 +6250,7 @@ Fortsätt?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
-      <translation>Yta</translation>
+      <translation>Ansikte</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
@@ -6791,7 +6791,7 @@ Fortsätt?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="641"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="693"/>
       <source>Bad Selection</source>
-      <translation>Dålig markering</translation>
+      <translation>Dåligt urval</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
@@ -7007,7 +7007,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
@@ -7286,7 +7286,7 @@ Formernas överlappande volymer tas bort.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
@@ -7817,17 +7817,17 @@ Formernas överlappande volymer tas bort.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>Förhandsvisning kräver en Part-baserad vyhanterare; ingen hittades för %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>okänt objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Fel vid återgivning av förhandsgranskning: %1. Det indikerar vanligtvis ett fel med modellen.</translation>
     </message>
@@ -7896,7 +7896,7 @@ Formernas överlappande volymer tas bort.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Välj bana</translation>
     </message>
@@ -7936,22 +7936,22 @@ Formernas överlappande volymer tas bort.</translation>
       <translation>Rikta in efter banan</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Fast antal</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Fast avstånd</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Fast antal och avstånd</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8094,7 +8094,7 @@ Formernas överlappande volymer tas bort.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Riktning 2</translation>
     </message>

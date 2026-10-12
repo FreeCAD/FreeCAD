@@ -1318,7 +1318,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation>Träffrekvens</translation>
+      <translation>Träffkvot</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>

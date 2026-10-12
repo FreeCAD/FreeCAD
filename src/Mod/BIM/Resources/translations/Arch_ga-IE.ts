@@ -7415,8 +7415,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>Airde nó doimhneacht easbhrúite an eilimint seo.
+Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh ina bhfuil sí a mheaitseáil go huathoibríoch.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9520,9 +9520,9 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Teimpléad do théacs lipéid an spáis.
+Úsáid $area, $label, $longname, $description nó aon ainm airí eile a bhfuil $ roimhe (gan aird a thabhairt ar chás na litreach),
+nó $floor, $walls, $ceiling le haghaidh bailchríocha, chun na sonraí comhfhreagracha a chur isteach.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9588,29 +9588,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>Fad an bhalla seo.
+Is féidir é a chur in eagar ach amháin más líne dhréachta, sceitse gan srian ina bhfuil líne amháin, nó rud ar bith, é bunlíne an bhalla seo.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>Leithead an bhalla seo.
+Déantar neamhaird de má tá an balla seo bunaithe ar sholad nó ar aghaidh.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>Airde an bhalla seo.
+Fág ag 0 í chun airde na Leibhéil nó an Fhoirgnimh máguaird a mheaitseáil go huathoibríoch.
+Déanfar neamhaird de má tá an balla seo bunaithe ar sholad.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>Ailíniú an bhalla seo ar a bhunréad, más infheidhme.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10688,12 +10688,12 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>Dréachtú 2T</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>Geoiméadracht 3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="685"/>
@@ -13783,7 +13783,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Cruthaíonn sé aontas de chruthanna éagsúla</translation>
     </message>
   </context>
   <context>
@@ -13835,7 +13835,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Cruthaíonn sé trasnú idir dhá chruth</translation>
     </message>
   </context>
   <context>
@@ -13843,7 +13843,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Cruthaitheoir Cruthanna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -13856,12 +13856,12 @@ Ar mhaith leat dul ar aghaidh?</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Gearradh Roinne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Cruthaíonn sé teilgean 2T ar an bplána XY de na haghaidheanna trasnaithe de na réada roghnaithe amháin.</translation>
     </message>
   </context>
   <context>
@@ -13869,12 +13869,12 @@ Ar mhaith leat dul ar aghaidh?</translation>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Fritháireamh 2T</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Fóntas chun cruthanna plána a fhritháireamh</translation>
     </message>
   </context>
 </TS>

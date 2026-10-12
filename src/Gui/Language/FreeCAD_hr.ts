@@ -5510,44 +5510,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Prikaži ovisnosti</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
       <source>Depending on</source>
       <translation>Ovisi o</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
       <source>Depended by</source>
       <translation>Ovisan kod</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Selections</source>
       <translation>Odabiri</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
       <source>All</source>
       <translation>Sve</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
       <source>&amp;Use Original Selection</source>
       <translation>Koristi originaln&amp;u selekciju</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Zanemarite ovisnosti i nastavite s objektima
@@ -6162,7 +6162,7 @@ Spremiti sve promjene?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="197"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2651"/>
       <source>Dimension</source>
       <translation>Dimenzija</translation>
     </message>
@@ -6214,59 +6214,59 @@ Spremiti sve promjene?</translation>
       <translation>Spreman</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1424"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>Zatvori sve</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1697"/>
-      <location filename="../MainWindow.cpp" line="1698"/>
       <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>Uključuje ove alatne trake</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1718"/>
-      <location filename="../MainWindow.cpp" line="1719"/>
       <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>Uključi/isključi ovaj usidrivi prozor</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1927"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>Safe mode enabled</source>
       <translation>Siguran način rada omogućen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1928"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD sada radi u sigurnom načinu rada.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1934"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Siguran način rada privremeno onemogućuje vaše konfiguracije i dodatke. Ponovno pokrenite aplikaciju za izlaz iz sigurnog načina rada.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2374"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2376"/>
+      <location filename="../MainWindow.cpp" line="2527"/>
       <source>Unsaved document</source>
       <translation>Nespremljeni dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2375"/>
+      <location filename="../MainWindow.cpp" line="2377"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Izvezeni objekt sadrži vanjsku poveznicu. Prije izvoza spremite dokument barem jednom.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2528"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Za povezivanje s vanjskim objektima dokument se mora barem jednom spremiti.
 Spremiti dokument sad?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3036"/>
+      <location filename="../MainWindow.cpp" line="3038"/>
       <source>Safe Mode</source>
       <translation>Siguran način rada</translation>
     </message>
@@ -6551,152 +6551,152 @@ Kako želite nastaviti?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>property</source>
       <translation>svojstvo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
       <source>Expand/Collapse Properties</source>
       <translation>Proširi/Sažmi svojstva</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
       <source>Expand to Default</source>
       <translation>Proširi na zadano</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
       <source>Expand All</source>
       <translation>Proširi sve</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
       <source>Collapse All</source>
       <translation>Sažmi sve</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Default Expand</source>
       <translation>Proširi zadano</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
       <source>Auto Expand</source>
       <translation>Automatski proširi</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Auto Collapse</source>
       <translation>Automatski sažmi</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
       <source>object %1 (%2):
 </source>
       <translation type="unfinished">object %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>property %1
 </source>
       <translation type="unfinished">property %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>document %1:
 </source>
       <translation type="unfinished">document %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
       <source>(No references found.)</source>
       <translation type="unfinished">(No references found.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Property Uses</source>
       <translation type="unfinished">Property Uses</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
       <source>Copy</source>
       <translation>Kopiraj</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Add Property</source>
       <translation>Dodaj svojstvo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Rename Property Group</source>
       <translation>Preimenuj grupu svojstava</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Rename Property</source>
       <translation>Preimenuj svojstvo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Edit Property Tooltip</source>
       <translation>Uredi svojstva Opis Alta</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
       <source>Delete Property</source>
       <translation>Izbriši svojstvo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
       <source>Move Property</source>
       <translation type="unfinished">Move Property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Tooltip</source>
       <translation>Naziv alata</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
       <source>Show Hidden</source>
       <translation>Prikaži skriveno</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
       <source>Expression</source>
       <translation>Izraz</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
       <source>Property name</source>
       <translation>Ime svojstva</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
       <source>Group name:</source>
       <translation>Naziv grupe:</translation>
     </message>
@@ -7481,7 +7481,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4254"/>
+      <location filename="../Tree.cpp" line="4258"/>
       <source>Search</source>
       <translation>Pretraživanje</translation>
     </message>
@@ -7691,7 +7691,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6613"/>
+      <location filename="../Tree.cpp" line="6617"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
@@ -7711,14 +7711,14 @@ Specify another directory?</source>
       <translation>Otvori lokaciju datoteke</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6581"/>
+      <location filename="../Tree.cpp" line="6585"/>
       <source> (but must be executed)</source>
       <translation>(ali mora biti izvršen)
 
 </translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6584"/>
+      <location filename="../Tree.cpp" line="6588"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Interni naziv: %2</translation>
     </message>
@@ -8801,7 +8801,7 @@ Odaberite "Prekini" za prekid
       <translation>Ne mogu pronaći datoteku %1 niti u %2 niti u %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2790"/>
       <source>Clarify Selection</source>
       <translation>Pojasnite odabir</translation>
     </message>
@@ -9258,7 +9258,7 @@ trenutnu kopiju će biti izgubljene.
       <translation>Nije dopušteno:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1337"/>
+      <location filename="../Selection/Selection.cpp" line="1335"/>
       <source>Selection not allowed by filter</source>
       <translation>Izbor nije dozvoljen kod ovog filtera</translation>
     </message>
@@ -9572,7 +9572,7 @@ trenutnu kopiju će biti izgubljene.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
@@ -14495,7 +14495,7 @@ Ovo omogućuje da usidreni izbornici ostaju uvijek prozirni.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4326"/>
+      <location filename="../Tree.cpp" line="4330"/>
       <source>Tree View</source>
       <translation>Prikaz stabla</translation>
     </message>

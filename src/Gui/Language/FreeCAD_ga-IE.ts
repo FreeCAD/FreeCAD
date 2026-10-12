@@ -4073,15 +4073,15 @@ Is é an luach trastomhas an sféir a oireann don scáileán.</translation>
 Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
 Applies to touchpads and other devices that report
 pixel-precise scrolling. Ordinary wheel mice keep zooming.</source>
-      <translation type="unfinished">Two-finger scroll on a touchpad pans the view.
-Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
-Applies to touchpads and other devices that report
-pixel-precise scrolling. Ordinary wheel mice keep zooming.</translation>
+      <translation>Bogann scrollú le dhá mhéar ar an bpainéal tadhaill an radharc.
+Déanann Shift + scrollú fithisiú, agus déanann Ctrl + scrollú (Cmd ar macOS) súmáil.
+Baineann sé seo le painéil tadhaill agus le gléasanna eile a thacaíonn
+le scrollú cruinn ag leibhéal na bpicteilíní. Leanann gnáth-luchóga le roth ag súmáil.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
       <source>Touchpad scroll pans instead of zooming</source>
-      <translation type="unfinished">Touchpad scroll pans instead of zooming</translation>
+      <translation>Déanann an ceap tadhaill scrollú agus panáil in áit súmála</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="786"/>
@@ -4217,8 +4217,8 @@ Ciallaíonn céim súmála '1' fachtóir 7.5 do gach céim súmála.</translatio
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
       <source>Prevents view tilting when pinch-zooming.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Cuireann sé cosc ​​ar chlaonadh an amhairc agus súmáil á déanamh trí phioncadh.
+Ní dhéanann an socrú seo díchumasú ar chlaonadh leis an luchóg.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="723"/>
@@ -5481,44 +5481,44 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
       <translation>Taispeáin spleáchais</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
       <source>Depending on</source>
       <translation>Ag brath ar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Document</source>
       <translation>Doiciméad</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
       <source>Depended by</source>
       <translation>Ag brath ar</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Selections</source>
       <translation>Roghanna</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
       <source>All</source>
       <translation>Gach</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Úsáid an Rogha Bunaidh</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Déan neamhaird de spleáchais agus lean ar aghaidh leis na réada
@@ -6134,7 +6134,7 @@ Sábháil na hathruithe go léir?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="197"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2651"/>
       <source>Dimension</source>
       <translation>Toise</translation>
     </message>
@@ -6186,59 +6186,59 @@ Sábháil na hathruithe go léir?</translation>
       <translation>Réidh</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1424"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>Dún Gach Rud</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1697"/>
-      <location filename="../MainWindow.cpp" line="1698"/>
       <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>Athraíonn an barra uirlisí seo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1718"/>
-      <location filename="../MainWindow.cpp" line="1719"/>
       <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>Athraigh an fhuinneog in-dockáilte seo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1927"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>Safe mode enabled</source>
       <translation>Mód sábháilte cumasaithe</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1928"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>Tá FreeCAD ag rith i mód sábháilte anois.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1934"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>Díchumasaíonn mód sábháilte do chumraíochtaí agus breiseáin go sealadach. Atosaigh an feidhmchlár chun an mód sábháilte a fhágáil.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2374"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2376"/>
+      <location filename="../MainWindow.cpp" line="2527"/>
       <source>Unsaved document</source>
       <translation>Doiciméad neamhshábháilte</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2375"/>
+      <location filename="../MainWindow.cpp" line="2377"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>Tá nasc seachtrach sa réad easpórtáilte. Sábháil an doiciméad uair amháin ar a laghad sula ndéantar é a easpórtáil.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2528"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Chun nasc a dhéanamh le rudaí seachtracha, ní mór an doiciméad a shábháil uair amháin ar a laghad.
 An bhfuil tú ag iarraidh an doiciméad a shábháil anois?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3036"/>
+      <location filename="../MainWindow.cpp" line="3038"/>
       <source>Safe Mode</source>
       <translation>Mód Sábháilte</translation>
     </message>
@@ -6521,152 +6521,152 @@ Conas is mian leat dul ar aghaidh?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>property</source>
       <translation>maoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
       <source>Expand/Collapse Properties</source>
       <translation>Airíonna a Leathnú/Laghdú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
       <source>Expand to Default</source>
       <translation>Leathnaigh go Réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
       <source>Expand All</source>
       <translation>Leathnaigh Uile</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
       <source>Collapse All</source>
       <translation>Laghdaigh Gach Rud</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Default Expand</source>
       <translation>Réamhshocrú Leathnú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
       <source>Auto Expand</source>
       <translation>Leathnú Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Auto Collapse</source>
       <translation>Laghdú Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
       <source>object %1 (%2):
 </source>
       <translation>réad %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>property %1
 </source>
       <translation>maoin %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>document %1:
 </source>
       <translation>doiciméad %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>Déantar tagairt don mhaoin %1 i réad %2 (%3) i ndoiciméad %4 le:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
       <source>(No references found.)</source>
       <translation>(Níor aimsíodh aon tagairtí.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Property Uses</source>
       <translation>Úsáidí Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Add Property</source>
       <translation>Cuir Maoin leis</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Rename Property Group</source>
       <translation>Athainmnigh Grúpa Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>Ní féidir an grúpa a athainmniú: tá ainmneacha ag maoin amháin nó níos mó a thosaíonn le hainm an ghrúpa</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Rename Property</source>
       <translation>Athainmnigh an Mhaoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Edit Property Tooltip</source>
       <translation>Leid Uirlisí Eagarthóireachta Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
       <source>Delete Property</source>
       <translation>Scrios an Mhaoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
       <source>Move Property</source>
       <translation>Bog Maoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Tooltip</source>
       <translation>Leid Uirlis</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
       <source>Show Hidden</source>
       <translation>Taispeáin Folaithe</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
       <source>Expression</source>
       <translation>Léiriú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
       <source>Property name</source>
       <translation>Ainm na maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
       <source>Group name:</source>
       <translation>Ainm an ghrúpa:</translation>
     </message>
@@ -7451,7 +7451,7 @@ Sonraigh eolaire eile?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4254"/>
+      <location filename="../Tree.cpp" line="4258"/>
       <source>Search</source>
       <translation>Cuardaigh</translation>
     </message>
@@ -7661,7 +7661,7 @@ Sonraigh eolaire eile?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6613"/>
+      <location filename="../Tree.cpp" line="6617"/>
       <source>Rename</source>
       <translation>Athainmnigh</translation>
     </message>
@@ -7681,12 +7681,12 @@ Sonraigh eolaire eile?</translation>
       <translation>Oscail Suíomh an Chomhaid</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6581"/>
+      <location filename="../Tree.cpp" line="6585"/>
       <source> (but must be executed)</source>
       <translation> (ach ní mór é a fhorghníomhú)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6584"/>
+      <location filename="../Tree.cpp" line="6588"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Ainm inmheánach: %2</translation>
     </message>
@@ -8767,7 +8767,7 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Ní féidir comhad %1 a aimsiú i %2 ná i %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2790"/>
       <source>Clarify Selection</source>
       <translation>Soiligh an Roghnú</translation>
     </message>
@@ -9224,7 +9224,7 @@ dhéantar ar an gcóip reatha.
       <translation>Ní cheadaítear:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1337"/>
+      <location filename="../Selection/Selection.cpp" line="1335"/>
       <source>Selection not allowed by filter</source>
       <translation>Ní cheadaítear an rogha ag an scagaire</translation>
     </message>
@@ -9538,7 +9538,7 @@ dhéantar ar an gcóip reatha.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Gan ainm</translation>
@@ -14445,7 +14445,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4326"/>
+      <location filename="../Tree.cpp" line="4330"/>
       <source>Tree View</source>
       <translation>Radharc Crann</translation>
     </message>

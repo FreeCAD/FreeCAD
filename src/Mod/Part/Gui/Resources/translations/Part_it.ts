@@ -4408,11 +4408,6 @@ Selezionare prima una o più entità spigolo.</translation>
       <translation>Controlla automaticamente il modello dopo un'operazione booleana</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
-      <source>Automatically refine model after boolean operation</source>
-      <translation>Affina automaticamente il modello dopo un'operazione booleana</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="148"/>
       <source>Add name of base object</source>
       <translation>Aggiungi il nome dell'oggetto base</translation>
@@ -4421,31 +4416,6 @@ Selezionare prima una o più entità spigolo.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
       <translation>Impostazioni modello</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
-      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation>Convalida la geometria (BRep) dopo ogni operazione booleana per rilevare errori. Nota: ciò potrebbe rallentare le prestazioni su modelli complessi.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Pulisce automaticamente la forma dopo le operazioni booleane rimuovendo i bordi complanari ridondanti e unendo le facce adiacenti</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
-      <source>Automatically refine model after applying operations</source>
-      <translation>Affina automaticamente il modello dopo l'applicazione delle operazioni</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</source>
-      <translation>Esegue automaticamente una fase di raffinazione dopo la creazione delle feature di Part Design per rimuovere i bordi superflui e ripulire la geometria</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation>Imposta per i nuovi corpi di consentire più solidi (composti) non collegati. Se deselezionato, un corpo è strettamente limitato a un singolo solido contiguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="133"/>
@@ -4621,6 +4591,36 @@ Selezionare prima una o più entità spigolo.</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
       <translation>Passa automaticamente al pannello azioni quando viene attivato l'ambiente Part Design</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="33"/>
+      <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
+      <translation>Convalida la geometria (BRep) dopo ogni operazione booleana per rilevare errori. Nota: ciò potrebbe rallentare le prestazioni su modelli complessi.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="55"/>
+      <source>Automatic refinement of Part Boolean results</source>
+      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
+      <translation>Raffina i risultati della parte booleana rimuovendo i bordi ridondanti e fondendo le facce adiacenti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="80"/>
+      <source>Automatic refinement of Part Design features</source>
+      <translation>Raffinamento automatico delle caratteristiche di Part Design</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
+      <source>Refines Part Design features after creation by removing unnecessary edges</source>
+      <translation>Raffina le funzioni di Part Design dopo la creazione rimuovendo i bordi inutili</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
+      <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
+      <translation>Imposta per i nuovi corpi di consentire più solidi (composti) non collegati. Se deselezionato, un corpo è strettamente limitato a un singolo solido contiguo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -7813,17 +7813,17 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
       <translation>L'anteprima richiede un provider di visualizzazione basato su parti; nessuno trovato per %1.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
       <translation>oggetto sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="305"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Errore durante il rendering dell'anteprima: %1. Di solito indica un errore con il modello.</translation>
     </message>
@@ -7892,7 +7892,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="145"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
       <translation>Seleziona percorso</translation>
     </message>
@@ -7932,22 +7932,22 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
       <translation>Allinea al tracciato</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
       <translation>Conteggio fisso</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
       <translation>Spaziatura fissa</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="112"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
       <translation>Conteggio e spaziatura fissi</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="157"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
       <translation type="unfinished">(+%1)</translation>
     </message>
@@ -8090,7 +8090,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="142"/>
+      <location filename="../../TaskPatternParameters.cpp" line="144"/>
       <source>Direction 2</source>
       <translation>Direzione 2</translation>
     </message>

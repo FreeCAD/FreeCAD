@@ -103,7 +103,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     <message>
       <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
-      <translation>&amp;Assemblage</translation>
+      <translation>&amp;Assembly</translation>
     </message>
   </context>
   <context>
@@ -135,7 +135,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
@@ -175,37 +175,37 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Courroie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Lien cassé dans : </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>Éditer la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>Mise à jour des positions enregistrées</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Sélectionner 2 éléments dans 2 pièces séparées</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Rayon 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Pas du filetage</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Rayon primitif</translation>
     </message>
@@ -728,12 +728,12 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
       <translation>La référence {order} de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>Liste des références aux composants à regrouper</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>L'objet à bloquer</translation>
     </message>

@@ -905,8 +905,8 @@ av knapparna ovan</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation>Om detta väljs centreras arbetsplanet
-på den aktuella vyn när du trycker på en
+      <translation>Om detta väljs kommer arbetsplanet att
+centreras på den aktuella vyn när du trycker på en
 av knapparna ovan</translation>
     </message>
     <message>
@@ -918,8 +918,8 @@ av knapparna ovan</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="117"/>
       <source>Centers the working plane on the current view when pressing one
 of the buttons above</source>
-      <translation>Centrerar arbetsplanet på den aktuella vyn när du trycker på en
-av knapparna ovan</translation>
+      <translation>Centrerar arbetsplanet på den aktuella vyn när du trycker på en av
+knapparna ovan</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="133"/>
@@ -1128,7 +1128,7 @@ planet till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Flat Lines</source>
-      <translation>Ytor med kanter</translation>
+      <translation>Plana linjer</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="261"/>
@@ -1158,7 +1158,7 @@ planet till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
       <source>Points</source>
-      <translation>Punkter</translation>
+      <translation>Poäng</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="69"/>
@@ -2002,10 +2002,10 @@ eller cm, eller lämna tomt för att använda den aktuella enheten i FreeCAD.</t
 value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
 used for linear dimensions.</source>
-      <translation>Standardlängden för måttgränslinjer. Använd 0 för fullständiga måttgränslinjer. Ett negativt
-värde anger mellanrummet mellan måttgränslinjernas ändar och de uppmätta
-punkterna. Ett positivt värde anger måttgränslinjernas maximala längd. Används
-endast för linjära mått.</translation>
+      <translation>Standardlängden för anknytningslinjer. Använd 0 för fullständiga anknytningslinjer. Ett negativt
+värde anger avståndet mellan förlängningslinjernas ändar och de uppmätta
+punkterna. Ett positivt värde anger den maximala längden på förlängningslinjerna. Används endast
+för linjära mått.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="676"/>
@@ -2289,10 +2289,10 @@ tillägget "dxf_library" från Tilläggshanterare.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som
-återanvändbara objekt (sammansatta Part-objekt) och instanser blir `App::Link`-objekt,
-vilket bevarar blockstrukturen. Bäst för fullständig integration med
-arbetsbänken Draft. </translation>
+      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som återanvändbara
+objekt (Part Compounds) och instanser blir `App::Link`-objekt,
+vilket bevarar blockstrukturen. Bäst för fullständig integration med Draft-
+arbetsbänken. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="123"/>
@@ -2313,10 +2313,10 @@ arbetsbänken Draft. </translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
-      <translation>Skapar parametriska Part-objekt (till exempel Part::Line och Part::Circle). Blockdefinitioner
-importeras som återanvändbara objekt (sammansatta Part-objekt) och instanser
-blir `App::Link`-objekt, vilket bevarar blockstrukturen. Bäst för
-skriptbaserad efterbearbetning och integration med arbetsbänken Part.</translation>
+      <translation>Skapar parametriska Part-objekt (t.ex. Part::Line och Part::Circle). Block
+importeras som återanvändbara objekt (Part Compounds) och instanser blir
+`App::Link`-objekt, vilket bevarar blockstrukturen. Bäst för
+skriptbaserad efterbearbetning och integration med Part-arbetsbänken.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="151"/>
@@ -2367,10 +2367,10 @@ form. Bäst för att importera och visa mycket stora filer med maximal prestanda
 between the DXF file's unit and millimeters. Example: for files in
 millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4,
 in feet: 304.8</source>
-      <translation>Skalfaktor som tillämpas på DXF-filer vid import. Faktorn anger omvandlingen
+      <translation>Skalfaktor som ska användas vid import av DXF-filer. Faktorn är omvandlingen
 mellan DXF-filens enhet och millimeter. Exempel: för filer i
-millimeter: 1, i centimeter: 10, i meter: 1000, i tum: 25,4,
-i fot: 304,8</translation>
+millimeter: 1, centimeter: 10, meter: 1 000, tum: 25,4
+och fot: 304,8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="288"/>
@@ -2385,14 +2385,14 @@ i fot: 304,8</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
       <source>Points</source>
-      <translation>Punkter</translation>
+      <translation>Poäng</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
       <source>If checked, entities from the paper space will also be imported. By default,
 only model space is imported</source>
-      <translation>Om detta är markerat importeras även entiteter från pappersutrymmet. Som standard
-importeras endast modellutrymmet</translation>
+      <translation>Om detta är markerat importeras även objekt från pappersutrymmet. Som standard importeras
+endast modellutrymmet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="327"/>
@@ -2934,7 +2934,7 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="161"/>
       <source>Make face</source>
-      <translation>Skapa yta</translation>
+      <translation>Gör ansikte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="277"/>
@@ -3014,7 +3014,7 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="715"/>
       <source>UI Options</source>
-      <translation>Alternativ för användargränssnitt</translation>
+      <translation>UI-inställningar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="721"/>
@@ -3357,7 +3357,7 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     <message>
       <location filename="../../DraftGui.py" line="736"/>
       <source>Make face</source>
-      <translation>Skapa yta</translation>
+      <translation>Gör ansikte</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="744"/>
@@ -3448,7 +3448,7 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
     <message>
       <location filename="../../DraftGui.py" line="1037"/>
       <source>Point</source>
-      <translation>Punkt</translation>
+      <translation>Poäng</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1074"/>
@@ -3517,12 +3517,12 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
     <message>
       <location filename="../../DraftGui.py" line="2063"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>Skapa objekt</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2241"/>
       <source>Faces</source>
-      <translation>Ytor</translation>
+      <translation>Ansikten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2242"/>
@@ -3537,7 +3537,7 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Utkast</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="299"/>
@@ -3704,7 +3704,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="630"/>
       <source>Faces:</source>
-      <translation>Ytor:</translation>
+      <translation>Ansikten:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="631"/>
@@ -3724,7 +3724,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="637"/>
       <source>Face</source>
-      <translation>Yta</translation>
+      <translation>Ansikte</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="642"/>
@@ -5389,7 +5389,7 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <location filename="../../draftmake/make_arc_3points.py" line="91"/>
       <location filename="../../draftmake/make_arc_3points.py" line="96"/>
       <source>Points:</source>
-      <translation>Punkter:</translation>
+      <translation>Poäng:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="92"/>
@@ -5925,8 +5925,8 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <location filename="../../draftutils/params.py" line="256"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-      <translation>Vill du uppdatera SVG-mönsteralternativen
-för befintliga objekt i alla öppna dokument?</translation>
+      <translation>Vill du uppdatera SVG-mönsteralternativen för
+befintliga objekt i alla öppna dokument?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="73"/>
@@ -6182,7 +6182,7 @@ För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</transla
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft Utility</source>
-      <translation>Draft-verktyg</translation>
+      <translation>Utkast till verktyg</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="118"/>
@@ -6638,7 +6638,7 @@ Om alternativet ”Kopiera” är aktivt skapas förskjutna kopior.</translation
     <message>
       <location filename="../../draftguitools/gui_points.py" line="67"/>
       <source>Point</source>
-      <translation>Punkt</translation>
+      <translation>Poäng</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="68"/>
@@ -6684,7 +6684,7 @@ Om alternativet ”Kopiera” är aktivt skapas roterade kopior.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="67"/>
       <source>Creates a regular polygon (triangle, square, pentagon…)</source>
-      <translation>Skapar en reguljär polygon (triangel, kvadrat, femhörning…)</translation>
+      <translation>Skapar en regelbunden polygon (triangel, kvadrat, femhörning…)</translation>
     </message>
   </context>
   <context>
@@ -6872,9 +6872,9 @@ The result of the operation depends on the types of objects, which may be able t
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
       <translation>Uppgraderar de valda objekten till mer komplexa former.
-Resultatet av operationen beror på typen av objekt, som kanske kan uppgraderas flera gånger i rad.
-Den kan t.ex. sammanfoga de markerade objekten till ett, konvertera enkla kanter till parametriska polylinjer,
-konvertera slutna kanter till fyllda ytor och parametriska polygoner, och sammanfoga ytor till en enda yta.</translation>
+Resultatet av åtgärden beror på typen av objekt, som kan gå att uppgradera flera gånger i följd.
+Åtgärden kan till exempel sammanfoga markerade objekt till ett, omvandla enkla kanter till parametriska polylinjer,
+omvandla slutna kanter till fyllda ytor och parametriska polygoner samt sammanfoga ytor till en enda yta.</translation>
     </message>
   </context>
   <context>
@@ -7070,7 +7070,7 @@ ange True för fusion eller False för sammansättning</translation>
       <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/circle.py" line="61"/>
       <source>Create a face</source>
-      <translation>Skapa en yta</translation>
+      <translation>Skapa ett ansikte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="90"/>
@@ -7090,7 +7090,7 @@ ange True för fusion eller False för sammansättning</translation>
     <message>
       <location filename="../../draftobjects/polygon.py" line="50"/>
       <source>Number of faces</source>
-      <translation>Antal ytor</translation>
+      <translation>Antal ansikten</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="53"/>
@@ -7236,8 +7236,8 @@ The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
       <translation>Texten som visas av denna etikett.
 
 Egenskapen är skrivskyddad eftersom den slutliga texten beror på ”Label Type”
-och det objekt som anges i ”Target”.
-”Custom Text” visas endast om ”Label Type” är ”Custom”.</translation>
+och objektet som anges i ”Target”.
+”Custom Text” visas endast om ”Label Type” är satt till ”Custom”.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="214"/>
@@ -7628,17 +7628,17 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på punkterna i "Point O
     <message>
       <location filename="../../draftobjects/point.py" line="48"/>
       <source>X Location</source>
-      <translation>X-placering</translation>
+      <translation>X Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="51"/>
       <source>Y Location</source>
-      <translation>Y-placering</translation>
+      <translation>Y Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="54"/>
       <source>Z Location</source>
-      <translation>Z-placering</translation>
+      <translation>Z Plats</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="48"/>
@@ -7708,12 +7708,12 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation>Objektet och dess specifika underelement
+      <translation>Objektet och dess specifika delelement
 som detta mått mäter.
 
 Det finns flera möjligheter:
 - Ett objekt och en av dess kanter.
-- Ett objekt och två av dess hörnpunkter.
+- Ett objekt och två av dess hörn.
 - Ett bågobjekt och dess kant.</translation>
     </message>
     <message>
@@ -7847,7 +7847,7 @@ egenskaperna "First Angle" och "Last Angle".</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="51"/>
       <source>Linked faces</source>
-      <translation>Länkade ytor</translation>
+      <translation>Länkade ansikten</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="54"/>
@@ -8184,7 +8184,7 @@ bortom måttlinjen</translation>
       <location filename="../../InitGui.py" line="154"/>
       <location filename="../../InitGui.py" line="157"/>
       <source>Draft</source>
-      <translation>Draft</translation>
+      <translation>Utkast</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="262"/>
@@ -8397,7 +8397,7 @@ En skiss med konturer som inte hänger ihop konverteras däremot till flera ensk
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 The construction group is created if it does not exist.</source>
-      <translation>Lägger till de markerade objekten i konstruktionsgruppen,
+      <translation>Lägger till de markerade objekten i konstruktionsgruppen
 och ändrar deras utseende till konstruktionsstilen.
 Konstruktionsgruppen skapas om den inte redan finns.</translation>
     </message>
@@ -8468,10 +8468,10 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn on the XY-plane.</source>
-      <translation>Ställer in den valda linjens lutning genom att ändra Z-värdet för en av dess punkter.
-Om en polylinje är markerad ändras lutningen för varje segment.
+      <translation>Ställer in lutningen på den valda linjen genom att ändra Z-värdet för en av dess punkter.
+Om en polylinje är markerad tillämpas lutningstransformationen på vart och ett av dess segment.
 
-Lutningen ändrar alltid Z-värdet. Därför fungerar kommandot bara bra för
+Lutningen ändrar alltid Z-värdet och därför fungerar kommandot bäst för
 raka Draft-linjer som ritas i XY-planet.</translation>
     </message>
   </context>
@@ -8747,7 +8747,7 @@ Den initiala projektionsriktningen är den motsatta till den aktuella aktiva vyr
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="219"/>
       <source>Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</source>
-      <translation>Snäpper till centrum för ytor och cirkulära kanter samt till placeringspunkten för arbetsplansproxyer och byggnadsdelar</translation>
+      <translation>Snäpper till mittpunkten för ytor och cirkulära kanter samt till placeringspunkten för arbetsplansproxyer och byggnadsdelar</translation>
     </message>
   </context>
   <context>
@@ -8937,10 +8937,10 @@ Den initiala projektionsriktningen är den motsatta till den aktuella aktiva vyr
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som
-återanvändbara objekt (sammansatta Part-objekt) och instanser blir `App::Link`-objekt,
-vilket bevarar blockstrukturen. Bäst för fullständig integration med
-arbetsbänken Draft.</translation>
+      <translation>Skapar helt parametriska Draft-objekt. Blockdefinitioner importeras som återanvändbara
+objekt (Part Compounds) och instanser blir `App::Link`-objekt,
+vilket bevarar blockstrukturen. Bäst för fullständig integration med Draft-
+arbetsbänken.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="32"/>
@@ -8953,9 +8953,9 @@ arbetsbänken Draft.</translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
-      <translation>Skapar parametriska Part-objekt (till exempel Part::Line och Part::Circle). Blockdefinitioner
-importeras som återanvändbara objekt (sammansatta Part-objekt) och instanser
-blir `App::Link`-objekt, vilket bevarar blockstrukturen. Bäst för
+      <translation>Skapar parametriska Part-objekt (t.ex. Part::Line och Part::Circle). Block
+importeras som återanvändbara objekt (Part Compounds) och instanser blir
+`App::Link`-objekt, vilket bevarar blockstrukturen. Bäst för
 skriptbaserad efterbearbetning.</translation>
     </message>
     <message>
@@ -9028,6 +9028,19 @@ form. Bäst för att visa mycket stora filer med maximal prestanda.</translation
 The 'Auto Update' property of the views is ignored.</source>
       <translation>Tvingar fram en uppdatering av de markerade 2D-vyerna eller alla 2D-vyer i dokumentet.
 Vyernas egenskap ”Auto Update” ignoreras.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Verktyg för 2D-vyer</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Verktyg för att skapa och uppdatera 2D-vyer</translation>
     </message>
   </context>
 </TS>

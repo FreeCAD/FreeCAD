@@ -466,7 +466,7 @@ Modifier la direction de l'axe lui-même dans l'éditeur de propriétés.</trans
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Si cette option est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+Ceci ne fonctionne que si "Réseau de liens" est désactivé.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
@@ -477,8 +477,8 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
+      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau de liens" au lieu d'un réseau normal.
+Un réseau de liens est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="239"/>
@@ -628,7 +628,7 @@ Les valeurs négatives entraîneront la production de copies dans la direction n
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Si cette option est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+Ceci ne fonctionne que si "Réseau de liens" est désactivé.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="447"/>
@@ -639,8 +639,8 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
+      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau de liens" au lieu d'un réseau normal.
+Un réseau de liens est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="458"/>
@@ -725,7 +725,7 @@ Modifier la direction de l'axe lui-même dans l'éditeur de propriétés.</trans
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
       <translation>Si cette option est cochée, les objets résultants dans le réseau seront fusionnés s’ils se touchent.
-Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
+Ceci ne fonctionne que si "Réseau de liens" est désactivé.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
@@ -736,8 +736,8 @@ Ceci ne fonctionne que si "Réseau lié" est désactivé.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau lié" au lieu d'un réseau normal.
-Un réseau lié est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
+      <translation>Si cette option est cochée, l'objet résultant sera un "Réseau de liens" au lieu d'un réseau normal.
+Un réseau de liens est plus efficace lors de la création de plusieurs copies mais il ne peut pas être fusionné.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="201"/>
@@ -5097,7 +5097,7 @@ groupes.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
       <source>Create Link array:</source>
-      <translation>Créer un réseau lié :</translation>
+      <translation>Créer un réseau de liens :</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="339"/>
@@ -5139,7 +5139,7 @@ groupes.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="322"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
       <source>Create link array:</source>
-      <translation>Créer un réseau lié selon une courbe</translation>
+      <translation>Créer un réseau selon une courbe de liens</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
@@ -5992,7 +5992,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="116"/>
       <source>Create Path Twisted Array</source>
-      <translation>Créer un réseau tordu de courbe</translation>
+      <translation>Créer un réseau torsadé selon une courbe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="108"/>
@@ -6111,7 +6111,7 @@ Autoriser FreeCAD à télécharger ces bibliothèques :
 - Menu Édition → Préférences → Importer/exporter → DXF → Permettre à FreeCAD de télécharger...
 
 Ou télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer pour permettre à
-FreeCAD de télécharger ces bibliothèques. Répondre Oui.</translation>
+FreeCAD de télécharger ces bibliothèques. Répondre « Oui ».</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="149"/>
@@ -7129,7 +7129,7 @@ Pour un cercle complet, donner la même valeur que l'angle de départ</translati
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="138"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation>Facteur de rotation du réseau torsadé.</translation>
+      <translation>Facteur de rotation du réseau torsadé</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
@@ -8222,7 +8222,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="80"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation>Outils pour créer différents types de réseaux,  rectangulaires, polaires, circulaires, courbes et points</translation>
+      <translation>Outils pour créer différents types de réseaux, rectangulaires, polaires, circulaires, selon une courbe et des points</translation>
     </message>
   </context>
   <context>
@@ -8473,7 +8473,7 @@ que pour les lignes de Draft droites tracées sur le plan XY.</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="182"/>
       <source>Path Link Array</source>
-      <translation>Réseau lié selon une courbe</translation>
+      <translation>Réseau de copies liées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="186"/>
@@ -8486,12 +8486,12 @@ que pour les lignes de Draft droites tracées sur le plan XY.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="70"/>
       <source>Twisted Path Array</source>
-      <translation>Réseau tordu de courbe</translation>
+      <translation>Réseau de copies torsadées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="74"/>
       <source>Creates twisted copies of the selected object along a selected path</source>
-      <translation>Crée des copies déformées de l'objet sélectionné suivant une courbe sélectionnée.</translation>
+      <translation>Crée des copies torsadées de l'objet sélectionné suivant une courbe sélectionnée.</translation>
     </message>
   </context>
   <context>
@@ -8499,12 +8499,12 @@ que pour les lignes de Draft droites tracées sur le plan XY.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="137"/>
       <source>Twisted Path Link Array</source>
-      <translation>Réseau de lien de courbe tordu</translation>
+      <translation>Réseau de copies torsadées liées selon une courbe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="141"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation>Crée des copies déformées liées de l'objet sélectionné suivant une courbe sélectionnée.</translation>
+      <translation>Crée des copies torsadées liées de l'objet sélectionné suivant une courbe sélectionnée.</translation>
     </message>
   </context>
   <context>
@@ -8526,7 +8526,7 @@ caméra et la visibilité des objets.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="71"/>
       <source>Point Array</source>
-      <translation>Réseau de points</translation>
+      <translation>Réseau selon des points</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="75"/>
@@ -8539,7 +8539,7 @@ caméra et la visibilité des objets.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="149"/>
       <source>Point Link Array</source>
-      <translation>Réseau lié selon des points</translation>
+      <translation>Réseau de copies liées selon des points</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="153"/>
@@ -9005,6 +9005,19 @@ géométrie est intégrée à la forme du calque. Idéal pour afficher des fichi
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
       <translation>Force la mise à jour des vues 2D sélectionnées ou de toutes les vues 2D du document. La propriété « Auto Update » des vues est ignorée.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Outils d'affichage 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Outils pour créer et mettre à jour des vues 2D</translation>
     </message>
   </context>
 </TS>

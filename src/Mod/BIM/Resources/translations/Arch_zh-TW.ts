@@ -9565,7 +9565,7 @@ Ignored if this wall is based on a solid.</source>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>如果適用，將該牆壁對準其基礎物件。</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10640,7 +10640,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>2D 草稿</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
@@ -13732,7 +13732,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>建立多個形狀的聯集</translation>
     </message>
   </context>
   <context>
@@ -13784,7 +13784,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>建立兩個形狀的交集</translation>
     </message>
   </context>
   <context>
@@ -13810,7 +13810,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>僅針對所選物件的交集面，在 XY 平面上建立二維投影。</translation>
     </message>
   </context>
   <context>

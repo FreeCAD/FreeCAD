@@ -4308,12 +4308,12 @@ it has a weld symbol that would become broken.</source>
       <translation>No podeu suprimir aquesta línia guia perquè conté un símbol de soldadura que es trencaria.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Tanqueu el diàleg obert abans de suprimir l'objecte de detall</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>No podeu suprimir aquesta vista perquè conté una o més vistes dependents que es trencarien.</translation>
     </message>
@@ -4323,8 +4323,8 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
@@ -4717,27 +4717,27 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>Algorisme de detecció de cares</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>Utilitzar l'algorisme de detecció de cares més recent o un de llegat</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4864,14 +4864,14 @@ Cada unitat té una amplada aproximada de 0.1 mm</translation>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>Si es marca aquesta opció i l'algorisme de detecció de cares ho permet, FreeCAD intentarà
+determinar si cada cara del dibuix representa material o un forat.
+Amb un gran nombre de cares, la detecció pot alentir-se.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Identificar cares que representen buits</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>

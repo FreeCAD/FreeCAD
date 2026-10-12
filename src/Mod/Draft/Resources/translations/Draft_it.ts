@@ -8989,4 +8989,17 @@ The 'Auto Update' property of the views is ignored.</source>
 La proprietà 'Auto aggiornamento' delle viste viene ignorata.</translation>
     </message>
   </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>Strumenti di visualizzazione 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>Strumenti per creare e aggiornare le viste 2D</translation>
+    </message>
+  </context>
 </TS>

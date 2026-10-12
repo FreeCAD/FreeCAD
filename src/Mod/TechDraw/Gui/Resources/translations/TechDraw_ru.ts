@@ -1354,13 +1354,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="564"/>
       <location filename="../../CommandExtensionPack.cpp" line="698"/>
       <source>Cosmetic Thread Bolt Bottom View</source>
-      <translation>Оформить Виток резьбы Болта вид Снизу</translation>
+      <translation>Условное изображение резьбы вид снизу</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="566"/>
       <location filename="../../CommandExtensionPack.cpp" line="700"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
-      <translation>Добавляет косметический вито резьбы в вид Сверху или Снизу для выбранных болтов/винтов/шпилек</translation>
+      <translation>Добавляет условное изображение резьбы на вид сверху или снизу выбранных болтов/винтов/шпилек</translation>
     </message>
   </context>
   <context>
@@ -1374,13 +1374,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="461"/>
       <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Cosmetic Thread Bolt Side View</source>
-      <translation>Косметическая резьба болта вид сбоку</translation>
+      <translation>Условное изображение резьбы вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="462"/>
       <location filename="../../CommandExtensionPack.cpp" line="693"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
-      <translation>Добавляет косметическую боковую проекцию резьбы для болта/винта/шпильки между двумя выделенными параллельными линиями</translation>
+      <translation>Добавляет условное изображение резьбы на вид сбоку болта/винта/шпильки между двумя выделенными параллельными линиями</translation>
     </message>
   </context>
   <context>
@@ -1394,17 +1394,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="513"/>
       <location filename="../../CommandExtensionPack.cpp" line="683"/>
       <source>Cosmetic Thread Hole Bottom View</source>
-      <translation>Оформить Виток резьбы для Отверстия вид Снизу</translation>
+      <translation>Условное изображение резьбы в отверстии вид снизу</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="514"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
-      <translation>Добавляет косметический вито резьбы в вид Сверху или Снизу для выбранных отверстий или кругов</translation>
+      <translation>Добавляет условное изображение резьбы на вид сверху или снизу для выбранных отверстий или окружностей</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
-      <translation>Добавляет косметический вито резьбы в вид Сверху или Снизу для отверстий или кругов</translation>
+      <translation>Добавляет условное изображение резьбы на вид сверху или снизу для отверстий или окружностей</translation>
     </message>
   </context>
   <context>
@@ -1418,17 +1418,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="410"/>
       <location filename="../../CommandExtensionPack.cpp" line="676"/>
       <source>Cosmetic Thread Hole Side View</source>
-      <translation>Косметическая резьба в отверстии вид сбоку</translation>
+      <translation>Условное изображение резьбы в отверстии вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="411"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
-      <translation>Добавляет косметическую боковую проекцию резьбы для отверстия или круга</translation>
+      <translation>Добавляет условное изображение резьбы на вид сбоку для отверстий или окружностей</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="678"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Добавляет косметическую боковую проекцию резьбы для выбранного отверстия снаружи двух выделенных параллельных линий</translation>
+      <translation>Добавляет условное изображение резьбы на вид сбоку для выбранного отверстия между двумя выделенными параллельными линиями</translation>
     </message>
   </context>
   <context>
@@ -1441,12 +1441,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="596"/>
       <source>Cosmetic Thread Hole Side View</source>
-      <translation>Косметическая резьба в отверстии вид сбоку</translation>
+      <translation>Условное изображение резьбы в отверстии вид сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="597"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Добавляет косметическую боковую проекцию резьбы для выбранного отверстия снаружи двух выделенных параллельных линий</translation>
+      <translation>Добавляет условное изображение резьбы на вид сбоку для выбранного отверстия между двумя выделенными параллельными линиями</translation>
     </message>
   </context>
   <context>
@@ -2615,7 +2615,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="392"/>
       <source>Cosmetic Thread Hole Side</source>
-      <translation>Схематическое резьбовое отверстие вид сбоку</translation>
+      <translation>Схематическое резьбовое отверстие сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="440"/>
@@ -2625,7 +2625,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="443"/>
       <source>Cosmetic Thread Bolt Side</source>
-      <translation>Схематическая резьба болта вид сбоку</translation>
+      <translation>Схематическая резьба болта сбоку</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="492"/>
@@ -2660,7 +2660,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>Cosmetic thread hole bottom</source>
-      <translation>Косметическая резьба в отверстии снизу</translation>
+      <translation>Схематическое резьбовое отверстие снизу</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="769"/>
@@ -4309,12 +4309,12 @@ it has a weld symbol that would become broken.</source>
 содержит символ сварки, который может быть повреждён при удалении.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="405"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Закройте диалоговое окно перед удалением объекта детализации</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="420"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Вы не можете удалить этот вид, потому что это повредит один или более других зависимых от него видов.</translation>
     </message>
@@ -4324,8 +4324,8 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="184"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="192"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="409"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="424"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="426"/>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <location filename="../../ViewProviderTemplate.cpp" line="207"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>

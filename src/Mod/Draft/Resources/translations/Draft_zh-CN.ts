@@ -8981,4 +8981,17 @@ The 'Auto Update' property of the views is ignored.</source>
 将忽略视图的“自动更新”属性。</translation>
     </message>
   </context>
+  <context>
+    <name>Draft_Shape2DViewTools</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
+      <source>2D View Tools</source>
+      <translation>二维视图工具</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
+      <source>Tools to create and update 2D Views</source>
+      <translation>用于创建和更新二维视图的工具</translation>
+    </message>
+  </context>
 </TS>

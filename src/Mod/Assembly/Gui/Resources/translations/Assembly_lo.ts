@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation>ໄລຍະຫ່າງ</translation>
     </message>
@@ -170,37 +170,37 @@
       <translation>ສາຍພານ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="818"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>ການເຊື່ອມໂຍງເສຍຢູ່ທີ່: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1248"/>
+      <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
       <translation>ແກ້ໄຂຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1430"/>
+      <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
       <translation>ອັບເດດຕຳແໜ່ງທີ່ບັນທຶກໄວ້</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1875"/>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>ເລືອກ 2 ອົງປະກອບຈາກ 2 ຊິ້ນສ່ວນທີ່ແຍກກັນ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2069"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>ລັດສະໝີ 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2071"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>ໄລຍະກຽວ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2073"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>ລັດສະໝີໄລຍະຫ່າງ</translation>
     </message>
@@ -717,12 +717,12 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ການອ້າງອີງທີ {order} ຂອງຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1294"/>
+      <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
       <translation>ລາຍການອ້າງອີງເຖິງສ່ວນປະກອບທີ່ຈະຈັດກຸ່ມເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1453"/>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>ວັດຖຸທີ່ຈະຍຶດຕິດກັບພື້ນ</translation>
     </message>

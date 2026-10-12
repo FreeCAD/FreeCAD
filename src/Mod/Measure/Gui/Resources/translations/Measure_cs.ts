@@ -462,47 +462,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <location filename="../../TaskMassProperties.cpp" line="355"/>
       <source>Parameters</source>
       <translation>Parametry</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <location filename="../../TaskMassProperties.cpp" line="358"/>
       <source>Physical Properties</source>
       <translation>Fyzikální vlastnosti</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <location filename="../../TaskMassProperties.cpp" line="361"/>
       <source>Center of Gravity</source>
       <translation>Těžiště</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <location filename="../../TaskMassProperties.cpp" line="362"/>
       <source>Center of Volume</source>
       <translation>Střed objemu</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Inertia</source>
       <translation>Setrvačnost</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="434"/>
+      <location filename="../../TaskMassProperties.cpp" line="444"/>
       <source>Close</source>
       <translation>Zavřít</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="437"/>
+      <location filename="../../TaskMassProperties.cpp" line="447"/>
       <source>Save</source>
       <translation>Uložit</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="441"/>
+      <location filename="../../TaskMassProperties.cpp" line="451"/>
       <source>Reset</source>
       <translation>Reset</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1222"/>
+      <location filename="../../TaskMassProperties.cpp" line="1232"/>
       <source> (Average)</source>
       <translation> (Průměr)</translation>
     </message>
@@ -537,7 +537,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="161"/>
       <source>Area</source>
-      <translation>Oblast</translation>
+      <translation>Plocha</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="169"/>

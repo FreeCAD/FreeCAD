@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation>Показывает координаты границ выбранной сетки</translation>
+      <translation>Показывает координаты габаритной рамки выбранной сетки</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Regular Solid</source>
-      <translation>Обычное геометрическое тело</translation>
+      <translation>Обычное твёрдое тело</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1545"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="995"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation>Создаёт поперечные сечения сетки</translation>
+      <translation>Создаёт поперечные сечения полигональной сетки</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="1380"/>
       <source>Decimates a mesh</source>
-      <translation>Проредить полигональную сетку</translation>
+      <translation>Уменьшить детализацию полигональной сетки</translation>
     </message>
   </context>
   <context>
@@ -1407,7 +1407,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation>Будут отображены габариты</translation>
+      <translation>Отображать габаритную рамку</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
@@ -2034,7 +2034,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>Boundings of %1:</source>
-      <translation>Границы %1:</translation>
+      <translation>Габариты %1:</translation>
     </message>
   </context>
   <context>
@@ -2221,7 +2221,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1524"/>
       <source>Boundings</source>
-      <translation>Ограничения</translation>
+      <translation>Габариты</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1591"/>
@@ -2327,17 +2327,17 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation>Количество фасеток</translation>
+      <translation>Количество полигонов</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation>Минимальная граница</translation>
+      <translation>Мин. точка габаритной рамки</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation>Максимальная граница</translation>
+      <translation>Макс. точка габаритной рамки</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>

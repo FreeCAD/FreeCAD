@@ -4,37 +4,37 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="92"/>
+      <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Cтандард (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="350"/>
+      <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="763"/>
+      <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
       <translation>US cиcтем јединица (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="820"/>
+      <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Империјални за грађевинарство (ft, lb, mph)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="77"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Империјални децимални (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="581"/>
+      <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Грађевински Euro (cm, m², m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="807"/>
+      <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Грађевински US (ft-in, sqft, cft)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Метрички мали делови &amp; CNC(mm, mm/min)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="611"/>
+      <location filename="../../UnitsSchemasData.h" line="627"/>
       <source>FEM (mm, N, s)</source>
       <translation>МКЕ (mm, N, s)</translation>
     </message>

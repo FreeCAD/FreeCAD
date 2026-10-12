@@ -4110,22 +4110,22 @@ The default template is located at:
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation>Параметры профилей крыши :
-* Угол : уклон в градусах относительно горизонтали.
-* Прогон : расстояние по горизонтали между стеной и коньком.
-* Толщина : толщина кровли.
-* Свес : горизонтальное расстояние между карнизом и стеной.
-* Высота : высота конька над основанием (рассчитывается автоматически).
-* IdRel : Id профиля, используемого для автоматических расчетов.
+      <translation>Параметры профилей крыши:
+* Угол: уклон в градусах относительно горизонтали.
+* Прогон: расстояние по горизонтали между стеной и коньком.
+* Толщина: толщина кровли.
+* Свес: горизонтальное расстояние между карнизом и стеной.
+* Высота: высота конька над основанием (рассчитывается автоматически).
+* IdRel: Id профиля, используемого для автоматических расчетов.
 ---
-Если Angle = 0 и Run = 0, то профиль идентичен связанному профилю.
-Если Angle = 0, то угол рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.
-Если Run = 0, то прогон рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.</translation>
+Если угол= 0 и прогон = 0, то профиль идентичен связанному профилю.
+Если угол = 0, то угол рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.
+Если прогон = 0, то прогон рассчитывается таким образом, чтобы высота была такой же, как у связанного профиля.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1082"/>
       <source>Run</source>
-      <translation>Запустить</translation>
+      <translation>Прогон</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1085"/>
@@ -13799,12 +13799,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="58"/>
       <source>Covering</source>
-      <translation>Обложка</translation>
+      <translation>Облицовка</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCovering.py" line="61"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
-      <translation>Создает облицовку (чистовое покрытие пола, облицовку) на выбранной грани</translation>
+      <translation>Создаёт облицовку (чистовое покрытие) на выбранной грани</translation>
     </message>
   </context>
   <context>

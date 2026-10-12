@@ -62,10 +62,8 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
+      <translation>הגדר כתובת URL מותאמת אישית או את התיקייה שבה נמצאים קבצי העזרה.
+ניתן להוריד את התיעוד לשימוש לא מקוון דרך מנהל התוספים והתקנת התוסף &quot;offline-documentation&quot;. אם שדה זה נותר ריק, FreeCAD יחפש אוטומטית את קבצי העזרה במיקום ברירת המחדל
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>

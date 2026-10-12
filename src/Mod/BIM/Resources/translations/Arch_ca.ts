@@ -7393,8 +7393,8 @@ S'avorta la creació de la construcció.</translation>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>L'alçada o profunditat d'extrusió d'aquest element.
+Deixeu-ho a 0 per ajustar-ho automàticament a l'alçada del nivell o edifici que el conté.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9498,9 +9498,9 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Plantilla del text de l'etiqueta de l'espai.
+Feu servir $area, $label, $longname, $description o qualsevol altre nom de propietat precedit de $ (sense distingir entre majúscules i minúscules),
+o bé $floor, $walls, $ceiling per als acabats, per inserir les dades corresponents.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9566,29 +9566,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>La longitud d'aquest mur.
+Només es pot editar si la línia de base del mur és una línia d'esbós, un croquis sense restriccions amb una sola línia o no n'hi ha cap.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>L'amplada d'aquest mur.
+S'ignora si aquest mur es basa en un sòlid o una cara.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>L'alçada d'aquest mur.
+Deixeu-ho a 0 per ajustar-la automàticament a l'alçada del nivell o construcció que el conté.
+S'ignora si aquest mur es basa en un sòlid.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>L'alineament d'aquest mur respecte de l'objecte base, si escau.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10666,12 +10666,12 @@ Alt+Re Pàg per a estendre l'extrusióAlt+Av Pàg per a encongir l'extrusióAlt+
     <message>
       <location filename="../../InitGui.py" line="683"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>Esbós 2D</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="684"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>Geometria 3D/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="685"/>
@@ -13761,7 +13761,7 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Crea una unió de diverses formes</translation>
     </message>
   </context>
   <context>
@@ -13813,7 +13813,7 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Crea una intersecció de dues formes</translation>
     </message>
   </context>
   <context>
@@ -13821,7 +13821,7 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Constructor de formes</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -13834,12 +13834,12 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Tall de secció</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Crea una projecció 2D, sobre el pla XY, només de les cares d'intersecció dels objectes seleccionats.</translation>
     </message>
   </context>
   <context>
@@ -13847,12 +13847,12 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Desplaçament 2D</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Utilitat per a desplaçar formes planes</translation>
     </message>
   </context>
 </TS>

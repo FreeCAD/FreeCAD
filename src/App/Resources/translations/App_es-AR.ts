@@ -90,7 +90,7 @@ El usuario debe luego hacer clic en el botón Refrescar en la barra de herramien
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Almacena la última elección del usuario sobre si aplicar la configuración de CopyOnChange a todos los enlaces que apuntan al mismo objeto configurable</translation>
+      <translation>Guarda la última opción de usuario de si aplicar la configuración de CopyOnChange a todos los enlaces que hacen referencia al mismo objeto configurable</translation>
     </message>
   </context>
 </TS>

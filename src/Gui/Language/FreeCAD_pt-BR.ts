@@ -5480,44 +5480,44 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Mostrar dependências</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="121"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="124"/>
       <source>Depending on</source>
       <translation>Dependendo de</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="122"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
       <source>Document</source>
       <translation>Documento</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="123"/>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="127"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="126"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="130"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="125"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="128"/>
       <source>Depended by</source>
       <translation>Dependente de</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="129"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="132"/>
       <source>Selections</source>
       <translation>Seleções</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="135"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="138"/>
       <source>All</source>
       <translation>Todos</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="165"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="168"/>
       <source>&amp;Use Original Selection</source>
       <translation>&amp;Usar Seleção Original</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgObjectSelection.cpp" line="167"/>
+      <location filename="../Dialogs/DlgObjectSelection.cpp" line="170"/>
       <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
       <translation>Ignorar dependências e prosseguir com os objetos originalmente selecionados antes de abrir este diálogo</translation>
@@ -6132,7 +6132,7 @@ Salvar todas as alterações?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="197"/>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2651"/>
       <source>Dimension</source>
       <translation>Dimensão</translation>
     </message>
@@ -6184,59 +6184,59 @@ Salvar todas as alterações?</translation>
       <translation>Pronto</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1424"/>
+      <location filename="../MainWindow.cpp" line="1426"/>
       <source>Close All</source>
       <translation>Fechar tudo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1697"/>
-      <location filename="../MainWindow.cpp" line="1698"/>
       <location filename="../MainWindow.cpp" line="1699"/>
+      <location filename="../MainWindow.cpp" line="1700"/>
+      <location filename="../MainWindow.cpp" line="1701"/>
       <source>Toggles this toolbar</source>
       <translation>Alterna esta barra de ferramentas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1718"/>
-      <location filename="../MainWindow.cpp" line="1719"/>
       <location filename="../MainWindow.cpp" line="1720"/>
+      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1722"/>
       <source>Toggles this dockable window</source>
       <translation>Alterna esta janela acoplável</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1927"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>Safe mode enabled</source>
       <translation>Modo seguro ativado</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1928"/>
+      <location filename="../MainWindow.cpp" line="1930"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD está sendo executado em modo de segurança.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1932"/>
+      <location filename="../MainWindow.cpp" line="1934"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>O modo de segurança desativa temporariamente suas configurações e complementos. Reinicie o aplicativo para sair do modo de segurança.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2374"/>
-      <location filename="../MainWindow.cpp" line="2525"/>
+      <location filename="../MainWindow.cpp" line="2376"/>
+      <location filename="../MainWindow.cpp" line="2527"/>
       <source>Unsaved document</source>
       <translation>Documento não salvo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2375"/>
+      <location filename="../MainWindow.cpp" line="2377"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation>O objeto exportado contém um link externo. Salve o documento pelo menos uma vez antes de exportar.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2526"/>
+      <location filename="../MainWindow.cpp" line="2528"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Para vincular a objetos externos, o documento deve ser salvo pelo menos uma vez.
 Salvar o documento agora?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3036"/>
+      <location filename="../MainWindow.cpp" line="3038"/>
       <source>Safe Mode</source>
       <translation>Modo de segurança</translation>
     </message>
@@ -6519,149 +6519,149 @@ Deseja prosseguir?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="381"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="392"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>property</source>
       <translation>propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="918"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
       <source>Expand/Collapse Properties</source>
       <translation>Mostrar/Ocultar propriedades</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="920"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
       <source>Expand to Default</source>
       <translation>Expandir para o padrão</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="922"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
       <source>Expand All</source>
       <translation>Expandir tudo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="924"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
       <source>Collapse All</source>
       <translation>Ocultar tudo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="930"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Default Expand</source>
       <translation>Expandir padrão</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
       <source>Auto Expand</source>
       <translation>Expandir automaticamente</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="936"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Auto Collapse</source>
       <translation>Ocultar automaticamente</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1026"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
       <source>object %1 (%2):
 </source>
       <translation>objeto %1 (%2):</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1033"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
       <source>property %1
 </source>
       <translation>propriedade %1:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1045"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>document %1:
 </source>
       <translation>documento %1:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1070"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>Referências à propriedade %1 do objeto %2 (%3) no documento %4:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
       <source>(No references found.)</source>
       <translation>(Nenhuma referência encontrada.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1104"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1192"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
       <source>Property Uses</source>
       <translation>Emprego das Propriedades</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1134"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
       <source>Copy</source>
       <translation>Copiar</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1142"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Add Property</source>
       <translation>Adicionar propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1149"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1432"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
       <source>Rename Property Group</source>
       <translation>Renomear grupo de propriedades</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1160"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>Não é possível renomear o grupo: uma ou mais propriedades têm nomes que iniciam com o nome do grupo</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1169"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1402"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
       <source>Rename Property</source>
       <translation>Renomear propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
       <source>Edit Property Tooltip</source>
       <translation>Editar dica de propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1187"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
       <source>Delete Property</source>
       <translation>Excluir propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1202"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
       <source>Move Property</source>
       <translation>Mover propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Tooltip</source>
       <translation>Sugestão</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1212"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
       <source>Show Hidden</source>
       <translation>Mostrar ocultos</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1229"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
       <source>Expression</source>
       <translation>Expressão</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
       <source>Property name</source>
       <translation>Nome da propriedade</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
       <source>Group name:</source>
       <translation>Nome do grupo:</translation>
     </message>
@@ -7446,7 +7446,7 @@ Especificar outro diretório?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4254"/>
+      <location filename="../Tree.cpp" line="4258"/>
       <source>Search</source>
       <translation>Pesquisar</translation>
     </message>
@@ -7656,7 +7656,7 @@ Especificar outro diretório?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6613"/>
+      <location filename="../Tree.cpp" line="6617"/>
       <source>Rename</source>
       <translation>Renomear</translation>
     </message>
@@ -7676,12 +7676,12 @@ Especificar outro diretório?</translation>
       <translation>Abrir local do arquivo</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6581"/>
+      <location filename="../Tree.cpp" line="6585"/>
       <source> (but must be executed)</source>
       <translation> (mas deve ser executado)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6584"/>
+      <location filename="../Tree.cpp" line="6588"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Nome interno: %2</translation>
     </message>
@@ -8757,7 +8757,7 @@ Escolha 'Abortar' para cancelar</translation>
       <translation>Não é possível encontrar o arquivo %1 nem em %2, nem em %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2801"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2790"/>
       <source>Clarify Selection</source>
       <translation>Refinar seleção</translation>
     </message>
@@ -9195,7 +9195,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="252"/>
       <source>Cannot load image file %1. The decoded image requires at least %2 MiB, exceeding the %3 MiB limit. Reduce its dimensions before loading it.</source>
-      <translation type="unfinished">Cannot load image file %1. The decoded image requires at least %2 MiB, exceeding the %3 MiB limit. Reduce its dimensions before loading it.</translation>
+      <translation>Não foi possível carregar o arquivo de imagem %1. A imagem decodificada requer pelo menos %2 MiB, excedendo o limite de %3 MiB. Reduza suas dimensões antes de carregá-la.</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9216,7 +9216,7 @@ the current copy will be lost.
       <translation>Não é permitido:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1337"/>
+      <location filename="../Selection/Selection.cpp" line="1335"/>
       <source>Selection not allowed by filter</source>
       <translation>Seleção não permitida pelo filtro</translation>
     </message>
@@ -9536,7 +9536,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2642"/>
+      <location filename="../MainWindow.cpp" line="2644"/>
       <location filename="../DocumentRecovery.cpp" line="410"/>
       <source>Unnamed</source>
       <translation>Sem nome</translation>
@@ -14460,7 +14460,7 @@ Isso faz com que o painel acoplado permaneça transparente o tempo todo.</transl
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4326"/>
+      <location filename="../Tree.cpp" line="4330"/>
       <source>Tree View</source>
       <translation>Visão em árvore</translation>
     </message>
@@ -14534,12 +14534,12 @@ Isso faz com que o painel acoplado permaneça transparente o tempo todo.</transl
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="138"/>
       <source>Linear Gradient</source>
-      <translation type="unfinished">Linear Gradient</translation>
+      <translation>Gradiente linear</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="140"/>
       <source>Radial Gradient</source>
-      <translation type="unfinished">Radial Gradient</translation>
+      <translation>Gradiente radial</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="142"/>
@@ -14921,22 +14921,22 @@ tratado como uma sequência de teclas de atalho 'F, F'.</translation>
     <message>
       <location filename="../Command.cpp" line="1063"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Experimental</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1065"/>
       <source>EXPERIMENTAL: this command may change.</source>
-      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+      <translation>EXPERIMENTAL: este comando pode mudar.</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1069"/>
       <source>Development preview</source>
-      <translation type="unfinished">Development preview</translation>
+      <translation>Prévia de desenvolvimento</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1070"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
+      <translation>PRÉVIA DE DESENVOLVIMENTO: este comando pode mudar ou ser removido.</translation>
     </message>
   </context>
   <context>
@@ -14970,37 +14970,37 @@ tratado como uma sequência de teclas de atalho 'F, F'.</translation>
     <message>
       <location filename="../NumericLocale.cpp" line="86"/>
       <source>Incomplete number</source>
-      <translation type="unfinished">Incomplete number</translation>
+      <translation>Número incompleto</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="88"/>
       <source>Malformed grouping separator placement</source>
-      <translation type="unfinished">Malformed grouping separator placement</translation>
+      <translation>Posicionamento incorreto do separador de milhares</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="90"/>
       <source>Invalid number</source>
-      <translation type="unfinished">Invalid number</translation>
+      <translation>Número inválido</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="92"/>
       <source>Invalid expression</source>
-      <translation type="unfinished">Invalid expression</translation>
+      <translation>Expressão inválida</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="94"/>
       <source>Expression could not be evaluated</source>
-      <translation type="unfinished">Expression could not be evaluated</translation>
+      <translation>A expressão não pôde ser avaliada</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="96"/>
       <source>Incompatible unit</source>
-      <translation type="unfinished">Incompatible unit</translation>
+      <translation>Unidade incompatível</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="98"/>
       <source>Value is outside the allowed range</source>
-      <translation type="unfinished">Value is outside the allowed range</translation>
+      <translation>O valor está fora do intervalo permitido</translation>
     </message>
   </context>
   <context>

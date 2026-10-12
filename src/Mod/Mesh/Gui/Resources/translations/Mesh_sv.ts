@@ -739,7 +739,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="844"/>
       <source>Remove degenerated faces</source>
-      <translation>Ta bort degenererade ytor</translation>
+      <translation>Ta bort degenererade ansikten</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation>Antal punkter</translation>
+      <translation>Antal poäng</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
@@ -1647,7 +1647,7 @@ ett jämnare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="188"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="196"/>
@@ -1926,7 +1926,7 @@ ett jämnare utseende.
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minsta antal ytor</translation>
+      <translation>Minsta antal ansikten</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -1972,7 +1972,7 @@ ett jämnare utseende.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -2323,7 +2323,7 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation>Antal punkter</translation>
+      <translation>Antal poäng</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
