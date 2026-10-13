@@ -671,6 +671,14 @@ public:
         std::vector<PointPos>& PosIds3
     ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    /// returns true if the two points have PointOnObject object that attaches them to the same edge
+    bool arePointsOnSameObject(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    std::vector<int> getPointOnSameObjectConstraints(
+        int GeoId1,
+        PointPos PosId1,
+        int GeoId2,
+        PointPos PosId2
+    );
 
     // Returns true if the sketch has 1 or more block constraint
     bool hasBlockConstraint() const;

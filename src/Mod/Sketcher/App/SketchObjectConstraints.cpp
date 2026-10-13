@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <unordered_set>
 
 #include <QCoreApplication>
 
@@ -2104,6 +2105,176 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
 
     return false;
 }
+
+// clang-format on
+namespace
+{
+
+bool areTargetsEquivalent(int target1, int target2)
+{
+    if (target1 == target2) {
+        return true;
+    }
+
+    // The root point (origin) lies on both sketch axes.
+    if (target1 == GeoEnum::RtPnt) {
+        return target2 == GeoEnum::HAxis || target2 == GeoEnum::VAxis;
+    }
+
+    if (target2 == GeoEnum::RtPnt) {
+        return target1 == GeoEnum::HAxis || target1 == GeoEnum::VAxis;
+    }
+
+    return false;
+}
+
+int getPointOnObjectTarget(const Constraint* constraint, int geoId, PointPos posId)
+{
+    if (constraint->Type != PointOnObject) {
+        return GeoEnum::GeoUndef;
+    }
+
+    int targetGeoId = GeoEnum::GeoUndef;
+    bool foundPoint = false;
+
+    for (size_t i = 0; i < constraint->getElementsSize(); ++i) {
+        const GeoElementId element = constraint->getElement(i);
+
+        if (element.GeoId == geoId && element.Pos == posId) {
+            foundPoint = true;
+        }
+        else if (element.Pos == PointPos::none && element.GeoId != GeoEnum::GeoUndef) {
+            targetGeoId = element.GeoId;
+        }
+    }
+
+    return foundPoint ? targetGeoId : GeoEnum::GeoUndef;
+}
+
+}  // namespace
+
+bool SketchObject::arePointsOnSameObject(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
+{
+    std::vector<int> constraints1, constraints2;
+    getConstraintIndices(GeoId1, constraints1);
+    getConstraintIndices(GeoId2, constraints2);
+
+    const auto constraints = Constraints.getValues();
+    std::vector<int> firstTargets;
+
+    for (const int index : constraints1) {
+        const int targetGeoId = getPointOnObjectTarget(constraints[index], GeoId1, PosId1);
+
+        if (targetGeoId != GeoEnum::GeoUndef) {
+            firstTargets.push_back(targetGeoId);
+        }
+    }
+
+    // The origin is on both sketch axes, even without an explicit
+    // PointOnObject constraint on the origin.
+    if (GeoId1 == GeoEnum::RtPnt) {
+        firstTargets.push_back(GeoEnum::HAxis);
+        firstTargets.push_back(GeoEnum::VAxis);
+    }
+
+    if (firstTargets.empty()) {
+        return false;
+    }
+
+    for (const int index : constraints2) {
+        const int targetGeoId = getPointOnObjectTarget(constraints[index], GeoId2, PosId2);
+
+        if (targetGeoId == GeoEnum::GeoUndef) {
+            continue;
+        }
+
+        for (const int firstTarget : firstTargets) {
+            if (areTargetsEquivalent(firstTarget, targetGeoId)) {
+                return true;
+            }
+        }
+    }
+
+    // Also handle the origin as the second point.
+    if (GeoId2 == GeoEnum::RtPnt) {
+        for (const int firstTarget : firstTargets) {
+            if (firstTarget == GeoEnum::HAxis || firstTarget == GeoEnum::VAxis) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+std::vector<int> SketchObject::getPointOnSameObjectConstraints(
+    int GeoId1,
+    PointPos PosId1,
+    int GeoId2,
+    PointPos PosId2
+)
+{
+    std::vector<int> constraints1, constraints2;
+    getConstraintIndices(GeoId1, constraints1);
+    getConstraintIndices(GeoId2, constraints2);
+
+    const auto constraints = Constraints.getValues();
+    std::vector<int> conflictingConstraints;
+
+    std::unordered_map<int, std::vector<int>> firstTargets;
+
+    for (const int index : constraints1) {
+        const int targetGeoId = getPointOnObjectTarget(constraints[index], GeoId1, PosId1);
+
+        if (targetGeoId != GeoEnum::GeoUndef) {
+            firstTargets[targetGeoId].push_back(index);
+        }
+    }
+
+    // Treat the origin as lying on both sketch axes.
+    if (GeoId1 == GeoEnum::RtPnt) {
+        firstTargets[GeoEnum::HAxis];
+        firstTargets[GeoEnum::VAxis];
+    }
+
+    for (const int index : constraints2) {
+        const int targetGeoId = getPointOnObjectTarget(constraints[index], GeoId2, PosId2);
+
+        if (targetGeoId == GeoEnum::GeoUndef) {
+            continue;
+        }
+
+        for (const auto& [firstTarget, firstIndices] : firstTargets) {
+            if (areTargetsEquivalent(firstTarget, targetGeoId)) {
+                conflictingConstraints
+                    .insert(conflictingConstraints.end(), firstIndices.begin(), firstIndices.end());
+
+                conflictingConstraints.push_back(index);
+            }
+        }
+    }
+
+    // If the second point is the origin, remove constraints on either axis
+    // that the first point lies on.
+    if (GeoId2 == GeoEnum::RtPnt) {
+        for (const auto& [firstTarget, firstIndices] : firstTargets) {
+            if (firstTarget == GeoEnum::HAxis || firstTarget == GeoEnum::VAxis) {
+                conflictingConstraints
+                    .insert(conflictingConstraints.end(), firstIndices.begin(), firstIndices.end());
+            }
+        }
+    }
+
+    std::sort(conflictingConstraints.begin(), conflictingConstraints.end());
+    conflictingConstraints.erase(
+        std::unique(conflictingConstraints.begin(), conflictingConstraints.end()),
+        conflictingConstraints.end()
+    );
+
+    return conflictingConstraints;
+}
+// clang-format off
+
 bool SketchObject::hasBlockConstraint() const
 {
     return std::ranges::any_of(Constraints.getValues(), [](auto& c) {
