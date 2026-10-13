@@ -405,8 +405,19 @@ QString Action::createToolTip(
     return tooltip + cmdName;
 }
 
-QString Action::createToolTip(const QAction* action, const QString& helpText, const Command* command)
+QString Action::createToolTip(const QAction* action, const Command* command)
 {
+    if (!action || !command) {
+        return {};
+    }
+
+    // Use the same translation context as Command::applyCommandData()
+    const char* context = command->className();
+    if (dynamic_cast<const PythonCommand*>(command)
+        || dynamic_cast<const PythonGroupCommand*>(command)) {
+        context = command->getName();
+    }
+    QString helpText = QApplication::translate(context, command->getToolTipText());
     return createToolTip(helpText, action->text(), action->font(), command->getShortcut(), command);
 }
 

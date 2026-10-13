@@ -127,13 +127,7 @@ void PartCmdSelectFilter::languageChange()
         cmd0->setText(
             QApplication::translate("PartCmdVertexSelection", vertexSelection->getMenuText())
         );
-        cmd0->setToolTip(
-            Gui::Action::createToolTip(
-                cmd0,
-                QApplication::translate("PartCmdVertexSelection", vertexSelection->getToolTipText()),
-                vertexSelection
-            )
-        );
+        cmd0->setToolTip(Gui::Action::createToolTip(cmd0, vertexSelection));
         cmd0->setStatusTip(
             QApplication::translate("PartCmdVertexSelection", vertexSelection->getStatusTip())
         );
@@ -143,13 +137,7 @@ void PartCmdSelectFilter::languageChange()
     if (edgeSelection) {
         QAction* cmd1 = act[1];
         cmd1->setText(QApplication::translate("PartCmdEdgeSelection", edgeSelection->getMenuText()));
-        cmd1->setToolTip(
-            Gui::Action::createToolTip(
-                cmd1,
-                QApplication::translate("PartCmdEdgeSelection", edgeSelection->getToolTipText()),
-                edgeSelection
-            )
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, edgeSelection));
         cmd1->setStatusTip(
             QApplication::translate("PartCmdEdgeSelection", edgeSelection->getStatusTip())
         );
@@ -159,13 +147,7 @@ void PartCmdSelectFilter::languageChange()
     if (faceSelection) {
         QAction* cmd1 = act[2];
         cmd1->setText(QApplication::translate("PartCmdFaceSelection", faceSelection->getMenuText()));
-        cmd1->setToolTip(
-            Gui::Action::createToolTip(
-                cmd1,
-                QApplication::translate("PartCmdFaceSelection", faceSelection->getToolTipText()),
-                faceSelection
-            )
-        );
+        cmd1->setToolTip(Gui::Action::createToolTip(cmd1, faceSelection));
         cmd1->setStatusTip(
             QApplication::translate("PartCmdFaceSelection", faceSelection->getStatusTip())
         );
@@ -177,13 +159,7 @@ void PartCmdSelectFilter::languageChange()
         cmd2->setText(
             QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getMenuText())
         );
-        cmd2->setToolTip(
-            Gui::Action::createToolTip(
-                cmd2,
-                QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getToolTipText()),
-                removeSelection
-            )
-        );
+        cmd2->setToolTip(Gui::Action::createToolTip(cmd2, removeSelection));
         cmd2->setStatusTip(
             QApplication::translate("PartCmdRemoveSelectionGate", removeSelection->getStatusTip())
         );
