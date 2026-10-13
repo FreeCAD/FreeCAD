@@ -5545,7 +5545,25 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
     auto beforeSolve = getCoincidentSolveStatus(Obj);
 
     if (!substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+        constexpr int MaxValidationAttempts = 3;
+
         auto validation = validateCoincidentSelection(Obj, GeoId1, PosId1, GeoId2, PosId2);
+
+        for (int attempt = 0; validation == CoincidentSelectionResult::RemovePointOnObject
+             && attempt < MaxValidationAttempts;
+             ++attempt) {
+            const auto conflictingConstraints
+                = Obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+
+            if (conflictingConstraints.empty()) {
+                break;
+            }
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", conflictingConstraints.front());
+
+            validation = validateCoincidentSelection(Obj, GeoId1, PosId1, GeoId2, PosId2);
+        }
+
         if (validation != CoincidentSelectionResult::Valid) {
             abortCommand();
             showCoincidentSelectionWarning(Obj, validation);
