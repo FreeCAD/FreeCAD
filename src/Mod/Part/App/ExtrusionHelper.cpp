@@ -25,6 +25,8 @@
 #include <FCConfig.h>
 
 #include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
@@ -33,6 +35,7 @@
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <gp_Ax1.hxx>
+#include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Trsf.hxx>
 #include <GProp_GProps.hxx>
@@ -40,6 +43,9 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
+
+#include <cmath>
+#include <numbers>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -52,6 +58,52 @@
 #include "Geometry.h"
 
 using namespace Part;
+
+namespace
+{
+// OCC's BRepOffsetAPI_MakeOffset (MAT2d) can crash when offsetting small circles
+// inward, see https://github.com/FreeCAD/FreeCAD/issues/33427
+// For a wire made of a single full circle the offset is computed analytically.
+// Returns false if the wire is not a single full circle.
+// On success, 'result' holds the offset wire, or a null shape if the circle collapsed.
+bool makeCircleOffset(const TopoDS_Wire& wire, double offset, TopoDS_Shape& result)
+{
+    TopExp_Explorer xp(wire, TopAbs_EDGE);
+    if (!xp.More()) {
+        return false;
+    }
+    TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+    xp.Next();
+    if (xp.More()) {
+        return false;  // more than one edge
+    }
+
+    BRepAdaptor_Curve curve(edge);  // takes the edge and wire location into account
+    if (curve.GetType() != GeomAbs_Circle) {
+        return false;
+    }
+    double first = curve.FirstParameter();
+    double last = curve.LastParameter();
+    if (std::fabs((last - first) - 2.0 * std::numbers::pi) > Precision::PConfusion()) {
+        return false;  // an arc, not a full circle
+    }
+
+    gp_Circ circ = curve.Circle();
+    double newRadius = circ.Radius() + offset;
+    if (newRadius <= Precision::Confusion()) {
+        result = TopoDS_Shape();  // collapsed, caller reports "end face is empty"
+        return true;
+    }
+    circ.SetRadius(newRadius);
+
+    TopoDS_Edge newEdge = BRepBuilderAPI_MakeEdge(circ, first, last);
+    if (edge.Orientation() == TopAbs_REVERSED) {
+        newEdge.Reverse();
+    }
+    result = BRepBuilderAPI_MakeWire(newEdge).Wire();
+    return true;
+}
+}  // namespace
 
 ExtrusionHelper::ExtrusionHelper() = default;
 
@@ -506,21 +558,24 @@ void ExtrusionHelper::createTaperedPrismOffset(
 
     TopoDS_Shape offsetShape;
     if (fabs(offset) > Precision::Confusion()) {
-        TopLoc_Location edgeLocation;
-        // create the offset shape
-        BRepOffsetAPI_MakeOffsetFix mkOffset;
-        mkOffset.Init(GeomAbs_Arc);
-        mkOffset.Init(GeomAbs_Intersection);
-        mkOffset.AddWire(movedSourceWire);
-        try {
-            mkOffset.Perform(offset);
-            offsetShape = mkOffset.Shape();
-        }
-        catch (const Base::Exception& e) {
-            throw Base::RuntimeError(e.what());
-        }
-        if (!mkOffset.IsDone()) {
-            throw Standard_Failure("Extrusion: Offset could not be created");
+        // single full circles are offset analytically to avoid an OCC crash
+        if (!makeCircleOffset(movedSourceWire, offset, offsetShape)) {
+            TopLoc_Location edgeLocation;
+            // create the offset shape
+            BRepOffsetAPI_MakeOffsetFix mkOffset;
+            mkOffset.Init(GeomAbs_Arc);
+            mkOffset.Init(GeomAbs_Intersection);
+            mkOffset.AddWire(movedSourceWire);
+            try {
+                mkOffset.Perform(offset);
+                offsetShape = mkOffset.Shape();
+            }
+            catch (const Base::Exception& e) {
+                throw Base::RuntimeError(e.what());
+            }
+            if (!mkOffset.IsDone()) {
+                throw Standard_Failure("Extrusion: Offset could not be created");
+            }
         }
     }
     else {
