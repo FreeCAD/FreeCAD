@@ -315,8 +315,7 @@ QString TaskSketchBasedParameters::make2DLabel(
         return {};
     }
     else {
-        return QString::fromUtf8(section->Label.getValue()) + ":"
-            + QString::fromStdString(subValues[0]);
+        return QString::fromUtf8(section->Label.getValue()) + ":" + QString::fromStdString(subValues[0]);
     }
 }
 
