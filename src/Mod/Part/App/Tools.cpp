@@ -33,6 +33,7 @@
 #include <BRepIntCurveSurface_Inter.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepTools.hxx>
 #include <CSLib.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <Geom_Line.hxx>
