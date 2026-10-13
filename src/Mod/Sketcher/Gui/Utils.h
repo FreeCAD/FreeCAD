@@ -234,8 +234,6 @@ inline void scrollTo(QListWidget* list, int i, bool select)
     }
 }
 
-QMap<QString, QString> findAvailableFontFiles();
-
 // Model TreeWidget helpers
 Gui::TreeWidget* findModelTreeWidget();
 
