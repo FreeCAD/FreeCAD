@@ -1104,7 +1104,14 @@ void ObjectIdentifier::getDep(Dependencies& deps,
 
     if (!result.resolvedProperty) {
         if (!result.propertyName.empty()) {
-            deps[result.resolvedDocumentObject].insert(result.propertyName);
+            std::string canonicalPropertyName =
+                result.resolvedDocumentObject->getCanonicalPropertyName(
+                        result.propertyName.c_str()
+                );
+            deps[result.resolvedDocumentObject].insert(
+                canonicalPropertyName.empty() ? result.propertyName
+                : canonicalPropertyName
+            );
         }
         return;
     }
