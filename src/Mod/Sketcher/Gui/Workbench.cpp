@@ -235,7 +235,8 @@ void Workbench::leaveEditMode()
      */
     auto* workbench = Gui::WorkbenchManager::instance()->active();
 
-    if (workbench->name() == "SketcherWorkbench") {
+    if (workbench->name() == "SketcherWorkbench"
+        && Gui::ToolBarManager::getInstance()->isAnyVisible(nonEditModeToolbarNames())) {
         Gui::ToolBarManager::getInstance()->setState(
             editModeToolbarNames(),
             Gui::ToolBarManager::State::SaveState

@@ -245,6 +245,9 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    // In create mode the dialog is not in edit mode, so nothing closes it if undo deletes the
+    // hatch it operates on
+    setAutoCloseOnTransactionChange(mode);
 }
 
 TaskDlgGeomHatch::~TaskDlgGeomHatch()

@@ -865,16 +865,80 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertGreater(len(cutting_moves), 1)
 
     def test_bidirectional_with_pass_extension(self):
-        """Test bidirectional strategy with pass extension parameter."""
+        """Test that pass extension lengthens both ends of each cut."""
         pass_extension = 2.0
-        commands = bidirectional_facing.bidirectional(
-            self.square_wire, 10.0, 50.0, pass_extension=pass_extension
-        )
+        tolerance = 1e-7  # millimeters
 
-        self.assertGreater(len(commands), 0)
-        # Should generate valid toolpath commands
-        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
-        self.assertGreater(len(cutting_moves), 1)
+        def cutting_passes(commands):
+            passes = []
+            position = {}
+            for cmd in commands:
+                if cmd.Name not in ("G0", "G1"):
+                    continue
+                params = cmd.Parameters
+                previous = position.copy()
+                position.update({axis: params[axis] for axis in "XYZ" if axis in params})
+                if cmd.Name != "G1":
+                    continue
+                self.assertTrue(all(axis in previous and axis in position for axis in "XYZ"))
+                start = FreeCAD.Vector(*(previous[axis] for axis in "XYZ"))
+                end = FreeCAD.Vector(*(position[axis] for axis in "XYZ"))
+                # Skip plunges and zero-length moves
+                if abs(end.z - start.z) < tolerance and (end - start).Length > tolerance:
+                    passes.append((start, end))
+            return passes
+
+        for angle in (0.0, 30.0):
+            for tool_diameter in (4.0, 6.0):
+                with self.subTest(angle=angle, tool_diameter=tool_diameter):
+                    theta = math.radians(angle)
+                    direction = FreeCAD.Vector(math.cos(theta), math.sin(theta), 0)
+                    across = FreeCAD.Vector(-math.sin(theta), math.cos(theta), 0)
+                    bounds = [
+                        vertex.Point.dot(direction) for vertex in self.rectangle_wire.Vertexes
+                    ]
+                    radius = tool_diameter / 2.0
+                    baseline, extended = [
+                        cutting_passes(
+                            bidirectional_facing.bidirectional(
+                                self.rectangle_wire,
+                                tool_diameter,
+                                50.0,
+                                pass_extension=extension,
+                                angle_degrees=angle,
+                            )
+                        )
+                        for extension in (0.0, pass_extension)
+                    ]
+                    self.assertGreater(len(baseline), 1)
+                    self.assertEqual(len(baseline), len(extended))
+
+                    for base_pass, extended_pass in zip(baseline, extended):
+                        base_low, base_high = sorted(base_pass, key=lambda p: p.dot(direction))
+                        ext_low, ext_high = sorted(extended_pass, key=lambda p: p.dot(direction))
+                        # Zero extension still includes the tool radius
+                        self.assertAlmostEqual(
+                            base_low.dot(direction), min(bounds) - radius, delta=tolerance
+                        )
+                        self.assertAlmostEqual(
+                            base_high.dot(direction), max(bounds) + radius, delta=tolerance
+                        )
+                        self.assertAlmostEqual(
+                            (ext_low - base_low).dot(direction), -pass_extension, delta=tolerance
+                        )
+                        self.assertAlmostEqual(
+                            (ext_high - base_high).dot(direction), pass_extension, delta=tolerance
+                        )
+                        for base_point, extended_point in zip(base_pass, extended_pass):
+                            self.assertAlmostEqual(
+                                (extended_point - base_point).dot(across), 0.0, delta=tolerance
+                            )
+                            self.assertAlmostEqual(base_point.z, extended_point.z, delta=tolerance)
+                        base_length = (base_pass[1] - base_pass[0]).Length
+                        extended_length = (extended_pass[1] - extended_pass[0]).Length
+                        self.assertAlmostEqual(
+                            extended_length - base_length, 2 * pass_extension, delta=tolerance
+                        )
 
     def test_spiral_layer_calculation(self):
         """Test that spiral generates appropriate number of layers."""

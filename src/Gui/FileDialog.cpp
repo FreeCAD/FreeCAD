@@ -1177,14 +1177,15 @@ FileChooser::FileChooser(QWidget* parent)
     layout->setSpacing(2);
 
     lineEdit = new QLineEdit(this);
-    completer = new QCompleter(this);
-    completer->setMaxVisibleItems(12);
-    fs_model = new QFileSystemModel(completer);
-    fs_model->setRootPath(QStringLiteral(""));
-    completer->setModel(fs_model);
-    lineEdit->setCompleter(completer);
-
-
+    // Only install the completer if/when we actually need it, so we avoid Windows trying to access
+    // network drives if we don't need them for anything. See Issue #31565.
+    connect(
+        lineEdit,
+        &QLineEdit::textEdited,
+        this,
+        &FileChooser::installPathCompleter,
+        Qt::SingleShotConnection
+    );
     connect(lineEdit, &QLineEdit::textChanged, this, &FileChooser::fileNameChanged);
     connect(lineEdit, &QLineEdit::editingFinished, this, &FileChooser::editingFinished);
 
@@ -1203,6 +1204,16 @@ FileChooser::FileChooser(QWidget* parent)
 }
 
 FileChooser::~FileChooser() = default;
+
+void FileChooser::installPathCompleter()
+{
+    auto completer = new QCompleter(this);
+    completer->setMaxVisibleItems(12);
+    auto fileSystemModel = new QFileSystemModel(completer);
+    fileSystemModel->setRootPath(QString());
+    completer->setModel(fileSystemModel);
+    lineEdit->setCompleter(completer);
+}
 
 void FileChooser::resizeEvent(QResizeEvent* e)
 {

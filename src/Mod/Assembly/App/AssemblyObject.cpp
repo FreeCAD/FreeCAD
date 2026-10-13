@@ -2310,7 +2310,7 @@ std::string AssemblyObject::handleOneSideOfJoint(
 
     if (!part || !obj) {
         Base::Console()
-            .warning("The property %s of Joint %s is bad.\n", propRefName, joint->getFullName());
+            .warning("The property {} of Joint {} is bad.\n", propRefName, joint->getFullName());
         return "";
     }
 
@@ -2414,7 +2414,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Rotation yawRotation(currentZAxis, yawAdjustment);
 
     // Combine the initial rotation with the yaw adjustment
-    Base::Rotation adjustedRotation = rot * yawRotation;
+    Base::Rotation adjustedRotation = yawRotation * rot;
     plc1.setRotation(adjustedRotation);
 
     // Then end of processing similar to handleOneSideOfJoint :

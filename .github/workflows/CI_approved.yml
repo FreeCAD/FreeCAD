@@ -31,9 +31,12 @@
 #   - On code changes (synchronize, opened, reopened, push): cancel any
 #     older in-progress runs for the same branch, then proceed.
 #   - On label additions: check whether macOS/Windows builds already ran
-#     (or are running) for the same HEAD SHA.  If so, wait for that run to
-#     finish and have the build jobs report its results instead of building
-#     again, so the required checks reflect the real outcome.
+#     for the same HEAD SHA.  If so, have the build jobs report that run's
+#     results instead of building again, so the required checks reflect the
+#     real outcome.
+#
+# Runs for the same PR and HEAD SHA share a concurrency group, so a label
+# run stays pending (holding no runner) until the run before it finishes.
 
 name: FreeCAD CI approved
 
@@ -50,9 +53,18 @@ on:
 permissions:
   contents: read
 
+# Pending runs in a group are superseded by newer ones; only the newest suite counts for merging.
+concurrency:
+  group: >-
+    FC-CI-approved-${{ github.event.pull_request
+    && format('{0}-{1}', github.event.pull_request.number, github.event.pull_request.head.sha)
+    || github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   Gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       actions: write
     outputs:
@@ -72,8 +84,8 @@ jobs:
             const isPR = context.eventName === 'pull_request';
             const action = context.payload.action;
 
-            // For labeled events, check whether builds already exist for this SHA. If they do, wait for that run
-            // to finish and have this run mirror its results rather than building again.
+            // For labeled events, check whether builds already exist for this SHA. If they do, have
+            // this run mirror their results rather than building again.
             if (isPR && action === 'labeled') {
               const headSha = context.payload.pull_request.head.sha;
               const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
@@ -95,19 +107,15 @@ jobs:
                 && !(job.steps ?? []).some(
                   s => s.name === mirrorStepName && s.conclusion !== 'skipped');
 
-              // Only older runs count, so concurrent label events cannot wait on each other.
+              // Newer runs in the group are either pending behind this one or were superseded unrun.
               const olderRuns = runs.filter(r => r.id < context.runId).sort((a, b) => b.id - a.id);
 
-              for (let run of olderRuns) {
-                // Wait even before build jobs exist, or simultaneous label events all build.
-                while (run.status !== 'completed') {
-                  core.info(`Waiting for run ${run.html_url} (status: ${run.status}) to complete`);
-                  await new Promise(resolve => setTimeout(resolve, 60000));
-                  ({ data: run } = await github.rest.actions.getWorkflowRun({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    run_id: run.id,
-                  }));
+              for (const run of olderRuns) {
+                // The concurrency group keeps same-SHA runs of this PR from overlapping, so an
+                // unfinished one is still pending and will run after this one.
+                if (run.status !== 'completed') {
+                  core.info(`Ignoring run ${run.html_url} (status: ${run.status})`);
+                  continue;
                 }
 
                 const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
@@ -146,7 +154,7 @@ jobs:
             // For PR code changes (synchronize/opened/reopened), cancel older runs on the same head ref so we don't
             // waste CI resources on stale code.
             const branch = context.payload.pull_request.head.ref;
-            for (const status of ['in_progress', 'queued']) {
+            for (const status of ['in_progress', 'queued', 'pending']) {
               const { data: { workflow_runs: runs } } = await github.rest.actions.listWorkflowRuns({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

@@ -497,6 +497,7 @@ public:
     void testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2);
     void testStatus(bool resetStatus);
     bool isVisibleInTree() const;
+    bool toggleElementVisibility();
     void displayStatusInfo();
 
     QVariant data(int column, int role) const override;
@@ -564,6 +565,7 @@ private:
         std::vector<bool>::const_iterator& from
     );
 
+    App::DocumentObject* getElementVisibilityParent() const;
     void setIconOverlays(int currentStatus, QPixmap& overlays) const;
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
     QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);

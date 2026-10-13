@@ -528,7 +528,7 @@ void DrawViewPart::extractFaces()
             findFacesV26_3(goEdges);
             break;
         default:
-            Base::Console().warning("DVP::extractFaces - Unsupported algorithm id %d\n",
+            Base::Console().warning("DVP::extractFaces - Unsupported algorithm id {}\n",
                                     static_cast<int>(Preferences::faceFinderVersion()));
             return;
     }
@@ -557,14 +557,14 @@ void DrawViewPart::findFacesV26_3(const std::vector<BaseGeomPtr> &goEdges)
         Standard_SStream errStream;
         builder.DumpErrors(errStream);
         const std::string &errStr = errStream.str();
-        Base::Console().error("FaceFinder v26.3: OCC General Fuse algorithm failed with error(s):\n%s\n", errStr.c_str());
+        Base::Console().error("FaceFinder v26.3: OCC General Fuse algorithm failed with error(s):\n{}\n", errStr);
         return;
     }
     if (builder.HasWarnings()) {
         Standard_SStream warnStream;
         builder.DumpWarnings(warnStream);
         const std::string &warnStr = warnStream.str();
-        Base::Console().warning("FaceFinder v26.3: OCC General Fuse algorithm raised warning(s):\n%s\n", warnStr.c_str());
+        Base::Console().warning("FaceFinder v26.3: OCC General Fuse algorithm raised warning(s):\n{}\n", warnStr);
     }
 
     // Go through the resulting faces while discarding the hole-in-plane face and the really tiny ones
@@ -610,7 +610,7 @@ void DrawViewPart::findFacesV26_3(const std::vector<BaseGeomPtr> &goEdges)
     // Report possible face representation problems, were there any
     for (unsigned int i = 0; i < faceGeoms.size(); ++i) {
         if (faceGeoms[i]->getRepresentation() == FaceRepresentation::Failed) {
-            Base::Console().warning("FaceFinder v26.3: Failed to determine how to display face %s.Face%d\n",
+            Base::Console().warning("FaceFinder v26.3: Failed to determine how to display face {}.Face{}\n",
                                     getNameInDocument(), i);
         }
     }
@@ -1181,7 +1181,7 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
     //    Base::Console().message("DVP::projectPoint({}, {}\n",
-    //                            DrawUtil::formatVector(pt).c_str(), invert);
+    //                            DrawUtil::formatVector(pt), invert);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
     gp_Pnt gPt(pt.x, pt.y, pt.z);

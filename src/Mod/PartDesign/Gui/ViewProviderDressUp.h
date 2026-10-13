@@ -86,8 +86,8 @@ protected:
     void updatePreviewColor() override;
 
 private:
-    bool highlightEdgesAsSolid;
-    bool highlightFacesAsSolid;
+    bool highlightEdgesAsSolid {false};
+    bool highlightFacesAsSolid {false};
 };
 
 

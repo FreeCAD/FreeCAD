@@ -1079,7 +1079,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
     }
     else {
         PickId pickId = pickFace(x, y);
-        long step = Base::clamp(long(naviStepByTurn), 4L, 36L);
+        long step = std::clamp(long(naviStepByTurn), 4L, 36L);
         float rotStepAngle = (2 * std::numbers::pi) / step;
 
         FaceType faceType = getFaceType(pickId);

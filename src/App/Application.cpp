@@ -2767,6 +2767,9 @@ void Application::initConfig(int argc, char ** argv)
         if (auto branch = Base::FCVersionInfo::RepositoryBranch(); !branch.empty()) {
             Application::Config()["BuildRevisionBranch"] = branch;
         }
+        if (auto type = Base::FCVersionInfo::BuildType(); !type.empty()) {
+            Application::Config()["BuildType"] = type;
+        }
     }
 
     _argc = argc;

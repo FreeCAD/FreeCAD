@@ -47,9 +47,14 @@ class TestLinkArrayCircular(unittest.TestCase):
     def testSuppressionProtectsGeneratedElements(self):
         source = self.doc.addObject("Part::Box", "SuppressionSource")
         for kind in ("Polar", "Circular", "Path", "Point"):
+            print(f"Doing: {kind}")
             with self.subTest(kind=kind):
                 array = self.doc.addObject("Part::LinkArray" + kind, "SuppressionArray")
                 array.LinkedObject = source
+                array.ShowElement = True
+                if kind == "Circular":
+                    array.Axis = (None, ["Z_Axis"])
+                    array.BinormalAxis = (None, ["Y_Axis"])
                 if kind in ("Path", "Point"):
                     path = self.doc.addObject("Part::Feature", "SuppressionPath")
                     path.Shape = Part.makePolygon([App.Vector(), App.Vector(20, 0, 0)])
@@ -66,6 +71,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.array.NumberCircles = 2
         self.array.RadialDistance = 1000000
         self.array.TangentialDistance = 0.001
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
         self.assertIn("10000", self.array.getStatusString())
 
@@ -74,20 +80,23 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.assertEqual(
             self.array.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength"
         )
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
 
         self.assertEqual(self.array.getStatusString(), "Valid")
-        # floor(2*pi*10/10) -> 6 -> 4, floor(2*pi*20/10) -> 12.
-        self.assertEqual(self.array.ElementCount, 1 + 4 + 12)
+        self.assertEqual(self.array.ElementCount, 32)
         self.assertEqual(len(self.array.PlacementList), self.array.ElementCount)
-        self.assertEqual(self.array.PlacementList[0], App.Placement())
         self.assertAlmostEqual(self.array.PlacementList[1].Base.Length, 10)
         self.assertAlmostEqual(self.array.PlacementList[5].Base.Length, 20)
 
     def testAxisReferenceOrientsTheCircles(self):
         axis = self.doc.addObject("Part::Feature", "Axis")
         axis.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(5, 10, 0))
+        axis2 = self.doc.addObject("Part::Feature", "Axis")
+        axis2.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(6, 0, 0))
         self.array.Axis = (axis, ["Edge1"])
+        self.array.BinormalAxis = (axis2, ["Edge1"])
+        self.array.StartAtShape = False
 
         self.doc.recompute()
 
@@ -96,7 +105,7 @@ class TestLinkArrayCircular(unittest.TestCase):
             self.assertAlmostEqual(placement.Base.y, 0)
 
         # The selected edge supplies the center as well as the axis direction.
-        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, -5)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 0)
 
     def testSketchEdgeOrientsTheCircles(self):
         # Part2DObject is the base of Sketcher::SketchObject; it must not force
@@ -109,13 +118,18 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.assertEqual(self.array.getStatusString(), "Valid")
         for placement in self.array.PlacementList:
             self.assertAlmostEqual(placement.Base.y, 0)
-        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, -5)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 10)
 
     def testSketchNamedAxesStillOrientTheCircles(self):
         sketch = self.doc.addObject("Part::Part2DObject", "Sketch")
-        for axis, coordinate in (("H_Axis", "x"), ("V_Axis", "y"), ("N_Axis", "z")):
+        for axis, coordinate, binormalAxis in (
+            ("H_Axis", "x", "V_Axis"),
+            ("V_Axis", "y", "N_Axis"),
+            ("N_Axis", "z", "H_Axis"),
+        ):
             with self.subTest(axis=axis):
                 self.array.Axis = (sketch, [axis])
+                self.array.BinormalAxis = (sketch, [binormalAxis])
                 self.doc.recompute()
                 self.assertEqual(self.array.getStatusString(), "Valid")
                 for placement in self.array.PlacementList:
