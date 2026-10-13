@@ -664,20 +664,34 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
+
+    /// returns all the points that form an intersection between GeoId1 and GeoId2
     void getDirectlyCoincidentPoints(
         const int GeoId1,
         const int GeoId2,
         std::vector<int>& GeoIds3,
         std::vector<PointPos>& PosIds3
     ) const;
+
+    /// Checks if the two points are directly or indirectly coincident
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
     /// returns true if the two points have PointOnObject object that attaches them to the same edge
-    bool arePointsOnSameObject(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    /// followCoincident follows coincident points to GeoId1/GeoId2 to see if they are connected to
+    /// the same edge
+    bool arePointsOnSameObject(
+        int GeoId1,
+        PointPos PosId1,
+        int GeoId2,
+        PointPos PosId2,
+        bool followCoincident = true
+    );
     std::vector<int> getPointOnSameObjectConstraints(
         int GeoId1,
         PointPos PosId1,
         int GeoId2,
-        PointPos PosId2
+        PointPos PosId2,
+        bool followCoincident = true
     );
 
     // Returns true if the sketch has 1 or more block constraint
