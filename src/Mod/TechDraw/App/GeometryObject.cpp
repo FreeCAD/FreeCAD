@@ -153,12 +153,12 @@ HLRAlgo_Projector GeometryObject::getProjector(const gp_Ax2& viewAxis) const
     return HLRAlgo_Projector(viewAxis);
 }
 
-void GeometryObject::projectShape(const TopoDS_Shape& inPartShape, const gp_Ax2& viewAxis)
+void GeometryObject::projectShape(const Part::TopoShape& inPartShape, const gp_Ax2& viewAxis)
 {
     clear();
 
     m_partShape = inPartShape;
-    TopoDS_Shape inShape = inPartShape;
+    TopoDS_Shape inShape = inPartShape.getShape();
 
     Handle(HLRBRep_Algo) brep_hlr;
     try {
@@ -336,14 +336,14 @@ void GeometryObject::makeTDGeometry()
 
 
 //!set up a hidden line remover and project a shape with it
-void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)
+void GeometryObject::projectShapeWithPolygonAlgo(const Part::TopoShape& input, const gp_Ax2& viewAxis)
 {
 //    Base::Console().message("GO::projectShapeWithPolygonAlgo()\n");
     // Clear previous Geometry
     clear();
 
-    m_partShape = Part::TopoShape(input);
-    TopoDS_Shape inShape = input;
+    m_partShape = input;
+    TopoDS_Shape inShape = input.getShape();
 
     //work around for Mantis issue #3332
     //if 3332 gets fixed in OCC, this will produce shifted views and will need

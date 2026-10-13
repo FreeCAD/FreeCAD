@@ -485,6 +485,10 @@ void QGIViewPart::drawAllEdges()
         item->setZValue(ZVALUE::EDGE);
         item->setPrettyNormal();
 
+        // Debug the toponaming
+        QColor tagColor = (*itGeom)->getMappedName() != "" ? QColor(Qt::green) : QColor(Qt::red);
+        item->setNormalColor(tagColor);
+
         if (!vp->ShowAllEdges.getValue() && !showItem) {
              //view level "show" status  && individual edge "show" status
              item->hide();

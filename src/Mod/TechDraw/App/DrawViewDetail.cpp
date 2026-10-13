@@ -55,6 +55,8 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
+#include <Mod/Part/App/TopoShapeOpCode.h>
+
 #include "DrawComplexSection.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
@@ -192,13 +194,13 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     DrawViewPart* dvp = static_cast<DrawViewPart*>(baseObj);
-    TopoDS_Shape shape3d = dvp->getShapeForDetail();
+    Part::TopoShape shape3d = dvp->getShapeForDetail();
     DrawViewSection* dvs = nullptr;
     if (dvp->isDerivedFrom<TechDraw::DrawViewSection>()) {
         dvs = static_cast<TechDraw::DrawViewSection*>(dvp);
     }
 
-    if (shape3d.IsNull()) {
+    if (shape3d.isNull()) {
         return DrawView::execute();
     }
 
@@ -219,7 +221,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
 
 //try to create a detail of the solids & shells in shape
 //if there are no solids/shells in shape, use the edges in shape
-void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
+void DrawViewDetail::detailExec(const Part::TopoShape& shape, DrawViewPart* dvp, DrawViewSection* dvs)
 {
     if (waitingForHlr() || waitingForDetail()) {
         return;
@@ -251,7 +253,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
 //this runs in a separate thread since it can sometimes take a long time
 //make a common of the input shape and a cylinder (or prism depending on
 //the matting style)
-void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* dvp, DrawViewSection* dvs)
+void DrawViewDetail::makeDetailShape(const Part::TopoShape& shape3d, DrawViewPart* dvp, DrawViewSection* dvs)
 {
     showProgressMessage(getNameInDocument(), "is making detail shape");
 
@@ -259,13 +261,12 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     double radius = getFudgeRadius();
 
     //make a copy of the input shape so we don't inadvertently change it
-    BRepBuilderAPI_Copy BuilderCopy(shape3d);
-    TopoDS_Shape copyShape = BuilderCopy.Shape();
+    Part::TopoShape copyShape = shape3d.makeElementCopy();
     m_saveShape = copyShape;
     m_saveDvp = dvp;
     m_saveDvs = dvs;
 
-    gp_Pnt gpCenter = ShapeUtils::findCentroid(copyShape, dirDetail);
+    gp_Pnt gpCenter = ShapeUtils::findCentroid(copyShape.getShape(), dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(), gpCenter.Y(), gpCenter.Z());
     m_saveCentroid = shapeCenter;//centroid of original shape
 
@@ -285,7 +286,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
-    BRepBndLib::AddOptimal(copyShape, bbxSource);
+    BRepBndLib::AddOptimal(copyShape.getShape(), bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
     Base::Vector3d toolPlaneOrigin = anchor + dirDetail * diag * -1.0;//center tool about anchor
@@ -331,13 +332,9 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     //for each solid and shell in the input shape, make a common with the tool and
     //add the result to a compound.  This avoids issues with some geometry errors in the
     //input shape.
-    BRep_Builder builder;
-    TopoDS_Compound pieces;
-    builder.MakeCompound(pieces);
-    TopExp_Explorer expl1(copyShape, TopAbs_SOLID);
-    for (; expl1.More(); expl1.Next()) {
-        const TopoDS_Solid& s = TopoDS::Solid(expl1.Current());
-        FCBRepAlgoAPI_Common mkCommon(s, tool);
+    std::vector<Part::TopoShape> pieces;
+    for (const auto& s : copyShape.getSubTopoShapes(TopAbs_SOLID)) {
+        FCBRepAlgoAPI_Common mkCommon(s.getShape(), tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -350,13 +347,12 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         if (xp.More() != Standard_True) {
             continue;
         }
-        builder.Add(pieces, mkCommon.Shape());
+        pieces.push_back(Part::TopoShape(0, s.Hasher).makeElementShape(
+            mkCommon, std::vector<Part::TopoShape>{s, tool}, Part::OpCodes::Common));
     }
 
-    TopExp_Explorer expl2(copyShape, TopAbs_SHELL, TopAbs_SOLID);
-    for (; expl2.More(); expl2.Next()) {
-        const TopoDS_Shell& s = TopoDS::Shell(expl2.Current());
-        FCBRepAlgoAPI_Common mkCommon(s, tool);
+    for (const auto& s : copyShape.getSubTopoShapes(TopAbs_SHELL, TopAbs_SOLID)) {
+        FCBRepAlgoAPI_Common mkCommon(s.getShape(), tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -369,14 +365,13 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         if (xp.More() != Standard_True) {
             continue;
         }
-        builder.Add(pieces, mkCommon.Shape());
+        pieces.push_back(Part::TopoShape(0, s.Hasher).makeElementShape(
+            mkCommon, std::vector<Part::TopoShape>{s, tool}, Part::OpCodes::Common));
     }
 
     // now get any loose edges in the input
-    TopExp_Explorer expl3(copyShape, TopAbs_EDGE, TopAbs_FACE);
-    for (; expl3.More(); expl3.Next()) {
-        const TopoDS_Edge& e = TopoDS::Edge(expl3.Current());
-        FCBRepAlgoAPI_Common mkCommon(e, tool);
+    for (const auto& e : copyShape.getSubTopoShapes(TopAbs_EDGE, TopAbs_FACE)) {
+        FCBRepAlgoAPI_Common mkCommon(e.getShape(), tool);
         if (!mkCommon.IsDone()) {
             continue;
         }
@@ -389,27 +384,28 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         if (xp.More() != Standard_True) {
             continue;
         }
-        builder.Add(pieces, mkCommon.Shape());
+        pieces.push_back(Part::TopoShape(0, e.Hasher).makeElementShape(
+            mkCommon, std::vector<Part::TopoShape>{e, tool}, Part::OpCodes::Common));
     }
 
     // save the detail shape for further processing
-    m_detailShape = pieces;
+    m_detailShape = Part::TopoShape(0, copyShape.Hasher).makeElementCompound(pieces);
 
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");     //debug
-        BRepTools::Write(copyShape, "DVDCopy.brep");//debug
-        BRepTools::Write(m_detailShape, "DVDCommon.brep"); //debug
+        BRepTools::Write(copyShape.getShape(), "DVDCopy.brep");//debug
+        BRepTools::Write(m_detailShape.getShape(), "DVDCommon.brep"); //debug
     }
 
-    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_detailShape, dirDetail);
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_detailShape.getShape(), dirDetail);
     Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
     m_saveCentroid += centroid;//center of massaged shape
     //align shape with detail anchor
-    TopoDS_Shape centeredShape = ShapeUtils::moveShape(m_detailShape, anchor * -1.0);
+    Part::TopoShape centeredShape = ShapeUtils::moveShape(m_detailShape, anchor * -1.0);
     m_scaledShape = ShapeUtils::scaleShape(centeredShape, getScale());
 
     if (debugDetail()) {
-        BRepTools::Write(m_scaledShape, "DVDScaled.brep");//debug
+        BRepTools::Write(m_scaledShape.getShape(), "DVDScaled.brep");//debug
     }
 
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
@@ -448,7 +444,7 @@ void DrawViewDetail::postHlrTasks(void)
 
 TopoDS_Shape DrawViewDetail::getShapeForGeometryBuild() const
 {
-    return m_scaledShape;
+    return m_scaledShape.getShape();
 }
 
 //continue processing after makeDetailShape thread is finished
@@ -457,7 +453,7 @@ void DrawViewDetail::onMakeDetailFinished(void)
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), m_viewAxis);
+    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }

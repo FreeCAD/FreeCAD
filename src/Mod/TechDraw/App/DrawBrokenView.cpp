@@ -76,6 +76,8 @@
 #include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
@@ -147,20 +149,20 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
         return DrawView::execute();     // NOLINT
     }
 
-    TopoDS_Shape shape = getSourceShape();
-    if (shape.IsNull()) {
+    Part::TopoShape shape = getSourceShape();
+    if (shape.isNull()) {
         Base::Console().message("DBV::execute - {} - Source shape is Null.\n", getNameInDocument());
         return DrawView::execute();     // NOLINT
     }
 
-    BRepBuilderAPI_Copy BuilderCopy(shape);
-    TopoDS_Shape safeShape = BuilderCopy.Shape();
-    m_unbrokenCenter = SU::findCentroidVec(safeShape, getProjectionCS());
+    Part::TopoShape safeShape = shape.makeElementCopy();
+    m_unbrokenCenter = SU::findCentroidVec(safeShape.getShape(), getProjectionCS());
 
-    TopoDS_Shape brokenShape = breakShape(safeShape);
-    m_compressedShape = compressShape(brokenShape);
+    Part::TopoShape brokenShape = breakShape(safeShape);
+    Part::TopoShape compressedShape = compressShape(brokenShape);
+    m_compressedShape = compressedShape.getShape();
 
-    partExec(m_compressedShape);
+    partExec(compressedShape);
 
     return DrawView::execute();     // NOLINT
 }
@@ -168,14 +170,14 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
 
 //! applies the breaks to the input shape.  returns a compound of broken
 //! pieces moved so they are separated by a distance of Gap.
-TopoDS_Shape DrawBrokenView::breakShape(const TopoDS_Shape& shapeToBreak) const
+Part::TopoShape DrawBrokenView::breakShape(const Part::TopoShape& shapeToBreak) const
 {
     auto breaksAll = Breaks.getValues();
-    TopoDS_Shape updatedShape = shapeToBreak;
+    Part::TopoShape updatedShape = shapeToBreak;
     for (auto& item : breaksAll) {
-        TopoDS_Shape previousShape = updatedShape;
+        Part::TopoShape previousShape = updatedShape;
         updatedShape = apply1Break(*item, updatedShape);
-        if (updatedShape.IsNull()) {
+        if (updatedShape.isNull()) {
             Base::Console().warning("Failed to apply break {}\n", item->Label.getValue());
             updatedShape = previousShape;
         }
@@ -186,7 +188,7 @@ TopoDS_Shape DrawBrokenView::breakShape(const TopoDS_Shape& shapeToBreak) const
 
 //! applies a single break to the input shape.  returns a compound of the
 //! broken pieces.
-TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, const TopoDS_Shape& inShape) const
+Part::TopoShape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, const Part::TopoShape& inShape) const
 {
     auto breakPoints = breakPointsFromObj(breakObj);
     if (breakPoints.first.IsEqual(breakPoints.second, EWTOLERANCE)) {
@@ -207,13 +209,14 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     // FCBRepAlgoAPI_Cut gets upset about cutting non-solids?? "XXX is not a solid" from Boolean::execute().
     // We are cutting Compounds and that is valid in BRepAlgoAPI_Cut, but maybe not in FCBRepAlgoAPI_Cut?
     // See sample file here: https://github.com/FreeCAD/FreeCAD/issues/27414
-    BRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
+    BRepAlgoAPI_Cut mkCut0(inShape.getShape(), halfSpace0);
     if (!mkCut0.IsDone() || mkCut0.Shape().IsNull()) {
         Base::Console().warning("Failed to make first cut for break {}.\n", breakObj.Label.getValue());
         return {};
     }
 
-    TopoDS_Shape cut0 = mkCut0.Shape();
+    Part::TopoShape cut0 = Part::TopoShape(0, inShape.Hasher)
+                               .makeElementShape(mkCut0, std::vector<Part::TopoShape>{inShape, halfSpace0}, Part::OpCodes::Cut);
 
     // make a halfspace that is positioned at the second breakpoint and extends
     // in the direction of the first point
@@ -223,26 +226,21 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
 
     // see mkCut0 above
-    BRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
+    BRepAlgoAPI_Cut mkCut1(inShape.getShape(), halfSpace1);
     if (!mkCut1.IsDone()|| mkCut1.Shape().IsNull()) {
         Base::Console().warning("Failed to make second cut for break {}.\n", breakObj.Label.getValue());
         return {};
     }
-    TopoDS_Shape cut1 = mkCut1.Shape();
+    Part::TopoShape cut1 = Part::TopoShape(0, inShape.Hasher)
+                               .makeElementShape(mkCut1, std::vector<Part::TopoShape>{inShape, halfSpace1}, Part::OpCodes::Cut);
 
-    BRep_Builder builder;
-    TopoDS_Compound result;
-    builder.MakeCompound(result);
-    builder.Add(result, cut0);
-    builder.Add(result, cut1);
-
-    return result;
+    return Part::TopoShape(0, inShape.Hasher).makeElementCompound(std::vector<Part::TopoShape>{cut0, cut1});
 }
 
 //! compress the broken shape at the breaks
-TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) const
+Part::TopoShape DrawBrokenView::compressShape(const Part::TopoShape& shapeToCompress) const
 {
-    TopoDS_Shape compressed = compressHorizontal(shapeToCompress);
+    Part::TopoShape compressed = compressHorizontal(shapeToCompress);
     return compressVertical(compressed);
 }
 
@@ -251,9 +249,9 @@ TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) 
 //! a break:        BbbbbbbB
 //! a piece:  PpppP                     move right by removed(B)
 //! a piece:                  PppppP    no need to move
-TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToCompress)const
+Part::TopoShape DrawBrokenView::compressHorizontal(const Part::TopoShape& shapeToCompress)const
 {
-    std::vector<TopoDS_Shape> pieces = getPieces(shapeToCompress);
+    std::vector<Part::TopoShape> pieces = getPieces(shapeToCompress);
     std::vector<App::DocumentObject*> breaksAll = Breaks.getValues();
     Base::Vector3d moveDirection = DU::closestBasisOriented(Base::convertTo<Base::Vector3d>(getProjectionCS().XDirection()));
     bool descend = false;
@@ -271,7 +269,7 @@ TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToComp
             // check each piece against the current break
             if (moveThisPiece(pieceLimit, breakItem, moveDirection)) {
                 // piece is to left of break, so needs to move right
-                TopoDS_Shape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
+                Part::TopoShape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
                 pieces.at(iPiece) = temp;
             }
 
@@ -279,19 +277,12 @@ TopoDS_Shape  DrawBrokenView::compressHorizontal(const TopoDS_Shape& shapeToComp
         }
     }
     // turn updated pieces into a compound
-    BRep_Builder builder;
-    TopoDS_Compound result;
-    builder.MakeCompound(result);
-    for (auto& pieceShape : pieces) {
-        builder.Add(result, pieceShape);
-    }
-
-    return result;
+    return Part::TopoShape(0, shapeToCompress.Hasher).makeElementCompound(pieces);
 }
 
 //! move the broken pieces in the input shape "Up" to close up the removed areas.
 //! note: breaks and pieces should not intersect by this point
-TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompress)const
+Part::TopoShape DrawBrokenView::compressVertical(const Part::TopoShape& shapeToCompress)const
 {
     auto pieces = getPieces(shapeToCompress);
 
@@ -313,21 +304,14 @@ TopoDS_Shape  DrawBrokenView::compressVertical(const TopoDS_Shape& shapeToCompre
             // check each piece against the current break using a fuzzy equality
             if (moveThisPiece(pieceLimit, breakItem, moveDirection)) {
                 // piece is below the break, move it up
-                TopoDS_Shape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
+                Part::TopoShape temp = ShapeUtils::moveShape(pieces.at(iPiece), netBreakDisplace);
                 pieces.at(iPiece) = temp;
             }
             iPiece++;
         }
     }
     // turn updated pieces into a compound
-    BRep_Builder builder;
-    TopoDS_Compound result;
-    builder.MakeCompound(result);
-    for (auto& pieceShape : pieces) {
-        builder.Add(result, pieceShape);
-    }
-
-    return result;
+    return Part::TopoShape(0, shapeToCompress.Hasher).makeElementCompound(pieces);
 }
 
 
@@ -542,42 +526,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromSketch(
 //! extract the boundary of the break lines from an edge
 std::pair<Base::Vector3d, Base::Vector3d> DrawBrokenView::breakBoundsFromEdge(const App::DocumentObject& breakObj) const
 {
-    TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
-    if (locShape.IsNull() || locShape.ShapeType() != TopAbs_EDGE) {
-        return {Base::Vector3d(), Base::Vector3d()};
-    }
-
-    auto edge = projectEdge(TopoDS::Edge(locShape));
-    auto start = edge->getStartPoint();
-    auto end = edge->getEndPoint();
-    Base::Vector3d direction = end - start;
-    double length = direction.Length();
-    direction.Normalize();
-    Base::Vector3d stdX{1.0, 0.0, 0.0};
-    Base::Vector3d stdY{0.0, 1.0, 0.0};
-    if (DU::fpCompare(fabs(direction.Dot(stdX)), 1.0, EWTOLERANCE) ) {
-        double left = std::min(start.x, end.x);
-        double right = std::max(start.x, end.x);
-        // not wild about this for top/bottom
-        double top = start.y + length;
-        double bottom = start.y - length;
-        Base::Vector3d topLeft{left, top, 0.0};
-        Base::Vector3d bottomRight{right, bottom, 0.0};
-        return{topLeft, bottomRight};
-    }
-
-    if (!DU::fpCompare(fabs(direction.Dot(stdY)), 1.0, EWTOLERANCE) ) {
-        Base::Console().message("DBV::breakBoundsFromEdge - direction is neither X nor Y\n");
-        // TODO: throw? return nonsense?
-    }
-
-    double left = start.x - length;
-    double right = start.x + length;
-    double bottom = std::min(start.y, end.y);
-    double top = std::max(start.y, end.y);
-    Base::Vector3d topLeft{left, top, 0.0};
-    Base::Vector3d bottomRight{right, bottom, 0.0};
-    return{topLeft, bottomRight};
+    return breakBoundsFromSketch(breakObj);
 }
 
 //! calculate the unscaled length of the breakline
@@ -642,6 +591,9 @@ double DrawBrokenView::breaklineLengthFromEdge(const App::DocumentObject& breakO
     }
     // the breakline could be very long.  do we need a max breakline length?
     auto edge = projectEdge(TopoDS::Edge(locShape));
+    if (!edge) {
+        return 0.0;
+    }
     auto start = edge->getStartPoint();
     auto end = edge->getEndPoint();
     return (end - start).Length();
@@ -730,7 +682,7 @@ std::vector<TopoDS_Edge> DrawBrokenView::edgesFromCompound(const TopoDS_Shape& c
 
 //! find the limits of each piece's bounding box in cardinal direction (if we support oblique projection directions, then the
 //! piece will have to be transformed to align with OXYZ cardinal axes as in DrawViewPart::getSizeAlongVector)
-PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<TopoDS_Shape>& pieces, Base::Vector3d direction)
+PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<Part::TopoShape>& pieces, Base::Vector3d direction)
 {
     Base::Vector3d stdX{1.0, 0.0, 0.0};
     Base::Vector3d stdY{0.0, 1.0, 0.0};
@@ -740,7 +692,7 @@ PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<TopoDS_Shape>& p
     for (auto& item : pieces) {
         Bnd_Box pieceBox;
         pieceBox.SetGap(0.0);
-        BRepBndLib::AddOptimal(item, pieceBox);
+        BRepBndLib::AddOptimal(item.getShape(), pieceBox);
         double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;      // NOLINT
         pieceBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         if (DU::fpCompare(std::fabs(direction.Dot(stdX)), 1.0, EWTOLERANCE)) {
@@ -765,10 +717,10 @@ PieceLimitList DrawBrokenView::getPieceLimits(const std::vector<TopoDS_Shape>& p
 }
 
 //! get the pieces of the broken shape.
-std::vector<TopoDS_Shape> DrawBrokenView::getPieces(const TopoDS_Shape& brokenShape)
+std::vector<Part::TopoShape> DrawBrokenView::getPieces(const Part::TopoShape& brokenShape)
 {
-    std::vector<TopoDS_Shape> result = getPiecesByType(brokenShape, TopAbs_SOLID);
-    std::vector<TopoDS_Shape> temp = getPiecesByType(brokenShape, TopAbs_SHELL, TopAbs_SOLID);
+    std::vector<Part::TopoShape> result = getPiecesByType(brokenShape, TopAbs_SOLID);
+    std::vector<Part::TopoShape> temp = getPiecesByType(brokenShape, TopAbs_SHELL, TopAbs_SOLID);
     result.insert(result.end(), temp.begin(), temp.end());
     temp = getPiecesByType(brokenShape, TopAbs_FACE, TopAbs_SHELL);
     result.insert(result.end(), temp.begin(), temp.end());
@@ -781,18 +733,11 @@ std::vector<TopoDS_Shape> DrawBrokenView::getPieces(const TopoDS_Shape& brokenSh
 
 //! retrieve the subelements of a shape that are of type desiredShapeType, but that do not
 //! belong to a shape of type avoidShapeType.
-std::vector<TopoDS_Shape> DrawBrokenView::getPiecesByType(const TopoDS_Shape& shapeToSearch,
-                                                          TopAbs_ShapeEnum desiredShapeType,
-                                                          TopAbs_ShapeEnum avoidShapeType)
+std::vector<Part::TopoShape> DrawBrokenView::getPiecesByType(const Part::TopoShape& shapeToSearch,
+                                                             TopAbs_ShapeEnum desiredShapeType,
+                                                             TopAbs_ShapeEnum avoidShapeType)
 {
-    std::vector<TopoDS_Shape> result;
-
-    TopExp_Explorer expl(shapeToSearch, desiredShapeType, avoidShapeType);
-    for (; expl.More(); expl.Next()) {
-        result.push_back(expl.Current());
-    }
-
-    return result;
+    return shapeToSearch.getSubTopoShapes(desiredShapeType, avoidShapeType);
 }
 
 //! sort the breaks that match direction by their minimum limit

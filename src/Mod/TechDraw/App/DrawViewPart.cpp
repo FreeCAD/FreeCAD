@@ -95,6 +95,8 @@
 #include "Preferences.h"
 #include "ShapeUtils.h"
 
+#include <Mod/Part/App/TopoShape.h>
+
 using namespace TechDraw;
 using DU = DrawUtil;
 
@@ -170,9 +172,8 @@ DrawViewPart::~DrawViewPart()
     removeAllReferencesFromGeom();
 }
 
-//! returns a compound of all the shapes from the DocumentObjects in the Source &
-//!  XSource property lists
-TopoDS_Shape DrawViewPart::getSourceShape(bool fuse, bool allow2d) const
+
+Part::TopoShape DrawViewPart::getSourceShape(bool fuse, bool allow2d) const
 {
 //    Base::Console().message("DVP::getSourceShape()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
@@ -180,7 +181,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(bool fuse, bool allow2d) const
         return {};
     }
     if (fuse) {
-        return ShapeExtractor::getShapesFused(links);
+        return Part::TopoShape(ShapeExtractor::getShapesFused(links));
     }
     return ShapeExtractor::getShapes(links, allow2d);
 }
@@ -188,7 +189,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(bool fuse, bool allow2d) const
 //! deliver a shape appropriate for making a detail view based on this view
 //! TODO: why does dvp do the thinking for detail, but section picks its own
 //! version of the shape?  Should we have a getShapeForSection?
-TopoDS_Shape DrawViewPart::getShapeForDetail() const
+Part::TopoShape DrawViewPart::getShapeForDetail() const
 {
     return ShapeUtils::rotateShape(getSourceShape(false), getProjectionCS(), Rotation.getValue());
 }
@@ -213,10 +214,10 @@ void DrawViewPart::addPoints()
 {
 //    Base::Console().message("DVP::addPoints()\n");
     // get all the 2d shapes in the sources, then pick through them for vertices.
-    std::vector<TopoDS_Shape> shapesAll = ShapeExtractor::getShapes2d(getAllSources());
+    std::vector<Part::TopoShape> shapesAll = ShapeExtractor::getShapes2d(getAllSources());
     for (auto& shape : shapesAll) {
-        if (shape.ShapeType() == TopAbs_VERTEX) {
-            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+        if (shape.shapeType() == TopAbs_VERTEX) {
+            gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()));
             Base::Vector3d vp(gp.X(), gp.Y(), gp.Z());
             vp = vp - m_saveCentroid;
             //need to offset the point to match the big projection
@@ -240,8 +241,8 @@ App::DocumentObjectExecReturn* DrawViewPart::execute()
         return DrawView::execute();
     }
 
-    TopoDS_Shape shape = getSourceShape();
-    if (shape.IsNull()) {
+    Part::TopoShape shape = getSourceShape();
+    if (shape.isNull()) {
         Base::Console().message("DVP::execute - {} - Source shape is Null.\n", getNameInDocument());
         return DrawView::execute();
     }
@@ -294,7 +295,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
-void DrawViewPart::partExec(TopoDS_Shape& shape)
+void DrawViewPart::partExec(Part::TopoShape& shape)
 {
     if (waitingForHlr()) {
         //finish what we are already doing before starting a new cycle
@@ -310,22 +311,25 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
     }
 }
 
-//! prepare the shape for HLR processing by centering, scaling and rotating it
-GeometryObjectPtr DrawViewPart::makeGeometryForShape(const TopoDS_Shape& shape)
+
+GeometryObjectPtr DrawViewPart::makeGeometryForShape(const Part::TopoShape& shape)
 {
     // if we use the passed reference directly, the centering doesn't work.  Maybe the underlying OCC TShape
     // isn't modified?  using a copy works and the referenced shape (from getSourceShape in execute())
     // isn't used for anything anyway.
     bool copyGeometry = true;
     bool copyMesh = false;
-    BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
+    BRepBuilderAPI_Copy copier(shape.getShape(), copyGeometry, copyMesh);
     TopoDS_Shape localShape = copier.Shape();
 
     gp_Pnt gCentroid = ShapeUtils::findCentroid(localShape, getProjectionCS());
     m_saveCentroid = Base::convertTo<Base::Vector3d>(gCentroid);
-    m_saveShape = ShapeUtils::centerShape(localShape, m_saveCentroid);
+    m_saveShape = ShapeUtils::centerShape(shape, m_saveCentroid);
 
-    return buildGeometryObject(getShapeForGeometryBuild(), getProjectionCS());
+    // build from the source TopoShape so the element map survives into the HLR result
+    Part::TopoShape mappedShape = scaleAndRotate(m_saveShape);
+
+    return buildGeometryObject(mappedShape, getProjectionCS());
 }
 
 //! Return the shape modified by scaling and rotating
@@ -340,13 +344,23 @@ TopoDS_Shape DrawViewPart::scaleAndRotate(const TopoDS_Shape& input) const
     return result;
 }
 
-TopoDS_Shape DrawViewPart::getShapeForGeometryBuild() const
+//! Return the TopoShape modified by scaling and rotating
+Part::TopoShape DrawViewPart::scaleAndRotate(const Part::TopoShape& input) const
 {
-    return scaleAndRotate(m_saveShape);
+    Part::TopoShape result = ShapeUtils::scaleShape(input, getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+        result = ShapeUtils::rotateShape(result, getProjectionCS(), Rotation.getValue());//conventional rotation
+    }
+
+    return result;
 }
 
-//! create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape& shape,
+TopoDS_Shape DrawViewPart::getShapeForGeometryBuild() const
+{
+    return scaleAndRotate(m_saveShape).getShape();
+}
+
+TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const Part::TopoShape& shape,
                                                               const gp_Ax2& viewAxis)
 {
     TechDraw::GeometryObjectPtr go(
@@ -471,10 +485,12 @@ void DrawViewPart::postHlrTasks()
     }
 
     // rescale if view doesn't fit on page
-    if (ScaleType.isValue("Automatic") && !checkFit()) {
+    if (ScaleType.isValue("Automatic") && !checkFit()
+        && !isDerivedFrom<DrawViewSection>() && !isDerivedFrom<DrawViewDetail>()) {
         double newScale = autoScale();
         Scale.setValue(newScale);
-        partExec(m_saveShape);
+        Part::TopoShape saveShape(m_saveShape);
+        partExec(saveShape);
     }
 
     overrideKeepUpdated(false);
@@ -1306,7 +1322,7 @@ Base::Vector3d DrawViewPart::getOriginalCentroid() const { return m_saveCentroid
 
 Base::Vector3d DrawViewPart::getCurrentCentroid() const
 {
-    TopoDS_Shape shape = getSourceShape();
+    TopoDS_Shape shape = getSourceShape().getShape();
     if (shape.IsNull()) {
         return Base::Vector3d(0.0, 0.0, 0.0);
     }

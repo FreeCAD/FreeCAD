@@ -93,8 +93,8 @@ public:
     void setEdgeGeometry(BaseGeomPtrVector newGeoms) { edgeGeom = newGeoms; }
 
     HLRAlgo_Projector getProjector(const gp_Ax2& viewAxis) const;
-    void projectShape(const  TopoDS_Shape& inPartShape, const gp_Ax2& viewAxis);
-    void projectShapeWithPolygonAlgo(const  TopoDS_Shape& input, const gp_Ax2& viewAxis);
+    void projectShape(const  Part::TopoShape& inPartShape, const gp_Ax2& viewAxis);
+    void projectShapeWithPolygonAlgo(const  Part::TopoShape& input, const gp_Ax2& viewAxis);
     const Part::TopoShape& getPartShape() const { return m_partShape; }
     static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS, bool invertYRequired = true);
     static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape, const gp_Ax2& projCS);

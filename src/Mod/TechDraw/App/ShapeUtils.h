@@ -41,6 +41,11 @@
 
 #include <Base/Vector3D.h>
 
+namespace Part
+{
+class TopoShape;
+}
+
 //! a class to contain useful shape manipulations. these methods were originally
 //  in GeometryObject.
 
@@ -77,16 +82,21 @@ public:
 
 //! scales a shape uniformly in all directions
     static TopoDS_Shape scaleShape(const TopoDS_Shape& input, double scale);
+    static Part::TopoShape scaleShape(const Part::TopoShape& input, double scale);
 
 //! rotates a shape around the Z axis of a coordinate system
     static TopoDS_Shape rotateShape(const TopoDS_Shape& input, const gp_Ax2& coordSys,
                                         double rotAngle);
+    static Part::TopoShape rotateShape(const Part::TopoShape& input, const gp_Ax2& coordSys,
+                                        double rotAngle);
 
 //! moves a shape in a direction and distance specified by the motion parameter
     static TopoDS_Shape moveShape(const TopoDS_Shape& input, const Base::Vector3d& motion);
+    static Part::TopoShape moveShape(const Part::TopoShape& input, const Base::Vector3d& motion);
 
 //! move a shape such that its centroid is aligned with the origin point of a CoordinateSystem
     static TopoDS_Shape centerShape(const TopoDS_Shape& input, const Base::Vector3d& centroid);
+    static Part::TopoShape centerShape(const Part::TopoShape& input, const Base::Vector3d& centroid);
 
 //! Returns the centroid of shape, as viewed according to direction
     static gp_Pnt findCentroid(const TopoDS_Shape& shape);

@@ -100,7 +100,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
         return DrawView::execute();
     }
 
-    m_compound = TopoDS::Compound(getSourceShape());
+    m_compound = TopoDS::Compound(getSourceShape().getShape());
     if (m_compound.IsNull()) {
         return new App::DocumentObjectExecReturn("DVP - Linked shape object(s) is invalid");
     }
