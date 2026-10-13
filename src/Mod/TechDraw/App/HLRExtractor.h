@@ -25,6 +25,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <vector>
+#include <string>
 
 #include <Standard_Handle.hxx>
 #include <TopoDS_Edge.hxx>
@@ -52,7 +53,7 @@ struct HLREdge
     std::string sourceType = "";
 };
 
-class HLRExtractor
+class TechDrawExport HLRExtractor
 {
 public:
     HLRExtractor(const Handle(HLRBRep_Algo) & algo);
@@ -79,7 +80,7 @@ private:
     Handle(HLRBRep_Algo) m_algo;
 };
 
-class PolyHLRExtractor
+class TechDrawExport PolyHLRExtractor
 {
 public:
     PolyHLRExtractor(const Handle(HLRBRep_PolyAlgo) & algo);
