@@ -2313,10 +2313,16 @@ G1 X20.000 Y10.000 F6000.000
         kept = [r"\bG2\b", r"\bM9\b"]
 
         commands = [
-            Path.Command("(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
             Path.Command("(Tool: 5mm Endmill (HSS))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
             Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "J": 0.0}, {}),
             Path.Command("M3", {"S": 1000}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M5", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
@@ -2324,7 +2330,11 @@ G1 X20.000 Y10.000 F6000.000
             Path.Command("M9", {}, {}),
             Path.Command("G54", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M6", {"T": 3}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G81", {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G81",
+                {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
         ]
 
         def export_lines(line_numbers, tool_change):
@@ -2350,7 +2360,8 @@ G1 X20.000 Y10.000 F6000.000
                         for pattern in add_block_delete:
                             self.assertTrue(
                                 any(re.search(pattern, l) for l in marked),
-                                f"No block delete annotation line matching {pattern}:\n" + "\n".join(lines),
+                                f"No block delete annotation line matching {pattern}:\n"
+                                + "\n".join(lines),
                             )
 
                         for pattern in kept:
@@ -2367,7 +2378,10 @@ G1 X20.000 Y10.000 F6000.000
                         for line in marked:
                             self.assertFalse(line.startswith("//"), f"Doubled /: {line}")
                             self.assertTrue(
-                                any(re.search(p, line) for p in add_block_delete + post_added_deleted),
+                                any(
+                                    re.search(p, line)
+                                    for p in add_block_delete + post_added_deleted
+                                ),
                                 f"Unexpected block-deleted line: {line}",
                             )
 
@@ -2388,18 +2402,32 @@ G1 X20.000 Y10.000 F6000.000
     def test_block_delete_off(self):
         """With use-block-delete off, no line gets '/' even if every command is annotated"""
         commands = [
-            Path.Command("(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
             Path.Command("(Tool: 5mm Endmill (HSS))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "J": 0.0}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G2",
+                {"X": 20.0, "Y": 10.0, "I": 5.0, "J": 0.0},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
             Path.Command("M3", {"S": 1000}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M5", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M7", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M9", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("G54", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
             Path.Command("M6", {"T": 3}, {Constants.ANNOT_BLOCK_DELETE: True}),
-            Path.Command("G81", {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G81",
+                {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
         ]
 
         def export_lines(useblockdelete, line_numbers, tool_change):
@@ -2420,7 +2448,7 @@ G1 X20.000 Y10.000 F6000.000
             for line_numbers in (False, True):
                 for tool_change in (True, False):
                     with self.subTest(line_numbers=line_numbers, tool_change=tool_change):
-                        #make sure no lines start with /
+                        # make sure no lines start with /
                         off_lines = export_lines(False, line_numbers, tool_change)
                         for line in off_lines:
                             self.assertFalse(

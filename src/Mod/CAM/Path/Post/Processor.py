@@ -778,9 +778,7 @@ class PostProcessor:
                 "name": "useblockdelete",
                 "scope": SCOPE_MACHINE,
                 "type": "bool",
-                "label": translate(
-                    "CAM", "Use Block Delete"
-                ),
+                "label": translate("CAM", "Use Block Delete"),
                 "default": False,
                 "help": translate(
                     "CAM",
@@ -1451,11 +1449,16 @@ class PostProcessor:
         changed = False
         for cmd in path.Commands:
             if cmd.Name in Constants.GCODE_DRILL_COMMANDS:
-                in_deleted_cycle = bool(cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"] )
+                in_deleted_cycle = bool(
+                    cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                    and self.values["USEBLOCKDELETE"]
+                )
             elif cmd.Name in Constants.GCODE_CYCLE_CANCEL:
                 if in_deleted_cycle and not cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE):
                     cmd = Path.Command(
-                        cmd.Name, cmd.Parameters, {**cmd.Annotations, Constants.ANNOT_BLOCK_DELETE: True}
+                        cmd.Name,
+                        cmd.Parameters,
+                        {**cmd.Annotations, Constants.ANNOT_BLOCK_DELETE: True},
                     )
                     changed = True
                 in_deleted_cycle = False
@@ -1502,7 +1505,14 @@ class PostProcessor:
                             pause_cmd = Path.Command(
                                 "G4",
                                 {"P": wait_time},
-                                {Constants.ANNOT_BLOCK_DELETE: True} if (cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"]) else {},
+                                (
+                                    {Constants.ANNOT_BLOCK_DELETE: True}
+                                    if (
+                                        cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                                        and self.values["USEBLOCKDELETE"]
+                                    )
+                                    else {}
+                                ),
                             )
                             new_commands.append(pause_cmd)
                     item.path = Path.Path(new_commands)
@@ -1529,7 +1539,14 @@ class PostProcessor:
                             pause_cmd = Path.Command(
                                 "G4",
                                 {"P": spindle.coolant_delay},
-                                {Constants.ANNOT_BLOCK_DELETE: True} if (cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"] ) else {},
+                                (
+                                    {Constants.ANNOT_BLOCK_DELETE: True}
+                                    if (
+                                        cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                                        and self.values["USEBLOCKDELETE"]
+                                    )
+                                    else {}
+                                ),
                             )
                             new_commands.append(pause_cmd)
                     item.path = Path.Path(new_commands)
@@ -1698,7 +1715,14 @@ class PostProcessor:
                                     if param in cmd.Parameters:
                                         xy_params[param] = cmd.Parameters[param]
 
-                                block_delete_annot = {Constants.ANNOT_BLOCK_DELETE: True} if (cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"]) else {}
+                                block_delete_annot = (
+                                    {Constants.ANNOT_BLOCK_DELETE: True}
+                                    if (
+                                        cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                                        and self.values["USEBLOCKDELETE"]
+                                    )
+                                    else {}
+                                )
                                 if xy_params:
                                     xy_cmd = Path.Command(cmd.Name, xy_params, block_delete_annot)
                                     new_commands.append(xy_cmd)
@@ -1833,9 +1857,14 @@ class PostProcessor:
                         Path.Command(
                             f"(TLO suppressed {Path.Command(cmd.Name, cmd.Parameters).toGCode()})",
                             {},
-                            {Constants.ANNOT_BLOCK_DELETE: True}
-                            if (cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"])
-                            else {},
+                            (
+                                {Constants.ANNOT_BLOCK_DELETE: True}
+                                if (
+                                    cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                                    and self.values["USEBLOCKDELETE"]
+                                )
+                                else {}
+                            ),
                         )
                     ]
                 else:
@@ -2451,7 +2480,14 @@ class PostProcessor:
                                     # no annotations in the text: toGCode() appends "; key:value"
                                     f"(Tool change suppressed: {Path.Command(cmd.Name, cmd.Parameters).toGCode()})",
                                     {},
-                                    {Constants.ANNOT_BLOCK_DELETE: True} if (cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"]) else {},
+                                    (
+                                        {Constants.ANNOT_BLOCK_DELETE: True}
+                                        if (
+                                            cmd.Annotations.get(Constants.ANNOT_BLOCK_DELETE)
+                                            and self.values["USEBLOCKDELETE"]
+                                        )
+                                        else {}
+                                    ),
                                 )
                             )
                         else:
@@ -3645,7 +3681,11 @@ class PostProcessor:
             return None
 
         # Check for blockdelete annotation
-        block_delete_string = "/" if (annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"] ) else ""
+        block_delete_string = (
+            "/"
+            if (annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"])
+            else ""
+        )
 
         # Get comment symbol
         comment_symbol = self.values["COMMENT_SYMBOL"]
@@ -3769,7 +3809,11 @@ class PostProcessor:
         annotations = command.Annotations
 
         # Check for blockdelete annotation
-        block_delete_string = "/" if (annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"] ) else ""
+        block_delete_string = (
+            "/"
+            if (annotations.get(Constants.ANNOT_BLOCK_DELETE) and self.values["USEBLOCKDELETE"])
+            else ""
+        )
 
         # Build command line
         command_line = []
