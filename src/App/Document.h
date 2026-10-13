@@ -142,7 +142,9 @@ public:
         /// Whether a recompute is necessary on restore for migration purposes.
         RecomputeOnRestore = 13,
         /// Whether the local coordinate system of older versions should be migrated.
-        MigrateLCS = 14
+        MigrateLCS = 14,
+        /// Whether the document was created without a view and has not been shown yet.
+        HiddenDoc = 15
     };
     // clang-format on
 
