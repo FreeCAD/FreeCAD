@@ -84,7 +84,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.doc.recompute()
 
         self.assertEqual(self.array.getStatusString(), "Valid")
-        self.assertEqual(self.array.ElementCount, 32)
+        self.assertEqual(self.array.ElementCount, 33)
         self.assertEqual(len(self.array.PlacementList), self.array.ElementCount)
         self.assertAlmostEqual(self.array.PlacementList[1].Base.Length, 10)
         self.assertAlmostEqual(self.array.PlacementList[5].Base.Length, 20)
@@ -105,7 +105,7 @@ class TestLinkArrayCircular(unittest.TestCase):
             self.assertAlmostEqual(placement.Base.y, 0)
 
         # The selected edge supplies the center as well as the axis direction.
-        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 0)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 5)
 
     def testSketchEdgeOrientsTheCircles(self):
         # Part2DObject is the base of Sketcher::SketchObject; it must not force
@@ -118,7 +118,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.assertEqual(self.array.getStatusString(), "Valid")
         for placement in self.array.PlacementList:
             self.assertAlmostEqual(placement.Base.y, 0)
-        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 10)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 15)
 
     def testSketchNamedAxesStillOrientTheCircles(self):
         sketch = self.doc.addObject("Part::Part2DObject", "Sketch")

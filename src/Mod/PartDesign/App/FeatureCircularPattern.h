@@ -23,7 +23,6 @@ public:
     }
 
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
-    bool deleteOriginalTransformation() const override;
     gp_Ax2 getRotation(const App::PropertyLinkSub& property) const override;
 };
 
