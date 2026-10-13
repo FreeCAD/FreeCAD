@@ -80,6 +80,9 @@ public:
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
+                // Allow preselection of curve-curve vertices so the tool can
+                // explain on click why a point fillet isn't possible here.
+                return true;
                 // TODO: This could return true for any curve as long as
                 // int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim,
                 // bool createCorner, bool chamfer) evaluates two correct points that can be bound
@@ -146,6 +149,21 @@ public:
     }
 
 private:
+    bool isPointFilletPossible(int vertexId) const
+    {
+        SketchObject* obj = sketchgui->getSketchObject();
+        std::vector<int> geoIds;
+        std::vector<Sketcher::PointPos> posIds;
+        obj->getDirectlyCoincidentPoints(vertexId, geoIds, posIds);
+        geoIds = obj->chooseFilletsEdges(geoIds);
+
+        if (geoIds.size() != 2 || geoIds[0] < 0 || geoIds[1] < 0) {
+            return false;
+        }
+        return obj->getGeometry(geoIds[0])->is<Part::GeomLineSegment>()
+            && obj->getGeometry(geoIds[1])->is<Part::GeomLineSegment>();
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -393,6 +411,19 @@ private:
     void onButtonPressed(Base::Vector2d onSketchPos) override
     {
         this->updateDataAndDrawToPosition(onSketchPos);
+
+        if (state() == SelectMode::SeekFirst && vtId != -1 && !isPointFilletPossible(vtId)) {
+            Gui::TranslatedUserWarning(
+                sketchgui,
+                tr("Fillet/chamfer not possible"),
+                tr("Fillet/chamfer on a point only works between two lines. "
+                   "To fillet curves, select the two edges instead.")
+            );
+            vtId = -1;
+            updateHint();
+            return;
+        }
+
         if (canGoToNextMode()) {
             if (state() == SelectMode::SeekFirst) {
                 if (vtId != -1) {
