@@ -102,8 +102,7 @@ private:
             return wrap.fromQWidget(tree);
         }
 
-        PyErr_SetString(PyExc_TypeError, "finding the Model TreeWidget failed");
-        return Py::None();
+        throw Py::RuntimeError("finding the Model TreeWidget failed");
     }
 
     Py::Object getActiveSketchPreselection(const Py::Tuple& args)
