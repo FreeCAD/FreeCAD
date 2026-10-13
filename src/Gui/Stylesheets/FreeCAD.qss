@@ -264,7 +264,7 @@ QCheckBox:focus {
   border: 1px solid @AccentColor;
 }
 
-QCheckBox QWidget:disabled {
+QCheckBox:disabled {
   color: @TextDisabledColor;
 }
 
