@@ -28,7 +28,6 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/WorkbenchManager.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 using namespace SketcherGui;
@@ -176,20 +175,8 @@ inline const QStringList nonEditModeToolbarNames()
 
 void Workbench::activated()
 {
-    /* When the workbench is activated, it may happen that we are in edit mode or not.
-     * If we are not in edit mode, the function enterEditMode (called by the ViewProvider) takes
-     * care to save the state of toolbars outside of edit mode. We cannot do it here, as we are
-     * coming from another WB.
-     *
-     * If we moved to another WB from edit mode, the new WB was activated before deactivating this.
-     * Therefore we had no chance to tidy up the save state. We assume a loss of any CHANGE to
-     * toolbar configuration since last entering edit mode in this case (for any change in
-     * configuration to be stored, the edit mode must be left while the selected Workbench is the
-     * sketcher WB).
-     *
-     * However, now that we are back (from another WB), we need to make the toolbars available.
-     * These correspond to the last saved state.
-     */
+    // Workbench setup makes edit toolbars unavailable. Restore them when returning
+    // to a document with a sketch in edit mode.
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
         Gui::ToolBarManager::getInstance()->setState(
@@ -226,22 +213,10 @@ void Workbench::enterEditMode()
 
 void Workbench::leaveEditMode()
 {
-    /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
-     * without changing workbench.
-     *
-     * However, do not save state if the current workbench is not the Sketcher WB, because otherwise
-     * we would be saving the state of the currently activated workbench, and the toolbars would
-     * disappear (as the toolbars of that other WB are only visible).
-     */
-    auto* workbench = Gui::WorkbenchManager::instance()->active();
-
-    if (workbench->name() == "SketcherWorkbench"
-        && Gui::ToolBarManager::getInstance()->isAnyVisible(nonEditModeToolbarNames())) {
-        Gui::ToolBarManager::getInstance()->setState(
-            editModeToolbarNames(),
-            Gui::ToolBarManager::State::SaveState
-        );
-    }
+    Gui::ToolBarManager::getInstance()->setState(
+        editModeToolbarNames(),
+        Gui::ToolBarManager::State::SaveState
+    );
 
     Gui::ToolBarManager::getInstance()->setState(
         editModeToolbarNames(),
