@@ -358,8 +358,8 @@ class Edit(gui_base_original.Modifier):
         QtCore.QTimer.singleShot(0, self.reset_edit)
 
     def reset_edit(self):
-        if Gui.ActiveDocument is not None:
-            Gui.ActiveDocument.resetEdit()
+        if self.doc is not None:
+            Gui.getDocument(self.doc.Name).resetEdit()
 
     # -------------------------------------------------------------------------
     # INPUT HINTS

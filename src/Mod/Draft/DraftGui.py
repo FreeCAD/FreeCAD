@@ -118,6 +118,7 @@ class DraftLineEdit(QtWidgets.QLineEdit):
 
 class DraftTaskPanel:
     def __init__(self, widget, extra=None):
+        self.document = FreeCADGui.ActiveDocument
         if extra:
             if isinstance(extra, list):
                 self.form = [widget] + extra
@@ -133,8 +134,8 @@ class DraftTaskPanel:
         if hasattr(FreeCADGui, "draftToolBar"):
             return FreeCADGui.draftToolBar.validatePoint()
         else:
-            if FreeCADGui.ActiveDocument:
-                FreeCADGui.ActiveDocument.resetEdit()
+            if self.document:
+                self.document.resetEdit()
             return True
 
     def reject(self):
@@ -145,8 +146,8 @@ class DraftTaskPanel:
             return
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
-        if FreeCADGui.ActiveDocument:
-            FreeCADGui.ActiveDocument.resetEdit()
+        if self.document:
+            self.document.resetEdit()
         return True
 
     def isAllowedAlterDocument(self):
@@ -175,6 +176,7 @@ class DraftToolBar:
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
+        self.taskDocument = None
         self.mouse = True
         self.mouse_delay_input_start = time.time()
         self.cancel = None
@@ -866,8 +868,10 @@ class DraftToolBar:
     # ---------------------------------------------------------------------------
 
     def _show_dialog(self, panel):
-        task = FreeCADGui.Control.showDialog(panel)
-        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+        if panel.document != self.taskDocument:
+            return
+        task = FreeCADGui.Control.showDialog(panel, panel.document)
+        task.setDocumentName(panel.document.Document.Name)
         task.setAutoCloseOnDeletedDocument(True)
 
     def taskUi(self, title="Draft", extra=None, icon="Draft_Draft"):
@@ -875,7 +879,8 @@ class DraftToolBar:
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
-        todo.delay(FreeCADGui.Control.closeDialog, None)
+        self.taskDocument = FreeCADGui.ActiveDocument
+        todo.delay(FreeCADGui.Control.closeDialog, self.taskDocument)
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
@@ -1117,7 +1122,10 @@ class DraftToolBar:
         self._locks.dispose()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.clearPointConstraintProvider(self)
-        todo.delay(FreeCADGui.Control.closeDialog, None)
+        document = self.taskDocument
+        self.taskDocument = None
+        if document:
+            todo.delay(FreeCADGui.Control.closeDialog, document)
         self.cancel = None
         self.sourceCmd = None
         self.pointcallback = None
@@ -1285,6 +1293,7 @@ class DraftToolBar:
 
         class TaskPanel:
             def __init__(self, extra=None, callback=None):
+                self.document = FreeCADGui.ActiveDocument
                 if extra:
                     self.form = [extra]
                 self.callback = callback
@@ -1297,8 +1306,9 @@ class DraftToolBar:
                     self.callback()
                 return True
 
-        todo.delay(FreeCADGui.Control.closeDialog, None)
         panel = TaskPanel(extra, on_close_call)
+        self.taskDocument = panel.document
+        todo.delay(FreeCADGui.Control.closeDialog, self.taskDocument)
         todo.delay(self._show_dialog, panel)
 
     # ---------------------------------------------------------------------------
@@ -1429,7 +1439,8 @@ class DraftToolBar:
             elif self.textValue.isVisible():
                 return False
             else:
-                FreeCADGui.ActiveDocument.resetEdit()
+                if self.taskDocument:
+                    self.taskDocument.resetEdit()
         return True
 
     def acceptPointInput(self):
@@ -1437,6 +1448,7 @@ class DraftToolBar:
 
     def finish(self, cont=None):
         """finish button action"""
+        document = self.taskDocument
         if self.sourceCmd:
             if cont is None:
                 cont = self.continueMode
@@ -1444,8 +1456,8 @@ class DraftToolBar:
         if self.cancel:
             self.cancel()
             self.cancel = None
-        if FreeCADGui.ActiveDocument:
-            FreeCADGui.ActiveDocument.resetEdit()
+        if document:
+            document.resetEdit()
 
     def escape(self):
         """escapes the current command"""
@@ -1453,8 +1465,10 @@ class DraftToolBar:
 
     def closeLine(self):
         """close button action"""
+        document = self.taskDocument
         self.sourceCmd.finish(cont=self.continueMode, closed=True)
-        FreeCADGui.ActiveDocument.resetEdit()
+        if document:
+            document.resetEdit()
 
     def wipeLine(self):
         """wipes existing segments of a line"""
@@ -2110,14 +2124,19 @@ class DraftToolBar:
             todo.delay(self.tray.show, None)
 
     def Deactivated(self):
-        if FreeCAD.activeDraftCommand is not None:
+        command = FreeCAD.activeDraftCommand
+        if command is not None:
             self.continueMode = False
-        if hasattr(FreeCAD.activeDraftCommand, "finish"):
-            FreeCAD.activeDraftCommand.finish()
-        else:
-            dialog = FreeCADGui.Control.activeTaskDialog()
-            if hasattr(dialog, "reject"):
-                dialog.reject()
+            if hasattr(command, "finish"):
+                command.finish()
+            else:
+                # Document activation precedes workbench deactivation.
+                document = getattr(command, "doc", None)
+                if document is not None:
+                    gui_document = FreeCADGui.getDocument(document.Name)
+                    dialog = FreeCADGui.Control.activeTaskDialog(gui_document)
+                    if dialog is not None:
+                        dialog.reject()
         FreeCADGui.Control.clearTaskWatcher()
         if hasattr(self, "tray"):
             todo.delay(self.tray.hide, None)
