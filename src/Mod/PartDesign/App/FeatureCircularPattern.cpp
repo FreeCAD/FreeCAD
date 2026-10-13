@@ -15,12 +15,6 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::CircularPattern, PartDesign::Transfo
 CircularPattern::CircularPattern()
 {
     Part::CircularPatternExtension::initExtension(this);
-    Part::CircularPatternExtension::setIncludeIdentityTransformation(true);
-}
-
-bool CircularPattern::deleteOriginalTransformation() const
-{
-    return identityTransformSuppressed();
 }
 
 const std::list<gp_Trsf> CircularPattern::getTransformations(const std::vector<App::DocumentObject*>)
