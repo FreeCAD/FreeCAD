@@ -1210,9 +1210,6 @@ void TaskMassProperties::tryUpdate()
     auto setText =
         [&](QLineEdit* edit, const Base::Quantity& quantity, const QString& suffix = QString()) {
             Base::Quantity q(quantity);
-            if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
-                q.setValue(0.0);
-            }
             Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
             format.setDenominator(denominator);
             q.setFormat(format);
@@ -1229,6 +1226,13 @@ void TaskMassProperties::tryUpdate()
             edit->setCursorPosition(0);
         };
 
+    auto clampToZero = [](Base::Quantity q) {
+        if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
+            q.setValue(0.0);
+        }
+        return q;
+    };
+
     const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Average)") : QString();
 
     if (info.mass.getValue() + info.volume.getValue() != 0.0) {
@@ -1240,12 +1244,12 @@ void TaskMassProperties::tryUpdate()
     setText(panel->ui.surfaceAreaEdit, info.surfaceArea);
 
     if (info.mass.getValue() != 0.0) {
-        setText(panel->ui.cogXText, Base::Quantity(info.cog.x, Base::Unit::Length));
-        setText(panel->ui.cogYText, Base::Quantity(info.cog.y, Base::Unit::Length));
-        setText(panel->ui.cogZText, Base::Quantity(info.cog.z, Base::Unit::Length));
-        setText(panel->ui.covXText, Base::Quantity(info.cov.x, Base::Unit::Length));
-        setText(panel->ui.covYText, Base::Quantity(info.cov.y, Base::Unit::Length));
-        setText(panel->ui.covZText, Base::Quantity(info.cov.z, Base::Unit::Length));
+        setText(panel->ui.cogXText, clampToZero(Base::Quantity(info.cog.x, Base::Unit::Length)));
+        setText(panel->ui.cogYText, clampToZero(Base::Quantity(info.cog.y, Base::Unit::Length)));
+        setText(panel->ui.cogZText, clampToZero(Base::Quantity(info.cog.z, Base::Unit::Length)));
+        setText(panel->ui.covXText, clampToZero(Base::Quantity(info.cov.x, Base::Unit::Length)));
+        setText(panel->ui.covYText, clampToZero(Base::Quantity(info.cov.y, Base::Unit::Length)));
+        setText(panel->ui.covZText, clampToZero(Base::Quantity(info.cov.z, Base::Unit::Length)));
         setText(
             panel->ui.inertiaJoxText,
             Base::Quantity(info.inertiaJo.x, Base::Unit::MassMomentOfInertia)

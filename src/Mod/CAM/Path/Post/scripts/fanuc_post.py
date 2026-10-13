@@ -75,15 +75,12 @@ Values = dict[str, Any]
 
 POST_TYPE = "machine"
 
-# Fanuc has no K on a G17 arc; a helix carries its pitch in Z.
-PARAMETER_ORDER = Constants.PARAMETER_ORDER.replace("K", "")
-
 TAPE_MARK = "%"
 RIGID_TAP_MODE = "M29"
 
-# Beyond the base list: the plane select a preamble carries, the extended work
-# offsets a work plane may name, and the program ends a Custom op may write.
-EXTRA_SUPPORTED = ["G17", "G54.1"] + Constants.MCODE_END + Constants.MCODE_END_RESET
+# Beyond the base list: the extended work offsets a work plane may name, and
+# the program ends a Custom op may write.
+EXTRA_SUPPORTED = ["G54.1"] + Constants.MCODE_END + Constants.MCODE_END_RESET
 
 
 class FanucPost(PostProcessor):
@@ -128,8 +125,6 @@ class FanucPost(PostProcessor):
             elif name == "spindle_decimals":
                 # S takes an integer.
                 prop["default"] = 0
-            elif name == "parameter_order":
-                prop["default"] = PARAMETER_ORDER
             elif name == "pre_rotary_move":
                 prop["help"] = translate(
                     "CAM",

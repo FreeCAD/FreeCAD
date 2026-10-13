@@ -725,7 +725,7 @@ void EditModeCoinManager::ParameterObserver::updateAxisTransparencyParameter(
     );
 
     int transparencyInt = hGrpp->GetInt("AxisTransparency", 30);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.axisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();
@@ -742,7 +742,7 @@ void EditModeCoinManager::ParameterObserver::updateOccludedAxisTransparencyParam
     );
 
     int transparencyInt = hGrpp->GetInt("OccludedAxisTransparency", 90);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.occludedAxisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();
@@ -908,7 +908,7 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
         Base::Console()
-            .developerError("EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+            .developerError("EditModeCoinManager", "Malformed parameter string: {}\n", e.what());
     }
 }
 
@@ -923,7 +923,7 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
                                          // the program is not terminated when calling the noexcept
                                          // destructor.
         Base::Console()
-            .developerError("EditModeCoinManager", "Malformed parameter string: %s\n", e.what());
+            .developerError("EditModeCoinManager", "Malformed parameter string: {}\n", e.what());
     }
 }
 

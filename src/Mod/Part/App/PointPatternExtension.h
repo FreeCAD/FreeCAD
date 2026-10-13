@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include "App/PropertyStandard.h"
+
+
 #include <list>
 
 #include <App/DocumentObjectExtension.h>
@@ -22,9 +25,14 @@ public:
     ~PointPatternExtension() override = default;
 
     App::PropertyLinkSub PointObject;
+    App::PropertyInteger OriginPointIndex;
+    App::PropertyBool RelativeToFirst;
 
-    std::list<gp_Trsf> calculateTransformations(bool relativeToFirst) const;
+    std::list<gp_Trsf> calculateTransformations() const;
+    bool identityTransformSuppressed() const;
     short extensionMustExecute() override;
+
+    void extensionOnChanged(const App::Property* prop) override;
 };
 
 }  // namespace Part

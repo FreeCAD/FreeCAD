@@ -283,7 +283,7 @@ void QGEPath::clearMarkers()
 void QGEPath::onDragFinished(QPointF dragEndPos, int markerIndex)
 {
 //    Base::Console().message("QGEPath::onDragFinished({}, {})\n",
-//                            TechDraw::DrawUtil::formatVector(dragEndPos).c_str(),
+//                            TechDraw::DrawUtil::formatVector(dragEndPos),
 //                            markerIndex);
     if ((int) m_ghostPoints.size() > markerIndex) {
         m_ghostPoints.at(markerIndex) = dragEndPos;

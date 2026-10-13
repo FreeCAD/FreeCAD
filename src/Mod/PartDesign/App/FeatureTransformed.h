@@ -93,6 +93,11 @@ public:
     {
         return true;
     }
+    /// Whether the first transformation should be overwritten represented by the original support.
+    virtual bool deleteOriginalTransformation() const
+    {
+        return false;
+    }
     virtual bool isTransformationSuppressed(int index) const;
     virtual void setTransformationSuppressed(int index, bool suppressed);
     const std::list<gp_Trsf> getFilteredTransformations(

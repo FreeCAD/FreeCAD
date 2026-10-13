@@ -293,7 +293,7 @@ void SelectionView::search(const QString& text)
             for (auto it : objects) {
                 QString label = QString::fromUtf8(it->Label.getValue());
                 if (label.contains(text, Qt::CaseInsensitive)) {
-                    searchList.push_back(it);
+                    searchList.emplace_back(it);
                     // save as user data
                     QString selObject;
                     QTextStream str(&selObject);
@@ -319,11 +319,11 @@ void SelectionView::search(const QString& text)
 void SelectionView::validateSearch()
 {
     if (!searchList.empty()) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            Gui::Selection().clearSelection();
-            for (auto it : searchList) {
-                Gui::Selection().addSelection(doc->getName(), it->getNameInDocument(), nullptr);
+        Gui::Selection().clearSelection();
+        for (const auto& it : searchList) {
+            if (it.getObject()) {  // skip objects deleted since the search
+                Gui::Selection()
+                    .addSelection(it.getDocumentName().c_str(), it.getObjectName().c_str(), nullptr);
             }
         }
     }

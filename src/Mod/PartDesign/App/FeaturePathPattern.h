@@ -22,6 +22,8 @@ public:
     }
 
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
+    bool deleteOriginalTransformation() const override;
+    bool hasOriginalTransformation() const override;
 };
 
 }  // namespace PartDesign

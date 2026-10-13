@@ -159,6 +159,92 @@ class TestPathProfile(PathTestBase):
         )
 
     # Unit tests
+    def testStartPointKeptWhenOriginChanges(self):
+        """The start point stays where it is on the model when the Job's origin changes or the
+        model is moved."""
+        profile = PathProfile.Create("ProfileStartPoint")
+        profile.StartPoint = FreeCAD.Vector(10, 20, 5)
+        move = FreeCAD.Placement(FreeCAD.Vector(7, -2, 3), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, move)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(17, 18, 8), 1e-9))
+        turn = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 90))
+        PathJob.carryOperationPoints(self.job, turn)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(-18, 17, 8), 1e-9))
+        self.doc.removeObject(profile.Name)
+
+    def testTypedHeightsFollowModel(self):
+        """Heights typed in go up and down with the model; calculated ones are left to the
+        operation."""
+        profile = PathProfile.Create("ProfileTypedHeights")
+        self.doc.recompute()
+        profile.setExpression("FinalDepth", None)
+        profile.FinalDepth = 3
+        start = profile.StartDepth.Value
+        down = FreeCAD.Placement(FreeCAD.Vector(0, 0, -2), FreeCAD.Rotation())
+        PathJob.carryOperationHeights(self.job, down)
+        self.assertRoughly(profile.FinalDepth.Value, 1)
+        self.assertRoughly(profile.StartDepth.Value, start)
+        self.doc.removeObject(profile.Name)
+
+    def testAttachedWorkplaneKeepsFrameValues(self):
+        """On a work plane attached to the model, the start point picked in the 3D view moves
+        with the model, while a typed depth and a point kept in the plane's frame stay as they
+        are: the plane moved with the model."""
+        import Path.Main.Workplane as PathWorkplane
+        import Path.Op.Slot as PathSlot
+
+        plane = PathWorkplane.createWorkplane(self.job, self.doc.Body, "Face6", label="Side")
+        profile = PathProfile.Create("ProfileOnPlane")
+        slot = PathSlot.Create("SlotOnPlane")
+        self.doc.recompute()
+        for op in (profile, slot):
+            op.Workplane = plane
+            op.setExpression("FinalDepth", None)
+            op.FinalDepth = -3
+        profile.StartPoint = FreeCAD.Vector(10, 20, 5)
+        slot.CustomPoint1 = FreeCAD.Vector(1, 2, 0)
+        up = FreeCAD.Placement(FreeCAD.Vector(0, 0, 4), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, up)
+        PathJob.carryOperationHeights(self.job, up)
+        self.assertTrue(profile.StartPoint.isEqual(FreeCAD.Vector(10, 20, 9), 1e-9))
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 2, 0), 1e-9))
+        self.assertRoughly(profile.FinalDepth.Value, -3)
+        self.assertRoughly(slot.FinalDepth.Value, -3)
+        for obj in (profile, slot, plane):
+            self.doc.removeObject(obj.Name)
+
+    def testUnattachedWorkplaneSeesTheMoveInItsFrame(self):
+        """On a work plane set where it is, not attached to the model, the model moves in the
+        plane's frame: a typed depth changes by the move along the plane's tool axis, and a
+        point kept in the frame moves with the model there."""
+        import Path.Main.Workplane as PathWorkplane
+        import Path.Op.Slot as PathSlot
+
+        # +Z of the plane is -Y of the Job; +Z of the Job is +Y of the plane
+        tilt = FreeCAD.Placement(FreeCAD.Vector(), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90))
+        plane = PathWorkplane.createWorkplane(self.job, placement=tilt, label="Tilted")
+        # set where it is, not attached to the model
+        plane.AttachmentSupport = None
+        plane.Placement = tilt
+        slot = PathSlot.Create("SlotTilted")
+        self.doc.recompute()
+        slot.Workplane = plane
+        slot.setExpression("FinalDepth", None)
+        slot.FinalDepth = -3
+        slot.CustomPoint1 = FreeCAD.Vector(1, 2, 0)
+        up = FreeCAD.Placement(FreeCAD.Vector(0, 0, 4), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, up)
+        PathJob.carryOperationHeights(self.job, up)
+        self.assertRoughly(slot.FinalDepth.Value, -3)
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 6, 0), 1e-9))
+        back = FreeCAD.Placement(FreeCAD.Vector(0, -4, 0), FreeCAD.Rotation())
+        PathJob.carryOperationPoints(self.job, back)
+        PathJob.carryOperationHeights(self.job, back)
+        self.assertRoughly(slot.FinalDepth.Value, 1)
+        self.assertTrue(slot.CustomPoint1.isEqual(FreeCAD.Vector(1, 6, 4), 1e-9))
+        for obj in (slot, plane):
+            self.doc.removeObject(obj.Name)
+
     def test00(self):
         """test00() Empty test."""
         return
