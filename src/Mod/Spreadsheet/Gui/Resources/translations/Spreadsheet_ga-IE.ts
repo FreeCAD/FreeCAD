@@ -352,7 +352,7 @@
       <translation>Cruthaigh Scarbhileog</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>Socraigh airíonna na cille</translation>
     </message>
@@ -737,6 +737,13 @@ an dearaidh a athrú go dinimiciúil. Cruthófar an mhaoin mura bhfuil sí ann.<
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
       <translation>Leasainm don chill seo</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Ceadaítear tagairt a dhéanamh do chill trí ainm ailias, mar shampla
+Spreadsheet.my_alias_name in áit Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -1286,6 +1293,69 @@ Réamhshocraithe: %V = %A
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Tábla Cumraíochta Díshuiteála</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>Tagann an t-alias salach ar chomhartha aonaid forchoimeádta a úsáideann slointe</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Neamhbhailí: comhartha aonaid forchoéadaithe</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>Tagann an t-alias salach ar chomhartha tairisigh forchoimeádta a úsáideann slointe</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Neamhbhailí: comhartha tairisigh forchoéadta</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>Tá an t-ainm eile sainithe cheana féin</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Neamhbhailí: tá an t-alias ann cheana féin</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>Ní féidir le hailias a bheith cosúil le seoladh cille, ar nós A1 nó C12</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Neamhbhailí: meaitseálann an t-alias patrún sheoladh na cille</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>Tagann an t-alias salach ar ainm airíonna scarbhileoige atá ann cheana féin</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Neamhbhailí: tagann sé salach ar ainm maoine atá ann cheana</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>Caithfidh an t-alias tosú le litir agus gan ach litreacha, digití agus '_' a bheith ann</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Neamhbhailí: comhréir mhícheart ailiáis</translation>
     </message>
   </context>
 </TS>

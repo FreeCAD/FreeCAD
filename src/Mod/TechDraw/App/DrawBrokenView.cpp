@@ -149,7 +149,7 @@ App::DocumentObjectExecReturn* DrawBrokenView::execute()
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
-        Base::Console().message("DBV::execute - %s - Source shape is Null.\n", getNameInDocument());
+        Base::Console().message("DBV::execute - {} - Source shape is Null.\n", getNameInDocument());
         return DrawView::execute();     // NOLINT
     }
 
@@ -176,7 +176,7 @@ TopoDS_Shape DrawBrokenView::breakShape(const TopoDS_Shape& shapeToBreak) const
         TopoDS_Shape previousShape = updatedShape;
         updatedShape = apply1Break(*item, updatedShape);
         if (updatedShape.IsNull()) {
-            Base::Console().warning("Failed to apply break %s\n", item->Label.getValue());
+            Base::Console().warning("Failed to apply break {}\n", item->Label.getValue());
             updatedShape = previousShape;
         }
     }
@@ -209,7 +209,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     // See sample file here: https://github.com/FreeCAD/FreeCAD/issues/27414
     BRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
     if (!mkCut0.IsDone() || mkCut0.Shape().IsNull()) {
-        Base::Console().warning("Failed to make first cut for break %s.\n", breakObj.Label.getValue());
+        Base::Console().warning("Failed to make first cut for break {}.\n", breakObj.Label.getValue());
         return {};
     }
 
@@ -225,7 +225,7 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     // see mkCut0 above
     BRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
     if (!mkCut1.IsDone()|| mkCut1.Shape().IsNull()) {
-        Base::Console().warning("Failed to make second cut for break %s.\n", breakObj.Label.getValue());
+        Base::Console().warning("Failed to make second cut for break {}.\n", breakObj.Label.getValue());
         return {};
     }
     TopoDS_Shape cut1 = mkCut1.Shape();
@@ -1188,9 +1188,9 @@ bool DrawBrokenView::isDirectionReversed(Base::Vector3d direction) const
 
 void DrawBrokenView::printBreakList(const std::string& text, const BreakList& inBreaks) const
 {
-    Base::Console().message("DBV - %s\n", text.c_str());
+    Base::Console().message("DBV - {}\n", text);
     for (auto& entry : inBreaks) {
-        Base::Console().message("   > label: %s  >  low: %.3f  >  high: %.3f  >  net: %.3f\n", entry.breakObj->Label.getValue(),
+        Base::Console().message("   > label: {}  >  low: {:.3f}  >  high: {:.3f}  >  net: {:.3f}\n", entry.breakObj->Label.getValue(),
                                 entry.lowLimit, entry.highLimit, entry.netRemoved);
     }
 }

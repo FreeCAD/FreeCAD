@@ -3,9 +3,11 @@
 from __future__ import annotations
 from typing import Any, Final, overload, Union
 
+from Base.BoundBox import BoundBox
 from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 
+from .Area import Area
 from .Command import Command
 
 @export(
@@ -49,7 +51,7 @@ class Path(Persistence):
         """sets the contents of the path from a gcode string"""
         ...
 
-    def getClearedArea(self) -> Any:
+    def getClearedArea(self, diameter: float, zmax: float, bbox: BoundBox, /) -> Area:
         """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
         ...
 

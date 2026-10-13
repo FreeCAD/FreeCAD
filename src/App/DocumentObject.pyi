@@ -103,7 +103,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def removeProperty(self, string: str, /) -> None:
+    def removeProperty(self, string: str, /) -> bool:
         """
         Remove a generic property.
 
@@ -117,9 +117,13 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def touch(self) -> None:
+    def touch(self, property_name: str = ..., /) -> None:
         """
         Mark the object as changed (touched)
+
+        With no argument the object is then forced to recompute. With an empty string as the
+        argument, this marks the object as touched *without* forcing a recompute. Finally, if a
+        property name is passed, this only touches that property.
         """
         ...
 
@@ -135,9 +139,11 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def setExpression(self, name: str, expression: str, /) -> None:
+    def setExpression(self, name: str, expression: str | None, comment: str = ..., /) -> None:
         """
-        Register an expression for a property
+        Register an expression for a property.
+
+        Pass None as expression to clear an existing expression.
         """
         ...
 
@@ -154,7 +160,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def recompute(self, recursive: bool = False, /) -> None:
+    def recompute(self, recursive: bool = False, /) -> bool:
         """
         Recomputes this object
         """
@@ -248,7 +254,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def setElementVisible(self, element: str, visible: bool, /) -> int:
+    def setElementVisible(self, element: str, visible: bool = True, /) -> int:
         """
         Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
@@ -268,7 +274,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getParentGroup(self) -> DocumentObjectGroup:
+    def getParentGroup(self) -> DocumentObjectGroup | None:
         """
         Returns the group the object is in or None if it is not part of a group.
 
@@ -295,7 +301,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getPathsByOutList(self) -> list:
+    def getPathsByOutList(self, target: DocumentObject, /) -> list[list[DocumentObject]]:
         """
         Get all paths from this object to another object following the OutList.
         """
@@ -315,7 +321,7 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def resolveSubElement(self, subname: str, append: bool, type: int, /) -> tuple:
+    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple:
         """
         resolve both new and old style sub element
 
@@ -334,7 +340,7 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str, /) -> str:
+    def getElementMapVersion(self, property_name: str, restored: bool = False, /) -> str:
         """
         return element map version of a given geometry property
         """
@@ -347,7 +353,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getPlacementOf(self, subname: str, target: DocumentObject = None, /) -> Any:
+    def getPlacementOf(self, subname: str, target: DocumentObject | None = None, /) -> Any:
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement

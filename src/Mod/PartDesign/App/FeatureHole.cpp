@@ -829,8 +829,9 @@ void Hole::updateHoleCutParams()
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and
                     // read-only
-                    if (!HoleCutCustomValues.getValue()
-                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                    if (!isRestoring()
+                        && (!HoleCutCustomValues.getValue()
+                            || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly()))) {
                         HoleCutDiameter.setValue(dimen.diameter);
                         HoleCutDepth.setValue(dimen.depth);
                         HoleCutDiameter.setReadOnly(true);
@@ -869,8 +870,9 @@ void Hole::updateHoleCutParams()
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and
                     // read-only
-                    if (!HoleCutCustomValues.getValue()
-                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                    if (!isRestoring()
+                        && (!HoleCutCustomValues.getValue()
+                            || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly()))) {
                         HoleCutDiameter.setValue(dimen.diameter);
                         HoleCutDiameter.setReadOnly(true);
                         HoleCutDepth.setReadOnly(true);
@@ -2749,7 +2751,7 @@ int Hole::baseProfileOption_idxToBitmask(int index)
     if (index == 2) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
     }
-    Base::Console().error("Unexpected hole base profile combobox index: %i", index);
+    Base::Console().error("Unexpected hole base profile combobox index: {}", index);
     return 0;
 }
 int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
@@ -2764,7 +2766,7 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
         return 2;
     }
 
-    Base::Console().error("Unexpected hole base profile bitmask: %i", bitmask);
+    Base::Console().error("Unexpected hole base profile bitmask: {}", bitmask);
     return -1;
 }
 

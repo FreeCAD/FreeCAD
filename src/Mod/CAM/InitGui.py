@@ -88,6 +88,7 @@ class CAMWorkbench(Workbench):
         import Path.GuiInit
 
         from Path.Main.Gui import JobCmd as PathJobCmd
+        from Path.Main.Gui import WorkplaneCmd as PathWorkplaneCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
@@ -124,7 +125,7 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Sanity"]
+        projcmdlist = ["CAM_Job", "CAM_Workplane", "CAM_Sanity"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 
@@ -156,6 +157,7 @@ class CAMWorkbench(Workbench):
             "CAM_DressupArray",
             "CAM_DressupAxisMap",
             "CAM_DressupPathBoundary",
+            "CAM_DressupPathBoundary2",
             "CAM_DressupDogbone",
             "CAM_DressupDragKnife",
             "CAM_DressupLeadInOut",

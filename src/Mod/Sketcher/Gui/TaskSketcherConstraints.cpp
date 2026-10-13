@@ -33,15 +33,15 @@
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
-#include <fmt/format.h>
-#include <fmt/ranges.h>
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <limits>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -78,14 +78,19 @@ QT_TRANSLATE_NOOP("SketcherGui::ConstraintView", "Select Elements");
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
 #define CONTEXT_ITEM(ICONSTR, NAMESTR, CMDSTR, FUNC, ACTSONSELECTION)                              \
-    QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                       \
-    QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));         \
-    constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(                                     \
-        Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));      \
-    if (ACTSONSELECTION)                                                                           \
-        constr_##FUNC->setEnabled(!items.isEmpty());                                               \
-    else                                                                                           \
-        constr_##FUNC->setEnabled(true);
+    if (auto* cmd_##FUNC = Gui::Application::Instance->commandManager().getCommandByName(CMDSTR);  \
+        cmd_##FUNC && cmd_##FUNC->allowedByMaturity()) {                                           \
+        QIcon icon_##FUNC(Gui::BitmapFactory().pixmap(ICONSTR));                                   \
+        QAction* constr_##FUNC = menu.addAction(icon_##FUNC, tr(NAMESTR), this, SLOT(FUNC()));     \
+        constr_##FUNC->setShortcut(QKeySequence(QString::fromUtf8(cmd_##FUNC->getAccel())));       \
+        if (ACTSONSELECTION) {                                                                     \
+            constr_##FUNC->setEnabled(!items.isEmpty());                                           \
+        }                                                                                          \
+        else {                                                                                     \
+            constr_##FUNC->setEnabled(true);                                                       \
+        }                                                                                          \
+    }
+
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR, FUNC)                                                           \
     void ConstraintView::FUNC()                                                                    \
@@ -1254,7 +1259,7 @@ void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
     }
 
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
-    const std::string idList = fmt::format("[{}]", fmt::join(ids, ", "));
+    const std::string idList = std::format("[{}]", Base::Tools::joinFormatted(ids, ", "));
     sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
     try {
         Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());

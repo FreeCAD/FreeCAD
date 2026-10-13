@@ -27,7 +27,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include <fmt/format.h>
+#include <format>
 
 #include "MeasureCOM.h"
 
@@ -146,7 +146,7 @@ std::string MeasureCOM::getResultString()
     Base::Quantity qy(value.y, unit);
     Base::Quantity qz(value.z, unit);
 
-    return fmt::format(
+    return std::format(
         "Geometric Center\nX: {}\nY: {}\nZ: {}",
         formatQuantity(qx),
         formatQuantity(qy),

@@ -632,6 +632,8 @@ class BIMWorkbench(Workbench):
         from nativeifc import ifc_observer
         from draftutils import grid_observer
 
+        translate = FreeCAD.Qt.translate
+
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -676,9 +678,11 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
-                BimWatcher(self.bimtools, "3D/BIM Geometry"),
-                BimWatcher(self.modify, "Modify", invert=True),
+                BimWatcher(
+                    self.draftingtools + self.annotationtools, translate("BIM", "2D Drafting")
+                ),
+                BimWatcher(self.bimtools, translate("BIM", "3D/BIM Geometry")),
+                BimWatcher(self.modify, translate("BIM", "Modify"), invert=True),
             ]
         )
 

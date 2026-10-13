@@ -52,22 +52,6 @@
     </message>
   </context>
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="61"/>
-      <source>Element to measure</source>
-      <translation>அளவிட வேண்டிய உறுப்பு</translation>
-    </message>
-  </context>
-  <context>
-    <name>App::PropertyVector</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="68"/>
-      <source>The result location</source>
-      <translation>முடிவு இடம்</translation>
-    </message>
-  </context>
-  <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
@@ -202,92 +186,92 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="137"/>
+      <location filename="../../TaskMeasure.cpp" line="138"/>
       <source>Measurement</source>
       <translation>அளவீடு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
-      <source>Show Delta</source>
-      <translation>டெல்டாவைக் காட்டு</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="159"/>
+      <location filename="../../TaskMeasure.cpp" line="149"/>
       <source>Auto Save</source>
       <translation>தானியங்கு சேமிப்பு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="163"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>புதிய அளவீட்டைத் தொடங்கும் போது கடைசி அளவீட்டைத் தானாகச் சேமித்தல். நடத்தையை தற்காலிகமாக மாற்ற, உயர்த்து விசையைப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="168"/>
+      <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
       <translation>சேர்க்கை தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="174"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>சரிபார்த்தால், அளவீட்டில் புதிய தேர்வு சேர்க்கப்படும். தேர்வு செய்யப்படவில்லை என்றால், தற்போதைய அளவீட்டில் ஒரு தேர்வைச் சேர்க்க கட்டுப்பாடு விசையை அழுத்த வேண்டும் இல்லையெனில் புதிய அளவீடு தொடங்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="187"/>
+      <location filename="../../TaskMeasure.cpp" line="175"/>
       <source>Settings</source>
       <translation>அமைப்புகள்</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="199"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
       <translation>தானியங்கு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="231"/>
+      <location filename="../../TaskMeasure.cpp" line="222"/>
       <source>Mode</source>
       <translation>பயன்முறை</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="245"/>
+      <location filename="../../TaskMeasure.cpp" line="228"/>
       <source>Result</source>
       <translation>முடிவு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="551"/>
+      <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
       <translation>% 1 தானியங்கு-சேமிப்பு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
       <translation>% 1 புதிய அளவீட்டைத் தொடங்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
       <translation>% 1 அளவீட்டில் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="780"/>
+      <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>% 1 புதிய அளவீடு, % 2 தானாகச் சேமிப்பதை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="785"/>
+      <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>% 1 அளவீட்டைச் சேர், % 2 தானாகச் சேமிப்பதை நிலைமாற்று</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="281"/>
+      <location filename="../../TaskMeasure.cpp" line="820"/>
+      <source>Show Delta</source>
+      <translation>டெல்டாவைக் காட்டு</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
       <translation>செயலில் உள்ள ஆவணத்தில் அளவீட்டைச் சேமிக்கிறது</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="287"/>
+      <location filename="../../TaskMeasure.cpp" line="269"/>
       <source>Close</source>
       <translation>மூடு</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="288"/>
+      <location filename="../../TaskMeasure.cpp" line="270"/>
       <source>Close the measurement task.</source>
       <translation>அளவீட்டு பணியை மூடு.</translation>
     </message>
@@ -295,57 +279,9 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="280"/>
+      <location filename="../../TaskMeasure.cpp" line="262"/>
       <source>Save</source>
       <translation>சேமி</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskMeasure</name>
-    <message>
-      <location filename="../../../InitGui.py" line="44"/>
-      <source>Center of mass</source>
-      <translation>வெகுசன நடுவண்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="119"/>
-      <source>Distance</source>
-      <translation>தூரம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="127"/>
-      <source>Distance Free</source>
-      <translation>தூரம் இலவசம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="135"/>
-      <source>Angle</source>
-      <translation>கோணம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="143"/>
-      <source>Length</source>
-      <translation>நீளம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="151"/>
-      <source>Position</source>
-      <translation>பதவி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="159"/>
-      <source>Area</source>
-      <translation>பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="167"/>
-      <source>Diameter</source>
-      <translation>விட்டம்</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="175"/>
-      <source>Radius</source>
-      <translation>ஆரம்</translation>
     </message>
   </context>
   <context>
@@ -506,6 +442,54 @@
     </message>
   </context>
   <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>தூரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>தூரம் இலவசம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>கோணம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>நீளம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>பதவி</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>விட்டம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>ஆரம்</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="345"/>
@@ -548,7 +532,7 @@
       <translation>மீட்டமை</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1218"/>
+      <location filename="../../TaskMassProperties.cpp" line="1222"/>
       <source> (Average)</source>
       <translation>(சராசரி)</translation>
     </message>

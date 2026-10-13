@@ -130,8 +130,14 @@ struct ConversionMetadata
     // the order and orientation of open curves.
     std::map<std::pair<int64_t, int64_t>, SegmentData> edgeData;
 
+    // Maps each point's a-value to the z-values of connected points
+    std::map<int64_t, std::vector<int64_t>> edges;
+
     // Deduplication cache: maps (x,y) in Clipper coordinates to the z-label already assigned there
     std::map<std::pair<int64_t, int64_t>, int64_t> xy_to_z;
+
+    // Maps z-label to its (x,y) in Clipper coordinates
+    std::map<int64_t, std::pair<int64_t, int64_t>> z_to_xy;
 
     // Track the next z-value available for allocation
     int64_t z_next;
@@ -161,6 +167,7 @@ public:
     static bool m_please_abort;  // the user sets this from another thread, to tell
                                  // MakeOnePocketCurve to finish with no result.
     static double m_clipper_scale;
+    static constexpr double default_clipper_scale = 10000.0;
 
     void append(const CCurve& curve);
     void move(CCurve&& curve);
@@ -232,8 +239,20 @@ public:
     void ReorderOpenPaths(Clipper2Lib::Paths64& paths, const ConversionMetadata& metadata);
 
 private:
-    // Returns (minZ, maxZ) of the vertices of the parent edge
-    static std::pair<int64_t, int64_t> getParentEdge(
+    static std::optional<std::pair<int64_t, int64_t>> getParentEdge(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
+    );
+
+    static SegmentData getParentMetadataFallback(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
+    );
+
+    // Returns metadata for the parent edge of the clipper edge (p1, p2)
+    static SegmentData getParentMetadata(
         const Clipper2Lib::Point64& p1,
         const Clipper2Lib::Point64& p2,
         const ConversionMetadata& metadata
@@ -246,6 +265,7 @@ private:
     void SetFromResult(
         Clipper2Lib::Paths64& paths,
         bool isClosed,
+        bool assertOutputClosed,
         ConversionMetadata& metadata,
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
@@ -266,7 +286,8 @@ private:
         Clipper2Lib::FillRule fillType,
         bool reverseOpenPathContents = false,
         bool reverseOpenPathOrder = false,
-        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
+        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt,
+        bool assertOutputClosed = false
     );
 };
 

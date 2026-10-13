@@ -552,6 +552,15 @@ void CmdPartDesignClone::activated(int iMsg)
             obj,
             std::stringstream() << "addObject('PartDesign::Body','" << bodyName << "')"
         );
+
+        App::Part* actPart = PartDesignGui::getActivePart();
+        if (actPart && actPart->getDocument() == obj->getDocument()) {
+            Gui::cmdAppDocument(
+                obj,
+                std::stringstream() << actPart->getNameInDocument() << ".addObject(App.getDocument('"
+                                    << obj->getDocument()->getName() << "')." << bodyName << ")"
+            );
+        }
         Gui::cmdAppDocument(
             obj,
             std::stringstream() << "addObject('PartDesign::FeatureBase','" << cloneName << "')"
@@ -728,13 +737,13 @@ unsigned validateSketches(
             continue;
         }
 
-        // Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
+        // Base::Console().error("Checking sketch {}\n", (*s)->getNameInDocument());
         //  Check whether this sketch is already being used by another feature
         //  Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            // Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
+            // Base::Console().error("Inlist: {}\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>()) {
                 o = inList.erase(o);  // ignore bodies
             }
@@ -2469,6 +2478,141 @@ bool CmdPartDesignLinearPattern::isActive()
 }
 
 //===========================================================================
+// PartDesign_CircularPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignCircularPattern)
+
+CmdPartDesignCircularPattern::CmdPartDesignCircularPattern()
+    : Command("PartDesign_CircularPattern")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Circular Pattern");
+    sToolTipText = QT_TR_NOOP(
+        "Duplicates the selected features or the active body in concentric circular patterns"
+    );
+    sWhatsThis = "PartDesign_CircularPattern";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_CircularPattern";
+}
+
+void CmdPartDesignCircularPattern::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(true);
+    if (!pcActiveBody) {
+        return;
+    }
+
+    auto worker = [cmd = this,
+                   pcActiveBody](App::DocumentObject* feat, std::vector<App::DocumentObject*> features) {
+        bool hasDirection = false;
+        auto* profile = features.empty() ? nullptr
+                                         : freecad_cast<PartDesign::ProfileBased*>(features.front());
+        if (profile) {
+            if (auto* sketch = profile->getVerifiedSketch(/* silent =*/true)) {
+                FCMD_OBJ_CMD(feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
+                hasDirection = true;
+            }
+        }
+        if (!hasDirection) {
+            FCMD_OBJ_CMD(
+                feat,
+                "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
+            );
+        }
+
+        finishTransformed(cmd, feat);
+    };
+
+    prepareTransformed(pcActiveBody, this, "CircularPattern", worker);
+}
+
+bool CmdPartDesignCircularPattern::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_PathPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignPathPattern)
+
+CmdPartDesignPathPattern::CmdPartDesignPathPattern()
+    : Command("PartDesign_PathPattern")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Path Pattern");
+    sToolTipText = QT_TR_NOOP("Duplicates the selected features or the active body along a path");
+    sWhatsThis = "PartDesign_PathPattern";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_PathPattern";
+}
+
+void CmdPartDesignPathPattern::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(true);
+    if (!pcActiveBody) {
+        return;
+    }
+
+    auto worker =
+        [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            finishTransformed(cmd, feat);
+        };
+    prepareTransformed(pcActiveBody, this, "PathPattern", worker);
+}
+
+bool CmdPartDesignPathPattern::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_PointPattern
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignPointPattern)
+
+CmdPartDesignPointPattern::CmdPartDesignPointPattern()
+    : Command("PartDesign_PointPattern")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Point Pattern");
+    sToolTipText = QT_TR_NOOP(
+        "Duplicates the selected features or the active body at points from a shape"
+    );
+    sWhatsThis = "PartDesign_PointPattern";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_PointPattern";
+}
+
+void CmdPartDesignPointPattern::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(true);
+    if (!pcActiveBody) {
+        return;
+    }
+
+    auto worker =
+        [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            finishTransformed(cmd, feat);
+        };
+    prepareTransformed(pcActiveBody, this, "PointPattern", worker);
+}
+
+bool CmdPartDesignPointPattern::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_PolarPattern
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignPolarPattern)
@@ -2879,6 +3023,9 @@ void CreatePartDesignCommands()
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
+    rcCmdMgr.addCommand(new CmdPartDesignCircularPattern());
+    rcCmdMgr.addCommand(new CmdPartDesignPathPattern());
+    rcCmdMgr.addCommand(new CmdPartDesignPointPattern());
     rcCmdMgr.addCommand(new CmdPartDesignPolarPattern());
     // rcCmdMgr.addCommand(new CmdPartDesignScaled());
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());

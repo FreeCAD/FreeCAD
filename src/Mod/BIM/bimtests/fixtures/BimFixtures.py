@@ -88,7 +88,7 @@ def create_test_model(document, **overrides):
     p2 = FreeCAD.Vector(building_length, 0, 0)
     p3 = FreeCAD.Vector(building_length, building_width, 0)
     p4 = FreeCAD.Vector(0, building_width, 0)
-    exterior_wire = Draft.makeWire([p1, p2, p3, p4], closed=True)
+    exterior_wire = Draft.make_wire([p1, p2, p3, p4], closed=True)
     exterior_wall = Arch.makeWall(
         exterior_wire, name=LABELS["exterior_wall"], height=ground_floor_height
     )
@@ -96,7 +96,7 @@ def create_test_model(document, **overrides):
 
     p5 = FreeCAD.Vector(building_length / 2, 0, 0)
     p6 = FreeCAD.Vector(building_length / 2, building_width, 0)
-    interior_wire = Draft.makeWire([p5, p6])
+    interior_wire = Draft.make_wire([p5, p6])
     interior_wall = Arch.makeWall(
         interior_wire, name=LABELS["interior_wall"], height=interior_wall_height
     )
@@ -163,7 +163,7 @@ def create_test_model(document, **overrides):
     level_0.addObject(beam)
 
     # --- 6. Upper Floor Slab and Roof ---
-    slab_profile = Draft.makeRectangle(
+    slab_profile = Draft.make_rectangle(
         length=building_length,
         height=building_width,
         placement=FreeCAD.Placement(FreeCAD.Vector(0, 0, interior_wall_height), FreeCAD.Rotation()),
@@ -172,7 +172,7 @@ def create_test_model(document, **overrides):
     slab.IfcType = "Slab"
     level_1.addObject(slab)
 
-    roof_profile = Draft.makeRectangle(
+    roof_profile = Draft.make_rectangle(
         length=building_length + (2 * roof_overhang),
         height=building_width + (2 * roof_overhang),
         placement=FreeCAD.Placement(

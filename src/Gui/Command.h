@@ -29,6 +29,7 @@
 #include <vector>
 #include <fastsignals/signal.h>
 
+#include <Base/Maturity.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 
@@ -701,6 +702,10 @@ public:
     };
     friend class LogDisabler;
 
+    void setMaturity(Base::Maturity m);
+    Base::Maturity getMaturity() const;
+    bool allowedByMaturity() const;
+
 private:
     void _invoke(int, bool disablelog);
 
@@ -726,6 +731,7 @@ protected:
     const char* sName;
     const char* sHelpUrl;
     int eType;
+    Base::Maturity eMaturity;
     /// Indicate if the command shall log to MacroManager
     bool bCanLog;
     //@}

@@ -111,7 +111,11 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def canDropObject(
-        self, obj: Any = None, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self,
+        obj: Any = None,
+        owner: Any = None,
+        subname: str = ...,
+        elem: Optional[List[str]] = None,
     ) -> bool:
         """
         Check whether the child object can be added by dropping.
@@ -130,7 +134,11 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def dropObject(
-        self, obj: Any, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self,
+        obj: Any,
+        owner: Any = None,
+        subname: str = ...,
+        elem: Optional[List[str]] = None,
     ) -> str:
         """
         Add a child object by dropping.
@@ -254,7 +262,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementPicked(self, pickPoint: Any, /) -> str:
+    def getElementPicked(self, pickPoint: Any, /) -> str | None:
         """
         Return the picked subelement.
 

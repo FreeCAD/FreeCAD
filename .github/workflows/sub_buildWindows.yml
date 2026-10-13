@@ -54,6 +54,10 @@ on:
         required: false
         default: false
         type: boolean
+      mirrorRunId:
+        required: false
+        default: ''
+        type: string
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -63,7 +67,10 @@ permissions:
 
 jobs:
   Build:
-    runs-on: windows-2022
+    runs-on: ${{ inputs.skipBuild && 'ubuntu-latest' || 'windows-2022' }}
+    permissions:
+      actions: read
+      contents: read
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
@@ -89,15 +96,41 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Report result of previous run
+        if: inputs.skipBuild && inputs.mirrorRunId != ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          MIRROR_RUN_ID: ${{ inputs.mirrorRunId }}
+          JOB_NAME_SUFFIX: "/ Build"
+        with:
+          script: |
+            const runId = Number(process.env.MIRROR_RUN_ID);
+            const suffix = process.env.JOB_NAME_SUFFIX;
+            const { data: { jobs } } = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+              per_page: 100,
+            });
+            const previous = jobs.find(j => j.name.endsWith(suffix));
+            if (!previous) {
+              core.setFailed(`No job matching "${suffix}" in run ${runId}, re-run CI to build this commit`);
+              return;
+            }
+            core.info(`Reporting result of ${previous.html_url}: ${previous.conclusion}`);
+            if (!['success', 'skipped'].includes(previous.conclusion)) {
+              core.setFailed(`${previous.name} concluded "${previous.conclusion}" in run ${runId}: ${previous.html_url}`);
+            }
+
       - name: Harden the runner (Audit all outbound calls)
         if: "!inputs.skipBuild"
-        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
       - name: Checking out source code
         if: "!inputs.skipBuild"
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: true
 
@@ -164,6 +197,7 @@ jobs:
           -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
 
       - name: Add msbuild to PATH
+        if: "!inputs.skipBuild"
         uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
 
       - name: Compiling sources

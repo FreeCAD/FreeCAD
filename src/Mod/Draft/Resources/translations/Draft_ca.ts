@@ -2061,7 +2061,7 @@ s'afegeix un fil cru de la forma original</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Apply cuts</source>
-      <translation type="unfinished">Apply cuts</translation>
+      <translation>Aplicar talls</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2768,7 +2768,7 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>Note: DXF options apply to DWG files as well.</source>
-      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
+      <translation>Nota: Les opcions de DXF també s'apliquen als fitxers DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3194,7 +3194,7 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     </message>
     <message>
       <location filename="../../DraftGui.py" line="709"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="282"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -3433,19 +3433,20 @@ No disponible si la preferència "Utilitza primitives de peça" està habilitada
     <message>
       <location filename="../../DraftGui.py" line="1098"/>
       <location filename="../../DraftGui.py" line="1118"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="224"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="278"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1099"/>
       <location filename="../../DraftGui.py" line="1119"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="225"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="279"/>
       <source>Offset distance</source>
       <translation>Distància de desplaçament</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="63"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
@@ -3614,7 +3615,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
-      <location filename="../../draftutils/utils.py" line="1143"/>
+      <location filename="../../draftutils/utils.py" line="1135"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <source>No active document. Aborting.</source>
       <translation>Cap document actiu. Avortant.</translation>
@@ -3656,83 +3657,83 @@ or try saving to a lower DWG version.</source>
       <translation>No té "ViewObject.RootNode".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="637"/>
+      <location filename="../../draftutils/utils.py" line="629"/>
       <source>Solids:</source>
       <translation>Sòlids:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="638"/>
+      <location filename="../../draftutils/utils.py" line="630"/>
       <source>Faces:</source>
       <translation>Cares:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="639"/>
+      <location filename="../../draftutils/utils.py" line="631"/>
       <source>Wires:</source>
       <translation>Polilínies:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="640"/>
+      <location filename="../../draftutils/utils.py" line="632"/>
       <source>Edges:</source>
       <translation>Arestes:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="641"/>
+      <location filename="../../draftutils/utils.py" line="633"/>
       <source>Vertices:</source>
       <translation>Vèrtexs:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="645"/>
+      <location filename="../../draftutils/utils.py" line="637"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="642"/>
       <source>Wire</source>
       <translation>Cable</translation>
     </message>
     <message>
+      <location filename="../../draftutils/utils.py" line="675"/>
       <location filename="../../draftutils/utils.py" line="683"/>
-      <location filename="../../draftutils/utils.py" line="691"/>
       <source>different types</source>
       <translation>tipus diferents</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="705"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>Els objectes tenen ubicacions diferents. Distància entre els dos punts base:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="969"/>
+      <location filename="../../draftutils/utils.py" line="961"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s no es pot modificar perquè la seva ubicació és de només lectura</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1184"/>
+      <location filename="../../draftutils/utils.py" line="1176"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Aquesta funció quedarà obsoleta a {}. Si us plau, utilitza '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1190"/>
+      <location filename="../../draftutils/utils.py" line="1182"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Aquesta funció quedarà obsoleta. Si us plau, utilitza '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="700"/>
       <source>has a different value</source>
       <translation>té un valor diferent</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="710"/>
+      <location filename="../../draftutils/utils.py" line="702"/>
       <source>doesn't exist in one of the objects</source>
       <translation>no existeix en un dels objectes</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="960"/>
+      <location filename="../../draftutils/utils.py" line="952"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s comparteix una base amb %d objectes més. Si us plau, comproveu si voleu modificar-ho.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1106"/>
+      <location filename="../../draftutils/utils.py" line="1098"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Entrada incorrecta: document desconegut {}</translation>
     </message>
@@ -3761,17 +3762,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="243"/>
       <source>%1 pick arrow point</source>
-      <translation type="unfinished">%1 pick arrow point</translation>
+      <translation>%1 escull el punt de la fletxa</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="247"/>
       <source>%1 pick corner point</source>
-      <translation type="unfinished">%1 pick corner point</translation>
+      <translation>%1 escull el punt de la cantonada</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="251"/>
       <source>%1 pick text point</source>
-      <translation type="unfinished">%1 pick text point</translation>
+      <translation>%1 escull el punt del text</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
@@ -3801,7 +3802,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../drafttests/test_lines_gui.py" line="56"/>
       <location filename="../../drafttests/test_lines_gui.py" line="94"/>
       <source>Point identical to previous point</source>
-      <translation type="unfinished">Point identical to previous point</translation>
+      <translation>Punt idèntic al punt anterior</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="327"/>
@@ -3911,7 +3912,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
+      <translation>%1 escull el punt inicial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="259"/>
@@ -3976,42 +3977,42 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
       <source>Hold %1 constrain</source>
-      <translation type="unfinished">Hold %1 constrain</translation>
+      <translation>Mantenir %1 per restringir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
       <source>Hold %1 horizontal/vertical dimension</source>
-      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
+      <translation>Mantenir %1 per crear dimensió horitzontal/vertical</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
       <source>Hold %1 radial dimension</source>
-      <translation type="unfinished">Hold %1 radial dimension</translation>
+      <translation>Mantenir %1 per crear dimensió radial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
       <source>Hold %1 snap</source>
-      <translation type="unfinished">Hold %1 snap</translation>
+      <translation>Mantenir %1 per ajustar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="98"/>
       <source>Hold %1 copy</source>
-      <translation type="unfinished">Hold %1 copy</translation>
+      <translation>Mantenir %1 per copiar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="114"/>
       <source>%1 select objects to modify</source>
-      <translation type="unfinished">%1 select objects to modify</translation>
+      <translation>%1 seleccionar objectes a modificar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="116"/>
       <source>%1 select object to modify</source>
-      <translation type="unfinished">%1 select object to modify</translation>
+      <translation>%1 seleccionar objecte a modificar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
       <source>%1 / %2 / %3 switch constraint</source>
-      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+      <translation>%1 / %2 / %3 restricció de commutació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="143"/>
@@ -4031,12 +4032,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="172"/>
       <source>%1 / hold %2 select edge</source>
-      <translation type="unfinished">%1 / hold %2 select edge</translation>
+      <translation>%1 / manteniu premut %2 per a seleccionar l'aresta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="174"/>
       <source>Hold %1 select edge</source>
-      <translation type="unfinished">Hold %1 select edge</translation>
+      <translation>Manteniu premut %1 per a seleccionar l'aresta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="312"/>
@@ -4128,7 +4129,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
-      <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
+      <translation>%1 executa Mou, Gira o Escala sobre els subelements</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="179"/>
@@ -4145,22 +4146,22 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="374"/>
       <source>%1 select object to edit</source>
-      <translation type="unfinished">%1 select object to edit</translation>
+      <translation>%1 selecciona l'objecte que cal editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="382"/>
       <source>%1 pick node to edit</source>
-      <translation type="unfinished">%1 pick node to edit</translation>
+      <translation>%1 tria el node que cal editar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
-      <translation type="unfinished">%1 options for hovered node/edge</translation>
+      <translation>%1 opcions del node/aresta sota el cursor</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
       <source>%1 place node</source>
-      <translation type="unfinished">%1 place node</translation>
+      <translation>%1 col·loca el node</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="541"/>
@@ -4260,14 +4261,19 @@ or try saving to a lower DWG version.</source>
       <translation>Fitxer JSON (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="77"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="80"/>
       <source>Select an object to project</source>
       <translation>Seleccioneu un objecte a projectar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="123"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="126"/>
       <source>Create 2D View</source>
       <translation>Crea una vista 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="156"/>
+      <source>Update</source>
+      <translation>Actualitza</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="140"/>
@@ -4315,17 +4321,17 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
-      <translation type="unfinished">%1 pick rotation center</translation>
+      <translation>%1 tria el centre de rotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
-      <translation type="unfinished">%1 pick base angle</translation>
+      <translation>%1 tria l'angle base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
-      <translation type="unfinished">%1 pick rotation angle</translation>
+      <translation>%1 tria l'angle de rotació</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
@@ -4463,7 +4469,7 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
       <translation>Crea Polígon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="96"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="65"/>
       <source>Select objects to trim or extend</source>
       <translation>Seleccioneu objecte(s) per a retallar o allargar</translation>
     </message>
@@ -4473,55 +4479,71 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
       <translation>Aquest objecte no és compatible</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="137"/>
-      <location filename="../../draftutils/utils.py" line="393"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <source>Only a single face can be extruded</source>
       <translation>Només es pot extrusionar una sola cara</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="156"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="138"/>
+      <location filename="../../draftutils/utils.py" line="385"/>
+      <location filename="../../draftutils/utils.py" line="388"/>
+      <location filename="../../draftutils/utils.py" line="391"/>
       <location filename="../../draftutils/utils.py" line="396"/>
-      <location filename="../../draftutils/utils.py" line="399"/>
-      <location filename="../../draftutils/utils.py" line="404"/>
-      <location filename="../../draftutils/utils.py" line="410"/>
-      <location filename="../../draftutils/utils.py" line="425"/>
+      <location filename="../../draftutils/utils.py" line="402"/>
+      <location filename="../../draftutils/utils.py" line="417"/>
       <source>Trimex does not support this object type</source>
       <translation>Trimex no admet aquest tipus d'objecte</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="178"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
+      <source>Select a single face to extrude</source>
+      <translation>Seleccioneu una sola cara per a extrudir</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="568"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>No es poden retallar aquests objectes, només s'admeten fils i arcs d'esbós</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="588"/>
       <source>These objects do not intersect</source>
       <translation>Aquests objectes no s'intersequen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="528"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="591"/>
       <source>Too many intersection points</source>
       <translation>Massa punts d'intersecció</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="604"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="667"/>
       <source>%1 pick target</source>
-      <translation type="unfinished">%1 pick target</translation>
+      <translation>%1 tria l'objectiu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="606"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="669"/>
       <source>Hold %1 free direction</source>
-      <translation type="unfinished">Hold %1 free direction</translation>
+      <translation>Manteniu premut %1 per a una direcció lliure</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="672"/>
       <source>Hold %1 keep active endpoint</source>
-      <translation type="unfinished">Hold %1 keep active endpoint</translation>
+      <translation>Manteniu premut %1 per a conservar el punt final actiu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="675"/>
       <source>Hold %1 invert trim direction</source>
-      <translation type="unfinished">Hold %1 invert trim direction</translation>
+      <translation>Manteniu premut %1 per a invertir la direcció de retallada</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="684"/>
+      <source>Extrude Face</source>
+      <translation>Extrudeix la cara</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="685"/>
+      <source>Select a face to extrude</source>
+      <translation>Seleccioneu una cara per a extrudir</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4536,21 +4558,21 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
-      <translation type="unfinished">%1 pick distance</translation>
+      <translation>%1 tria la distància</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="168"/>
       <location filename="../../draftguitools/gui_offset.py" line="152"/>
       <source>Pick distance</source>
       <translation>Tria l'equidistància</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="283"/>
       <source>Offset angle</source>
       <translation>Angle d'equidistància</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="571"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>No es poden retallar aquests objectes, massa polilínies</translation>
     </message>
@@ -4584,7 +4606,7 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
       <source>Set Point as First</source>
-      <translation type="unfinished">Set Point as First</translation>
+      <translation>Estableix el punt com a primer</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
@@ -4722,12 +4744,12 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 defineix el primer punt i nus</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 defineix el punt i nus següents</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4790,17 +4812,17 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
-      <translation type="unfinished">%1 pick base point</translation>
+      <translation>%1 tria el punt base</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
-      <translation type="unfinished">%1 pick reference distance</translation>
+      <translation>%1 tria la distància de referència</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
-      <translation type="unfinished">%1 pick new distance</translation>
+      <translation>%1 tria la distància nova</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="158"/>
@@ -4823,27 +4845,27 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
-      <translation type="unfinished">%1 pick dimension position</translation>
+      <translation>%1 tria la posició de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
-      <translation type="unfinished">%1 select edge</translation>
+      <translation>%1 selecciona l'aresta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
-      <translation type="unfinished">%1 pick next dimension point</translation>
+      <translation>%1 tria el punt següent de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
-      <translation type="unfinished">%1 pick first dimension point</translation>
+      <translation>%1 tria el primer punt de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
-      <translation type="unfinished">%1 pick second dimension point</translation>
+      <translation>%1 tria el segon punt de la cota</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
@@ -4868,22 +4890,22 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="536"/>
       <source>%1 pick first point of selection rectangle</source>
-      <translation type="unfinished">%1 pick first point of selection rectangle</translation>
+      <translation>%1 tria el primer punt del rectangle de selecció</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="538"/>
       <source>%1 pick opposite point of selection rectangle</source>
-      <translation type="unfinished">%1 pick opposite point of selection rectangle</translation>
+      <translation>%1 tria el punt oposat del rectangle de selecció</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="540"/>
       <source>%1 pick start point of displacement</source>
-      <translation type="unfinished">%1 pick start point of displacement</translation>
+      <translation>%1 tria el punt inicial del desplaçament</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="542"/>
       <source>%1 pick end point of displacement</source>
-      <translation type="unfinished">%1 pick end point of displacement</translation>
+      <translation>%1 tria el punt final del desplaçament</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="180"/>
@@ -4939,12 +4961,12 @@ L'angle final serà l'angle base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="210"/>
       <source>%1 pick start point of mirror line</source>
-      <translation type="unfinished">%1 pick start point of mirror line</translation>
+      <translation>%1 tria el punt inicial de la línia de simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="212"/>
       <source>%1 pick end point of mirror line</source>
-      <translation type="unfinished">%1 pick end point of mirror line</translation>
+      <translation>%1 tria el punt final de la línia de simetria</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -5976,7 +5998,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="123"/>
       <source>%1 click on a line to split it</source>
-      <translation type="unfinished">%1 click on a line to split it</translation>
+      <translation>%1 feu clic en una línia per a dividir-la</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="76"/>
@@ -6096,17 +6118,17 @@ Per permetre que FreeCAD descarregui aquestes biblioteques, responeu Sí.</trans
     <message>
       <location filename="../../draftobjects/hatch.py" line="243"/>
       <source>No valid faces for hatch</source>
-      <translation type="unfinished">No valid faces for hatch</translation>
+      <translation>No hi ha cares vàlides per a la trama</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Desa la vista de la càmera</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
-      <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
+      <translation>Manté el valor fix durant l'entrada 3D. La icona del cadenat o un doble clic desbloquen el camp.</translation>
     </message>
   </context>
   <context>
@@ -6650,14 +6672,14 @@ Si la opció "Còpia" està activada, crearà còpies girades.</translation>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="78"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="71"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="81"/>
-      <source>Trims or extends the selected object, or extrudes single faces</source>
-      <translation>Retalla o estén l'objecte seleccionat, o extrudeix cares individuals</translation>
+      <location filename="../../draftguitools/gui_trimex.py" line="72"/>
+      <source>Trims or extends the selected object</source>
+      <translation>Retalla o allarga l'objecte seleccionat</translation>
     </message>
   </context>
   <context>
@@ -6944,7 +6966,7 @@ Consisteix en una llista de cadenes de text; cada element de la llista es mostra
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The objects and faces used by this object</source>
-      <translation type="unfinished">The objects and faces used by this object</translation>
+      <translation>Els objectes i les cares que usa aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="63"/>
@@ -8129,10 +8151,10 @@ més enllà de la línia de cota</translation>
       <translation>Calat</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="253"/>
-      <location filename="../../InitGui.py" line="256"/>
-      <location filename="../../InitGui.py" line="259"/>
       <location filename="../../InitGui.py" line="262"/>
+      <location filename="../../InitGui.py" line="265"/>
+      <location filename="../../InitGui.py" line="268"/>
+      <location filename="../../InitGui.py" line="271"/>
       <source>Import-Export</source>
       <translation>Importació-exportació</translation>
     </message>
@@ -8550,12 +8572,12 @@ línies rectes d'esbós dibuixades en el pla XY.</translation>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="63"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="66"/>
       <source>Shape 2D View</source>
       <translation>Vista 2D de forma</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="67"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="70"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
       <translation>Crea una projecció 2D dels objectes seleccionats al pla XY.
@@ -8954,6 +8976,21 @@ de blocs no es preserven; la seva geometria passa a formar part de la forma de l
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
       <translation>SVG aplanat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UpdateShape2DView</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
+      <source>Force 2D View Update</source>
+      <translation>Força l'actualització de la vista 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
+      <source>Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</source>
+      <translation>Força una actualització de les vistes 2D seleccionades o de totes les vistes 2D del document.
+S'ignora la propietat 'Auto Update' de les vistes.</translation>
     </message>
   </context>
 </TS>

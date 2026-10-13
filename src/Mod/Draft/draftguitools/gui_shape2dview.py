@@ -104,7 +104,7 @@ class Shape2DView(gui_base_original.Modifier):
         commitlist = []
         Gui.addModule("Draft")
         if len(objs) == 1 and faces:
-            _cmd = "Draft.make_shape2dview"
+            _cmd = "Draft.make_shape_2d_view"
             _cmd += "("
             _cmd += "FreeCAD.ActiveDocument." + objs[0].Name + ", "
             _cmd += DraftVecUtils.toString(vec) + ", "
@@ -114,7 +114,7 @@ class Shape2DView(gui_base_original.Modifier):
         else:
             n = 0
             for o in objs:
-                _cmd = "Draft.make_shape2dview"
+                _cmd = "Draft.make_shape_2d_view"
                 _cmd += "("
                 _cmd += "FreeCAD.ActiveDocument." + o.Name + ", "
                 _cmd += DraftVecUtils.toString(vec)
@@ -136,7 +136,7 @@ class UpdateShape2DView:
     def GetResources(self):
         return {
             "Pixmap": "TechDraw_TreePageUnsync",
-            "Accel": "V,T",
+            "Accel": "V, A",
             "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force 2D View Update"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Draft_UpdateShape2DView",
@@ -162,5 +162,29 @@ class UpdateShape2DView:
 
 
 Gui.addCommand("Draft_UpdateShape2DView", UpdateShape2DView())
+
+
+class Shape2DViewGroup:
+    """Gui command for the group of 2D View tools."""
+
+    def GetCommands(self):
+        return ("Draft_Shape2DView", "Draft_UpdateShape2DView")
+
+    def GetResources(self):
+        return {
+            "Pixmap": "Draft_2DShapeView",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_Shape2DViewTools", "2D View Tools"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_Shape2DViewTools",
+                "Tools to create and update 2D Views",
+            ),
+        }
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
+
+
+Gui.addCommand("Draft_Shape2DViewTools", Shape2DViewGroup())
 
 ## @}

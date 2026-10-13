@@ -24,12 +24,11 @@
 
 #include <array>
 #include <cmath>
+#include <format>
 #include <limits>
 #include <numbers>
 #include <sstream>
 #include <string>
-
-#include <fmt/format.h>
 
 #include "Exception.h"
 #include "NumericFormatting.h"
@@ -256,7 +255,7 @@ Quantity Quantity::operator-() const
 
 std::string Quantity::toString(const QuantityFormat& format) const
 {
-    return fmt::format("'{} {}'", toNumber(format), myUnit.getString());
+    return std::format("'{} {}'", toNumber(format), myUnit.getString());
 }
 
 std::string Quantity::toNumber(const QuantityFormat& format) const
@@ -308,7 +307,7 @@ std::string Quantity::getSafeUserString() const
         }
         if (useFallback) {
             auto unitStr = getUnit().getString();
-            userStr = fmt::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
+            userStr = std::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
         }
     }
 
@@ -483,6 +482,7 @@ const Quantity Quantity::MegaElectronVolt       ( 1.602176634e-7        , Unit::
 const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::Work                    );  // 1 cal = 4.1868 J
 const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Work                    );
 const Quantity Quantity::NewtonMeter            ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
+const Quantity Quantity::NewtonMilliMeter       ( 1e+3                  , Unit::Moment                  );
 
 const Quantity Quantity::KMH                    ( 1e+6 / 3600           , Unit::Velocity                );  // km/h
 const Quantity Quantity::MPH                    ( mi / 3600             , Unit::Velocity                );  // Mile/h

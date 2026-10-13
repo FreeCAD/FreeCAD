@@ -434,7 +434,7 @@ class _ViewProviderFloor:
 
         Parameters
         ----------
-        menu: <PySide2.QtWidgets.QMenu>
+        menu: <PySide6.QtWidgets.QMenu>
             The context menu already assembled prior to this method being
             called.
         """

@@ -833,7 +833,7 @@ void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& ms
     }
     catch (const Base::Exception& e) {
         reference->setValue(oldObj, oldSubNames);
-        Base::Console().warning("Could not set %s: %s\n", referenceKind, e.what());
+        Base::Console().warning("Could not set {}: {}\n", referenceKind, e.what());
     }
 
     exitReferenceSelectionMode();

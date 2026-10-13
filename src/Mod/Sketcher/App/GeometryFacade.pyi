@@ -4,11 +4,10 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
-from Base.Axis import Axis
-from Base.CoordinateSystem import CoordinateSystem
+from Base.Matrix import Matrix
 from Base.Placement import Placement
 from Base.Vector import Vector
-from App.DocumentObjectExtension import DocumentObjectExtension
+from Part.App.GeometryExtension import GeometryExtension
 from typing import Final, List
 
 @export(
@@ -47,43 +46,43 @@ class GeometryFacade(BaseClass):
     """Returns the underlying geometry object."""
 
     @constmethod
-    def testGeometryMode(self) -> bool:
+    def testGeometryMode(self, mode: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         """
         ...
 
-    def setGeometryMode(self) -> None:
+    def setGeometryMode(self, mode: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
         ...
 
-    def mirror(self) -> None:
+    def mirror(self, point: Vector, axis: Vector = ..., /) -> None:
         """
         Performs the symmetrical transformation of this geometric object
         """
         ...
 
-    def rotate(self, Ang: float, axis: Axis, /) -> None:
+    def rotate(self, placement: Placement, /) -> None:
         """
         Rotates this geometric object at angle Ang (in radians) about axis
         """
         ...
 
-    def scale(self, center: CoordinateSystem, factor: float, /) -> None:
+    def scale(self, center: Vector | tuple[float, float, float], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
         ...
 
-    def transform(self, transformation: Placement, /) -> None:
+    def transform(self, transformation: Matrix, /) -> None:
         """
         Applies a transformation to this geometric object
         """
         ...
 
-    def translate(self, offset: Vector, /) -> None:
+    def translate(self, offset: Vector | tuple[float, float, float], /) -> None:
         """
         Translates this geometric object
         """
@@ -104,20 +103,20 @@ class GeometryFacade(BaseClass):
         ...
 
     @constmethod
-    def getExtensionOfType(self, type_str: str, /) -> DocumentObjectExtension:
+    def getExtensionOfType(self, type_str: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
         ...
 
     @constmethod
-    def getExtensionOfName(self, name: str, /) -> DocumentObjectExtension:
+    def getExtensionOfName(self, name: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
         ...
 
-    def setExtension(self, extension: DocumentObjectExtension, /) -> None:
+    def setExtension(self, extension: GeometryExtension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
@@ -136,7 +135,7 @@ class GeometryFacade(BaseClass):
         ...
 
     @constmethod
-    def getExtensions(self) -> List[DocumentObjectExtension]:
+    def getExtensions(self) -> List[GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         """

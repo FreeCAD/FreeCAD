@@ -352,7 +352,7 @@
       <translation>Crear full de càlcul</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>Propietats de la cel·la</translation>
     </message>
@@ -730,6 +730,13 @@ switch the design configuration. The property will be created if not exist.</sou
       <source>Alias for this cell</source>
       <translation>Àlies per a aquesta cel·la</translation>
     </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Permet fer referència a una cel·la mitjançant un àlies; per exemple,
+Spreadsheet.my_alias_name en lloc de Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -971,17 +978,17 @@ Vol continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Cel·les</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Nombre màxim de columnes</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Nombre mínim de files</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -991,7 +998,7 @@ Vol continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Displays the cell alias using the custom format.</source>
-      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+      <translation>Mostra l'àlies de la cel·la utilitzant el format personalitzat.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="194"/>
@@ -1001,7 +1008,7 @@ Vol continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="207"/>
       <source>Sets the table view zoom level from 60% to 160%.</source>
-      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+      <translation>Estableix el nivell de zoom de la vista de taula entre el 60 % i el 160 %.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="210"/>
@@ -1260,6 +1267,69 @@ Per defecte: %V = %A
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Restableix la taula de configuració</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>L'àlies entra en conflicte amb un token d'unitat reservat utilitzat per les expressions</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Invàlid: token d'unitat reservada</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>L'àlies entra en conflicte amb un token de constant reservat utilitzat per les expressions</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Invàlid: token de constant reservat</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>Àlies ja està definida</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Invàlid: l'àlies ja existeix</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>L'àlies no pot semblar una adreça de cel·la, com ara A1 o C12</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Invàlid: l'àlies coincideix amb el patró d'adreça de la cel·la</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>L'àlies entra en conflicte amb un nom de propietat de full de càlcul existent</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Invàlid: entra en conflicte amb un nom de propietat existent</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>L'àlies ha de començar per una lletra i contenir només lletres, dígits i '_'</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Invàlid: sintaxi d'àlies incorrecta</translation>
     </message>
   </context>
 </TS>

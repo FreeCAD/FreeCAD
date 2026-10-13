@@ -63,67 +63,67 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>Otwórz plik</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="241"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>Rysunek roboczy 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="241"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation>Tworzy dokument 2D środowiska Rysunek Roboczy</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="244"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>BIM / Architektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation>Pusty plik</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Tworzy nowy pusty plik FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Otwiera istniejący plik CAD lub model 3D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="231"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation>Część parametryczna</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Tworzy Zawartość w środowisku pracy Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation>Tworzy projekt złożenia</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation>Tworzy projekt architektoniczny</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="529"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>Nowy plik</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="523"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

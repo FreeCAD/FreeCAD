@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2022 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Constants
 import FreeCAD
@@ -32,20 +31,24 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 
-class Instruction(object):
+class Instruction:
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
 
-    def __init__(self, begin, cmd, param=None):
+    def __init__(self, begin, cmd, param=None, annotations=None):
         self.begin = begin
+        self.annotations = {}
         if isinstance(cmd, Path.Command):
             self.cmd = cmd.Name
             self.param = cmd.Parameters
+            self.annotations = dict(cmd.Annotations)
         else:
             self.cmd = cmd
             if param is None:
                 self.param = {}
             else:
                 self.param = param
+        if annotations:
+            self.annotations = dict(annotations)
 
     def anglesOfTangents(self):
         return (0, 0)
@@ -66,7 +69,7 @@ class Instruction(object):
         """positionEnd() ... returns a Vector of the end position"""
         return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
 
-    def pathLength(self):
+    def pathLength(self, xy=None):
         """pathLength() ... returns the length in mm"""
         return 0
 
@@ -76,16 +79,18 @@ class Instruction(object):
     def isRapid(self):
         return False
 
+    def isLinking(self):
+        """isLinking() ... return true if this move was generated as a linking (travel) move"""
+        return self.annotations.get("type") == Constants.ANNOT_LINKING["type"]
+
     def isPlunge(self):
         """isPlunge() ... return true if this moves is vertical"""
-        if self.isMove():
-            if (
-                Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
-                and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
-                and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
-            ):
-                return True
-        return False
+        return (
+            self.isMove()
+            and Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
+            and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
+            and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        )
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""
@@ -130,7 +135,10 @@ class Instruction(object):
 
     def toCommand(self):
         """toCommand(instr) ... return Path.Command object"""
-        return Path.Command(self.cmd, self.param)
+        cmd = Path.Command(self.cmd, self.param)
+        if self.annotations:
+            cmd.Annotations = self.annotations
+        return cmd
 
 
 class MoveStraight(Instruction):
@@ -155,7 +163,7 @@ class MoveStraight(Instruction):
     def isRapid(self):
         return self.cmd in Constants.GCODE_MOVE_RAPID
 
-    def pathLength(self):
+    def pathLength(self, xy=None):
         return (self.positionEnd() - self.positionBegin()).Length
 
 
@@ -212,8 +220,14 @@ class MoveArc(Instruction):
         """arcRadius() ... return the radius"""
         return (self.xyBegin() - self.xyCenter()).Length
 
-    def pathLength(self):
-        return self.arcAngle() * self.arcRadius()
+    def pathLength(self, xy=True):
+        """pathLength() ... return length of arc in XY plane
+        if xy=False, calculate true length of arc which can be a helix"""
+        h = self.positionBegin().z - self.positionEnd().z
+        if xy or Path.Geom.isRoughly(h, 0):
+            return self.arcAngle() * self.arcRadius()
+        else:
+            return math.hypot(self.arcAngle() * self.arcRadius(), h)
 
     def xyCenter(self):
         return FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
@@ -229,7 +243,7 @@ class MoveArcCCW(MoveArc):
         return math.pi / 2
 
 
-class Maneuver(object):
+class Maneuver:
     """A series of instructions and moves"""
 
     def __init__(self, begin=None, instr=None):
@@ -268,22 +282,41 @@ class Maneuver(object):
             begin = FreeCAD.Vector(0, 0, 0)
 
         if cmd.Name in Constants.GCODE_MOVE_LINE:
-            return MoveStraight(begin, cmd.Name, cmd.Parameters)
+            return MoveStraight(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
         if cmd.Name in Constants.GCODE_MOVE_CW:
-            return MoveArcCW(begin, cmd.Name, cmd.Parameters)
+            return MoveArcCW(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
         if cmd.Name in Constants.GCODE_MOVE_CCW:
-            return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
-        return Instruction(begin, cmd.Name, cmd.Parameters)
+            return MoveArcCCW(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
+        return Instruction(begin, cmd.Name, cmd.Parameters, cmd.Annotations)
 
     @classmethod
-    def FromPath(cls, path, begin=None):
+    def FromPath(cls, path, begin=None, skipZeroLength=False):
+        """FromPath(path: Path.Path) ... returns Maneuver instance from Path.Path object
+        If skipZeroLength=True, commands with zero length move will be skipped
+        Can be useful, if angle of tangent uses, which can not be defined for zero length moves"""
         maneuver = Maneuver(begin)
         instr = []
         begin = maneuver.positionBegin()
+        x = y = z = None
+        isPosDefined = False  # used to defer the zero-length check
         for cmd in path.Commands:
             i = cls.InstructionFromCommand(cmd, begin)
+
+            if (
+                skipZeroLength
+                and i.isMove()
+                and isPosDefined
+                and Path.Geom.isRoughly(i.pathLength(xy=False), 0)
+            ):
+                continue  # skip zero length move
+
             instr.append(i)
             begin = i.positionEnd()
+            if not isPosDefined:  # until a full position is established
+                x = cmd.x if cmd.x is not None else x
+                y = cmd.y if cmd.y is not None else y
+                z = cmd.z if cmd.z is not None else z
+                isPosDefined = x is not None and y is not None and z is not None
         maneuver.instr = instr
         return maneuver
 

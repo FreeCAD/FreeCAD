@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Редактор стилей заметок</translation>
+      <translation>Редактор стилей разметки</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -67,12 +67,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation>Импорт стилей из файла JSON</translation>
+      <translation>Импорт стилей из JSON файла</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>Экспорт стилей в файл JSON</translation>
+      <translation>Экспорт стилей в JSON файл</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
@@ -127,7 +127,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
       <source>Extension line length</source>
-      <translation>Длина удлиняющей линии</translation>
+      <translation>Длина выносной линии</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="642"/>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new…</source>
-      <translation>Добавить новую…</translation>
+      <translation>Добавить новый…</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="539"/>
       <source>Show unit</source>
-      <translation>Показать единицы измерения</translation>
+      <translation>Показывать единицы измерения</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="559"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="596"/>
       <source>Dimension Details</source>
-      <translation>Настройки размера</translation>
+      <translation>Настройки размерных линий</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="662"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Annotations</source>
-      <translation>Аннотации</translation>
+      <translation>Разметка</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="546"/>
       <source>Shows the unit next to the dimension value</source>
-      <translation>Показывает единицы измерения рядом со значением размера</translation>
+      <translation>Показывать единицы измерения рядом со значением размера</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="579"/>
@@ -1168,7 +1168,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="673"/>
       <source>Annotations</source>
-      <translation>Аннотации</translation>
+      <translation>Разметка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
@@ -1204,7 +1204,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Annotation</source>
-      <translation>Аннотация</translation>
+      <translation>Разметка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
@@ -1220,7 +1220,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation>Множитель масштаба аннотации является обратной величиной по отношению к масштабу, установленному в настройках виджета "Масштаб аннотации". Если масштаб равен 1:100, то множитель равен 100.</translation>
+      <translation>Множитель масштаба разметки является обратной величиной по отношению к масштабу, установленному в настройках виджета "Масштаб разметки". Если масштаб равен 1:100, то множитель равен 100.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
@@ -1381,12 +1381,12 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="670"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
-      <translation>Применить вышеуказанный стиль ко всем аннотациям (текстам, размерам и меткам)</translation>
+      <translation>Применить вышеуказанный стиль ко всей разметке (текстам, размерам и меткам)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>Show unit</source>
-      <translation>Показать единицы измерения</translation>
+      <translation>Показывать единицы измерения</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
@@ -1815,7 +1815,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="589"/>
       <source>Dimension Details</source>
-      <translation>Настройки размера</translation>
+      <translation>Настройки размерных линий</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="669"/>
@@ -1968,7 +1968,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="481"/>
       <source>Show unit</source>
-      <translation>Показать единицы измерения</translation>
+      <translation>Показывать единицы измерения</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="497"/>
@@ -3243,7 +3243,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="709"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="282"/>
       <source>Angle</source>
       <translation>Угол</translation>
     </message>
@@ -3486,19 +3486,20 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="1098"/>
       <location filename="../../DraftGui.py" line="1118"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="224"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="278"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1099"/>
       <location filename="../../DraftGui.py" line="1119"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="225"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="279"/>
       <source>Offset distance</source>
       <translation>Расстояние смещения</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="63"/>
       <source>Trimex</source>
       <translation>ОбрезатьПродлить</translation>
     </message>
@@ -3667,7 +3668,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_patharray.py" line="328"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
-      <location filename="../../draftutils/utils.py" line="1143"/>
+      <location filename="../../draftutils/utils.py" line="1135"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <source>No active document. Aborting.</source>
       <translation>Нет активного документа. Прерывание.</translation>
@@ -3709,83 +3710,83 @@ or try saving to a lower DWG version.</source>
       <translation>Не имеет 'ViewObject.RootNode'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="637"/>
+      <location filename="../../draftutils/utils.py" line="629"/>
       <source>Solids:</source>
       <translation>Твёрдые тела:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="638"/>
+      <location filename="../../draftutils/utils.py" line="630"/>
       <source>Faces:</source>
       <translation>Грани:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="639"/>
+      <location filename="../../draftutils/utils.py" line="631"/>
       <source>Wires:</source>
       <translation>Кривые:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="640"/>
+      <location filename="../../draftutils/utils.py" line="632"/>
       <source>Edges:</source>
       <translation>Рёбра:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="641"/>
+      <location filename="../../draftutils/utils.py" line="633"/>
       <source>Vertices:</source>
       <translation>Вершины:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="645"/>
+      <location filename="../../draftutils/utils.py" line="637"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="642"/>
       <source>Wire</source>
       <translation>Кривая</translation>
     </message>
     <message>
+      <location filename="../../draftutils/utils.py" line="675"/>
       <location filename="../../draftutils/utils.py" line="683"/>
-      <location filename="../../draftutils/utils.py" line="691"/>
       <source>different types</source>
       <translation>различные типы</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="705"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>Объекты имеют разное размещение. Расстояние между двумя базовыми точками:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="969"/>
+      <location filename="../../draftutils/utils.py" line="961"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s нельзя изменить, потому что их размещение доступно только для чтения</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1184"/>
+      <location filename="../../draftutils/utils.py" line="1176"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Эта функция будет удалена в {}. Пожалуйста, используйте "{}".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1190"/>
+      <location filename="../../draftutils/utils.py" line="1182"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Эта функция будет устарела. Пожалуйста, используйте "{}".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="700"/>
       <source>has a different value</source>
       <translation>имеет другое значение</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="710"/>
+      <location filename="../../draftutils/utils.py" line="702"/>
       <source>doesn't exist in one of the objects</source>
       <translation>не существует ни в одном из объектов</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="960"/>
+      <location filename="../../draftutils/utils.py" line="952"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s имеет общую базу с %d другими объектами. Пожалуйста, проверьте, хотите ли вы изменить её.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1106"/>
+      <location filename="../../draftutils/utils.py" line="1098"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Неверный ввод: неизвестный документ {}</translation>
     </message>
@@ -4238,7 +4239,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="71"/>
       <source>Annotation Style Editor</source>
-      <translation>Редактор стилей заметок</translation>
+      <translation>Редактор стилей разметки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="224"/>
@@ -4253,12 +4254,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="232"/>
       <source>Style name required</source>
-      <translation>Требуется название стиля</translation>
+      <translation>Требуется задать название стиля</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="233"/>
       <source>No style name specified</source>
-      <translation>Не указано имя стиля</translation>
+      <translation>Не указано название стиля</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="239"/>
@@ -4270,12 +4271,12 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="240"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="310"/>
       <source>This style name already exists</source>
-      <translation>Такое название стиля уже существует</translation>
+      <translation>Стиль с таким названием уже существует</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="270"/>
       <source>Style in use</source>
-      <translation>Используемый стиль</translation>
+      <translation>Стиль используется</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="271"/>
@@ -4290,7 +4291,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="299"/>
       <source>New name</source>
-      <translation>Новое имя</translation>
+      <translation>Новое название</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="324"/>
@@ -4313,14 +4314,19 @@ or try saving to a lower DWG version.</source>
       <translation>JSON файл (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="77"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="80"/>
       <source>Select an object to project</source>
       <translation>Выберите объект для проецирования</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="123"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="126"/>
       <source>Create 2D View</source>
       <translation>Создать 2D вид</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="156"/>
+      <source>Update</source>
+      <translation>Обновить</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="140"/>
@@ -4516,7 +4522,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Создать многоугольник</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="96"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="65"/>
       <source>Select objects to trim or extend</source>
       <translation>Выберите объекты для обрезки или удлинения</translation>
     </message>
@@ -4526,55 +4532,71 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Этот объект не поддерживается</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="137"/>
-      <location filename="../../draftutils/utils.py" line="393"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <source>Only a single face can be extruded</source>
       <translation>Выдавливать можно только одну грань</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="156"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="138"/>
+      <location filename="../../draftutils/utils.py" line="385"/>
+      <location filename="../../draftutils/utils.py" line="388"/>
+      <location filename="../../draftutils/utils.py" line="391"/>
       <location filename="../../draftutils/utils.py" line="396"/>
-      <location filename="../../draftutils/utils.py" line="399"/>
-      <location filename="../../draftutils/utils.py" line="404"/>
-      <location filename="../../draftutils/utils.py" line="410"/>
-      <location filename="../../draftutils/utils.py" line="425"/>
+      <location filename="../../draftutils/utils.py" line="402"/>
+      <location filename="../../draftutils/utils.py" line="417"/>
       <source>Trimex does not support this object type</source>
       <translation>ОбрезатьПродлить не поддерживает этот тип объекта</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="178"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
+      <source>Select a single face to extrude</source>
+      <translation>Выберите одну грань для выдавливания</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="568"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Невозможно обрезать эти объекты, поддерживаются только кривые и дуги из Наброска</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="588"/>
       <source>These objects do not intersect</source>
       <translation>Эти объекты не пересекаются</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="528"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="591"/>
       <source>Too many intersection points</source>
       <translation>Слишком много точек пересечения</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="604"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="667"/>
       <source>%1 pick target</source>
       <translation>%1 укажите цель</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="606"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="669"/>
       <source>Hold %1 free direction</source>
       <translation>Удерживайте %1 для свободного направления</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="672"/>
       <source>Hold %1 keep active endpoint</source>
       <translation>Удерживайте %1 для сохранения активной конечной точки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="675"/>
       <source>Hold %1 invert trim direction</source>
       <translation>Удерживайте %1 для инвертирования направления обрезки</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="684"/>
+      <source>Extrude Face</source>
+      <translation>Выдавить грань</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="685"/>
+      <source>Select a face to extrude</source>
+      <translation>Выберите грань для выдавливания</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4592,18 +4614,18 @@ The final angle will be the base angle plus this amount.</source>
       <translation>%1 укажите расстояние</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="168"/>
       <location filename="../../draftguitools/gui_offset.py" line="152"/>
       <source>Pick distance</source>
       <translation>Укажите расстояние</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="283"/>
       <source>Offset angle</source>
       <translation>Угол смещения</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="571"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Невозможно обрезать эти объекты, слишком много кривых</translation>
     </message>
@@ -6707,14 +6729,14 @@ If the "Copy" option is active, it will create rotated copies.</source>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="78"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="71"/>
       <source>Trimex</source>
       <translation>ОбрезатьПродлить</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="81"/>
-      <source>Trims or extends the selected object, or extrudes single faces</source>
-      <translation>Обрезает или продлевает выбранный объект, или выдавливает отдельные грани</translation>
+      <location filename="../../draftguitools/gui_trimex.py" line="72"/>
+      <source>Trims or extends the selected object</source>
+      <translation>Обрезать или продлить выбранный объект</translation>
     </message>
   </context>
   <context>
@@ -7268,7 +7290,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
 Для других типов текст будет сформирован автоматически на основе 
 объекта, определенного в "Цели".
 "Теги" и "Материал" работают только для объектов, которые имеют 
-эти свойства, например, БИМ-объекты.
+эти свойства, например, ТИМ-объекты.
 
 Для "Позиции", "Длины" и "Площади" эти свойства будут извлечены из
  главного объекта в "Цели" или из подэлемента "Вершина N", "Ребро N"
@@ -7286,11 +7308,11 @@ in the same proportion.</source>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation>Стиль аннотации, который будет применён к этому объекту.
+      <translation>Стиль разметки, который будет применён к этому объекту.
 При использовании сохраненного стиля некоторые свойства 
 просмотра станут доступны только для чтения; их можно будет 
 изменить только с помощью инструмента "Редактор стилей 
-аннотаций".</translation>
+разметки".</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="220"/>
@@ -8245,10 +8267,10 @@ beyond the dimension line</source>
       <translation>Набросок</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="253"/>
-      <location filename="../../InitGui.py" line="256"/>
-      <location filename="../../InitGui.py" line="259"/>
       <location filename="../../InitGui.py" line="262"/>
+      <location filename="../../InitGui.py" line="265"/>
+      <location filename="../../InitGui.py" line="268"/>
+      <location filename="../../InitGui.py" line="271"/>
       <source>Import-Export</source>
       <translation>Импорт/Экспорт</translation>
     </message>
@@ -8258,12 +8280,12 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
       <source>Annotation Styles</source>
-      <translation>Стиль Аннотации</translation>
+      <translation>Стили Разметки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="86"/>
       <source>Opens an editor to manage or create annotation styles</source>
-      <translation>Открывает редактор для управления или создания стилей аннотации</translation>
+      <translation>Открывает редактор для управления или создания стилей разметки</translation>
     </message>
   </context>
   <context>
@@ -8448,7 +8470,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="233"/>
       <source>Adds new Draft and BIM objects to the selected layer or group</source>
-      <translation>Добавляет новые объекты Наброска и БИМ (BIM) к выбранному 
+      <translation>Добавляет новые объекты Наброска и ТИМ (BIM) к выбранному 
 слою или группе</translation>
     </message>
   </context>
@@ -8680,12 +8702,12 @@ straight Draft lines that are drawn on the XY-plane.</source>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="63"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="66"/>
       <source>Shape 2D View</source>
       <translation>Двухмерная проекция фигуры</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="67"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="70"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
       <translation>Создаёт 2D-проекцию выбранных объектов на плоскости XY.
@@ -9079,7 +9101,7 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
       <source>Warning</source>
-      <translation>Предупреждения</translation>
+      <translation>Предупреждение</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>
@@ -9092,7 +9114,22 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
-      <translation>Сглаженный SVG </translation>
+      <translation>Сглаженный SVG</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UpdateShape2DView</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
+      <source>Force 2D View Update</source>
+      <translation type="unfinished">Force 2D View Update</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
+      <source>Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</source>
+      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</translation>
     </message>
   </context>
 </TS>

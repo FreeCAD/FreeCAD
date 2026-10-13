@@ -352,7 +352,7 @@
       <translation>Стварыць аркуш</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="315"/>
+      <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
@@ -731,6 +731,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.ui" line="269"/>
       <source>Alias for this cell</source>
       <translation>Псеўданім для клеткі</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="47"/>
+      <source>Allows referring to a cell by an alias name, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Дазваляе спасылацца на клетку з дапамогай псеўданіма, напрыклад Spreadsheet.my_alias_name замест Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -1279,6 +1285,69 @@ Defaults to: %V = %A
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
       <translation>Выдаліць табліцу канфігурацыі</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::PropertiesDialog</name>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="342"/>
+      <source>Alias conflicts with a reserved unit token used by expressions</source>
+      <translation>Псеўданім канфліктуе з зарэзерваваным токенам адзінкі, ужытымі выразамі</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="343"/>
+      <source>Invalid: reserved unit token</source>
+      <translation>Недапушчальна: зарэзерваваны токен адзінкі</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="346"/>
+      <source>Alias conflicts with a reserved constant token used by expressions</source>
+      <translation>Псеўданім канфліктуе з зарэзерваваным токенам канстанты, ужытымі выразамі</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="347"/>
+      <source>Invalid: reserved constant token</source>
+      <translation>Недапушчальна: зарэзерваваны токен канстанты</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="350"/>
+      <source>Alias already defined</source>
+      <translation>Псеўданім ужо вызначаны</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="351"/>
+      <source>Invalid: alias already exists</source>
+      <translation>Недапушчальну: псеўданім ужо існуе</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="354"/>
+      <source>Alias cannot look like a cell address such as A1 or C12</source>
+      <translation>Псеўданім не можа выглядаць як адрас клеткі, як A1 ці C12</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="355"/>
+      <source>Invalid: alias matches cell address pattern</source>
+      <translation>Недапушчальна: псеўданім адпавядае шаблону адраса клеткі</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="358"/>
+      <source>Alias conflicts with an existing spreadsheet property name</source>
+      <translation>Псеўданім канфліктуе з існуючым іменем уласцівасці аркуша</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="359"/>
+      <source>Invalid: conflicts with existing property name</source>
+      <translation>Недапушчальна: канфліктуе з існуючым іменем уласцівасці</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="362"/>
+      <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
+      <translation>Псеўданім павінен пачынацца з літары, і ўтрымліваць толькі літары, лічбы і '_'</translation>
+    </message>
+    <message>
+      <location filename="../../PropertiesDialog.cpp" line="363"/>
+      <source>Invalid: bad alias syntax</source>
+      <translation>Недапушчальна: няправільны сінтаксіс псеўданіма</translation>
     </message>
   </context>
 </TS>

@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <sstream>
+#include <utility>
 
 #include <Geom_TrimmedCurve.hxx>
 
@@ -62,7 +63,7 @@ PyObject* SketchObjectPy::solve(PyObject* args)
         return nullptr;
     }
     const auto status = this->getSketchObjectPtr()->solve();
-    return Py_BuildValue("i", Base::to_underlying(status));
+    return Py_BuildValue("i", std::to_underlying(status));
 }
 
 PyObject* SketchObjectPy::addGeometry(PyObject* args)
@@ -2685,7 +2686,7 @@ PyObject* SketchObjectPy::getGeometryId(PyObject* args)
         std::stringstream str;
         str << "Not able to get geometry Id of a geometry with the given index: " << Index;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        Py_Return;
+        return nullptr;
     }
 
     return Py::new_reference_to(Py::Long(Id));

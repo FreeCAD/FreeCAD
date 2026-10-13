@@ -25,17 +25,18 @@ import pathlib
 import unittest
 
 import FreeCAD
+import Path
 
 FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 
 
 def _get_z_depths(obj, z_max=0):
     """Return sorted list of unique Z values <= z_max from a CAM path object."""
-    zs = set()
+    zs = []
     for cmd in obj.Path.Commands:
         z = cmd.Parameters.get("Z", z_max + 1)
-        if z <= z_max:
-            zs.add(z)
+        if z <= z_max and not any(Path.Geom.isRoughly(z, _) for _ in zs):
+            zs.append(z)
     return sorted(zs)
 
 

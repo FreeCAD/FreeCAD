@@ -30,7 +30,6 @@
 #include <QDockWidget>
 #include <QFileInfo>
 
-#include <App/Application.h>
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>

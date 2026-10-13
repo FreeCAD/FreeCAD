@@ -82,6 +82,11 @@ public:
     {
         return !(*this == p);
     }
+    // Exact coordinate equality (operator== is tolerance-based)
+    bool exactlyEquals(const Point& p) const
+    {
+        return x == p.x && y == p.y;
+    }
     double dist(const Point& p) const
     {
         double dx = p.x - x;

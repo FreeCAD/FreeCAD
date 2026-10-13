@@ -327,6 +327,20 @@ class TestFileNameGenerator(unittest.TestCase):
 
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
 
+    def test074(self):
+        """Test %O substitution when the template has literal text around it"""
+        teststring = "%j-Op-%O.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("OutsideProfile")
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(
+            self, filename, os.path.join(self.testfilepath, "MainJob-Op-OutsideProfile.nc")
+        )
+
     def test075(self):
         """Test path and filename substitutions together"""
         teststring = "%D/%j_%S.nc"
@@ -1981,7 +1995,11 @@ G1 X20.000 Y10.000 F6000.000
         """
         Test that pre/post rotary blocks are inserted around rotary axis moves.
 
-        Expected: 2 rotary groups → 2 pre-rotary + 2 post-rotary blocks.
+        Expected: 3 pre-rotary + 3 post-rotary blocks. On a machine with
+        rotary axes the post commands every operation's pose before it - here
+        the rotaries home, since the operation has no work plane - and that
+        move is wrapped like any other; the path's own 2 rotary groups are the
+        other two.
         """
         config = self._get_full_machine_config()
         machine = Machine.from_dict(config)
@@ -2004,13 +2022,13 @@ G1 X20.000 Y10.000 F6000.000
 
             self.assertEqual(
                 gcode.count("(prerotary)"),
-                2,
-                "Should have 2 pre-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 pre-rotary blocks (the initial pose, then one per rotary group)",
             )
             self.assertEqual(
                 gcode.count("(Postrotary)"),
-                2,
-                "Should have 2 post-rotary blocks (one per rotary group)",
+                3,
+                "Should have 3 post-rotary blocks (the initial pose, then one per rotary group)",
             )
 
     def test142_fixture_change_blocks_insertion(self):

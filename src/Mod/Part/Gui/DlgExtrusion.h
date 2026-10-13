@@ -46,7 +46,7 @@ public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion() override;
     void accept() override;
-    void apply();
+    bool apply();
     void reject() override;
 
     Base::Vector3d getDir() const;
@@ -64,6 +64,14 @@ public:
     bool validate();
 
     void writeParametersToFeature(App::DocumentObject& feature, App::DocumentObject* base) const;
+
+    Part::Extrusion* createFeatureFor(App::DocumentObject* sourceObj);
+    void updateFeatures();
+    void reconcileFeatures();
+    void refreshFeatures();
+    void updateBinding();
+    void applyBoundParameters();
+    void syncLinearParameters();
 
     void setSelectionGate();
 
@@ -84,6 +92,13 @@ private:
     void onButtonZClicked();
     void onCheckSymmetricToggled(bool on);
     void onTextLinkTextChanged(QString);
+    void onTreeSelectionChanged();
+
+    bool applyInternal();
+    bool ensureTransaction();
+    void commitTransaction();
+    void abortTransaction();
+    void removeCreatedFeatures();
 
 private:
     /// updates enabling of controls
@@ -104,6 +119,10 @@ private:
     class EdgeSelection;
     EdgeSelection* filter;
     bool filterSelection;
+    std::vector<Part::Extrusion*> extrusions;
+    Part::Extrusion* boundFeature {nullptr};
+    bool transactionOpen {false};
+    bool ownsTransaction {false};
 };
 
 class TaskExtrusion: public Gui::TaskView::TaskDialog

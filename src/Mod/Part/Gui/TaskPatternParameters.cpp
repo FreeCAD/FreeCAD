@@ -54,10 +54,12 @@ std::string patternReferenceCommand(
     const std::vector<std::string>& subnames
 )
 {
-    if (!object) {
+    if (!object && subnames.empty()) {
         return "None";
     }
-    std::string command = "(" + Gui::Command::getObjectCmd(object) + ", [";
+    std::string command = "(";
+    command += object ? Gui::Command::getObjectCmd(object) : "None";
+    command += ", [";
     for (const auto& subname : subnames) {
         command += Base::Tools::quoted(Base::Tools::escapeEncodeString(subname)) + ", ";
     }
@@ -401,10 +403,8 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         std::vector<std::string> subnames;
         App::DocumentObject* object = nullptr;
         circularParametersWidget->getAxis(object, subnames);
-        if (object || subnames.empty()) {
-            const std::string direction = buildDirectionReferencePythonString(object, subnames);
-            FCMD_OBJ_CMD(pattern, "Axis = " << direction.c_str());
-        }
+        const std::string direction = buildDirectionReferencePythonString(object, subnames);
+        FCMD_OBJ_CMD(pattern, "Axis = " << direction.c_str());
         circularParametersWidget->applyQuantitySpinboxes();
         return;
     }
@@ -423,10 +423,8 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         std::vector<std::string> dirs;
         App::DocumentObject* obj = nullptr;
         widget->getAxis(obj, dirs);
-        if (obj || dirs.empty()) {
-            std::string direction = buildDirectionReferencePythonString(obj, dirs);
-            FCMD_OBJ_CMD(pattern, directionProperty << " = " << direction.c_str());
-        }
+        const std::string direction = buildDirectionReferencePythonString(obj, dirs);
+        FCMD_OBJ_CMD(pattern, directionProperty << " = " << direction.c_str());
         FCMD_OBJ_CMD(pattern, reversedProperty << " = " << widget->getReverse());
         FCMD_OBJ_CMD(pattern, modeProperty << " = " << widget->getMode());
         widget->applyQuantitySpinboxes();
@@ -475,7 +473,7 @@ void TaskPatternParameters::updatePatternSpacingLabels()
             }
             catch (const Base::Exception& e) {
                 Base::Console().warning(
-                    "Could not update linear pattern spacing labels: %s\n",
+                    "Could not update linear pattern spacing labels: {}\n",
                     e.what()
                 );
             }
@@ -529,7 +527,7 @@ void TaskPatternParameters::updatePatternSpacingLabels()
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().warning("Could not update polar pattern spacing labels: %s\n", e.what());
+            Base::Console().warning("Could not update polar pattern spacing labels: {}\n", e.what());
         }
     }
 }
@@ -605,14 +603,5 @@ std::string TaskPatternParameters::buildDirectionReferencePythonString(
     const std::vector<std::string>& subs
 ) const
 {
-    if (!obj) {
-        return "None";
-    }
-
-    if (subs.empty()) {
-        return Gui::Command::getObjectCmd(obj);
-    }
-
-    const std::string sub = subs.front();
-    return Gui::Command::getObjectCmd(obj, "(", ", ['") + sub + "'])";
+    return patternReferenceCommand(obj, subs);
 }

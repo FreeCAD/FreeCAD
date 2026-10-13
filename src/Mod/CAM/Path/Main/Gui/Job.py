@@ -298,6 +298,8 @@ class ViewProvider:
             children.append(self.obj.SetupSheet)
         if hasattr(self.obj, "Tools"):
             children.append(self.obj.Tools)
+        if getattr(self.obj, "Workplanes", None):
+            children.append(self.obj.Workplanes)
         return children
 
     def onDelete(self, vobj, arg2=None):
@@ -1535,25 +1537,43 @@ class TaskPanel:
         combo = self.form.jobMachine
         combo.blockSignals(True)
         combo.clear()
+        combo.addItem(translate("CAM_Post", "(Legacy post-processor)"), "")
         try:
             entries = MachineFactory.list_configuration_files()
         except Exception as e:
             Path.Log.warning(f"Failed to list machines: {e}")
-            entries = [("<none>", None)]
+            entries = []
         for display, filename in entries:
-            combo.addItem(display, filename or "")
+            combo.addItem(display, filename)
         current = getattr(self.obj, "Machine", "") or ""
         idx = combo.findText(current) if current else -1
         idx = max(0, idx)
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
+        self.updatePostProcessorVisibility()
+
+    def machineSelected(self):
+        """Return True when a machine configuration (not legacy post) is selected."""
+        return bool(self.form.jobMachine.currentData())
+
+    def updatePostProcessorVisibility(self):
+        """Show the post processor / arguments rows only when no machine is selected.
+        A machine configuration carries its own post processor settings."""
+        noMachine = not self.machineSelected()
+        for widget in (
+            self.form.label_10,
+            self.form.postProcessor,
+            self.form.label_11,
+            self.form.postProcessorArguments,
+        ):
+            widget.setVisible(noMachine)
 
     def machineChanged(self):
         """Write the selected machine name back to Job.Machine."""
+        self.updatePostProcessorVisibility()
         if not hasattr(self.obj, "Machine"):
             return
-        text = self.form.jobMachine.currentText()
-        self.obj.Machine = text if text and text != "<any>" else ""
+        self.obj.Machine = self.form.jobMachine.currentText() if self.machineSelected() else ""
 
     def newMachine(self):
         """Open the Machine Editor to create a new machine, then refresh the combo."""

@@ -57,7 +57,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskChamferParameters */
 
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, true, true, parent)
+    : TaskDressUpParameters(DressUpView, true, true, false, true, parent)
     , ui(new Ui_TaskChamferParameters)
 {
     // we need a separate container widget to add all controls to
@@ -343,7 +343,7 @@ void TaskChamferParameters::apply()
 
     // Alert user if he created an empty feature
     if (ui->listWidgetReferences->count() == 0) {
-        Base::Console().warning(tr("Empty chamfer created!\n").toStdString().c_str());
+        Base::Console().warning("{}", tr("Empty chamfer created!\n").toStdString());
     }
 }
 

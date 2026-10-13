@@ -137,6 +137,7 @@ public:
             commandAddShapeGeometryAndConstraints();
 
             if (deleteOriginal) {
+                reassignConstraintNames(initialConstraintCount);
                 reassignFacadeIds();
             }
 
@@ -273,6 +274,28 @@ private:
         }
     }
 
+    void reassignConstraintNames(int startIndex) const
+    {
+        int i = 0;
+        for (const auto& constraint : ShapeConstraints) {
+            if (!constraint->Name.empty()) {
+                std::string escaped = Base::Tools::escapedUnicodeFromUtf8(constraint->Name.c_str());
+                try {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "renameConstraint(%d, u'%s')",
+                        startIndex + i,
+                        escaped
+                    );
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().error("{}\n", e.what());
+                }
+            }
+            ++i;
+        }
+    }
+
 private:
     struct LabelToScale
     {
@@ -304,7 +327,7 @@ private:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "deleteAllGeometry(True)");
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
         else {
@@ -321,7 +344,7 @@ private:
                 );
             }
             catch (const Base::Exception& e) {
-                Base::Console().error("%s\n", e.what());
+                Base::Console().error("{}\n", e.what());
             }
         }
     }
@@ -342,7 +365,7 @@ private:
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "setGeometryIds([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().error("%s\n", e.what());
+            Base::Console().error("{}\n", e.what());
         }
     }
     void scaleLabels(int constraintIndexOffset)

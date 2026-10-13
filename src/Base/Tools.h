@@ -27,6 +27,7 @@
 
 #include <FCGlobal.h>
 #include <algorithm>
+#include <format>
 #include <functional>
 #include <cmath>
 #include <numbers>
@@ -432,6 +433,26 @@ BaseExport constexpr bool isNullOrEmpty(const char* str)
 BaseExport std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
 /**
+ * @brief joinFormatted
+ * Join the elements of any range with the infix separator \a sep, formatting
+ * each element with std::format.  Unlike joinList() no separator follows the
+ * last element.  Replaces fmt::join until std::format formats a range on
+ * every supported compiler, which libstdc++ does from version 15 on.
+ */
+template<typename Range>
+std::string joinFormatted(const Range& range, std::string_view sep)
+{
+    std::string result;
+    for (const auto& element : range) {
+        if (!result.empty()) {
+            result += sep;
+        }
+        result += std::format("{}", element);
+    }
+    return result;
+}
+
+/**
  * @brief currentDateTimeString
  * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
  */
@@ -476,27 +497,5 @@ struct Overloads: Ts...
 
 template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
-
-
-#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
-[[deprecated("Replace with std::to_underlying() now that C++23 is required")]]
-#endif
-template<typename E>
-constexpr auto to_underlying(E e) noexcept
-{
-    return static_cast<std::underlying_type_t<E>>(e);
-}
-
-#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
-[[deprecated("Replace with std::unreachable() now that C++23 is required")]]
-#endif
-[[noreturn]] inline void unreachable()
-{
-#if defined(_MSC_VER) && !defined(__clang__)
-    __assume(false);
-#else
-    __builtin_unreachable();
-#endif
-}
 
 }  // namespace Base

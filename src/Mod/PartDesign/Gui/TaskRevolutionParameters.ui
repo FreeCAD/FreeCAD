@@ -369,6 +369,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxProjectAxis">
+     <property name="toolTip">
+      <string>Projects the selected axis onto the profile plane if the profile is planar. When unchecked, uses the axis in its original position and direction.</string>
+     </property>
+     <property name="text">
+      <string>Project selected axis to profile plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxReversed">
      <property name="text">
       <string>Reversed</string>
@@ -447,6 +457,7 @@
   <tabstop>changeMode2</tabstop>
   <tabstop>revolveAngle2</tabstop>
   <tabstop>lineFaceName2</tabstop>
+  <tabstop>checkBoxProjectAxis</tabstop>
   <tabstop>checkBoxReversed</tabstop>
   <tabstop>comboOperation</tabstop>
   <tabstop>checkBoxUpdateView</tabstop>

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
+from StringID import StringID
 from typing import Any, Final, overload, Dict
 
 
@@ -20,14 +21,14 @@ class StringHasher(BaseClass):
     """
 
     @overload
-    def getID(self, txt: str, base64: bool = False, /) -> Any:
+    def getID(self, txt: str, base64: bool = False, /) -> StringID | None:
         ...
 
     @overload
-    def getID(self, id: int, base64: bool = False, /) -> Any:
+    def getID(self, id: int, index: int = 0, /) -> StringID | None:
         ...
 
-    def getID(self, arg: Any, base64: bool = False, /) -> Any:
+    def getID(self, arg: Any, base64: bool = False, /) -> StringID | None:
         """
         If the input is text, return a StringID object that is unique within this hasher. This
         StringID object is reference counted. The hasher may only save hash ID's that are used.

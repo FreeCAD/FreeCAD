@@ -20,5 +20,6 @@ namespace ZVALUE {
     const int BALLOON = 120;
     const int ANNOTATION = 120;
     const int TRACKER = 125;
+    const int VIEWCAPTION = 150;
     const int LOCK = 200;
 }

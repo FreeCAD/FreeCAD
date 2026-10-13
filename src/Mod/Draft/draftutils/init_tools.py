@@ -32,11 +32,6 @@
 
 ## \addtogroup draftutils
 # @{
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
-from draftutils.translate import translate
-
-# Comment out commands that aren't ready to be used
 
 
 def get_draft_drawing_commands():
@@ -98,7 +93,7 @@ def get_draft_modification_commands():
         "Draft_Slope",
         "Draft_FlipDimension",
         "Separator",
-        "Draft_Shape2DView",
+        "Draft_Shape2DViewTools",
     ]
 
 

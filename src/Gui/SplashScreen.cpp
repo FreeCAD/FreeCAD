@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <format>
 #include <string_view>
-#include <fmt/format.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
@@ -229,7 +229,7 @@ static void renderDevBuildWarning(
     painter.drawText(box, Qt::AlignCenter, devWarning);
 }
 
-static QPixmap defaultSplashImage()
+QPixmap SplashScreen::defaultSplashImage()
 {
     constexpr QSizeF splashSize(480.0, 220.0);
     return BitmapFactory().pixmapFromSvg(":/icons/freecadsplash.svg", splashSize);
@@ -266,7 +266,7 @@ static QFont defaultSplashFont(const QFont& fallback)
  * Constructs a splash screen that will display the pixmap.
  */
 SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
-    : QSplashScreen(pixmap, f)
+    : QSplashScreen(pixmap, f | Qt::NoDropShadowWindowHint)
 {
     // write the messages to splasher
     messages = new SplashObserver(this);
@@ -295,8 +295,6 @@ bool SplashScreen::event(QEvent* e)
 
 void SplashScreen::show()
 {
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::NoDropShadowWindowHint);
-
     QSplashScreen::show();
 
     // Our repaint will call processEvents later on, no need to waste time here
@@ -386,7 +384,7 @@ QPixmap SplashScreen::splashImage()
         const std::string minor = App::Application::Config()["BuildVersionMinor"];
         const std::string point = App::Application::Config()["BuildVersionPoint"];
         const std::string suffix = App::Application::Config()["BuildVersionSuffix"];
-        std::string version = fmt::format("{}.{}.{}{}", major, minor, point, suffix);
+        std::string version = std::format("{}.{}.{}{}", major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string, std::string>::const_iterator te = App::Application::Config().find(

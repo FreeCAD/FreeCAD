@@ -23,7 +23,7 @@
 #include "Format.h"
 #include "FaultCodes.h"
 
-#include <Build/Version.h>
+#include <Base/Version.h>
 
 #include <algorithm>
 #include <array>
@@ -216,9 +216,10 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
         throw BadFormatError("Frame count doesn't fit in available storage");
     }
 
-#if defined(FC_HAVE_CPPTRACE) && defined(FCRepositoryHash)
+#if defined(FC_HAVE_CPPTRACE)
     // Check to see if the current running version is the same as the one in the fcrash file:
-    const bool doSymbolication = parsedReport.buildID == FCRepositoryHash;
+    const auto hash = FCVersionInfo::RepositoryHash();
+    const bool doSymbolication = !hash.empty() && parsedReport.buildID == hash;
 #else
     constexpr bool doSymbolication = false;
 #endif

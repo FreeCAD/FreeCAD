@@ -4,22 +4,22 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="609"/>
+      <location filename="../../Application.cpp" line="614"/>
       <source>Unnamed</source>
       <translation>Izenik gabea</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>True</source>
       <translation>Egia</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="569"/>
+      <location filename="../../Expression.cpp" line="583"/>
       <source>False</source>
       <translation>Gezurra</translation>
     </message>
     <message>
-      <location filename="../../Expression.cpp" line="587"/>
+      <location filename="../../Expression.cpp" line="601"/>
       <source>Null</source>
       <translation type="unfinished">Null</translation>
     </message>
@@ -27,7 +27,7 @@
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="163"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Jatorria</translation>
     </message>
@@ -85,7 +85,7 @@ Erabiltzaileak orduan, Refresh button sakatu beharko du tresna-barra nagusian.</
   <context>
     <name>LinkParams</name>
     <message>
-      <location filename="../../Link.cpp" line="119"/>
+      <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link

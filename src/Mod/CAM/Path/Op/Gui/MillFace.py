@@ -27,7 +27,6 @@ import Path
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.PocketBase as PathPocketBaseGui
 import Path.Op.MillFace as PathMillFace
-import Path.Op.PocketShape as PathPocketShape
 import FreeCADGui
 
 __title__ = "CAM Face Mill Operation UI"
@@ -57,7 +56,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         ]
 
         enumTups = PathMillFace.ObjectFace.propertyEnumerations(dataType="raw")
-        enumTups.update(PathPocketShape.ObjectPocket.pocketPropertyEnumerations(dataType="raw"))
+        enumTups.update(PathMillFace.ObjectFace.pocketPropertyEnumerations(dataType="raw"))
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form

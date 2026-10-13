@@ -6,6 +6,8 @@ from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Part.App.Geom2d.Geometry2d import Geometry2d
 from Part.App.Geom2d.BSplineCurve import BSplineCurve
+from Part.GeometrySurface import GeometrySurface
+from Part.TopoShapeFace import TopoShapeFace
 from typing import Final, overload, List
 
 @export(
@@ -44,8 +46,26 @@ class Curve2d(Geometry2d):
         """
         ...
 
+    @overload
     @constmethod
-    def toShape(self) -> object:
+    def toShape(self) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, param1: float, param2: float, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, surface: GeometrySurface, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, surface: GeometrySurface, param1: float, param2: float, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, face: TopoShapeFace, /) -> object: ...
+    @overload
+    @constmethod
+    def toShape(self, face: TopoShapeFace, param1: float, param2: float, /) -> object: ...
+    @constmethod
+    def toShape(self, *args) -> object:
         """
         Return the shape for the geometry.
         """
@@ -53,22 +73,37 @@ class Curve2d(Geometry2d):
 
     @overload
     @constmethod
-    def discretize(self, *, Number: int) -> List[Vector]: ...
+    def discretize(self, Number: int, First: float = None, Last: float = None) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, QuasiNumber: int) -> List[Vector]: ...
+    def discretize(
+        self, QuasiNumber: int, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Distance: float) -> List[Vector]: ...
+    def discretize(
+        self, Distance: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Deflection: float) -> List[Vector]: ...
+    def discretize(
+        self, Deflection: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, QuasiDeflection: float) -> List[Vector]: ...
+    def discretize(
+        self, QuasiDeflection: float, First: float = None, Last: float = None
+    ) -> List[Vector]: ...
     @overload
     @constmethod
-    def discretize(self, *, Angular: float, Curvature: float, Minimum: int = 2) -> List[Vector]: ...
+    def discretize(
+        self,
+        Angular: float,
+        Curvature: float,
+        First: float = None,
+        Last: float = None,
+        Minimum: int = 2,
+    ) -> List[Vector]: ...
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
         """
@@ -174,7 +209,7 @@ class Curve2d(Geometry2d):
         ...
 
     @constmethod
-    def intersectCC(self, other: "Curve2d", /) -> List[Vector]:
+    def intersectCC(self, other: "Curve2d", tolerance: float = ..., /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
@@ -183,7 +218,7 @@ class Curve2d(Geometry2d):
     @overload
     def toBSpline(self, /) -> BSplineCurve: ...
     @overload
-    def toBSpline(self, First: float, Last: float, /) -> BSplineCurve: ...
+    def toBSpline(self, First: float = ..., Last: float = ..., /) -> BSplineCurve: ...
     def toBSpline(self, *args: float) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)

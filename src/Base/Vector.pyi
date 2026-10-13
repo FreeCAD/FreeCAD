@@ -195,7 +195,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isEqual(self, vector2: "Vector", tol: float = 0, /) -> bool:
+    def isEqual(self, vector2: "Vector", tol: float, /) -> bool:
         """
         Checks if the distance between the points represented by this vector
         and `vector2` is less or equal to the given tolerance.
@@ -206,7 +206,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isParallel(self, vector2: "Vector", tol: float = 0, /) -> bool:
+    def isParallel(self, vector2: "Vector", tol: float, /) -> bool:
         """
         Checks if this vector and `vector2` are
         parallel less or equal to the given tolerance.
@@ -217,7 +217,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isNormal(self, vector2: "Vector", tol: float = 0, /) -> bool:
+    def isNormal(self, vector2: "Vector", tol: float, /) -> bool:
         """
         Checks if this vector and `vector2` are
         normal less or equal to the given tolerance.
@@ -255,8 +255,8 @@ class Vector(PyObjectBase):
     def distanceToPoint(self, point2: "Vector", /) -> float:
         """
         Returns the distance to another point represented by `point2`.
-        .
-        point : Base.Vector
+
+        point2 : Base.Vector
         """
         ...
 

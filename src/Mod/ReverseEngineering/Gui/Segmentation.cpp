@@ -217,7 +217,7 @@ void Segmentation::accept()
                         else {
                             failures.push_back(feaSegm);
                             Base::Console().warning(
-                                "Failed to create face from %s\n",
+                                "Failed to create face from {}\n",
                                 feaSegm->Label.getValue()
                             );
                         }
@@ -225,7 +225,7 @@ void Segmentation::accept()
                     catch (Standard_Failure&) {
                         failures.push_back(feaSegm);
                         Base::Console().error(
-                            "Fatal failure to create face from %s\n",
+                            "Fatal failure to create face from {}\n",
                             feaSegm->Label.getValue()
                         );
                     }

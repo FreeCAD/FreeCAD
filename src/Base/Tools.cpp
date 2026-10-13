@@ -25,8 +25,7 @@
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
 #include <chrono>
-#include <ctime>
-#include <iomanip>
+#include <format>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -295,18 +294,7 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 std::string Base::Tools::currentDateTimeString()
 {
     const auto now = std::chrono::system_clock::now();
-    const std::time_t t = std::chrono::system_clock::to_time_t(now);
-
-    std::tm tmUtc {};
-#if defined(_WIN32)
-    gmtime_s(&tmUtc, &t);
-#else
-    gmtime_r(&t, &tmUtc);
-#endif
-
-    std::ostringstream out;
-    out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
-    return out.str();
+    return std::format("{:%Y-%m-%dT%H:%M:%SZ}", std::chrono::floor<std::chrono::seconds>(now));
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)

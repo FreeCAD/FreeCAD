@@ -83,7 +83,7 @@ def is_typable(obj):
     ifcfile = ifc_tools.get_ifcfile(obj)
     if not element or not ifcfile:
         return False
-    type_class = element.is_a() + "Type"
+    type_class = element.is_a().removesuffix("StandardCase") + "Type"
     schema = ifcfile.wrapped_data.schema_name()
     schema = ifc_tools.ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema)
     try:
@@ -159,7 +159,7 @@ def edit_type(obj):
     typerel = getattr(element, "IsTypedBy", None)
     if obj.Type:
         # verify the type is compatible -ex IFcWall in IfcWallType
-        if obj.Type.Class != element.is_a() + "Type":
+        if obj.Type.Class != element.is_a().removesuffix("StandardCase") + "Type":
             t = translate("BIM", "Error: Incompatible type")
             FreeCAD.Console.PrintError(obj.Label + ": " + t + ": " + obj.Type.Class + "\n")
             obj.Type = None

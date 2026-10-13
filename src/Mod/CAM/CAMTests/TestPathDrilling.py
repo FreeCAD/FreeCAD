@@ -26,7 +26,7 @@ import Path.Main.Job as PathJob
 import Path.Op.Drilling as PathDrilling
 import Path.Tool.Controller as PathToolController
 from Path.Tool.toolbit import ToolBit
-import CAMTests.PathTestUtils as PathTestUtils
+from CAMTests import PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -50,168 +50,62 @@ class TestPathDrilling(PathTestUtils.PathTestBase):
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
 
-    def test00_peck_retract_defaults_to_safe_height(self):
-        """PeckRetract (the G83/G81 'R' value) should default to SafeHeight, not StartDepth."""
+    def createDrillingOp(self):
+        """Helper method to create drilling op"""
         operation = PathDrilling.Create("Drilling", parentJob=self.job)
         operation.ToolController = self.toolController
 
-        self.assertTrue(hasattr(operation, "PeckRetract"))
-        self.assertRoughly(operation.SafeHeight.Value, operation.PeckRetract.Value)
-
-    def test01_peck_retract_drives_canned_cycle_r(self):
-        """The R parameter of the generated G83 peck cycle must come from PeckRetract,
-        not from StartDepth (see FreeCAD/FreeCAD#32201)."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
         operation.Strategy = "Drilling"
-        operation.Locations = [FreeCAD.Vector(10, 10, 0)]
-        operation.setExpression("StartDepth", None)
-        operation.StartDepth = 11.0  # stock top
-        operation.setExpression("FinalDepth", None)
-        operation.FinalDepth = 0.0
-        operation.PeckEnabled = True
-        operation.PeckDepth = 2.0
-        # Override the default (job-linked) retract, the way a user would via the
-        # "Peck Retract" field: just clear of the surface, so the cycle's rapid down
-        # to R stays in open air, but well below SafeHeight.
-        operation.setExpression("PeckRetract", None)
-        operation.PeckRetract = 12.0
-
-        operation.Proxy.execute(operation)
-
-        commands = {command.Name: command for command in operation.Path.Commands}
-        self.assertIn("G83", commands)
-        g83 = commands["G83"]
-
-        self.assertRoughly(12.0, g83.Parameters["R"])
-        self.assertNotEqual(operation.StartDepth.Value, g83.Parameters["R"])
-
-    def test02_peck_retract_ignored_when_not_pecking(self):
-        """PeckRetract only applies to peck cycles. A plain (non-peck) G81 cycle
-        should retract to SafeHeight regardless of any stale PeckRetract value."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
-        operation.Strategy = "Drilling"
-        operation.Locations = [FreeCAD.Vector(10, 10, 0)]
-        operation.setExpression("StartDepth", None)
-        operation.StartDepth = 11.0  # stock top
-        operation.setExpression("FinalDepth", None)
-        operation.FinalDepth = 0.0
-        operation.PeckEnabled = False
-        # A leftover/stale PeckRetract value (e.g. from a previous Peck session)
-        # must not leak into a non-peck cycle.
-        operation.setExpression("PeckRetract", None)
-        operation.PeckRetract = 12.0
-
-        operation.Proxy.execute(operation)
-
-        commands = {command.Name: command for command in operation.Path.Commands}
-        self.assertIn("G81", commands)
-        g81 = commands["G81"]
-
-        self.assertRoughly(operation.SafeHeight.Value, g81.Parameters["R"])
-        self.assertNotEqual(12.0, g81.Parameters["R"])
-
-    def test03_low_peck_retract_climbs_to_safe_before_next_hole(self):
-        """In KeepToolDown (G99) mode with a PeckRetract below SafeHeight (e.g. a
-        low peck retract deep inside a hole), the tool must not silently traverse to
-        the next hole at the low R height. It should climb to SafeHeight first."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
-        operation.Strategy = "Drilling"
-        operation.Locations = [FreeCAD.Vector(2, 2, 0), FreeCAD.Vector(18, 18, 0)]
-        operation.setExpression("StartDepth", None)
-        operation.StartDepth = 11.0  # stock top
-        operation.setExpression("FinalDepth", None)
-        operation.FinalDepth = 0.0
-        operation.PeckEnabled = True
-        operation.PeckDepth = 2.0
-        operation.KeepToolDown = True
-        operation.setExpression("PeckRetract", None)
-        operation.PeckRetract = 12.0  # clear of the surface, but below SafeHeight
-
-        operation.Proxy.execute(operation)
-
-        commands = operation.Path.Commands
-        g83_indices = [i for i, c in enumerate(commands) if c.Name == "G83"]
-        self.assertEqual(2, len(g83_indices))
-
-        between = commands[g83_indices[0] + 1 : g83_indices[1]]
-        climbs = [
-            c
-            for c in between
-            if c.Name == "G0"
-            and "Z" in c.Parameters
-            and Path.Geom.isRoughly(c.Parameters["Z"], operation.SafeHeight.Value)
+        operation.Locations = [
+            FreeCAD.Vector(5, 5, 0),
+            FreeCAD.Vector(10, 10, 0),
+            FreeCAD.Vector(20, 20, 0),
         ]
-        self.assertTrue(
-            climbs, "expected an explicit climb to SafeHeight between the two peck cycles"
-        )
 
-    def _twoHolePeckOp(self, peck_retract, strategy=None):
-        """A two-hole G99 peck op at machine-runnable depths, optionally on a
-        geometry-aware collision strategy."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
-        operation.Strategy = "Drilling"
-        operation.Locations = [FreeCAD.Vector(2, 2, 0), FreeCAD.Vector(18, 18, 0)]
-        operation.setExpression("StartDepth", None)
-        operation.StartDepth = 11.0  # stock top
-        operation.setExpression("FinalDepth", None)
+        operation.clearExpression("ClearanceHeight")
+        operation.ClearanceHeight = 15.0
+        operation.clearExpression("SafeHeight")
+        operation.SafeHeight = 13.0
+        operation.clearExpression("StartDepth")
+        operation.StartDepth = 11.0
+        operation.clearExpression("FinalDepth")
         operation.FinalDepth = 0.0
-        operation.PeckEnabled = True
+
+        operation.PeckEnabled = False
+        operation.clearExpression("PeckRetract")
+        operation.PeckRetract = 11.0
+        operation.clearExpression("PeckDepth")
         operation.PeckDepth = 2.0
-        operation.KeepToolDown = True
-        operation.setExpression("PeckRetract", None)
-        operation.PeckRetract = peck_retract
-        if strategy:
-            operation.CollisionAvoidanceStrategy = strategy
-            # CollisionClearance is expression-bound to OpToolDiameter and would be
-            # re-evaluated by execute(); pin it so the margin is explicit.
-            operation.setExpression("CollisionClearance", None)
-            operation.CollisionClearance = 1.0
-        operation.Proxy.execute(operation)
+
+        operation.KeepToolDown = False
+
+        operation.CollisionAvoidanceStrategy = "Retract Height"
+        operation.clearExpression("CollisionClearance")
+        operation.CollisionClearance = 1.0
+
         return operation
 
-    def _betweenCycles(self, operation):
-        """The commands emitted between the two canned cycles."""
-        commands = operation.Path.Commands
-        cycles = [i for i, c in enumerate(commands) if c.Name == "G83"]
-        self.assertEqual(2, len(cycles))
-        return commands[cycles[0] + 1 : cycles[1]]
+    def getSimpleGcodeFromPath(self, path):
+        """Returns string (gcode) without decimals and annotations to simplify comparing result"""
+        lines = []
+        for cmd in path.Commands:
+            line = cmd.toGCode()
+            if line in ("(Drilling)", "(Begin Drilling)"):
+                continue
+            line = line.replace(".000000", "")
+            lst = line.split(";")
+            lines.append(lst[0])
+            if len(lst) > 1:
+                annotation = lst[1]
 
-    def test04_geometry_strategy_keeps_tool_down_between_holes(self):
-        """With a strategy that actually checks geometry, a G99 retract that clears
-        the stock needs no climb -- the modal cycle carries the tool across at R.
-        That is the whole point of KeepToolDown."""
-        operation = self._twoHolePeckOp(12.0, strategy="Line of Sight")
+        return "\n".join(lines), annotation
 
-        between = self._betweenCycles(operation)
-        climbs = [c for c in between if c.Name == "G0" and "Z" in c.Parameters]
-        self.assertFalse(
-            climbs,
-            f"a clear traverse at R should emit no linking moves, got: {climbs}",
-        )
-
-    def test05_geometry_strategy_links_when_traverse_blocked(self):
-        """Same strategy, but a retract down inside the stock: the traverse to the
-        next hole is not clear, so explicit linking moves must be emitted rather
-        than letting the modal cycle drag the tool through material."""
-        operation = self._twoHolePeckOp(5.0, strategy="Line of Sight")
-
-        between = self._betweenCycles(operation)
-        climbs = [
-            c for c in between if c.Name == "G0" and "Z" in c.Parameters and c.Parameters["Z"] > 5.0
-        ]
-        self.assertTrue(climbs, "expected linking moves when the traverse at R is blocked by stock")
-
-    def test06_extra_offset_migration_renames_drill_tip(self):
+    def test00_extra_offset_migration_renames_drill_tip(self):
         """An old document's ExtraOffset selection must survive the enum rename.
         Enumeration::setEnums keeps the stored string and setValue() silently falls
         back to index 0 when it is gone, so without the migration "Drill Tip" would
         come back as "None" and the hole would be drilled short."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
+        operation = self.createDrillingOp()
 
         for old, expected in (
             ("Drill Tip", "Tool Tip"),
@@ -226,13 +120,10 @@ class TestPathDrilling(PathTestUtils.PathTestBase):
 
             self.assertEqual(expected, operation.ExtraOffset)
 
-    def test07_retract_height_migrates_to_peck_retract(self):
+    def test01_retract_height_migrates_to_peck_retract(self):
         """Documents saved while the property was named RetractHeight must come back
         as PeckRetract, keeping their value."""
-        operation = PathDrilling.Create("Drilling", parentJob=self.job)
-        operation.ToolController = self.toolController
-        operation.setExpression("PeckRetract", None)
-        operation.PeckRetract = 12.0
+        operation = self.createDrillingOp()
         operation.renameProperty("PeckRetract", "RetractHeight")
         self.assertFalse(hasattr(operation, "PeckRetract"))
 
@@ -240,17 +131,175 @@ class TestPathDrilling(PathTestUtils.PathTestBase):
 
         self.assertTrue(hasattr(operation, "PeckRetract"))
         self.assertFalse(hasattr(operation, "RetractHeight"))
-        self.assertRoughly(12.0, operation.PeckRetract.Value)
+        self.assertRoughly(11.0, operation.PeckRetract.Value)
 
-    def test08_peck_retract_below_final_depth_falls_back_to_safe_height(self):
-        """An R at or below the hole bottom makes the post-processor's cycle expander
-        drop the hole from the output entirely (DrillCycleExpander returns [] when R is
-        under the drill depth), so the holes vanish with no warning anywhere. The
-        operation must catch that and fall back to SafeHeight."""
-        operation = self._twoHolePeckOp(-1.0)  # below FinalDepth (0.0)
+    def test10_basic_drilling_op(self):
+        """Test basic Drilling operation creation"""
+        operation = self.createDrillingOp()
+        operation.Proxy.execute(operation)
 
-        cycles = [c for c in operation.Path.Commands if c.Name == "G83"]
-        self.assertEqual(2, len(cycles))
-        for cycle in cycles:
-            self.assertRoughly(operation.SafeHeight.Value, cycle.Parameters["R"])
-            self.assertNotEqual(-1.0, cycle.Parameters["R"])
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G81 F100 R13 X5 Y5 Z0
+G81 F100 R13 X10 Y10 Z0
+G81 F100 R13 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G98", annotation)
+
+    def test11_collision_clearance(self):
+        """Test Drilling operation
+        - rapids at ClearanceHeight"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Clearance Height"
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G81 F100 R13 X5 Y5 Z0
+G0 F200 X5 Y5 Z15
+G0 F200 X10 Y10 Z15
+G0 F200 X10 Y10 Z13
+G81 F100 R13 X10 Y10 Z0
+G0 F200 X10 Y10 Z15
+G0 F200 X20 Y20 Z15
+G0 F200 X20 Y20 Z13
+G81 F100 R13 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G98", annotation)
+
+    def test12_collision_clearance_peck(self):
+        """Test Drilling operation
+        - peck
+        - rapids at ClearanceHeight"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Clearance Height"
+        operation.PeckEnabled = True
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G83 F100 Q2 R11 X5 Y5 Z0
+G0 F200 X5 Y5 Z15
+G0 F200 X10 Y10 Z15
+G0 F200 X10 Y10 Z13
+G83 F100 Q2 R11 X10 Y10 Z0
+G0 F200 X10 Y10 Z15
+G0 F200 X20 Y20 Z15
+G0 F200 X20 Y20 Z13
+G83 F100 Q2 R11 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G98", annotation)
+
+    def test13_collision_retract_peck(self):
+        """Test Drilling operation
+        - peck
+        - rapids at SafeHeight"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Retract Height"
+        operation.PeckEnabled = True
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G83 F100 Q2 R11 X5 Y5 Z0
+G83 F100 Q2 R11 X10 Y10 Z0
+G83 F100 Q2 R11 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G98", annotation)
+
+    def test14_collision_retract_peck_depth(self):
+        """Test Drilling operation
+        - peck
+        - peck retract lower than top model face
+        - rapids at SafeHeight"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Retract Height"
+        operation.PeckEnabled = True
+        operation.PeckRetract = 9.0
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G83 F100 Q2 R9 X5 Y5 Z0
+G83 F100 Q2 R9 X10 Y10 Z0
+G83 F100 Q2 R9 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G98", annotation)
+
+    def test15_collision_retract_peck_depth_keeptooldown(self):
+        """Test Drilling operation
+        - peck
+        - peck retract lower than top model face
+        - rapids at SafeHeight
+        - keep tool down"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Retract Height"
+        operation.PeckEnabled = True
+        operation.PeckRetract = 9.0
+        operation.KeepToolDown = True
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G83 F100 Q2 R9 X5 Y5 Z0
+G0 F200 X5 Y5 Z13
+G0 F200 X10 Y10 Z13
+G83 F100 Q2 R9 X10 Y10 Z0
+G0 F200 X10 Y10 Z13
+G0 F200 X20 Y20 Z13
+G83 F100 Q2 R9 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G99", annotation)
+
+    def test16_collision_line_peck_depth_keeptooldown(self):
+        """Test Drilling operation
+        - peck
+        - peck retract lower than top model face
+        - rapids at SafeHeight
+        - keep tool down"""
+        operation = self.createDrillingOp()
+        operation.CollisionAvoidanceStrategy = "Line of Sight"
+        operation.PeckEnabled = True
+        operation.PeckRetract = 9.0
+        operation.KeepToolDown = True
+        operation.Proxy.execute(operation)
+
+        expected = """G0 F200 Z15
+G0 F200 X5 Y5
+G0 F200 Z13
+G83 F100 Q2 R9 X5 Y5 Z0
+G0 F200 X5 Y5 Z13
+G0 F200 X10 Y10 Z13
+G83 F100 Q2 R9 X10 Y10 Z0
+G0 F200 X10 Y10 Z13
+G0 F200 X20 Y20 Z13
+G83 F100 Q2 R9 X20 Y20 Z0
+G0 Z15"""
+
+        result, annotation = self.getSimpleGcodeFromPath(operation.Path)
+        self.assertEqual(result, expected)
+        self.assertIn("G99", annotation)

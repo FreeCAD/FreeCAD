@@ -3794,14 +3794,14 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Cruthaigh Struchtúr</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="204"/>
+      <location filename="../../bimcommands/BimWall.py" line="201"/>
       <source>Next point</source>
       <translation>An chéad phointe eile</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchCommands.py" line="1728"/>
-      <location filename="../../bimcommands/BimProfile.py" line="99"/>
+      <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>Catagóir</translation>
     </message>
@@ -3890,7 +3890,7 @@ Tá an teimpléad réamhshocraithe suite ag:
       <location filename="../../ArchCoveringGui.py" line="672"/>
       <location filename="../../ArchCoveringGui.py" line="683"/>
       <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
       <source>No selection</source>
       <translation>Gan aon rogha</translation>
     </message>
@@ -3973,9 +3973,9 @@ Tá an teimpléad réamhshocraithe suite ag:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimPanel.py" line="204"/>
-      <location filename="../../bimcommands/BimWindow.py" line="450"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>Réamhshocrú</translation>
     </message>
@@ -4063,13 +4063,13 @@ Tá an teimpléad réamhshocraithe suite ag:
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1604"/>
+      <location filename="../../ArchStructure.py" line="1624"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="214"/>
-      <location filename="../../bimcommands/BimWall.py" line="507"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../bimcommands/BimWall.py" line="504"/>
       <source>Length</source>
       <translation>Fad</translation>
     </message>
@@ -4082,13 +4082,13 @@ Tá an teimpléad réamhshocraithe suite ag:
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchStructure.py" line="1625"/>
       <location filename="../../ArchWall.py" line="1863"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="221"/>
-      <location filename="../../bimcommands/BimWall.py" line="514"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>Leithead</translation>
     </message>
@@ -4209,43 +4209,43 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Níorbh fhéidir an geoiméadracht bhunúsach a réiteach.</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1588"/>
+      <location filename="../../ArchCoveringGui.py" line="1589"/>
       <source>%1 pick tile origin</source>
       <translation>%1 roghnaigh bunús tíleanna</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1592"/>
+      <location filename="../../ArchCoveringGui.py" line="1593"/>
       <source>%1 rotate tile CW / Shift+%1 rotate tile CCW</source>
       <translation>%1 rothlaigh tíl ar dheis / Shift+%1 rothlaigh tíl ar dheis</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1600"/>
+      <location filename="../../ArchCoveringGui.py" line="1601"/>
       <source>%1 pick new base face or object</source>
       <translation>%1 roghnaigh aghaidh nó réad bonn nua</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1604"/>
+      <location filename="../../ArchCoveringGui.py" line="1605"/>
       <source>%1+%2 add face or object</source>
       <translation>%1+%2 cuir aghaidh nó réad leis</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1611"/>
+      <location filename="../../ArchCoveringGui.py" line="1612"/>
       <source>%1 pick planar face or object</source>
       <translation>%1 roghnaigh aghaidh nó réad plánach</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1615"/>
+      <location filename="../../ArchCoveringGui.py" line="1616"/>
       <source>%1+%2 add planar face or object</source>
       <translation>%1+%2 cuir aghaidh nó réad plánach leis</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1606"/>
+      <location filename="../../ArchStructure.py" line="1626"/>
       <location filename="../../ArchWall.py" line="1869"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchWindow.py" line="1199"/>
-      <location filename="../../bimcommands/BimWall.py" line="521"/>
+      <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>Airde</translation>
     </message>
@@ -4265,39 +4265,39 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Fad/Leithead an Athraigh</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1070"/>
+      <location filename="../../ArchStructure.py" line="1090"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>Is soladach neamhbhailí an mogalra seo</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1189"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Thug Facemaker earráid ar ais</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1616"/>
+      <location filename="../../ArchStructure.py" line="1636"/>
       <source>Node Tools</source>
       <translation>Uirlisí Nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1640"/>
+      <location filename="../../ArchStructure.py" line="1660"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Síneann sé nóid an eilimint seo chun nóid eilimint eile a bhaint amach</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1671"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Ceanglaíonn nóid an eilimint seo le nóid eilimint eile</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1662"/>
+      <location filename="../../ArchStructure.py" line="1682"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Casann sé gach nód struchtúrach den doiciméad ar/as</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1669"/>
+      <location filename="../../ArchStructure.py" line="1689"/>
       <source>Extrusion Tools</source>
       <translation>Uirlisí Easbhrúite</translation>
     </message>
@@ -4323,17 +4323,17 @@ Tá an teimpléad réamhshocraithe suite ag:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
-      <location filename="../../bimcommands/BimTruss.py" line="83"/>
-      <location filename="../../bimcommands/BimWall.py" line="157"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
+      <location filename="../../bimcommands/BimWall.py" line="154"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
-      <location filename="../../bimcommands/BimTruss.py" line="85"/>
-      <location filename="../../bimcommands/BimWall.py" line="159"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
+      <location filename="../../bimcommands/BimWall.py" line="156"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
@@ -4353,90 +4353,90 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Roghanna Struchtúir</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1042"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>Earráid: Níorbh fhéidir an cruth bonn a easbhrú feadh an réada uirlis seo</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1621"/>
+      <location filename="../../ArchStructure.py" line="1641"/>
       <source>Reset Nodes</source>
       <translation>Athshocraigh Nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1627"/>
+      <location filename="../../ArchStructure.py" line="1647"/>
       <source>Edit Nodes</source>
       <translation>Nóid a Chur in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1633"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Extend Nodes</source>
       <translation>Nóid a Leathnú</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1646"/>
+      <location filename="../../ArchStructure.py" line="1666"/>
       <source>Connect Nodes</source>
       <translation>Nóid Cheangail</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1657"/>
+      <location filename="../../ArchStructure.py" line="1677"/>
       <source>Toggle All Nodes</source>
       <translation>Gach Nóid a Athrú</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1674"/>
-      <location filename="../../ArchStructure.py" line="1875"/>
+      <location filename="../../ArchStructure.py" line="1694"/>
+      <location filename="../../ArchStructure.py" line="1895"/>
       <source>Select Tool</source>
       <translation>Roghnaigh Uirlis</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1679"/>
+      <location filename="../../ArchStructure.py" line="1699"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>Roghnaíonn sé réad nó imill le húsáid mar uirlis (cosán easbhrúite)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1703"/>
-      <location filename="../../ArchStructure.py" line="1753"/>
+      <location filename="../../ArchStructure.py" line="1723"/>
+      <location filename="../../ArchStructure.py" line="1773"/>
       <source>Choose another Structure object:</source>
       <translation>Roghnaigh réad Struchtúir eile:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1709"/>
-      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1729"/>
+      <location filename="../../ArchStructure.py" line="1779"/>
       <source>The chosen object is not a Structure</source>
       <translation>Ní Struchtúr an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1714"/>
-      <location filename="../../ArchStructure.py" line="1764"/>
+      <location filename="../../ArchStructure.py" line="1734"/>
+      <location filename="../../ArchStructure.py" line="1784"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Níl aon nóid struchtúracha ag an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1719"/>
-      <location filename="../../ArchStructure.py" line="1769"/>
+      <location filename="../../ArchStructure.py" line="1739"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Tá níos mó ná 2 nód ag ceann de na réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
-      <location filename="../../ArchStructure.py" line="1782"/>
+      <location filename="../../ArchStructure.py" line="1752"/>
+      <location filename="../../ArchStructure.py" line="1802"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Ní féidir pointe trasnaithe oiriúnach a aimsiú</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1736"/>
+      <location filename="../../ArchStructure.py" line="1756"/>
       <source>Intersection found.
 </source>
       <translation>Crosbhóthar aimsithe.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1787"/>
+      <location filename="../../ArchStructure.py" line="1807"/>
       <source>Intersection found.</source>
       <translation>Crosbhóthar aimsithe.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1860"/>
       <source>Done</source>
       <translation>Déanta</translation>
     </message>
@@ -4446,12 +4446,12 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Trealamh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="61"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="58"/>
       <source>Select a base shape object and optionally a mesh object</source>
       <translation>Roghnaigh réad cruth bonn agus réad mogaill más mian leat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="81"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="78"/>
       <source>Create Equipment</source>
       <translation>Cruthaigh Trealamh</translation>
     </message>
@@ -4466,19 +4466,19 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Urlár</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="68"/>
-      <location filename="../../bimcommands/BimProfile.py" line="152"/>
+      <location filename="../../bimcommands/BimProfile.py" line="65"/>
+      <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>Cruthaigh Próifíl</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="79"/>
-      <location filename="../../bimcommands/BimPanel.py" line="129"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
       <source>%1 pick point</source>
       <translation>%1 pointe piocadh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="95"/>
+      <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>Socruithe Próifíle</translation>
     </message>
@@ -4493,25 +4493,25 @@ Tá an teimpléad réamhshocraithe suite ag:
       <translation>Suíomh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="58"/>
+      <location filename="../../bimcommands/BimSite.py" line="55"/>
       <source>Create Site</source>
       <translation>Cruthaigh Suíomh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="65"/>
-      <location filename="../../bimcommands/BimRoof.py" line="81"/>
+      <location filename="../../bimcommands/BimRoof.py" line="62"/>
+      <location filename="../../bimcommands/BimRoof.py" line="78"/>
       <source>Create Roof</source>
       <translation>Cruthaigh Díon</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="97"/>
-      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>%1 select a base object</source>
       <translation>%1 roghnaigh réad bonn</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="92"/>
+      <location filename="../../bimcommands/BimRoof.py" line="89"/>
       <source>Unable to create a roof</source>
       <translation>Ní féidir díon a chruthú</translation>
     </message>
@@ -4578,47 +4578,47 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Oscailt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="64"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="61"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
       <translation>Roghnaigh dhá réad, réad le gearradh agus réad a shainmhíníonn plána gearrtha, san ord sin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="69"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="66"/>
       <source>The first object does not have a shape</source>
       <translation>Níl cruth ar an gcéad réad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="74"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="71"/>
       <source>The second object does not define a plane</source>
       <translation>Ní shainmhíníonn an dara réad plána</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="118"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="115"/>
       <source>Cutting</source>
       <translation>Gearradh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="144"/>
       <source>Cut Plane</source>
       <translation>Gearr Plána</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="148"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="145"/>
       <source>Cut Plane Options</source>
       <translation>Roghanna Plána Gearrtha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="149"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="146"/>
       <source>Which side to cut</source>
       <translation>Cén taobh le gearradh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Behind</source>
       <translation>Taobh thiar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Front</source>
       <translation>Tosaigh</translation>
     </message>
@@ -4720,7 +4720,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Comhaid tagartha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="56"/>
+      <location filename="../../bimcommands/BimReference.py" line="53"/>
       <source>Create external reference</source>
       <translation>Cruthaigh tagairt sheachtrach</translation>
     </message>
@@ -4730,7 +4730,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Fráma</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="60"/>
+      <location filename="../../bimcommands/BimFrame.py" line="57"/>
       <source>Create Frame</source>
       <translation>Cruthaigh Fráma</translation>
     </message>
@@ -4790,44 +4790,44 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Fuinneog</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="109"/>
-      <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="213"/>
+      <location filename="../../bimcommands/BimWindow.py" line="106"/>
+      <location filename="../../bimcommands/BimWindow.py" line="133"/>
+      <location filename="../../bimcommands/BimWindow.py" line="210"/>
       <source>Create Window</source>
       <translation>Cruthaigh Fuinneog</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="154"/>
+      <location filename="../../bimcommands/BimWindow.py" line="151"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Roghnaigh aghaidh ar réad atá ann cheana féin nó roghnaigh réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="171"/>
+      <location filename="../../bimcommands/BimWindow.py" line="168"/>
       <source>%1 pick point on host</source>
       <translation>%1 pointe piocála ar an óstach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="260"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Níl an fhuinneog bunaithe ar sceitse. Níl an fhuinneog ailínithe ná athraithe méide.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="282"/>
+      <location filename="../../bimcommands/BimWindow.py" line="279"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Gan aon srian Leithead agus/nó Airde i sceitse na fuinneoige. Níor athraíodh méid na fuinneoige.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="285"/>
+      <location filename="../../bimcommands/BimWindow.py" line="282"/>
       <source>No window found. Cannot continue.</source>
       <translation>Níor aimsíodh aon fhuinneog. Ní féidir leanúint ar aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Auto include in host object</source>
       <translation>Uath-áireamh san réad óstach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="412"/>
+      <location filename="../../bimcommands/BimWindow.py" line="409"/>
       <source>Sill height</source>
       <translation>Airde na sile</translation>
     </message>
@@ -4850,7 +4850,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="399"/>
+      <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>Roghanna Fuinneoige</translation>
     </message>
@@ -4921,7 +4921,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Aisghabhann an imeall roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
       <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
@@ -5089,7 +5089,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchSectionPlane.py" line="1592"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
@@ -5131,25 +5131,25 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>Cineál</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1599"/>
+      <location filename="../../ArchStructure.py" line="1619"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../bimcommands/BimPanel.py" line="228"/>
+      <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1720"/>
-      <location filename="../../bimcommands/BimWall.py" line="537"/>
+      <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
     </message>
@@ -5179,17 +5179,17 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Córas Ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="85"/>
+      <location filename="../../bimcommands/BimAxis.py" line="82"/>
       <source>Only axes must be selected</source>
       <translation>Ní gá ach aiseanna a roghnú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="90"/>
+      <location filename="../../bimcommands/BimAxis.py" line="87"/>
       <source>Create Axis System</source>
       <translation>Cruthaigh Córas Ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="95"/>
+      <location filename="../../bimcommands/BimAxis.py" line="92"/>
       <source>Select at least one axis</source>
       <translation>Roghnaigh ais amháin ar a laghad</translation>
     </message>
@@ -5220,7 +5220,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Trus</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="116"/>
+      <location filename="../../bimcommands/BimTruss.py" line="113"/>
       <source>Create Truss</source>
       <translation>Cruthaigh Trus</translation>
     </message>
@@ -5300,17 +5300,17 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Ag clúdach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="58"/>
+      <location filename="../../bimcommands/BimStairs.py" line="55"/>
       <source>Create Stairs</source>
       <translation>Cruthaigh Staighre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="543"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="540"/>
       <source>Create material</source>
       <translation>Cruthaigh ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="576"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="573"/>
       <source>Create multi-material</source>
       <translation>Cruthaigh ilábhar</translation>
     </message>
@@ -5358,7 +5358,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Earráid: Níl aon Chrios ag an spás '%s'. Ag cur as don spás.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="117"/>
+      <location filename="../../bimcommands/BimAxis.py" line="114"/>
       <source>Create Grid</source>
       <translation>Cruthaigh Eangach</translation>
     </message>
@@ -5581,28 +5581,28 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Bileog Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="87"/>
-      <location filename="../../bimcommands/BimPanel.py" line="148"/>
+      <location filename="../../bimcommands/BimPanel.py" line="84"/>
+      <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>Cruthaigh Painéal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="200"/>
+      <location filename="../../bimcommands/BimPanel.py" line="197"/>
       <source>Panel Options</source>
       <translation>Roghanna Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="237"/>
+      <location filename="../../bimcommands/BimPanel.py" line="234"/>
       <source>Rotate</source>
       <translation>Rothlaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="322"/>
+      <location filename="../../bimcommands/BimPanel.py" line="319"/>
       <source>Create Panel Cut</source>
       <translation>Cruthaigh Gearradh Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="354"/>
+      <location filename="../../bimcommands/BimPanel.py" line="351"/>
       <source>Create Panel Sheet</source>
       <translation>Cruthaigh Bileog Painéil</translation>
     </message>
@@ -5612,7 +5612,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Earráid ag ríomh cruth</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1988"/>
+      <location filename="../../ArchStructure.py" line="2008"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>Níorbh fhéidir cruth a ríomh</translation>
@@ -5653,7 +5653,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Cuir suíomhanna radhairc in eagar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="455"/>
+      <location filename="../../bimcommands/BimPanel.py" line="452"/>
       <source>This object has no face</source>
       <translation>Níl aghaidh ar an réad seo</translation>
     </message>
@@ -5663,14 +5663,14 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Balla Cuirtíní</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
+      <location filename="../../bimcommands/BimTruss.py" line="58"/>
       <source>Select only one base object or none</source>
       <translation>Roghnaigh réad bonn amháin nó ceann ar bith</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="122"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
       <source>Create Curtain Wall</source>
       <translation>Cruthaigh Balla Imbhalla</translation>
     </message>
@@ -6207,23 +6207,23 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <translation>Nascóir</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="62"/>
-      <location filename="../../bimcommands/BimPipe.py" line="71"/>
+      <location filename="../../bimcommands/BimPipe.py" line="59"/>
+      <location filename="../../bimcommands/BimPipe.py" line="68"/>
       <source>Create Pipe</source>
       <translation>Cruthaigh Píopa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="106"/>
+      <location filename="../../bimcommands/BimPipe.py" line="103"/>
       <source>Select exactly 2 or 3 pipe objects</source>
       <translation>Roghnaigh 2 nó 3 réad píopa go díreach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="112"/>
+      <location filename="../../bimcommands/BimPipe.py" line="109"/>
       <source>Select only pipe objects</source>
       <translation>Roghnaigh réada píopa amháin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="116"/>
+      <location filename="../../bimcommands/BimPipe.py" line="113"/>
       <source>Create Connector</source>
       <translation>Cruthaigh Nascóir</translation>
     </message>
@@ -6351,7 +6351,7 @@ Tá an modúl Python Ladybug nó Pysolar riachtanach.</translation>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>Luach</translation>
     </message>
@@ -6399,7 +6399,7 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Cruthaigh Urlár</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="50"/>
+      <location filename="../../bimcommands/BimAxis.py" line="47"/>
       <source>Create Axis</source>
       <translation>Cruthaigh Ais</translation>
     </message>
@@ -6506,8 +6506,8 @@ Cruthú urláir curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="94"/>
-      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
       <source>Select a base object</source>
       <translation>Roghnaigh réad bonn</translation>
     </message>
@@ -6576,7 +6576,7 @@ Cruthú urláir curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="475"/>
       <source>Property</source>
       <translation>Maoin</translation>
     </message>
@@ -6607,13 +6607,13 @@ Cruthú urláir curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
       <translation>Maoin nua</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>New property set</source>
       <translation>Socrú maoine nua</translation>
     </message>
@@ -6623,13 +6623,13 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Rebar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="72"/>
-      <location filename="../../bimcommands/BimRebar.py" line="106"/>
+      <location filename="../../bimcommands/BimRebar.py" line="69"/>
+      <location filename="../../bimcommands/BimRebar.py" line="103"/>
       <source>Create Rebar</source>
       <translation>Cruthaigh Rebar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="116"/>
+      <location filename="../../bimcommands/BimRebar.py" line="113"/>
       <source>Select a base face on a structural object</source>
       <translation>Roghnaigh aghaidh bhunúsach ar réad struchtúrach</translation>
     </message>
@@ -6639,114 +6639,114 @@ Cruthú urláir curtha ar ceal.</translation>
       <translation>Roinn</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="62"/>
       <source>Create Section Plane</source>
       <translation>Cruthaigh Plána Rannóige</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1799"/>
+      <location filename="../../ArchSectionPlane.py" line="1798"/>
       <source>Scope</source>
       <translation>Raon feidhme</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Placement and Visuals</source>
       <translation>Socrú agus Amharcléiriú</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchSectionPlane.py" line="1804"/>
       <source>Objects seen by this section plane</source>
       <translation>Réada a fheictear ón eitleán alt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Baintear rudaí aibhsithe ón liosta thuas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1812"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Add Selected</source>
       <translation>Cuir Roghnaithe leis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1817"/>
+      <location filename="../../ArchSectionPlane.py" line="1816"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Cuireann sé réada roghnaithe le raon feidhme an eitleáin rannóige seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1818"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Cut View</source>
       <translation>Radharc Gearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1825"/>
+      <location filename="../../ArchSectionPlane.py" line="1824"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Cruthaíonn sé gearradh beo sa radharc 3D, ag cur geoiméadracht i bhfolach ar thaobh amháin den eitleán le go bhfeicfidh tú taobh istigh de do mhúnla</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Rotate by 90°</source>
       <translation>Rothlaigh 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1830"/>
+      <location filename="../../ArchSectionPlane.py" line="1829"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-X áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1834"/>
+      <location filename="../../ArchSectionPlane.py" line="1833"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-Y áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1838"/>
+      <location filename="../../ArchSectionPlane.py" line="1837"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Rothlaíonn sé an plána timpeall a ais-Z áitiúil</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1839"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Resize to Fit</source>
       <translation>Athraigh Méid chun Oiriúnú</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1845"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Recenter Plane</source>
       <translation>Plána Athdhírithe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1827"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate X</source>
       <translation>Rothlaigh X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1598"/>
+      <location filename="../../ArchSectionPlane.py" line="1597"/>
       <source>Toggle Cut View</source>
       <translation>Athraigh an Radharc Gearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1831"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotate Y</source>
       <translation>Rothlaigh Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1835"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotate Z</source>
       <translation>Rothlaigh Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1844"/>
+      <location filename="../../ArchSectionPlane.py" line="1843"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Athraíonn méid an eitleáin chun go n-oirfidh sé do na rudaí sa liosta thuas</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
       <location filename="../../ArchWall.py" line="1873"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>Lár</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1850"/>
+      <location filename="../../ArchSectionPlane.py" line="1849"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Lárnaíonn sé an plána ar na réada sa liosta thuas</translation>
     </message>
@@ -6784,7 +6784,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="281"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="87"/>
       <source>Create Building</source>
       <translation>Cruthaigh Foirgneamh</translation>
     </message>
@@ -6794,7 +6794,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Spás</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="59"/>
+      <location filename="../../bimcommands/BimSpace.py" line="56"/>
       <source>Create Space</source>
       <translation>Cruthaigh Spás</translation>
     </message>
@@ -6849,69 +6849,69 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Ní féidir ballaí a bhunú ach ar réada Cuid nó Mogaill</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="110"/>
-      <location filename="../../bimcommands/BimWall.py" line="410"/>
-      <location filename="../../bimcommands/BimWall.py" line="658"/>
+      <location filename="../../bimcommands/BimWall.py" line="107"/>
+      <location filename="../../bimcommands/BimWall.py" line="407"/>
+      <location filename="../../bimcommands/BimWall.py" line="655"/>
       <source>Create Wall</source>
       <translation>Cruthaigh Balla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="146"/>
+      <location filename="../../bimcommands/BimWall.py" line="143"/>
       <source>First Point of Wall</source>
       <translation>Céad Phointe an Bhalla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="486"/>
+      <location filename="../../bimcommands/BimWall.py" line="483"/>
       <source>Wall Presets</source>
       <translation>Réamhshocruithe Balla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="492"/>
+      <location filename="../../bimcommands/BimWall.py" line="489"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>Taispeánann an liosta seo gach réada MultiMaterials den doiciméad seo. Cruthaigh cuid acu chun cineálacha ballaí a shainiú.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="544"/>
+      <location filename="../../bimcommands/BimWall.py" line="541"/>
       <source>Baseline</source>
       <translation>Bonnlíne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="550"/>
+      <location filename="../../bimcommands/BimWall.py" line="547"/>
       <source>No baseline</source>
       <translation>Gan aon bhunlíne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="551"/>
+      <location filename="../../bimcommands/BimWall.py" line="548"/>
       <source>Draft line</source>
       <translation>Líne dréachta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="552"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>Sketch</source>
       <translation>Sceitse</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
       <location filename="../../ArchWall.py" line="1893"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>Ailíniú</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1872"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>Ar chlé</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
-      <location filename="../../bimcommands/BimWall.py" line="531"/>
+      <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>Ar dheis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="584"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="609"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="581"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="606"/>
       <source>Merge Walls</source>
       <translation>Ballaí a Chumaisc</translation>
     </message>
@@ -6937,7 +6937,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1848"/>
-      <location filename="../../bimcommands/BimWall.py" line="481"/>
+      <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>Roghanna Balla</translation>
     </message>
@@ -7048,64 +7048,64 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Ag cumasú bratach fórsa B-rep an réada</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="55"/>
       <source>Add space boundary</source>
       <translation>Cuir teorainn spáis leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="73"/>
       <source>Grouping</source>
       <translation>Grúpáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="112"/>
       <source>Remove space boundary</source>
       <translation>Bain teorainn an spáis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="130"/>
       <source>Ungrouping</source>
       <translation>Ag díghrúpáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="173"/>
       <source>Split Mesh</source>
       <translation>Mogalra Scoilte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="221"/>
       <source>Mesh to shape</source>
       <translation>Mogalra chun cruth a thabhairt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="291"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="288"/>
       <source>Remove shape</source>
       <translation>Bain cruth</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="340"/>
       <source>No problems found!</source>
       <translation>Níor aimsíodh aon fhadhbanna!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <source>The selected wall contains no subwalls to merge</source>
       <translation>Níl aon fho-bhallaí sa bhalla roghnaithe le cumasc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="595"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="599"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="596"/>
       <source>Select only wall objects</source>
       <translation>Roghnaigh rudaí balla amháin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="607"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="604"/>
       <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
       <translation>Ní féidir ballaí a bhfuil airíonna 'Leithead', 'Airde' agus 'Ailíniú' éagsúla acu a chumasc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="415"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="448"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="412"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="445"/>
       <source>Create Component</source>
       <translation>Cruthaigh Comhpháirt</translation>
     </message>
@@ -7115,68 +7115,68 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Eochair</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="482"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="479"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Cruthaigh scarbhileog airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="57"/>
       <source>Create Level</source>
       <translation>Cruthaigh Leibhéal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="63"/>
+      <location filename="../../bimcommands/BimFence.py" line="60"/>
       <source>Create Fence</source>
       <translation>Cruthaigh Fál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="303"/>
+      <location filename="../../bimcommands/BimBox.py" line="299"/>
       <source>Create Box</source>
       <translation>Cruthaigh Bosca</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="65"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="62"/>
       <source>Create 2D View</source>
       <translation>Cruthaigh Radharc 2T</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1156"/>
       <source>Active</source>
       <translation>Gníomhach</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1167"/>
       <source>Set Working Plane</source>
       <translation>Socraigh Plána Oibre</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1177"/>
       <source>Save Camera View</source>
       <translation>Sábháil Radharc Ceamara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1218"/>
+      <location filename="../../ArchBuildingPart.py" line="1219"/>
       <source>Active working plane set to Top</source>
       <translation>Plána oibre gníomhach socraithe go Barr</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1223"/>
+      <location filename="../../ArchBuildingPart.py" line="1224"/>
       <source>Active working plane set to {self.Object.Label}</source>
       <translation>Plána oibre gníomhach socraithe go {self.Object.Label}</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>New Group</source>
       <translation>Grúpa Nua</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Athordaigh na Leanaí in Aibítre</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1191"/>
       <source>Clone Level Up</source>
       <translation>Leibhéal Clónála Suas</translation>
     </message>
@@ -7320,7 +7320,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Scag</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>Cruthaigh Sceitse</translation>
     </message>
@@ -7355,7 +7355,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1865"/>
+      <location filename="../../ArchStructure.py" line="1885"/>
       <source>An optional extrusion path for this element</source>
       <translation>Cosán easbhrúite roghnach don eilimint seo</translation>
     </message>
@@ -7458,42 +7458,42 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Roghnaigh Tacar Airíonna Sainmhínithe ag an Úsáideoir le húsáid agus cruth malairteach á chruthú, leis an ArchSketch céanna </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1432"/>
+      <location filename="../../ArchStructure.py" line="1452"/>
       <source>If the nodes are visible or not</source>
       <translation>Más féidir na nóid a fheiceáil nó nach féidir</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1440"/>
+      <location filename="../../ArchStructure.py" line="1460"/>
       <source>The width of the nodes line</source>
       <translation>Leithead líne na nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1448"/>
+      <location filename="../../ArchStructure.py" line="1468"/>
       <source>The size of the node points</source>
       <translation>Méid na bpointí nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1457"/>
+      <location filename="../../ArchStructure.py" line="1477"/>
       <source>The color of the nodes line</source>
       <translation>Dath líne na nóid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1466"/>
+      <location filename="../../ArchStructure.py" line="1486"/>
       <source>The type of structural node</source>
       <translation>An cineál nóid struchtúraigh</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1912"/>
+      <location filename="../../ArchStructure.py" line="1932"/>
       <source>Axes systems this structure is built on</source>
       <translation>Córais aiseanna ar a bhfuil an struchtúr seo tógtha</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1922"/>
+      <location filename="../../ArchStructure.py" line="1942"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Na huimhreacha eilimintí le heisiamh nuair a bhíonn an struchtúr seo bunaithe ar aiseanna</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1929"/>
+      <location filename="../../ArchStructure.py" line="1949"/>
       <source>If true the element are aligned with axes</source>
       <translation>Más fíor, ailínítear na heilimintí leis na haiseanna</translation>
     </message>
@@ -7587,147 +7587,147 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1221"/>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchBuildingPart.py" line="548"/>
       <source>The line width of this object</source>
       <translation>Leithead líne an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>An optional unit to express levels</source>
       <translation>Aonad roghnach chun leibhéil a chur in iúl</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <location filename="../../ArchBuildingPart.py" line="565"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Claochlú le cur i bhfeidhm ar an marc leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="575"/>
+      <location filename="../../ArchBuildingPart.py" line="576"/>
       <source>If true, show the level</source>
       <translation>Más fíor, taispeáin an leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="584"/>
+      <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Más fíor, taispeáin an t-aonad ar an gclib leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="594"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Más fíor, beidh tionchar ag an bhfritháireamh taispeána ar an marc tionscnaimh freisin</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="602"/>
+      <location filename="../../ArchBuildingPart.py" line="603"/>
       <source>If true, the object's label is displayed</source>
       <translation>Más fíor, taispeántar lipéad an réada</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="611"/>
+      <location filename="../../ArchBuildingPart.py" line="612"/>
       <source>The font to be used for texts</source>
       <translation>An cló le húsáid le haghaidh téacsanna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="620"/>
+      <location filename="../../ArchBuildingPart.py" line="621"/>
       <source>The font size of texts</source>
       <translation>Méid cló na dtéacsanna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="631"/>
+      <location filename="../../ArchBuildingPart.py" line="632"/>
       <source>The individual face colors</source>
       <translation>Dathanna aghaidhe aonair</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="644"/>
+      <location filename="../../ArchBuildingPart.py" line="645"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Más fíor é, nuair a ghníomhaítear é, oiriúnóidh an plána oibre go huathoibríoch don leibhéal seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="655"/>
+      <location filename="../../ArchBuildingPart.py" line="656"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Má shocraítear go Fíor, coinneofar an plána oibre i mód Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="665"/>
+      <location filename="../../ArchBuildingPart.py" line="666"/>
       <source>Camera position data associated with this object</source>
       <translation>Sonraí suíomh ceamara a bhaineann leis an réad seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="677"/>
+      <location filename="../../ArchBuildingPart.py" line="678"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Má shocraítear é, athchóireofar an radharc atá stóráilte sa réad seo nuair a chliceálann tú faoi dhó é</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="688"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Más fíor é, gníomhaíonn cliceáil faoi dhó ar an réad seo sa chrann é</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="702"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Má tá sé seo cumasaithe, sábhálfar léiriú OpenInventor den réad seo sa chomhad FreeCAD, rud a ligfidh tagairt a dhéanamh dó i gcomhaid eile i mód éadrom.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="712"/>
+      <location filename="../../ArchBuildingPart.py" line="713"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>Sliotán chun ionadaíocht OpenInventor an réada seo a shábháil, má tá sé cumasaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="726"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Más fíor, taispeáin go nglacfaidh na rudaí atá sa Chuid Foirgnimh seo leis na socruithe líne, datha agus trédhearcachta seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="734"/>
+      <location filename="../../ArchBuildingPart.py" line="735"/>
       <source>The line width of child objects</source>
       <translation>Leithead líne na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="743"/>
+      <location filename="../../ArchBuildingPart.py" line="744"/>
       <source>The line color of child objects</source>
       <translation>Dath líne na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="752"/>
+      <location filename="../../ArchBuildingPart.py" line="753"/>
       <source>The shape appearance of child objects</source>
       <translation>Cruth cuma na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="762"/>
+      <location filename="../../ArchBuildingPart.py" line="763"/>
       <source>The transparency of child objects</source>
       <translation>Trédhearcacht réada linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="773"/>
+      <location filename="../../ArchBuildingPart.py" line="774"/>
       <source>Cut the view above this level</source>
       <translation>Gearr an radharc os cionn an leibhéil seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="783"/>
+      <location filename="../../ArchBuildingPart.py" line="784"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>An fad idir an plána leibhéalta agus an líne ghearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="792"/>
+      <location filename="../../ArchBuildingPart.py" line="793"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Cas air gearradh nuair a ghníomhaítear an leibhéal seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="805"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>An bosca gabhála le haghaidh réada nua-chruthaithe a léirítear mar [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="813"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Turns auto group box on/off</source>
       <translation>Casann bosca grúpa uathoibríoch air/as</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="821"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>Automatically set size from contents</source>
       <translation>Socraigh méid go huathoibríoch ón ábhar</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="829"/>
+      <location filename="../../ArchBuildingPart.py" line="830"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Corrlach le húsáid nuair a bhíonn an méid uathoibríoch casta air</translation>
     </message>
@@ -7934,7 +7934,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="744"/>
-      <location filename="../../ArchIFC.py" line="87"/>
+      <location filename="../../ArchIFC.py" line="88"/>
       <source>The type of this object</source>
       <translation>Cineál an réada seo</translation>
     </message>
@@ -8622,14 +8622,14 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Sonraí IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="97"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
+      <location filename="../../ArchIFC.py" line="98"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="409"/>
       <source>IFC properties of this object</source>
       <translation>Airíonna IFC an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="322"/>
-      <location filename="../../ArchIFC.py" line="333"/>
+      <location filename="../../ArchIFC.py" line="324"/>
+      <location filename="../../ArchIFC.py" line="335"/>
       <source>Description of IFC attributes are not yet implemented</source>
       <translation>Níl cur síos ar thréithe IFC curtha i bhfeidhm go fóill</translation>
     </message>
@@ -9407,34 +9407,33 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Trédhearcacht an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
-      <location filename="../../ArchSectionPlane.py" line="1247"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <source>Show the cut in the 3D view</source>
       <translation>Taispeáin an gearradh sa radharc 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1238"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The color of this object</source>
       <translation>Dath an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>An fad idir an plána gearrtha agus an gearradh radhairc iarbhír (coinnigh luach an-bheag é seo ach ní nialas)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>Show the label in the 3D view</source>
       <translation>Taispeáin an lipéad san amharc 3T</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Ainm an chló</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1284"/>
+      <location filename="../../ArchSectionPlane.py" line="1276"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Méid an chló téacs</translation>
@@ -9837,12 +9836,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2050"/>
+      <location filename="../../ArchStructure.py" line="2070"/>
       <source>Structure Tools</source>
       <translation>Uirlisí Struchtúir</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2051"/>
+      <location filename="../../ArchStructure.py" line="2071"/>
       <source>Structure tools</source>
       <translation>Uirlisí struchtúir</translation>
     </message>
@@ -9850,12 +9849,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="43"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="40"/>
       <source>Equipment</source>
       <translation>Trealamh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="47"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="44"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
       <translation>Cruthaíonn sé trealamh ó réad roghnaithe (Cuid nó Mogalra)</translation>
     </message>
@@ -9863,7 +9862,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1233"/>
+      <location filename="../../ArchBuildingPart.py" line="1234"/>
       <source>Writing camera position</source>
       <translation>Suíomh an cheamara á scríobh</translation>
     </message>
@@ -9871,102 +9870,102 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="529"/>
+      <location filename="../../InitGui.py" line="535"/>
       <source>&amp;2D Drafting</source>
       <translation>&amp;Dréachtú 2T</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="530"/>
+      <location filename="../../InitGui.py" line="536"/>
       <source>&amp;3D/BIM</source>
       <translation>&amp;3T/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="508"/>
+      <location filename="../../InitGui.py" line="514"/>
       <source>Drafting Tools</source>
       <translation>Uirlisí Dréachtaithe</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="509"/>
+      <location filename="../../InitGui.py" line="515"/>
       <source>Draft Snap</source>
       <translation>Dréacht-Snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="510"/>
+      <location filename="../../InitGui.py" line="516"/>
       <source>3D/BIM Tools</source>
       <translation>Uirlisí 3T/BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="511"/>
+      <location filename="../../InitGui.py" line="517"/>
       <source>Annotation Tools</source>
       <translation>Uirlisí Anótála</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="512"/>
+      <location filename="../../InitGui.py" line="518"/>
       <source>2D Tools</source>
       <translation>Uirlisí 2T</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="513"/>
+      <location filename="../../InitGui.py" line="519"/>
       <source>Manage Tools</source>
       <translation>Bainistigh Uirlisí</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="514"/>
+      <location filename="../../InitGui.py" line="520"/>
       <source>General Tools</source>
       <translation>Uirlisí Ginearálta</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="515"/>
+      <location filename="../../InitGui.py" line="521"/>
       <source>Object Tools</source>
       <translation>Uirlisí Réada</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="516"/>
+      <location filename="../../InitGui.py" line="522"/>
       <source>3D Tools</source>
       <translation>Uirlisí 3T</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="531"/>
+      <location filename="../../InitGui.py" line="537"/>
       <source>&amp;Reinforcement Tools</source>
       <translation>&amp;Uirlisí Athneartaithe</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="534"/>
+      <location filename="../../InitGui.py" line="540"/>
       <source>M&amp;odify</source>
       <translation>&amp;Athraigh</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="536"/>
+      <location filename="../../InitGui.py" line="542"/>
       <source>Ma&amp;nage</source>
       <translation>Bai&amp;nistigh</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="538"/>
+      <location filename="../../InitGui.py" line="544"/>
       <source>Fas&amp;teners</source>
       <translation>Dún&amp;tóirí</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="532"/>
+      <location filename="../../InitGui.py" line="538"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Anótáil</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="533"/>
+      <location filename="../../InitGui.py" line="539"/>
       <source>&amp;Snapping</source>
       <translation>&amp;Snapping</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="537"/>
+      <location filename="../../InitGui.py" line="543"/>
       <source>&amp;Flamingo</source>
       <translation>&amp;Flamingo</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="539"/>
+      <location filename="../../InitGui.py" line="545"/>
       <source>&amp;Utils</source>
       <translation>&amp;Fóntais</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="544"/>
+      <location filename="../../InitGui.py" line="550"/>
       <source>Nudge</source>
       <translation>Broid</translation>
     </message>
@@ -9974,12 +9973,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="43"/>
+      <location filename="../../bimcommands/BimProfile.py" line="40"/>
       <source>Profile</source>
       <translation>Próifíl</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="45"/>
+      <location filename="../../bimcommands/BimProfile.py" line="42"/>
       <source>Creates a profile</source>
       <translation>Cruthaíonn próifíl</translation>
     </message>
@@ -9987,12 +9986,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="46"/>
+      <location filename="../../bimcommands/BimSite.py" line="43"/>
       <source>Site</source>
       <translation>Suíomh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="48"/>
+      <location filename="../../bimcommands/BimSite.py" line="45"/>
       <source>Creates a site including selected objects</source>
       <translation>Cruthaíonn suíomh lena n-áirítear réada roghnaithe</translation>
     </message>
@@ -10000,12 +9999,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="42"/>
+      <location filename="../../bimcommands/BimRoof.py" line="39"/>
       <source>Roof</source>
       <translation>Díon</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="46"/>
+      <location filename="../../bimcommands/BimRoof.py" line="43"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Cruthaíonn sé réad dín ón sreang roghnaithe.</translation>
     </message>
@@ -10013,12 +10012,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="41"/>
       <source>Cut With Plane</source>
       <translation>Gearr le Plána</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="42"/>
       <source>Cuts an object with a plane</source>
       <translation>Gearrann sé réad le plána</translation>
     </message>
@@ -10026,12 +10025,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="43"/>
+      <location filename="../../bimcommands/BimReference.py" line="40"/>
       <source>External Reference</source>
       <translation>Tagairt Sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="45"/>
+      <location filename="../../bimcommands/BimReference.py" line="42"/>
       <source>Creates an external reference object</source>
       <translation>Cruthaíonn réad tagartha seachtrach</translation>
     </message>
@@ -10039,12 +10038,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="43"/>
+      <location filename="../../bimcommands/BimFrame.py" line="40"/>
       <source>Frame</source>
       <translation>Fráma</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="48"/>
+      <location filename="../../bimcommands/BimFrame.py" line="45"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>Cruthaíonn sé seo réad fráma ó réad 2T plánach (an cosán/na cosáin easbhrúite) agus próifíl. Cinntigh go bhfuil na réada roghnaithe san ord sin.</translation>
     </message>
@@ -10052,12 +10051,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="50"/>
+      <location filename="../../bimcommands/BimWindow.py" line="47"/>
       <source>Window</source>
       <translation>Fuinneog</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="55"/>
+      <location filename="../../bimcommands/BimWindow.py" line="52"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Cruthaíonn sé réad fuinneoige ó réad roghnaithe (sreang, dronuilleog nó sceitse)</translation>
     </message>
@@ -10065,12 +10064,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="69"/>
+      <location filename="../../bimcommands/BimAxis.py" line="66"/>
       <source>Axis System</source>
       <translation>Córas Ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="73"/>
+      <location filename="../../bimcommands/BimAxis.py" line="70"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Cruthaíonn córas ais ó shraith aiseanna</translation>
     </message>
@@ -10078,12 +10077,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Truss</name>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="43"/>
+      <location filename="../../bimcommands/BimTruss.py" line="40"/>
       <source>Truss</source>
       <translation>Trus</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="47"/>
+      <location filename="../../bimcommands/BimTruss.py" line="44"/>
       <source>Creates a truss object from the selected line or from scratch</source>
       <translation>Cruthaíonn réad truss ón líne roghnaithe nó ón tús</translation>
     </message>
@@ -10091,12 +10090,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="43"/>
+      <location filename="../../bimcommands/BimStairs.py" line="40"/>
       <source>Stairs</source>
       <translation>Staighre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="45"/>
+      <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Creates a flight of stairs</source>
       <translation>Cruthaíonn sé eitilt staighre</translation>
     </message>
@@ -10104,12 +10103,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="43"/>
+      <location filename="../../bimcommands/BimSpace.py" line="40"/>
       <source>Space</source>
       <translation>Spás</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="47"/>
+      <location filename="../../bimcommands/BimSpace.py" line="44"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Cruthaíonn réad spáis ó réada teorann roghnaithe</translation>
     </message>
@@ -10117,12 +10116,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="42"/>
+      <location filename="../../bimcommands/BimFence.py" line="39"/>
       <source>Fence</source>
       <translation>Fál</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="45"/>
+      <location filename="../../bimcommands/BimFence.py" line="42"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Cruthaíonn réad fál ó chuid, post agus cosán roghnaithe</translation>
     </message>
@@ -10130,12 +10129,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="533"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="530"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="537"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="534"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>Cruthaíonn nó cuireann sé sainmhíniú ábhartha réada roghnaithe in eagar.</translation>
     </message>
@@ -10143,12 +10142,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="568"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="565"/>
       <source>Multi-Material</source>
       <translation>Ilábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="570"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
       <source>Creates or edits multi-materials</source>
       <translation>Cruthaíonn nó eagarthóiríonn ilábhair</translation>
     </message>
@@ -10156,12 +10155,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="600"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="597"/>
       <source>Material Tools</source>
       <translation>Uirlisí Ábhartha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="601"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Material tools</source>
       <translation>Uirlisí ábhair</translation>
     </message>
@@ -10169,12 +10168,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="110"/>
+      <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Grid</source>
       <translation>Eangach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="112"/>
+      <location filename="../../bimcommands/BimAxis.py" line="109"/>
       <source>Creates a customizable grid object</source>
       <translation>Cruthaíonn réad eangaí saincheaptha</translation>
     </message>
@@ -10242,12 +10241,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="55"/>
+      <location filename="../../bimcommands/BimPanel.py" line="52"/>
       <source>Panel</source>
       <translation>Painéal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="60"/>
+      <location filename="../../bimcommands/BimPanel.py" line="57"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>Cruthaíonn sé réad painéil ón tús nó ó réad roghnaithe (sceitse, sreang, aghaidh nó soladach)</translation>
     </message>
@@ -10255,12 +10254,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="307"/>
+      <location filename="../../bimcommands/BimPanel.py" line="304"/>
       <source>Panel Cut</source>
       <translation>Gearradh Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="309"/>
+      <location filename="../../bimcommands/BimPanel.py" line="306"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Cruthaíonn sé radhairc 2T de phainéil roghnaithe</translation>
     </message>
@@ -10268,12 +10267,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="340"/>
+      <location filename="../../bimcommands/BimPanel.py" line="337"/>
       <source>Panel Sheet</source>
       <translation>Bileog Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="344"/>
+      <location filename="../../bimcommands/BimPanel.py" line="341"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Cruthaíonn sé bileog 2T ar féidir gearrthacha painéil a bheith inti</translation>
     </message>
@@ -10281,12 +10280,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="379"/>
+      <location filename="../../bimcommands/BimPanel.py" line="376"/>
       <source>Nest</source>
       <translation>Nead</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="383"/>
+      <location filename="../../bimcommands/BimPanel.py" line="380"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Neadaíonn sraith cruthanna roghnaithe i gcoimeádán</translation>
     </message>
@@ -10294,12 +10293,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="555"/>
+      <location filename="../../bimcommands/BimPanel.py" line="552"/>
       <source>Panel Tools</source>
       <translation>Uirlisí Painéil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="556"/>
+      <location filename="../../bimcommands/BimPanel.py" line="553"/>
       <source>Panel tools</source>
       <translation>Uirlisí painéil</translation>
     </message>
@@ -10307,12 +10306,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="40"/>
       <source>Curtain Wall</source>
       <translation>Balla Cuirtíní</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="45"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Cruthaíonn réad balla imbhalla ón líne roghnaithe nó ón tús</translation>
     </message>
@@ -10320,12 +10319,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="43"/>
+      <location filename="../../bimcommands/BimPipe.py" line="40"/>
       <source>Pipe</source>
       <translation>Píopa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="47"/>
+      <location filename="../../bimcommands/BimPipe.py" line="44"/>
       <source>Creates a pipe object from a given wire or line</source>
       <translation>Cruthaíonn réad píopa ó shreang nó líne ar leith</translation>
     </message>
@@ -10333,12 +10332,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="87"/>
+      <location filename="../../bimcommands/BimPipe.py" line="84"/>
       <source>Connector</source>
       <translation>Nascóir</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="91"/>
+      <location filename="../../bimcommands/BimPipe.py" line="88"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Cruthaíonn sé nascóir idir 2 nó 3 phíopa roghnaithe</translation>
     </message>
@@ -10346,12 +10345,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="132"/>
+      <location filename="../../bimcommands/BimPipe.py" line="129"/>
       <source>Pipe Tools</source>
       <translation>Uirlisí Píopa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="133"/>
+      <location filename="../../bimcommands/BimPipe.py" line="130"/>
       <source>Pipe tools</source>
       <translation>Uirlisí píopa</translation>
     </message>
@@ -10359,12 +10358,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="39"/>
       <source>Schedule</source>
       <translation>Sceideal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="45"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Cruthaíonn sé sceideal chun sonraí a bhailiú ón tsamhail</translation>
     </message>
@@ -10385,12 +10384,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="43"/>
+      <location filename="../../bimcommands/BimAxis.py" line="40"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="45"/>
+      <location filename="../../bimcommands/BimAxis.py" line="42"/>
       <source>Creates a set of axes</source>
       <translation>Cruthaíonn sraith aiseanna</translation>
     </message>
@@ -10398,12 +10397,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="137"/>
+      <location filename="../../bimcommands/BimAxis.py" line="134"/>
       <source>Axis Tools</source>
       <translation>Uirlisí Ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="138"/>
+      <location filename="../../bimcommands/BimAxis.py" line="135"/>
       <source>Axis tools</source>
       <translation>Uirlisí ais</translation>
     </message>
@@ -10411,12 +10410,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="43"/>
+      <location filename="../../bimcommands/BimRebar.py" line="40"/>
       <source>Custom Rebar</source>
       <translation>Rebar Saincheaptha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="48"/>
+      <location filename="../../bimcommands/BimRebar.py" line="45"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>Cruthaíonn barra athneartaithe ón aghaidh roghnaithe den réada sholadaigh agus/nó sceitse</translation>
     </message>
@@ -10424,12 +10423,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="41"/>
       <source>Section Plane</source>
       <translation>Eitleán Rannóige</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="45"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Cruthaíonn réad eitleáin rannóige, lena n-áirítear na réada roghnaithe</translation>
     </message>
@@ -10438,7 +10437,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <name>Arch_Building</name>
     <message>
       <location filename="../../ArchBuilding.py" line="229"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="75"/>
       <source>Building</source>
       <translation>Foirgneamh</translation>
     </message>
@@ -10448,7 +10447,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Cruthaíonn sé réad foirgníochta lena n-áirítear réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="77"/>
       <source>Creates a building object</source>
       <translation>Cruthaíonn réad foirgníochta</translation>
     </message>
@@ -10456,12 +10455,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="59"/>
+      <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Wall</source>
       <translation>Balla</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="64"/>
+      <location filename="../../bimcommands/BimWall.py" line="61"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>Cruthaíonn sé réad balla ón tús nó ó réad roghnaithe (sreang, aghaidh nó soladach)</translation>
     </message>
@@ -10469,12 +10468,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merge Walls</source>
       <translation>Ballaí a Chumaisc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="549"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Cuireann sé na ballaí roghnaithe le chéile, más féidir</translation>
     </message>
@@ -10482,12 +10481,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="39"/>
       <source>Add Component</source>
       <translation>Cuir Comhpháirt leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Adds the selected components to the active object</source>
       <translation>Cuireann na comhpháirteanna roghnaithe leis an réad gníomhach</translation>
     </message>
@@ -10495,12 +10494,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="158"/>
       <source>Split Mesh</source>
       <translation>Mogalra Scoilte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Roinneann sé mogaill roghnaithe ina gcomhpháirteanna neamhspleácha</translation>
     </message>
@@ -10508,12 +10507,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="191"/>
       <source>Mesh to Shape</source>
       <translation>Mogalra go Cruth</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
       <source>Turns selected meshes into Part shape objects</source>
       <translation>Déanann mogaill roghnaithe réada cruth Cuid</translation>
     </message>
@@ -10521,12 +10520,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="237"/>
       <source>Select Non-Manifold Meshes</source>
       <translation>Roghnaigh Mogaill Neamh-Ilghnéitheacha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Roghnaíonn sé gach mogalra neamh-ilghnéitheach ón doiciméad nó ó na grúpaí roghnaithe</translation>
     </message>
@@ -10534,12 +10533,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Close Holes</source>
       <translation>Dún na Poill</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
       <source>Closes holes in open shapes, turning them into solids</source>
       <translation>Dúnann sé poill i gcruthanna oscailte, ag casadh ina solaid iad</translation>
     </message>
@@ -10547,12 +10546,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="330"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="327"/>
       <source>Check</source>
       <translation>Seiceáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="331"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="328"/>
       <source>Checks the selected objects for problems</source>
       <translation>Seiceálann sé na rudaí roghnaithe le haghaidh fadhbanna</translation>
     </message>
@@ -10560,12 +10559,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="359"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="356"/>
       <source>Survey</source>
       <translation>Suirbhé</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="360"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="357"/>
       <source>Starts survey</source>
       <translation>Tosaíonn suirbhé</translation>
     </message>
@@ -10573,12 +10572,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Component</source>
       <translation>Comhpháirt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="405"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="402"/>
       <source>Creates an undefined architectural component</source>
       <translation>Cruthaíonn comhpháirt ailtireachta neamhshainithe</translation>
     </message>
@@ -10586,12 +10585,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="434"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Clone Component</source>
       <translation>Comhpháirt Chlónála</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="438"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="435"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Clónálann sé réad mar chomhpháirt ailtireachta neamhshainithe</translation>
     </message>
@@ -10599,12 +10598,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Toggle Subcomponents</source>
       <translation>Fo-chomhpháirteanna a scoránaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="506"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Taispeánann nó folaíonn sé fo-chomhpháirteanna an réada seo</translation>
     </message>
@@ -10612,17 +10611,17 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="596"/>
+      <location filename="../../InitGui.py" line="602"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="597"/>
+      <location filename="../../InitGui.py" line="603"/>
       <source>Draft</source>
       <translation>Dréacht</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="843"/>
+      <location filename="../../InitGui.py" line="859"/>
       <source>Import-Export</source>
       <translation>Iompórtáil-Easpórtáil</translation>
     </message>
@@ -10638,8 +10637,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
       <location filename="../../BimStatus.py" line="63"/>
-      <location filename="../../bimcommands/BimNudge.py" line="76"/>
-      <location filename="../../bimcommands/BimNudge.py" line="146"/>
+      <location filename="../../bimcommands/BimNudge.py" line="73"/>
+      <location filename="../../bimcommands/BimNudge.py" line="143"/>
       <source>Auto</source>
       <translation>Uathoibríoch</translation>
     </message>
@@ -10673,1201 +10672,1201 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
       <translation>BIM</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="806"/>
+      <location filename="../../InitGui.py" line="784"/>
       <source>Snapping</source>
       <translation>Ag snapáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="45"/>
+      <location filename="../../bimcommands/BimBox.py" line="170"/>
       <source>Length</source>
       <translation>Fad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
-      <location filename="../../bimcommands/BimBox.py" line="183"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
+      <location filename="../../bimcommands/BimBox.py" line="179"/>
       <source>Width</source>
       <translation>Leithead</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
-      <location filename="../../bimcommands/BimBox.py" line="192"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
+      <location filename="../../bimcommands/BimBox.py" line="188"/>
       <source>Height</source>
       <translation>Airde</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="90"/>
+      <location filename="../../bimcommands/BimClassification.py" line="87"/>
       <source>Search…</source>
       <translation>Cuardaigh…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="91"/>
+      <location filename="../../bimcommands/BimClassification.py" line="88"/>
       <source>Searches classes</source>
       <translation>Cuardaigh ranganna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="110"/>
+      <location filename="../../bimcommands/BimClassification.py" line="107"/>
       <source>Editing</source>
       <translation>Eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="69"/>
+      <location filename="../../bimcommands/BimDiff.py" line="66"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
       <translation>Caithfidh an doiciméad reatha a bheith ar an bpríomhcháipéis. Tá réada nua sa cheann eile le cumasc leis. Cinntigh nach bhfuil ach na réada atá beartaithe le haghaidh comparáide le feiceáil sa dá dhoiciméad. Ar aghaidh?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="321"/>
+      <location filename="../../bimcommands/BimDiff.py" line="325"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation>tá an cruth céanna fós ar réada ach tá ábhar difriúil iontu. An bhfuil tú ag iarraidh iad a nuashonrú sa phríomhdhoiciméad?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="376"/>
+      <location filename="../../bimcommands/BimDiff.py" line="380"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>níl aon ID IFC ag réada sa phríomhdhoiciméad, ach tá réad comhionann le haitheantas ann sa doiciméad nua. An bhfuil sé ceart na haitheantais seo a aistriú chuig na réada bunaidh?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="395"/>
+      <location filename="../../bimcommands/BimDiff.py" line="397"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>athraíodh ainm na n-ábhar. Athraigh ainm na n-ainmneacha?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="412"/>
+      <location filename="../../bimcommands/BimDiff.py" line="414"/>
       <source>objects had their properties changed. Update?</source>
       <translation>athraíodh airíonna réad. Nuashonrú?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="431"/>
+      <location filename="../../bimcommands/BimDiff.py" line="433"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>tá suíomh na n-ábhar athraithe. Bog iad go dtí a suíomh nua?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="450"/>
+      <location filename="../../bimcommands/BimDiff.py" line="452"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation>Na rudaí atá bogtha a dhathú i mbuí sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="471"/>
+      <location filename="../../bimcommands/BimDiff.py" line="473"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation>Na rudaí atá modhnaithe a dhathú in oráiste sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="494"/>
+      <location filename="../../bimcommands/BimDiff.py" line="496"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation>níl na réada ann a thuilleadh sa cháipéis nua. Bog iad go grúpa 'Le Scriosadh'?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="509"/>
+      <location filename="../../bimcommands/BimDiff.py" line="511"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation>Na rudaí atá bainte a dhathú i ndearg sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="528"/>
+      <location filename="../../bimcommands/BimDiff.py" line="531"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation>Na rudaí atá curtha leis a dhathú i nglas sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="549"/>
+      <location filename="../../bimcommands/BimDiff.py" line="552"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation>Ní mór dhá dhoiciméad a bheith oscailte chun an uirlis seo a rith. Ceann amháin arb é an príomhdhoiciméad é, agus ceann ina bhfuil réada nua le comparáid a dhéanamh leis an gceann atá ann cheana féin. Cinntigh nach bhfuil ach na réada le comparáid a dhéanamh sa dá dhoiciméad le feiceáil.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="88"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="457"/>
       <source>Create new material</source>
       <translation>Cruthaigh ábhar nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="89"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
       <source>Create new multi-material</source>
       <translation>Cruthaigh ilábhar nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
       <source>Label</source>
       <translation>Lipéad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>Cineál IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/__init__.py" line="42"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>Níor aimsíodh ifcOpenShell ar an gcóras seo. Tá tacaíocht IFC díchumasaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation>Struchtúr réada</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation>Tréith</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="104"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>Luach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="103"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>Maoin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="125"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="122"/>
       <source>Open</source>
       <translation>Oscail</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="128"/>
       <source>Back</source>
       <translation>Ar ais</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="129"/>
       <source>Go back to last item selected</source>
       <translation>Téigh ar ais go dtí an mhír dheireanach a roghnaíodh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="134"/>
       <source>Insert</source>
       <translation>Cuir isteach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="140"/>
       <source>Inserts the selected object and its children in the active document</source>
       <translation>Cuirtear an réad roghnaithe agus a chlann isteach sa cháipéis ghníomhach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="146"/>
       <source>Mesh</source>
       <translation>Mogalra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="147"/>
       <source>Turn mesh display on/off</source>
       <translation>Cas an taispeáint mogalra air/as</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
       <source>IFC files (*.ifc)</source>
       <translation>Comhaid IFC (*.ifc)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="193"/>
       <source>File not found</source>
       <translation>Níor aimsíodh an comhad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="200"/>
       <source>IFC Explorer</source>
       <translation>Taiscéalaí IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="123"/>
       <source>Open another IFC file</source>
       <translation>Oscail comhad IFC eile</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="183"/>
       <source>Select an IFC File</source>
       <translation>Roghnaigh Comhad IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="225"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
       <translation>Ní bhfuarthas eilimint ifcSite i %s. Ní féidir iniúchadh a dhéanamh.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="482"/>
       <source>Error in entity</source>
       <translation>Earráid san eintiteas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="124"/>
       <source>Custom property sets can be defined in</source>
       <translation>Is féidir tacair airíonna saincheaptha a shainiú i</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="129"/>
       <source>Add property</source>
       <translation>Cuir maoin leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>Add property set</source>
       <translation>Cuir tacar maoine leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>New</source>
       <translation>Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>Search results</source>
       <translation>Torthaí cuardaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="377"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
       <translation>Rabhadh: tá seanstíl IfcProperties ag réad %1 agus ní féidir é a nuashonrú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="668"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>Roghnaigh nó cruthaigh tacar airíonna ar dtús inar cheart an mhaoin nua a chur.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New Property Set</source>
       <translation>Tacar Maoine Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>Property set name:</source>
       <translation>Ainm an tacair maoine:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
       <source>Area</source>
       <translation>Limistéar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
       <source>Horizontal Area</source>
       <translation>Achar Cothrománach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
       <source>Vertical Area</source>
       <translation>Achar Ingearach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
       <source>Volume</source>
       <translation>Toirt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="183"/>
       <source>Add quantity set…</source>
       <translation>Cuir an tsraith cainníochta leis…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="200"/>
       <source>Adding quantity set</source>
       <translation>Tacar cainníochta a chur leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="435"/>
       <source>Cannot save quantities settings for object %1</source>
       <translation>Ní féidir socruithe cainníochtaí a shábháil don réad %1</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="54"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="51"/>
       <source>Select Image</source>
       <translation>Roghnaigh Íomhá</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>Comhad íomhá (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
-      <location filename="../../bimcommands/BimBox.py" line="81"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="83"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
       <source>%1 pick opposite point</source>
       <translation>%1 roghnaigh pointe os coinne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="203"/>
+      <location filename="../../bimcommands/BimLayers.py" line="200"/>
       <source>Warning: The new layer was added to the project</source>
       <translation>Rabhadh: Cuireadh an ciseal nua leis an tionscadal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="209"/>
+      <location filename="../../bimcommands/BimLayers.py" line="206"/>
       <source>There is no IFC project in this document</source>
       <translation>Níl aon tionscadal IFC sa cháipéis seo</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="312"/>
+      <location filename="../../bimcommands/BimLayers.py" line="309"/>
       <source>On</source>
       <translation>Ar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="313"/>
+      <location filename="../../bimcommands/BimLayers.py" line="310"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="314"/>
+      <location filename="../../bimcommands/BimLayers.py" line="311"/>
       <source>Line width</source>
       <translation>Leithead líne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="315"/>
+      <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Draw style</source>
       <translation>Stíl tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="316"/>
+      <location filename="../../bimcommands/BimLayers.py" line="313"/>
       <source>Line color</source>
       <translation>Dath líne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="317"/>
+      <location filename="../../bimcommands/BimLayers.py" line="314"/>
       <source>Face color</source>
       <translation>Dath aghaidhe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="318"/>
+      <location filename="../../bimcommands/BimLayers.py" line="315"/>
       <source>Transparency</source>
       <translation>Trédhearcacht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="319"/>
+      <location filename="../../bimcommands/BimLayers.py" line="316"/>
       <source>Line print color</source>
       <translation>Dath priontála líne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="341"/>
+      <location filename="../../bimcommands/BimLayers.py" line="338"/>
       <source>New Layer</source>
       <translation>Sraith Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="52"/>
+      <location filename="../../bimcommands/BimLeader.py" line="49"/>
       <source>Leader</source>
       <translation>Ceannaire</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="77"/>
+      <location filename="../../bimcommands/BimLeader.py" line="74"/>
       <source>Create Leader</source>
       <translation>Cruthaigh Ceannaire</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimLibrary.py" line="184"/>
       <location filename="../../bimcommands/BimLibrary.py" line="187"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="937"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="941"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="934"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="938"/>
       <source>Preview</source>
       <translation>Réamhamharc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="924"/>
       <location filename="../../bimcommands/BimLibrary.py" line="927"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="930"/>
       <source>Options</source>
       <translation>Roghanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="344"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation>Ní féidir nasc a dhéanamh mar go bhfuil an príomhdhoiciméad dúnta.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="304"/>
       <source>Save the working file before linking.</source>
       <translation>Sábháil an comhad oibre sula ndéantar nascadh.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="497"/>
       <source>No structure in cache. Refresh required.</source>
       <translation>Gan aon struchtúr sa taisce. Athnuachan ag teastáil.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>Ní féidir an réad seo a chur isteach mar go bhfuil an doiciméad dúnta.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="605"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation>Earráid: Ní féidir comhaid SAT a allmhairiú - ní mór breiseán InventorLoader nó CadExchanger a shuiteáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="631"/>
       <source>Error: Unable to download</source>
       <translation>Earráid: Ní féidir íoslódáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="678"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>%1 pick insertion point</source>
       <translation>%1 pointe ionchuir roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Insertion Point</source>
       <translation>Pointe Ionsáithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Origin</source>
       <translation>Bunús</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Top left</source>
       <translation>Barr ar chlé</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Top center</source>
       <translation>Lár barr</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Top right</source>
       <translation>Barr ar dheis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Middle left</source>
       <translation>Lár ar chlé</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
       <source>Middle center</source>
       <translation>Lár-lár</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
       <source>Middle right</source>
       <translation>Lár ar dheis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="709"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
       <source>Bottom left</source>
       <translation>Bun ar chlé</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="710"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
       <source>Bottom center</source>
       <translation>Lár bun</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="711"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
       <source>Bottom right</source>
       <translation>Bun ar dheis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="817"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="814"/>
       <source>Could not fetch library contents</source>
       <translation>Níorbh fhéidir ábhar na leabharlainne a fháil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="821"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="818"/>
       <source>No results fetched from online library</source>
       <translation>Níor aimsíodh aon torthaí ón leabharlann ar líne</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="879"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="876"/>
       <source>Warning, this can take several minutes!</source>
       <translation>Rabhadh, d’fhéadfadh sé seo roinnt nóiméad a thógáil!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="122"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="119"/>
       <source>Clears the search field</source>
       <translation>Glanann sé an réimse cuardaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="129"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="126"/>
       <source> Material Operations</source>
       <translation> Oibríochtaí Ábhartha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="135"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="132"/>
       <source>New Material</source>
       <translation>Ábhar Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge Duplicates</source>
       <translation>Cumaisc Dúblaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
       <source>Delete Unused</source>
       <translation>Scrios Neamhúsáidte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
       <source>Rename</source>
       <translation>Athainmnigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
       <source>Duplicate</source>
       <translation>Dúblach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
       <source>Merge To…</source>
       <translation>Cumaisc le…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="103"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation>Roghnaigh Ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="104"/>
       <source>Search materials</source>
       <translation>Ábhair chuardaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="105"/>
       <source>Searches for materials in the list</source>
       <translation>Cuardaigh ábhair sa liosta</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation>Ilábhar Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="237"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="247"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="234"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="244"/>
       <source>Merging duplicate material</source>
       <translation>Ábhar dúblach á chumasc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="256"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="253"/>
       <source>Unable to delete material</source>
       <translation>Ní féidir ábhar a scriosadh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="260"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="257"/>
       <source>InList not empty</source>
       <translation>Níl an liosta folamh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="287"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="284"/>
       <source>Deleting unused material</source>
       <translation>Ábhar neamhúsáidte a scriosadh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="337"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="334"/>
       <source>Select Material to Merge To</source>
       <translation>Roghnaigh Ábhar le Cumaisc leis</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="382"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="379"/>
       <source>This material is used by:</source>
       <translation>Úsáidtear an t-ábhar seo ag:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="164"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="161"/>
       <source>Passed</source>
       <translation>Rite</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="165"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="162"/>
       <source>This test has succeeded.</source>
       <translation>D’éirigh leis an tástáil seo.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="176"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="173"/>
       <source>This test has failed. Press the button to know more</source>
       <translation>Theip ar an tástáil seo. Brúigh an cnaipe le tuilleadh eolais a fháil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="184"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="181"/>
       <source>Test</source>
       <translation>Tástáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="297"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="294"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
       <translation>Níl ifcopenshell suiteáilte ar an gcóras nó níl sé ar fáil do FreeCAD. Tá an leabharlann seo freagrach as tacaíocht IFC i FreeCAD, agus dá bhrí sin tá tacaíocht IFC díchumasaithe faoi láthair. Seiceáil %1 chun tuilleadh eolais a fháil.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="328"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="325"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
       <translation>Níorbh fhéidir an leagan de Ifcopenshell atá suiteáilte ar an gcóras a pharsáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="340"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="337"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
       <translation>Ginfidh an leagan de Ifcopenshell atá suiteáilte ar an gcóras comhaid leis an leagan scéime seo:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="441"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="438"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
       <translation>Fuarthas amach nach bhfuil na réada foirgnimh seo a leanas san áireamh in aon Suíomh. Is féidir leat an scéal a réiteach trí réad Suímh a chruthú, mura bhfuil aon cheann i do mhúnla, agus na réada foirgnimh a tharraingt agus a scaoileadh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="487"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="484"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
       <translation>Fuarthas amach nach bhfuil na réada stór foirgnimh seo a leanas (codanna foirgnimh a bhfuil a ról IFC socraithe mar "stór foirgnimh") san áireamh in aon fhoirgneamh. Réitigh an scéal trí réad foirgnimh a chruthú, mura bhfuil aon cheann i láthair sa mhúnla, agus tarraing agus scaoil na réada stór foirgnimh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="548"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="545"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
       <translation>Fuarthas amach nach bhfuil na réada BIM seo a leanas san áireamh in aon urlár foirgnimh (codanna foirgnimh a bhfuil a ról IFC socraithe mar "urlár foirgnimh"). Réitigh an scéal trí réad urláir foirgnimh a chruthú, mura bhfuil aon cheann i láthair sa mhúnla, agus na réada seo a tharraingt agus a scaoileadh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="685"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="682"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
       <translation>Tá airíonna faid, leithead nó airde ag na réada thíos, ach ní dhéanfar na hairíonna seo a onnmhairiú go sainráite chuig IFC. Ní fadhb í seo i gcónaí, mura bhfuiltear ag iarraidh na cainníochtaí seo a onnmhairiú:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="693"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="690"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
       <translation>Chun onnmhairiú na gcainníochtaí seo a chumasú, bain úsáid as an uirlis bhainisteora cainníochtaí IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Cainníochtaí IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="765"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="762"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Chun tacair airíonna coitianta a chur leis na réada seo, bain úsáid as an uirlis bainisteoir airíonna IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="858"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="855"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>Chun tacair airíonna na réad seo a shocrú, bain úsáid as an uirlis bainisteoir airíonna IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1071"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
       <translation>Tá réad breise, ar a dtugtar "TinyLinesResult", curtha leis an tsamhail seo, agus roghnaithe. Tá na línte beaga bídeacha go léir a fuarthas ann, le haghaidh iniúchta. Bí cinnte an réad TinyLinesResult a scriosadh nuair a bheidh tú críochnaithe!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="386"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="383"/>
       <source>The following types were not found in the project:</source>
       <translation>Ní bhfuarthas na cineálacha seo a leanas sa tionscadal:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="92"/>
-      <location filename="../../bimcommands/BimPreflight.py" line="185"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="89"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="182"/>
       <source>Performs the test</source>
       <translation>Déanann an tástáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="595"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="592"/>
       <source>The following BIM objects have the "Undefined" type:</source>
       <translation>Tá an cineál "Gan Sainmhíniú" ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="600"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="597"/>
       <source>The following objects are not BIM objects:</source>
       <translation>Ní réada BIM iad na réada seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="607"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="604"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
       <translation>Is féidir leat na rudaí seo a thiontú ina rudaí BIM trí úsáid a bhaint as an uirlis Modify -&gt; Add Component.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="642"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="639"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
       <translation>Tá geoiméadracht neamhbhailí nó neamh-sholadach ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="757"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="754"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
       <translation>Tá cineál IFC sainithe ag na réada thíos ach níl an tacar airíonna coiteanna gaolmhara acu:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="839"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="836"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
       <translation>Tá tacar airíonna coiteann ag na réada thíos ach níl na hairíonna riachtanacha go léir sa tacar airíonna sin:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="848"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="845"/>
       <source>Verify which properties a certain property set must contain on %1</source>
       <translation>Fíoraigh cé na hairíonna a chaithfidh a bheith i sraith airíonna áirithe ar %1</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="887"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="884"/>
       <source>The following BIM objects have no material attributed:</source>
       <translation>Níl aon ábhar curtha i leith na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="928"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="925"/>
       <source>The following BIM objects have no defined standard code:</source>
       <translation>Níl aon chód caighdeánach sainithe ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="978"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="975"/>
       <source>The following BIM objects are not extrusions:</source>
       <translation>Ní easbhrúiteáin iad na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1012"/>
       <source>The following BIM objects are not standard cases:</source>
       <translation>Ní cásanna caighdeánacha iad na réada BIM seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1061"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
       <translation>Tá línte níos lú ná 1/32 orlach nó 0.79 mm ag na réada thíos, arb é an méid líne is lú a nglacann Revit leis. Caithfear na réada seo amach nuair a allmhairítear isteach i Revit iad:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1077"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
       <translation>Leid: Is fearr a fheictear na torthaí i mód Sreangfhráma (roghchlár Amharc -&gt; Stíl Tarraingthe -&gt; Sreangfhráma)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="302"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="299"/>
       <source>Building Layout</source>
       <translation>Leagan Amach Foirgnimh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="315"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="312"/>
       <source>Building Outline</source>
       <translation>Imlíne Foirgnimh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="331"/>
       <source>Building Label</source>
       <translation>Lipéad Foirgnimh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="344"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="341"/>
       <source>Vertical Axes</source>
       <translation>Aiseanna Ingearacha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="355"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="352"/>
       <source>Horizontal Axes</source>
       <translation>Aiseanna Cothrománacha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="365"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="362"/>
       <source>Axes</source>
       <translation>Aiseanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="376"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="373"/>
       <source>Zero Level Height</source>
       <translation>Airde Leibhéal Nialasach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="374"/>
       <source>Level height is zero. No levels will be created.</source>
       <translation>Is é nialas airde an leibhéil. Ní chruthófar aon leibhéil.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="380"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
       <source>Set the level height to a non-zero value.</source>
       <translation>Socraigh airde an leibhéil go luach neamh-nialas.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="390"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="387"/>
       <source>Level</source>
       <translation>Leibhéal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="451"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="448"/>
       <source>Save Preset</source>
       <translation>Sábháil Réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="452"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="449"/>
       <source>Preset name</source>
       <translation>Ainm réamhshocraithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="507"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="504"/>
       <source>User preset</source>
       <translation>Réamhshocrú úsáideora</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="661"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
       <source>Save Template File</source>
       <translation>Sábháil Comhad Teimpléid</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="682"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="679"/>
       <source>Open Template File</source>
       <translation>Oscail Comhad Teimpléid</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="796"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="793"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Luchtaíodh an teimpléad go rathúil isteach sa cháipéis reatha</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>Grúpa Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="670"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="667"/>
       <source>Template saved successfully</source>
       <translation>Sábháilte an teimpléad go rathúil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="52"/>
+      <location filename="../../bimcommands/BimReorder.py" line="49"/>
       <source>You must choose a group object before using this command</source>
       <translation>Ní mór duit réad grúpa a roghnú sula n-úsáideann tú an t-ordú seo</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="138"/>
+      <location filename="../../bimcommands/BimSetup.py" line="135"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
       <translation>Níl roinnt binse oibre breise suiteáilte, rud a leathnaíonn feidhmiúlacht BIM:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="142"/>
+      <location filename="../../bimcommands/BimSetup.py" line="139"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
       <translation>Suiteáil iad ón roghchlár Uirlisí -&gt; Bainisteoir Breiseán.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="181"/>
+      <location filename="../../bimcommands/BimSetup.py" line="178"/>
       <source>Unit system updated for active document</source>
       <translation>Córas aonaid nuashonraithe don doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="185"/>
+      <location filename="../../bimcommands/BimSetup.py" line="182"/>
       <source>Unit system updated for all opened documents</source>
       <translation>Córas aonaid nuashonraithe do gach doiciméad oscailte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="631"/>
+      <location filename="../../bimcommands/BimSetup.py" line="628"/>
       <source>IfcOpenShell Not Found</source>
       <translation>Níor aimsíodh IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="635"/>
+      <location filename="../../bimcommands/BimSetup.py" line="632"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
       <translation>Tá ifcOpenShell ag teastáil chun comhaid IFC a allmhairiú agus a onnmhairiú. Is cosúil go bhfuil sé ar iarraidh ar an gcóras. An bhfuil tú ag iarraidh é a íoslódáil agus a shuiteáil anois? Suiteálfar é in eolaire macraí FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="56"/>
       <source>Select a planar object</source>
       <translation>Roghnaigh réad plánach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>%1 select a planar object</source>
       <translation>%1 roghnaigh réad plánach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="81"/>
+      <location filename="../../bimcommands/BimSlab.py" line="82"/>
       <source>Slab</source>
       <translation>Leac</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="61"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="58"/>
       <source>Select Page Template</source>
       <translation>Roghnaigh Teimpléad Leathanaigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="73"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="70"/>
       <source>Template</source>
       <translation>Teimpléad</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="52"/>
+      <location filename="../../bimcommands/BimTrash.py" line="49"/>
       <source>Trash</source>
       <translation>Bruscar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="130"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="127"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
       <translation>Ní féidir rochtain a fháil ar an rang teagaisc. Fíoraigh an nasc idirlín (Ní gá é seo ach uair amháin).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="160"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="157"/>
       <source>Downloading images…</source>
       <translation>Ag íoslódáil íomhánna…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="244"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="241"/>
       <source>BIM Tutorial - Step</source>
       <translation>Ranganna Teagaisc BIM - Céim</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="138"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="135"/>
       <source>Draft clones are not supported yet!</source>
       <translation>Ní thacaítear le clónanna dréachta go fóill!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="139"/>
       <source>The selected object is not a clone</source>
       <translation>Ní clón é an réad roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="145"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
       <source>Select exactly one object</source>
       <translation>Roghnaigh réad amháin go díreach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>Isolate</source>
       <translation>Leithlisigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="137"/>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Creates a new working plane proxy</source>
       <translation>Cruthaíonn seachfhreastalaí eitleáin oibre nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Deletes the selected item</source>
       <translation>Scriosann sé an mhír roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimViews.py" line="701"/>
+      <location filename="../../bimcommands/BimViews.py" line="97"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>Gníomhach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="102"/>
+      <location filename="../../bimcommands/BimViews.py" line="99"/>
       <source>New Working Plane Proxy</source>
       <translation>Seachfhreastalaí Nua ar an bPlána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="104"/>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
       <source>Toggle Visibility</source>
       <translation>Infheictheacht a Athrú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="141"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Athraíonn infheictheacht na míreanna roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="144"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Múchann sé gach mír seachas na cinn roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <location filename="../../bimcommands/BimViews.py" line="98"/>
       <source>New Level Above</source>
       <translation>Leibhéal Nua Thuas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
       <translation>Sábháil Radharc Ceamara</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Save Visibility of Objects</source>
       <translation>Sábháil Infheictheacht Réada</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="131"/>
       <source>Creates a new level above the highest existing one</source>
       <translation>Cruthaíonn sé leibhéal nua os cionn an leibhéal is airde atá ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Saves the current camera view to the selected items</source>
       <translation>Sábhálann sé radharc reatha an cheamara sna míreanna roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="148"/>
+      <location filename="../../bimcommands/BimViews.py" line="145"/>
       <source>Renames the selected item</source>
       <translation>Athainmníonn an mhír roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="149"/>
-      <location filename="../../bimcommands/BimViews.py" line="704"/>
+      <location filename="../../bimcommands/BimViews.py" line="146"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>Gníomhaíonn sé an mhír roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="176"/>
+      <location filename="../../bimcommands/BimViews.py" line="173"/>
       <source>BIM Views Manager</source>
       <translation>Bainisteoir Radharcanna BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="327"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>Radharcanna 2T</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="340"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>Bileoga</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="712"/>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
       <source>Set Working Plane</source>
       <translation>Socraigh Plána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="716"/>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
       <translation>Socraíonn an mhír roghnaithe mar an plána oibre reatha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="225"/>
+      <location filename="../../bimcommands/BimWindows.py" line="222"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="127"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="124"/>
       <source>The active document is already an IFC document</source>
       <translation>Is doiciméad IFC cheana féin an doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="76"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="73"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
       <translation>Níl an comhad IFC sábháilte. Sábháil uair amháin le go mbeidh comhad IFC ann cheana féin le comparáid a dhéanamh leis. Ansin, rith an t-ordú seo arís.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="88"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="85"/>
       <source>No changes to display.</source>
       <translation>Gan aon athruithe le taispeáint.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="75"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="72"/>
       <source>IfcOpenShell Update</source>
       <translation>Nuashonrú IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
       <translation>Tá an nuashonrú suiteáilte in eolaire úsáideora do FreeCAD agus ní bheidh tionchar aige ar an gcuid eile de do chóras.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="78"/>
       <source>An update to your installed IfcOpenShell version is available</source>
       <translation>Tá nuashonrú ar fáil ar an leagan IfcOpenShell atá suiteáilte agat</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="80"/>
       <source>Would you like to install that update?</source>
       <translation>Ar mhaith leat an nuashonrú sin a shuiteáil?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="84"/>
       <source>Your version of IfcOpenShell is already up to date</source>
       <translation>Tá do leagan de IfcOpenShell cothrom le dáta cheana féin</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
       <translation>Ní bhfuarthas aon suiteáil IfcOpenShell atá ann cheana ar an gcóras seo.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>Would you like to install the most recent version?</source>
       <translation>Ar mhaith leat an leagan is déanaí a shuiteáil?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="99"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
       <translation>Níl IfcOpenShell suiteáilte, agus theip ar FreeCAD leagan oiriúnach a aimsiú le suiteáil. Is féidir leat IfcOpenShell a shuiteáil de láimh fós, tabhair cuairt ar https://wiki.freecad.org/IfcOpenShell le haghaidh tuilleadh treoracha.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="107"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="104"/>
       <source>IfcOpenShell update successfully installed.</source>
       <translation>Suiteáladh nuashonrú IfcOpenShell go rathúil.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="155"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="152"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
       <translation>Ní féidir pip a rith. Cinntigh go bhfuil pip suiteáilte ar do chóras.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="36"/>
+      <location filename="../../nativeifc/ifc_status.py" line="33"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
       <translation>Tá mód IFC dian AR SIÚL (is IFC gach réad)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="39"/>
+      <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
       <translation>Tá mód IFC dian AS (ceadaítear réada IFC agus neamh-IFC)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="78"/>
+      <location filename="../../nativeifc/ifc_status.py" line="75"/>
       <source>Add IFC property…</source>
       <translation>Cuir maoin IFC leis…</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="83"/>
+      <location filename="../../nativeifc/ifc_status.py" line="80"/>
       <source>Add standard IFC Property Set…</source>
       <translation>Cuir Tacar Maoine IFC caighdeánach leis…</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="140"/>
+      <location filename="../../nativeifc/ifc_status.py" line="137"/>
       <source>No Property set provided</source>
       <translation>Níor soláthraíodh aon tacar maoine</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="151"/>
+      <location filename="../../nativeifc/ifc_status.py" line="148"/>
       <source>add property</source>
       <translation>cuir maoin leis</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="214"/>
+      <location filename="../../nativeifc/ifc_status.py" line="211"/>
       <source>Property set already exists</source>
       <translation>Tá an tacar maoine ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="218"/>
+      <location filename="../../nativeifc/ifc_status.py" line="215"/>
       <source>add property set</source>
       <translation>cuir tacar maoine leis</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="226"/>
+      <location filename="../../nativeifc/ifc_status.py" line="223"/>
       <source>Property already exists</source>
       <translation>Tá an mhaoin ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
       <source>Viewed lines</source>
       <translation>Línte a breathnaíodh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="82"/>
       <source>Cut lines</source>
       <translation>Línte gearrtha</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="374"/>
       <source>Removing property</source>
       <translation>Ag baint maoine</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="379"/>
       <source>Removing property set</source>
       <translation>Ag baint tacair airíonna</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_types.py" line="167"/>
+      <location filename="../../nativeifc/ifc_types.py" line="164"/>
       <source>Error: Incompatible type</source>
       <translation>Earráid: Cineál neamh-chomhoiriúnach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="160"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="157"/>
       <source>Error: Select exactly one base face</source>
       <translation>Earráid: Roghnaigh aghaidh bhunúsach amháin go díreach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="81"/>
+      <location filename="../../bimcommands/BimTDView.py" line="78"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
       <translation>Níor aimsíodh ná níor roghnaíodh aon radharc alt, réad Dréachta, ná leathanach sa cháipéis</translation>
     </message>
@@ -11915,93 +11914,93 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
       <translation>Earráid Teimpléid Easpórtála WebGL</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="102"/>
       <source>Deactivate Container</source>
       <translation>Díghníomhachtaigh Coimeádán</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="104"/>
       <source>Make Active Container</source>
       <translation>Déan Coimeádán Gníomhach</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="108"/>
       <source>Expand Children</source>
       <translation>Leathnaigh Leanaí</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="112"/>
       <source>Collapse Children</source>
       <translation>Laghdaigh Leanaí</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="117"/>
       <source>Remove Shape</source>
       <translation>Bain Cruth</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="119"/>
       <source>Load Shape</source>
       <translation>Luchtaigh Cruth</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="123"/>
       <source>Load Representation</source>
       <translation>Ionadaíocht Luchtaigh</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="127"/>
       <source>Add Geometry Properties</source>
       <translation>Cuir Airíonna Geoiméadrachta leis</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Show Geometry Tree</source>
       <translation>Taispeáin Crann Geoiméadrachta</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
       <source>Expand Property Sets</source>
       <translation>Leathnaigh Tacair Airíonna</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="138"/>
       <source>Load Material</source>
       <translation>Ábhar Luchtaigh</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="142"/>
       <source>Convert to Type</source>
       <translation>Tiontaigh go Cineál</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="426"/>
       <source>View Diff</source>
       <translation>Féach ar an Difríocht</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="430"/>
       <source>Save IFC File</source>
       <translation>Sábháil Comhad IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File As…</source>
       <translation>Sábháil Comhad IFC Mar…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="30"/>
+      <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>Roghnaigh réad le nascadh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="83"/>
+      <location filename="../../bimcommands/BimBox.py" line="79"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="171"/>
+      <location filename="../../bimcommands/BimBox.py" line="167"/>
       <source>Box Dimensions</source>
       <translation>Toisí an Bhosca</translation>
     </message>
@@ -12009,12 +12008,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_RebarTools</name>
     <message>
-      <location filename="../../InitGui.py" line="414"/>
+      <location filename="../../InitGui.py" line="420"/>
       <source>Reinforcement Tools</source>
       <translation>Uirlisí Athneartaithe</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="415"/>
+      <location filename="../../InitGui.py" line="421"/>
       <source>Reinforcement tools</source>
       <translation>Uirlisí athneartaithe</translation>
     </message>
@@ -12022,12 +12021,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Background</name>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="38"/>
+      <location filename="../../bimcommands/BimBackground.py" line="35"/>
       <source>Toggle Background</source>
       <translation>Cúlra a Athraigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="42"/>
+      <location filename="../../bimcommands/BimBackground.py" line="39"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation>Athraíonn sé cúlra an Amharc 3T idir simplí agus grádán</translation>
     </message>
@@ -12035,12 +12034,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Beam</name>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="49"/>
+      <location filename="../../bimcommands/BimBeam.py" line="46"/>
       <source>Beam</source>
       <translation>Bhíoma</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="50"/>
+      <location filename="../../bimcommands/BimBeam.py" line="47"/>
       <source>Creates a beam between two points</source>
       <translation>Cruthaíonn bhíoma idir dhá phointe</translation>
     </message>
@@ -12048,12 +12047,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Box</name>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="39"/>
+      <location filename="../../bimcommands/BimBox.py" line="35"/>
       <source>Box</source>
       <translation>Bosca</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="42"/>
+      <location filename="../../bimcommands/BimBox.py" line="38"/>
       <source>Graphically creates a generic box in the current document</source>
       <translation>Cruthaíonn sé bosca ginearálta go grafach sa cháipéis reatha</translation>
     </message>
@@ -12061,12 +12060,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Part_Builder</name>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="38"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
       <translation>Tógálaí Cruthanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="39"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
       <source>Advanced utility to create shapes</source>
       <translation>Fóntais ardleibhéil chun cruthanna a chruthú</translation>
     </message>
@@ -12074,12 +12073,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_Level</name>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="46"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
       <source>Level</source>
       <translation>Leibhéal</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="47"/>
       <source>Creates a building part object that represents a level</source>
       <translation>Cruthaíonn réad cuid foirgnimh a léiríonn leibhéal</translation>
     </message>
@@ -12087,12 +12086,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="43"/>
       <source>Clone</source>
       <translation>Clónáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="49"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
       <translation>Clónálann sé réada roghnaithe chuig suíomh eile</translation>
     </message>
@@ -12100,12 +12099,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Column</name>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="49"/>
+      <location filename="../../bimcommands/BimColumn.py" line="46"/>
       <source>Column</source>
       <translation>Colún</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="50"/>
+      <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>Cruthaíonn colún ag suíomh sonraithe</translation>
     </message>
@@ -12113,12 +12112,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Part_Common</name>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="38"/>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
       <source>Intersection</source>
       <translation>Crosbhealach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="39"/>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
       <translation>Cruthaíonn sé trasnú dhá chruth</translation>
     </message>
@@ -12126,22 +12125,22 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Convert</name>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="38"/>
+      <location filename="../../bimcommands/BimConvert.py" line="35"/>
       <source>Convert to BIM</source>
       <translation>Tiontaigh go BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="39"/>
+      <location filename="../../bimcommands/BimConvert.py" line="36"/>
       <source>Converts any object to a BIM component</source>
       <translation>Tiontaíonn sé aon réad go comhpháirt BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
       <translation>Bain den Ghrúpa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="41"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
       <translation>Baintear an réad seo as a ghrúpa tuismitheora</translation>
     </message>
@@ -12149,12 +12148,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Copy</name>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="43"/>
+      <location filename="../../bimcommands/BimCopy.py" line="40"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="44"/>
+      <location filename="../../bimcommands/BimCopy.py" line="41"/>
       <source>Copies selected objects to another location</source>
       <translation>Cóipeálann sé rudaí roghnaithe chuig suíomh eile</translation>
     </message>
@@ -12162,12 +12161,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="37"/>
+      <location filename="../../bimcommands/BimCut.py" line="34"/>
       <source>Difference</source>
       <translation>Difríocht</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="38"/>
+      <location filename="../../bimcommands/BimCut.py" line="35"/>
       <source>Creates a difference between two shapes</source>
       <translation>Cruthaíonn sé difríocht idir dhá chruth</translation>
     </message>
@@ -12175,12 +12174,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Diff</name>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="38"/>
+      <location filename="../../bimcommands/BimDiff.py" line="35"/>
       <source>IFC Shape Diff</source>
       <translation>Difríocht Chruth IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="41"/>
+      <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>Shows the difference between two IFC-based documents</source>
       <translation>Taispeánann sé an difríocht idir dhá dhoiciméad bunaithe ar IFC</translation>
     </message>
@@ -12188,12 +12187,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Door</name>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="43"/>
+      <location filename="../../bimcommands/BimDoor.py" line="40"/>
       <source>Door</source>
       <translation>Doras</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="44"/>
+      <location filename="../../bimcommands/BimDoor.py" line="41"/>
       <source>Places a door at a given location</source>
       <translation>Cuireann doras in áit ar leith</translation>
     </message>
@@ -12201,18 +12200,18 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_EmptyTrash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="82"/>
+      <location filename="../../bimcommands/BimTrash.py" line="79"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
       <translation>Scriosann sé as an mbosca bruscair gach rud nach n-úsáideann aon duine eile</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>Folmhaigh an Bruscar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="39"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
       <translation>Scriosann sé gach rud ón mbosca bruscair nach n-úsáideann aon duine eile</translation>
     </message>
@@ -12220,12 +12219,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Examples</name>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="38"/>
+      <location filename="../../bimcommands/BimExamples.py" line="35"/>
       <source>BIM Examples</source>
       <translation>Samplaí BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="42"/>
+      <location filename="../../bimcommands/BimExamples.py" line="39"/>
       <source>Download examples of BIM files made with FreeCAD</source>
       <translation>Íoslódáil samplaí de chomhaid BIM a rinneadh le FreeCAD</translation>
     </message>
@@ -12233,12 +12232,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Extrude</name>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="38"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="35"/>
       <source>Extrude</source>
       <translation>Easbhrúigh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="39"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="36"/>
       <source>Extrudes a selected 2D shape</source>
       <translation>Easbhrúitear cruth 2T roghnaithe</translation>
     </message>
@@ -12246,7 +12245,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch Fence selection</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="59"/>
+      <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>Roghnaigh cuid, post agus cosán san ord seo go díreach chun fál a thógáil.</translation>
     </message>
@@ -12254,12 +12253,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Part_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="37"/>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
       <source>Union</source>
       <translation>Aontas</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="38"/>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
       <translation>Cruthaíonn sé aontas de roinnt cruthanna</translation>
     </message>
@@ -12267,12 +12266,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Glue</name>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="38"/>
+      <location filename="../../bimcommands/BimGlue.py" line="35"/>
       <source>Glue</source>
       <translation>Gliú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="41"/>
+      <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Joins selected shapes into one non-parametric shape</source>
       <translation>Ceanglaíonn cruthanna roghnaithe i gcruth neamhpharaiméadrach amháin</translation>
     </message>
@@ -12280,12 +12279,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Help</name>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="38"/>
+      <location filename="../../bimcommands/BimHelp.py" line="35"/>
       <source>BIM Help</source>
       <translation>Cabhair BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="42"/>
+      <location filename="../../bimcommands/BimHelp.py" line="39"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
       <translation>Osclaíonn sé leathanach cabhrach BIM ar shuíomh Gréasáin dhoiciméadúcháin FreeCAD</translation>
     </message>
@@ -12293,12 +12292,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_ImagePlane</name>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="35"/>
       <source>Image Plane</source>
       <translation>Plána Íomhá</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="36"/>
       <source>Creates a plane from an image</source>
       <translation>Cruthaíonn sé eitleán ó íomhá</translation>
     </message>
@@ -12306,12 +12305,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Leader</name>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="45"/>
+      <location filename="../../bimcommands/BimLeader.py" line="42"/>
       <source>Leader</source>
       <translation>Ceannaire</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="48"/>
+      <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
       <translation>Cruthaíonn sé polalíne le saighead ag a chríochphointe</translation>
     </message>
@@ -12319,12 +12318,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Library</name>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="86"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="83"/>
       <source>Objects Library</source>
       <translation>Leabharlann Réada</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="87"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="84"/>
       <source>Opens the objects library</source>
       <translation>Osclaíonn an leabharlann réad</translation>
     </message>
@@ -12332,12 +12331,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="61"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="58"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="65"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="62"/>
       <source>Sets or creates a material for selected objects</source>
       <translation>Socraíonn nó cruthaíonn ábhar do réada roghnaithe</translation>
     </message>
@@ -12345,12 +12344,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_MoveView</name>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="38"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="35"/>
       <source>Move View</source>
       <translation>Bog an Radharc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="39"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="36"/>
       <source>Moves this view to an existing page</source>
       <translation>Bogann sé an radharc seo chuig leathanach atá ann cheana féin</translation>
     </message>
@@ -12358,7 +12357,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Switch</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="127"/>
+      <location filename="../../bimcommands/BimNudge.py" line="124"/>
       <source>Nudge Switch</source>
       <translation>Brúigh Lasc</translation>
     </message>
@@ -12366,7 +12365,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Up</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="153"/>
+      <location filename="../../bimcommands/BimNudge.py" line="150"/>
       <source>Nudge Up</source>
       <translation>Brúigh Suas</translation>
     </message>
@@ -12374,7 +12373,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Down</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="173"/>
+      <location filename="../../bimcommands/BimNudge.py" line="170"/>
       <source>Nudge Down</source>
       <translation>Brúigh Síos</translation>
     </message>
@@ -12382,7 +12381,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Left</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="193"/>
+      <location filename="../../bimcommands/BimNudge.py" line="190"/>
       <source>Nudge Left</source>
       <translation>Brúigh ar Chlé</translation>
     </message>
@@ -12390,7 +12389,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Right</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="213"/>
+      <location filename="../../bimcommands/BimNudge.py" line="210"/>
       <source>Nudge Right</source>
       <translation>Brúigh ar Dheis</translation>
     </message>
@@ -12398,7 +12397,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Extend</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="233"/>
+      <location filename="../../bimcommands/BimNudge.py" line="230"/>
       <source>Nudge Extend</source>
       <translation>Brúigh Leathnú</translation>
     </message>
@@ -12406,7 +12405,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_Shrink</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="257"/>
+      <location filename="../../bimcommands/BimNudge.py" line="254"/>
       <source>Nudge Shrink</source>
       <translation>Brúigh Laghdaigh</translation>
     </message>
@@ -12414,7 +12413,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_RotateLeft</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="281"/>
+      <location filename="../../bimcommands/BimNudge.py" line="278"/>
       <source>Nudge Rotate Left</source>
       <translation>Brúigh Rothlaigh Ar Chlé</translation>
     </message>
@@ -12422,7 +12421,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Nudge_RotateRight</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="310"/>
+      <location filename="../../bimcommands/BimNudge.py" line="307"/>
       <source>Nudge Rotate Right</source>
       <translation>Brúigh Rothlaigh ar Dheis</translation>
     </message>
@@ -12430,12 +12429,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Part_Offset2D</name>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="38"/>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
       <translation>Fritháireamh 2T</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="39"/>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation>Fóntais chun cruthanna plánacha a fhritháireamh</translation>
     </message>
@@ -12443,12 +12442,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Preflight</name>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="64"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="61"/>
       <source>Preflight Checks</source>
       <translation>Seiceálacha Réamheitilte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="68"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="65"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
       <translation>Seiceálann sé roinnt tréithe den mhúnla seo sula ndéantar é a onnmhairiú chuig IFC</translation>
     </message>
@@ -12456,12 +12455,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Project</name>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="38"/>
+      <location filename="../../bimcommands/BimProject.py" line="35"/>
       <source>IFC Project</source>
       <translation>Tionscadal IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="39"/>
+      <location filename="../../bimcommands/BimProject.py" line="36"/>
       <source>Creates an empty NativeIFC project</source>
       <translation>Cruthaíonn tionscadal NativeIFC folamh</translation>
     </message>
@@ -12469,12 +12468,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_ResetCloneColors</name>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="35"/>
       <source>Reset Colors</source>
       <translation>Athshocraigh Dathanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="39"/>
       <source>Resets the colors of this object from its cloned original</source>
       <translation>Athshocraíonn sé dathanna an réada seo óna bhunleagan clónáilte</translation>
     </message>
@@ -12482,12 +12481,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Rewire</name>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="38"/>
+      <location filename="../../bimcommands/BimRewire.py" line="35"/>
       <source>Rewire</source>
       <translation>Athshreangú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="39"/>
+      <location filename="../../bimcommands/BimRewire.py" line="36"/>
       <source>Recreates wires from selected objects</source>
       <translation>Athchruthaíonn sreanga ó réada roghnaithe</translation>
     </message>
@@ -12495,12 +12494,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="51"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
       <source>Create 2D view</source>
       <translation>Cruthaigh radharc 2T</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
       <source>Create 2D Cut</source>
       <translation>Cruthaigh Gearradh 2T</translation>
     </message>
@@ -12508,12 +12507,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="38"/>
+      <location filename="../../bimcommands/BimSketch.py" line="35"/>
       <source>New Sketch</source>
       <translation>Sceitse Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="41"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>Cruthaíonn sé sceitse nua sa phlána oibre reatha</translation>
     </message>
@@ -12521,12 +12520,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="39"/>
       <source>Slab</source>
       <translation>Leac</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="44"/>
+      <location filename="../../bimcommands/BimSlab.py" line="40"/>
       <source>Creates a slab from a planar shape</source>
       <translation>Cruthaíonn leac ó chruth plánach</translation>
     </message>
@@ -12534,12 +12533,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_TDPage</name>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="37"/>
       <source>New Page</source>
       <translation>Leathanach Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="43"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Creates a new TechDraw page from a template</source>
       <translation>Cruthaíonn leathanach TechDraw nua ó theimpléad</translation>
     </message>
@@ -12547,12 +12546,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Text</name>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="37"/>
+      <location filename="../../bimcommands/BimText.py" line="34"/>
       <source>Text</source>
       <translation>Téacs</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="40"/>
+      <location filename="../../bimcommands/BimText.py" line="37"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
       <translation>Cruthaigh téacs san amharc 3T reatha nó ar leathanach TechDraw</translation>
     </message>
@@ -12560,12 +12559,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Trash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="39"/>
+      <location filename="../../bimcommands/BimTrash.py" line="36"/>
       <source>Move to Trash</source>
       <translation>Bog go dtí an Bruscar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Moves the selected objects to the trash folder</source>
       <translation>Bogann sé na rudaí roghnaithe chuig an bhfillteán bruscair</translation>
     </message>
@@ -12573,12 +12572,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Tutorial</name>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="48"/>
       <source>BIM Tutorial</source>
       <translation>Ranganna Teagaisc BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="54"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
       <source>Starts or continues the BIM in-game tutorial</source>
       <translation>Tosaíonn nó leanann sé ar aghaidh leis an rang teagaisc BIM sa chluiche</translation>
     </message>
@@ -12586,12 +12585,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Unclone</name>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="39"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="36"/>
       <source>Unclone</source>
       <translation>Díchlónáil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="43"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="40"/>
       <source>Creates a selected clone object independent from its original</source>
       <translation>Cruthaíonn réad clón roghnaithe neamhspleách ar a bhunaidh</translation>
     </message>
@@ -12599,12 +12598,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="55"/>
+      <location filename="../../bimcommands/BimViews.py" line="52"/>
       <source>Views Manager</source>
       <translation>Bainisteoir Radharcanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="56"/>
+      <location filename="../../bimcommands/BimViews.py" line="53"/>
       <source>Shows or hides the views manager</source>
       <translation>Taispeánann nó folaíonn sé an bainisteoir radhairc</translation>
     </message>
@@ -12612,12 +12611,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_SetWPFront</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="35"/>
       <source>Working Plane Front</source>
       <translation>Tosaigh an Phlána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="36"/>
       <source>Sets the working plane to Front</source>
       <translation>Socraíonn an plána oibre go dtí an Tosaigh</translation>
     </message>
@@ -12625,12 +12624,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_SetWPSide</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="50"/>
       <source>Working Plane Side</source>
       <translation>Taobh an Phlána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="51"/>
       <source>Sets the working plane to Side</source>
       <translation>Socraíonn an plána oibre go Taobh</translation>
     </message>
@@ -12638,12 +12637,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_SetWPTop</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="65"/>
       <source>Working Plane Top</source>
       <translation>Barr an Phlána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="66"/>
       <source>Sets the working plane to Top</source>
       <translation>Socraíonn an plána oibre go Barr</translation>
     </message>
@@ -12651,12 +12650,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_WPView</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="80"/>
       <source>Working Plane View</source>
       <translation>Radharc Plána Oibre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="84"/>
       <source>Aligns the view to the current item in BIM Views Manager or to the current working plane</source>
       <translation>Ailíníonn sé an radharc leis an mír reatha i mBainisteoir Radharcanna BIM nó leis an eitleán oibre reatha</translation>
     </message>
@@ -12664,12 +12663,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_Diff</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="52"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="49"/>
       <source>Shows the current unsaved changes in the IFC file</source>
       <translation>Taispeánann na hathruithe neamhshábháilte reatha sa chomhad IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="54"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="51"/>
       <source>IFC File Diff</source>
       <translation>Difríocht Chomhaid IFC</translation>
     </message>
@@ -12677,12 +12676,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_Expand</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="75"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="72"/>
       <source>Expands the children of the selected objects or document</source>
       <translation>Leathnaíonn sé seo páistí na réada nó an doiciméid roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="77"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="74"/>
       <source>IFC Expand</source>
       <translation>IFC Leathnú</translation>
     </message>
@@ -12690,12 +12689,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_ConvertDocument</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="115"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="112"/>
       <source>Converts the active document to an IFC document</source>
       <translation>Tiontaíonn sé an doiciméad gníomhach go doiciméad IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="117"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="114"/>
       <source>Convert Document</source>
       <translation>Tiontaigh Doiciméad</translation>
     </message>
@@ -12703,12 +12702,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_MakeProject</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="141"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="138"/>
       <source>Converts the current selection to an IFC project</source>
       <translation>Tiontaíonn sé an roghnú reatha go tionscadal IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="143"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="140"/>
       <source>Convert to IFC Project</source>
       <translation>Tiontaigh go tionscadal IFC</translation>
     </message>
@@ -12716,12 +12715,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_Save</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="179"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="176"/>
       <source>Saves the current IFC document</source>
       <translation>Sábháil an doiciméad IFC reatha</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="181"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="178"/>
       <source>Save IFC File</source>
       <translation>Sábháil Comhad IFC</translation>
     </message>
@@ -12729,12 +12728,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="212"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="209"/>
       <source>Saves the current IFC document as another file</source>
       <translation>Sábhálann sé an doiciméad IFC reatha mar chomhad eile</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="214"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="211"/>
       <source>Save IFC File As…</source>
       <translation>Sábháil Comhad IFC Mar…</translation>
     </message>
@@ -12742,12 +12741,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>IFC_UpdateIOS</name>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="41"/>
       <source>Shows a dialog to update IfcOpenShell</source>
       <translation>Taispeánann sé dialóg chun IfcOpenShell a nuashonrú</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="46"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="43"/>
       <source>IfcOpenShell Update</source>
       <translation>Nuashonrú IfcOpenShell</translation>
     </message>
@@ -13149,12 +13148,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="273"/>
       <source>Remove Shape From BIM</source>
       <translation>Bain Cruth as BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Removes cubic shapes from BIM components</source>
       <translation>Baintear cruthanna ciúbacha as comhpháirteanna BIM</translation>
     </message>
@@ -13162,12 +13161,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_DrawingView</name>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="45"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="42"/>
       <source>2D Drawing</source>
       <translation>Líníocht 2T</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="49"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="46"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
       <translation>Cruthaíonn sé coimeádán líníochta chun eilimintí radhairc 2T a choinneáil</translation>
     </message>
@@ -13175,7 +13174,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_GenericTools</name>
     <message>
-      <location filename="../../InitGui.py" line="369"/>
+      <location filename="../../InitGui.py" line="370"/>
       <source>Generic 3D Tools</source>
       <translation>Uirlisí 3T Ginearálacha</translation>
     </message>
@@ -13183,7 +13182,7 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Create2DViews</name>
     <message>
-      <location filename="../../InitGui.py" line="382"/>
+      <location filename="../../InitGui.py" line="388"/>
       <source>Create 2D Views</source>
       <translation>Cruthaigh Radharcanna 2T</translation>
     </message>
@@ -13191,12 +13190,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="96"/>
       <source>Remove Component</source>
       <translation>Bain Comhpháirt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="100"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
       <translation>Baintear na comhpháirteanna roghnaithe óna dtuismitheoirí, nó cruthaítear poll i gcomhpháirt</translation>
     </message>
@@ -13204,12 +13203,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Toggle IFC B-Rep Flag</source>
       <translation>Bratach IFC B-Rep a athrú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="381"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
       <source>Forces an object to be exported as B-rep or not</source>
       <translation>Éiríonn sé ar réad a easpórtáil mar B-rep nó nach ea</translation>
     </message>
@@ -13217,12 +13216,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="464"/>
       <source>New IFC Spreadsheet</source>
       <translation>Scarbhileog IFC Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="471"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="468"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
       <translation>Cruthaíonn scarbhileog chun airíonna IFC réada a stóráil</translation>
     </message>
@@ -13230,12 +13229,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Classification</name>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="43"/>
+      <location filename="../../bimcommands/BimClassification.py" line="40"/>
       <source>Manage Classification</source>
       <translation>Bainistigh Aicmiú</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="47"/>
+      <location filename="../../bimcommands/BimClassification.py" line="44"/>
       <source>Manages classification systems and apply classification to objects</source>
       <translation>Bainistíonn córais aicmithe agus cuireann aicmiú i bhfeidhm ar réada</translation>
     </message>
@@ -13243,12 +13242,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_DimensionAligned</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="43"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="40"/>
       <source>Aligned Dimension</source>
       <translation>Toise Ailínithe</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="44"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="41"/>
       <source>Creates an aligned dimension</source>
       <translation>Cruthaíonn toise ailínithe</translation>
     </message>
@@ -13256,12 +13255,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_DimensionHorizontal</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="54"/>
       <source>Horizontal Dimension</source>
       <translation>Toise Cothrománach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="60"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Creates an horizontal dimension</source>
       <translation>Cruthaíonn toise cothrománach</translation>
     </message>
@@ -13269,12 +13268,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_DimensionVertical</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="79"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="76"/>
       <source>Vertical Dimension</source>
       <translation>Toise Ingearach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="80"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="77"/>
       <source>Creates a vertical dimension</source>
       <translation>Cruthaíonn toise ingearach</translation>
     </message>
@@ -13282,12 +13281,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_IfcElements</name>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="36"/>
       <source>Manage IFC Elements</source>
       <translation>Bainistigh Eilimintí IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="40"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
       <translation>Bainistíonn conas a easpórtálfar eilimintí éagsúla an tionscadail BIM chuig IFC</translation>
     </message>
@@ -13295,12 +13294,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_IfcExplorer</name>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="41"/>
       <source>IFC Explorer</source>
       <translation>Taiscéalaí IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="42"/>
       <source>Opens the IFC explorer utility</source>
       <translation>Osclaíonn an fóntais taiscéalaí IFC</translation>
     </message>
@@ -13308,12 +13307,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_IfcProperties</name>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="41"/>
       <source>Manage IFC Properties</source>
       <translation>Bainistigh Airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="45"/>
       <source>Manages the different IFC properties of the BIM objects</source>
       <translation>Bainistíonn sé airíonna IFC éagsúla na n-ábhar BIM</translation>
     </message>
@@ -13321,12 +13320,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_IfcQuantities</name>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="69"/>
       <source>Manage IFC Quantities</source>
       <translation>Bainistigh Cainníochtaí IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="73"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
       <translation>Bainistíonn conas a easpórtálfar cainníochtaí eilimintí éagsúla den tionscadal BIM chuig IFC</translation>
     </message>
@@ -13334,12 +13333,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Layers</name>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="57"/>
+      <location filename="../../bimcommands/BimLayers.py" line="54"/>
       <source>Manage Layers</source>
       <translation>Bainistigh Sraitheanna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="60"/>
+      <location filename="../../bimcommands/BimLayers.py" line="57"/>
       <source>Sets/modifies the different layers of your BIM project</source>
       <translation>Socraíonn/modhannaíonn sé na sraitheanna éagsúla de do thionscadal BIM</translation>
     </message>
@@ -13347,12 +13346,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_ProjectManager</name>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="53"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="50"/>
       <source>Setup Project</source>
       <translation>Tionscadal a Chur Ar Bun</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="54"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="51"/>
       <source>Creates or manages a BIM project</source>
       <translation>Cruthaíonn nó bainistíonn tionscadal BIM</translation>
     </message>
@@ -13360,12 +13359,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Reextrude</name>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="35"/>
       <source>Re-Extrude</source>
       <translation>Ath-easbhrúite</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="41"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Recreates an extruded structure from a selected face</source>
       <translation>Athchruthaíonn struchtúr easbhrúite ó aghaidh roghnaithe</translation>
     </message>
@@ -13373,12 +13372,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Reorder</name>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="39"/>
+      <location filename="../../bimcommands/BimReorder.py" line="36"/>
       <source>Reorder Children</source>
       <translation>Athordaigh Leanaí</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="41"/>
+      <location filename="../../bimcommands/BimReorder.py" line="38"/>
       <source>Reorders children of the selected object</source>
       <translation>Athordaíonn sé páistí an réada roghnaithe</translation>
     </message>
@@ -13386,12 +13385,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Setup</name>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="42"/>
+      <location filename="../../bimcommands/BimSetup.py" line="39"/>
       <source>BIM Setup</source>
       <translation>Socrú BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="45"/>
+      <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
       <translation>Socraíonn sé roghanna coitianta FreeCAD le haghaidh sreabhadh oibre BIM</translation>
     </message>
@@ -13399,12 +13398,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_Shape2DView</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="39"/>
       <source>Section View</source>
       <translation>Radharc na Rannóige</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
       <source>Section Cut</source>
       <translation>Gearradh Roinne</translation>
     </message>
@@ -13412,12 +13411,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_SimpleCopy</name>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="35"/>
       <source>Simple Copy</source>
       <translation>Cóip Shimplí</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="36"/>
       <source>Creates a simple non-parametric copy</source>
       <translation>Cruthaíonn cóip shimplí neamhpharaiméadrach</translation>
     </message>
@@ -13425,12 +13424,12 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
   <context>
     <name>BIM_TDView</name>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="38"/>
+      <location filename="../../bimcommands/BimTDView.py" line="35"/>
       <source>New View</source>
       <translation>Radharc Nua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="44"/>
+      <location filename="../../bimcommands/BimTDView.py" line="41"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
@@ -13442,12 +13441,12 @@ roghnaigh an radharc agus an leathanach araon sula ndéantar an t-ordú a fhorgh
   <context>
     <name>BIM_Welcome</name>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="39"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="36"/>
       <source>BIM Welcome Screen</source>
       <translation>Scáileán Fáilte BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="40"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="37"/>
       <source>Shows the BIM workbench welcome screen</source>
       <translation>Taispeánann sé scáileán fáilte an bhinse oibre BIM</translation>
     </message>
@@ -13455,12 +13454,12 @@ roghnaigh an radharc agus an leathanach araon sula ndéantar an t-ordú a fhorgh
   <context>
     <name>BIM_Windows</name>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="38"/>
+      <location filename="../../bimcommands/BimWindows.py" line="35"/>
       <source>Manage Doors and Windows</source>
       <translation>Bainistigh Doirse agus Fuinneoga</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="42"/>
+      <location filename="../../bimcommands/BimWindows.py" line="39"/>
       <source>Manages the different doors and windows of the BIM project</source>
       <translation>Bainistíonn sé na doirse agus na fuinneoga éagsúla den tionscadal BIM</translation>
     </message>
@@ -13665,8 +13664,8 @@ roghnaigh an radharc agus an leathanach araon sula ndéantar an t-ordú a fhorgh
       <translation>Cuir Clúdach in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ArchCoveringGui.py" line="1757"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <location filename="../../ArchCoveringGui.py" line="1758"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
       <source>Create Covering</source>
       <translation>Cruthaigh Clúdach</translation>
     </message>
@@ -13705,7 +13704,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_ArcTools</name>
     <message>
-      <location filename="../../InitGui.py" line="239"/>
+      <location filename="../../InitGui.py" line="240"/>
       <source>Arc Tools</source>
       <translation>Uirlisí Arc</translation>
     </message>
@@ -13713,7 +13712,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_SplineTools</name>
     <message>
-      <location filename="../../InitGui.py" line="251"/>
+      <location filename="../../InitGui.py" line="252"/>
       <source>Spline Tools</source>
       <translation>Uirlisí Splín</translation>
     </message>
@@ -13721,7 +13720,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_AxisTools</name>
     <message>
-      <location filename="../../InitGui.py" line="263"/>
+      <location filename="../../InitGui.py" line="264"/>
       <source>Axis Tools</source>
       <translation>Uirlisí Ais</translation>
     </message>
@@ -13729,7 +13728,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_OffsetTools</name>
     <message>
-      <location filename="../../InitGui.py" line="276"/>
+      <location filename="../../InitGui.py" line="277"/>
       <source>Offset Tools</source>
       <translation>Uirlisí Fritháireamh</translation>
     </message>
@@ -13737,7 +13736,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_ArrayTools</name>
     <message>
-      <location filename="../../InitGui.py" line="294"/>
+      <location filename="../../InitGui.py" line="295"/>
       <source>Array Tools</source>
       <translation>Uirlisí Eagar</translation>
     </message>
@@ -13745,7 +13744,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_BooleanTools</name>
     <message>
-      <location filename="../../InitGui.py" line="307"/>
+      <location filename="../../InitGui.py" line="308"/>
       <source>Boolean Tools</source>
       <translation>Uirlisí Booleánacha</translation>
     </message>
@@ -13753,7 +13752,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_IfcManageTools</name>
     <message>
-      <location filename="../../InitGui.py" line="324"/>
+      <location filename="../../InitGui.py" line="325"/>
       <source>IFC Management</source>
       <translation>Bainistíocht IFC</translation>
     </message>
@@ -13761,7 +13760,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_ReportTools</name>
     <message>
-      <location filename="../../InitGui.py" line="336"/>
+      <location filename="../../InitGui.py" line="337"/>
       <source>Report Tools</source>
       <translation>Uirlisí Tuairiscithe</translation>
     </message>
@@ -13769,20 +13768,33 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_CloneTools</name>
     <message>
-      <location filename="../../InitGui.py" line="348"/>
+      <location filename="../../InitGui.py" line="349"/>
       <source>Cloning Tools</source>
       <translation>Uirlisí Clónála</translation>
     </message>
   </context>
   <context>
+    <name>BIM_ExtrudeFace</name>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
+      <source>Extrude Face</source>
+      <translation>Easbhrúigh Aghaidh</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
+      <source>Extrudes a selected face into a solid</source>
+      <translation>Easbhrúitear aghaidh roghnaithe ina cruth soladach</translation>
+    </message>
+  </context>
+  <context>
     <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
       <source>Covering</source>
       <translation>Ag clúdach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
       <translation>Cruthaíonn sé clúdach (bailchríoch urláir, cumhdach) ar aghaidh roghnaithe</translation>
     </message>
@@ -13790,12 +13802,12 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_Compound</name>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="38"/>
+      <location filename="../../bimcommands/BimCompound.py" line="35"/>
       <source>Compound</source>
       <translation>Comhdhúil</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="39"/>
+      <location filename="../../bimcommands/BimCompound.py" line="36"/>
       <source>Creates a compound of several shapes</source>
       <translation>Cruthaíonn comhdhúil de roinnt cruthanna</translation>
     </message>
@@ -13803,7 +13815,7 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="308"/>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
       <source>Wall Trace</source>
       <translation>Rian Balla</translation>
     </message>
@@ -13811,12 +13823,12 @@ Ar mhaith leat dul ar aghaidh?</translation>
   <context>
     <name>BIM_LinkMake</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="14"/>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
       <source>Make Link</source>
       <translation>Déan Nasc</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="18"/>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>Cruthaíonn sé Nasc leis an réad roghnaithe agus cuireann sé ar chumas é a bhogadh láithreach</translation>
     </message>

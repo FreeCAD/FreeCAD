@@ -308,11 +308,7 @@ void ToolBarGrip::mouseMoveEvent(QMouseEvent* me)
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint pos = me->globalPos();
-#else
     QPoint pos = me->globalPosition().toPoint();
-#endif
     QRect rect(toolbar->mapToGlobal(QPoint(0, 0)), toolbar->size());
 
     // if mouse did not leave the area of toolbar do not continue with undocking it
@@ -1350,6 +1346,23 @@ void ToolBarManager::setState(const QString& name, State state)
             saveVisibility(show, policy);
         }
     }
+}
+bool ToolBarManager::isAnyVisible(const QList<QString>& names)
+{
+    for (auto& name : names) {
+        if (!isVisible(name)) {
+            return true;
+        }
+    }
+    return false;
+}
+bool ToolBarManager::isVisible(const QString& name)
+{
+    QToolBar* tb = findToolBar(toolBars(), name);
+    if (tb) {
+        return tb->isVisible();
+    }
+    return false;
 }
 
 #include "moc_ToolBarManager.cpp"

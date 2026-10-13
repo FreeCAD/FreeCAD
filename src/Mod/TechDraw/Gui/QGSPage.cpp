@@ -1216,15 +1216,12 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        Base::Console().error("QGSP::ppxml - failed to open file for writing: %s\n",
+        Base::Console().error("QGSP::ppxml - failed to open file for writing: {}\n",
                               qPrintable(fileName));
     }
 
     QTextStream stream(&outFile);
     stream.setGenerateByteOrderMark(false);
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    stream.setCodec("UTF-8");
-#endif
 
     stream << exportDoc.toByteArray();
     outFile.close();

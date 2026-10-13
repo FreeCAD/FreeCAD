@@ -2,8 +2,5 @@
 
 from __future__ import annotations
 
-try:
-    from PySide6.QtWebEngineWidgets import *
-    from PySide6.QtWebEngineCore import QWebEnginePage as QWebEnginePage
-except ImportError:
-    from PySide2.QtWebEngineWidgets import *
+from PySide6.QtWebEngineWidgets import *
+from PySide6.QtWebEngineCore import QWebEnginePage as QWebEnginePage

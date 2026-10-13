@@ -1,41 +1,35 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Constants
+import Part
 import Path
 import Path.Base.Util as PathUtil
-import Path.Base.Generator.rotation as rotation
+from Path.Base.Generator import rotation
 import Path.Geom
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Op.Util import getCycleTimeEstimate
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
@@ -79,6 +73,20 @@ class PathNoTCException(Exception):
         super().__init__("No Tool Controller found")
 
 
+class BaseGeometryException(Exception):
+    """BaseGeometryException is raised when assigned geometry missed"""
+
+    def __init__(self):
+        super().__init__("Base geometry error!")
+
+
+class DepthsException(Exception):
+    """DepthsException is raised when depth parameters incorrect"""
+
+    def __init__(self):
+        super().__init__("Depth parameters error!")
+
+
 class _TransformedShapeProxy:
     """Lightweight proxy that wraps a FreeCAD document object and intercepts
     ``.Shape`` access to return a pre-transformed copy.
@@ -114,43 +122,7 @@ class _TransformedShapeProxy:
         return hash(object.__getattribute__(self, "_real_obj"))
 
 
-def _transform_shape_with_arc_fix(shape, matrix):
-    """Transform *shape* by *matrix* and recover arcs degraded to BSplines.
-
-    ``transformShape()`` can turn circles/arcs into BSplineCurves.
-    This attempts to convert them back via ``toBiArcs()`` so that
-    downstream operations (e.g. Deburr) still see native arc geometry.
-
-    Returns the (possibly fixed) transformed ``Part.Shape``.
-    """
-    transformed = shape.copy().transformShape(matrix, False, False)
-    fixed_edges = []
-    any_converted = False
-    for edge in transformed.Edges:
-        try:
-            curve = edge.Curve
-        except TypeError:
-            fixed_edges.append(edge)
-            continue
-        if type(curve).__name__ == "BSplineCurve":
-            try:
-                arcs = curve.toBiArcs(0.001)
-                if arcs and len(arcs) == 1:
-                    fixed_edges.append(Part.Edge(arcs[0]))
-                    any_converted = True
-                    continue
-            except Exception:
-                # Biarc conversion can fail for degenerate or unsupported
-                # B-spline geometry; fall back to keeping the original edge.
-                pass
-        fixed_edges.append(edge)
-
-    if any_converted:
-        return Part.makeCompound(fixed_edges)
-    return transformed
-
-
-class ObjectOp(object):
+class ObjectOp:
     """
     Base class for proxy objects of all Path operations.
 
@@ -299,16 +271,13 @@ class ObjectOp(object):
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
 
-        obj.addProperty(
-            "App::PropertyVector",
-            "Workplane",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.",
-            ),
-        )
-        obj.Workplane = FreeCAD.Vector(0, 0, 1)
+        self._addWorkplaneProperty(obj)
+
+        # Placement is derived from the work plane in execute(): the path is
+        # generated in the plane's frame and Placement positions it. A
+        # SetupSheet prototype has no Placement, hence the guard.
+        if hasattr(obj, "Placement"):
+            obj.setEditorMode("Placement", 1)  # read-only
 
         features = self.opFeatures(obj)
 
@@ -498,7 +467,7 @@ class ObjectOp(object):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -509,16 +478,101 @@ class ObjectOp(object):
 
         return data
 
+    def _addWorkplaneProperty(self, obj, workplane=None):
+        """_addWorkplaneProperty(obj, workplane=None) ... add the Workplane link.
+
+        One definition of the property, used both when an operation is created
+        and when an older document is migrated, so the two cannot drift."""
+        obj.addProperty(
+            "App::PropertyLink",
+            "Workplane",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The named work plane this operation works in, shared with other "
+                "operations of the Job. Its local +Z is the tool axis. Empty means "
+                "the Job's own XY, which is ordinary Z-up milling.",
+            ),
+        )
+        obj.Workplane = workplane
+
+    def _migrateWorkplane(self, obj):
+        """_migrateWorkplane(obj) ... ensure obj carries a Workplane link.
+
+        The property has had three shapes. It began as an App::PropertyVector
+        holding a tool axis, became an App::PropertyPlacement holding a frame,
+        and is now an App::PropertyLink to a named work plane on the Job. A
+        prototype in between carried the placement plus a separate
+        WorkplaneLink. FreeCAD cannot change a property's type in place, so the
+        old value is read, the property removed, and the link added.
+
+        A non-identity frame from an older document becomes a work plane object
+        of its own, so the operation keeps generating in the frame it was saved
+        with. The convention that turns a vector into a placement is documented
+        in PathUtil.placementFromToolAxis() and must not change, or documents
+        written before the first migration would shift in plane."""
+        if hasattr(obj, "RotaryPositions"):
+            # A prototype recorded the solved rotary positions on the
+            # operation. The post solves them from the Placement now.
+            obj.removeProperty("RotaryPositions")
+        if hasattr(obj, "Workplane"):
+            if "App::PropertyLink" == obj.getTypeIdOfProperty("Workplane"):
+                if hasattr(obj, "WorkplaneLink"):
+                    obj.removeProperty("WorkplaneLink")
+                return
+
+        linked = None
+        placement = None
+
+        if hasattr(obj, "WorkplaneLink"):
+            linked = obj.WorkplaneLink
+            obj.removeProperty("WorkplaneLink")
+
+        if hasattr(obj, "Workplane"):
+            old = obj.Workplane
+            if isinstance(old, FreeCAD.Vector):
+                placement = PathUtil.placementFromToolAxis(old)
+            elif isinstance(old, FreeCAD.Placement):
+                placement = FreeCAD.Placement(old)
+            obj.removeProperty("Workplane")
+
+        if linked is None and placement is not None and not placement.isIdentity(1e-9):
+            linked = self._adoptFrameAsWorkplane(obj, placement)
+
+        self._addWorkplaneProperty(obj, linked)
+
+    def _adoptFrameAsWorkplane(self, obj, placement):
+        """_adoptFrameAsWorkplane(obj, placement) ... a work plane object for a
+        frame an older document stored directly on the operation.
+
+        Created in the document and linked; filed under the Job's Workplanes
+        group if the Job is far enough restored to have one, and adopted by
+        the Job's own restore otherwise."""
+        import Path.Main.Workplane as PathWorkplane
+
+        job = PathUtils.findParentJob(obj)
+        label = "%s work plane" % obj.Label
+        if job is not None and getattr(job, "Proxy", None) is not None:
+            try:
+                return PathWorkplane.createWorkplane(job, label=label, placement=placement)
+            except Exception as e:
+                Path.Log.warning("Could not file migrated work plane under the Job: %s" % e)
+
+        workplane = obj.Document.addObject("Part::LocalCoordinateSystem", "Workplane")
+        workplane.Label = label
+        workplane.Placement = FreeCAD.Placement(placement)
+        return workplane
+
     def setEditorModes(self, obj, features):
         """Editor modes are not preserved during document store/restore, set editor modes for all properties"""
 
-        for op in ["OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
-            if hasattr(obj, op):
-                obj.setEditorMode(op, 1)  # read-only
+        # Placement is derived from the work plane; the Op* values are computed.
+        for prop in ["Placement", "OpStartDepth", "OpFinalDepth", "OpToolDiameter", "CycleTime"]:
+            if hasattr(obj, prop):
+                obj.setEditorMode(prop, 1)  # read-only
 
-        if FeatureDepths & features:
-            if FeatureNoFinalDepth & features:
-                obj.setEditorMode("OpFinalDepth", 2)
+        if FeatureDepths & features and FeatureNoFinalDepth & features:
+            obj.setEditorMode("OpFinalDepth", 2)
 
     def onDocumentRestored(self, obj):
         Path.Log.track()
@@ -528,7 +582,7 @@ class ObjectOp(object):
             FeatureBaseGeometry & features
             and "App::PropertyLinkSubList" == obj.getTypeIdOfProperty("Base")
         ):
-            Path.Log.info("Replacing link property with global link (%s)." % obj.State)
+            Path.Log.info(f"Replacing link property with global link ({obj.State})")
             base = obj.Base
             obj.removeProperty("Base")
             self.addBaseProperty(obj)
@@ -543,7 +597,7 @@ class ObjectOp(object):
             oldvalue = str(obj.CoolantMode) if hasattr(obj, "CoolantMode") else "None"
             if (
                 hasattr(obj, "CoolantMode")
-                and not obj.getTypeIdOfProperty("CoolantMode") == "App::PropertyEnumeration"
+                and obj.getTypeIdOfProperty("CoolantMode") != "App::PropertyEnumeration"
             ):
                 obj.removeProperty("CoolantMode")
 
@@ -601,17 +655,7 @@ class ObjectOp(object):
             obj.CollisionAvoidanceStrategy = "Clearance Height"
             self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
-        if not hasattr(obj, "Workplane"):
-            obj.addProperty(
-                "App::PropertyVector",
-                "Workplane",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.",
-                ),
-            )
-            obj.Workplane = FreeCAD.Vector(0, 0, 1)
+        self._migrateWorkplane(obj)
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -619,12 +663,12 @@ class ObjectOp(object):
     def dumps(self):
         """__getstat__(self) ... called when receiver is saved.
         Can safely be overwritten by subclasses."""
-        return None
+        return
 
     def loads(self, state):
         """__getstat__(self) ... called when receiver is restored.
         Can safely be overwritten by subclasses."""
-        return None
+        return
 
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
@@ -643,18 +687,15 @@ class ObjectOp(object):
     def initOperation(self, obj):
         """initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses."""
-        pass
 
     def initAfterBase(self, obj):
         """initAfterBase(obj) ... implement to execute extra commands
         while create new operation after add all base geometry.
         Should be overwritten by subclasses."""
-        pass
 
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses."""
-        pass
 
     def opOnChanged(self, obj, prop):
         """opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -663,24 +704,20 @@ class ObjectOp(object):
         distinguish between assigning a different value and assigning the same
         value again.
         Can safely be overwritten by subclasses."""
-        pass
 
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses."""
-        pass
 
     def opUpdateDepths(self, obj):
         """opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass."""
-        pass
 
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
-        pass
 
     def baseShapes(self, obj):
         """baseShapes(obj) ... yield (base, subs) tuples for the operation's
@@ -716,7 +753,9 @@ class ObjectOp(object):
             key = id(base_obj)
             if key not in proxy_cache:
                 if hasattr(base_obj, "Shape") and base_obj.Shape:
-                    shape = _transform_shape_with_arc_fix(base_obj.Shape, matrix)
+                    # The matrix is a pure rotation, so a rigid transform is
+                    # enough and analytic curve types are preserved.
+                    shape = base_obj.Shape.copy().transformShape(matrix, False, False)
 
                     # Validate the shape before creating proxy
                     Path.Log.debug(f"  Final shape type: {type(shape).__name__}")
@@ -727,12 +766,6 @@ class ObjectOp(object):
                         shape = base_obj.Shape
                     elif hasattr(shape, "Volume") and shape.Volume < 1e-9:
                         Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
-
-                    # Check if we have faces
-                    if hasattr(shape, "Faces"):
-                        Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
-                        if len(shape.Faces) == 0:
-                            Path.Log.warning("  Transformed shape has no faces!")
 
                     proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
                 else:
@@ -754,7 +787,7 @@ class ObjectOp(object):
             return
 
         if "Restore" not in obj.State and prop in ("Base", "StartDepth", "FinalDepth"):
-            self.updateDepths(obj, True)
+            self._updateDepthsInFrame(obj)
 
         self.opOnChanged(obj, prop)
 
@@ -799,6 +832,16 @@ class ObjectOp(object):
             Path.Log.debug(obj.getEnumerationsOfProperty("CoolantMode"))
             obj.CoolantMode = job.SetupSheet.CoolantMode
 
+        # A new operation adopts the work plane of the one before it, the way
+        # it adopts that operation's tool controller. A job machining one
+        # tilted face should not need the frame assigned per operation.
+        if hasattr(obj, "Workplane"):
+            for op in job.Operations.Group[-2::-1]:
+                previous = getattr(op, "Workplane", None)
+                if previous is not None:
+                    obj.Workplane = previous
+                    break
+
         if FeatureDepths & features:
             if self.applyExpression(obj, "StartDepth", job.SetupSheet.StartDepthExpression):
                 obj.OpStartDepth = 1.0
@@ -811,19 +854,20 @@ class ObjectOp(object):
         else:
             obj.StartDepth = 1.0
 
-        if FeatureStepDown & features:
-            if not self.applyExpression(obj, "StepDown", job.SetupSheet.StepDownExpression):
-                obj.StepDown = "1 mm"
+        if FeatureStepDown & features and not self.applyExpression(
+            obj, "StepDown", job.SetupSheet.StepDownExpression
+        ):
+            obj.StepDown = "1 mm"
 
         if FeatureHeights & features:
-            if job.SetupSheet.SafeHeightExpression:
-                if not self.applyExpression(obj, "SafeHeight", job.SetupSheet.SafeHeightExpression):
-                    obj.SafeHeight = "3 mm"
-            if job.SetupSheet.ClearanceHeightExpression:
-                if not self.applyExpression(
-                    obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
-                ):
-                    obj.ClearanceHeight = "5 mm"
+            if job.SetupSheet.SafeHeightExpression and not self.applyExpression(
+                obj, "SafeHeight", job.SetupSheet.SafeHeightExpression
+            ):
+                obj.SafeHeight = "3 mm"
+            if job.SetupSheet.ClearanceHeightExpression and not self.applyExpression(
+                obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
+            ):
+                obj.ClearanceHeight = "5 mm"
 
         if FeatureDiameters & features:
             obj.MinDiameter = "0 mm"
@@ -841,29 +885,109 @@ class ObjectOp(object):
         self.opSetDefaultValues(obj, job)
         return job
 
-    def _setBaseAndStock(self, obj, ignoreErrors=False):
-        job = PathUtils.findParentJob(obj)
+    def resetDepthDefaults(self, obj):
+        """resetDepthDefaults(obj) ... re-derive heights and depths for the
+        operation's current work plane, stock and model.
 
+        The heights and depths a user sees are bound to the computed Op values
+        by expressions from the Job's SetupSheet - StartDepth to OpStartDepth,
+        ClearanceHeight to OpStockZMax plus an offset, and so on. Editing any
+        of those fields clears its expression permanently, after which the
+        value no longer tracks anything. That is invisible while nothing
+        changes, and wrong the moment the stock, the model or the work plane
+        does: the Op values move to the new frame and the values the operation
+        actually generates from stay behind.
+
+        This restores the expressions rather than writing the numbers they
+        would currently produce, so the fields track subsequent changes too. A
+        field whose SetupSheet default is a plain value rather than an
+        expression is written from the corresponding Op value instead.
+
+        Returns True if defaults were restored."""
+        job = self.getJob(obj)
         if not job:
-            if not ignoreErrors:
-                Path.Log.error(translate("CAM", "No parent job found for operation."))
             return False
-        if not job.Model.Group:
+
+        features = self.opFeatures(obj)
+        setup = job.SetupSheet
+
+        # Refresh the Op values first: the expressions below read them.
+        self.updateDepths(obj, True)
+
+        if FeatureDepths & features:
+            if not self.applyExpression(obj, "StartDepth", setup.StartDepthExpression):
+                obj.StartDepth = obj.OpStartDepth.Value
+            if not FeatureNoFinalDepth & features:
+                if not self.applyExpression(obj, "FinalDepth", setup.FinalDepthExpression):
+                    obj.FinalDepth = obj.OpFinalDepth.Value
+
+        if FeatureStepDown & features:
+            self.applyExpression(obj, "StepDown", setup.StepDownExpression)
+
+        if FeatureHeights & features:
+            if not self.applyExpression(obj, "SafeHeight", setup.SafeHeightExpression):
+                obj.SafeHeight = obj.OpStockZMax.Value + 3.0
+            if not self.applyExpression(obj, "ClearanceHeight", setup.ClearanceHeightExpression):
+                obj.ClearanceHeight = obj.OpStockZMax.Value + 5.0
+
+        obj.recompute()
+        return True
+
+    def _checkDepthsInWorkplane(self, obj):
+        """_checkDepthsInWorkplane(obj) ... True if the operation's depths can
+        be cut in the frame it is about to generate in.
+
+        Only checked when a work plane rotation is active. Heights and depths
+        whose expressions have been cleared do not follow the frame, so after a
+        work plane is assigned they can name a depth that is nowhere near the
+        stock. Without this the operation fails somewhere deep in a generator,
+        or worse succeeds and cuts in the wrong place."""
+        if getattr(self, "_geom_transform_matrix", None) is None:
+            return True
+        if not (FeatureDepths & self.opFeatures(obj)):
+            return True
+        if not (hasattr(obj, "OpStockZMin") and hasattr(obj, "OpStockZMax")):
+            return True
+
+        bottom = obj.OpStockZMin.Value
+        top = obj.OpStockZMax.Value
+        depth = obj.FinalDepth.Value
+        if Path.Geom.isRoughly(depth, top) or bottom - 1e-6 <= depth <= top:
+            return True
+
+        Path.Log.error(
+            translate(
+                "CAM",
+                "%s: FinalDepth (%.3f) is outside the stock in this work plane "
+                "(%.3f to %.3f). Heights and depths set before the work plane "
+                "was assigned do not carry over - use Reset to defaults on the "
+                "Heights page.",
+            )
+            % (obj.Label, depth, bottom, top)
+        )
+        return False
+
+    def _setBaseAndStock(self, obj, ignoreErrors=False):
+        self.job = PathUtils.findParentJob(obj)
+        if not self.job:
+            if not ignoreErrors:
+                Path.Log.error(translate("CAM_Operation", "No parent job found for operation"))
+            return False
+        if not self.job.Model.Group:
             if not ignoreErrors:
                 Path.Log.error(
-                    translate("CAM", "Parent job %s doesn't have a base object") % job.Label
+                    translate("CAM_Operation", "Parent job %s doesn't have a base object")
+                    % self.job.Label
                 )
             return False
-        self.job = job
-        self.model = job.Model.Group
-        self.stock = job.Stock
+        self.model = self.job.Model.Group
+        self.stock = self.job.Stock
         return True
 
     def getJob(self, obj):
         """getJob(obj) ... return the job this operation is part of."""
-        if not hasattr(self, "job") or self.job is None:
-            if not self._setBaseAndStock(obj):
-                return None
+        if getattr(self, "job", None) is None:
+            self._setBaseAndStock(obj)
         return self.job
 
     def updateDepths(self, obj, ignoreErrors=False):
@@ -871,13 +995,12 @@ class ObjectOp(object):
         Should not be overwritten."""
 
         def faceZmin(bb, fbb):
-            if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
-                return fbb.ZMin
-            elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
-                return fbb.ZMin
-            elif fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin:  # face/shelf
+            if (
+                (fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax)  # top face
+                or (fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax)  # vertical face, full cut
+                or (fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin)  # internal vertical wall
+                or (fbb.ZMax == fbb.ZMin and fbb.ZMax > bb.ZMin)  # face/shelf
+            ):
                 return fbb.ZMin
             return bb.ZMin
 
@@ -926,10 +1049,16 @@ class ObjectOp(object):
             job = PathUtils.findParentJob(obj)
             zmax = stockBB.ZMax
             if matrix is not None:
-                # Transform model bounding box to get Z in rotated frame
-                modelBB = job.Proxy.modelBoundBox(job)
-                rot = getattr(self, "_geometry_rotation", None)
-                if rot is not None:
+                # The top of the model along the tool axis, from the shapes
+                # themselves: in a tilted frame the corners of the world
+                # bounding box include corners the model does not have (a
+                # facet cut off a block leaves its old corner above the facet).
+                shapes = [getattr(m, "Shape", None) for m in job.Model.Group]
+                if shapes and all(sh is not None and not sh.isNull() for sh in shapes):
+                    zmin = max(sh.transformed(matrix).BoundBox.ZMax for sh in shapes)
+                else:
+                    # A mesh has no Shape: fall back to the bounding box.
+                    modelBB = job.Proxy.modelBoundBox(job)
                     corners = [
                         FreeCAD.Vector(modelBB.XMin, modelBB.YMin, modelBB.ZMin),
                         FreeCAD.Vector(modelBB.XMax, modelBB.YMin, modelBB.ZMin),
@@ -940,10 +1069,10 @@ class ObjectOp(object):
                         FreeCAD.Vector(modelBB.XMin, modelBB.YMax, modelBB.ZMax),
                         FreeCAD.Vector(modelBB.XMax, modelBB.YMax, modelBB.ZMax),
                     ]
-                    transformed_corners = [rot.multVec(c) for c in corners]
+                    # The full frame, not just its rotation: with an origin the
+                    # top of the model is measured from the plane, not from zero.
+                    transformed_corners = [matrix.multVec(c) for c in corners]
                     zmin = max(c.z for c in transformed_corners)
-                else:
-                    zmin = modelBB.ZMax
             else:
                 zmin = job.Proxy.modelBoundBox(job).ZMax
 
@@ -975,105 +1104,163 @@ class ObjectOp(object):
                     for sub in sublist:
                         o.Shape.getElement(sub)
             except Exception:
-                Path.Log.error(
-                    "%s - stale base geometry detected - %s, %s" % (obj.Label, o.Label, sub)
-                )
+                Path.Log.error(f"{obj.Label} - stale base geometry detected - {o.Label}, {sub}")
                 self.isBaseValid = False
                 return False
 
         self.isBaseValid = True
         return True
 
-    def _setup_workplane_transform(self, obj):
-        """Set up 3+2 geometry transformation if workplane is not Z-up.
+    def checkDepths(self, obj):
+        """checkDepths(obj) ... check that depths and heights are consistent with each other"""
+        features = self.opFeatures(obj)
+        isValid = True
+        if (
+            FeatureDepths & features
+            and not FeatureNoFinalDepth & features
+            and Path.Geom.isStrictlyGreater(obj.FinalDepth.Value, obj.StartDepth.Value)
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Final depth is above start depth") % obj.Label
+            )
+            isValid = False
+        if (
+            FeatureDepths & features
+            and FeatureHeights & features
+            and Path.Geom.isStrictlyGreater(obj.StartDepth.Value, obj.SafeHeight.Value)
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Start depth is above safe height") % obj.Label
+            )
+            isValid = False
+        if FeatureHeights & features and Path.Geom.isStrictlyGreater(
+            obj.SafeHeight.Value, obj.ClearanceHeight.Value
+        ):
+            Path.Log.error(
+                translate("CAM_Operation", "%s: Safe height is above clearance height") % obj.Label
+            )
+            isValid = False
+        return isValid
 
-        When the workplane is rotated, this method:
-        1. Solves for the rotary axis angles via the orientation solver
-        2. Computes the geometry transform matrix (rotation that maps the
-           workplane normal to Z-up)
-        3. Stores rotation G-code commands for later emission
-        4. Sets ``self._geom_transform_matrix`` so that ``updateDepths()``
-           and ``baseShapes()`` see transformed geometry
+    # Per-execute frame state, set by _setup_workplane_transform and cleared
+    # at the end of execute().
+    _FRAME_ATTRS = ("_geom_transform_matrix", "_geometry_rotation")
 
-        Returns:
-            True if the operation may proceed (workplane is Z-up, or rotation
-            was successfully set up). False if the workplane requires rotation
-            but it cannot be applied — the caller must abort execution rather
-            than running the op against an unrotated, non-Z-up workplane.
+    def _updateDepthsInFrame(self, obj):
+        """updateDepths() for a property change, in the operation's frame.
+
+        Depths are measured in the work plane's frame, which execute() sets
+        up before it calls updateDepths(). A property change (a new Base, a
+        depth) arrives here without it and computed the depths in world
+        coordinates: a new operation that kept the plane it inherited showed
+        the world stock top as its Start Depth, above its Safe Height, and
+        generated nothing. Set the frame up for the call, unless execute()
+        already has."""
+        if any(hasattr(self, attr) for attr in self._FRAME_ATTRS):
+            # execute() set the frame up and owns its teardown; clearing it
+            # here would pull the frame out from under the rest of execute().
+            return self.updateDepths(obj, True)
+        # Nobody set the frame up, so this call does, and takes it down again
+        # whether or not updateDepths() raises.
+        self._setup_workplane_transform(obj, warn=False)
+        try:
+            return self.updateDepths(obj, True)
+        finally:
+            for attr in self._FRAME_ATTRS:
+                if hasattr(self, attr):
+                    delattr(self, attr)
+
+    def _setup_workplane_transform(self, obj, warn=True):
+        """Set up the frame this operation generates in.
+
+        The operation generates in its work plane's own frame: the plane's
+        origin is (0, 0, 0), its X is the plane's X, and Z is the tool axis, so
+        every depth and height is a distance along the tool axis from the
+        plane and every direction-sensitive parameter is relative to the
+        plane's X. The path is stored in that frame, with no rotary words,
+        and obj.Placement carries the frame. Generation knows nothing about
+        the machine: how the plane is reached - indexing the rotaries,
+        declaring a tilted plane to the control, or refixturing the part - is
+        the post-processor's question, answered from the Placement at output
+        time, and changing the machine means re-posting, not recomputing.
+
+        If a machine with rotary axes is configured and cannot index to the
+        plane, a warning says so here, early, but the path is generated all
+        the same. ``warn=False`` skips that check, for a caller that only
+        needs the frame.
+
+        Sets ``self._geom_transform_matrix`` (world to plane frame) for
+        updateDepths() and baseShapes(), and ``self._geometry_rotation`` when
+        the plane is rotated, which is the flag operations key their 3+2
+        handling on.
         """
-        # Clean any stale state from a previous execute()
-        for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
+        for attr in self._FRAME_ATTRS:
             if hasattr(self, attr):
                 delattr(self, attr)
 
         if not hasattr(obj, "Workplane"):
-            return True
+            return
 
-        wp = obj.Workplane
+        placement = PathUtil.workplaneForOp(obj)
         z_up = FreeCAD.Vector(0, 0, 1)
+        tool_axis = placement.Rotation.multVec(z_up)
+        is_rotated = not tool_axis.isEqual(z_up, 1e-6)
 
-        machine = self.job.Proxy.getMachine() if self.job else None
-        has_rotaries = machine is not None and machine.has_rotary_axes
+        if not placement.isIdentity(1e-9):
+            self._geom_transform_matrix = placement.inverse().toMatrix()
+        if is_rotated:
+            self._geometry_rotation = placement.Rotation.inverted()
 
-        # A Z-up workplane needs no geometry transform, but on a machine with
-        # rotary axes the op must still command its pose explicitly: ops are
-        # atomic and cannot know what pose a previous op left the machine in.
-        if wp.isEqual(z_up, 1e-6):
-            if has_rotaries:
-                chain = rotation.build_kinematic_chain(machine)
-                if chain:
-                    self._rotation_commands = [
-                        Path.Command("G0", {axis.name: 0.0 for axis in chain})
-                    ]
-            return True
+        if is_rotated and warn:
+            self._warnIfUnreachableByIndexing(obj, tool_axis)
 
-        if not has_rotaries:
-            Path.Log.warning(
-                f"Operation {obj.Label}: Workplane requires rotation but "
-                f"no machine with rotary axes is configured"
-            )
-            return False
+    def toFrame(self, point):
+        """toFrame(point) ... a world point in the frame the operation generates in.
 
-        # Solve orientation
+        Start and end points are picked in the 3D view and stored in world
+        coordinates. While the operation generates in its work plane's frame
+        they have to be carried into that frame, as the base geometry is."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return point
+        return matrix.multVec(point)
+
+    def startPoint(self, obj):
+        """startPoint(obj) ... obj.StartPoint in the frame the operation generates in."""
+        return self.toFrame(obj.StartPoint)
+
+    def shapeToFrame(self, shape):
+        """shapeToFrame(shape) ... a world shape in the frame the operation generates in.
+
+        Base geometry goes through baseShapes(); a whole shape an operation
+        takes beside it (Engrave's BaseShapes) has to go through the same
+        transform, or the operation reads world coordinates as plane-local."""
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return shape
+        # See baseShapes(): checkScale=False preserves arcs/circles.
+        return shape.copy().transformShape(matrix, False, False)
+
+    def _warnIfUnreachableByIndexing(self, obj, tool_axis):
+        """An early, advisory word when the configured machine has rotary
+        axes and cannot index to the operation's plane. Nothing is decided
+        here; the post refuses at output time, and a plane may be reached by
+        refixturing instead."""
         try:
-            result = rotation.solve_orientation(machine, wp)
-            Path.Log.debug(result)
-
+            machine = self.job.Proxy.getMachine() if self.job else None
+            if machine is None or not machine.has_rotary_axes:
+                return
+            result = rotation.solve_orientation(machine, tool_axis)
             if not result.success:
-                Path.Log.error(
-                    f"Operation {obj.Label}: Cannot solve workplane "
-                    f"orientation: {result.reason}"
+                plane = getattr(obj, "Workplane", None)
+                Path.Log.warning(
+                    "Operation %s: machine '%s' cannot index to work plane %s (%s). The "
+                    "path is generated in the plane's frame; the post-processor decides how "
+                    "the plane is reached."
+                    % (obj.Label, machine.name, plane.Label if plane else "?", result.reason)
                 )
-                return False
-
-            # Build rotation commands (G0 moves for each rotary axis)
-            cmd_params = {name: angle for name, angle in result.angles.items()}
-            rotation_cmds = [Path.Command("G0", cmd_params)] if cmd_params else []
-
-            # Compute the geometry transform matrix.
-            chain = rotation.build_kinematic_chain(machine)
-            Path.Log.debug(f"Chain: {chain}")
-            Path.Log.debug(f"Solution Angles: {result.angles}")
-            geom_rotation = rotation.compute_rotation_matrix(chain, result.angles)
-            Path.Log.debug(f"Geometry rotation: {geom_rotation}")
-
-            # Store as FreeCAD.Matrix for transformShape()
-            self._geom_transform_matrix = geom_rotation.toMatrix()
-            self._geometry_rotation = geom_rotation
-            self._rotation_commands = rotation_cmds
-
-            Path.Log.info(
-                f"Operation {obj.Label}: 3+2 workplane active, " f"angles={result.angles}"
-            )
-            return True
-
         except Exception as e:
-            Path.Log.error(f"Operation {obj.Label}: Error setting up workplane " f"transform: {e}")
-            # Clean up on failure
-            for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
-                if hasattr(self, attr):
-                    delattr(self, attr)
-            return False
+            Path.Log.debug("Operation %s: reachability not checked: %s" % (obj.Label, e))
 
     @waiting_effects
     def execute(self, obj):
@@ -1113,7 +1300,7 @@ class ObjectOp(object):
         # make sure Base is still valid
         if not self.checkBase(obj):
             obj.Path = Path.Path()
-            raise Exception("Base geometry error!")
+            raise BaseGeometryException
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
@@ -1148,29 +1335,28 @@ class ObjectOp(object):
                 obj.OpToolDiameter = tool.Diameter
 
         # --- 3+2 Setup: compute geometry transformation before depth calculation ---
-        # If the workplane is not Z-up, solve the orientation and set up the
+        # If the workplane is not Z-up, set up the
         # transform matrix so that updateDepths() sees transformed BoundBoxes
-        # and baseShapes() yields transformed geometry. Abort the op cleanly
-        # if rotation is required but unavailable — otherwise downstream
-        # geometry ops would fail with confusing errors against unrotated input.
-        if not self._setup_workplane_transform(obj):
-            obj.Path = Path.Path("(workplane rotation unavailable)")
-            return
+        # and baseShapes() yields transformed geometry.
+        self._setup_workplane_transform(obj)
 
         self.updateDepths(obj)
         # now that all op values are set make sure the user properties get updated accordingly,
         # in case they still have an expression referencing any op values
         obj.recompute()
 
-        self.commandlist = []
-        self.commandlist.append(Path.Command("(%s)" % obj.Label))
-        if obj.Comment:
-            self.commandlist.append(Path.Command("(%s)" % obj.Comment))
+        if not self.checkDepths(obj):  # check depth parameters
+            obj.Path = Path.Path()
+            raise DepthsException
 
-        # Emit rotation commands if 3+2 is active
-        if hasattr(self, "_rotation_commands"):
-            self.commandlist.extend(self._rotation_commands)
-            delattr(self, "_rotation_commands")
+        if not self._checkDepthsInWorkplane(obj):
+            obj.Path = Path.Path("(depths do not match this work plane)")
+            return
+
+        self.commandlist = []
+        self.commandlist.append(Path.Command(f"({obj.Label})"))
+        if obj.Comment:
+            self.commandlist.append(Path.Command(f"({obj.Comment})"))
 
         # If a geometry transform is active, wrap self.model and self.stock
         # in proxy objects so operations that access them see Z-up geometry.
@@ -1184,7 +1370,8 @@ class ObjectOp(object):
             def transform_shape(obj):
                 if not hasattr(obj, "Shape") or not obj.Shape:
                     return obj
-                final_shape = _transform_shape_with_arc_fix(obj.Shape, matrix)
+                # See baseShapes(): checkScale=False preserves arcs/circles.
+                final_shape = obj.Shape.copy().transformShape(matrix, False, False)
                 return _TransformedShapeProxy(obj, final_shape)
 
             self.model = [transform_shape(m) for m in self.model]
@@ -1245,8 +1432,18 @@ class ObjectOp(object):
 
         path = Path.Path(self.commandlist)
 
-        # Clean up temporary 3+2 attributes
-        for attr in ("_geometry_rotation", "_geom_transform_matrix"):
+        # The path is in the work plane's frame; Placement positions it. That
+        # is the convention the rest of the pipeline already honours -
+        # dressups, both simulators, Inspect and the legacy posts read an
+        # operation through PathUtils.getPathWithPlacement(), and the 3D view
+        # applies Placement in the scene graph. An operation with no work
+        # plane keeps the identity it has always had.
+        frame = PathUtil.workplaneForOp(obj)
+        if not obj.Placement.isSame(frame, 1e-9):
+            obj.Placement = frame
+
+        # Clean up the per-execute frame state
+        for attr in self._FRAME_ATTRS:
             if hasattr(self, attr):
                 delattr(self, attr)
 
@@ -1271,7 +1468,7 @@ class ObjectOp(object):
             for p, el in baselist:
                 if p == base and sub in el:
                     Path.Log.notice(
-                        (translate("CAM", "Base object %s.%s already in the list") + "\n")
+                        (translate("CAM_Operation", "Base object %s.%s already in the list") + "\n")
                         % (base.Label, sub)
                     )
                     return
@@ -1281,7 +1478,7 @@ class ObjectOp(object):
                 obj.Base = baselist
             else:
                 Path.Log.notice(
-                    (translate("CAM", "Base object %s.%s rejected by operation") + "\n")
+                    (translate("CAM_Operation", "Base object %s.%s rejected by operation") + "\n")
                     % (base.Label, sub)
                 )
 

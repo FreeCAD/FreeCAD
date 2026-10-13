@@ -600,7 +600,7 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName, std::set
     // 2. Find the raw block data.
     auto it = this->Blocks.find(blockName);
     if (it == this->Blocks.end()) {
-        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        ImportError("Block '{}' is referenced but not defined. Skipping.", blockName.c_str());
         return;
     }
     const Block& blockData = it->second;
@@ -673,7 +673,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName, std::se
     // 2. Find the raw block data from the parsing phase.
     auto it = this->Blocks.find(blockName);
     if (it == this->Blocks.end()) {
-        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        ImportError("Block '{}' is referenced but not defined. Skipping.", blockName.c_str());
         return;
     }
     const Block& blockData = it->second;
@@ -929,7 +929,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 
     // Step 3: Check for duplicates to prevent errors.
     if (this->Blocks.count(name)) {
-        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.", name.c_str());
+        ImportError("Duplicate block name '{}' found. Ignoring subsequent definition.", name.c_str());
         return SkipBlockContents();
     }
 
@@ -1881,7 +1881,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         }
         else {
             Base::Console().warning(
-                "ImpExpDxf - unknown curve type: %d\n",
+                "ImpExpDxf - unknown curve type: {}\n",
                 static_cast<int>(adapt.GetType())
             );
         }
@@ -2057,7 +2057,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
             s = c.Value(f);
             ePt = c.Value(l);
             Base::Console().message(
-                "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
+                "DxfWrite::exportBSpline - no result- from:({:.3f},{:.3f}) to:({:.3f},{:.3f})\n",
                 s.X(),
                 s.Y(),
                 ePt.X(),

@@ -1,28 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2021 Russell Johnson (russ4262) <russ4262@gmail.com>
+# SPDX-FileCopyrightText: 2023 Robert Schöftner <rs@unfoo.net>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2023 Robert Schöftner <rs@unfoo.net>                    *
-# *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Part
@@ -128,7 +124,6 @@ class TestPathProfile(PathTestBase):
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        pass
 
     def checkGcode(self, expected, actual, tol=0.01, includeRapids=True):
         egen = yieldGcode(expected, includeRapids=includeRapids)
@@ -151,11 +146,10 @@ class TestPathProfile(PathTestBase):
                     return abs(x - y) < tol
                 return x == y
 
-            if len(e.keys()) != len(a.keys()) or any(
-                map(lambda k: not v_eq(e.get(k), a.get(k)), e.keys())
-            ):
-                if error is None:
-                    error = f"Incorrect gcode at line {i+1}\nExpected: {e_str}\nActual  : {a_str}\n"
+            if (
+                len(e.keys()) != len(a.keys()) or any(not v_eq(e.get(k), a.get(k)) for k in e)
+            ) and error is None:
+                error = f"Incorrect gcode at line {i+1}\nExpected: {e_str}\nActual  : {a_str}\n"
 
         e_str = "\n".join(e_strs)
         a_str = "\n".join(a_strs)
@@ -186,6 +180,8 @@ class TestPathProfile(PathTestBase):
         profile.processHoles = True
         profile.UseComp = True
         profile.Direction = "CW"
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -219,6 +215,8 @@ class TestPathProfile(PathTestBase):
         profile.processHoles = True
         profile.UseComp = False
         profile.Direction = "CW"
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -256,6 +254,8 @@ class TestPathProfile(PathTestBase):
         profile.UseComp = True
         profile.Direction = "CW"
         profile.OffsetExtra = -profile.OpToolDiameter / 2.0
+        profile.StartPoint = FreeCAD.Vector(30, 30, 0)
+        profile.UseStartPoint = True
         _addViewProvider(profile)
         self.doc.recompute()
 
@@ -376,20 +376,18 @@ class TestPathOpenProfile(PathTestBase):
         """setUp()...
         This method is called prior to each test() method.
         """
-        pass
 
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method.
         """
-        pass
 
     def testOpenProfileSetup(self):
         """Verify Profile Base contains 2 edges of the triangle."""
 
         # Verify profile.Base has correct structure: [(part, edges_tuple)]
         self.assertEqual(len(self.profile.Base), 1, "Profile.Base should have 1 entry")
-        part, edges = self.profile.Base[0]
+        _, edges = self.profile.Base[0]
 
         # Assert we are profiling 2 edges
         self.assertEqual(len(edges), 2, "Profile Base should contain 2 edges")
