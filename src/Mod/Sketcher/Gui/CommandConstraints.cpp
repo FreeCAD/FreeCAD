@@ -5012,6 +5012,7 @@ protected:
         Valid,
         AlreadyCoincident,
         WouldCollapseGeometry,
+        RemovePointOnObject
     };
 
     struct CoincidentSolveStatus {
@@ -5286,10 +5287,15 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
     }
 }
 
-void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves)
+// clang-format on
+void CmdSketcherConstrainCoincidentUnified::activatedCoincident(
+    SketchObject* obj,
+    std::vector<SelIdPair> points,
+    std::vector<SelIdPair> curves
+)
 {
-    bool allConicsEdges = true;// If user selects only conics (circle, ellipse, arc, arcOfEllipse)
-                               // then we make concentric constraint.
+    bool allConicsEdges = true;  // If user selects only conics (circle, ellipse, arc, arcOfEllipse)
+                                 // then we make concentric constraint.
     for (auto& curve : curves) {
         if (!isGeoConcentricCompatible(obj->getGeometry(curve.GeoId))) {
             allConicsEdges = false;
@@ -5299,9 +5305,12 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             Gui::TranslatedUserWarning(
                 obj,
                 QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more vertices from the sketch for a coincident "
+                QObject::tr(
+                    "Select two or more vertices from the sketch for a coincident "
                     "constraint, or two or more circles, ellipses, arcs or arcs of ellipse "
-                    "for a concentric constraint."));
+                    "for a concentric constraint."
+                )
+            );
             return;
         }
         curve.PosId = Sketcher::PointPos::mid;
@@ -5337,15 +5346,36 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             break;
         }
 
+        // remove max 10 PointOnShape before moving
+        constexpr int MaxValidationAttempts = 10;
+
         auto validation = validateCoincidentSelection(obj, GeoId1, PosId1, GeoId2, PosId2);
+
+        for (int attempt = 0; validation == CoincidentSelectionResult::RemovePointOnObject
+             && attempt < MaxValidationAttempts;
+             ++attempt) {
+            const auto conflictingConstraints
+                = obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+
+            if (conflictingConstraints.empty()) {
+                break;
+            }
+
+            Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", conflictingConstraints.front());
+
+            validation = validateCoincidentSelection(obj, GeoId1, PosId1, GeoId2, PosId2);
+        }
+
         if (validation == CoincidentSelectionResult::Valid) {
             constraintsAdded = true;
-            Gui::cmdAppObjectArgs(obj,
+            Gui::cmdAppObjectArgs(
+                obj,
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
                 GeoId1,
                 static_cast<int>(PosId1),
                 GeoId2,
-                static_cast<int>(PosId2));
+                static_cast<int>(PosId2)
+            );
         }
         else {
             lastRejectedSelection = validation;
@@ -5366,6 +5396,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
         showCoincidentSelectionWarning(obj, lastRejectedSelection);
     }
 }
+// clang-format off
 
 void CmdSketcherConstrainCoincidentUnified::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
 {
@@ -5539,6 +5570,10 @@ CmdSketcherConstrainCoincidentUnified::validateCoincidentSelection(SketchObject*
     bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
     if (constraintExists) {
         return CoincidentSelectionResult::AlreadyCoincident;
+    }
+
+    if (obj->arePointsOnSameObject(GeoId1, PosId1, GeoId2, PosId2)) {
+        return CoincidentSelectionResult::RemovePointOnObject;
     }
 
     auto firstPoints = obj->getAllCoincidentPoints(GeoId1, PosId1);
