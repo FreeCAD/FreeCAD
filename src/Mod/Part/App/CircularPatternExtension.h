@@ -34,19 +34,8 @@ public:
     App::PropertyBool FlipBinormalAxis;
 
     std::list<gp_Trsf> calculateTransformations() const;
-    bool identityTransformSuppressed() const;
 
     short extensionMustExecute() override;
-    // void extensionOnChanged(const App::Property* prop) override;
-
-    inline bool isIncludeIdentityTransformation() const
-    {
-        return includeIdentityTransformation;
-    }
-    inline void setIncludeIdentityTransformation(bool v)
-    {
-        includeIdentityTransformation = v;
-    }
 
     static const App::PropertyIntegerConstraint::Constraints intNumberCircles;
     static const App::PropertyIntegerConstraint::Constraints intSymmetry;
@@ -54,9 +43,6 @@ public:
 protected:
     gp_Ax2 getRotation() const;
     virtual gp_Ax2 getRotation(const App::PropertyLinkSub& property) const;
-
-    // set to true for PD
-    bool includeIdentityTransformation = false;
 };
 
 }  // namespace Part
