@@ -101,11 +101,6 @@ CircularPatternExtension::CircularPatternExtension()
     );
 }
 
-bool CircularPatternExtension::identityTransformSuppressed() const
-{
-    return false;
-}
-
 std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
 {
     const double radialDistance = RadialDistance.getValue();
@@ -162,9 +157,7 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     int startCircle = !StartAtShape.getValue() ? 1 : 0;
     int endCircle = !StartAtShape.getValue() ? circleCount : circleCount - 1;
 
-    if (includeIdentityTransformation) {
-        transformations.emplace_back();
-    }
+    transformations.emplace_back();
 
     const double fullCircle = 2.0 * std::acos(-1.0);
 
