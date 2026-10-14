@@ -738,22 +738,34 @@ public:
      * @param[in] argc The argument count.
      * @param[in] argv The argument values.
      *
-     * This is the same as calling initConfiguration() followed by initModules().
+     * This is the same as calling initConfiguration(), initPython() and initModules().
      */
     static void init(int argc, char ** argv);
 
     /**
-     * @brief Initialize the configuration, parameters, Python interpreter and the application.
+     * @brief Initialize the configuration, parameters and the application.
      *
-     * The first stage of init(). It leaves the module init scripts to initModules(), so the
-     * caller may do some work in between, e.g. show a splash screen.
+     * The first stage of init(). It leaves the Python interpreter to initPython() and the module
+     * init scripts to initModules(), so the caller may do some work in between, e.g. show
+     * a splash screen.
      *
      * @param[in] argc The argument count.
      * @param[in] argv The argument values.
      */
     static void initConfiguration(int argc, char ** argv);
 
-    /// Run the init scripts of all modules, the second stage of init().
+    /// Initialize the Python interpreter, the second stage of init().
+    static void initPython();
+
+    /**
+     * @brief Whether program information is requested instead of running the application.
+     *
+     * Valid after initConfiguration(). The information is thrown as Base::ProgramInformation
+     * by initPython() as it may contain the configuration of the interpreter.
+     */
+    static bool isProgramInformationRequested();
+
+    /// Run the init scripts of all modules, the last stage of init().
     static void initModules();
 
     /// Initialize FreeCAD's type system for objects, properties, etc.

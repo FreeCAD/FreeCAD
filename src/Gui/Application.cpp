@@ -51,6 +51,7 @@
 #include <format>
 #include <list>
 #include <ranges>
+#include <vector>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -2671,7 +2672,8 @@ bool Application::startApplication()
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
     static int argc = App::Application::GetARGC();
-    qtApp = std::make_unique<GUISingleApplication>(argc, App::Application::GetARGV());
+    static std::vector<char*> argv(App::Application::GetARGV(), App::Application::GetARGV() + argc + 1);
+    qtApp = std::make_unique<GUISingleApplication>(argc, argv.data());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))

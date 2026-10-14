@@ -274,14 +274,17 @@ int main(int argc, char** argv)
 
         Gui::Application::initApplication();
 
-        // Create the QApplication and show the splash before running the init scripts of all
-        // modules, which is the slowest part of the init phase
-        if (inGuiMode() && !Gui::Application::startApplication()) {
+        // Create the QApplication and show the splash before initializing the Python
+        // interpreter and running the init scripts of all modules, which is the slowest part
+        // of the init phase. Not needed when only program information is requested.
+        if (inGuiMode() && !App::Application::isProgramInformationRequested()
+            && !Gui::Application::startApplication()) {
             // another instance took over
             App::Application::destruct();
             return 0;
         }
 
+        App::Application::initPython();
         App::Application::initModules();
 
         // Only if 'RunMode' is set to 'Gui' do the replacement
