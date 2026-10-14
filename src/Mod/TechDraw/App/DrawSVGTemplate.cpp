@@ -94,6 +94,24 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
     TechDraw::DrawTemplate::onChanged(prop);
 }
 
+void DrawSVGTemplate::reloadTemplate()
+{
+    // PropertyString ignores assigning the current path, so a same-file
+    // refresh has to copy the source SVG in again. EditableTexts are taken
+    // from the file, the same as a path change. An empty path does nothing.
+    const std::string path = Template.getValue();
+    if (path.empty()) {
+        return;
+    }
+
+    replaceFileIncluded(path);
+    EditableTexts.setValues(getEditableTextsFromTemplate());
+    QDomDocument templateDocument;
+    if (getTemplateDocument(PageResult.getValue(), templateDocument)) {
+        extractTemplateAttributes(templateDocument);
+    }
+}
+
 void DrawSVGTemplate::onSettingDocument()
 {
     attachDocument(DocumentObject::getDocument());
