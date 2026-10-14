@@ -533,8 +533,7 @@ def _model_optimization(
     if faces is None:
         faces = shape.Faces
 
-    # Detect pre-triangulated models and skip optimization
-    if not exempt_faces and surface_common._is_triangulated_mesh(faces):
+    if not exempt_faces:
         Path.Log.debug(
             "surface_mesh._model_optimization: Pre-triangulated model detected. Skipping face optimization."
         )
