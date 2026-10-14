@@ -353,6 +353,13 @@ void GUISingleApplication::receiveConnection()
 
 void GUISingleApplication::processMessages()
 {
+    // messages may arrive while still starting up, keep them until the event loop runs,
+    // Application::runApplication() then processes them
+    MainWindow* mw = Gui::getMainWindow();
+    if (!mw || !mw->property("eventLoop").toBool() || d_ptr->messages.isEmpty()) {
+        return;
+    }
+
     QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);

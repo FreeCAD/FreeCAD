@@ -31,6 +31,7 @@
 
 #include "StyleParameters/ParameterManager.h"
 
+class QApplication;
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;
@@ -48,7 +49,6 @@ class MDIView;
 class MainWindow;
 class MenuItem;
 class PreferencePackManager;
-class SplashScreen;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -279,7 +279,9 @@ public:
     static void initTypes();
     static void initOpenInventor();
     static void runInitGuiScript();
+    static bool startApplication();
     static void runApplication();
+    static void destroyApplication();
     void tryClose(QCloseEvent* e);
     //@}
 
@@ -287,7 +289,7 @@ public:
     static bool hiddenMainWindow();
     /// install the language from the user preferences
     static void activateLanguage();
-    static void showSplash();
+    /// close the splash shown by startApplication(), once \a window is on the screen if given
     static void hideSplash(QWidget* window);
     /// stop showing messages in the splash, as it processes events with each of them
     static void freezeSplash();
@@ -359,8 +361,7 @@ private:
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
     void shutdown();
-    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
-    static SplashScreen* splash;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* app);
 
     friend class ApplicationPy;
 };

@@ -22,6 +22,7 @@
 
 #include <format>
 #include <string_view>
+#include <utility>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
@@ -307,6 +308,9 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::finish(QWidget* w)
 {
+    // Stop listening now, the deferred delete may run from within a console notification
+    delete std::exchange(messages, nullptr);
+
     // Unlike QSplashScreen::finish() do not wait for the window here, see show(). Close from the
     // event loop once it is exposed instead, to leave no gap without any window on the screen.
     QWindow* window = w ? w->windowHandle() : nullptr;
