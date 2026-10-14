@@ -460,6 +460,7 @@ PyObject* Gui::ApplicationPy::sEmbedToWindow(PyObject* /*self*/, PyObject* args)
 static QWidget* setupMainWindow()
 {
     if (!Gui::Application::Instance) {
+        Gui::Application::activateLanguage();
         static Gui::Application* app = new Gui::Application(true);
         Q_UNUSED(app);
     }

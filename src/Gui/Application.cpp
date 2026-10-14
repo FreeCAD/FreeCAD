@@ -535,12 +535,6 @@ Application::Application(bool GUIenabled)
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
         // NOLINTEND
-        // install the last active language
-        ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
-        QString lang = QLocale::languageToString(QLocale().language());
-        Translator::instance()->activateLanguage(
-            hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
         // Coin3d disables VBO support for some (typically very old) drivers and hardware.
@@ -2679,9 +2673,18 @@ void Application::runApplication()
     StartupProcess process;
     process.execute();
 
+    // Show the splash as soon as possible. It needs the image search paths and, as it
+    // contains translated text, the language.
+    activateLanguage();
+    showSplash();
+    // make sure the splash does not outlive a failed startup
+    auto splashGuard = qScopeGuard([]() { hideSplash(nullptr); });
+
     Application app(true);
     MainWindow mw;
     mw.setProperty("QuitOnClosed", true);
+    // the splash processes events with each message, close it before the main window is gone
+    auto splashMainWindowGuard = qScopeGuard([]() { hideSplash(nullptr); });
 
     // Destroy deferred views while their GUI and Python owners are still alive.
     auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
@@ -2760,6 +2763,17 @@ bool Application::hiddenMainWindow()
     auto it = cfg.find("StartHidden");
 
     return it != cfg.end();
+}
+
+void Application::activateLanguage()
+{
+    ParameterGrp::handle hPGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    QString lang = QLocale::languageToString(QLocale().language());
+    Translator::instance()->activateLanguage(
+        hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str()
+    );
 }
 
 void Application::showSplash()

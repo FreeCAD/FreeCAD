@@ -285,6 +285,8 @@ public:
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
+    /// install the language from the user preferences
+    static void activateLanguage();
     static void showSplash();
     static void hideSplash(QWidget* window);
     /// return the status bits
