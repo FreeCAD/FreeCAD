@@ -243,10 +243,12 @@ int main(int argc, char** argv)
 #if defined(FC_OS_WIN32)
         App::Application::initConfiguration(argc_, argv_.data());
 # ifdef _MSC_VER
-        // *Not* installed on mingw, etc.
-        Base::CrashReporter::WindowsCrashReporter::install(
-            App::Application::getUserAppDataDir() + "CrashReports"
-        );
+        // *Not* installed on mingw, etc. Neither when only program information is requested.
+        if (!App::Application::isProgramInformationRequested()) {
+            Base::CrashReporter::WindowsCrashReporter::install(
+                App::Application::getUserAppDataDir() + "CrashReports"
+            );
+        }
 # endif
 #else
         App::Application::initConfiguration(argc, argv);
@@ -273,9 +275,10 @@ int main(int argc, char** argv)
 
         Gui::Application::initApplication();
 
-        // Create the QApplication and show the splash before running the init scripts of all
-        // modules, which is the slowest part of the init phase
-        if (inGuiMode()) {
+        // Create the QApplication and show the splash before initializing the Python
+        // interpreter and running the init scripts of all modules, which is the slowest part
+        // of the init phase. Not needed when only program information is requested.
+        if (inGuiMode() && !App::Application::isProgramInformationRequested()) {
             if (!Gui::Application::startApplication()) {
                 // another instance took over
                 App::Application::destruct();
