@@ -1764,8 +1764,8 @@ class CommandSetStartPoint:
     def GetResources(self):
         return {
             "Pixmap": "CAM_StartPoint",
-            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Start Point Selection"),
-            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Selects the start point"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_SetStartPoint", "Start Point Selection"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_SetStartPoint", "Selects the start point"),
         }
 
     def IsActive(self):
