@@ -198,8 +198,8 @@ class DrawViewPart(DrawView):
         self, index: int, style: int, weight: float, color: tuple, visible: int, /
     ) -> None:
         """
-        formatGeometricEdge(index, style, weight, color, visible). Returns None.
-        style parameter is from Qt::PenStyle) and is converted to closest standard line number style.
+        Applies appearance attributes to a geometric edge.
+        Style parameter is from Qt::PenStyle and is converted to closest standard line number style.
         """
         ...
 
@@ -207,8 +207,8 @@ class DrawViewPart(DrawView):
         self, edgeName: str, lineNumber: int, weight: float, color: tuple, visible: int, /
     ) -> None:
         """
-        decorateLine(edgeName, lineNumber, weight, color, visible). Returns None.
-        Applies appearance attributes to geometric edge idx.  Handles standard line numbers (0-15 (ISO) or 1-17 (ASME)).
+        Applies appearance attributes to geometric edge edgeName ("Edge1").  Handles standard line
+        numbers (0-15 (ISO) or 1-17 (ASME)).
         """
         ...
 
