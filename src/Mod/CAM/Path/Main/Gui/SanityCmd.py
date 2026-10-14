@@ -124,10 +124,10 @@ class CommandCAMQuickValidate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Sanity",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Quick Validate"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_QuickValidate", "Quick Validate"),
             "Accel": "P, V",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Sanity",
+                "CAM_QuickValidate",
                 "Validates the CAM job for common issues without generating a full report",
             ),
         }
