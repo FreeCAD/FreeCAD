@@ -337,6 +337,9 @@ class Edit(gui_base_original.Modifier):
 
     def finish(self, cont=False):
         """Terminate Edit Tool."""
+        document = self.doc
+        gui_document = gui_utils.get_gui_document(document)
+        editing = gui_document.getInEdit() if gui_document is not None else None
         App.removeDocumentObserver(self)
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
@@ -355,11 +358,12 @@ class Edit(gui_base_original.Modifier):
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
 
-        QtCore.QTimer.singleShot(0, self.reset_edit)
+        QtCore.QTimer.singleShot(0, lambda: gui_utils.reset_edit(document, editing))
 
     def reset_edit(self):
-        if self.doc is not None:
-            Gui.getDocument(self.doc.Name).resetEdit()
+        document = gui_utils.get_gui_document(self.doc)
+        if document is not None:
+            document.resetEdit()
 
     # -------------------------------------------------------------------------
     # INPUT HINTS
