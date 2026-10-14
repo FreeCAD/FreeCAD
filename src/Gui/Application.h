@@ -48,6 +48,7 @@ class MDIView;
 class MainWindow;
 class MenuItem;
 class PreferencePackManager;
+class SplashScreen;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -284,6 +285,8 @@ public:
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
+    static void showSplash();
+    static void hideSplash(QWidget* window);
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits
@@ -353,6 +356,7 @@ private:
     NavlibInterface* pNavlibInterface;
     void shutdown();
     static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
+    static SplashScreen* splash;
 
     friend class ApplicationPy;
 };
