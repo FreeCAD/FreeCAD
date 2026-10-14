@@ -928,20 +928,17 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 PyObject* DrawViewPartPy::decorateLine(PyObject *args)
 {
     char* selName{};           //Selection routine name - "Edge0"
-    int style{Qt::NoPen};      // Qt style is no longer used except in deprecated LineFormat constructors. see lineNumber.
-    constexpr int StandardContinuousLine{1};
-    int lineNumber{StandardContinuousLine};
-    Base::Color color{LineFormat::getDefEdgeColor()};
-    constexpr double DefaultWeight{0.5};
-    double weight{DefaultWeight};
-    int visible{1};
+    int lineNumber{};
+    double weight{};
+    int visible{};
     PyObject* pColor{};
 
     if (!PyArg_ParseTuple(args, "sidOp", &selName, &lineNumber, &weight, &pColor, &visible)) {
         return nullptr;
     }
 
-    color = DrawUtil::pyTupleToColor(pColor);
+    const TechDraw::LineFormat format(Qt::NoPen, weight, DrawUtil::pyTupleToColor(pColor),
+                                     visible, lineNumber);
     DrawViewPart* dvp = getDrawViewPartPtr();
     int edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
 
@@ -950,11 +947,7 @@ PyObject* DrawViewPartPy::decorateLine(PyObject *args)
         if (geom->source() == SourceType::COSMETICEDGE) {
             TechDraw::CosmeticEdge *ce = dvp->getCosmeticEdgeBySelection(selName);
             if (ce) {
-                ce->m_format.setLineNumber(lineNumber);
-                ce->m_format.setWidth(weight);
-                ce->m_format.setColor(color);
-                ce->m_format.setVisible(visible);
-                ce->m_format.setStyle(style);
+                ce->m_format = format;
             }
             Py_Return;
         }
@@ -962,11 +955,7 @@ PyObject* DrawViewPartPy::decorateLine(PyObject *args)
         if (geom->source() == SourceType::CENTERLINE) {
             TechDraw::CenterLine *cl = dvp->getCenterLineBySelection(selName);
             if (cl) {
-                cl->m_format.setLineNumber(lineNumber);
-                cl->m_format.setWidth(weight);
-                cl->m_format.setColor(color);
-                cl->m_format.setVisible(visible);
-                cl->m_format.setStyle(style);
+                cl->m_format = format;
             }
             Py_Return;
         }
@@ -975,19 +964,10 @@ PyObject* DrawViewPartPy::decorateLine(PyObject *args)
     // regular edge SourceType::GEOMETRY
     TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(selName);
     if (gf) {
-        // already have a format
-        gf->m_format.setStyle(style);
-        gf->m_format.setColor(color);
-        gf->m_format.setWidth(weight);
-        gf->m_format.setVisible(visible);
-        gf->m_format.setLineNumber(lineNumber);
+        gf->m_format = format;
     }
     else {
-        // need a new format
-        TechDraw::LineFormat fmt(style, weight, color, visible, lineNumber);
-        auto* newGF = new TechDraw::GeomFormat(edgeIndex, fmt);
-//                    int idx =
-        dvp->addGeomFormat(newGF);
+        dvp->addGeomFormat(new TechDraw::GeomFormat(edgeIndex, format));
     }
     Py_Return;
 }
@@ -1127,4 +1107,3 @@ int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
