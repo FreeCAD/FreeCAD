@@ -54,6 +54,7 @@ public:
 
 protected:
     bool event(QEvent* e) override;
+    bool eventFilter(QObject* o, QEvent* e) override;
     void drawContents(QPainter* painter) override;
 
 private:
