@@ -41,7 +41,7 @@
             "type": "STRING",
             "value": "Debug"
           },
-          "FREECAD_VCS_PROVENANCE": {
+          "FREECAD_VERSION_INCLUDE_GIT": {
             "type": "BOOL",
             "value": "OFF"
           }

@@ -1,6 +1,6 @@
 # If the sources don't include a Version.h then create one
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
-    if(FREECAD_VCS_PROVENANCE)
+    if(FREECAD_VERSION_INCLUDE_GIT)
         set(PACKAGE_WCREF "$WCREV$")
         set(PACKAGE_WCDATE "$WCDATE$")
         set(PACKAGE_WCURL "$WCURL$")
