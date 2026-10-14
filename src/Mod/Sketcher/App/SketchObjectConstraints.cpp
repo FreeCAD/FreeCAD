@@ -788,14 +788,18 @@ int SketchObject::setUpSketch()
 }
 
 int SketchObject::diagnoseAdditionalConstraints(
-    std::vector<Sketcher::Constraint*> additionalconstraints)
-{
+    std::vector<Sketcher::Constraint*> additionalconstraints,
+    std::vector<int>& removeConstraints
+) {
     auto objectconstraints = Constraints.getValues();
 
     std::vector<Sketcher::Constraint*> allconstraints;
-    allconstraints.reserve(objectconstraints.size() + additionalconstraints.size());
+    allconstraints.reserve(objectconstraints.size() + additionalconstraints.size() - removeConstraints.size());
 
     std::ranges::copy(objectconstraints, back_inserter(allconstraints));
+    std::erase_if(allconstraints, [&, index = 0](const auto*) mutable {
+        return std::ranges::find(removeConstraints, index++) != removeConstraints.end();
+    });
     std::ranges::copy(additionalconstraints, back_inserter(allconstraints));
 
     lastDoF =

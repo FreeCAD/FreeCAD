@@ -339,13 +339,16 @@ protected:
         const AutoConstraint& autoConstraint,
         int geoId,
         Sketcher::PointPos pointPos,
-        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+        std::vector<int>& removeConstraints
     );
     bool filterRedundantAutoConstraints(
-        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+        std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+        std::vector<int>& removeConstraints
     );
     void addGeneratedAutoConstraints(
-        const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+        const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+        const std::vector<int>& removeConstraints
     );
 
     void setAngleSnapping(bool enable, Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
