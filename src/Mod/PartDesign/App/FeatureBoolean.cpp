@@ -34,6 +34,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyGeo.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -94,6 +95,10 @@ void Boolean::onSettingDocument()
 
 void Boolean::slotChangedObject(const App::DocumentObject& object, const App::Property& prop)
 {
+    if (!prop.isDerivedFrom<App::PropertyPlacement>()) {
+        return;
+    }
+
     auto* document = getDocument();
     if (!document || document->testStatus(App::Document::Restoring)
         || UseLegacyBodyPlacement.getValue() || &object == this
