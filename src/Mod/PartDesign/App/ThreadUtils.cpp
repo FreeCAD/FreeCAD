@@ -1953,6 +1953,17 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
             }
         }
     }
+
+    // Match Hole's standard order and keep newly discovered standards at the end.
+    const auto begin = std::begin(ThreadUtils::ThreadTypeEnums);
+    const auto end = std::end(ThreadUtils::ThreadTypeEnums) - 1;
+    std::stable_sort(
+        definitions.begin(),
+        definitions.end(),
+        [begin, end](const ThreadDefinition& lhs, const ThreadDefinition& rhs) {
+            return std::find(begin, end, lhs.id) < std::find(begin, end, rhs.id);
+        }
+    );
 }
 
 std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDefinition(
