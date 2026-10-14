@@ -25,12 +25,14 @@
 
 #include <QPixmap>
 #include <map>
+#include <memory>
 #include <string>
 
 #include <App/Application.h>
 
 #include "StyleParameters/ParameterManager.h"
 
+class QApplication;
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;
@@ -48,7 +50,6 @@ class MDIView;
 class MainWindow;
 class MenuItem;
 class PreferencePackManager;
-class SplashScreen;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -279,7 +280,11 @@ public:
     static void initTypes();
     static void initOpenInventor();
     static void runInitGuiScript();
+    /// create the QApplication and show the splash, false if another instance took over
+    static bool startApplication();
     static void runApplication();
+    /// hand over the QApplication created by startApplication() when not running it
+    static std::unique_ptr<QApplication> releaseApplication();
     void tryClose(QCloseEvent* e);
     //@}
 
@@ -287,7 +292,7 @@ public:
     static bool hiddenMainWindow();
     /// install the language from the user preferences
     static void activateLanguage();
-    static void showSplash();
+    /// close the splash shown by startApplication(), once \a window is on the screen if given
     static void hideSplash(QWidget* window);
     /// stop showing messages in the splash, as it processes events with each of them
     static void freezeSplash();
@@ -360,7 +365,6 @@ private:
     NavlibInterface* pNavlibInterface;
     void shutdown();
     static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
-    static SplashScreen* splash;
 
     friend class ApplicationPy;
 };

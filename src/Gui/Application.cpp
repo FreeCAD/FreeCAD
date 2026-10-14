@@ -174,7 +174,6 @@ namespace sp = std::placeholders;
 FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
-SplashScreen* Application::splash = nullptr;
 
 #ifdef USE_3DCONNEXION_NAVLIB
 extern "C" {
@@ -2614,7 +2613,32 @@ void runEventLoop(GUISingleApplication& mainApp)
 }
 }  // namespace
 
-void Application::runApplication()
+namespace
+{
+std::unique_ptr<GUISingleApplication> qtApp;  // NOLINT
+std::unique_ptr<SplashScreen> splash;         // NOLINT
+
+void showSplash()
+{
+    // when running in verbose mode no splasher
+    if ((App::Application::Config()["Verbose"] == "Strict")
+        || (App::Application::Config()["RunMode"] != "Gui") || Application::hiddenMainWindow()) {
+        return;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+
+    if (hGrp->GetBool("ShowSplasher", true)) {
+        splash = std::make_unique<SplashScreen>(Gui::SplashScreen::splashImage());
+        splash->setShowMessages(hGrp->GetBool("ShowSplasherMessages", true));
+        splash->show();
+    }
+}
+}  // namespace
+
+bool Application::startApplication()
 {
     StartupProcess::setupApplication();
 
@@ -2646,8 +2670,8 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
-    int argc = App::Application::GetARGC();
-    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    static int argc = App::Application::GetARGC();
+    qtApp = std::make_unique<GUISingleApplication>(argc, App::Application::GetARGV());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))
@@ -2664,8 +2688,9 @@ void Application::runApplication()
     setlocale(LC_NUMERIC, "C");
 
     // check if a single or multiple instances can run
-    if (onlySingleInstance(mainApp)) {
-        return;
+    if (onlySingleInstance(*qtApp)) {
+        qtApp.reset();
+        return false;
     }
 
     setAppNameAndIcon();
@@ -2677,8 +2702,22 @@ void Application::runApplication()
     // contains translated text, the language.
     activateLanguage();
     showSplash();
+
+    return true;
+}
+
+std::unique_ptr<QApplication> Application::releaseApplication()
+{
+    return std::move(qtApp);
+}
+
+void Application::runApplication()
+{
+    auto qtAppGuard = qScopeGuard([]() { qtApp.reset(); });
     // make sure the splash does not outlive a failed startup
     auto splashGuard = qScopeGuard([]() { hideSplash(nullptr); });
+
+    Q_ASSERT(qtApp);  // created by startApplication()
 
     Application app(true);
     MainWindow mw;
@@ -2697,10 +2736,10 @@ void Application::runApplication()
     SoDebugError::setHandlerCallback(messageHandlerCoin, 0);
 #endif
 
-    StartupPostProcess postProcess(&mw, app, &mainApp);
+    StartupPostProcess postProcess(&mw, app, qtApp.get());
     postProcess.execute();
 
-    init3DMouse(&mw, &mainApp);
+    init3DMouse(&mw, qtApp.get());
 
     Instance->d->startingUp = false;
 
@@ -2714,7 +2753,7 @@ void Application::runApplication()
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
     Gui::getMainWindow()->setProperty("eventLoop", true);
 
-    runEventLoop(mainApp);
+    runEventLoop(*qtApp);
 
     Base::Console().log("Finish: Event loop left\n");
 }
@@ -2776,25 +2815,6 @@ void Application::activateLanguage()
     );
 }
 
-void Application::showSplash()
-{
-    // when running in verbose mode no splasher
-    if ((App::Application::Config()["Verbose"] == "Strict")
-        || (App::Application::Config()["RunMode"] != "Gui") || hiddenMainWindow()) {
-        return;
-    }
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/General"
-    );
-
-    if (hGrp->GetBool("ShowSplasher", true)) {
-        splash = new SplashScreen(Gui::SplashScreen::splashImage());
-        splash->setShowMessages(hGrp->GetBool("ShowSplasherMessages", true));
-        splash->show();
-    }
-}
-
 void Application::freezeSplash()
 {
     if (splash) {
@@ -2804,16 +2824,11 @@ void Application::freezeSplash()
 
 void Application::hideSplash(QWidget* window)
 {
-    if (splash) {
-        if (window) {
-            splash->finish(window);
-        }
-        else {
-            splash->close();
-        }
-        delete splash;
-        splash = nullptr;
+    if (splash && window) {
+        splash->setAttribute(Qt::WA_DeleteOnClose);
+        splash.release()->finish(window);
     }
+    splash.reset();
 }
 
 bool Application::testStatus(Status pos) const

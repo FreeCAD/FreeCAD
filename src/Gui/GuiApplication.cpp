@@ -36,6 +36,7 @@
 #include <QByteArray>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMetaMethod>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QFileOpenEvent>
@@ -353,6 +354,12 @@ void GUISingleApplication::receiveConnection()
 
 void GUISingleApplication::processMessages()
 {
+    // messages may arrive while still starting up, keep them until somebody listens
+    if (!isSignalConnected(QMetaMethod::fromSignal(&GUISingleApplication::messageReceived))) {
+        d_ptr->timer->start(1000);
+        return;
+    }
+
     QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
