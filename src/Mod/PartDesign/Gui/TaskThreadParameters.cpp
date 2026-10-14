@@ -22,13 +22,14 @@
  *                                                                          *
  ***************************************************************************/
 
+
 #include <QWidget>
 #include <QEvent>
 #include <QLineEdit>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
+#include <Gui/Application.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
@@ -36,17 +37,16 @@
 
 #include "ui_TaskThreadParameters.h"
 #include "TaskThreadParameters.h"
-
 #include "TaskDressUpParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
 namespace sp = std::placeholders;
 
-TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent)
-    : TaskDressUpParameters(DressUpView, true, true, parent)
-    , observer(new Observer(this, getObject<PartDesign::Thread>()))
+TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* threadView, QWidget* parent)
+    : TaskDressUpParameters(threadView, true, true, parent)
     , ui(new Ui_TaskThreadParameters)
+    , observer(new Observer(this, getObject<PartDesign::Thread>()))
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -54,73 +54,71 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     QMetaObject::connectSlotsByName(this);
 
-    PartDesign::Thread* pcThread = DressUpView->getObject<PartDesign::Thread>();
+    const PartDesign::Thread* thread = threadView->getObject<PartDesign::Thread>();
 
-    setLinkSubText(ui->lateralFaceEdit, pcThread->LateralFace);
-    setLinkSubText(ui->startEdit, pcThread->StartPlane);
-    setLinkSubText(ui->upToGeometryEdit, pcThread->UpToGeometry);
+    setLinkSubText(ui->lateralFaceEdit, thread->LateralFace);
+    setLinkSubText(ui->startEdit, thread->StartPlane);
+    setLinkSubText(ui->upToGeometryEdit, thread->UpToGeometry);
 
-    std::vector<std::string> strings = pcThread->Base.getSubValues();
-
-    QMetaObject::connectSlotsByName(this);
+    const std::vector<std::string> strings = thread->Base.getSubValues();
 
     setThreadSelectionMode(SideFaceSel);
 
-    ui->endTypeCombo->setCurrentIndex(pcThread->DepthType.getValue());
-    bool isDimension = std::string(pcThread->DepthType.getValueAsString()) == "Dimension";
-    bool isUpToGeometry = std::string(pcThread->DepthType.getValueAsString()) == "UpToGeometry";
+    ui->endTypeCombo->setCurrentIndex(thread->DepthType.getValue());
+    const bool isDimension = std::string(thread->DepthType.getValueAsString()) == "Dimension";
+    const bool isUpToGeometry = std::string(thread->DepthType.getValueAsString()) == "UpToGeometry";
 
     ui->labelDepth->setHidden(!isDimension);
     ui->Depth->setHidden(!isDimension);
     ui->upToGeometryWidget->setHidden(!isUpToGeometry);
-    ui->Depth->setValue(pcThread->Depth.getValue());
+    ui->Depth->setValue(thread->Depth.getValue());
+
+    const auto addComboBoxItems = [this](QComboBox* widget, const auto& values) {
+        for (const auto& value : values) {
+            widget->addItem(tr(value.c_str()));
+        }
+    };
 
     ui->standardCombo->clear();
-    std::vector<std::string> cursorStandard = pcThread->ThreadTypeName.getEnumVector();
-    for (const auto& it : cursorStandard) {
-        ui->standardCombo->addItem(tr(it.c_str()));
-    }
-    ui->standardCombo->setCurrentIndex(pcThread->ThreadType.getValue());
+    const std::vector<std::string> cursorStandard = thread->ThreadTypeName.getEnumVector();
+    addComboBoxItems(ui->standardCombo, cursorStandard);
+    ui->standardCombo->setCurrentIndex(thread->ThreadType.getValue());
 
     ui->diameterCombo->clear();
-    std::vector<std::string> cursorDiameter = pcThread->ThreadSize.getEnumVector();
-    for (const auto& it : cursorDiameter) {
-        ui->diameterCombo->addItem(tr(it.c_str()));
-    }
-    ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
+    const std::vector<std::string> cursorDiameter = thread->ThreadSize.getEnumVector();
+    addComboBoxItems(ui->diameterCombo, cursorDiameter);
+    ui->diameterCombo->setCurrentIndex(thread->ThreadSize.getValue());
 
     ui->classCombo->clear();
-    std::vector<std::string> cursorClass = pcThread->ThreadClass.getEnumVector();
-    for (const auto& it : cursorClass) {
-        ui->classCombo->addItem(tr(it.c_str()));
-    }
-    ui->classCombo->setCurrentIndex(pcThread->ThreadClass.getValue());
+    const std::vector<std::string> cursorClass = thread->ThreadClass.getEnumVector();
+    addComboBoxItems(ui->classCombo, cursorClass);
+    ui->classCombo->setCurrentIndex(thread->ThreadClass.getValue());
 
     ui->pitchCombo->clear();
-    std::vector<std::string> cursorPitch = pcThread->ThreadSizePitch.getEnumVector();
-    for (const auto& it : cursorPitch) {
-        ui->pitchCombo->addItem(tr(it.c_str()));
-    }
-    ui->pitchCombo->setCurrentIndex(pcThread->ThreadSizePitch.getValue());
+    const std::vector<std::string> cursorPitch = thread->ThreadSizePitch.getEnumVector();
+    addComboBoxItems(ui->pitchCombo, cursorPitch);
+    ui->pitchCombo->setCurrentIndex(thread->ThreadSizePitch.getValue());
 
     ui->directionCombo->clear();
-    std::vector<std::string> cursorDirection = pcThread->ThreadDirection.getEnumVector();
-    for (const auto& it : cursorDirection) {
-        ui->directionCombo->addItem(tr(it.c_str()));
-    }
-    ui->directionCombo->setCurrentIndex(pcThread->ThreadDirection.getValue());
+    const std::vector<std::string> cursorDirection = thread->ThreadDirection.getEnumVector();
+    addComboBoxItems(ui->directionCombo, cursorDirection);
+    ui->directionCombo->setCurrentIndex(thread->ThreadDirection.getValue());
 
 
-    ui->customClearanceCheck->setChecked(pcThread->UseCustomThreadClearance.getValue());
+    ui->customClearanceCheck->setChecked(thread->UseCustomThreadClearance.getValue());
     ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
     ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
-    ui->customClearanceField->setValue(pcThread->CustomThreadClearance.getValue());
+    ui->customClearanceField->setValue(thread->CustomThreadClearance.getValue());
 
-    bool isModeled = pcThread->ModelThread.getValue();
+    ui->taperedCheck->setChecked(thread->Tapered.getValue());
+    ui->taperedAngleField->setEnabled(thread->Tapered.getValue() && !thread->TaperedAngle.isReadOnly());
+    ui->taperedAngleField->setValue(thread->TaperedAngle.getValue());
+
+    const bool isModeled = thread->ModelThread.getValue();
     ui->modelledThreadRadio->setChecked(isModeled);
 
     ui->designationEdit->setReadOnly(true);
-    ui->designationEdit->setText(pcThread->ThreadDesignation.getValue());
+    ui->designationEdit->setText(thread->ThreadDesignation.getValue());
 
     connect(
         ui->standardCombo,
@@ -206,14 +204,23 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
         ui->customClearanceCheck,
         &QCheckBox::toggled,
         this,
-        &TaskThreadParameters::CustomClearanceCheckValuesChanged
+        &TaskThreadParameters::useCustomThreadClearanceChanged
     );
+
+    connect(ui->taperedCheck, &QCheckBox::toggled, this, &TaskThreadParameters::taperedCheckChanged);
 
     connect(
         ui->customClearanceField,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
         &TaskThreadParameters::customThreadClearanceChanged
+    );
+
+    connect(
+        ui->taperedAngleField,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &TaskThreadParameters::taperedAngleChanged
     );
 
     connect(
@@ -262,18 +269,26 @@ void TaskThreadParameters::changeEvent(QEvent* e)
     }
 }
 
+bool TaskThreadParameters::getModelThread() const
+{
+    return ui->modelledThreadRadio->isChecked();
+}
+
+bool TaskThreadParameters::getCosmeticThreaded() const
+{
+    return ui->cosmeticThreadRadio->isChecked();
+}
+
 void TaskThreadParameters::apply()
 {
-    auto pcThread = getObject<PartDesign::Thread>();
-    if (pcThread->LateralFace.getSubValues().empty()) {
+    auto thread = getObject<PartDesign::Thread>();
+    if (thread->LateralFace.getSubValues().empty()) {
         Base::Console().warning(tr("Empty thread created!\n").toStdString().c_str());
     }
 }
 
 void TaskThreadParameters::onRefDeleted()
-{
-    /*TODO*/
-}
+{}
 
 void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode)
 {
@@ -308,54 +323,51 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     switch (currentSelectionMode) {
         case SideFaceSel: {
-            auto pcThread = getObject<PartDesign::Thread>();
+            auto thread = getObject<PartDesign::Thread>();
             std::vector<std::string> planes;
-            App::DocumentObject* selObj = nullptr;
-            getReferencedSelection(pcThread, msg, selObj, planes);
-            if (!selObj) {
+            App::DocumentObject* selectedObject = nullptr;
+            getReferencedSelection(thread, msg, selectedObject, planes);
+            if (!selectedObject) {
                 return;
             }
             setupTransaction();
-            pcThread->LateralFace.setValue(selObj, planes);
+            thread->LateralFace.setValue(selectedObject, planes);
             recomputeFeature();
-            setLinkSubText(ui->lateralFaceEdit, pcThread->LateralFace);
+            setLinkSubText(ui->lateralFaceEdit, thread->LateralFace);
             ui->selectLateralFace->setChecked(false);
             Gui::Selection().clearSelection();
             break;
         }
 
         case StartFaceSel: {
-            auto pcThread = getObject<PartDesign::Thread>();
+            auto thread = getObject<PartDesign::Thread>();
             std::vector<std::string> planes;
-            App::DocumentObject* selObj = nullptr;
-            getReferencedSelection(pcThread, msg, selObj, planes);
-            if (!selObj) {
+            App::DocumentObject* selectedObject = nullptr;
+            getReferencedSelection(thread, msg, selectedObject, planes);
+            if (!selectedObject) {
                 return;
             }
             setupTransaction();
-            pcThread->StartPlane.setValue(selObj, planes);
+            thread->StartPlane.setValue(selectedObject, planes);
             recomputeFeature();
-            setLinkSubText(ui->startEdit, pcThread->StartPlane);
+            setLinkSubText(ui->startEdit, thread->StartPlane);
             ui->selectStart->setChecked(false);
             Gui::Selection().clearSelection();
             break;
         }
 
         case UpToGeometrySel: {
-            auto pcThread = getObject<PartDesign::Thread>();
+            auto thread = getObject<PartDesign::Thread>();
             std::vector<std::string> planes;
-            App::DocumentObject* selObj = nullptr;
-            getReferencedSelection(pcThread, msg, selObj, planes);
-            for (const auto& p : planes) {
-            }
-
-            if (!selObj) {
+            App::DocumentObject* selectedObject = nullptr;
+            getReferencedSelection(thread, msg, selectedObject, planes);
+            if (!selectedObject) {
                 return;
             }
             setupTransaction();
-            pcThread->UpToGeometry.setValue(selObj, planes);
+            thread->UpToGeometry.setValue(selectedObject, planes);
             recomputeFeature();
-            setLinkSubText(ui->upToGeometryEdit, pcThread->UpToGeometry);
+            setLinkSubText(ui->upToGeometryEdit, thread->UpToGeometry);
             ui->selectUpToGeometry->setChecked(false);
             Gui::Selection().clearSelection();
             break;
@@ -373,16 +385,17 @@ void TaskThreadParameters::threadTypeChanged(int index)
         return;
     }
 
-    auto pcThread = getObject<PartDesign::Thread>();
-    if (!pcThread) {
+    auto thread = getObject<PartDesign::Thread>();
+    if (!thread) {
         return;
     }
 
-    QString ThreadClassString = ui->classCombo->currentText();
+    const QString threadClassText = ui->classCombo->currentText();
 
-    pcThread->ThreadType.setValue(index);
+    setupTransaction();
+    thread->ThreadType.setValue(index);
 
-    int threadClassIndex = ui->classCombo->findText(ThreadClassString, Qt::MatchContains);
+    const int threadClassIndex = ui->classCombo->findText(threadClassText, Qt::MatchContains);
     if (threadClassIndex > -1) {
         ui->classCombo->setCurrentIndex(threadClassIndex);
     }
@@ -398,6 +411,7 @@ void TaskThreadParameters::threadSizeChanged(int index)
 
     auto thread = getObject<PartDesign::Thread>();
     if (thread) {
+        setupTransaction();
         thread->ThreadSize.setValue(index);
         recomputeFeature();
     }
@@ -411,6 +425,7 @@ void TaskThreadParameters::threadSizePitchChanged(int index)
 
     auto thread = getObject<PartDesign::Thread>();
     if (thread) {
+        setupTransaction();
         thread->ThreadSizePitch.setValue(index);
         recomputeFeature();
     }
@@ -422,10 +437,11 @@ void TaskThreadParameters::depthTypeChanged(int index)
     if (!thread) {
         return;
     }
+    setupTransaction();
     thread->DepthType.setValue(index);
 
-    bool isDimension = std::string(thread->DepthType.getValueAsString()) == "Dimension";
-    bool isUpToGeometry = std::string(thread->DepthType.getValueAsString()) == "UpToGeometry";
+    const bool isDimension = std::string(thread->DepthType.getValueAsString()) == "Dimension";
+    const bool isUpToGeometry = std::string(thread->DepthType.getValueAsString()) == "UpToGeometry";
     ui->labelDepth->setHidden(!isDimension);
     ui->Depth->setHidden(!isDimension);
     ui->upToGeometryWidget->setHidden(!isUpToGeometry);
@@ -435,6 +451,7 @@ void TaskThreadParameters::depthTypeChanged(int index)
 void TaskThreadParameters::depthChanged(double value)
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         thread->Depth.setValue(value);
         recomputeFeature();
     }
@@ -447,6 +464,7 @@ void TaskThreadParameters::threadClassChanged(int index)
     }
 
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         thread->ThreadClass.setValue(index);
         recomputeFeature();
     }
@@ -459,14 +477,16 @@ void TaskThreadParameters::threadDirectionChanged(int index)
     }
 
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         thread->ThreadDirection.setValue(index);
         recomputeFeature();
     }
 }
 
-void TaskThreadParameters::CustomClearanceCheckValuesChanged()
+void TaskThreadParameters::useCustomThreadClearanceChanged()
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         thread->UseCustomThreadClearance.setValue(ui->customClearanceCheck->isChecked());
         ui->customClearanceField->setEnabled(ui->customClearanceCheck->isChecked());
         ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
@@ -475,9 +495,20 @@ void TaskThreadParameters::CustomClearanceCheckValuesChanged()
     }
 }
 
+void TaskThreadParameters::taperedCheckChanged()
+{
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
+        thread->Tapered.setValue(ui->taperedCheck->isChecked());
+        ui->taperedAngleField->setEnabled(ui->taperedCheck->isChecked());
+        recomputeFeature();
+    }
+}
+
 void TaskThreadParameters::threadModelChanged()
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         if (sender() == ui->cosmeticThreadRadio) {
             thread->CosmeticThread.setValue(true);
             thread->ModelThread.setValue(false);
@@ -493,52 +524,66 @@ void TaskThreadParameters::threadModelChanged()
 void TaskThreadParameters::customThreadClearanceChanged(double value)
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
         thread->CustomThreadClearance.setValue(value);
         recomputeFeature();
     }
 }
 
-void TaskThreadParameters::changedObject(const App::Document&, const App::Property& Prop)
+void TaskThreadParameters::taperedAngleChanged(double value)
+{
+    if (auto thread = getObject<PartDesign::Thread>()) {
+        setupTransaction();
+        thread->TaperedAngle.setValue(value);
+        recomputeFeature();
+    }
+}
+
+
+void TaskThreadParameters::changedObject(const App::Document&, const App::Property& property)
 {
     auto thread = getObject<PartDesign::Thread>();
     if (!thread) {
-        return;  // happens when aborting the command
+        return;
     }
-    bool ro = Prop.isReadOnly();
+    const bool readOnly = property.isReadOnly();
 
-    Base::Console().log("Parameter %s was updated\n", Prop.getName());
-
-    auto updateCheckable = [&](QCheckBox* widget, bool value) {
+    const auto updateCheckable = [&](QCheckBox* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
         widget->setChecked(value);
-        widget->setDisabled(ro);
+        widget->setDisabled(readOnly);
     };
 
-    auto updateRadio = [&](QRadioButton* widget, bool value) {
+    const auto updateRadio = [&](QRadioButton* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
         widget->setChecked(value);
-        widget->setDisabled(ro);
+        widget->setDisabled(readOnly);
     };
 
-    auto updateComboBox = [&](QComboBox* widget, int value) {
+    const auto updateComboBox = [&](QComboBox* widget, int value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
         widget->setCurrentIndex(value);
-        widget->setDisabled(ro);
+        widget->setDisabled(readOnly);
     };
 
-    if (&Prop == &thread->ThreadType) {
+    const auto updateSpinBox = [&](Gui::PrefQuantitySpinBox* widget, double value) {
+        [[maybe_unused]] QSignalBlocker blocker(widget);
+        widget->setValue(value);
+        widget->setDisabled(readOnly);
+    };
+
+    const auto updateComboBoxItems = [](QComboBox* widget, const auto& values, int selected) {
+        QSignalBlocker blocker(widget);
+        widget->clear();
+        for (const auto& value : values) {
+            widget->addItem(QString::fromStdString(value));
+        }
+        widget->setCurrentIndex(selected);
+    };
+
+    if (&property == &thread->ThreadType) {
         ui->standardCombo->setEnabled(true);
         updateComboBox(ui->standardCombo, thread->ThreadType.getValue());
-
-        // Thread type also updates related properties
-        auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
-            QSignalBlocker blocker(widget);
-            widget->clear();
-            for (const auto& it : values) {
-                widget->addItem(QString::fromStdString(it));
-            }
-            widget->setCurrentIndex(selected);
-        };
 
         updateComboBoxItems(
             ui->diameterCombo,
@@ -554,18 +599,16 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
-    else if (&Prop == &thread->ThreadSize) {
+    else if (&property == &thread->ThreadClass) {
+        QSignalBlocker blocker(ui->classCombo);
+        ui->classCombo->clear();
+        for (const auto& value : thread->ThreadClass.getEnumVector()) {
+            ui->classCombo->addItem(tr(value.c_str()));
+        }
+        ui->classCombo->setCurrentIndex(thread->ThreadClass.getValue());
+    }
+    else if (&property == &thread->ThreadSize) {
         updateComboBox(ui->diameterCombo, thread->ThreadSize.getValue());
-        // Thread size also updates related properties
-        auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
-            QSignalBlocker blocker(widget);
-            widget->clear();
-            for (const auto& it : values) {
-                widget->addItem(QString::fromStdString(it));
-            }
-            widget->setCurrentIndex(selected);
-        };
-
         updateComboBoxItems(
             ui->pitchCombo,
             thread->ThreadSizePitch.getEnumVector(),
@@ -574,13 +617,47 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
-    else if (&Prop == &thread->ThreadSizePitch) {
-
+    else if (&property == &thread->ThreadSizePitch) {
+        updateComboBox(ui->pitchCombo, thread->ThreadSizePitch.getValue());
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
-    else if (&Prop == &thread->DepthType) {
+    else if (&property == &thread->ThreadDesignation) {
+        ui->designationEdit->setText(thread->ThreadDesignation.getValue());
+    }
+    else if (&property == &thread->LateralFace) {
+        setLinkSubText(ui->lateralFaceEdit, thread->LateralFace);
+    }
+    else if (&property == &thread->StartPlane) {
+        setLinkSubText(ui->startEdit, thread->StartPlane);
+    }
+    else if (&property == &thread->UpToGeometry) {
+        setLinkSubText(ui->upToGeometryEdit, thread->UpToGeometry);
+    }
+    else if (&property == &thread->Depth) {
+        updateSpinBox(ui->Depth, thread->Depth.getValue());
+    }
+    else if (&property == &thread->ModelThread || &property == &thread->CosmeticThread) {
+        updateRadio(ui->modelledThreadRadio, thread->ModelThread.getValue());
+        updateRadio(ui->cosmeticThreadRadio, !thread->ModelThread.getValue());
+    }
+    else if (&property == &thread->DepthType) {
         ui->endTypeCombo->setEnabled(true);
         updateComboBox(ui->endTypeCombo, thread->DepthType.getValue());
+        ui->labelDepth->setHidden(std::string(thread->DepthType.getValueAsString()) != "Dimension");
+        ui->Depth->setHidden(std::string(thread->DepthType.getValueAsString()) != "Dimension");
+        ui->upToGeometryWidget->setHidden(
+            std::string(thread->DepthType.getValueAsString()) != "UpToGeometry"
+        );
+    }
+    else if (&property == &thread->Tapered) {
+        updateCheckable(ui->taperedCheck, thread->Tapered.getValue());
+        ui->taperedAngleField->setEnabled(
+            thread->Tapered.getValue() && !thread->TaperedAngle.isReadOnly()
+        );
+    }
+    else if (&property == &thread->TaperedAngle) {
+        updateSpinBox(ui->taperedAngleField, thread->TaperedAngle.getValue());
+        ui->taperedAngleField->setEnabled(thread->Tapered.getValue() && !readOnly);
     }
 }
 
@@ -600,15 +677,10 @@ void TaskThreadParameters::setThreadSelectionGate()
 }
 
 
-//**************************************************************************
-//**************************************************************************
-// TaskDialog
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskDlgThreadParameters::TaskDlgThreadParameters(ViewProviderThread* DressUpView)
-    : TaskDlgDressUpParameters(DressUpView)
+TaskDlgThreadParameters::TaskDlgThreadParameters(ViewProviderThread* threadView)
+    : TaskDlgDressUpParameters(threadView)
 {
-    parameter = new TaskThreadParameters(DressUpView);
+    parameter = new TaskThreadParameters(threadView);
 
     Content.push_back(parameter);
 
@@ -623,23 +695,54 @@ bool TaskDlgThreadParameters::accept()
     return TaskDlgDressUpParameters::accept();
 }
 
-#include "moc_TaskThreadParameters.cpp"
+bool TaskDlgThreadParameters::reject()
+{
+    auto* thread = getObject<PartDesign::Thread>();
+    App::Document* document = thread ? thread->getDocument() : nullptr;
+    const std::string threadName = thread && thread->getNameInDocument()
+        ? thread->getNameInDocument()
+        : "";
 
-TaskThreadParameters::Observer::Observer(TaskThreadParameters* _owner, PartDesign::Thread* _thread)
-    : DocumentObserver(_thread->getDocument())
-    , owner(_owner)
-    , thread(_thread)
+    if (auto* threadView = getViewObject<ViewProviderThread>()) {
+        threadView->restoreBaseVisibility();
+        threadView->clearThreadTextures();
+    }
+
+    const bool result = TaskDlgDressUpParameters::reject();
+
+    auto* restoredThread = document && !threadName.empty()
+        ? dynamic_cast<PartDesign::Thread*>(document->getObject(threadName.c_str()))
+        : nullptr;
+    if (restoredThread) {
+        if (auto* restoredView = dynamic_cast<ViewProviderThread*>(
+                Gui::Application::Instance->getViewProvider(restoredThread)
+            )) {
+            restoredView->updateOverlay();
+        }
+    }
+
+    return result;
+}
+
+TaskThreadParameters::Observer::Observer(
+    TaskThreadParameters* taskPanel,
+    const PartDesign::Thread* threadObject
+)
+    : DocumentObserver(threadObject->getDocument())
+    , owner(taskPanel)
+    , thread(threadObject)
 {}
 
 void TaskThreadParameters::Observer::slotChangedObject(
-    const App::DocumentObject& Obj,
-    const App::Property& Prop
+    const App::DocumentObject& object,
+    const App::Property& property
 )
 {
-    if (&Obj == thread) {
-        Base::Console().log("Parameter %s was updated with a new value\n", Prop.getName());
-        if (Obj.getDocument()) {
-            owner->changedObject(*Obj.getDocument(), Prop);
+    if (&object == thread) {
+        if (object.getDocument()) {
+            owner->changedObject(*object.getDocument(), property);
         }
     }
 }
+
+#include "moc_TaskThreadParameters.cpp"

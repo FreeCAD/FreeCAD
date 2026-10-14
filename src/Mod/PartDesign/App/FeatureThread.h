@@ -25,8 +25,12 @@
 
 #pragma once
 
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 
 #include "FeatureDressUp.h"
 #include "ThreadUtils.h"
@@ -53,7 +57,7 @@ public:
     App::PropertyLength Depth;
     App::PropertyLength ThreadDepth;
     App::PropertyLength ThreadDiameter;
-    App::PropertyLength ThreadPitch;
+    App::PropertyLength Diameter;
     App::PropertyEnumeration ThreadType;
     App::PropertyEnumeration ThreadTypeName;
     App::PropertyEnumeration ThreadSize;
@@ -69,6 +73,9 @@ public:
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
     App::PropertyBool IsInternal;
+    App::PropertyBool Tapered;
+    App::PropertyAngle TaperedAngle;
+
 
     /** @name methods override feature */
     //@{
@@ -82,12 +89,32 @@ public:
     }
     //@}
 
+    struct ThreadExtent
+    {
+        gp_Pnt origin;
+        gp_Dir direction;
+        double length;
+    };
+
+    /// Resolve the nominal thread interval, including StartPlane and DepthType.
+    /// Throws when the selected geometry or length specification is invalid.
+    ThreadExtent resolveThreadExtent();
+
+    Base::Vector3d guessNormalDirection() const;
+    std::vector<gp_Pnt> getThreadLocations() const;
+    double getThreadPitch() const;
+    std::optional<gp_Pnt> getThreadOrigin() const;
+    std::optional<gp_Dir> getThreadNormal() const;
+    const Part::TopoShape& getReducedBasePreviewShape() const;
+
 protected:
     void onChanged(const App::Property* prop) override;
+    void updatePreviewShape() override;
 
 private:
+    ThreadExtent resolveThreadExtent(const Part::TopoShape& base);
     ThreadUtils threadUtils;
-    void addThreadType();
+    Part::TopoShape reducedBasePreviewShape;
 };
 
 }  // namespace PartDesign

@@ -24,7 +24,38 @@
 
 #pragma once
 
+#include <vector>
+#include <memory>
+
+
+#include <Gui/ViewProviderTextureExtension.h>
+#include <App/Material.h>
+
 #include "ViewProviderDressUp.h"
+
+class SoTexture2Transform;
+class SoSeparator;
+class SoGroup;
+class SoClipPlane;
+class SoToggleSwitch;
+class QMenu;
+
+namespace App
+{
+class DocumentObject;
+class Property;
+}  // namespace App
+
+namespace PartDesign
+{
+class Thread;
+}
+
+class TopoDS_Face;
+class TopoDS_Shape;
+class gp_Dir;
+class gp_Pnt;
+
 
 namespace PartDesignGui
 {
@@ -33,21 +64,90 @@ class PartDesignGuiExport ViewProviderThread: public ViewProviderDressUp
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderThread);
 
+    SoClipPlane* m_startThreadClipper {nullptr};
+    SoClipPlane* m_endThreadClipper {nullptr};
+    SoTexture2Transform* m_textureTransform {nullptr};
+
 public:
     /// constructor
-    ViewProviderThread()
-    {
-        sPixmap = "PartDesign_Thread.svg";
-        menuName = tr("Thread Parameters");
-    }
+    ViewProviderThread();
 
-    /// return "Thread"
+    /// destructor
+    ~ViewProviderThread() override;
+    bool onDelete(const std::vector<std::string>& arg) override;
+
+    /// grouping handling
     const std::string& featureName() const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
+    SoSeparator* createThreadTextureSeparator();
+    bool isHoleThreadVisible() const;
+    void updateOverlay() override;
+    void showPreview(bool enable) override;
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
     TaskDlgFeatureParameters* getEditDialog() override;
+    void updateData(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
+    void attachPreview() override;
+    void updatePreview() override;
+
+private:
+    friend class TaskDlgThreadParameters;
+
+    bool isThreadVisible() const;
+
+    std::unique_ptr<Gui::ViewProviderTextureExtension> textureExtension;
+    Gui::CoinPtr<PartGui::SoPreviewShape> pcReducedBasePreview;
+    Gui::CoinPtr<SoToggleSwitch> pcReducedBaseToggle;
+    Gui::CoinPtr<SoGroup> overlayRoot;
+    bool baseHiddenForPreview {false};
+
+    PartDesignGui::ViewProvider* getBaseFeatureViewProvider() const;
+    void syncExternalPreviewVisibility();
+    void restoreBaseVisibility();
+    std::optional<gp_Dir> getThreadNormal(const PartDesign::Thread* thread) const;
+    std::optional<gp_Pnt> getThreadOrigin(const PartDesign::Thread* thread) const;
+    std::vector<gp_Pnt> getThreadLocations(const PartDesign::Thread* thread) const;
+    App::Material getGlobalMaterial();
+    TopoDS_Shape getCurrentlyVisibleShape(const PartDesign::Thread* thread) const;
+    void updateThreadClipper(const gp_Pnt& origin, const gp_Dir& direction, double length);
+    void updateThreadDirection(const PartDesign::Thread* thread);
+    void applyThreadPhaseOffset(const PartDesign::Thread* thread);
+
+    std::vector<TopoDS_Face> collectBoreFaces(
+        const PartDesign::Thread* thread,
+        const gp_Pnt& threadOrigin
+    ) const;
+    bool generateBoreMeshData(
+        const PartDesign::Thread* thread,
+        const gp_Pnt& threadOriginPnt,
+        std::vector<SbVec3f>& vertices,
+        std::vector<SbVec3f>& normals,
+        std::vector<int>& indices,
+        std::vector<SbVec2f>& uvs
+    ) const;
+    std::pair<gp_Dir, gp_Dir> buildOrthonormalFrame(const gp_Dir& axis) const;
+    SbVec2f addVertex(
+        std::vector<SbVec3f>& vertices,
+        std::vector<SbVec3f>& normals,
+        const gp_Pnt& pt,
+        const gp_Pnt& origin,
+        const gp_Dir& axis,
+        const gp_Dir& xDir,
+        const gp_Dir& yDir,
+        double surfaceSlope,
+        double threadPitch,
+        bool reverseNormal
+    ) const;
+    void handleSeamTriangle(
+        std::vector<SbVec3f>& vertices,
+        std::vector<SbVec3f>& normals,
+        std::vector<SbVec2f>& uvs,
+        std::array<int, 3>& triIndices
+    ) const;
+    std::map<const PartDesign::Thread*, SoSwitch*> m_threadOverlays;
+    void clearThreadTextures();
 };
 
 }  // namespace PartDesignGui

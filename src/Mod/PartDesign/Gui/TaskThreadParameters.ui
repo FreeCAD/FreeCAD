@@ -113,6 +113,11 @@
                     <string>Up to geometry</string>
                 </property>
             </item>
+            <item>
+                <property name="text">
+                    <string>Up to first</string>
+                </property>
+            </item>
         </widget>
       </item>
       <item row="3" column="0">
@@ -279,6 +284,41 @@
       </item>
       <item row="6" column="1">
        <widget class="QComboBox" name="directionCombo"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="taperedCheck">
+        <property name="text">
+         <string>Tapered</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+        <widget class="Gui::PrefQuantitySpinBox" name="taperedAngleField">
+            <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="baseSize">
+                <size>
+                    <width>0</width>
+                    <height>0</height>
+                </size>
+            </property>
+            <property name="toolTip">
+                <string>Taper angle (90° for a cylindrical thread)</string>
+            </property>
+            <property name="keyboardTracking">
+                <bool>false</bool>
+            </property>
+            <property name="unit" stdset="0">
+                <string notr="true">deg</string>
+            </property>
+            <property name="minimum" stdset="0">
+                <double>0.000000000000000</double>
+            </property>
+        </widget>
       </item>
      </layout>
     </widget>
