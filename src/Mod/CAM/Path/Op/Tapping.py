@@ -292,11 +292,11 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         else:
             obj.DwellTime = 1
 
-    def opOnDocumentRestored(self, obj):
-        Path.Log.warning(
-            "The Tapping operation is deprecated and will be removed in a future release."
-            "\nPlease use the Drilling operation with Strategy set to 'Tapping' instead."
-            "\nExisting Tapping operations will continue to work but you cannot create new ones."
+    def opDeprecationNotice(self, obj):
+        return PathOp.deprecationNotice(
+            translate("CAM_Tapping", "The Tapping operation"),
+            translate("CAM_Tapping", "the Drilling operation with Strategy set to 'Tapping'"),
+            stage=PathOp.DeprecationStage.Hidden,
         )
 
 
