@@ -3,6 +3,7 @@
 #include "PatternCircularParametersWidget.h"
 
 #include <QSignalBlocker>
+#include <QCheckBox>
 
 #include <Base/Tools.h>
 #include <Gui/QuantitySpinBox.h>
@@ -13,11 +14,15 @@
 using namespace PartGui;
 
 PatternCircularParametersWidget::PatternCircularParametersWidget(QWidget* parent)
-    : PatternReferenceWidget(parent)
+    : QWidget(parent)
     , ui(new Ui_PatternCircularParametersWidget)
+    , axisWidget(new PatternReferenceWidget(this))
+    , binormalAxisWidget(new PatternReferenceWidget(this))
 {
     ui->setupUi(this);
-    setupReferenceCombo(ui->axisCombo);
+    axisWidget->setupReferenceCombo(ui->axisCombo);
+    binormalAxisWidget->setupReferenceCombo(ui->tangentAxisCombo);
+    binormalAxisWidget->setAxisIndex(1);
 
     connect(
         ui->radialDistance,
@@ -43,6 +48,18 @@ PatternCircularParametersWidget::PatternCircularParametersWidget(QWidget* parent
         this,
         &PatternCircularParametersWidget::onSymmetryChanged
     );
+    connect(
+        ui->centerAroundFeature,
+        &QCheckBox::toggled,
+        this,
+        &PatternCircularParametersWidget::onStartAtShapeChanged
+    );
+    connect(
+        ui->flipTangentDirection,
+        &QCheckBox::toggled,
+        this,
+        &PatternCircularParametersWidget::onFlipBinormalDirectionChanged
+    );
 }
 
 PatternCircularParametersWidget::~PatternCircularParametersWidget() = default;
@@ -52,20 +69,29 @@ void PatternCircularParametersWidget::bindProperties(
     App::PropertyLength* radialDistance,
     App::PropertyLength* tangentialDistance,
     App::PropertyIntegerConstraint* numberCircles,
-    App::PropertyIntegerConstraint* symmetry
+    App::PropertyIntegerConstraint* symmetry,
+    App::PropertyBool* startAtShape,
+    App::PropertyLinkSub* binormalAxis,
+    App::PropertyBool* flipBinormalAxis
 )
 {
-    bindReference(axis);
+    axisWidget->bindReference(axis);
+    binormalAxisWidget->bindReference(binormalAxis);
+
     radialDistanceProperty = radialDistance;
     tangentialDistanceProperty = tangentialDistance;
     numberCirclesProperty = numberCircles;
     symmetryProperty = symmetry;
+    startAtShapeProperty = startAtShape;
+    flipBinormalAxisProperty = flipBinormalAxis;
 
     {
         const QSignalBlocker radialBlocker(ui->radialDistance);
         const QSignalBlocker tangentialBlocker(ui->tangentialDistance);
         const QSignalBlocker circleCountBlocker(ui->numberCircles);
         const QSignalBlocker symmetryBlocker(ui->symmetry);
+        const QSignalBlocker centerAroundFeatureBlocker(ui->centerAroundFeature);
+        const QSignalBlocker flipBinormalAxisBlocker(ui->flipTangentDirection);
         ui->radialDistance->setUnit(Base::Unit::Length);
         ui->tangentialDistance->setUnit(Base::Unit::Length);
         ui->radialDistance->bind(*radialDistanceProperty);
@@ -77,6 +103,8 @@ void PatternCircularParametersWidget::bindProperties(
         ui->symmetry->setRange(symmetryProperty->getMinimum(), symmetryProperty->getMaximum());
         ui->numberCircles->bind(*numberCirclesProperty);
         ui->symmetry->bind(*symmetryProperty);
+        ui->centerAroundFeature->setChecked(startAtShape->getValue());
+        ui->flipTangentDirection->setChecked(flipBinormalAxis->getValue());
     }
 
     updateUI();
@@ -89,11 +117,22 @@ void PatternCircularParametersWidget::updateUI()
     }
 
     Base::StateLocker locker(blockUpdate, true);
-    updateReferenceUI();
+    axisWidget->updateReferenceUI();
+    binormalAxisWidget->updateReferenceUI();
     ui->radialDistance->setValue(radialDistanceProperty->getValue());
     ui->tangentialDistance->setValue(tangentialDistanceProperty->getValue());
     ui->numberCircles->setValue(numberCirclesProperty->getValue());
     ui->symmetry->setValue(symmetryProperty->getValue());
+}
+
+bool PatternCircularParametersWidget::startAtShape() const
+{
+    return ui->centerAroundFeature->isChecked();
+}
+
+bool PatternCircularParametersWidget::flipBinormalAxis() const
+{
+    return ui->flipTangentDirection->isChecked();
 }
 
 void PatternCircularParametersWidget::applyQuantitySpinboxes() const
@@ -110,7 +149,8 @@ void PatternCircularParametersWidget::onRadialDistanceChanged(double value)
         return;
     }
     radialDistanceProperty->setValue(value);
-    Q_EMIT parametersChanged();
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
 }
 
 void PatternCircularParametersWidget::onTangentialDistanceChanged(double value)
@@ -119,7 +159,28 @@ void PatternCircularParametersWidget::onTangentialDistanceChanged(double value)
         return;
     }
     tangentialDistanceProperty->setValue(value);
-    Q_EMIT parametersChanged();
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
+}
+
+void PatternCircularParametersWidget::onStartAtShapeChanged(bool value)
+{
+    if (blockUpdate || !startAtShapeProperty) {
+        return;
+    }
+    startAtShapeProperty->setValue(value);
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
+}
+
+void PatternCircularParametersWidget::onFlipBinormalDirectionChanged(bool value)
+{
+    if (blockUpdate || !flipBinormalAxisProperty) {
+        return;
+    }
+    flipBinormalAxisProperty->setValue(value);
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
 }
 
 void PatternCircularParametersWidget::onNumberCirclesChanged(unsigned value)
@@ -128,7 +189,8 @@ void PatternCircularParametersWidget::onNumberCirclesChanged(unsigned value)
         return;
     }
     numberCirclesProperty->setValue(value);
-    Q_EMIT parametersChanged();
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
 }
 
 void PatternCircularParametersWidget::onSymmetryChanged(unsigned value)
@@ -137,5 +199,6 @@ void PatternCircularParametersWidget::onSymmetryChanged(unsigned value)
         return;
     }
     symmetryProperty->setValue(value);
-    Q_EMIT parametersChanged();
+    Q_EMIT axisWidget->parametersChanged();
+    Q_EMIT binormalAxisWidget->parametersChanged();
 }

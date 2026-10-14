@@ -212,6 +212,54 @@ PyObject* DrawViewPartPy::clearCosmeticEdges(PyObject *args)
 
     Py_Return;
 }
+PyObject* DrawViewPartPy::refreshCosmeticEdges(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->refreshCEGeoms();
+
+    Py_Return;
+}
+
+PyObject* DrawViewPartPy::refreshCosmeticVertexes(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->refreshCVGeoms();
+
+    Py_Return;
+}
+
+PyObject* DrawViewPartPy::refreshCenterlines(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->refreshCLGeoms();
+
+    Py_Return;
+}
+
+PyObject* DrawViewPartPy::refreshAllCosmetic(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    DrawViewPart* item = getDrawViewPartPtr();
+    item->refreshAllCosmetic();
+
+    Py_Return;
+}
+
 
 PyObject* DrawViewPartPy::clearCenterLines(PyObject *args)
 {
@@ -385,11 +433,13 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!O!|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &(Base::VectorPy::Type), &pPnt2,
                                         &style, &weight,
-                                        &PyTuple_Type, &pColor)) {
+                                        &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -407,6 +457,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
         ce->m_format.setStyle(style);
         ce->m_format.setWidth(weight);
         ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -428,11 +479,13 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!O!|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &(Base::VectorPy::Type), &pPnt2,
                                         &style, &weight,
-                                        &PyTuple_Type, &pColor)) {
+                                        &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -461,6 +514,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
         ce->m_format.setStyle(style);
         ce->m_format.setWidth(weight);
         ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticLine - line creation failed");
@@ -482,11 +536,13 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!d|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &radius,
                                         &style, &weight,
-                                        &PyTuple_Type, &pColor)) {
+                                        &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -505,6 +561,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         ce->m_format.setStyle(style);
         ce->m_format.setWidth(weight);
         ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
@@ -529,10 +586,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!ddd|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &radius, &angle1, &angle2,
-                                        &style, &weight, &PyTuple_Type, &pColor)) {
+                                        &style, &weight, &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -557,6 +616,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         else {
             ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
         }
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
@@ -579,11 +639,13 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!d|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &radius,
                                         &style, &weight,
-                                        &PyTuple_Type, &pColor)) {
+                                        &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -605,6 +667,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
         ce->m_format.setStyle(style);
         ce->m_format.setWidth(weight);
         ce->m_format.setColor(pColor ? DrawUtil::pyTupleToColor(pColor) : defCol);
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircle - circle creation failed");
@@ -629,10 +692,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
     double weight = LineFormat::getDefEdgeWidth();
     Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
+    if (!PyArg_ParseTuple(args, "O!ddd|idO!i", &(Base::VectorPy::Type), &pPnt1,
                                         &radius, &angle1, &angle2,
-                                        &style, &weight, &PyTuple_Type, &pColor)) {
+                                        &style, &weight, &PyTuple_Type, &pColor,
+                                        &lineNumber)) {
         return nullptr;
     }
 
@@ -660,6 +725,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
         else {
             ce->m_format.setColor(DrawUtil::pyTupleToColor(pColor));
         }
+        ce->m_format.setLineNumber(lineNumber);
     }
     else {
         PyErr_SetString(PyExc_RuntimeError, "DVPPI:makeCosmeticCircleArc - arc creation failed");
@@ -830,8 +896,9 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     double weight = DefaultWeight;
     int visible = 1;
     PyObject* pColor{};
+    int lineNumber{1};   // solid line default
 
-    if (!PyArg_ParseTuple(args, "iidOi", &idx, &style, &weight, &pColor, &visible)) {
+    if (!PyArg_ParseTuple(args, "iidOi", &idx, &style, &weight, &pColor, &visible, &lineNumber)) {
         return nullptr;
     }
 

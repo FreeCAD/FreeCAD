@@ -182,7 +182,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
     i = 0;
     for (auto& cv : cVerts) {
         //        Base::Console().message("CE::getCVIndex - cv tag: {}\n",
-        //                                cv->getTagAsString().c_str());
+        //                                cv->getTagAsString());
         if (cv->getTagAsString() == tag) {
             return base + i;
         }
@@ -200,7 +200,7 @@ int CosmeticExtension::getCVIndex(const std::string& tag)
 std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool invert)
 {
 //    Base::Console().message("CEx::addCosmeticVertex({})\n",
-//                             DrawUtil::formatVector(pos).c_str());
+//                             DrawUtil::formatVector(pos));
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
     Base::Vector3d tempPos = pos;
     if (invert) {

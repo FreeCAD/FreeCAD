@@ -146,7 +146,14 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
 
     if (auto* point = freecad_cast<PartDesign::PointPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();
-        setupPointPatternParameterUI(widget, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupPointPatternParameterUI(
+            widget,
+            ui->parametersWidgetPlaceholder,
+            this,
+            &point->PointObject,
+            &point->RelativeToFirst,
+            &point->OriginPointIndex
+        );
     }
     else if (auto* path = freecad_cast<PartDesign::PathPattern*>(getObject())) {
         ui->parametersWidgetPlaceholder2->hide();
@@ -174,7 +181,10 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
             &circular->RadialDistance,
             &circular->TangentialDistance,
             &circular->NumberCircles,
-            &circular->Symmetry
+            &circular->Symmetry,
+            &circular->StartAtShape,
+            &circular->BinormalAxis,
+            &circular->FlipBinormalAxis
         );
     }
     else {
@@ -515,7 +525,12 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* circularPattern = freecad_cast<PartDesign::CircularPattern*>(patternObj)) {
-            circularPattern->Axis.setValue(selObj, directions);
+            if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+                circularPattern->BinormalAxis.setValue(selObj, directions);
+            }
+            else {
+                circularPattern->Axis.setValue(selObj, directions);
+            }
         }
         else if (auto* pathPattern = freecad_cast<PartDesign::PathPattern*>(patternObj)) {
             pathPattern->Path.setValue(selObj, directions);
@@ -555,7 +570,10 @@ void TaskPatternParameters::apply()
     // This triggers accept() before the update timer for the 3D view has a
     // chance to fire. If the timer is active, it means a recompute is
     // pending.
-    consumePendingUpdate();
+    if (!consumePendingUpdate()) {
+        // force recompute if is wasn't updated by the timer
+        recomputePatternFeature();
+    }
     updateInstanceControls();
 }
 

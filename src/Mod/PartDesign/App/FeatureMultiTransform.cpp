@@ -92,6 +92,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(
 {
     generatedSuppression.clear();
     originalTransformation = true;
+    suppressOriginalTransformation = false;
     const auto transFeatures = Transformations.getValues();
     if (transFeatures.empty()) {
         return {};
@@ -122,17 +123,19 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(
 
         // A standalone point pattern puts its first point in Placement. Helpers must
         // carry that translation in the transformations instead, since they are not executed.
-        auto* points = freecad_cast<PartDesign::PointPattern*>(transformed);
-        auto transformations = points ? points->calculateTransformations(false)
-                                      : transformed->getTransformations(originals);
-        if (points) {
-            const gp_Trsf inverse = getLocation().Transformation().Inverted();
-            for (auto& transformation : transformations) {
-                gp_Pnt point(transformation.TranslationPart());
-                point.Transform(inverse);
-                transformation.SetTranslation(gp_Vec(gp_Pnt(), point));
-            }
+        // auto* points = freecad_cast<PartDesign::PointPattern*>(transformed);
+        auto transformations = transformed->getTransformations(originals);
+        if (transformed->deleteOriginalTransformation()) {
+            suppressOriginalTransformation = true;
         }
+        // if (points) {
+        //     const gp_Trsf inverse = getLocation().Transformation().Inverted();
+        //     for (auto& transformation : transformations) {
+        //         gp_Pnt point(transformation.TranslationPart());
+        //         point.Transform(inverse);
+        //         transformation.SetTranslation(gp_Vec(gp_Pnt(), point));
+        //     }
+        // }
         transformed->purgeTouched();
         if (firstFeature) {
             int index = 0;

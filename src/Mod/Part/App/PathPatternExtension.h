@@ -41,7 +41,8 @@ public:
     App::PropertyBool Align;
     App::PropertyVector VerticalVector;
 
-    std::list<gp_Trsf> calculateTransformations(bool relativeToFirst) const;
+    std::list<gp_Trsf> calculateTransformations() const;
+    bool identityTransformSuppressed() const;
 
     short extensionMustExecute() override;
     void extensionOnChanged(const App::Property* prop) override;

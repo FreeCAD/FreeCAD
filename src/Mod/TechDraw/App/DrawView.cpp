@@ -739,7 +739,7 @@ void DrawView::showProgressMessage(std::string featureName, std::string text)
 void DrawView::translateLabel(std::string context, std::string baseName, std::string uniqueName)
 {
 //    Base::Console().message("DV::translateLabel - context: {} baseName: {} uniqueName: {}\n",
-//                            context.c_str(), baseName, uniqueName);
+//                            context, baseName, uniqueName);
 
     Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
 //    Base::Console().message("DV::translateLabel - new label: {}\n", Label.getValue());

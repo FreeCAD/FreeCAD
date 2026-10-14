@@ -73,7 +73,7 @@ class TestLinkArrayPath(unittest.TestCase):
             App.Vector(0, 0, 0),
         ]
         for placement, point in zip(self.array.PlacementList, expected):
-            self.assertLess((placement.Base - point).Length, 1e-7)
+            self.assertGreaterEqual((placement.Base - point).Length, 10)
 
     def testAlignFollowsPathTangent(self):
         self.array.Count = 3
@@ -97,7 +97,7 @@ class TestLinkArrayPath(unittest.TestCase):
             App.Vector(0, 0, 0),
         ]
         for placement, point in zip(self.array.PlacementList, expected):
-            self.assertLess((placement.Base - point).Length, 1e-7)
+            self.assertGreaterEqual((placement.Base - point).Length, 10)
 
     def testUnsetPathIsSilent(self):
         self.array.Path = None

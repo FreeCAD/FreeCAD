@@ -27,6 +27,7 @@ from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import json
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
 import Path.Main.Stock as PathStock
@@ -99,6 +100,179 @@ def createResourceClone(obj, orig, name, icon):
 
 def createModelResourceClone(obj, orig):
     return createResourceClone(obj, orig, "Model", "BaseGeometry")
+
+
+def linksTo(target, exclude=()):
+    """linksTo(target, exclude=()) ... what links target: for each link, the object and property
+    holding it, the kind of link, and the sub-elements named. Operations' base geometry, work
+    planes' attachments and the like; expressions are not followed."""
+    records = []
+    for obj in target.InList:
+        if obj in exclude:
+            continue
+        for prop in obj.PropertiesList:
+            kind = obj.getTypeIdOfProperty(prop)
+            if not kind.startswith("App::PropertyLink"):
+                continue
+            try:
+                value = obj.getPropertyByName(prop)
+            except Exception:
+                continue
+            record = {"obj": obj.Name, "prop": prop}
+            if kind.startswith("App::PropertyLinkSubList"):
+                for linked, subs in value or []:
+                    if linked == target:
+                        subs = [subs] if isinstance(subs, str) else list(subs)
+                        records.append(dict(record, kind="sublist", subs=subs))
+            elif kind.startswith("App::PropertyLinkSub"):
+                if value and value[0] == target:
+                    records.append(dict(record, kind="sub", subs=list(value[1])))
+            elif kind.startswith("App::PropertyLinkList"):
+                if target in (value or []):
+                    records.append(dict(record, kind="list"))
+            elif value == target:
+                records.append(dict(record, kind="link"))
+    return records
+
+
+def relink(doc, records, target):
+    """relink(doc, records, target) ... make the links records describe, as linksTo found them,
+    to target instead. Those whose object or property is gone are left out."""
+    for record in records:
+        obj = doc.getObject(record["obj"])
+        if obj is None or not hasattr(obj, record["prop"]):
+            continue
+        prop = record["prop"]
+        value = obj.getPropertyByName(prop)
+        kind = record["kind"]
+        if kind == "sublist":
+            entries = [(o, tuple(s) if not isinstance(s, str) else (s,)) for o, s in value or []]
+            entries.append((target, tuple(record["subs"])))
+            setattr(obj, prop, entries)
+        elif kind == "sub":
+            setattr(obj, prop, (target, record["subs"]))
+        elif kind == "list":
+            setattr(obj, prop, list(value or []) + [target])
+        else:
+            setattr(obj, prop, target)
+
+
+def touchOperations(job):
+    """touchOperations(job) ... every operation of the Job to be computed again: one made from
+    the stock rather than from the model's geometry, a facing say, is not linked to what moved."""
+    for op in job.Proxy.allOperations():
+        op.touch()
+
+
+def objectsInModelFrame(job):
+    """objectsInModelFrame(job) ... what is placed on the part without being attached to it, and
+    so does not follow the model by itself when it is moved: work planes set where they are, and
+    the text, sketches and other shapes operations are made from."""
+    carried = []
+
+    def carry(obj):
+        if obj is None or obj in carried or not hasattr(obj, "Placement"):
+            return
+        if obj in job.Model.Group or obj == job.Stock:
+            return
+        if getattr(obj, "AttachmentSupport", None) and getattr(obj, "MapMode", "") != "Deactivated":
+            return
+        carried.append(obj)
+
+    for workplane in getattr(getattr(job, "Workplanes", None), "Group", []) or []:
+        carry(workplane)
+    import PathScripts.PathUtils as PathUtils
+
+    for obj in job.Document.Objects:
+        if not hasattr(obj, "Proxy") or not hasattr(obj, "Path"):
+            continue
+        if PathUtils.findParentJob(obj) != job:
+            continue
+        for shape in getattr(obj, "BaseShapes", []) or []:
+            carry(shape)
+    return carried
+
+
+def jobOfModel(obj):
+    """jobOfModel(obj) ... the Job whose model obj is, None if it is none's."""
+    for o in obj.InList:
+        for job in o.InList:
+            if getattr(job, "Model", None) == o and hasattr(job, "Operations"):
+                return job
+    return None
+
+
+def keepToScaledModel(job, model, before, after):
+    """keepToScaledModel(job, model, before, after) ... what is made from the Job's model kept
+    where it was on the part as the model's Scale changes from before to after, each its own size:
+    what is attached to the model its offset scaled, along the model's own axes; what is set on
+    the part unattached its place."""
+    ratio = []
+    for b, a in zip(before, after):
+        if abs(b) < 1e-12:
+            return
+        ratio.append(a / b)
+    if all(abs(r - 1) < 1e-12 for r in ratio):
+        return
+
+    def scaled(v):
+        return FreeCAD.Vector(v.x * ratio[0], v.y * ratio[1], v.z * ratio[2])
+
+    turn = model.Placement.Rotation
+    for obj in model.InList:
+        support = getattr(obj, "AttachmentSupport", None) or []
+        if getattr(obj, "MapMode", "Deactivated") == "Deactivated":
+            continue
+        if not any(entry[0] == model for entry in support):
+            continue
+        # the offset along the axes of the frame it is attached to, scaled along the model's
+        offset = FreeCAD.Placement(obj.AttachmentOffset)
+        frame = obj.Placement.multiply(offset.inverse()).Rotation
+        toModel = turn.inverted().multiply(frame)
+        offset.Base = toModel.inverted().multVec(scaled(toModel.multVec(offset.Base)))
+        obj.AttachmentOffset = offset
+    inverse = model.Placement.inverse()
+    for obj in objectsInModelFrame(job):
+        placement = FreeCAD.Placement(obj.Placement)
+        placement.Base = model.Placement.multVec(scaled(inverse.multVec(placement.Base)))
+        obj.Placement = placement
+
+
+class _ModelScale:
+    """A Job's model scaled, what is made from it kept to it: the Scale a Job's clone of its model
+    has, as it was before it changed."""
+
+    def __init__(self):
+        self.before = {}
+
+    def slotBeforeChangeObject(self, obj, prop):
+        # a Job's clone of its model only, as createResourceClone marks it
+        if prop == "Scale" and getattr(obj, "PathResource", None) == "Model":
+            self.before[(obj.Document.Name, obj.Name)] = FreeCAD.Vector(obj.Scale)
+
+    def slotChangedObject(self, obj, prop):
+        if prop != "Scale":
+            return
+        before = self.before.pop((obj.Document.Name, obj.Name), None)
+        doc = obj.Document
+        if before is None or doc.Restoring or doc.Transacting:
+            return
+        job = jobOfModel(obj)
+        if job is not None:
+            keepToScaledModel(job, obj, before, obj.Scale)
+
+
+_modelScale = None
+
+
+def _watchModelScale():
+    global _modelScale
+    if _modelScale is None:
+        _modelScale = _ModelScale()
+        FreeCAD.addDocumentObserver(_modelScale)
+
+
+_watchModelScale()
 
 
 class NotificationClass(QtCore.QObject):
@@ -446,12 +620,51 @@ class ObjectJob:
         # if obj.Stock and obj.Stock.ViewObject:
         #     obj.Stock.ViewObject.Visibility = True
 
+    def modelLinks(self, obj, base):
+        """modelLinks(obj, base) ... what links the clone base of a model: the operations' base
+        geometry, the work planes' attachments and the like, the Job's own links left out."""
+        return linksTo(base, (obj, obj.Model, obj.Stock))
+
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
+            # What links the clone goes with it. It is remembered, for the model's clone, should
+            # the model be added to the Job again, to take up.
+            records = self.modelLinks(obj, base)
+            model = self.baseObject(obj, base)
+            if records and model is not None:
+                self.setupDetachedModelLinks(obj)
+                links = dict(obj.DetachedModelLinks)
+                links[model.Name] = json.dumps(records)
+                obj.DetachedModelLinks = links
             PathUtil.clearExpressionEngine(base)
             if removeFromModel:
                 obj.Model.removeObject(base)
             obj.Document.removeObject(base.Name)
+
+    def setupDetachedModelLinks(self, obj):
+        if not hasattr(obj, "DetachedModelLinks"):
+            obj.addProperty(
+                "App::PropertyMap",
+                "DetachedModelLinks",
+                "Base",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The links to models taken out of the Job, for when they are added back",
+                ),
+            )
+            obj.setEditorMode("DetachedModelLinks", 2)  # hide
+
+    def addModel(self, obj, model):
+        """addModel(obj, model) ... add model to the Job, as a clone, and return the clone. A
+        model taken out before has what linked its clone then linked to the new one."""
+        base = createModelResourceClone(obj, model)
+        obj.Model.addObject(base)
+        links = dict(getattr(obj, "DetachedModelLinks", {}) or {})
+        if model.Name in links:
+            relink(obj.Document, json.loads(links.pop(model.Name)), base)
+            obj.DetachedModelLinks = links
+            obj.Document.recompute()
+        return base
 
     def modelBoundBox(self, obj):
         return PathStock.shapeBoundBox(obj.Model.Group)
@@ -987,6 +1200,110 @@ class ObjectJob:
     def isBaseCandidate(cls, obj):
         """Answer true if the given object can be used as a Base for a job."""
         return PathUtil.isValidBaseObject(obj)
+
+
+# Operation properties holding points picked in the 3D view, in the Job's coordinates.
+WORLD_POINTS = ("StartPoint", "EndPoint")
+# Operation and dressup properties holding points in the frame the operation generates in: the
+# Job's coordinates for ordinary Z-up milling, the work plane's for an indexed operation.
+FRAME_POINTS = ("CustomPoint1", "CustomPoint2", "PatternCenterCustom", "Centre")
+FRAME_POINT_LISTS = ("Locations", "Positions")
+# Operation and dressup properties holding heights, along the tool axis of the frame the
+# operation generates in.
+MODEL_HEIGHTS = (
+    "StartDepth",
+    "FinalDepth",
+    "SafeHeight",
+    "ClearanceHeight",
+    "ClearanceHeightOut",
+    "RetractHeight",
+    "DressupStartDepth",
+    "IgnoreOuterAbove",
+)
+
+
+def _operationsOf(job):
+    """The job's operations and dressups."""
+    from PathScripts import PathUtils
+
+    for obj in job.Document.Objects:
+        if not hasattr(obj, "Proxy") or not hasattr(obj, "Path"):
+            continue
+        if PathUtils.findParentJob(obj) == job:
+            yield obj
+
+
+def _moveInFrame(op, move, withModel=()):
+    """_moveInFrame(op, move, withModel=()) ... move, the Placement the model was moved by,
+    expressed in the frame op generates in. None when that frame is a work plane attached to
+    the model, or one of withModel, the objects moved as the model was: it moved with the model,
+    so nothing measured in it has moved."""
+    workplane = PathUtil.workplaneObjectForOp(op)
+    if workplane is not None and (
+        getattr(workplane, "AttachmentSupport", None) or workplane in withModel
+    ):
+        return None
+    frame = PathUtil.workplaneForOp(op)
+    if frame.isIdentity(1e-9):
+        return move
+    return frame.inverse().multiply(move).multiply(frame)
+
+
+def carryOperationPoints(job, move, withModel=()):
+    """carryOperationPoints(job, move, withModel=()) ... keep the points the job's operations and dressups have
+    on the model, such as their start and end points, where they are on it when the Job's origin
+    changes or the model is moved: moved by move, the Placement the model was moved by.
+
+    Start and end points are picked in the 3D view and kept in the Job's coordinates, so they
+    move with the model whatever frame the operation generates in. The other points are kept in
+    that frame: they move only as the model moves in the frame, and not at all when the frame is
+    a work plane attached to the model or one of withModel, the objects moved as the model was.
+    Points in lists keep their Z."""
+    for obj in _operationsOf(job):
+        for name in WORLD_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, move.multVec(value))
+        inFrame = _moveInFrame(obj, move, withModel)
+        if inFrame is None:
+            continue
+        for name in FRAME_POINTS:
+            value = getattr(obj, name, None)
+            if isinstance(value, FreeCAD.Vector):
+                setattr(obj, name, inFrame.multVec(value))
+        for name in FRAME_POINT_LISTS:
+            values = getattr(obj, name, None)
+            if values and all(isinstance(v, FreeCAD.Vector) for v in values):
+                moved = []
+                for value in values:
+                    at = inFrame.multVec(value)
+                    moved.append(FreeCAD.Vector(at.x, at.y, value.z))
+                setattr(obj, name, moved)
+
+
+def carryOperationHeights(job, move, withModel=()):
+    """carryOperationHeights(job, move, withModel=()) ... when the model is moved by move, the Placement it was
+    moved by, raise or lower with it the heights the job's operations and dressups were given by
+    hand, such as a typed in final depth.
+
+    A height is a distance along the tool axis of the frame the operation generates in, so it
+    changes by the move's component along that axis: the whole of a move up or down for ordinary
+    Z-up milling, nothing when the frame is a work plane attached to the model or one of
+    withModel, the objects moved as the model was, and nothing when the model was turned. Heights calculated from the stock and model by
+    expression are left to be calculated again: every operation is marked to be recomputed."""
+    for obj in _operationsOf(job):
+        inFrame = _moveInFrame(obj, move, withModel)
+        dz = 0.0
+        if inFrame is not None and inFrame.Rotation.isIdentity(1e-9):
+            dz = inFrame.Base.z
+        if abs(dz) > 1e-9:
+            calculated = {name for name, _ in obj.ExpressionEngine}
+            for name in MODEL_HEIGHTS:
+                if name in calculated or not hasattr(obj, name):
+                    continue
+                height = getattr(obj, name)
+                setattr(obj, name, getattr(height, "Value", height) + dz)
+        obj.touch()
 
 
 def Create(name, base, templateFile=None):
