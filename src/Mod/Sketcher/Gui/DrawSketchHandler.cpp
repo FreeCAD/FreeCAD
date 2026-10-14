@@ -1328,6 +1328,15 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
                 );
             }
 
+            // remove PointOnObject from one of the two points or else it causes the sketch to be
+            // overconstrained
+            const auto conflictingConstraints
+                = obj->getPointOnSameObjectConstraints(geoId1, posId1, geoId2, posId2);
+
+            if (!conflictingConstraints.empty()) {
+                removeConstraints.push_back(conflictingConstraints.front());
+            }
+
             if (itOfTangentConstraint != autoConstraints.end()) {
                 // modify tangency to endpoint-to-endpoint
                 (*itOfTangentConstraint)->FirstPos = posId1;
