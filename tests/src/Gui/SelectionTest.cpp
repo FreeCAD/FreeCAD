@@ -36,6 +36,33 @@ private:
     std::string _allowedName;
 };
 
+class MessageProviderGate: public Gui::SelectionGate, public Gui::SelectionGateMessageProvider
+{
+public:
+    explicit MessageProviderGate(bool allowed)
+        : _allowed(allowed)
+    {}
+
+    bool allow(App::Document*, App::DocumentObject*, const char*) override
+    {
+        ++allowCalls;
+        notAllowedReason = _allowed ? "allowed probe reason" : "rejected probe reason";
+        return _allowed;
+    }
+
+    QString selectionRejectionText() const override
+    {
+        ++renderCalls;
+        return QStringLiteral("rendered test rejection");
+    }
+
+    int allowCalls {};
+    mutable int renderCalls {};
+
+private:
+    bool _allowed;
+};
+
 class SelectionTest: public ::testing::Test
 {
 protected:
@@ -106,6 +133,62 @@ TEST_F(SelectionTest, testSelectionUsesActiveGateWithoutKeepingRejectionReason)
 
     EXPECT_FALSE(Gui::Selection().testSelection(_doc, _rejectedObject));
     EXPECT_EQ(gate->notAllowedReason, "existing reason");
+    EXPECT_FALSE(Gui::Selection().hasPreselection());
+    EXPECT_FALSE(Gui::Selection().hasSelection(_docName.c_str(), Gui::ResolveMode::NoResolve));
+}
+
+TEST(SelectionGateMessageProviderTest, discoversProviderThroughSelectionGateReference)
+{
+    MessageProviderGate gate(false);
+    const Gui::SelectionGate& base = gate;
+
+    EXPECT_EQ(
+        dynamic_cast<const Gui::SelectionGateMessageProvider*>(&base),
+        static_cast<const Gui::SelectionGateMessageProvider*>(&gate)
+    );
+    EXPECT_EQ(gate.renderCalls, 0);
+}
+
+TEST(SelectionGateMessageProviderTest, legacyGateHasNoMessageProvider)
+{
+    ObjectNameGate gate("Allowed");
+    const Gui::SelectionGate& base = gate;
+
+    EXPECT_EQ(dynamic_cast<const Gui::SelectionGateMessageProvider*>(&base), nullptr);
+}
+
+TEST_F(SelectionTest, allowedProviderProbeRestoresReasonWithoutRendering)
+{
+    auto* gate = new MessageProviderGate(true);
+    Gui::Selection().addSelectionGate(gate, Gui::ResolveMode::NoResolve);
+    int probeCount = 0;
+
+    for (const auto* originalReason : {"existing reason", ""}) {
+        gate->notAllowedReason = originalReason;
+        EXPECT_TRUE(Gui::Selection().testSelection(_doc, _allowedObject));
+        ++probeCount;
+        EXPECT_EQ(gate->allowCalls, probeCount);
+        EXPECT_EQ(gate->notAllowedReason, originalReason);
+        EXPECT_EQ(gate->renderCalls, 0);
+    }
+    EXPECT_FALSE(Gui::Selection().hasPreselection());
+    EXPECT_FALSE(Gui::Selection().hasSelection(_docName.c_str(), Gui::ResolveMode::NoResolve));
+}
+
+TEST_F(SelectionTest, rejectedProviderProbeRestoresReasonWithoutRendering)
+{
+    auto* gate = new MessageProviderGate(false);
+    Gui::Selection().addSelectionGate(gate, Gui::ResolveMode::NoResolve);
+    int probeCount = 0;
+
+    for (const auto* originalReason : {"existing reason", ""}) {
+        gate->notAllowedReason = originalReason;
+        EXPECT_FALSE(Gui::Selection().testSelection(_doc, _rejectedObject));
+        ++probeCount;
+        EXPECT_EQ(gate->allowCalls, probeCount);
+        EXPECT_EQ(gate->notAllowedReason, originalReason);
+        EXPECT_EQ(gate->renderCalls, 0);
+    }
     EXPECT_FALSE(Gui::Selection().hasPreselection());
     EXPECT_FALSE(Gui::Selection().hasSelection(_docName.c_str(), Gui::ResolveMode::NoResolve));
 }

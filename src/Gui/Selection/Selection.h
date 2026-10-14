@@ -30,6 +30,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <QString>
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <Base/Observer.h>
@@ -310,6 +312,19 @@ public:
      * literal into QT_TR_NOOP() for translatability.
      */
     std::string notAllowedReason;
+};
+
+/**
+ * Optional interface for gates that render contextual rejection messages.
+ * Called only for a nonempty SelectionGate::notAllowedReason. Implementations
+ * must return fully translated and formatted text without modifying selection
+ * state. The returned text is displayed without another translation lookup.
+ */
+class GuiExport SelectionGateMessageProvider
+{
+public:
+    virtual ~SelectionGateMessageProvider();
+    virtual QString selectionRejectionText() const = 0;
 };
 
 /** SelectionGateFilterExternal
@@ -885,7 +900,8 @@ protected:
     struct SelectionAllowance
     {
         bool allowed {false};
-        std::string reason;
+        // Owned, fully rendered UTF-8 text; do not translate again.
+        std::string displayTextUtf8;
     };
 
     /** @brief Checks if a selection is allowed through the selection filter.

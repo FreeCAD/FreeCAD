@@ -27,6 +27,7 @@
 #include <set>
 
 #include <QApplication>
+#include <QByteArray>
 
 #include <App/Application.h>
 #include <App/Datums.h>
@@ -61,6 +62,22 @@ FC_LOG_LEVEL_INIT("Selection", false, true, true)
 using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
+
+namespace
+{
+QString selectionGateRejectionText(const Gui::SelectionGate& gate)
+{
+    if (gate.notAllowedReason.empty()) {
+        return {};
+    }
+    if (const auto* provider = dynamic_cast<const Gui::SelectionGateMessageProvider*>(&gate)) {
+        return provider->selectionRejectionText();
+    }
+    return QObject::tr(gate.notAllowedReason.c_str());
+}
+}
+
+Gui::SelectionGateMessageProvider::~SelectionGateMessageProvider() = default;
 
 SelectionGateFilterExternal::SelectionGateFilterExternal(const char* docName, const char* objName)
 {
@@ -553,7 +570,7 @@ bool SelectionSingleton::needPickedList() const
 SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(const _SelObj& sel)
 {
     if (!ActiveGate) {
-        return {.allowed = true, .reason = ""};
+        return {.allowed = true, .displayTextUtf8 = ""};
     }
     const char* subelement = nullptr;
     auto pObject
@@ -561,11 +578,12 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(co
 
 
     if (!ActiveGate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
-        std::string copyNotAllowedReason = ActiveGate->notAllowedReason;
+        std::string displayTextUtf8 =
+            selectionGateRejectionText(*ActiveGate).toUtf8().toStdString();
         ActiveGate->notAllowedReason.clear();
-        return {.allowed = false, .reason = copyNotAllowedReason};
+        return {.allowed = false, .displayTextUtf8 = displayTextUtf8};
     }
-    return {.allowed = true, .reason = ""};
+    return {.allowed = true, .displayTextUtf8 = ""};
 }
 
 void SelectionSingleton::enablePickedList(bool enable)
@@ -967,11 +985,8 @@ int SelectionSingleton::setPreselect(
             }
         }
         if (!ActiveGate->allow(pObject->getDocument(), pObject, subelement)) {
-            QString msg;
-            if (ActiveGate->notAllowedReason.length() > 0) {
-                msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
-            }
-            else {
+            QString msg = selectionGateRejectionText(*ActiveGate);
+            if (msg.isEmpty()) {
                 msg = QCoreApplication::translate("SelectionFilter", "Not allowed:");
             }
             msg.append(QStringLiteral(" %1.%2.%3 ")
@@ -1328,8 +1343,8 @@ bool SelectionSingleton::addSelection(
     if (!selectionAllowance.allowed) {
         if (getMainWindow()) {
             QString msg;
-            if (selectionAllowance.reason.length() > 0) {
-                msg = QObject::tr(selectionAllowance.reason.c_str());
+            if (selectionAllowance.displayTextUtf8.length() > 0) {
+                msg = QString::fromUtf8(selectionAllowance.displayTextUtf8.c_str());
             }
             else {
                 msg = QCoreApplication::translate("SelectionFilter", "Selection not allowed by filter");

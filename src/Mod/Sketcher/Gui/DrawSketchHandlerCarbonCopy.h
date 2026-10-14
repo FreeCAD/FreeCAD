@@ -24,7 +24,15 @@
 
 #pragma once
 
+#include <array>
+
 #include <QApplication>
+#include <QCoreApplication>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QRegularExpressionMatchIterator>
+#include <QShortcut>
+#include <QString>
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -45,15 +53,148 @@
 namespace SketcherGui
 {
 
-class CarbonCopySelection: public Gui::SelectionFilterGate
+class CarbonCopySelection:
+    public Gui::SelectionFilterGate,
+    public Gui::SelectionGateMessageProvider
 {
+    enum class Shortcut
+    {
+        None,
+        Control,
+        ControlAlt
+    };
+
+    struct RejectionMessage
+    {
+        Sketcher::SketchObject::eReasonList reason;
+        const char* source;
+        Shortcut shortcut;
+    };
+
+    static constexpr std::array<RejectionMessage, 8> rejectionMessages {{
+        {Sketcher::SketchObject::rlCircularReference,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "Carbon copy would cause a circular dependency."
+         ),
+         Shortcut::None},
+        {Sketcher::SketchObject::rlOtherDoc,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "This object is in another document."
+         ),
+         Shortcut::None},
+        {Sketcher::SketchObject::rlOtherBody,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "This object belongs to another body. Hold %1 to allow cross-references."
+         ),
+         Shortcut::Control},
+        {Sketcher::SketchObject::rlOtherBodyWithLinks,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "This object belongs to another body and it contains external "
+             "geometry. Cross-reference not allowed."
+         ),
+         Shortcut::None},
+        {Sketcher::SketchObject::rlOtherPart,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "This object belongs to another part."
+         ),
+         Shortcut::None},
+        {Sketcher::SketchObject::rlNonParallel,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "The selected sketch is not parallel to this sketch. Hold %1 "
+             "to allow non-parallel sketches."
+         ),
+         Shortcut::ControlAlt},
+        {Sketcher::SketchObject::rlAxesMisaligned,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "The XY axes of the selected sketch do not have the same "
+             "direction as this sketch. Hold %1 to disregard it."
+         ),
+         Shortcut::ControlAlt},
+        {Sketcher::SketchObject::rlOriginsMisaligned,
+         QT_TRANSLATE_NOOP(
+             "SketcherGui::CarbonCopySelection",
+             "The origin of the selected sketch is not aligned with the "
+             "origin of this sketch. Hold %1 to disregard it."
+         ),
+         Shortcut::ControlAlt}
+    }};
+
     App::DocumentObject* object;
+
+    static bool hasExpectedPlaceholders(const QString& text, Shortcut shortcut)
+    {
+        static const QRegularExpression placeholders(QStringLiteral("%(?:L?[0-9]{1,2}|n)"));
+        auto matches = placeholders.globalMatch(text);
+        if (shortcut == Shortcut::None) {
+            return !matches.hasNext();
+        }
+        if (!matches.hasNext()) {
+            return false;
+        }
+        while (matches.hasNext()) {
+            if (matches.next().captured() != QStringLiteral("%1")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static QString shortcutText(Shortcut shortcut)
+    {
+#ifdef Q_OS_MAC
+        const bool dontSwap = QCoreApplication::testAttribute(Qt::AA_MacDontSwapCtrlAndMeta);
+        const QString control =
+            dontSwap ? QStringLiteral("\u2303") : QStringLiteral("\u2318");
+        if (shortcut == Shortcut::Control) {
+            return control;
+        }
+        const QString option = QStringLiteral("\u2325");
+        return dontSwap ? control + option : option + control;
+#else
+        // Use Qt's translations without extracting these key names into Sketcher's catalog.
+        const char* ctrlKey = "Ctrl";
+        const char* altKey = "Alt";
+        const QString control = QShortcut::tr(ctrlKey);
+        return shortcut == Shortcut::Control
+            ? control
+            : control + QLatin1Char('+') + QShortcut::tr(altKey);
+#endif
+    }
 
 public:
     explicit CarbonCopySelection(App::DocumentObject* obj)
         : Gui::SelectionFilterGate(nullPointer())
         , object(obj)
     {}
+
+    QString selectionRejectionText() const override
+    {
+        if (notAllowedReason.empty()) {
+            return {};
+        }
+        QString text = QCoreApplication::translate(
+            "SketcherGui::CarbonCopySelection", notAllowedReason.c_str()
+        );
+        for (const auto& message : rejectionMessages) {
+            if (notAllowedReason == message.source) {
+                if (text.isEmpty() || !hasExpectedPlaceholders(text, message.shortcut)) {
+                    text = QString::fromUtf8(message.source);
+                }
+                return message.shortcut == Shortcut::None
+                    ? text
+                    : text.arg(shortcutText(message.shortcut));
+            }
+        }
+        // Preserve informative text even if it is not one of the known reasons.
+        return text.isEmpty() ? QString::fromUtf8(notAllowedReason.c_str()) : text;
+    }
 
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override
     {
@@ -73,50 +214,11 @@ public:
         // Reusing code: All good reasons not to allow a carbon copy
         bool xinv = false, yinv = false;
         if (!sketch->isCarbonCopyAllowed(pDoc, pObj, xinv, yinv, &msg)) {
-            switch (msg) {
-                case Sketcher::SketchObject::rlCircularReference:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "Carbon copy would cause a circular dependency."
-                    );
+            for (const auto& message : rejectionMessages) {
+                if (message.reason == msg) {
+                    this->notAllowedReason = message.source;
                     break;
-                case Sketcher::SketchObject::rlOtherDoc:
-                    this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
-                    break;
-                case Sketcher::SketchObject::rlOtherBody:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "This object belongs to another body. Hold "
-                        "Ctrl to allow cross-references."
-                    );
-                    break;
-                case Sketcher::SketchObject::rlOtherBodyWithLinks:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "This object belongs to another body and it contains external "
-                        "geometry. Cross-reference not allowed."
-                    );
-                    break;
-                case Sketcher::SketchObject::rlOtherPart:
-                    this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
-                    break;
-                case Sketcher::SketchObject::rlNonParallel:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "The selected sketch is not parallel to this sketch. Hold "
-                        "Ctrl+Alt to allow non-parallel sketches."
-                    );
-                    break;
-                case Sketcher::SketchObject::rlAxesMisaligned:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "The XY axes of the selected sketch do not have the same "
-                        "direction as this sketch. Hold Ctrl+Alt to disregard it."
-                    );
-                    break;
-                case Sketcher::SketchObject::rlOriginsMisaligned:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "The origin of the selected sketch is not aligned with the "
-                        "origin of this sketch. Hold Ctrl+Alt to disregard it."
-                    );
-                    break;
-                default:
-                    break;
+                }
             }
             return false;
         }
