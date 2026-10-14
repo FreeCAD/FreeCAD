@@ -2105,11 +2105,30 @@ void initExceptions()
     new Base::ExceptionProducer<Base::PropertyError>;
     // NOLINTEND
 }
+
+// run a stage of the init phase, forcing the log to flush if it fails
+template<typename Stage>
+void runInitStage(Stage&& stage)
+{
+    try {
+        stage();
+    }
+    catch (...) {
+        Application::destructObserver();
+        throw;
+    }
+}
 }
 
 void Application::init(int argc, char ** argv)
 {
-    try {
+    initConfiguration(argc, argv);
+    initModules();
+}
+
+void Application::initConfiguration(int argc, char ** argv)
+{
+    runInitStage([&]() {
         // Establish the initial Base snapshot before application or GUI preferences can override it.
         Base::publishNumericLocaleContext(
             Base::createNumericLocaleContext()
@@ -2127,13 +2146,27 @@ void Application::init(int argc, char ** argv)
         initCrashReporter();
 
         initApplication();
+    });
+}
+
+void Application::initModules()
+{
+    runInitStage([]() {
+        // starting the init script
+        Base::Console().log("Run App init script\n");
+        try {
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
+
+        // seed randomizer
+        srand(time(nullptr));
+
         initExceptions();
-    }
-    catch (...) {
-        // force the log to flush
-        destructObserver();
-        throw;
-    }
+    });
 }
 
 // clang-format off
@@ -3048,19 +3081,6 @@ void Application::initApplication()
 #if defined (_DEBUG)
     Base::Console().log("Application is built with debug information\n");
 #endif
-
-    // starting the init script
-    Base::Console().log("Run App init script\n");
-    try {
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
-    }
-    catch (const Base::Exception& e) {
-        e.reportException();
-    }
-
-    // seed randomizer
-    srand(time(nullptr));
 }
 
 std::list<std::string> Application::getCmdLineFiles()
