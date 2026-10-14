@@ -737,8 +737,24 @@ public:
      *
      * @param[in] argc The argument count.
      * @param[in] argv The argument values.
+     *
+     * This is the same as calling initConfiguration() followed by initModules().
      */
     static void init(int argc, char ** argv);
+
+    /**
+     * @brief Initialize the configuration, parameters, Python interpreter and the application.
+     *
+     * The first stage of init(). It leaves the module init scripts to initModules(), so the
+     * caller may do some work in between, e.g. show a splash screen.
+     *
+     * @param[in] argc The argument count.
+     * @param[in] argv The argument values.
+     */
+    static void initConfiguration(int argc, char ** argv);
+
+    /// Run the init scripts of all modules, the second stage of init().
+    static void initModules();
 
     /// Initialize FreeCAD's type system for objects, properties, etc.
     static void initTypes();
