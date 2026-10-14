@@ -52,6 +52,7 @@
 #include <list>
 #include <ranges>
 #include <utility>
+#include <vector>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -2616,6 +2617,8 @@ void runEventLoop(GUISingleApplication& mainApp)
 
 namespace
 {
+int qtArgc = 0;                         // NOLINT
+std::vector<char*> qtArgv;              // NOLINT
 GUISingleApplication* qtApp = nullptr;  // NOLINT
 SplashScreen* splash = nullptr;         // NOLINT
 
@@ -2680,8 +2683,9 @@ bool Application::startApplication()
     // A new QApplication
     Base::Console().log("Init: Creating QApplication\n");
 
-    static int argc = App::Application::GetARGC();
-    qtApp = new GUISingleApplication(argc, App::Application::GetARGV());
+    qtArgc = App::Application::GetARGC();
+    qtArgv.assign(App::Application::GetARGV(), App::Application::GetARGV() + qtArgc + 1);
+    qtApp = new GUISingleApplication(qtArgc, qtArgv.data());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 406) \
     && (defined(FC_OS_LINUX) || defined(FC_OS_BSD))
