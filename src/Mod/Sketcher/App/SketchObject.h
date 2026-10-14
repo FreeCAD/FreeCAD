@@ -672,13 +672,15 @@ public:
     /// will automatically only be vertices.
     /// If PointOnObject constraints are included, the output can contain edges, use verticesOnly =
     /// true to return the vertex connected to the edge instead of the edge itself
+    /// ignoreMidPoints ignores constraints using PointPos::mid
     int getDirectlyCoincidentPoints(
         int GeoId1,
         int GeoId2,
         std::vector<int>& GeoIds3,
         std::vector<PointPos>& PosIds3,
         bool includePointOnObject = false,
-        bool verticesOnly = false
+        bool verticesOnly = false,
+        bool ignoreMidPoints = false
     ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 

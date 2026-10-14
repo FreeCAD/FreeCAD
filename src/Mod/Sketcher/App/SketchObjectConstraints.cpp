@@ -2063,7 +2063,8 @@ int SketchObject::getDirectlyCoincidentPoints(
     std::vector<int>& GeoIds3,
     std::vector<PointPos>& PosIds3,
     bool includePointOnObject,
-    bool verticesOnly
+    bool verticesOnly,
+    bool ignoreMidPoint
 ) const
 {
     std::vector<int> constraints;
@@ -2073,6 +2074,10 @@ int SketchObject::getDirectlyCoincidentPoints(
         const auto* con = Constraints.getValues()[idx];
 
         if (!con->involvesGeoId(GeoId2)) {
+            continue;
+        }
+
+        if (ignoreMidPoint && (con->getElement(0).Pos == PointPos::mid || con->getElement(1).Pos == PointPos::mid || con->getElement(2).Pos == PointPos::mid)) {
             continue;
         }
 
