@@ -58,6 +58,25 @@ if App.GuiUp:
     # from PySide import QtSvg  # for load_texture
 
 
+def get_gui_document(document):
+    """Resolve a GUI document only while its application document is still open."""
+    if not App.GuiUp or not any(doc is document for doc in App.listDocuments().values()):
+        return None
+    try:
+        return Gui.getDocument(document)
+    except KeyError:
+        # GUI deletion precedes application document deletion.
+        return None
+
+
+def reset_edit(document, view_provider):
+    """Reset the captured edit session if it is still current."""
+    gui_document = get_gui_document(document)
+    if view_provider is not None and gui_document is not None:
+        if gui_document.getInEdit() is view_provider:
+            gui_document.resetEdit()
+
+
 def get_3d_view():
     """Return the current 3D view.
 
