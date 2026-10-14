@@ -104,7 +104,6 @@
 #include "PythonConsole.h"
 #include "ReportView.h"
 #include "SelectionView.h"
-#include "SplashScreen.h"
 #include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
@@ -336,7 +335,6 @@ struct MainWindowP
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
-    SplashScreen* splashscreen;
     StatusBarObserver* status;
     bool whatsthis;
     QString whatstext;
@@ -360,7 +358,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     : QMainWindow(parent, f /*WDestructiveClose*/)
 {
     d = new MainWindowP;
-    d->splashscreen = nullptr;
     d->activeView = nullptr;
     d->whatsthis = false;
     d->assistant = new Assistant();
@@ -2273,42 +2270,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
     DockWindowManager::instance()->saveState();
     OverlayManager::instance()->save();
     ToolBarManager::getInstance()->saveState();
-}
-
-void MainWindow::startSplasher()
-{
-    // startup splasher
-    // when running in verbose mode no splasher
-    if (!(App::Application::Config()["Verbose"] == "Strict")
-        && (App::Application::Config()["RunMode"] == "Gui")) {
-        ParameterGrp::handle hGrp = App::GetApplication()
-                                        .GetUserParameter()
-                                        .GetGroup("BaseApp")
-                                        ->GetGroup("Preferences")
-                                        ->GetGroup("General");
-        // first search for an external image file
-        if (hGrp->GetBool("ShowSplasher", true)) {
-            d->splashscreen = new SplashScreen(SplashScreen::splashImage());
-
-            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
-                d->splashscreen->setShowMessages(false);
-            }
-
-            d->splashscreen->show();
-        }
-        else {
-            d->splashscreen = nullptr;
-        }
-    }
-}
-
-void MainWindow::stopSplasher()
-{
-    if (d->splashscreen) {
-        d->splashscreen->finish(this);
-        delete d->splashscreen;
-        d->splashscreen = nullptr;
-    }
 }
 
 /**
