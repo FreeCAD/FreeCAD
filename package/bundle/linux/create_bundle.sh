@@ -137,7 +137,7 @@ fi
 echo -e "\nCreate the appimage"
 # export GPG_TTY=$(tty)
 chmod a+x ./AppDir/AppRun
-export APPIMAGE_VERSION="${BUILD_TAG}"
+export VERSION="${BUILD_TAG}"
 ./appimagetool-$(uname -m).AppImage \
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \
