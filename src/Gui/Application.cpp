@@ -2795,6 +2795,13 @@ void Application::showSplash()
     }
 }
 
+void Application::freezeSplash()
+{
+    if (splash) {
+        splash->setShowMessages(false);
+    }
+}
+
 void Application::hideSplash(QWidget* window)
 {
     if (splash) {
