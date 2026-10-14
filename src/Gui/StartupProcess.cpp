@@ -453,10 +453,9 @@ void StartupPostProcess::runInitGuiScripts()
 
 void StartupPostProcess::activateWorkbench()
 {
-    // stop splash screen and set immediately the active window that may be of interest
-    // for scripts using Python binding for Qt
-    Gui::Application::hideSplash(mainWindow);
-    mainWindow->activateWindow();
+    // the splash stays shown until the main window is up, but must not process events from now
+    // on as this breaks the toolbars and the window geometry restored by loadWindowSettings()
+    Gui::Application::freezeSplash();
 
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
@@ -506,6 +505,13 @@ void StartupPostProcess::activateWorkbench()
 
     // Reactivate the startup workbench
     guiApp.activateWorkbench(start.c_str());
+
+    // stop splash screen only now, once the main window is shown, to leave no gap without
+    // any window on the screen
+    Gui::Application::hideSplash(mainWindow);
+    // set immediately the active window that may be of interest for scripts using Python
+    // binding for Qt
+    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::setStyleSheet()
