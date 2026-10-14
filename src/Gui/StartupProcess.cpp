@@ -223,7 +223,7 @@ void StartupPostProcess::execute()
     checkOpenGL();
     loadOpenInventor();
     setBranding();
-    showMainWindow();
+    runInitGuiScripts();
     activateWorkbench();
     checkParameters();
     checkVersionMigration();
@@ -437,13 +437,8 @@ void StartupPostProcess::setImportImageFormats()
     App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
 }
 
-void StartupPostProcess::showMainWindow()
+void StartupPostProcess::runInitGuiScripts()
 {
-    // show splasher while initializing the GUI
-    if (!loadFromPythonModule) {
-        Gui::Application::showSplash();
-    }
-
     // running the GUI init script
     try {
         Base::Console().log("Run Gui init script\n");
@@ -452,18 +447,17 @@ void StartupPostProcess::showMainWindow()
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in FreeCADGuiInit.py: {}\n", e.what());
-        Gui::Application::hideSplash(mainWindow);
         throw;
     }
-
-    // stop splash screen and set immediately the active window that may be of interest
-    // for scripts using Python binding for Qt
-    Gui::Application::hideSplash(mainWindow);
-    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::activateWorkbench()
 {
+    // stop splash screen and set immediately the active window that may be of interest
+    // for scripts using Python binding for Qt
+    Gui::Application::hideSplash(mainWindow);
+    mainWindow->activateWindow();
+
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().log("Init: Activating default workbench {}\n", start);
