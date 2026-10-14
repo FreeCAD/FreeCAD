@@ -148,7 +148,7 @@ class CarbonCopySelection:
 
     static QString shortcutText(Shortcut shortcut)
     {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
         const bool dontSwap = QCoreApplication::testAttribute(Qt::AA_MacDontSwapCtrlAndMeta);
         const QString control =
             dontSwap ? QStringLiteral("\u2303") : QStringLiteral("\u2318");
