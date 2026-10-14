@@ -22,7 +22,6 @@ _EXCLUDE_MODULES = {
 
 _EXCLUDE_MEMBERS = {
     "TestMachine": ["TestOutputOptions"],
-    "TestPostToolProcessing": ["TestEmptyMoveSuppression"],
 }
 
 
