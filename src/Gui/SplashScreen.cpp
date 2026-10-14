@@ -34,6 +34,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QThread>
+#include <QTimer>
 #include <QWindow>
 
 #include <App/Application.h>
@@ -307,8 +308,26 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::finish(QWidget* w)
 {
-    Q_UNUSED(w);
-    close();
+    // Unlike QSplashScreen::finish() do not wait for the window here, see show(). Close from the
+    // event loop once it is exposed instead, to leave no gap without any window on the screen.
+    QWindow* window = w ? w->windowHandle() : nullptr;
+    if (!window || window->isExposed()) {
+        close();
+        return;
+    }
+    window->installEventFilter(this);
+    // in case the window is never reported as exposed
+    constexpr int TimeOut = 1000;
+    QTimer::singleShot(TimeOut, this, &SplashScreen::close);
+}
+
+bool SplashScreen::eventFilter(QObject* o, QEvent* e)
+{
+    if (e->type() == QEvent::Expose && static_cast<QWindow*>(o)->isExposed()) {
+        o->removeEventFilter(this);
+        close();
+    }
+    return QSplashScreen::eventFilter(o, e);
 }
 
 bool SplashScreen::event(QEvent* e)

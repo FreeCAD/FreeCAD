@@ -289,6 +289,8 @@ public:
     static void activateLanguage();
     static void showSplash();
     static void hideSplash(QWidget* window);
+    /// stop showing messages in the splash, as it processes events with each of them
+    static void freezeSplash();
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits
