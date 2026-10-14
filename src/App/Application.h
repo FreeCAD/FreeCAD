@@ -738,22 +738,30 @@ public:
      * @param[in] argc The argument count.
      * @param[in] argv The argument values.
      *
-     * This is the same as calling initConfiguration() followed by initModules().
+     * This is the same as calling initConfiguration() and initModules().
      */
     static void init(int argc, char ** argv);
 
     /**
-     * @brief Initialize the configuration, parameters, Python interpreter and the application.
+     * @brief Initialize the configuration, parameters and the application.
      *
-     * The first stage of init(). It leaves the module init scripts to initModules(), so the
-     * caller may do some work in between, e.g. show a splash screen.
+     * The first stage of init(). It leaves the Python interpreter and the module init scripts
+     * to initModules(), so the caller may do some work in between, e.g. show a splash screen.
      *
      * @param[in] argc The argument count.
      * @param[in] argv The argument values.
      */
     static void initConfiguration(int argc, char ** argv);
 
-    /// Run the init scripts of all modules, the second stage of init().
+    /**
+     * @brief Whether program information is requested instead of running the application.
+     *
+     * Valid after initConfiguration(). The information is thrown as Base::ProgramInformation.
+     */
+    static bool isProgramInformationRequested();
+
+    /// Initialize the Python interpreter and run the init scripts of all modules, the last
+    /// stage of init().
     static void initModules();
 
     /// Initialize FreeCAD's type system for objects, properties, etc.
@@ -1016,6 +1024,7 @@ private:
     static void initConfig(int argc, char ** argv);
     static void initCrashReporter();
     static void initApplication();
+    static void initPython();
     static void logStatus();
     // the one and only pointer to the application object
     static Application *_pcSingleton;
