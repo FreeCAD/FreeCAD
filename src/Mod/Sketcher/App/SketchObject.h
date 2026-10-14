@@ -337,7 +337,10 @@ public:
 
     /** Performs a full analysis of the addition of additional constraints without adding them to
      * the sketch object */
-    int diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint*> additionalconstraints);
+    int diagnoseAdditionalConstraints(
+        std::vector<Sketcher::Constraint*> additionalconstraints,
+        std::vector<int>& removeConstraints
+    );
 
     /** Solves the sketch and (optionally) updates the geometry.
      * Does not trigger a recompute of any dependent features; when that is necessary, call

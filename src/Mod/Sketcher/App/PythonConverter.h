@@ -91,6 +91,8 @@ public:
         GeoIdMode geoIdMode = GeoIdMode::DoNotChangeGeoIds
     );
 
+    static std::string convertDelConstraints(const std::string& doc, const std::vector<int>& constraints);
+
     static std::vector<std::string> multiLine(std::string&& singlestring);
 
 private:

@@ -1300,11 +1300,13 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
     const AutoConstraint& ac,
     int geoId1,
     Sketcher::PointPos posId1,
-    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+    std::vector<int>& removeConstraints
 )
 {
     int geoId2 = ac.GeoId;
     Sketcher::PointPos posId2 = ac.PosId;
+    SketchObject* obj = getSketchObject();
 
     static const auto isStartOrEnd = [](const Sketcher::PointPos posId) {
         return posId == Sketcher::PointPos::start || posId == Sketcher::PointPos::end;
@@ -1521,7 +1523,8 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
 }
 
 bool DrawSketchHandler::filterRedundantAutoConstraints(
-    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+    std::vector<int>& removeConstraints
 )
 {
     if (autoConstraints.empty()) {
@@ -1534,7 +1537,7 @@ bool DrawSketchHandler::filterRedundantAutoConstraints(
 
     // Allows a diagnose with the new autoconstraints as if they were part of the sketchobject,
     // but WITHOUT adding them to the sketchobject..
-    sketchobject->diagnoseAdditionalConstraints(constraints);
+    sketchobject->diagnoseAdditionalConstraints(constraints, removeConstraints);
 
     if (sketchobject->getLastHasRedundancies()) {
         Base::Console().message(
@@ -1581,11 +1584,20 @@ bool DrawSketchHandler::filterRedundantAutoConstraints(
 }
 
 void DrawSketchHandler::addGeneratedAutoConstraints(
-    const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
+    const std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints,
+    const std::vector<int>& removeConstraints
 )
 {
     auto constraints = toPointerVector(autoConstraints);
 
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        Sketcher::PythonConverter::convertDelConstraints(
+            Gui::Command::getObjectCmd(sketchgui->getObject()),
+            removeConstraints
+        )
+            .c_str()
+    );
     Gui::Command::doCommand(
         Gui::Command::Doc,
         Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()), constraints)
