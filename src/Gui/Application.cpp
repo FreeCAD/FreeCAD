@@ -107,6 +107,7 @@
 #include "SelectionModulePy.h"
 #include "SoQtOffscreenRendererPy.h"
 #include "SpaceMouseParameter.h"
+#include "SplashScreen.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -173,6 +174,7 @@ namespace sp = std::placeholders;
 FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
+SplashScreen* Application::splash = nullptr;
 
 #ifdef USE_3DCONNEXION_NAVLIB
 extern "C" {
@@ -2758,6 +2760,39 @@ bool Application::hiddenMainWindow()
     auto it = cfg.find("StartHidden");
 
     return it != cfg.end();
+}
+
+void Application::showSplash()
+{
+    // when running in verbose mode no splasher
+    if ((App::Application::Config()["Verbose"] == "Strict")
+        || (App::Application::Config()["RunMode"] != "Gui") || hiddenMainWindow()) {
+        return;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+
+    if (hGrp->GetBool("ShowSplasher", true)) {
+        splash = new SplashScreen(Gui::SplashScreen::splashImage());
+        splash->setShowMessages(hGrp->GetBool("ShowSplasherMessages", true));
+        splash->show();
+    }
+}
+
+void Application::hideSplash(QWidget* window)
+{
+    if (splash) {
+        if (window) {
+            splash->finish(window);
+        }
+        else {
+            splash->close();
+        }
+        delete splash;
+        splash = nullptr;
+    }
 }
 
 bool Application::testStatus(Status pos) const

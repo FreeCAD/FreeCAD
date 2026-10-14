@@ -440,8 +440,8 @@ void StartupPostProcess::setImportImageFormats()
 void StartupPostProcess::showMainWindow()
 {
     // show splasher while initializing the GUI
-    if (!Application::hiddenMainWindow() && !loadFromPythonModule) {
-        mainWindow->startSplasher();
+    if (!loadFromPythonModule) {
+        Gui::Application::showSplash();
     }
 
     // running the GUI init script
@@ -452,13 +452,13 @@ void StartupPostProcess::showMainWindow()
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in FreeCADGuiInit.py: {}\n", e.what());
-        mainWindow->stopSplasher();
+        Gui::Application::hideSplash(mainWindow);
         throw;
     }
 
     // stop splash screen and set immediately the active window that may be of interest
     // for scripts using Python binding for Qt
-    mainWindow->stopSplasher();
+    Gui::Application::hideSplash(mainWindow);
     mainWindow->activateWindow();
 }
 
