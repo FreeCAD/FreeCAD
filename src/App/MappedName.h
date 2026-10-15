@@ -166,6 +166,7 @@ public:
     MappedName(const MappedName& other, const char* postfix)
         : data(other.toBytes())
     {
+        this->data.makeOwning();
         if (postfix) {
             this->postfix = Base::ByteBuffer::copy(Base::asBytes(postfix));
         }
@@ -275,7 +276,7 @@ public:
                 res.postfix = other.postfix;
             }
             else if (size != 0) {
-                res.postfix = Base::ByteBuffer::borrow(
+                res.postfix = Base::ByteBuffer::copy(
                     Base::asBytes(other.postfix.data(), static_cast<std::size_t>(size))
                 );
             }
@@ -452,7 +453,6 @@ public:
     MappedName& operator+=(const std::string& other)
     {
         if (!other.empty()) {
-            this->postfix.reserve(this->postfix.size() + other.size());
             this->postfix.append(Base::asBytes(other));
         }
         return *this;
@@ -466,6 +466,11 @@ public:
 
     MappedName& operator+=(const Base::ByteBuffer& other)
     {
+        if (this->postfix.empty() && !other.isBorrowed()) {
+            // Share the owned storage instead of copying it.
+            this->postfix = other;
+            return *this;
+        }
         return (*this) += other.view();
     }
 
@@ -541,6 +546,13 @@ public:
      */
     void append(const MappedName& other, int startPosition = 0, int size = -1)
     {
+        if (&other == this) {
+            // Appending changes the sizes read below, so work from a (shared) copy.
+            const MappedName copy(other);
+            append(copy, startPosition, size);
+            return;
+        }
+
         // enforce 0 <= startPosition <= other.size
         if (startPosition < 0) {
             startPosition = 0;
@@ -669,8 +681,10 @@ public:
             }
             buffer.append(reinterpret_cast<const char*>(this->data.data() + startPosition), count);
             len -= count;
+            startPosition = dataSize;
         }
-        buffer.append(reinterpret_cast<const char*>(this->postfix.data()), len);
+        buffer.append(reinterpret_cast<const char*>(this->postfix.data() + (startPosition - dataSize)),
+                      len);
         return buffer.c_str() + offset;
     }
 
@@ -756,12 +770,6 @@ public:
     Base::BytesView postfixBytes() const
     {
         return this->postfix.view();
-    }
-
-    /// Convenience function providing access to the pointer to the beginning of the postfix data.
-    const char* constPostfix() const
-    {
-        return reinterpret_cast<const char*>(this->postfix.data());
     }
 
     // No constData() because 'data' is allowed to contain raw data, which may not end with 0.
@@ -1189,7 +1197,7 @@ public:
         if (offset < 0) {
             offset = 0;
         }
-        if (searchTarget.size() > static_cast<std::size_t>(size() - offset)) {
+        if (offset > size() || searchTarget.size() > static_cast<std::size_t>(size() - offset)) {
             return false;
         }
         if ((offset != 0) || (!this->data.empty() && this->data.size() < searchTarget.size())) {
@@ -1318,18 +1326,18 @@ struct MappedNameRef
         return !name.empty();
     }
 
-    void append(const MappedName& _name, const ElementIDRefs _sids = ElementIDRefs())
+    void append(const MappedName& _name, ElementIDRefs _sids = ElementIDRefs())
     {
         if (!_name) {
             return;
         }
         if (!this->name) {
             this->name = _name;
-            this->sids = _sids;
+            this->sids = std::move(_sids);
             compact();
             return;
         }
-        std::unique_ptr<MappedNameRef> mappedName(new MappedNameRef(_name, _sids));
+        std::unique_ptr<MappedNameRef> mappedName(new MappedNameRef(_name, std::move(_sids)));
         if (!this->next) {
             this->next = std::move(mappedName);
         }

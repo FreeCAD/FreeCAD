@@ -83,12 +83,18 @@ int MappedName::findTagInElementName(long* tagOut,
 
     int size {0};
     const char* nameAsChars = this->toConstString(offset, size);
+    if (size <= 0) {
+        return -1;
+    }
 
     // check if the number followed by the tagPosfix is negative
     bool isNegative = (nameAsChars[0] == '-');
     if (isNegative) {
         ++nameAsChars;
         --size;
+        if (size <= 0) {
+            return -1;
+        }
     }
     boost::iostreams::stream<boost::iostreams::array_source> iss(nameAsChars, size);
     if (!hex) {

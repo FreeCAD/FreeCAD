@@ -576,6 +576,36 @@ TEST(MappedName, appendToBuffer)
     EXPECT_EQ(buffer, std::string("STUFFTESTPOSTFIXTESTSTPOSTF"));
 }
 
+TEST(MappedName, appendToBufferStartingInPostfix)
+{
+    // Arrange
+    Data::MappedName mappedName(Data::MappedName("TEST"), "POSTFIXTEST");
+    std::string buffer;
+
+    // Act
+    mappedName.appendToBuffer(buffer, 6, 3);
+
+    // Assert
+    EXPECT_EQ(buffer, "STF");
+    EXPECT_EQ(mappedName.toString(10, 3), "XTE");
+}
+
+TEST(MappedName, appendSelf)
+{
+    // Arrange
+    Data::MappedName mappedName("AB");
+    mappedName += "cd";
+    Data::MappedName partial(mappedName);
+
+    // Act
+    mappedName += mappedName;
+    partial.append(partial, 1);
+
+    // Assert
+    EXPECT_EQ(mappedName.toString(), "ABcdABcd");
+    EXPECT_EQ(partial.toString(), "ABcdBcd");
+}
+
 TEST(MappedName, appendToBufferWithPrefix)
 {
     // Arrange
@@ -887,6 +917,7 @@ TEST(MappedName, startsWith)
     EXPECT_EQ(mappedName.startsWith("TEST"), true);
     EXPECT_EQ(mappedName.startsWith(std::string("TEST")), true);
     EXPECT_EQ(mappedName.startsWith("WASD"), false);
+    EXPECT_EQ(mappedName.startsWith("", mappedName.size() + 1), false);
 }
 
 TEST(MappedName, findTagInElementNameHexPositiveIndexNonrecursive)
@@ -979,6 +1010,18 @@ TEST(MappedName, findTagInElementNameHexExpectedNegativeIndexNonrecursive)
     EXPECT_EQ(lenOutput, 20);     // The calculated length based on the tag's length parameter
     EXPECT_EQ(postfix, ";:H-1b:10,F");
     EXPECT_EQ(type, 'F');  // F=Face
+}
+
+TEST(MappedName, findTagInElementNameWithoutTagValue)
+{
+    // A trailing tag postfix, optionally followed by just a sign, carries no tag to parse.
+    for (const char* name : {"Edge1;:H", "Edge1;:H-", "Edge1;:T", "Edge1;:T-"}) {
+        Data::MappedName mappedName(name);
+        long tagOutput {0};
+        int lenOutput {0};
+
+        EXPECT_EQ(mappedName.findTagInElementName(&tagOutput, &lenOutput), -1) << name;
+    }
 }
 
 TEST(MappedName, findTagInElementNameRecursive)
