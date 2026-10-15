@@ -702,11 +702,15 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
                 phi1 += 2 * M_PI;
             }
 
-            // Compute the maximum angular step to achieve the required accuracy
-            const double dx = ptPrev.x - vertex.m_c.x;
-            const double dy = ptPrev.y - vertex.m_c.y;
-            const double radius = sqrt(dx * dx + dy * dy);
-            const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
+            // The start and end points needn't be exactly the same distance from the center, so
+            // interpolate the radius from the start radius to the end radius along the arc
+            const double rStart = ptPrev.dist(vertex.m_c);
+            const double rEnd = vertex.m_p.dist(vertex.m_c);
+
+            // Compute the maximum angular step to achieve the required accuracy (using the larger
+            // radius, which needs the smaller step)
+            const double rMax = std::max(rStart, rEnd);
+            const double max_dphi = 2 * acos((rMax - CArea::m_accuracy) / rMax);
 
             // Determine the number of segments
             const int num_segments
@@ -728,9 +732,11 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
                     }
                 }
                 else {
-                    // Compute the interpoalted point
-                    const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
-                    const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
+                    // Compute the interpolated point
+                    const double interp = (double)i / num_segments;
+                    const double r = rStart * (1 - interp) + rEnd * interp;
+                    const double px = vertex.m_c.x + r * cos(phi0 + dphi * i);
+                    const double py = vertex.m_c.y + r * sin(phi0 + dphi * i);
                     newPt = getPoint64(px, py);
                     if (newPt == pPrev) {
                         continue;
