@@ -23,12 +23,12 @@ namespace
 
 Base::ByteBuffer toByteBuffer(const QByteArray& bytes)
 {
-    return Base::ByteBuffer::copy(Base::BytesView(bytes.constData(), bytes.size()));
+    return Base::ByteBuffer::copy(Base::asBytes(bytes.constData(), bytes.size()));
 }
 
 QByteArray toQByteArray(const Base::ByteBuffer& bytes)
 {
-    return QByteArray(bytes.data(), static_cast<int>(bytes.size()));
+    return QByteArray(reinterpret_cast<const char*>(bytes.data()), static_cast<int>(bytes.size()));
 }
 
 }  // namespace
@@ -42,7 +42,7 @@ protected:
     static App::StringID givenFlaggedStringID(App::StringID::Flag flag)
     {
         const long value {42};
-        return App::StringID {value, Base::ByteBuffer::copy("data"), flag};
+        return App::StringID {value, Base::ByteBuffer::copy(Base::asBytes("data")), flag};
     }
 };
 
@@ -50,7 +50,7 @@ TEST_F(StringIDTest, stringIDManualConstructionNoFlags)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
-    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy("data");
+    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy(Base::asBytes("data"));
 
     // Act
     auto id = App::StringID(expectedValue, expectedData);
@@ -65,7 +65,7 @@ TEST_F(StringIDTest, stringIDManualConstructionWithFlag)  // NOLINT
 {
     // Arrange
     const long expectedValue {42};
-    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy("data");
+    const Base::ByteBuffer expectedData = Base::ByteBuffer::copy(Base::asBytes("data"));
     const App::StringID::Flags expectedFlags {App::StringID::Flag::Binary};
 
     // Act
@@ -275,8 +275,8 @@ TEST_F(StringIDTest, toStringWithoutIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
-    auto idA = App::StringID(1, Base::ByteBuffer::copy("data"));
-    auto idB = App::StringID(bigHex, Base::ByteBuffer::copy("data"));
+    auto idA = App::StringID(1, Base::ByteBuffer::copy(Base::asBytes("data")));
+    auto idB = App::StringID(bigHex, Base::ByteBuffer::copy(Base::asBytes("data")));
 
     // Act
     auto resultA = idA.toString();
@@ -291,7 +291,7 @@ TEST_F(StringIDTest, toStringWithIndex)  // NOLINT
 {
     // Arrange
     const long bigHex = 0xfcad10;
-    auto id = App::StringID(1, Base::ByteBuffer::copy("data"));
+    auto id = App::StringID(1, Base::ByteBuffer::copy(Base::asBytes("data")));
 
     // Act
     auto resultA = id.toString(bigHex);
@@ -395,7 +395,7 @@ TEST_F(StringIDTest, fromStringQByteArray)  // NOLINT
 
     // Act
     auto result
-        = App::StringID::fromString(Base::BytesView(testString.constData(), testString.size()), true);
+        = App::StringID::fromString(Base::asBytes(testString.constData(), testString.size()), true);
 
     // Assert
     EXPECT_EQ(result.id, 1);
@@ -609,7 +609,7 @@ protected:
     }
 
 private:
-    Base::ByteBuffer _data {Base::ByteBuffer::copy("data")};
+    Base::ByteBuffer _data {Base::ByteBuffer::copy(Base::asBytes("data"))};
     int _id {1};
 };
 
@@ -1236,7 +1236,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayShort)  // NOLINT
 
     // Act
     auto id = Hasher()->getID(
-        Base::BytesView(qba.constData(), qba.size()),
+        Base::asBytes(qba.constData(), qba.size()),
         App::StringHasher::Option::Hashable
     );
 
@@ -1257,7 +1257,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongHashable)  // NOLINT
 
     // Act
     auto id = Hasher()->getID(
-        Base::BytesView(qba.constData(), qba.size()),
+        Base::asBytes(qba.constData(), qba.size()),
         App::StringHasher::Option::Hashable
     );
 
@@ -1277,7 +1277,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayLongUnhashable)  // NOLINT
 
     // Act
     auto id = Hasher()->getID(
-        Base::BytesView(qba.constData(), qba.size()),
+        Base::asBytes(qba.constData(), qba.size()),
         App::StringHasher::Option::None
     );
 
@@ -1297,7 +1297,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayNoCopy)  // NOLINT
 
     // Act
     auto id = Hasher()->getID(
-        Base::BytesView(qba.constData(), qba.size()),
+        Base::asBytes(qba.constData(), qba.size()),
         App::StringHasher::Option::NoCopy
     );
 
@@ -1316,8 +1316,8 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoDifferentStrings)  // NOLINT
     QByteArray qbaB(stringB.data(), stringB.size());
 
     // Act
-    auto idA = Hasher()->getID(Base::BytesView(qbaA.constData(), qbaA.size()));
-    auto idB = Hasher()->getID(Base::BytesView(qbaB.constData(), qbaB.size()));
+    auto idA = Hasher()->getID(Base::asBytes(qbaA.constData(), qbaA.size()));
+    auto idB = Hasher()->getID(Base::asBytes(qbaB.constData(), qbaB.size()));
 
     // Assert
     EXPECT_NE(idA.dataToText(), idB.dataToText());
@@ -1332,8 +1332,8 @@ TEST_F(StringHasherTest, getIDFromQByteArrayTwoIdenticalStrings)  // NOLINT
     QByteArray qbaB(stringB.data(), stringB.size());
 
     // Act
-    auto idA = Hasher()->getID(Base::BytesView(qbaA.constData(), qbaA.size()));
-    auto idB = Hasher()->getID(Base::BytesView(qbaB.constData(), qbaB.size()));
+    auto idA = Hasher()->getID(Base::asBytes(qbaA.constData(), qbaA.size()));
+    auto idB = Hasher()->getID(Base::asBytes(qbaB.constData(), qbaB.size()));
 
     // Assert
     EXPECT_EQ(idA.dataToText(), idB.dataToText());
@@ -1347,7 +1347,7 @@ TEST_F(StringHasherTest, getIDFromQByteArrayBinaryFlag)  // NOLINT
 
     // Act
     auto id = Hasher()->getID(
-        Base::BytesView(qba.constData(), qba.size()),
+        Base::asBytes(qba.constData(), qba.size()),
         App::StringHasher::Option::Binary
     );
 

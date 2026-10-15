@@ -24,7 +24,6 @@
 
 #include <FCConfig.h>
 
-#include <cassert>
 #include <bitset>
 #include <memory>
 #include <string>
