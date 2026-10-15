@@ -81,7 +81,9 @@ class TestSketchAttachmentSupport(unittest.TestCase):
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_attachment_link_to_part(self):
-        Gui.Selection.addSelection(self.doc.Name, self.linkToPart.Name, f"{self.boxInPart.Name}.Face6")
+        Gui.Selection.addSelection(
+            self.doc.Name, self.linkToPart.Name, f"{self.boxInPart.Name}.Face6"
+        )
 
         self._runCommand()
 
@@ -91,7 +93,9 @@ class TestSketchAttachmentSupport(unittest.TestCase):
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_attachment_original_part(self):
-        Gui.Selection.addSelection(self.doc.Name, self.originalPart.Name, f"{self.boxInPart.Name}.Face6")
+        Gui.Selection.addSelection(
+            self.doc.Name, self.originalPart.Name, f"{self.boxInPart.Name}.Face6"
+        )
 
         self._runCommand()
 
