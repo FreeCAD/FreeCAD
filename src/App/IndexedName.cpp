@@ -91,7 +91,7 @@ void IndexedName::set(const char* name,
     // If a list of allowedNames was provided, see if our set name matches one of those
     // allowedNames: if it does, reference that memory location and return.
     for (const auto* typeName : allowedNames) {
-        if (std::strncmp(name, typeName, suffixPosition) == 0) {
+        if (typePart == typeName) {
             this->type = typeName;
             return;
         }
