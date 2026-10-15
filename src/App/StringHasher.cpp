@@ -385,10 +385,12 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const std::vector<
         return res;
     }
 
-    if (!indexed && name.isRaw()) {
-        // Make a copy of the memory if we didn't do so earlier
+    // Make a copy of the memory (tempID borrows from name,
+    // which may not outlive the new StringID)
+    if (!indexed) {
         tempID._data = Base::ByteBuffer::copy(name.dataBytes());
     }
+    tempID._postfix.makeOwning();
 
     // If the postfix is not already encoded, use getID to encode it:
     StringIDRef postfixRef;
