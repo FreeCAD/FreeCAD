@@ -424,7 +424,7 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
-target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+target_link_libraries(FreeCADBase ${FreeCADBase_LIBS} ${CMAKE_DL_LIBS})
 
 if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)

@@ -1,29 +1,38 @@
-
 set(PACKAGE_WCREF "$WCREV$")
 set(PACKAGE_WCDATE "$WCDATE$")
 set(PACKAGE_WCURL "$WCURL$")
 
-# If the sources don't include a Version.h then create one
-if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
+# Source archives carry revision metadata for builds without Git.
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/FreeCADVersion.txt")
+    configure_file(FreeCADVersion.txt FreeCADVersion.txt COPYONLY)
+    add_custom_target(fc_version)
+else()
+    configure_file(FreeCADVersion.txt.cmake FreeCADVersion.txt.in)
+    add_custom_target(fc_version
+        BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/FreeCADVersion.txt"
+        COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/src/Tools/SubWCRev.py"
+            "--srcdir=${CMAKE_SOURCE_DIR}" "--bindir=${CMAKE_BINARY_DIR}"
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${CMAKE_CURRENT_BINARY_DIR}/FreeCADVersion.txt.out"
+            "${CMAKE_CURRENT_BINARY_DIR}/FreeCADVersion.txt"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        VERBATIM
+    )
+endif()
 
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Version.h.cmake
-                ${CMAKE_CURRENT_BINARY_DIR}/Version.h.in)
+# Keep metadata beside the library in both build and installed trees.
+add_custom_command(TARGET fc_version POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_FILE_DIR:FreeCADBase>"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+        "${CMAKE_CURRENT_BINARY_DIR}/FreeCADVersion.txt"
+        "$<TARGET_FILE_DIR:FreeCADBase>/FreeCADVersion.txt"
+    VERBATIM
+)
 
-    add_custom_command(
-        OUTPUT version_file
-        BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/Version.h
-        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/SubWCRev.py
-            --srcdir=${CMAKE_SOURCE_DIR} --bindir=${CMAKE_BINARY_DIR}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Version.h.out
-            ${CMAKE_CURRENT_BINARY_DIR}/Version.h
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Version.h.in)
-    set_source_files_properties(version_file PROPERTIES SYMBOLIC true)
-
-    ADD_CUSTOM_TARGET(fc_version DEPENDS version_file)
-
-else (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
-
-    ADD_CUSTOM_TARGET(fc_version DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
-
-endif (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
+if(WIN32)
+    set(version_install_dir "${CMAKE_INSTALL_BINDIR}")
+else()
+    set(version_install_dir "${CMAKE_INSTALL_LIBDIR}")
+endif()
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/FreeCADVersion.txt"
+    DESTINATION "${version_install_dir}")

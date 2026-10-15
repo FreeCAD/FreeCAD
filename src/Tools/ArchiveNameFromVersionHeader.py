@@ -8,7 +8,7 @@
 import sys, getopt, platform
 
 
-def deserializeVersionHeader(path):
+def deserializeVersionFile(path):
     version = {}
     try:
         dat = open(path, "r").readlines()
@@ -16,10 +16,10 @@ def deserializeVersionHeader(path):
         print("Unable to open ", path)
         raise
 
-    for l in dat:
-        tokens = l.split()
-        if len(tokens) > 1 and tokens[0].lower() == "#define":
-            version[tokens[1]] = tokens[2].replace('"', "")
+    for line in dat:
+        key, separator, value = line.rstrip("\r\n").partition("=")
+        if separator:
+            version[key] = value
 
     return version
 
@@ -29,7 +29,7 @@ def main():
     SHA = None
 
     if len(sys.argv) < 2:
-        sys.stderr.write("Usage:  archiveNameFromVersion <path to Version.h> [--git-SHA=]\n")
+        sys.stderr.write("Usage:  archiveNameFromVersion <path to FreeCADVersion.txt> [--git-SHA=]\n")
 
     try:
         opts, args = getopt.getopt(sys.argv[2:], "g:", ["git-SHA="])
@@ -40,7 +40,7 @@ def main():
         if o in ("-g", "--git-SHA"):
             SHA = a
 
-    version = deserializeVersionHeader(sys.argv[1])
+    version = deserializeVersionFile(sys.argv[1])
     if SHA:
         version["FCRepositoryHash"] = SHA
 
@@ -48,7 +48,7 @@ def main():
         "FreeCAD_{Major}.{Minor}-{RevCount}.{GitShortSHA}-{OS}-{Arch}".format(
             Major=version["FCVersionMajor"],
             Minor=version["FCVersionMinor"],
-            RevCount=version["FCRevision"],
+            RevCount=version["FCRevision"].split()[0],
             GitShortSHA=version["FCRepositoryHash"][0:7],
             OS=OSAbbrev.get(platform.system(), "LIN"),
             Arch=platform.machine(),

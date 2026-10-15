@@ -223,7 +223,7 @@ Development file for OndselSolver
     %define plugin_regexp /^\\\(libFreeCAD.*%(for i in %{plugins};       do echo -n "\\\|$i"; done)\\\)\\\(\\\|Gui\\\)\\.so/d
     %define exported_libs_regexp      /^\\\(%(for i in %{exported_libs}; do echo -n "\\\|$i"; done)\\\)\\.so/d
 
-    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e  '%{plugin_regexp}' -e '%exported_libs_regexp'`
+    new_plugins=`ls %{buildroot}%{_libdir}/%{name}/%{_lib} | sed -e '/^FreeCADVersion[.]txt$/d' -e '%{plugin_regexp}' -e '%exported_libs_regexp'`
     if [ -n "$new_plugins" ]; then
         echo -e "\n\n\n**** ERROR:\n" \
             "\nPlugins not caught by regexps:" \

@@ -2745,7 +2745,7 @@ void Application::initConfig(int argc, char ** argv)
         ApplicationDirectories::findHomePath(argv[0])
     );
 
-    // Version of the application extracted from SubWCRef into src/Build/Version.h
+    // Version of the application read from FreeCADVersion.txt
     // We only set these keys if not yet defined. Therefore it suffices to search
     // only for 'BuildVersionMajor'.
     if (Application::Config().find("BuildVersionMajor") == Application::Config().end()) {

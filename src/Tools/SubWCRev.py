@@ -11,10 +11,14 @@
 # 2011/02/05: The script was extended to support also Bazaar
 
 import os, sys, re, datetime, time, getopt
+from pathlib import Path
 from urllib.parse import urlparse
 import xml.sax
 import xml.sax.handler
 import xml.sax.xmlreader
+
+VERSION_IN = Path("src/Build/FreeCADVersion.txt.in")
+VERSION_OUT = VERSION_IN.with_suffix(".out")
 
 try:
     from StringIO import StringIO
@@ -81,7 +85,7 @@ class VersionControl:
 class UnknownControl(VersionControl):
     def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(bindir + "/src/Build/Version.h.out"):
+        if (Path(bindir) / VERSION_OUT).exists():
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
@@ -95,7 +99,7 @@ class UnknownControl(VersionControl):
 class DebianChangelog(VersionControl):
     def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(bindir + "/src/Build/Version.h.out"):
+        if (Path(bindir) / VERSION_OUT).exists():
             return False
         try:
             f = open(srcdir + "/debian/changelog")
@@ -233,9 +237,8 @@ class DebianGitHub(VersionControl):
 
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
-        content.append("// Git relevant stuff\n")
-        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
-        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        content.append("FCRepositoryHash=%s\n" % (self.hash))
+        content.append("FCRepositoryBranch=%s\n" % (self.branch))
         return content
 
     def printInfo(self):
@@ -417,9 +420,8 @@ class GitControl(VersionControl):
 
     def writeVersion(self, lines):
         content = VersionControl.writeVersion(self, lines)
-        content.append("// Git relevant stuff\n")
-        content.append('#define FCRepositoryHash   "%s"\n' % (self.hash))
-        content.append('#define FCRepositoryBranch "%s"\n' % (self.branch))
+        content.append("FCRepositoryHash=%s\n" % (self.hash))
+        content.append("FCRepositoryBranch=%s\n" % (self.branch))
         return content
 
 
@@ -524,19 +526,20 @@ def main():
         DebianChangelog(),
         UnknownControl(),
     ]
+    version_out = Path(bindir) / VERSION_OUT
     for i in vcs:
         if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file
-            inp = open("%s/src/Build/Version.h.in" % (bindir))
+            inp = (Path(bindir) / VERSION_IN).open()
             lines = inp.readlines()
             inp.close()
             lines = i.writeVersion(lines)
-            out = open("%s/src/Build/Version.h.out" % (bindir), "w")
+            out = version_out.open("w")
             out.writelines(lines)
             out.write("\n")
             out.close()
             i.printInfo()
-            sys.stdout.write("%s/src/Build/Version.h.out written\n" % (bindir))
+            sys.stdout.write(f"{version_out} written\n")
             break
 
 

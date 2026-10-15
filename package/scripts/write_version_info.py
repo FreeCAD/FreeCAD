@@ -12,7 +12,7 @@ import SubWCRev
 gitInfo = SubWCRev.GitControl()
 gitInfo.extractInfo("","")
 
-i = open("src/Build/Version.h.cmake")
+i = open("src/Build/FreeCADVersion.txt.cmake")
 content = []
 for line in i.readlines():
 	line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
@@ -20,10 +20,9 @@ for line in i.readlines():
 	line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
 	content.append(line)
 
-with open("src/Build/Version.h.cmake", "w") as o:
-	content.append('// Git relevant stuff\n')
-	content.append('#define FCRepositoryHash   "%s"\n' % (gitInfo.hash))
-	content.append('#define FCRepositoryBranch "%s"\n' % (gitInfo.branch))
+with open("src/Build/FreeCADVersion.txt.cmake", "w") as o:
+	content.append("FCRepositoryHash=%s\n" % (gitInfo.hash))
+	content.append("FCRepositoryBranch=%s\n" % (gitInfo.branch))
 	o.writelines(content)
 
 with open("src/Tools/SubWCRev.py", "r") as f:

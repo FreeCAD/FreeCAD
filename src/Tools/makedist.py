@@ -53,7 +53,7 @@ def main():
     info = os.popen("git rev-list HEAD").read()
     revision = "%04d" % (info.count("\n"))
 
-    verfile = open("{}/src/Build/Version.h".format(bindir), "rb")
+    verfile = open("{}/src/Build/FreeCADVersion.txt".format(bindir), "rb")
     verstream = io.BytesIO(verfile.read())
     verfile.close()
 
@@ -69,7 +69,7 @@ def main():
     if dfsg:
         TGZNAME = DIRNAME + "-dfsg.tar.gz"
 
-    verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
+    verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/FreeCADVersion.txt")
     verinfo.mode = 0o660
     verinfo.size = len(verstream.getvalue())
     verinfo.mtime = time.time()
