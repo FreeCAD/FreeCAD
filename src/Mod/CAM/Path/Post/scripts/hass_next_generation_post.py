@@ -356,9 +356,6 @@ class HaasNextGeneration(PostProcessor):
                 prop["default"] = "G90 G94 G17"
             elif name == "postamble":
                 prop["default"] = "M5\nM9\nM30"
-            elif name == "safetyblock":  # TODO this is being used as safe retracts mode
-                # The preamble establishes the safe state; a separate block would repeat it.
-                prop["default"] = "G53 G0 Z0\n"
             elif name == "pre_tool_change":
                 prop["default"] = "M05\nG28 G91 Z0\nG90"
             elif name == "drill_cycles_to_translate":
