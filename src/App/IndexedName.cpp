@@ -24,8 +24,10 @@
 
 #include <algorithm>
 #include <cctype>
-#include <cstdlib>
+#include <charconv>
 #include <cstring>
+#include <memory>
+#include <string_view>
 #include <unordered_set>
 
 #include "IndexedName.h"
@@ -39,30 +41,20 @@ inline bool isInvalidChar(char test)
 }
 
 /// Get the integer suffix of name. Returns a tuple of (suffix, suffixPosition). Calling code
-/// should check to ensure that suffixPosition is not equal to nameLength (in which case there was
+/// should check to ensure that suffixPosition is not equal to name.size() (in which case there was
 /// no suffix).
 ///
 /// \param name The name to check
-/// \param nameLength The length of the string in name
 /// \returns An integer pair of the suffix itself and the position of that suffix in name
-std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
+std::pair<int, int> getIntegerSuffix(std::string_view name)
 {
-    int suffixPosition {nameLength - 1};
-
-    for (; suffixPosition >= 0; --suffixPosition) {
-        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-        if (!isdigit(name[suffixPosition])) {
-            break;
-        }
-    }
-    ++suffixPosition;
+    const auto it = std::find_if_not(name.rbegin(), name.rend(), [](char c) {
+        return std::isdigit(static_cast<unsigned char>(c));
+    });
+    const auto suffixPosition = static_cast<int>(name.rend() - it);
     int suffix {0};
-    if (suffixPosition < nameLength) {
-        // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-        // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-        suffix = std::atoi(name + suffixPosition);
-    }
+    const auto digits = name.substr(suffixPosition);
+    std::from_chars(digits.data(), std::to_address(digits.end()), suffix);
     return std::make_pair(suffix, suffixPosition);
 }
 
@@ -77,17 +69,17 @@ void IndexedName::set(const char* name,
     if (length < 0) {
         length = static_cast<int>(std::strlen(name));
     }
+    const std::string_view nameView(name, length);
     // Name typically ends with an integer: find that integer
-    auto [suffix, suffixPosition] = getIntegerSuffix(name, length);
+    auto [suffix, suffixPosition] = getIntegerSuffix(nameView);
     if (suffixPosition < length) {
         this->index = suffix;
     }
 
     // Make sure that every character is either an ASCII letter (upper or lowercase), or an
     // underscore. If any other character appears, reject the entire string.
-    // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-    if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
+    const auto typePart = nameView.substr(0, suffixPosition);
+    if (std::ranges::any_of(typePart, isInvalidChar)) {
         this->type = "";
         this->index = 0;
         return;
