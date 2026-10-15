@@ -104,6 +104,10 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
     Currently handles:
     - TorusRadius → CornerRadius
     - FlatRadius/Diameter → CornerRadius
+    - Dovetail without NeckCuttingHeight → NeckCuttingHeight = 0
+    - Reamer without FluteLength → FluteLength = its CuttingEdgeHeight, which
+      used to be the fluted length and is now derived (0); this must run before
+      the shape's derived parameters are applied, or that value is lost
     - Infers Units from parameter strings if not set
 
     Args:
@@ -182,5 +186,40 @@ def migrate_parameters(accessor: ParameterAccessor) -> bool:
                 migrated = True
             except Exception as e:
                 Path.Log.error(f"Failed to migrate FlatRadius for toolbit {name}: {e}")
+
+    kind = str(shape_type or "").lower()
+
+    # Dovetails saved before NeckCuttingHeight existed have no fluted neck.
+    if kind == "dovetail" and not accessor.has("NeckCuttingHeight"):
+        diam_raw = accessor.get("Diameter") if accessor.has("Diameter") else None
+        if isinstance(diam_raw, str) and diam_raw.strip().endswith("in"):
+            value = "0.0000 in"
+        else:
+            value = "0.0000 mm"
+
+        accessor.add_property(
+            "App::PropertyLength",
+            "NeckCuttingHeight",
+            "Shape",
+            "Fluted length of the neck above the head",
+        )
+        accessor.set_editor_mode("NeckCuttingHeight", 0)
+        accessor.set("NeckCuttingHeight", value)
+        Path.Log.info(f"Added NeckCuttingHeight={value} for {name}")
+        migrated = True
+
+    # A reamer's CuttingEdgeHeight used to be the length of its fluted body.
+    if kind == "reamer" and not accessor.has("FluteLength") and accessor.has("CuttingEdgeHeight"):
+        value = accessor.get("CuttingEdgeHeight")
+        accessor.add_property(
+            "App::PropertyLength",
+            "FluteLength",
+            "Shape",
+            "Length of the fluted body",
+        )
+        accessor.set_editor_mode("FluteLength", 0)
+        accessor.set("FluteLength", value)
+        Path.Log.info(f"Copied CuttingEdgeHeight to FluteLength={value} for {name}")
+        migrated = True
 
     return migrated

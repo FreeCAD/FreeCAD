@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 import FreeCAD
-from typing import Tuple, Mapping
+from typing import Any, Tuple, Mapping
 from .base import ToolBitShape
 
 
@@ -32,6 +32,10 @@ class ToolBitShapeTap(ToolBitShape):
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
             "CuttingEdgeLength": (
                 FreeCAD.Qt.translate("ToolBitShape", "Cutting edge length"),
                 "App::PropertyLength",
@@ -61,6 +65,14 @@ class ToolBitShapeTap(ToolBitShape):
                 "App::PropertyLength",
             ),
         }
+
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """
+        A tap cuts only at its point as it is fed in, never sideways, so it has
+        no cutting edge height. The threaded length is CuttingEdgeLength.
+        """
+        return {"CuttingEdgeHeight": lambda p: 0.0}
 
     @property
     def label(self) -> str:
