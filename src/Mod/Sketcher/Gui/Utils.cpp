@@ -23,16 +23,16 @@
  ***************************************************************************/
 
 #include <QCursor>
-#include <QDockWidget>
 #include <QLocale>
 #include <QRegularExpression>
 
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <Gui/ComboView.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
+#include <Gui/DockWindowManager.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -1014,14 +1014,16 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
 
 Gui::TreeWidget* SketcherGui::findModelTreeWidget()
 {
-    Gui::MainWindow* mw = Gui::getMainWindow();
-    if (!mw) {
-        return nullptr;
-    }
+    // The target dock's name depends on the tree mode
+    // (Independent -> "Tree view", Combined -> "Model").
+    auto* mgr = Gui::DockWindowManager::instance();
 
-    auto dock = mw->findChild<QDockWidget*>("Model");
-    if (!dock) {
-        return nullptr;
+    auto* dock = mgr->getDockWindow("Tree view");
+    if (!dock || !dock->inherits("Gui::TreeDockWidget")) {
+        dock = mgr->getDockWindow("Model");
+        if (!dock || !dock->inherits("Gui::DockWnd::ComboView")) {
+            return nullptr;
+        }
     }
 
     for (auto* w : dock->findChildren<QWidget*>()) {
