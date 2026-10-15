@@ -48,6 +48,8 @@ add_executable(Base_tests_run
         Writer.cpp
         XMLParser.cpp
         XMLTools.cpp
+        ZipOutputStream.cpp
+        ZipReader.cpp
 )
 
 setup_qt_test(InventorBuilder)

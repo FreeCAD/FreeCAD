@@ -28,9 +28,9 @@
 #include <vector>
 #include <fastsignals/signal.h>
 
-namespace zipios
+namespace Base
 {
-class ZipInputStream;
+class ZipReader;
 }
 namespace App
 {
@@ -56,7 +56,7 @@ public:
     void RestoreDocFile(Base::Reader& r) override;
 
 private:
-    zipios::ZipInputStream* stream {nullptr};
+    const Base::ZipReader* zip {nullptr};
     App::Document* appdoc;
     Gui::Document* document;
     std::vector<App::DocumentObject*> objects;

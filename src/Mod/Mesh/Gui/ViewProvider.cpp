@@ -62,6 +62,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/ViewProj.h>
+#include <Base/ZipOutputStream.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -86,7 +87,6 @@
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
-#include <zipios++/gzipoutputstream.h>
 
 #include "SoFCIndexedFaceSet.h"
 #include "SoFCMeshObject.h"
@@ -735,7 +735,7 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     Base::FileInfo fi(filename);
     if (binary) {
         Base::ofstream str(fi, std::ios::out | std::ios::binary);
-        zipios::GZIPOutputStream gzip(str);
+        Base::GZipOutputStream gzip(str);
         if (gzip) {
             gzip << buffer;
             gzip.close();

@@ -26,7 +26,6 @@ if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
     add_definitions(-DBOOST_DYN_LINK)
-    add_definitions(-DZIPIOS_UTF8)
 endif(WIN32)
 
 if(BUILD_TRACY_FRAME_PROFILER)
@@ -55,7 +54,6 @@ target_include_directories(
     ${Python3_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${ZIPIOS_INCLUDES}
     ${ICU_INCLUDE_DIRS}
 )
 
@@ -296,7 +294,8 @@ SET(FreeCADBase_CPP_SRCS
     Writer.cpp
     XMLTools.cpp
     XMLParser.cpp
-    ZipHeader.cpp
+    ZipOutputStream.cpp
+    ZipReader.cpp
 )
 
 SET(SWIG_HEADERS
@@ -370,7 +369,8 @@ SET(FreeCADBase_HPP_SRCS
     Writer.h
     XMLTools.h
     XMLParser.h
-    ZipHeader.h
+    ZipOutputStream.h
+    ZipReader.h
 )
 
 SET (FreeCADBase_CrashReporter_SRCS
@@ -410,12 +410,7 @@ IF (MSVC)
 
 ENDIF(MSVC)
 
-if(FREECAD_USE_EXTERNAL_ZIPIOS)
-    list(APPEND FreeCADBase_LIBS ${ZIPIOS_LIBRARY})
-else()
-    list(APPEND FreeCADBase_SRCS ${zipios_SRCS})
-    SOURCE_GROUP("zipios" FILES ${zipios_SRCS})
-endif()
+list(APPEND FreeCADBase_LIBS zipios)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(FreeCADBase PRIVATE

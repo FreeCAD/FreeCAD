@@ -5,7 +5,6 @@
 #include <Mod/Mesh/App/Core/IO/Reader3MF.h>
 #include <Mod/Mesh/App/Core/IO/ReaderOBJ.h>
 #include <xercesc/util/PlatformUtils.hpp>
-#include <zipios++/fcoll.h>
 
 class ImporterTest: public ::testing::Test
 {

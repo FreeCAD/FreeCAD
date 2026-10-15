@@ -1,0 +1,24 @@
+Emeritus main author:     Thomas Sondergaard (thomass@deltadata.dk)
+FreeBSD port maintainer:  Ying-Chieh Liao    (ijliao@csie.nctu.edu.tw)
+Conversion to c++11:      Alexis Wilke       (alexis@m2osw.com)
+General management stuff: Russel Winder      (russel@winder.org.uk)
+
+The files zipios++/directory.h and zipios++/directory.cpp originate
+from the dir_it library written by Dietmar Kuehl (it's available for
+download at http://www.boost.org)
+
+contrib/zipios++.spec.in contributed by Rui Miguel Silva Seabra
+
+libtool/shared library patch contributed by Arkadiusz Miskiewicz (arekm)
+
+Russel Winder (was r.winder@180sw.com, now russel@winder.org.uk) did the work
+of amending the code so as to work with GCC 3.2.1.
+
+Ross Burton (was r.burton@180sw.com, now ...) transformed zipios++.spec into
+zipios++.spec.in and made it more RedHat tradition conformant.
+
+Mark Donszelmann (Mark.Donszelmann@slac.stanford.edu) added gzipoutputstream
+and made several fixes for Visual C++ 6.0 and 7.0.
+
+Alexis Wilke converted version 1.x to 2.x and made it C++11 compatible.
+The API changed fairly heavily to comply with newer C++ versions.

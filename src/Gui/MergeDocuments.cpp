@@ -24,12 +24,11 @@
 #include <stack>
 
 
-#include <zipios++/zipinputstream.h>
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/ZipReader.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
@@ -106,12 +105,16 @@ unsigned int MergeDocuments::getMemSize() const
 std::vector<App::DocumentObject*> MergeDocuments::importObjects(std::istream& input)
 {
     this->nameMap.clear();
-    this->stream = new zipios::ZipInputStream(input);
-    XMLMergeReader reader(this->nameMap, "<memory>", *stream);
+    Base::ZipReader zipReader(input);
+    auto documentStream = zipReader.getInputStream("Document.xml");
+    if (!documentStream) {
+        throw Base::FileException("No Document.xml in the objects to import");
+    }
+    this->zip = &zipReader;
+    XMLMergeReader reader(this->nameMap, "<memory>", *documentStream);
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
-    delete this->stream;
-    this->stream = nullptr;
+    this->zip = nullptr;
 
     return objs;
 }
@@ -127,7 +130,7 @@ void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Ba
     }
     Restore(r);
 
-    r.readFiles(*this->stream);
+    r.readFiles(*this->zip);
 }
 
 void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer& w)

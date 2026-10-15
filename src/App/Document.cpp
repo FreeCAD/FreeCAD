@@ -48,6 +48,7 @@
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
+#include <zlib.h>
 
 #include <QCryptographicHash>
 #include <QCoreApplication>
@@ -69,6 +70,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/UnitsApi.h>
+#include <Base/ZipReader.h>
 
 #include "Document.h"
 #include "private/DocumentP.h"
@@ -83,14 +85,6 @@
 #include "StringHasher.h"
 #include "Transactions.h"
 
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
-#include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
-
 
 FC_LOG_LEVEL_INIT("App", true, true, true)
 
@@ -99,7 +93,6 @@ using Base::streq;
 using Base::Writer;
 using namespace App;
 using namespace boost;
-using namespace zipios;
 
 #if FC_DEBUG
 #define FC_LOGFEATUREUPDATE
@@ -1204,8 +1197,8 @@ void Document::Restore(Base::XMLReader& reader)
         reader.readElement("Features");
         for (auto i = 0; i < reader.getAttribute<long>("Count"); i++) {
             reader.readElement("Feature");
-            string type = reader.getAttribute<const char*>("type");
-            string name = reader.getAttribute<const char*>("name");
+            std::string type = reader.getAttribute<const char*>("type");
+            std::string name = reader.getAttribute<const char*>("name");
             try {
                 addObject(type.c_str(), name.c_str(), /*isNew=*/false);
             }
@@ -1219,7 +1212,7 @@ void Document::Restore(Base::XMLReader& reader)
         reader.readElement("FeatureData");
         for (auto i = 0; i < reader.getAttribute<long>("Count"); i++) {
             reader.readElement("Feature");
-            string name = reader.getAttribute<const char*>("name");
+            std::string name = reader.getAttribute<const char*>("name");
             DocumentObject* pObj = getObject(name.c_str());
             if (pObj) {  // check if this feature has been registered
                 pObj->setStatus(ObjectStatus::Restore, true);
@@ -2186,8 +2179,12 @@ void Document::restore(const char* filename,
         throw Base::FileException("Invalid project file", filename);
     }
 
-    zipios::ZipInputStream zipstream(file);
-    Base::XMLReader reader(filename, zipstream);
+    Base::ZipReader zip(file);
+    auto documentStream = zip.getInputStream("Document.xml");
+    if (!documentStream) {
+        throw Base::FileException("Error reading compression file", filename);
+    }
+    Base::XMLReader reader(filename, *documentStream);
 
     if (!reader.isValid()) {
         throw Base::FileException("Error reading compression file", filename);
@@ -2216,7 +2213,7 @@ void Document::restore(const char* filename,
     // Note: This file doesn't need to be available if the document has been created
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
-    reader.readFiles(zipstream);
+    reader.readFiles(zip);
 
     DocumentP::checkStringHasher(reader);
 
@@ -2437,9 +2434,9 @@ bool Document::isTouched() const
     return false;
 }
 
-vector<DocumentObject*> Document::getTouched() const
+std::vector<DocumentObject*> Document::getTouched() const
 {
-    vector<DocumentObject*> result;
+    std::vector<DocumentObject*> result;
 
     for (auto It : d->objectArray) {
         if (It->isTouched()) {
@@ -3427,7 +3424,7 @@ void Document::addObject(DocumentObject* obj, const char* name)
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)
 {
     // get unique name
-    string ObjectName;
+    std::string ObjectName;
     if (!Base::Tools::isNullOrEmpty(pObjectName)) {
         ObjectName = getUniqueObjectName(pObjectName);
     }

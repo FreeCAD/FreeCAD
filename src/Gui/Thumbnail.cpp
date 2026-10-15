@@ -32,10 +32,7 @@
 #include <App/Application.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
-#ifdef _MSC_VER
-# include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipfile.h>
+#include <Base/ZipReader.h>
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -130,20 +127,11 @@ void Thumbnail::SaveDocFile(Base::Writer& writer) const
         Base::FileInfo fi(filename.toUtf8().constData());
         if (fi.exists()) {
             try {
-                zipios::ZipFile zf(fi.filePath());
-                // getEntry uses default MatchPath=MATCH.
-                zipios::ConstEntryPointer entry = zf.getEntry("thumbnails/Thumbnail.png");
-                if (entry && entry->isValid()) {
-                    // getInputStream returns a pointer that must be deleted
-                    std::istream* is = zf.getInputStream(entry);
-                    if (is) {
-                        if (is->good()) {
-                            writer.Stream() << is->rdbuf();
-                            delete is;
-                            return;
-                        }
-                        delete is;
-                    }
+                Base::ZipReader zf(fi);
+                auto is = zf.getInputStream("thumbnails/Thumbnail.png");
+                if (is && is->good()) {
+                    writer.Stream() << is->rdbuf();
+                    return;
                 }
             }
             catch (const std::exception&) {

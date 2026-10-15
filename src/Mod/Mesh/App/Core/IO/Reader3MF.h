@@ -42,9 +42,9 @@ class DOMNamedNodeMap;
 class XercesDOMParser;
 }  // namespace XERCES_CPP_NAMESPACE
 
-namespace zipios
+namespace Base
 {
-class FileCollection;
+class ZipReader;
 }
 
 namespace MeshCore
@@ -69,6 +69,7 @@ public:
      * Passes a file name to the constructor
      */
     explicit Reader3MF(const std::string& filename);
+    ~Reader3MF();
     /*!
      * \brief Load the mesh from the input stream or file
      * \return true on success and false otherwise
@@ -133,7 +134,7 @@ private:
         int objectId = -1;
     };
     std::vector<MeshKernelAndTransform> meshes;
-    std::unique_ptr<zipios::FileCollection> file;
+    std::unique_ptr<Base::ZipReader> file;
     std::unique_ptr<std::istream> zip;
 };
 

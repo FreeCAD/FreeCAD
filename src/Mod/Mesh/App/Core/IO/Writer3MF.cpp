@@ -28,6 +28,7 @@
 
 #include "Core/Evaluation.h"
 #include "Core/MeshKernel.h"
+#include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <Base/XMLTools.h>
 
@@ -44,7 +45,7 @@ Writer3MF::Writer3MF(std::ostream& str)
 }
 
 Writer3MF::Writer3MF(const std::string& filename)
-    : zip(filename)
+    : zip(Base::FileInfo(filename))
 {
     zip.putNextEntry("3D/3dmodel.model");
     Initialize(zip);

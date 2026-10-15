@@ -29,13 +29,12 @@
 #include <locale>
 #include <ranges>
 
-#include <zipios++/zipinputstream.h>
-
 #include <unicode/utf8.h>
 
 #include "Exception.h"
 #include "Reader.h"
 #include "Writer.h"
+#include "ZipReader.h"
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Persistence.h"
@@ -218,8 +217,12 @@ void Persistence::dumpToStream(std::ostream& stream, int compression)
 
 void Persistence::restoreFromStream(std::istream& stream)
 {
-    zipios::ZipInputStream zipstream(stream);
-    Base::XMLReader reader("", zipstream);
+    ZipReader zip(stream);
+    auto content = zip.getInputStream("Persistence.xml");
+    if (!content) {
+        throw Base::ValueError("Unable to construct reader");
+    }
+    Base::XMLReader reader("", *content);
 
     if (!reader.isValid()) {
         throw Base::ValueError("Unable to construct reader");
@@ -227,6 +230,6 @@ void Persistence::restoreFromStream(std::istream& stream)
 
     reader.readElement("Content");
     Restore(reader);
-    reader.readFiles(zipstream);
+    reader.readFiles(zip);
     restoreFinished();
 }

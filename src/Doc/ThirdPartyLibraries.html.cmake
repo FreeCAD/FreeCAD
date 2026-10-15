@@ -97,8 +97,8 @@
       </tr>
 
       <tr>
-         <th align = 'left' > <a href = 'https://zipios.sourceforge.net' > Zipios++ </a> </th>
-         <td> <code> ${VTK_VERSION} </code> </td>
+         <th align = 'left' > <a href = 'https://github.com/Zipios/Zipios' > Zipios </a> </th>
+         <td> <code> ${ZIPIOS_VERSION} </code> </td>
          <th colspan = '5' ></th>
          <th align = 'left' > <a href = 'https://zlib.net' > zlib </a> </th>
          <td> <code> ${ZLIB_VERSION_STRING} </code> </td>

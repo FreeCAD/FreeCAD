@@ -1,5 +1,5 @@
 # Some configuration options for other environments
-# rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
+# rpmbuild --without=bundled_zipios: don't use bundled version of Zipios
 %bcond_without  bundled_zipios
 # rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
 %bcond_with bundled_pycxx
@@ -57,7 +57,7 @@ BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel libglvnd-deve
 BuildRequires:  smesh-devel
 %endif
 %if %{without bundled_zipios}
-BuildRequires:  zipios++-devel
+BuildRequires:  zipios-devel
 %endif
 %if %{without bundled_pycxx}
 BuildRequires:  python3-pycxx-devel

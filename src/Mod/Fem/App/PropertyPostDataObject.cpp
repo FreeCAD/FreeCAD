@@ -58,14 +58,10 @@
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
+#include <Base/ZipOutputStream.h>
+#include <Base/ZipReader.h>
 #include <CXX/Objects.hxx>
 
-
-#ifdef _MSC_VER
-# include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/zipinputstream.h>
 
 #include "PropertyPostDataObject.h"
 
@@ -347,7 +343,7 @@ void PropertyPostDataObject::Restore(Base::XMLReader& reader)
     }
 }
 
-void add_to_zip(Base::FileInfo path, int zip_path_idx, zipios::ZipOutputStream& ZipWriter)
+void add_to_zip(Base::FileInfo path, int zip_path_idx, Base::ZipOutputStream& ZipWriter)
 {
 
     if (path.isDir()) {
@@ -435,9 +431,8 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
     }
     else if (m_dataObject->IsA("vtkMultiBlockDataSet")) {
         // ZIP file we store all data in
-        zipios::ZipOutputStream ZipWriter(fi.filePath());
-        ZipWriter.putNextEntry("dummy");  // need to add a dummy first, as the read stream preloads
-                                          // the first entry, and we cannot get the file name...
+        Base::ZipOutputStream ZipWriter(fi);
+        ZipWriter.putNextEntry("dummy");  // FreeCAD 1.1 and older skip the first entry
         add_to_zip(datafolder, datafolder.filePath().length(), ZipWriter);
         ZipWriter.close();
         datafolder.deleteDirectoryRecursive();
@@ -500,29 +495,31 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
         else if (extension == "zip") {
 
             // first unzip the file into a datafolder
-            zipios::ZipInputStream ZipReader(fi.filePath());
             fo = Base::FileInfo(App::Application::getTempPath() + "vtk_extract_datadir");
             fo.createDirectories();
 
             try {
-                zipios::ConstEntryPointer entry = ZipReader.getNextEntry();
-                while (entry->isValid()) {
+                Base::ZipReader ZipReader(fi);
+                for (const auto& name : ZipReader.entryNames()) {
+                    // the empty first entry, see SaveDocFile()
+                    if (name == "dummy") {
+                        continue;
+                    }
                     // The entry names come straight out of the stored file and are attacker
                     // controlled, so they must never be joined to the extraction directory
                     // unchecked.
-                    auto safeName = Base::FileInfo::safeArchiveEntryPath(entry->getName());
+                    auto safeName = Base::FileInfo::safeArchiveEntryPath(name);
                     if (!safeName) {
                         Base::Console().error(
                             "Skipped dataset entry '{}': the name escapes the extraction "
                             "directory\n",
-                            entry->getName()
+                            name
                         );
-                        entry = ZipReader.getNextEntry();
                         continue;
                     }
 
                     Base::FileInfo entry_path(fo.filePath() + "/" + *safeName);
-                    if (entry->isDirectory()) {
+                    if (name.back() == '/') {
                         // seems not to be called
                         entry_path.createDirectories();
                     }
@@ -533,16 +530,16 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
                         }
 
                         Base::ofstream file(entry_path, std::ios::out | std::ios::binary);
-                        std::streambuf* buf = file.rdbuf();
-                        ZipReader >> buf;
+                        if (auto entry = ZipReader.getInputStream(name)) {
+                            *entry >> file.rdbuf();
+                        }
                         file.flush();
                         file.close();
                     }
-                    entry = ZipReader.getNextEntry();
                 }
             }
             catch (const std::exception&) {
-                // there is no further entry
+                // the file isn't a zip archive that can be read
             }
 
             // create the reader, and change the file for it to read. Also delete zip file, not
