@@ -35,6 +35,7 @@ SHAPEMAP = {
     "ballend": "Ballnose",
     "endmill": "Cylindrical",
     "taperedballnose": "Ballnose",
+    "lollipop": "Ballnose",
     "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",

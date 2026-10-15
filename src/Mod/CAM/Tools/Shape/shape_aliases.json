@@ -48,6 +48,20 @@
         ],
         "subtypes": []
     },
+    "Keyway": {
+        "aliases": [
+            "keyway",
+            "keyseat",
+            "woodruff"
+        ],
+        "subtypes": []
+    },
+    "Lollipop": {
+        "aliases": [
+            "lollipop"
+        ],
+        "subtypes": []
+    },
     "Probe": {
         "aliases": [
             "probe"

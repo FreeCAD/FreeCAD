@@ -89,6 +89,17 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         self.assertIsNotNone(cutter)
         self.assertAlmostEqual(cutter.getDiameter(), 10.0)
 
+    def test01b_create_lollipop(self):
+        """
+        A lollipop cuts with its ball, so OCL models it as a ball-nose cutter.
+        """
+        from Path.Base.Generator.surface_common import make_ocl_cutter
+
+        cutter = make_ocl_cutter("Lollipop", 6.35, edge_height=5.92)
+        self.assertIsNotNone(cutter)
+        self.assertIn("BallCutter", type(cutter).__name__)
+        self.assertAlmostEqual(cutter.getDiameter(), 6.35)
+
     def test02_create_bullnose(self):
         """
         Creates a bullnose cutter (end mill with corner radius) from tool parameters.

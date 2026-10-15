@@ -136,6 +136,7 @@ class CamoticsSimulation(QtCore.QObject):
         "ballend": "Ballnose",
         "endmill": "Cylindrical",
         "taperedballnose": "Ballnose",
+        "lollipop": "Ballnose",
         "v-bit": "Conical",
         "chamfer": "Snubnose",
     }
