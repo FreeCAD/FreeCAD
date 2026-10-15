@@ -44,6 +44,7 @@
 #include "GeometryObject.h"
 #include "Cosmetic.h"
 #include "DrawUtil.h"
+#include "LineGenerator.h"
 
 // inclusion of the generated files (generated out of DrawViewPartPy.xml)
 #include <Mod/TechDraw/App/CosmeticVertexPy.h>
@@ -909,10 +910,11 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
         gf->m_format.setColor(color);
         gf->m_format.setWidth(weight);
         gf->m_format.setVisible(visible);
-        gf->m_format.setLineNumber(lineNumber);
+        gf->m_format.setLineNumber(TechDraw::LineGenerator::fromQtStyle((Qt::PenStyle) style));
     }
     else {
-        TechDraw::LineFormat fmt(style, weight, color, visible, lineNumber);
+        TechDraw::LineFormat fmt(style, weight, color, visible,
+                                TechDraw::LineGenerator::fromQtStyle((Qt::PenStyle) style));
         auto* newGF = new TechDraw::GeomFormat(idx, fmt);
 //                    int idx =
         dvp->addGeomFormat(newGF);
@@ -920,6 +922,56 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 
     Py_Return;
 }
+
+//! applies a line format to an edge.  The line format is built from the parameters: line number, width, color (RGBA),
+//! visible.
+PyObject* DrawViewPartPy::decorateLine(PyObject *args)
+{
+    char* selName{};           //Selection routine name - "Edge0"
+    int lineNumber{};
+    double weight{};
+    int visible{};
+    PyObject* pColor{};
+
+    if (!PyArg_ParseTuple(args, "sidOp", &selName, &lineNumber, &weight, &pColor, &visible)) {
+        return nullptr;
+    }
+
+    const TechDraw::LineFormat format(Qt::NoPen, weight, DrawUtil::pyTupleToColor(pColor),
+                                     visible, lineNumber);
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    int edgeIndex = DrawUtil::getIndexFromName(std::string(selName));
+
+    TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(edgeIndex);
+    if (geom->getCosmetic()) {
+        if (geom->source() == SourceType::COSMETICEDGE) {
+            TechDraw::CosmeticEdge *ce = dvp->getCosmeticEdgeBySelection(selName);
+            if (ce) {
+                ce->m_format = format;
+            }
+            Py_Return;
+        }
+
+        if (geom->source() == SourceType::CENTERLINE) {
+            TechDraw::CenterLine *cl = dvp->getCenterLineBySelection(selName);
+            if (cl) {
+                cl->m_format = format;
+            }
+            Py_Return;
+        }
+    }
+
+    // regular edge SourceType::GEOMETRY
+    TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(selName);
+    if (gf) {
+        gf->m_format = format;
+    }
+    else {
+        dvp->addGeomFormat(new TechDraw::GeomFormat(edgeIndex, format));
+    }
+    Py_Return;
+}
+
 
 //------------------------------------------------------------------------------
 PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
@@ -1055,4 +1107,3 @@ int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
