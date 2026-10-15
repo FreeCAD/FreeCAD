@@ -1078,7 +1078,7 @@ class HaasNextGeneration(PostProcessor):
                         if str(
                             getattr(item.data.get("tool_controller").Tool, "ShapeType", "")
                         ).lower() not in ["probe", "drill"] and not isinstance(
-                            getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom
+                            PathDressup.baseOp(item.source).Proxy, Path.Op.Custom.ObjectCustom
                         ):
                             if not self._ssv_active:
                                 rebuilt.append(
@@ -1124,9 +1124,9 @@ class HaasNextGeneration(PostProcessor):
                                 level = 3
 
                         if not isinstance(
-                            getattr(item, "Proxy", None), Path.Op.Drilling.ObjectDrilling
+                            PathDressup.baseOp(item.source).Proxy, Path.Op.Drilling.ObjectDrilling
                         ) and not isinstance(
-                            getattr(item, "Proxy", None), Path.Op.Custom.ObjectCustom
+                            PathDressup.baseOp(item.source).Proxy, Path.Op.Custom.ObjectCustom
                         ):  # TODO this needs to be false on multi-axis ops as well
                             rebuilt.append(
                                 self._make_postable("Post: smoothing", [f"G187 P{level}"])
