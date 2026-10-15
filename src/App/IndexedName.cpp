@@ -72,17 +72,17 @@ void IndexedName::set(const char* name,
     if (length < 0) {
         length = static_cast<int>(std::strlen(name));
     }
+    const std::string_view nameView(name, length);
     // Name typically ends with an integer: find that integer
-    auto [suffix, suffixPosition] = getIntegerSuffix(std::string_view(name, length));
+    auto [suffix, suffixPosition] = getIntegerSuffix(nameView);
     if (suffixPosition < length) {
         this->index = suffix;
     }
 
     // Make sure that every character is either an ASCII letter (upper or lowercase), or an
     // underscore. If any other character appears, reject the entire string.
-    // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
-    // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
-    if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
+    const auto typePart = nameView.substr(0, suffixPosition);
+    if (std::ranges::any_of(typePart, isInvalidChar)) {
         this->type = "";
         this->index = 0;
         return;
