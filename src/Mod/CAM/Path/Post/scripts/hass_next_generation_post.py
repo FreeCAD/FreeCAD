@@ -1320,7 +1320,7 @@ class HaasNextGeneration(PostProcessor):
                                 translate(
                                     "CAM",
                                     "'{op}' taps with {cmd} but commands no spindle speed; "
-                                    "rigid tapping (M29) needs one",
+                                    "rigid tapping needs one",
                                 ).format(op=op.Label, cmd=command.Name),
                             )
                         )
