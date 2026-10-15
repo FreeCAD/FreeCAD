@@ -168,6 +168,7 @@ public:
     MappedName(const MappedName& other, const char* postfix)
         : data(other.toBytes())
     {
+        this->data.makeOwning();
         if (postfix) {
             this->postfix = Base::ByteBuffer::copy(Base::asBytes(postfix));
         }
@@ -277,7 +278,7 @@ public:
                 res.postfix = other.postfix;
             }
             else if (size != 0) {
-                res.postfix = Base::ByteBuffer::borrow(
+                res.postfix = Base::ByteBuffer::copy(
                     Base::asBytes(other.postfix.data(), static_cast<std::size_t>(size))
                 );
             }
