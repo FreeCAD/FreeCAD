@@ -1074,7 +1074,7 @@ class HaasNextGeneration(PostProcessor):
             seen_operation = False
             for item in section:
                 if item.item_type == "operation":
-                    if self.values.get("USESSV", False):
+                    if self.values.get("USESSV", False) and item.data.get("tool_controller"):
                         if str(
                             getattr(item.data.get("tool_controller").Tool, "ShapeType", "")
                         ).lower() not in ["probe", "drill"] and not isinstance(
