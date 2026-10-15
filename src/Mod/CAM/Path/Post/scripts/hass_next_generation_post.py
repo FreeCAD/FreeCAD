@@ -947,10 +947,14 @@ class HaasNextGeneration(PostProcessor):
                     params = item.path.Commands[0].Parameters
                     away = any(abs(float(v)) > 1e-6 for v in params.values())
                     if dwo:
+                        # Haas order: G255 before the next rotary move, the
+                        # rotaries are positioned, then G254 switches DWO on.
                         if dwo_on:
                             rebuilt.append(self._make_postable("Post: DWO off", DWO_OFF))
+                        rebuilt.append(item)
                         rebuilt.append(self._make_postable("Post: DWO on", DWO_ON))
                         dwo_on = True
+                        continue
                 if (
                     use_tcp
                     and item.item_type == "operation"
