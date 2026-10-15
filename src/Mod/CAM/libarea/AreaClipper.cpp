@@ -1110,22 +1110,35 @@ void CArea::Offset(double offset)
         }
     }
 
+    // Proactively remove curves that have the wrong tag, and fix orientation.
+    //
+    // In principle this will be done by the subsequent union operation, and since the positive-side
+    // and negative-side offsets of a closed shape do not intersect, it should be equivalent to
+    // filter out the unwanted side before or after the union. However, I found a test case where
+    // the positive and negative offsets of a 2-3 clipper unit thick pair of arcs do intersect
+    // because of the error in approximating arcs to segments. Doing the filtering ahead of time
+    // works around this problem. Note that this situation can still be an issue for open offsets.
+    for (auto it = m_curves.begin(); it != m_curves.end();) {
+        if (std::ranges::find(it->m_edgeTags, 1) == it->m_edgeTags.end()) {
+            it = m_curves.erase(it);
+            continue;
+        }
+
+        if (offset < 0) {
+            it->Reverse();
+        }
+        ++it;
+    }
+
     // Union, keeping positive edges and dropping negative edges
     _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::nullopt, true);
 
-    // Test code (to be vetted in a future PR) for replacing the expensive call to Reorder().
-    // To preserve full functionality probably we need to use the clipper PolyTree to determine
-    // nesting, but tbh nesting information may not be needed here at all.
-    //
-    // // If negative offset, reverse the curves to put them in the forward direction
-    // if (offset < 0) {
-    //     for (CCurve& c : m_curves) {
-    //         c.Reverse();
-    //     }
-    // }
-
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
+    // Update: also now that I'm reversing the negative offset curves above, this reorder command
+    // should never update curve orientation (just perhaps reorder them). But I don't want to rock
+    // the boat by removing it until all these clipper changes are stable and bugs are no longer
+    // materializing.
     this->Reorder();
 
     // Sanity check outputs -- should be closed
