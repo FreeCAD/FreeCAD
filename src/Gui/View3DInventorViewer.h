@@ -257,10 +257,20 @@ public:
         /// Render through this camera instead of the viewer's own, which is left untouched.
         /// Must arrive already referenced; the render neither takes nor releases ownership.
         SoCamera* camera = nullptr;
+        /// Capture this geometry instead of the document's view providers. Viewer overlays
+        /// and draw-style overrides are excluded. Must arrive already referenced.
+        SoNode* scene = nullptr;
     };
 
     /** Render the scene into a new image using the requested capture policy. */
     QImage renderToImage(const RenderImageOptions& options);
+
+    /// Render a custom scene and camera using the capture pipeline. With no viewer,
+    /// use an offscreen context and default lighting. Both nodes must be referenced.
+    static QImage renderSceneToImage(
+        const RenderImageOptions& options,
+        View3DInventorViewer* viewer = nullptr
+    );
 
     /** Capture the live viewport framebuffer as a raster-oriented image. */
     QImage grabFramebuffer();
@@ -655,7 +665,10 @@ private:
     bool renderToFramebuffer(QOpenGLFramebufferObject*, const RenderImageOptions& options);
     /// Assemble a scene root that renders the options' camera over the geometry alone.
     /// The returned node is unreferenced; the caller owns it.
-    SoSeparator* buildCaptureRoot(const RenderImageOptions& options) const;
+    static SoSeparator* buildCaptureRoot(
+        const RenderImageOptions& options,
+        const View3DInventorViewer* viewer
+    );
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();

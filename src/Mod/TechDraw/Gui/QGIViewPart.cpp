@@ -25,8 +25,26 @@
 #include <QPainterPath>
 #include <QKeyEvent>
 #include <QGraphicsTransform>
+#include <QImage>
+#include <algorithm>
+#include <cmath>
 #include <cstdio>
+#include <limits>
+#include <optional>
 #include <qmath.h>
+#include <utility>
+#include <vector>
+
+#include <Inventor/nodes/SoFrustumCamera.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+#include <Precision.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Trsf.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -34,7 +52,12 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Utilities.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
@@ -45,9 +68,12 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/GeometryObject.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -59,6 +85,7 @@
 #include "QGIFace.h"
 #include "QGIHighlight.h"
 #include "QGIMatting.h"
+#include "QGIPrimPath.h"
 #include "QGISectionLine.h"
 #include "QGIVertex.h"
 #include "QGIViewPart.h"
@@ -80,6 +107,178 @@ using DU = DrawUtil;
 using FillMode = QGIFace::FillMode;
 
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
+
+namespace {
+
+constexpr double ShadedPixelsPerMillimetre = 12.0;  // approximately 300 dpi
+constexpr int ShadedMaxImageDimension = 4096;
+constexpr double ShadedAngularDeflection = 0.20;
+constexpr double ShadedDeviation = 0.2;
+
+struct ShadedImage
+{
+    QImage image;
+    QRectF rect;
+};
+
+class QGIShadedImage final : public QGIPrimPath
+{
+public:
+    explicit QGIShadedImage(ShadedImage shaded)
+        : m_image(std::move(shaded.image))
+        , m_rect(shaded.rect)
+    {
+        QPainterPath outline;
+        outline.addRect(m_rect);
+        setPath(outline);
+        setFlag(QGraphicsItem::ItemIsSelectable, false);
+        setFlag(QGraphicsItem::ItemIsFocusable, false);
+        setAcceptHoverEvents(false);
+    }
+
+    void paint(QPainter* painter,
+               const QStyleOptionGraphicsItem*,
+               QWidget*) override
+    {
+        painter->save();
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter->drawImage(m_rect, m_image);
+        painter->restore();
+    }
+
+private:
+    QImage m_image;
+    QRectF m_rect;
+};
+
+// Render the prepared HLR shape through the shared screenshot pipeline.
+std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseColor)
+{
+    const auto geometry = viewPart->getGeometryObject();
+    if (!geometry || geometry->getProjectionShape().IsNull()) {
+        return {};
+    }
+    // Part owns the shape-to-Coin conversion, including meshing, face orientation
+    // and normals. Only the projection and page coordinates belong to TechDraw.
+    const Gui::CoinPtr<SoSeparator> root(new SoSeparator);
+    auto* material = new SoMaterial;
+    material->diffuseColor.setValue(float(baseColor.redF()), float(baseColor.greenF()),
+                                    float(baseColor.blueF()));
+    root->addChild(material);
+    gp_Trsf projectionTransform;
+    projectionTransform.SetTransformation(gp_Ax3(geometry->getProjectionAxis()));
+    auto* transform = new SoMatrixTransform;
+    transform->matrix = Base::convertTo<SbMatrix>(
+        Base::convertTo<Base::Placement>(projectionTransform).toMatrix()
+    );
+    root->addChild(transform);
+    root->addChild(
+        PartGui::ViewProviderPartExt::createFaceGeometry(
+            geometry->getProjectionShape(),
+            ShadedDeviation,
+            Base::toDegrees(ShadedAngularDeflection)
+        )
+    );
+
+    SoGetBoundingBoxAction boundsAction(SbViewportRegion(1, 1));
+    boundsAction.apply(root);
+    const SbBox3f bounds = boundsAction.getBoundingBox();
+    if (bounds.isEmpty()) {
+        return {};
+    }
+    const SbVec3f low = bounds.getMin(), high = bounds.getMax();
+    const double minZ = low[2], maxZ = high[2];
+    const double extent = std::max({double(high[0] - low[0]), double(high[1] - low[1]), maxZ - minZ});
+    const bool perspective = geometry->isPerspective();
+    const double focus = std::max(Precision::Confusion(), geometry->getFocus());
+    // HLR projects from (0, 0, focus) onto z=0. There are no finite image
+    // bounds if any geometry crosses the eye plane.
+    if (perspective && focus - maxZ <= Precision::Confusion()) {
+        return {};
+    }
+    double minX = low[0], minY = low[1], maxX = high[0], maxY = high[1];
+    if (perspective) {
+        minX = minY = std::numeric_limits<double>::infinity();
+        maxX = maxY = -minX;
+        for (int corner = 0; corner < 8; ++corner) {
+            const double x = corner & 1 ? high[0] : low[0];
+            const double y = corner & 2 ? high[1] : low[1];
+            const double z = corner & 4 ? maxZ : minZ;
+            const double factor = focus / (focus - z);
+            minX = std::min(minX, x * factor);
+            maxX = std::max(maxX, x * factor);
+            minY = std::min(minY, y * factor);
+            maxY = std::max(maxY, y * factor);
+        }
+    }
+    if (!std::isfinite(minX) || maxX <= minX || maxY <= minY) {
+        return {};
+    }
+    const Gui::CoinPtr<SoCamera> camera(
+        perspective ? static_cast<SoCamera*>(new SoFrustumCamera)
+                    : static_cast<SoCamera*>(new SoOrthographicCamera)
+    );
+    const double pixelsPerUnit = std::min(ShadedPixelsPerMillimetre,
+        (ShadedMaxImageDimension - 4.0) / std::max(maxX - minX, maxY - minY));
+    minX -= 2.0 / pixelsPerUnit;
+    maxX += 2.0 / pixelsPerUnit;
+    minY -= 2.0 / pixelsPerUnit;
+    maxY += 2.0 / pixelsPerUnit;
+    const int width = std::min(ShadedMaxImageDimension,
+        std::max(2, int(std::ceil((maxX - minX) * pixelsPerUnit))));
+    const int height = std::min(ShadedMaxImageDimension,
+        std::max(2, int(std::ceil((maxY - minY) * pixelsPerUnit))));
+    // Account for rounding so Coin and QPainter use exactly the same aspect ratio.
+    const double centerX = (minX + maxX) / 2.0;
+    const double halfWidth = (maxY - minY) * width / height / 2.0;
+    minX = centerX - halfWidth;
+    maxX = centerX + halfWidth;
+    const double padding = std::max(extent * 0.1, 0.001);
+    const double eye = perspective ? focus : maxZ + padding;
+    const double nearDistance = std::max(Precision::Confusion(), (eye - maxZ) * 0.5);
+    camera->nearDistance = float(nearDistance);
+    camera->farDistance = float(eye - minZ + padding);
+    camera->viewportMapping = SoCamera::LEAVE_ALONE;
+    camera->aspectRatio = float(width) / height;
+    if (perspective) {
+        camera->position.setValue(0, 0, float(eye));
+        auto* frustum = static_cast<SoFrustumCamera*>(camera.get());
+        frustum->left = float(minX * nearDistance / focus);
+        frustum->right = float(maxX * nearDistance / focus);
+        frustum->bottom = float(minY * nearDistance / focus);
+        frustum->top = float(maxY * nearDistance / focus);
+    }
+    else {
+        camera->position.setValue(float(centerX), float((minY + maxY) / 2.0), float(eye));
+        static_cast<SoOrthographicCamera*>(camera.get())->height = float(maxY - minY);
+    }
+
+    auto* guiDocument = Gui::Application::Instance->getDocument(viewPart->getDocument());
+    Gui::View3DInventorViewer* viewer = nullptr;
+    if (guiDocument) {
+        const auto views = guiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        if (!views.empty()) {
+            viewer = static_cast<Gui::View3DInventor*>(views.front())->getViewer();
+        }
+    }
+    Gui::View3DInventorViewer::RenderImageOptions options;
+    options.width = width;
+    options.height = height;
+    options.samples = 4;
+    options.background = Qt::transparent;
+    options.alphaMode = Gui::View3DInventorViewer::AlphaMode::PerPixel;
+    options.camera = camera;
+    options.scene = root;
+    QImage image = Gui::View3DInventorViewer::renderSceneToImage(options, viewer);
+    if (image.isNull()) {
+        return {};
+    }
+    return ShadedImage{std::move(image),
+        QRectF(QPointF(Rez::guiX(minX), Rez::guiX(-maxY)),
+               QPointF(Rez::guiX(maxX), Rez::guiX(-minY)))};
+}
+
+}  // namespace
 
 QGIViewPart::QGIViewPart() :
     m_pathBuilder(new PathBuilder(this)),
@@ -306,7 +505,10 @@ void QGIViewPart::drawViewPart()
     removePrimitives();//clean the slate
     removeDecorations();
 
-    if (viewPart->handleFaces() && !viewPart->CoarseView.getValue()) {
+    if (viewPart->hasShadedDisplay()) {
+        drawShaded();
+    }
+    else if (viewPart->handleFaces() && !viewPart->CoarseView.getValue()) {
         drawAllFaces();
     }
 
@@ -315,13 +517,50 @@ void QGIViewPart::drawViewPart()
     drawAllVertexes();
 }
 
+void QGIViewPart::drawShaded()
+{
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    auto* viewProvider = getViewProvider<ViewProviderViewPart>(getViewObject());
+    if (!viewProvider) {
+        return;
+    }
+
+    // Shaded styles always render opaque. FaceTransparency (initialised from the
+    // "Transparent faces" preference) is meant for the edge styles, where it would
+    // otherwise make the shaded image fully invisible.
+    QColor faceColor = viewProvider->FaceColor.getValue().asValue<QColor>();
+    faceColor.setAlpha(255);
+
+    std::optional<ShadedImage> shaded;
+    try {
+        shaded = makeShadedImage(viewPart, faceColor);
+    }
+    catch (const Standard_Failure& error) {
+        Base::Console().warning("TechDraw shading: %s\n", error.GetMessageString());
+    }
+    catch (const std::exception& error) {
+        Base::Console().warning("TechDraw shading: %s\n", error.what());
+    }
+    if (!shaded) {
+        Base::Console().warning(
+            "Could not create shaded image for %s\n",
+            viewPart->getNameInDocument());
+        return;
+    }
+
+    auto* item = new QGIShadedImage(std::move(*shaded));
+    addToGroupWithoutUpdate(item);
+    item->setPos(0.0, 0.0);
+    item->setZValue(ZVALUE::FACE);
+}
+
 void QGIViewPart::drawAllFaces(void)
 {
     // dvp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
     QColor faceColor;
-    auto vpp = dynamic_cast<ViewProviderViewPart *>(getViewProvider(getViewObject()));
+    auto vpp = getViewProvider<ViewProviderViewPart>(getViewObject());
     if (vpp) {
         faceColor = vpp->FaceColor.getValue().asValue<QColor>();
         faceColor.setAlpha((100 - vpp->FaceTransparency.getValue())*255/100);
@@ -459,10 +698,22 @@ void QGIViewPart::drawAllEdges()
             } else {
                 if (!(*itGeom)->getHlrVisible()) {
                     // hidden line without a format
-                    item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
-                                                                       vp->LineWidth.getValue()));
+                    if (dvp->hiddenEdgesAreSolid()) {
+                        item->setLinePen(
+                            m_dashedLineGenerator->getLinePen(
+                                1, vp->LineWidth.getValue()));
+                    }
+                    else {
+                        item->setLinePen(
+                            m_dashedLineGenerator->getLinePen(
+                                Preferences::HiddenLineStyle(),
+                                vp->HiddenWidth.getValue()));
+                    }
                     item->setHiddenEdge(true);
-                    item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
+                    const double hiddenWidth = dvp->hiddenEdgesAreSolid()
+                        ? vp->LineWidth.getValue()
+                        : vp->HiddenWidth.getValue();
+                    item->setWidth(Rez::guiX(hiddenWidth));
                     item->setZValue(ZVALUE::HIDEDGE);
                 } else {
                     // unformatted visible line, draw as continuous line
@@ -483,6 +734,13 @@ void QGIViewPart::drawAllEdges()
 
         item->setPos(0.0, 0.0);//now at group(0, 0)
         item->setZValue(ZVALUE::EDGE);
+        if (!dvp->showsVisibleEdges()
+            && (*itGeom)->source() == TechDraw::SourceType::GEOMETRY) {
+            // Retain real edge items for hover, selection, and dimensions while
+            // suppressing their normal paint in the edge-free shaded style.
+            item->setHiddenEdge(false);
+            item->setNormalColor(Qt::transparent);
+        }
         item->setPrettyNormal();
 
         if (!vp->ShowAllEdges.getValue() && !showItem) {
@@ -1524,5 +1782,3 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
-
