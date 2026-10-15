@@ -149,6 +149,12 @@ TEST_F(IndexedNameTest, nameAndTypeListConstructionWithoutAllowOthers)
 
     // Assert
     EXPECT_STREQ(indexedName.getType(), "");
+
+    // Act: a prefix of an allowed type is not that type
+    indexedName = Data::IndexedName("ED19", allowedTypes, false);
+
+    // Assert
+    EXPECT_STREQ(indexedName.getType(), "");
 }
 
 TEST_F(IndexedNameTest, nameAndTypeListConstructionWithAllowOthers)
