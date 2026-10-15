@@ -29,7 +29,9 @@ def main():
     SHA = None
 
     if len(sys.argv) < 2:
-        sys.stderr.write("Usage:  archiveNameFromVersion <path to FreeCADVersion.txt> [--git-SHA=]\n")
+        sys.stderr.write(
+            "Usage:  archiveNameFromVersion <path to FreeCADVersion.txt> [--git-SHA=]\n"
+        )
 
     try:
         opts, args = getopt.getopt(sys.argv[2:], "g:", ["git-SHA="])
