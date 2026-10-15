@@ -248,7 +248,9 @@ void CmdSketcherNewSketch::activated(int iMsg)
                 const auto linkParentObj = objects[0].getObject()->getDocument()->getObject(linkParentName.value().c_str());
                 auto subValues = support.getSubValues();
                 const std::string linkedObjName = support.getValue()->getNameInDocument();
-                std::transform(subValues.begin(), subValues.end(),  subValues.begin(), [linkedObjName](const auto& val)->std::string{return linkedObjName + "." + val; });
+                std::transform(subValues.begin(), subValues.end(), subValues.begin(), [linkParentName, linkedObjName](const auto& val)->std::string{
+                    return (linkedObjName != linkParentName) ? linkedObjName + "." + val : val; 
+                });
                 support.setValue(linkParentObj, subValues);
             }
         }
