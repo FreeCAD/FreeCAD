@@ -78,6 +78,24 @@ class TestPlaneAngles(unittest.TestCase):
         self.assertEqual(TiltedWorkPlane.euler_zxz(Rotation(X, 45)), (0.0, 45.0, 0.0))
         self.assertEqual(TiltedWorkPlane.spatial_abc(Rotation(X, 45)), (45.0, 0.0, 0.0))
 
+    def test_G268_readsBackAComposedFixedAxisRotationForQ123(self):
+        # G268 Q123 applies I about fixed X, then J about fixed Y, then K about fixed Z,
+        # so composing Rz(K) * Ry(J) * Rx(I) must read back as (I, J, K).
+        r = Rotation(Z, 30).multiply(Rotation(Y, 20)).multiply(Rotation(X, 45))
+        i, j, k = TiltedWorkPlane.plane_angles(PlaneCommand.G268, r)
+        self.assertAlmostEqual(i, 45, places=6)
+        self.assertAlmostEqual(j, 20, places=6)
+        self.assertAlmostEqual(k, 30, places=6)
+
+    def test_G268_fixedAndMovingAxisXYZDifferForTwoAngles(self):
+        # Guards the rotation order: read the same I, J, K as moving axes (Rx * Ry * Rz,
+        # i.e. fixed Z, then Y, then X) and the result is a different rotation. A post that
+        # swapped the conventions would still produce numbers, so this keeps it from passing.
+        r = Rotation(Z, 30).multiply(Rotation(Y, 20)).multiply(Rotation(X, 45))
+        i, j, k = TiltedWorkPlane.plane_angles(PlaneCommand.G268, r)
+        moving = Rotation(X, i).multiply(Rotation(Y, j)).multiply(Rotation(Z, k))
+        self.assertFalse(moving.isSame(r, 1e-6), "G268 rotation order incorrect")
+
     def test_tableParallelPlaneIsAllZeros(self):
         self.assertEqual(TiltedWorkPlane.euler_zxz(Rotation()), (0.0, 0.0, 0.0))
         self.assertEqual(TiltedWorkPlane.spatial_abc(Rotation()), (0.0, 0.0, 0.0))
@@ -251,7 +269,13 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         items = self._expand([self._item(op)], self._processor(plane_command=PlaneCommand.G268))
         self.assertEqual(
             self._shape(items),
-            ["G268 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000", "G53.1", "operation", "G269"],
+            [
+                # I, J, K are spatial angles about the fixed X, Y, Z axes, rotated in the order Q123
+                "G268 X30.000 Y10.000 Z5.000 I45.000 J0.000 K0.000 Q123",
+                "G253",
+                "operation",
+                "G269",
+            ],
         )
 
     def test_heidenhainDialect(self):
