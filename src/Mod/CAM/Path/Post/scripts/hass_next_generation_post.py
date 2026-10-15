@@ -180,10 +180,17 @@ HAAS_TOOL_TYPE = {  # TODO missing info for slitting saw, shell mill / boring ba
 
 
 def haas_probing_type(
-    haas_type, use9023=True
-):  # TODO should this be a hard error or warning and fail or swap to unsupported tool without probe?
+    haas_type, use9023=True, tool=None
+):
+    """Probing type for G65 P9023 A<type>; ``tool`` names the tool in the error message.
+    9023 is currently always true. There are some edge case machines that will use Macro P9995 instead
+    """
     if haas_type not in HAAS_TOOL_TYPE:
-        raise ValueError(f"Invalid Haas tool type: {haas_type}")
+        tool_info = f" for {tool}" if tool else ""
+        if haas_type is None:
+            raise ValueError(f"Tool type{tool_info} is None (tool was not found in the job)")
+        else:
+            raise ValueError(f"Probing tool type {haas_type!r} {tool_info} is unsupported by this post")
     int_type = HAAS_TOOL_TYPE[haas_type]
     if int_type in (3, 4):
         return 23 if use9023 else 1  # rotate
@@ -290,7 +297,9 @@ class HassHeaderBuilder(_HeaderBuilder):
             has_tools = True
             if self._measure_tools:
 
-                probing_type = haas_probing_type(tool_type, use9023=True)
+                probing_type = haas_probing_type(
+                    tool_type, use9023=True, tool=f"T{tool_number} ({tool_name})"
+                )
                 outstring = f"G65 P9023 A{probing_type} T{tool_number}"
                 if tool_body_length is not None and tool_diameter is not None:
                     outstring += f" H{tool_body_length:g} D{tool_diameter:g}"
@@ -758,7 +767,7 @@ class HaasNextGeneration(PostProcessor):
                 bit = tc.Tool
                 shape = str(getattr(bit, "ShapeType", "") or getattr(bit, "ShapeName", "")).lower()
                 return float(bit.Diameter.Value), float(bit.Length.Value), shape
-        return None, None, False
+        return None, None, None
 
     def _build_header(self, postables):
         base = super()._build_header(postables)
