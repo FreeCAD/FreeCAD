@@ -538,6 +538,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             "ballend",
             "bullnose",
             "taperedballnose",
+            "lollipop",
         ):
             Path.Log.warning(
                 "Rotary Surface: tool shape '{}' is not ideal for "

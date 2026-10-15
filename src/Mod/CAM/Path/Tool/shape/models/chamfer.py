@@ -27,11 +27,6 @@ from typing import Any, Tuple, Mapping
 from .base import ToolBitShape
 
 
-def _mm(value) -> float:
-    """A parameter's magnitude, whether it arrives as a Quantity or a number."""
-    return float(value.Value if hasattr(value, "Value") else value)
-
-
 class ToolBitShapeChamfer(ToolBitShape):
     name = "Chamfer"
 
@@ -78,10 +73,10 @@ class ToolBitShapeChamfer(ToolBitShape):
         tool it claims to describe.
         """
         return {
-            "Diameter": lambda p: _mm(p["TipDiameter"])
+            "Diameter": lambda p: p["TipDiameter"].Value
             + 2
-            * _mm(p["CuttingEdgeHeight"])
-            * math.tan(math.radians(_mm(p["CuttingEdgeAngle"]) / 2))
+            * p["CuttingEdgeHeight"].Value
+            * math.tan(math.radians(p["CuttingEdgeAngle"].Value / 2))
         }
 
     @property

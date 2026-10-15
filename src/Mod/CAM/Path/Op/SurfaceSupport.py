@@ -2671,6 +2671,7 @@ class OCL_Tool:
                 "ballend": "BallCutter",
                 "bullnose": "BullCutter",
                 "taperedballnose": "BallCutter",
+                "lollipop": "BallCutter",
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",
