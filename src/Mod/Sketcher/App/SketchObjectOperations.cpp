@@ -1206,8 +1206,17 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
         transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
     }
+    const bool isConic = geoAsCurve->isDerivedFrom<Part::GeomConic>()
+        || geoAsCurve->isDerivedFrom<Part::GeomArcOfConic>();
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
+        // Internal geometry stays with the first piece, as in trim
+        if (con->Type == InternalAlignment && isConic) {
+            auto* newCon = con->copy();
+            newCon->Second = newIds.front();
+            newConstraints.push_back(newCon);
+            continue;
+        }
         deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints, true);
     }
 
@@ -1237,6 +1246,14 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         midJoint->Second = newIds.back();
         midJoint->SecondPos = PointPos::mid;
         newConstraints.push_back(midJoint);
+        // Center and end point fix a circle but not the other conics
+        if (!geoAsCurve->is<Part::GeomArcOfCircle>()) {
+            auto* equal = new Constraint();
+            equal->Type = Equal;
+            equal->First = newIds.front();
+            equal->Second = newIds.back();
+            newConstraints.push_back(equal);
+        }
     }
     // for lines, we add a tangent constraint instead of coincident
     // TODO: this shouldn't be only for lines & bsplines, but for any geometry that isn't
