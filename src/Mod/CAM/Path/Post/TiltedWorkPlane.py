@@ -86,7 +86,7 @@ class PlaneCommand(Enum):
 
 
 def euler_zxz(rotation):
-    """(I, J, K) in degrees for G68.2 / G268: intrinsic Z, X', Z''."""
+    """(I, J, K) in degrees for G68.2: intrinsic Z, X', Z''."""
     return tuple(_clean(a) for a in rotation.toEulerAngles("IZXZ"))
 
 
