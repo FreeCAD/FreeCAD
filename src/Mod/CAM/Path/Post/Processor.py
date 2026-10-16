@@ -51,6 +51,7 @@ from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
+import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Util as PathUtil
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
@@ -1067,7 +1068,7 @@ class PostProcessor:
         # Processing options
         for (
             option
-        ) in "split_arcs f_for_rapid_moves translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
+        ) in "split_arcs translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
             " "
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
@@ -1407,6 +1408,18 @@ class PostProcessor:
                             Path.Command(command.Name, new_params, command.Annotations)
                         )
                     item.path = Path.Path(new_commands)
+
+    def _expand_rapid_feed(self, postables):
+        """Add missed rapid feed"""
+        if not self._machine.postprocessor_properties.get("f_for_rapid_moves"):
+            return
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.source and getattr(item.source, "ToolController", None):
+                    commands = PathFeedRate.setFeedRate(
+                        item.path.Commands, item.source.ToolController, onlyMissedRapid=True
+                    )
+                    item.path = Path.Path(commands)
 
     def _expand_canned_cycles(self, postables):
         """Terminate canned drill cycles in postable paths.
@@ -2878,6 +2891,7 @@ class PostProcessor:
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
         postables = self._expand_pre_item(postables)
 
+        self._expand_rapid_feed(postables)
         self._expand_canned_cycles(postables)
         self._expand_translate_drill_cycles(postables)
         self._expand_split_arcs(postables)
@@ -3761,19 +3775,20 @@ class PostProcessor:
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]
-                if not self.values["OUTPUT_DOUBLES"]:
-                    # Suppress parameters that haven't changed
-                    if (
-                        parameter in self.machine_state.Tracked
-                        and self.machine_state.previous[parameter] == current_value
-                    ):
-                        continue  # Skip this parameter
-                elif (
+                if (
                     parameter == "F"
                     and command_name in Constants.GCODE_MOVE_RAPID
-                    and (not self.values["F_FOR_RAPID_MOVES"] or current_value == 0.0)
-                ):
-                    continue  # no F for G0, or the F is 0.0 which should be skipped too
+                    and not self.values["F_FOR_RAPID_MOVES"]
+                ):  # removing rapid F from machine state and skip it in command
+                    if self.machine_state:
+                        self.machine_state.F = self.machine_state.previous["F"]
+                    continue
+                if (
+                    not self.values["OUTPUT_DOUBLES"]
+                    and parameter in self.machine_state.Tracked
+                    and self.machine_state.previous[parameter] == current_value
+                ):  # Suppress parameters that haven't changed
+                    continue
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")

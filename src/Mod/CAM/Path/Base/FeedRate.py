@@ -42,14 +42,16 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def setFeedRate(commandlist, ToolController):
+def setFeedRate(commandlist, ToolController, onlyMissedRapid=False):
     """Set the appropriate feed rate for a list of Path commands using the information from a Tool Controller
 
     Every motion command in the list will have a feed rate parameter added or overwritten based
     on the information stored in the tool controller. If a motion is a plunge (vertical) motion, the
     VertFeed value will be used, otherwise the HorizFeed value will be used instead.
 
-    Tapping cycles are left untouched, as their F word is the thread pitch."""
+    Tapping cycles are left untouched, as their F word is the thread pitch.
+
+    onlyMissedRapid allows update rapid moves which missed feed rate."""
 
     def _isVertical(currentposition, command):
         x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
@@ -88,9 +90,14 @@ def setFeedRate(commandlist, ToolController):
                 else ToolController.HorizFeed.Value
             )
 
-        params = command.Parameters
-        params["F"] = rate
-        command.Parameters = params
+        if not onlyMissedRapid or (
+            onlyMissedRapid
+            and command.Name in Path.Geom.CmdMoveRapid
+            and "F" not in command.Parameters
+        ):
+            params = command.Parameters
+            params["F"] = rate
+            command.Parameters = params
 
         machine.addCommand(command)
 
