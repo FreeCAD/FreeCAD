@@ -27,7 +27,6 @@ import unittest
 
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine
 import Constants
 import Path
 import Path.Post.Command as PathCommand
@@ -109,8 +108,6 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.macro = FreeCAD.getUserMacroDir()
 
         # Create a simple geometry object for the job
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -1378,14 +1375,13 @@ G1 X20.000 Y10.000 F6000.000
         lines = gcode.split("\n")
 
         for i, line in enumerate(lines):
-            if line.startswith("(Block-name:"):
-                if i + 2 < len(lines):
-                    self.assertEqual(
-                        lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
-                    )
-                    self.assertEqual(
-                        lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
-                    )
+            if line.startswith("(Block-name:") and i + 2 < len(lines):
+                self.assertEqual(
+                    lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
+                )
+                self.assertEqual(
+                    lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
+                )
 
     # ===== 110-119: _expand_tool_change tests =====
 
