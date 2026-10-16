@@ -91,6 +91,66 @@ def remove_splash():
     _params().SetBool("InstallSplash", False)
 
 
+# ------------------------------------------------------------- tema de ícones
+ICON_ZIP = os.path.join(RES_DIR, "tema-icones-sework.zip")
+BITMAPS = "User parameter:BaseApp/Preferences/Bitmaps"
+ICON_PATH_KEY = "CustomPathSework"  # lido por BitmapFactory::restoreCustomPaths (prefixo "CustomPath")
+
+
+def _icon_dir():
+    return os.path.join(FreeCAD.getUserAppDataDir(), "SeworkIcones")
+
+
+def install_icon_theme():
+    """Descompacta o tema "Sework Sóbrio" e o registra antes dos ícones embutidos.
+
+    O FreeCAD lê os caminhos de ícones ao iniciar, então a troca aparece na
+    próxima abertura do programa.
+    """
+    bitmaps = FreeCAD.ParamGet(BITMAPS)
+    if not _params().GetBool("IconTheme", True) or not os.path.isfile(ICON_ZIP):
+        bitmaps.RemString(ICON_PATH_KEY)
+        return
+    import zipfile
+
+    dest = _icon_dir()
+    stamp = "{}-{}".format(os.path.getsize(ICON_ZIP), int(os.path.getmtime(ICON_ZIP)))
+    try:
+        if _params().GetString("IconThemeStamp", "") != stamp or not os.path.isdir(dest):
+            if os.path.isdir(dest):
+                shutil.rmtree(dest, ignore_errors=True)
+            os.makedirs(dest, exist_ok=True)
+            with zipfile.ZipFile(ICON_ZIP) as z:
+                z.extractall(dest)
+            _params().SetString("IconThemeStamp", stamp)
+            FreeCAD.Console.PrintMessage("Sework: tema de ícones instalado (vale na próxima abertura).\n")
+        if bitmaps.GetString(ICON_PATH_KEY, "") != dest:
+            bitmaps.SetString(ICON_PATH_KEY, dest)
+    except (OSError, zipfile.BadZipFile) as exc:
+        FreeCAD.Console.PrintWarning("Sework: tema de ícones não instalado: {}\n".format(exc))
+
+
+class CmdTemaIcones:
+    def GetResources(self):
+        return {
+            "Pixmap": ICON_PATH,
+            "MenuText": "Alternar tema de ícones Sework",
+            "ToolTip": "Liga ou desliga o tema de ícones Sework Sóbrio (vale ao reabrir o FreeCAD)",
+        }
+
+    def Activated(self):
+        on = not _params().GetBool("IconTheme", True)
+        _params().SetBool("IconTheme", on)
+        install_icon_theme()
+        QtWidgets.QMessageBox.information(
+            FreeCADGui.getMainWindow(), APP_NAME,
+            "Tema de ícones Sework {}.\nFeche e abra o FreeCAD para ver a mudança.".format(
+                "ligado" if on else "desligado"))
+
+    def IsActive(self):
+        return True
+
+
 # ------------------------------------------------------------------------ tema
 _SETTERS = {
     "FCUInt": lambda g, n, v: g.SetUnsigned(n, int(v)),
@@ -125,11 +185,32 @@ def _set_light_stylesheet():
     return False
 
 
+QUALITY = {
+    # Anti-aliasing da vista 3D: 0 nenhum, 1 suavização de linha, 2 MSAA 2x,
+    # 3 MSAA 4x, 5 MSAA 6x, 4 MSAA 8x (enum Gui::AntiAliasing). Vale para vistas novas.
+    "AntiAliasing": 4,
+    # Tesselação das peças (Mod/Part): desvio em % do tamanho e ângulo em graus.
+    # Padrão do FreeCAD: 0,2 % e 28,65°. Menor = curvas mais lisas, arquivo mais pesado na tela.
+    "MeshDeviation": 0.1,
+    "MeshAngularDeflection": 12.0,
+}
+
+
+def apply_quality():
+    """Linhas suaves (MSAA 8x) e curvas mais lisas. Vale para vistas abertas depois."""
+    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt(
+        "AntiAliasing", QUALITY["AntiAliasing"])
+    part = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Part")
+    part.SetFloat("MeshDeviation", QUALITY["MeshDeviation"])
+    part.SetFloat("MeshAngularDeflection", QUALITY["MeshAngularDeflection"])
+
+
 def apply_theme():
     root = ET.parse(PACK_CFG).getroot()
     base = root.find("FCParamGroup[@Name='Root']/FCParamGroup[@Name='BaseApp']")
     _apply_group(base, "User parameter:BaseApp")
     _set_light_stylesheet()
+    apply_quality()
 
 
 # -------------------------------------------------------------------- comandos
@@ -218,7 +299,7 @@ class CmdBarrasClassicas:
 
 
 COMMANDS = ["Sework_AplicarTema", "Sework_Sobre"]
-MENU_EXTRA = ["Sework_BarrasClassicas", "Sework_RemoverSplash"]
+MENU_EXTRA = ["Sework_TemaIcones", "Sework_BarrasClassicas", "Sework_RemoverSplash"]
 
 
 def register_commands():
@@ -226,6 +307,7 @@ def register_commands():
     FreeCADGui.addCommand("Sework_Sobre", CmdSobre())
     FreeCADGui.addCommand("Sework_RemoverSplash", CmdRemoverSplash())
     FreeCADGui.addCommand("Sework_BarrasClassicas", CmdBarrasClassicas())
+    FreeCADGui.addCommand("Sework_TemaIcones", CmdTemaIcones())
 
 
 def install_translations():
@@ -256,9 +338,13 @@ def startup():
     register_commands()
     install_splash()
     install_translations()
+    install_icon_theme()
     QtCore.QTimer.singleShot(600, _start_ribbon)
     # Executa depois que a janela principal termina de montar.
     QtCore.QTimer.singleShot(0, apply_window_branding)
+    if not _params().GetBool("QualityApplied", False):
+        _params().SetBool("QualityApplied", True)
+        apply_quality()
     if _params().GetBool("FirstRun", True):
         _params().SetBool("FirstRun", False)
         if _params().GetBool("ApplyThemeOnFirstRun", True):

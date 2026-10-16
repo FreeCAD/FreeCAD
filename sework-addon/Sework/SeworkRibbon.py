@@ -239,7 +239,8 @@ TABS = [
             ("Sework_AplicarTema", L, "Aplicar\ntema"), ("Sework_Sobre", L, "Sobre"),
         ]),
         ("Interface", [
-            ("Sework_BarrasClassicas", S, "Barras clássicas"), ("Sework_RemoverSplash", S, "Splash original"),
+            ("Sework_TemaIcones", S, "Tema de ícones"), ("Sework_BarrasClassicas", S, "Barras clássicas"),
+            ("Sework_RemoverSplash", S, "Splash original"),
         ]),
     ]},
 ]

@@ -10,6 +10,8 @@ Addon em Python que dá ao FreeCAD oficial (1.1) a cara da Sework, sem compilar.
 | Aba Esboço automática | Ao editar um esboço, a faixa mostra a aba Esboço e volta à anterior ao concluir. |
 | Tradução pt-BR completa | `translations/sework_ptbr.qm` (tradução mais recente do repositório do FreeCAD, mais completa que a da versão 1.1.4) + dicionário `SeworkI18n.EXTRA` para o que nem o repositório traduz. Instalada com prioridade sobre a oficial. |
 | Tema "Sework Claro" | Acento azul #003A70, pré-seleção amarela #F7BE00, vista 3D em degradê branco → #CBD5E0, menus e painéis claros. Força o esquema claro mesmo com o Windows em modo escuro. |
+| Tema de ícones "Sework Sóbrio" | 1.582 ícones do FreeCAD recoloridos para a paleta Sework (azul-aço, âmbar, tijolo, sálvia, cinza frio), contornos em ardósia e degradê vertical em todo preenchimento chapado (efeito 3D). Vale para faixa, menus e árvore do modelo. Fica em `Resources/tema-icones-sework.zip`; o addon descompacta em `<dados do usuário>/SeworkIcones` e registra em `Bitmaps/CustomPathSework`. Liga/desliga na aba Sework (vale ao reabrir). |
+| Qualidade de exibição | Anti-aliasing MSAA 8x (linhas sem serrilhado) e tesselação mais fina (desvio 0,1 %, ângulo 12°) para curvas lisas. Aplicado uma vez; ajuste em `QUALITY` no `SeworkGui.py`. |
 | Splash, título e ícone | Splash Sework, "FreeCAD Sework" no título, ícone Sework. |
 
 ## Arquivos
@@ -40,6 +42,11 @@ Comando que não existir na versão instalada é ignorado.
 - `RibbonHeight` (padrão 104) — altura da área de comandos, em px
 - `SeworkTranslations` (padrão true) — tradução Sework
 - `RenameWindow`, `InstallSplash`, `ApplyThemeOnFirstRun` (padrão true)
+
+## Atualizar o tema de ícones
+
+`tools/gerar_tema_icones.py <clone do FreeCAD> <pasta de saída>` gera os SVGs. Paleta e intensidade do degradê
+ficam nas funções `recolor()` e `shade()`. Depois compacte a pasta em `Resources/tema-icones-sework.zip`.
 
 ## Atualizar a tradução
 
