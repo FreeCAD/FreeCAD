@@ -72,9 +72,10 @@ def get_gui_document(document):
 def reset_edit(document, view_provider):
     """Reset the captured edit session if it is still current."""
     gui_document = get_gui_document(document)
-    if view_provider is not None and gui_document is not None:
-        if gui_document.getInEdit() is view_provider:
-            gui_document.resetEdit()
+    if view_provider is None or gui_document is None:
+        return
+    if gui_document.getInEdit() is view_provider:
+        gui_document.resetEdit()
 
 
 def get_3d_view():

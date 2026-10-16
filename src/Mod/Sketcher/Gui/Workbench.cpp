@@ -175,8 +175,20 @@ inline const QStringList nonEditModeToolbarNames()
 
 void Workbench::activated()
 {
-    // Workbench setup makes edit toolbars unavailable. Restore them when returning
-    // to a document with a sketch in edit mode.
+    /* The workbench may be activated with or without a sketch in edit mode, for
+     * example when switching documents or returning from another workbench.
+     *
+     * ToolBarManager::setup() saves the outgoing workbench's available toolbar
+     * visibility, then sets up this workbench using its default availability and
+     * saved user preferences. Sketcher edit toolbars are unavailable by default,
+     * so they must be made available again here if a sketch is still being edited.
+     * The normal toolbars are hidden without changing their saved visibility.
+     *
+     * Do not save visibility here, as setup has already replaced the previous toolbar
+     * context. enterEditMode() and leaveEditMode() save the appropriate available
+     * toolbars when changing edit mode without switching workbenches. If no sketch
+     * is being edited, setup has already restored the normal toolbars.
+     */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
         Gui::ToolBarManager::getInstance()->setState(
