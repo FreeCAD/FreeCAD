@@ -60,6 +60,28 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
+class _VerticalScrollArea(QtGui.QScrollArea):
+    """Scroll area that scrolls only vertically.
+
+    It is never narrower than its contents, so the vertical scrollbar does
+    not also bring up a horizontal one.
+    """
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        if self.widget() is not None:
+            width = self.widget().minimumSizeHint().width()
+            width += self.verticalScrollBar().sizeHint().width() + 2 * self.frameWidth()
+            hint.setWidth(max(hint.width(), width))
+        return hint
+
+    def eventFilter(self, obj, event):
+        # Contents changed size, e.g. new axis pages: ask the dialog for room again
+        if obj is self.widget() and event.type() == QtCore.QEvent.LayoutRequest:
+            self.updateGeometry()
+        return super().eventFilter(obj, event)
+
+
 class DataclassGUIGenerator:
     """Generates Qt widgets dynamically from dataclass definitions.
 
@@ -382,8 +404,12 @@ class MachineEditorDialog(QtGui.QDialog):
 
     def __init__(self, machine_filename: Optional[str] = None, parent=None, machine=None):
         super().__init__(parent)
-        self.setMinimumSize(700, 900)
-        self.resize(700, 900)
+        # Only the height is fixed: the layout sets the minimum width from the tabs
+        self.setMinimumHeight(400)
+        # Start no taller than the screen, so the bottom buttons stay reachable
+        # at high display scaling. Tabs that do not fit scroll.
+        screen_height = self.screen().availableGeometry().height()
+        self.resize(700, min(800, int(screen_height * 0.9)))
 
         self.current_units = "metric"
         self.is_new_machine = machine_filename is None  # Track if creating new machine
@@ -914,7 +940,15 @@ class MachineEditorDialog(QtGui.QDialog):
         units, type, kinematics, and axes configuration. Connects change
         handlers for dynamic updates.
         """
-        layout = QtGui.QFormLayout(self.machine_tab)
+        # Use scroll area so the tab does not set the dialog's height
+        self.machine_scroll = _VerticalScrollArea()
+        self.machine_scroll.setWidgetResizable(True)
+        scroll_widget = QtGui.QWidget()
+        layout = QtGui.QFormLayout(scroll_widget)
+        self.machine_scroll.setWidget(scroll_widget)
+
+        tab_layout = QtGui.QVBoxLayout(self.machine_tab)
+        tab_layout.addWidget(self.machine_scroll)
 
         self.name_edit = QtGui.QLineEdit()
         self.name_edit.textChanged.connect(self._on_name_changed)
@@ -1737,8 +1771,11 @@ class MachineEditorDialog(QtGui.QDialog):
 
             layout.addWidget(type_specific_group)
 
-            # Add tab to toolheads tabs
-            self.toolheads_tabs.addTab(tab, toolhead.name if toolhead else f"Toolhead {i+1}")
+            # Add tab to toolheads tabs, in a scroll area so it does not set the dialog's height
+            scroll = QtGui.QScrollArea()
+            scroll.setWidgetResizable(True)
+            scroll.setWidget(tab)
+            self.toolheads_tabs.addTab(scroll, toolhead.name if toolhead else f"Toolhead {i+1}")
 
             # Store widget references for updates
             self.toolhead_edits.append(
