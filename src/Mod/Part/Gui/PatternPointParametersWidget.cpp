@@ -18,19 +18,35 @@ PatternPointParametersWidget::PatternPointParametersWidget(QWidget* parent)
     connect(ui->pointObjectButton, &QPushButton::clicked, this, [this]() {
         Q_EMIT requestReferenceSelection();
     });
+    connect(ui->originPointIndex, &QSpinBox::valueChanged, this, [this](int newValue) {
+        originPointIndexProperty->setValue(newValue);
+    });
+    connect(ui->relativeToFirst, &QCheckBox::toggled, this, [this](bool newValue) {
+        relativeToFirstProperty->setValue(newValue);
+        ui->originPointIndex->setEnabled(!ui->relativeToFirst->isChecked());
+    });
 }
 
 PatternPointParametersWidget::~PatternPointParametersWidget() = default;
 
-void PatternPointParametersWidget::bindProperty(App::PropertyLinkSub* pointObject)
+void PatternPointParametersWidget::bindProperty(
+    App::PropertyLinkSub* pointObject,
+    App::PropertyBool* relativeToFirst,
+    App::PropertyInteger* originPointIndex
+)
 {
     pointObjectProperty = pointObject;
+    relativeToFirstProperty = relativeToFirst;
+    originPointIndexProperty = originPointIndex;
     updateUI();
 }
 
 void PatternPointParametersWidget::updateUI()
 {
     updatePointObjectButton();
+    ui->originPointIndex->setValue(static_cast<int>(originPointIndexProperty->getValue()));
+    ui->relativeToFirst->setChecked(relativeToFirstProperty->getValue());
+    ui->originPointIndex->setEnabled(!ui->relativeToFirst->isChecked());
 }
 
 void PatternPointParametersWidget::getPointObject(
@@ -40,6 +56,16 @@ void PatternPointParametersWidget::getPointObject(
 {
     object = pointObjectProperty ? pointObjectProperty->getValue() : nullptr;
     subnames = pointObjectProperty ? pointObjectProperty->getSubValues() : std::vector<std::string>();
+}
+
+bool PatternPointParametersWidget::getRelativeToFirst() const
+{
+    return relativeToFirstProperty ? relativeToFirstProperty->getValue() : false;
+}
+
+long PatternPointParametersWidget::getOriginPointIndex() const
+{
+    return originPointIndexProperty ? originPointIndexProperty->getValue() : 0;
 }
 
 void PatternPointParametersWidget::updatePointObjectButton()
