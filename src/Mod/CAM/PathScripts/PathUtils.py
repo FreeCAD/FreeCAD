@@ -337,7 +337,17 @@ def makeWorkplane(shape):
     Creates a workplane circle at the ZMin level.
     """
     Path.Log.track()
-    loc = Vector(shape.BoundBox.Center.x, shape.BoundBox.Center.y, shape.BoundBox.ZMin)
+
+    # Use shape.optimalBoundingBox instead of shape.BoundingBox.
+    #
+    # shape.BoundBox uses the display triangulation when it is available to produce a precise
+    # bounding box, and can return a looser bounding box otherwise, producing different behavior
+    # when freecad is run in console/gui modes. shape.optimalBoundingBox always produces a tight
+    # bounding box. I am tentatively using parameters useTriangulation=False and
+    # useShapeTolerance=False, but I don't think it's important here.
+    bb = shape.optimalBoundingBox(False, False)
+
+    loc = Vector(bb.Center.x, bb.Center.y, bb.ZMin)
     c = Part.makeCircle(10, loc)
     return c
 
