@@ -1,40 +1,50 @@
-# FreeCAD Sework — addon de identidade visual
+# FreeCAD Sework — addon de interface e identidade visual
 
-Addon em Python que aplica a marca Sework no FreeCAD oficial, sem compilar.
+Addon em Python que dá ao FreeCAD oficial (1.1) a cara da Sework, sem compilar.
 
 ## O que ele faz
 
 | Item | Como |
 |---|---|
-| Splash Sework | copia `Resources/splash_image.png` para `<dados do usuário>/Gui/images/` — o FreeCAD usa esse arquivo antes da splash padrão (vale a partir da 2ª abertura) |
-| Título "FreeCAD Sework x.y.z" e ícone da janela | `QApplication.setApplicationName` + `setWindowIcon` ao iniciar |
-| Tema "Sework Claro" | pacote de preferências: acento #003A70, fundo 3D #F5F8FC, pré-seleção #F7BE00, corpo ativo amarelo. Aplicado sozinho na 1ª execução; também em Preferências → Geral → Pacotes de preferências |
-| Bancada "Sework" | menu e barra com *Aplicar tema Sework*, *Sobre o FreeCAD Sework* e *Voltar à splash original* |
+| Faixa de ferramentas (ribbon) | Abas Início, Esboço, Peça, Sólidos, Montagem, Desenho, Planilha e Sework. Comandos principais com ícone grande, demais empilhados, grupos com legenda. Rótulos em português escritos pela Sework. As barras clássicas ficam ocultas. |
+| Aba Esboço automática | Ao editar um esboço, a faixa mostra a aba Esboço e volta à anterior ao concluir. |
+| Tradução pt-BR completa | `translations/sework_ptbr.qm` (tradução mais recente do repositório do FreeCAD, mais completa que a da versão 1.1.4) + dicionário `SeworkI18n.EXTRA` para o que nem o repositório traduz. Instalada com prioridade sobre a oficial. |
+| Tema "Sework Claro" | Acento azul #003A70, pré-seleção amarela #F7BE00, vista 3D em degradê branco → #CBD5E0, menus e painéis claros. Força o esquema claro mesmo com o Windows em modo escuro. |
+| Splash, título e ícone | Splash Sework, "FreeCAD Sework" no título, ícone Sework. |
+
+## Arquivos
+
+- `InitGui.py` — ponto de entrada (carregado pelo FreeCAD)
+- `SeworkGui.py` — branding, tema, comandos Sework
+- `SeworkRibbon.py` — a faixa de ferramentas (abas e comandos ficam na lista `TABS`)
+- `SeworkI18n.py` — tradução com prioridade e dicionário `EXTRA`
+- `PreferencePacks/Sework Claro/` — tema
+- `Resources/` — splash e ícones
+- `translations/sework_ptbr.qm` — tradução compilada
 
 ## Instalar
 
-1. Instale o FreeCAD oficial (1.0 ou mais novo) e abra uma vez.
-2. Rode `instalar.ps1` (botão direito → *Executar com o PowerShell*). Ele copia a pasta `Sework` para `%APPDATA%\FreeCAD\Mod` (e para `v*\Mod`, nas versões que usam pasta por versão).
-3. Abra o FreeCAD, feche e abra de novo.
+1. Instale o FreeCAD 1.1 oficial e abra uma vez.
+2. Rode `instalar.ps1` (botão direito → *Executar com o PowerShell*). Copia a pasta `Sework` para `%APPDATA%\FreeCAD\v1-1\Mod` (e `Mod` de outras versões).
+3. Abra o FreeCAD.
 
-Instalação manual: copie a pasta `Sework` para a pasta `Mod` do usuário (no FreeCAD: *Ajuda → Abrir pasta de dados do usuário* — o nome do menu varia por versão).
+## Mudar a faixa
+
+Edite a lista `TABS` em `SeworkRibbon.py`. Cada item é `("NomeDoComando", L ou S, "Rótulo")`:
+`L` = ícone grande, `S` = pequeno; `\n` quebra o rótulo grande em duas linhas.
+Comando que não existir na versão instalada é ignorado.
 
 ## Opções (Ferramentas → Editar parâmetros → BaseApp/Preferences/Mod/Sework)
 
-- `RenameWindow` (bool, padrão true) — título/ícone Sework
-- `InstallSplash` (bool, padrão true) — instalar a splash
-- `ApplyThemeOnFirstRun` (bool, padrão true) — aplicar o tema na 1ª execução
+- `RibbonEnabled` (padrão true) — faixa Sework; também alternável pelo comando *Alternar faixa Sework / barras clássicas* na aba Sework
+- `RibbonHeight` (padrão 104) — altura da área de comandos, em px
+- `SeworkTranslations` (padrão true) — tradução Sework
+- `RenameWindow`, `InstallSplash`, `ApplyThemeOnFirstRun` (padrão true)
 
-## Opcional: `extras/branding.xml`
+## Atualizar a tradução
 
-Copiado para a pasta `bin` da instalação (exige administrador), ajusta o nome do programa e as cores dos textos da splash desde o primeiro instante.
-
-## Trocar a arte
-
-- Splash: substitua `Resources/splash_image.png` (960 × 540 px). Deixe claras a faixa superior esquerda (o FreeCAD escreve a versão em x=6, y=75) e a borda inferior esquerda (mensagens de carregamento).
-- Ícone: `Resources/icons/sework.png` (256 px) e `sework.ico`.
-- O "S" do ícone e a splash são provisórios, montados com a fonte Poppins e as cores oficiais. Coloque aqui o símbolo oficial da marca.
+Com o clone do FreeCAD: `lrelease $(find . -name "*_pt-BR.ts") -qm sework_ptbr.qm`.
 
 ## Licença
 
-Este addon é distribuído sob LGPL-2.1-or-later, a mesma licença do FreeCAD.
+LGPL-2.1-or-later, a mesma do FreeCAD.

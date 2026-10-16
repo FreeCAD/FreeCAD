@@ -196,19 +196,67 @@ class CmdRemoverSplash:
         return True
 
 
+class CmdBarrasClassicas:
+    def GetResources(self):
+        return {
+            "MenuText": "Alternar faixa Sework / barras clássicas",
+            "ToolTip": "Liga ou desliga a faixa de ferramentas Sework",
+        }
+
+    def Activated(self):
+        import SeworkRibbon
+
+        if SeworkRibbon._state["ribbon"] is not None:
+            SeworkRibbon.uninstall(restore_toolbars=True)
+            _params().SetBool("RibbonEnabled", False)
+        else:
+            SeworkRibbon.install()
+            _params().SetBool("RibbonEnabled", True)
+
+    def IsActive(self):
+        return True
+
+
 COMMANDS = ["Sework_AplicarTema", "Sework_Sobre"]
-MENU_EXTRA = ["Sework_RemoverSplash"]
+MENU_EXTRA = ["Sework_BarrasClassicas", "Sework_RemoverSplash"]
 
 
 def register_commands():
     FreeCADGui.addCommand("Sework_AplicarTema", CmdAplicarTema())
     FreeCADGui.addCommand("Sework_Sobre", CmdSobre())
     FreeCADGui.addCommand("Sework_RemoverSplash", CmdRemoverSplash())
+    FreeCADGui.addCommand("Sework_BarrasClassicas", CmdBarrasClassicas())
+
+
+def install_translations():
+    """Tradução pt-BR Sework com prioridade sobre a oficial (ver SeworkI18n)."""
+    try:
+        import SeworkI18n
+
+        SeworkI18n.install()
+        mw = FreeCADGui.getMainWindow()
+        if mw is not None:
+            mw.workbenchActivated.connect(SeworkI18n.on_workbench)
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: tradução não aplicada: {}\n".format(exc))
+
+
+def _start_ribbon():
+    if not _params().GetBool("RibbonEnabled", True):
+        return
+    try:
+        import SeworkRibbon
+
+        SeworkRibbon.install()
+    except Exception as exc:
+        FreeCAD.Console.PrintError("Sework: falha ao montar a faixa: {}\n".format(exc))
 
 
 def startup():
     register_commands()
     install_splash()
+    install_translations()
+    QtCore.QTimer.singleShot(600, _start_ribbon)
     # Executa depois que a janela principal termina de montar.
     QtCore.QTimer.singleShot(0, apply_window_branding)
     if _params().GetBool("FirstRun", True):
