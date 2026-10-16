@@ -107,6 +107,8 @@
 #include <QVariantAnimation>
 #include <QWheelEvent>
 
+#include <App/Datums.h>
+#include <App/Link.h>
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
@@ -121,6 +123,7 @@
 #include <Quarter/eventhandlers/EventFilter.h>
 #include <Gui/BitmapFactory.h>
 
+#include "Inventor/SoFCSectionCap.h"
 #include "View3DInventorViewer.h"
 #include "Application.h"
 #include "Camera.h"
@@ -1375,6 +1378,11 @@ View3DInventorViewer::~View3DInventorViewer()
     // the root node but isn't destroyed when closing this viewer so
     // that it prevents all children from being deleted. To reduce this
     // likelihood we explicitly remove all child nodes now.
+    if (this->pcSectionCap) {
+        this->pcSectionCap->setScene(nullptr);  // drop its ref on objectGroup
+        this->pcSectionCap->unref();
+        this->pcSectionCap = nullptr;
+    }
     coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
     this->pcViewProviderRoot = nullptr;
@@ -4118,6 +4126,74 @@ void View3DInventorViewer::toggleClippingPlane(
 bool View3DInventorViewer::hasClippingPlane() const
 {
     return pcClipPlane != nullptr;
+}
+
+void View3DInventorViewer::setSectionCapping(bool on)
+{
+    if (on == isSectionCapping()) {
+        return;
+    }
+    if (on) {
+        pcSectionCap = new Gui::Inventor::SoFCSectionCap();
+        pcSectionCap->ref();
+        pcSectionCap->setResolver([](SoNode* node, bool& excluded) -> std::string {
+            if (!node->isOfType(SoSeparator::getClassTypeId())) {
+                return {};
+            }
+            // search every document: a link's nodes may belong to another one
+            App::DocumentObject* obj = nullptr;
+            for (App::Document* doc : App::GetApplication().getDocuments()) {
+                Gui::Document* gdoc = Application::Instance->getDocument(doc);
+                if (ViewProviderDocumentObject* vp = gdoc ? gdoc->getViewProvider(node) : nullptr) {
+                    obj = vp->getObject();
+                    break;
+                }
+            }
+            if (!obj || !obj->isAttachedToDocument()) {
+                return {};
+            }
+            excluded = obj->isDerivedFrom<App::DatumElement>()
+                || obj->isDerivedFrom<App::LocalCoordinateSystem>();
+            auto fullName = [](App::DocumentObject* o) {
+                return std::string(o->getDocument()->getName()) + "#" + o->getNameInDocument();
+            };
+            std::string name = fullName(obj);
+            // an array link does not forward getLinkedObject(); ask the extension
+            App::DocumentObject* target = obj->getLinkedObject(true);
+            if (target == obj) {
+                if (auto ext = obj->getExtensionByType<App::LinkBaseExtension>(true)) {
+                    target = ext->getTrueLinkedObject(true);
+                }
+            }
+            if (target && target != obj && target->isAttachedToDocument()) {
+                name += "\t" + fullName(target);
+            }
+            return name;
+        });
+        pcSectionCap->setScene(objectGroup);
+        // last child, so that every clip plane is in the traversal state
+        pcViewProviderRoot->addChild(pcSectionCap);
+    }
+    else {
+        int index = pcViewProviderRoot->findChild(pcSectionCap);
+        if (index >= 0) {
+            pcViewProviderRoot->removeChild(index);
+        }
+        pcSectionCap->setScene(nullptr);
+        pcSectionCap->unref();
+        pcSectionCap = nullptr;
+    }
+    redraw();
+}
+
+bool View3DInventorViewer::isSectionCapping() const
+{
+    return pcSectionCap != nullptr;
+}
+
+const Gui::Inventor::SoFCSectionCap* View3DInventorViewer::getSectionCap() const
+{
+    return pcSectionCap;
 }
 
 /**
