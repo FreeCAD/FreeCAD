@@ -5,7 +5,7 @@ macro(InitializeFreeCADBuildOptions)
 
     option(BUILD_FORCE_DIRECTORY "The build directory must be different to the source directory." OFF)
     option(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
-    option(FREECAD_VERSION_INCLUDE_GIT "Embed git hash & branch to the build. Disable this option for faster incrmental builds after a commit." ON)
+    option(FREECAD_VERSION_INCLUDE_GIT "Embed git hash & branch to the build. Disable this option for faster incremental builds after a commit." ON)
     option(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
