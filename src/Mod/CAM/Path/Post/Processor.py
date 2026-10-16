@@ -51,6 +51,7 @@ from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
+import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Util as PathUtil
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
@@ -1067,7 +1068,7 @@ class PostProcessor:
         # Processing options
         for (
             option
-        ) in "split_arcs f_for_rapid_moves translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
+        ) in "split_arcs translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
             " "
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
@@ -1356,6 +1357,16 @@ class PostProcessor:
                                     gcodeheader.add_fixture(fixture_name)
 
         return gcodeheader
+
+    def _expand_rapid_feed(self, postables):
+        """Add missed rapid feed"""
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.source and getattr(item.source, "ToolController", None):
+                    commands = PathFeedRate.setFeedRate(
+                        item.path.Commands, item.source.ToolController, onlyMissed=True
+                    )
+                    item.path = Path.Path(commands)
 
     def _add_line_numbers(self, postables):
         """Add N word if we are line-numbering
@@ -2874,6 +2885,9 @@ class PostProcessor:
         # and command the rotaries it was solved for.
         postables = self._expand_workplane_frames(postables)
 
+        if self._machine.postprocessor_properties.get("f_for_rapid_moves"):
+            self._expand_rapid_feed(postables)
+
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
         postables = self._expand_pre_item(postables)
@@ -3761,19 +3775,18 @@ class PostProcessor:
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]
-                if not self.values["OUTPUT_DOUBLES"]:
-                    # Suppress parameters that haven't changed
-                    if (
-                        parameter in self.machine_state.Tracked
-                        and self.machine_state.previous[parameter] == current_value
-                    ):
-                        continue  # Skip this parameter
-                elif (
+                if (
                     parameter == "F"
                     and command_name in Constants.GCODE_MOVE_RAPID
-                    and (not self.values["F_FOR_RAPID_MOVES"] or current_value == 0.0)
-                ):
-                    continue  # no F for G0, or the F is 0.0 which should be skipped too
+                    and not self.values["F_FOR_RAPID_MOVES"]
+                ):  # Skip F for G0
+                    continue
+                if (
+                    not self.values["OUTPUT_DOUBLES"]
+                    and parameter in self.machine_state.Tracked
+                    and self.machine_state.previous[parameter] == current_value
+                ):  # Suppress parameters that haven't changed
+                    continue
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")

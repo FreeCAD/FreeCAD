@@ -856,7 +856,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
                 Path.Command("G0", {"X": 10.0, "Y": 0.0, "Z": -1.0, "F": 500.0}),
                 # identical G01's -> elide one
                 Path.Command("G1", {"F": 55, "X": 0.0, "Y": 0.0, "Z": 5.0}),
-                Path.Command("G1", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                Path.Command("G1", {"F": 55, "X": 0.0, "Y": 0.0, "Z": 5.0}),
                 # we know shopbot must translate a helix, using a relative Z
                 # so these are identical output, but not "duplicates"
                 Path.Command("G2", {"X": 10.0, "Y": 0.0, "I": 5.0, "J": 0.0, "Z": -5.0}),
