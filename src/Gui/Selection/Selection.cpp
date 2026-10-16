@@ -75,7 +75,7 @@ QString selectionGateRejectionText(const Gui::SelectionGate& gate)
     }
     return QObject::tr(gate.notAllowedReason.c_str());
 }
-}
+}  // namespace
 
 Gui::SelectionGateMessageProvider::~SelectionGateMessageProvider() = default;
 
@@ -578,8 +578,7 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(co
 
 
     if (!ActiveGate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
-        std::string displayTextUtf8 =
-            selectionGateRejectionText(*ActiveGate).toUtf8().toStdString();
+        std::string displayTextUtf8 = selectionGateRejectionText(*ActiveGate).toUtf8().toStdString();
         ActiveGate->notAllowedReason.clear();
         return {.allowed = false, .displayTextUtf8 = displayTextUtf8};
     }

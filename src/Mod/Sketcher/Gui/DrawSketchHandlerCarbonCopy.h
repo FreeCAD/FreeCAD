@@ -53,9 +53,7 @@
 namespace SketcherGui
 {
 
-class CarbonCopySelection:
-    public Gui::SelectionFilterGate,
-    public Gui::SelectionGateMessageProvider
+class CarbonCopySelection: public Gui::SelectionFilterGate, public Gui::SelectionGateMessageProvider
 {
     enum class Shortcut
     {
@@ -71,60 +69,54 @@ class CarbonCopySelection:
         Shortcut shortcut;
     };
 
-    static constexpr std::array<RejectionMessage, 8> rejectionMessages {{
-        {Sketcher::SketchObject::rlCircularReference,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "Carbon copy would cause a circular dependency."
-         ),
-         Shortcut::None},
-        {Sketcher::SketchObject::rlOtherDoc,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "This object is in another document."
-         ),
-         Shortcut::None},
-        {Sketcher::SketchObject::rlOtherBody,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "This object belongs to another body. Hold %1 to allow cross-references."
-         ),
-         Shortcut::Control},
-        {Sketcher::SketchObject::rlOtherBodyWithLinks,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "This object belongs to another body and it contains external "
-             "geometry. Cross-reference not allowed."
-         ),
-         Shortcut::None},
-        {Sketcher::SketchObject::rlOtherPart,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "This object belongs to another part."
-         ),
-         Shortcut::None},
-        {Sketcher::SketchObject::rlNonParallel,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "The selected sketch is not parallel to this sketch. Hold %1 "
-             "to allow non-parallel sketches."
-         ),
-         Shortcut::ControlAlt},
-        {Sketcher::SketchObject::rlAxesMisaligned,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "The XY axes of the selected sketch do not have the same "
-             "direction as this sketch. Hold %1 to disregard it."
-         ),
-         Shortcut::ControlAlt},
-        {Sketcher::SketchObject::rlOriginsMisaligned,
-         QT_TRANSLATE_NOOP(
-             "SketcherGui::CarbonCopySelection",
-             "The origin of the selected sketch is not aligned with the "
-             "origin of this sketch. Hold %1 to disregard it."
-         ),
-         Shortcut::ControlAlt}
-    }};
+    static constexpr std::array<RejectionMessage, 8> rejectionMessages {
+        {{Sketcher::SketchObject::rlCircularReference,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "Carbon copy would cause a circular dependency."
+          ),
+          Shortcut::None},
+         {Sketcher::SketchObject::rlOtherDoc,
+          QT_TRANSLATE_NOOP("SketcherGui::CarbonCopySelection", "This object is in another document."),
+          Shortcut::None},
+         {Sketcher::SketchObject::rlOtherBody,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "This object belongs to another body. Hold %1 to allow cross-references."
+          ),
+          Shortcut::Control},
+         {Sketcher::SketchObject::rlOtherBodyWithLinks,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "This object belongs to another body and it contains external "
+              "geometry. Cross-reference not allowed."
+          ),
+          Shortcut::None},
+         {Sketcher::SketchObject::rlOtherPart,
+          QT_TRANSLATE_NOOP("SketcherGui::CarbonCopySelection", "This object belongs to another part."),
+          Shortcut::None},
+         {Sketcher::SketchObject::rlNonParallel,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "The selected sketch is not parallel to this sketch. Hold %1 "
+              "to allow non-parallel sketches."
+          ),
+          Shortcut::ControlAlt},
+         {Sketcher::SketchObject::rlAxesMisaligned,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "The XY axes of the selected sketch do not have the same "
+              "direction as this sketch. Hold %1 to disregard it."
+          ),
+          Shortcut::ControlAlt},
+         {Sketcher::SketchObject::rlOriginsMisaligned,
+          QT_TRANSLATE_NOOP(
+              "SketcherGui::CarbonCopySelection",
+              "The origin of the selected sketch is not aligned with the "
+              "origin of this sketch. Hold %1 to disregard it."
+          ),
+          Shortcut::ControlAlt}}
+    };
 
     App::DocumentObject* object;
 
@@ -150,8 +142,7 @@ class CarbonCopySelection:
     {
 #ifdef Q_OS_MACOS
         const bool dontSwap = QCoreApplication::testAttribute(Qt::AA_MacDontSwapCtrlAndMeta);
-        const QString control =
-            dontSwap ? QStringLiteral("\u2303") : QStringLiteral("\u2318");
+        const QString control = dontSwap ? QStringLiteral("\u2303") : QStringLiteral("\u2318");
         if (shortcut == Shortcut::Control) {
             return control;
         }
@@ -162,9 +153,8 @@ class CarbonCopySelection:
         const char* ctrlKey = "Ctrl";
         const char* altKey = "Alt";
         const QString control = QShortcut::tr(ctrlKey);
-        return shortcut == Shortcut::Control
-            ? control
-            : control + QLatin1Char('+') + QShortcut::tr(altKey);
+        return shortcut == Shortcut::Control ? control
+                                             : control + QLatin1Char('+') + QShortcut::tr(altKey);
 #endif
     }
 
@@ -180,16 +170,16 @@ public:
             return {};
         }
         QString text = QCoreApplication::translate(
-            "SketcherGui::CarbonCopySelection", notAllowedReason.c_str()
+            "SketcherGui::CarbonCopySelection",
+            notAllowedReason.c_str()
         );
         for (const auto& message : rejectionMessages) {
             if (notAllowedReason == message.source) {
                 if (text.isEmpty() || !hasExpectedPlaceholders(text, message.shortcut)) {
                     text = QString::fromUtf8(message.source);
                 }
-                return message.shortcut == Shortcut::None
-                    ? text
-                    : text.arg(shortcutText(message.shortcut));
+                return message.shortcut == Shortcut::None ? text
+                                                          : text.arg(shortcutText(message.shortcut));
             }
         }
         // Preserve informative text even if it is not one of the known reasons.
