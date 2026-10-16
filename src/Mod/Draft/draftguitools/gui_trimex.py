@@ -565,6 +565,18 @@ class Trimex(gui_base_original.Modifier):
                 # print("new", angles)
                 if angles[0] > angles[1]:
                     angles = (angles[1], angles[0])
+                if self.placement:
+                    # the ghost angles are global, FirstAngle and LastAngle
+                    # are relative to the placement of the arc (#22913)
+                    rot = self.placement.Rotation.inverted()
+                    local = []
+                    for a in angles:
+                        a = math.radians(a)
+                        vec = rot.multVec(App.Vector(math.cos(a), math.sin(a), 0))
+                        local.append(math.degrees(math.atan2(vec.y, vec.x)))
+                    if rot.multVec(App.Vector(0, 0, 1)).z < 0:
+                        local.reverse()
+                    angles = local
                 self.obj.FirstAngle = angles[0]
                 self.obj.LastAngle = angles[1]
             else:
