@@ -179,9 +179,7 @@ HAAS_TOOL_TYPE = {  # TODO missing info for slitting saw, shell mill / boring ba
 }
 
 
-def haas_probing_type(
-    haas_type, use9023=True, tool=None
-):
+def haas_probing_type(haas_type, use9023=True, tool=None):
     """Probing type for G65 P9023 A<type>; ``tool`` names the tool in the error message.
     9023 is currently always true. There are some edge case machines that will use Macro P9995 instead
     """
@@ -190,7 +188,9 @@ def haas_probing_type(
         if haas_type is None:
             raise ValueError(f"Tool type{tool_info} is None (tool was not found in the job)")
         else:
-            raise ValueError(f"Probing tool type {haas_type!r} {tool_info} is unsupported by this post")
+            raise ValueError(
+                f"Probing tool type {haas_type!r} {tool_info} is unsupported by this post"
+            )
     int_type = HAAS_TOOL_TYPE[haas_type]
     if int_type in (3, 4):
         return 23 if use9023 else 1  # rotate
