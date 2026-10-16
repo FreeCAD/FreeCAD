@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 #include <FCGlobal.h>
 #include <string>
+#include <optional>
 
 namespace App
 {
@@ -89,6 +90,13 @@ public:
     {
         return SelPoses;
     }
+    /// get cached name of parent Link object
+    /// - returns empty string, if there is no link parent
+    /// - returns std::nullopt, if there was no evaluation for link parent
+    inline std::optional<std::string> getLinkParent() const
+    {
+        return LinkParentName;
+    }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
     const App::DocumentObject* getObject() const;
@@ -121,6 +129,11 @@ protected:
     std::string FeatName;
     std::string TypeName;
     std::vector<Base::Vector3d> SelPoses;
+    std::optional<std::string> LinkParentName = std::nullopt;
+
+    /// Evaluate and set link parent from passed candidates
+    /// If found, caches name of Link parent object
+    void evaluateLinkParent(const std::vector<std::string>& candidates);
 
 private:
     /// to make sure no duplicates of subnames
