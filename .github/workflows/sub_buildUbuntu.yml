@@ -36,7 +36,7 @@ on:
         default: false
         type: boolean
         required: false
-      testCoinNodeSnapshots:
+      testVisualSnapshots:
         default: true
         type: boolean
         required: false
@@ -184,25 +184,33 @@ jobs:
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
-      - name: Coin node snapshot visual tests on build dir
-        if: inputs.testCoinNodeSnapshots
+      - name: Visual snapshot tests on build dir
+        if: inputs.testVisualSnapshots
         timeout-minutes: 15
         uses: ./.github/workflows/actions/runPythonTests
         with:
-          testDescription: "Coin node snapshot visual tests on build dir"
+          testDescription: "Visual snapshot tests on build dir"
           testCommand: |
-            FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
-            xvfb-run -a -s "-screen 0 1024x768x24" \
-              "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
-          logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+            status=0
+            for path in src/Mod/Test/Visual*Snapshots.py; do
+              suite="${path##*/}"
+              suite="${suite%.py}"
+              python3 tools/rendering/visual_baselines.py compare \
+                --suite "$suite" --headless \
+                --freecad "${{ env.builddir }}/bin/FreeCAD" \
+                --out-dir "/tmp/FreeCADTesting/VisualSnapshots/$suite" || status=1
+            done
+            exit "$status"
+          logFile: ${{ env.logdir }}TestVisualSnapshotsBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
-      - name: Upload Coin node snapshot artifacts (on failure)
-        if: failure() && inputs.testCoinNodeSnapshots
+      - name: Upload visual snapshot artifacts (on failure)
+        if: failure() && inputs.testVisualSnapshots
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
-          path: /tmp/FreeCADTesting/CoinNodeSnapshots
+          name: ${{ inputs.artifactBasename }}-VisualSnapshots
+          path: /tmp/FreeCADTesting/VisualSnapshots
+          if-no-files-found: ignore
 
       - name: C++ tests
         timeout-minutes: 1
@@ -254,6 +262,7 @@ jobs:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
+            /tmp/FreeCADTesting/VisualSnapshots
             /var/crash/*FreeCAD*
 
       - name: Upload report
