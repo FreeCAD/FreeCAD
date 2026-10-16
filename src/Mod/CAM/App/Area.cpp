@@ -1345,16 +1345,6 @@ struct WireJoiner
                     adjacentList.push_back(vinfo);
                     ++info.iEnd[i];
                 }
-                // copy the adjacent indices to all connected edges
-                for (int j = info.iStart[i]; j < info.iEnd[i]; ++j) {
-                    auto& other = adjacentList[j];
-                    auto& otherInfo = *other.it;
-                    if (&otherInfo != &info) {
-                        int k = other.start ? 0 : 1;
-                        otherInfo.iStart[k] = info.iStart[i];
-                        otherInfo.iEnd[k] = info.iEnd[i];
-                    }
-                }
             }
             if (info.iStart[0] != info.iEnd[0] && info.iStart[1] != info.iEnd[1]) {
                 // add the edge only if it is connected to some other edges on
