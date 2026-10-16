@@ -53,6 +53,8 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
             ("cutMode", "CutMode"),
             ("clearingPattern", "ClearingPattern"),
             ("boundaryShape", "BoundaryShape"),
+            ("startAt", "StartAt"),
+            ("sorting", "SortingMode"),
         ]
 
         enumTups = PathMillFace.ObjectFace.propertyEnumerations(dataType="raw")
