@@ -117,7 +117,7 @@ class DraftLineEdit(QtWidgets.QLineEdit):
             super().keyPressEvent(event)
 
 
-class _TaskPanel:
+class _BaseTaskPanel:
     def __init__(self):
         self.document = FreeCAD.ActiveDocument
         self.dialog = None
@@ -128,7 +128,7 @@ class _TaskPanel:
         gui_utils.reset_edit(self.document, self.editing)
 
 
-class DraftTaskPanel(_TaskPanel):
+class DraftTaskPanel(_BaseTaskPanel):
     def __init__(self, widget, extra=None):
         super().__init__()
         if extra:
@@ -1315,7 +1315,7 @@ class DraftToolBar:
     def makeDumbTask(self, extra=None, on_close_call=None):
         """create a dumb taskdialog to prevent deleting the temp object"""
 
-        class TaskPanel(_TaskPanel):
+        class TaskPanel(_BaseTaskPanel):
             def __init__(self, extra=None, callback=None):
                 super().__init__()
                 if extra:
