@@ -63,12 +63,12 @@
       <translation>Importa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1612"/>
+      <location filename="../CommandDoc.cpp" line="1615"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2404"/>
+      <location filename="../CommandDoc.cpp" line="2419"/>
       <source>Paste expressions</source>
       <translation>Enganxa expressions</translation>
     </message>
@@ -128,7 +128,7 @@
       <translation>Alinea</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="459"/>
+      <location filename="../Placement.cpp" line="467"/>
       <source>Placement</source>
       <translation>Posició</translation>
     </message>
@@ -4742,7 +4742,7 @@ El sistema de preferències és el fixat en les preferències generals.</transla
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1160"/>
+      <location filename="../Placement.cpp" line="1168"/>
       <source>Placement</source>
       <translation>Posició</translation>
     </message>
@@ -5318,17 +5318,17 @@ La columna 'Estat' mostra si el document es pot recuperar.</translation>
       <translation>Reinicia</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="753"/>
+      <location filename="../Placement.cpp" line="761"/>
       <source>Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic en aquest botó.  Un punt pot estar en un vèrtex, cara o aresta.  Si esteu en una cara o aresta, el punt utilitzat serà el punt en la cara o aresta de la posició del ratolí.  Si es selecciona 1 punt s'uutilitzarà com a centre de rotació. Si se seleccionen 2 punts, el punt mig entre ells serà el centre de rotació i es crearà, si és necessari,  un nou eix personalitzat. Si se seleccionen 3 punts, el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts. Alguns detalls de distància i angle es proporcionen en la visualització d'informe, que pot ser útil per a alinear objectes.  Per a la vostra comoditat, quan feu Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="854"/>
+      <location filename="../Placement.cpp" line="862"/>
       <source>Incorrect Quantity</source>
       <translation>La quantitat és incorrecta</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="856"/>
+      <location filename="../Placement.cpp" line="864"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
       <translation>Hi ha camps d'entrada amb entrada incorrecta, assegureu-vos que els valors d'emplaçament són vàlids.</translation>
     </message>
@@ -5931,53 +5931,53 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="329"/>
+      <location filename="../GraphvizView.cpp" line="234"/>
       <source>Graphviz not found</source>
       <translation>No s'ha trobat el Graphviz.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="336"/>
+      <location filename="../GraphvizView.cpp" line="229"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>El Graphviz no s'ha pogut trobar al sistema.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="337"/>
+      <location filename="../GraphvizView.cpp" line="230"/>
       <source>Read more about it here.</source>
       <translation>Més informació aquí.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="338"/>
+      <location filename="../GraphvizView.cpp" line="231"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Voleu especificar el seu camí d'instal·lació si ja està instal·lat?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="349"/>
+      <location filename="../GraphvizView.cpp" line="235"/>
       <source>Graphviz installation path</source>
       <translation>Camí d'instal·lació del Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="389"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed</source>
       <translation>Ha fallat el Graphviz.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="390"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed to create an image file</source>
       <translation>El Graphviz no ha pogut crear un fitxer d'imatge.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="493"/>
+      <location filename="../GraphvizView.cpp" line="398"/>
       <source>Bitmap</source>
       <translation>Mapa de bits</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="519"/>
-      <location filename="../CommandDoc.cpp" line="762"/>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
       <source>Export Graph</source>
       <translation>Exporta el graf</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="611"/>
+      <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation>Exporta el graf</translation>
     </message>
@@ -6930,12 +6930,12 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1376"/>
+      <location filename="../FileDialog.cpp" line="1387"/>
       <source>Select Module</source>
       <translation>Seleccioneu el mòdul</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1378"/>
+      <location filename="../FileDialog.cpp" line="1389"/>
       <source>Open %1 as</source>
       <translation>Obre %1 com a</translation>
     </message>
@@ -7360,6 +7360,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="Translator.cpp" line="266"/>
+      <location filename="Translator.cpp" line="278"/>
       <source>Spanish</source>
       <translation>Castellà</translation>
     </message>
@@ -7448,7 +7449,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4258"/>
+      <location filename="../Tree.cpp" line="4247"/>
       <source>Search</source>
       <translation>Cerca</translation>
     </message>
@@ -7491,153 +7492,153 @@ Specify another directory?</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3392"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
+      <location filename="../Tree.cpp" line="3392"/>
       <source>File does not exist.</source>
       <translation>El fitxer no existeix.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Failed to open directory.</source>
       <translation>No s'ha pogut obrir el directori.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3892"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etiquetes i atributs</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3904"/>
+      <location filename="../Tree.cpp" line="3893"/>
       <source>Description</source>
       <translation>Descripció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3894"/>
       <source>Internal name</source>
       <translation>Nom intern</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3907"/>
+      <location filename="../Tree.cpp" line="3896"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Mostra objectes amagats en la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Mostra objectes marcats com a "ocults" a la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Commuta la visibilitat en la vista en arbre</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Create Group</source>
       <translation>Crear grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Creates a group</source>
       <translation>Crea un grup</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3910"/>
       <source>Renames object</source>
       <translation>Reanomena l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3923"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Finish Editing</source>
       <translation>Finalitza l'edició</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3913"/>
       <source>Finishes editing object</source>
       <translation>Finalitza l'edició de l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Afegiu objectes dependents a la selecció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Close Document</source>
       <translation>Tanca document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3930"/>
+      <location filename="../Tree.cpp" line="3919"/>
       <source>Closes the document</source>
       <translation>Tanca el document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Mostra la ubicació actual del fitxer al buscador</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Opens the current file location</source>
       <translation>Obre la ubicació actual del fitxer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3941"/>
+      <location filename="../Tree.cpp" line="3930"/>
       <source>Reload Document</source>
       <translation>Torna a carregar el document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reloads a partially loaded document</source>
       <translation>Torna a carregar un document que s'ha carregat parcialment</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3933"/>
       <source>Skip Recomputes</source>
       <translation>Omet el recàlcul</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Activa o desactiva els recàlculs del document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3936"/>
       <source>Allow Partial Recomputes</source>
       <translation>Permet recàlculs parcials</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Habilita o inhabilita el recàlcul de l'edició d'objectes quan estigui activat «Omet el recàlcul»</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3952"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Mark to Recompute</source>
       <translation>Marca per a recalcular</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Marks this object to be recomputed</source>
       <translation>Marca aquest objecte per a recalcular-lo</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3956"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Recompute Object</source>
       <translation>Recalcula l'objecte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3957"/>
+      <location filename="../Tree.cpp" line="3946"/>
       <source>Recomputes the selected object</source>
       <translation>Recalcula l'objecte seleccionat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Commuta la visibilitat dels objectes seleccionats</translation>
     </message>
@@ -7657,33 +7658,33 @@ Specify another directory?</source>
       <translation>Mostra una columna de descripció per als elements. La descripció d'un element es pot definir editant la propietat 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6617"/>
+      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="6624"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3916"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Afegiu tots els objectes dependents a la selecció</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Reveal in Finder</source>
       <translation>Mostra al buscador</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Open File Location</source>
       <translation>Obre la ubicació del fitxer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6585"/>
+      <location filename="../Tree.cpp" line="6592"/>
       <source> (but must be executed)</source>
       <translation> (però s'ha d'executar)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6588"/>
+      <location filename="../Tree.cpp" line="6595"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom intern: %2</translation>
     </message>
@@ -8128,104 +8129,104 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <translation>Hi ha hagut errors greus en carregar el fitxer. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Desar el projecte probablement provocarà la pèrdua de dades.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="156"/>
-      <location filename="../CommandDoc.cpp" line="282"/>
+      <location filename="../CommandDoc.cpp" line="159"/>
+      <location filename="../CommandDoc.cpp" line="285"/>
       <source>Supported formats</source>
       <translation>Formats admesos</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="190"/>
+      <location filename="../CommandDoc.cpp" line="193"/>
       <source>Open Document</source>
       <translation>Obre un document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="316"/>
+      <location filename="../CommandDoc.cpp" line="319"/>
       <source>Import File</source>
       <translation>Importa un fitxer</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="603"/>
+      <location filename="../CommandDoc.cpp" line="606"/>
       <source>Export File</source>
       <translation>Exportar fitxer</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="671"/>
-      <location filename="../CommandDoc.cpp" line="683"/>
+      <location filename="../CommandDoc.cpp" line="674"/>
+      <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation>Fusiona el document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../Document.cpp" line="1749"/>
       <location filename="../Document.cpp" line="1879"/>
       <source>%1 document</source>
       <translation>Document de %1</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="684"/>
+      <location filename="../CommandDoc.cpp" line="687"/>
       <source>Cannot merge document with itself.</source>
       <translation>No es pot fusionar un document amb sí mateix.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1111"/>
+      <location filename="../CommandDoc.cpp" line="1114"/>
       <source>Printing…</source>
       <translation>S'està imprimint…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1174"/>
+      <location filename="../CommandDoc.cpp" line="1177"/>
       <source>Exporting PDF…</source>
       <translation>Exportant a PDF…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1464"/>
+      <location filename="../CommandDoc.cpp" line="1467"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation>L’objecte exportat conté un enllaç extern. Deseu el documenta almenys una vegada abans d’exportar-lo.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1764"/>
-      <location filename="../CommandDoc.cpp" line="1774"/>
+      <location filename="../CommandDoc.cpp" line="1767"/>
+      <location filename="../CommandDoc.cpp" line="1777"/>
       <source>Delete Failed</source>
       <translation>No s'ha pogut suprimir</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2272"/>
+      <location filename="../CommandDoc.cpp" line="2287"/>
       <source>Copy Selected</source>
       <translation>Copia la selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2273"/>
+      <location filename="../CommandDoc.cpp" line="2288"/>
       <source>Copy Active Document</source>
       <translation>Copia el document actiu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2274"/>
+      <location filename="../CommandDoc.cpp" line="2289"/>
       <source>Copy All Documents</source>
       <translation>Copia tots el documents</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2392"/>
+      <location filename="../CommandDoc.cpp" line="2407"/>
       <source>Expression Error</source>
       <translation>Error d'expressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2393"/>
+      <location filename="../CommandDoc.cpp" line="2408"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation>No s'han pogut analitzar algunes de les expressions.
 Consulteu la vista d'informe per obtenir més detalls.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1828"/>
+      <location filename="../CommandDoc.cpp" line="1831"/>
       <source>Dependency error</source>
       <translation>Error de dependència</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2275"/>
+      <location filename="../CommandDoc.cpp" line="2290"/>
       <source>Paste</source>
       <translation>Enganxa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2427"/>
+      <location filename="../CommandDoc.cpp" line="2442"/>
       <source>Failed to paste expressions</source>
       <translation>No s'han pogut enganxar les expressions</translation>
     </message>
@@ -8766,7 +8767,7 @@ Trieu «Interromp» per a interrompre</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="996"/>
-      <location filename="../CommandDoc.cpp" line="1463"/>
+      <location filename="../CommandDoc.cpp" line="1466"/>
       <source>Unsaved Document</source>
       <translation>Document no desat</translation>
     </message>
@@ -8884,8 +8885,8 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'ha pogut afegir la propietat a «%1»: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2779"/>
-      <location filename="../Tree.cpp" line="3176"/>
+      <location filename="../Tree.cpp" line="2768"/>
+      <location filename="../Tree.cpp" line="3165"/>
       <source>Drag &amp; drop failed</source>
       <translation>S'ha produït un error en arrossegar i deixar anar</translation>
     </message>
@@ -8997,18 +8998,18 @@ la còpia actual es perdrà.
       <translation>Color de la llegenda</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1122"/>
+      <location filename="../OverlayManager.cpp" line="1130"/>
       <source>Toggle overlay</source>
       <translation>Alterna la superposició</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2594"/>
-      <location filename="../OverlayManager.cpp" line="1123"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
+      <location filename="../OverlayManager.cpp" line="1131"/>
       <source>Toggle floating window</source>
       <translation>Alterna la finestra flotant</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1124"/>
+      <location filename="../OverlayManager.cpp" line="1132"/>
       <source>Close dock window</source>
       <translation>Tancar finestra acoblable</translation>
     </message>
@@ -9316,12 +9317,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1345"/>
+      <location filename="../CommandDoc.cpp" line="1348"/>
       <source>&amp;Copy</source>
       <translation>&amp;Copia</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1346"/>
+      <location filename="../CommandDoc.cpp" line="1349"/>
       <source>Copies the selection to the clipboard</source>
       <translation>Copia la selecció al porta-retalls</translation>
     </message>
@@ -9329,12 +9330,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1317"/>
+      <location filename="../CommandDoc.cpp" line="1320"/>
       <source>Cu&amp;t</source>
       <translation>Re&amp;talla</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1318"/>
+      <location filename="../CommandDoc.cpp" line="1321"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation>Elimina la selecció i la copia al porta-retalls</translation>
     </message>
@@ -9342,12 +9343,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1580"/>
+      <location filename="../CommandDoc.cpp" line="1583"/>
       <source>&amp;Delete</source>
       <translation>&amp;Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1581"/>
+      <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Deletes the selected objects</source>
       <translation>Elimina els objectes seleccionats</translation>
     </message>
@@ -9391,12 +9392,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2140"/>
+      <location filename="../CommandDoc.cpp" line="2155"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation>Commuta el mode d'&amp;edició</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2141"/>
+      <location filename="../CommandDoc.cpp" line="2156"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Commuta el mode d'edició de l'objecte seleccionat</translation>
     </message>
@@ -9404,22 +9405,22 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="367"/>
+      <location filename="../CommandDoc.cpp" line="370"/>
       <source>&amp;Export…</source>
       <translation>&amp;Exportar…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="368"/>
+      <location filename="../CommandDoc.cpp" line="371"/>
       <source>Exports an object in the active document</source>
       <translation>Exporta un objecte en el document actiu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="516"/>
+      <location filename="../CommandDoc.cpp" line="519"/>
       <source>No Selection</source>
       <translation>Sense selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="517"/>
+      <location filename="../CommandDoc.cpp" line="520"/>
       <source>Select objects to export before using the Export command.</source>
       <translation>Seleccioneu els objectes que voleu exportar abans d'utilitzar l'ordre Exportar.</translation>
     </message>
@@ -9427,12 +9428,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2222"/>
+      <location filename="../CommandDoc.cpp" line="2237"/>
       <source>Expression Actions</source>
       <translation>Accions d’expressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2223"/>
+      <location filename="../CommandDoc.cpp" line="2238"/>
       <source>Actions that apply to expressions</source>
       <translation>Accions que s'apliquen a expressions</translation>
     </message>
@@ -9479,12 +9480,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="267"/>
+      <location filename="../CommandDoc.cpp" line="270"/>
       <source>&amp;Import…</source>
       <translation>&amp;Importa…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="268"/>
+      <location filename="../CommandDoc.cpp" line="271"/>
       <source>Imports a file into the active document</source>
       <translation>Importa un fitxer en el document actiu</translation>
     </message>
@@ -9518,12 +9519,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="655"/>
+      <location filename="../CommandDoc.cpp" line="658"/>
       <source>&amp;Merge Document</source>
       <translation>Fusiona un docu&amp;ment</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="657"/>
+      <location filename="../CommandDoc.cpp" line="660"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation>Fusiona un altre document de FreeCAD amb l'actiu</translation>
     </message>
@@ -9537,12 +9538,12 @@ la còpia actual es perdrà.
       <translation>Sense nom</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="793"/>
+      <location filename="../CommandDoc.cpp" line="796"/>
       <source>&amp;New Document</source>
       <translation>Document &amp;nou</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="794"/>
+      <location filename="../CommandDoc.cpp" line="797"/>
       <source>Creates a new empty document</source>
       <translation>Crea un document buit nou</translation>
     </message>
@@ -9563,22 +9564,22 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="140"/>
+      <location filename="../CommandDoc.cpp" line="143"/>
       <source>&amp;Open…</source>
       <translation>&amp;Obrir…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="141"/>
+      <location filename="../CommandDoc.cpp" line="144"/>
       <source>Opens a document or imports files</source>
       <translation>Obre un document o importa fitxers</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="234"/>
+      <location filename="../CommandDoc.cpp" line="237"/>
       <source>Cannot Open File</source>
       <translation>No es pot obrir el fitxer</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="235"/>
+      <location filename="../CommandDoc.cpp" line="238"/>
       <source>Loading the file %1 is not supported</source>
       <translation>La càrrega del fitxer %1 no és compatible.</translation>
     </message>
@@ -9586,12 +9587,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1381"/>
+      <location filename="../CommandDoc.cpp" line="1384"/>
       <source>&amp;Paste</source>
       <translation>A&amp;pega</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1382"/>
+      <location filename="../CommandDoc.cpp" line="1385"/>
       <source>Pastes the contents of the clipboard</source>
       <translation>Enganxa el contingut del porta-retalls</translation>
     </message>
@@ -9599,12 +9600,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1194"/>
+      <location filename="../CommandDoc.cpp" line="1197"/>
       <source>E&amp;xit</source>
       <translation>S&amp;urt</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1195"/>
+      <location filename="../CommandDoc.cpp" line="1198"/>
       <source>Quits the application</source>
       <translation>Surt de l'aplicació</translation>
     </message>
@@ -9625,12 +9626,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1273"/>
+      <location filename="../CommandDoc.cpp" line="1276"/>
       <source>&amp;Redo</source>
       <translation>&amp;Refés</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1274"/>
+      <location filename="../CommandDoc.cpp" line="1277"/>
       <source>Redoes a previously undone action</source>
       <translation>Refà l'acció prèviament desfeta</translation>
     </message>
@@ -9638,12 +9639,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="995"/>
+      <location filename="../CommandDoc.cpp" line="998"/>
       <source>Rever&amp;t</source>
       <translation>Restablei&amp;x</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="996"/>
+      <location filename="../CommandDoc.cpp" line="999"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Torna a la versió guardada d'aquest fitxer</translation>
     </message>
@@ -9651,12 +9652,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="827"/>
+      <location filename="../CommandDoc.cpp" line="830"/>
       <source>&amp;Save</source>
       <translation>&amp;Desa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
       <source>Saves the active document</source>
       <translation>Desa el document actiu</translation>
     </message>
@@ -9664,12 +9665,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="934"/>
+      <location filename="../CommandDoc.cpp" line="937"/>
       <source>Sa&amp;ve All</source>
       <translation>D&amp;esa'ls tots</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="935"/>
+      <location filename="../CommandDoc.cpp" line="938"/>
       <source>Saves all open documents</source>
       <translation>Desa tots els documents oberts</translation>
     </message>
@@ -9677,12 +9678,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1526"/>
+      <location filename="../CommandDoc.cpp" line="1529"/>
       <source>Select &amp;All</source>
       <translation>Seleccion&amp;a-ho tot</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1527"/>
+      <location filename="../CommandDoc.cpp" line="1530"/>
       <source>Selects all objects in the active document</source>
       <translation>Selecciona tots els objectes del document actiu</translation>
     </message>
@@ -9742,12 +9743,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1228"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>&amp;Undo</source>
       <translation>&amp;Desfés</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1229"/>
+      <location filename="../CommandDoc.cpp" line="1232"/>
       <source>Undoes the previous action</source>
       <translation>Desfà l'acció anterior</translation>
     </message>
@@ -10106,7 +10107,7 @@ la còpia actual es perdrà.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1704"/>
+      <location filename="../CommandDoc.cpp" line="1707"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10115,7 +10116,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1718"/>
+      <location filename="../CommandDoc.cpp" line="1721"/>
       <source>Object Dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
@@ -10196,12 +10197,12 @@ Continue?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1485"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
       <source>Object Dependencies</source>
       <translation>Dependències de l'objecte</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1486"/>
+      <location filename="../CommandDoc.cpp" line="1489"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Per a enllaçar amb objectes externs, el document s’ha de desar almenys una vegada.
@@ -12008,7 +12009,7 @@ la regió no són opacs.</translation>
       <translation>Alterna la superposició</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1148"/>
+      <location filename="../OverlayWidgets.cpp" line="1144"/>
       <source>Select auto show/hide mode</source>
       <translation>Seleccioneu el mode de mostrar/amagar automàticament</translation>
     </message>
@@ -12016,12 +12017,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2182"/>
+      <location filename="../CommandDoc.cpp" line="2197"/>
       <source>Propert&amp;ies</source>
       <translation>Propi&amp;etats</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2183"/>
+      <location filename="../CommandDoc.cpp" line="2198"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation>Mostra la vista de propietats, que mostra les propietats de l'objecte seleccionat.</translation>
     </message>
@@ -12392,12 +12393,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2019"/>
+      <location filename="../CommandDoc.cpp" line="2041"/>
       <source>Trans&amp;form</source>
       <translation>Trans&amp;formar</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2020"/>
+      <location filename="../CommandDoc.cpp" line="2042"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation>Transforma l'objecte seleccionat en la vista 3D</translation>
     </message>
@@ -12997,12 +12998,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="715"/>
+      <location filename="../CommandDoc.cpp" line="718"/>
       <source>Dependency Gra&amp;ph</source>
       <translation>Gràfic de de&amp;pendència</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="717"/>
+      <location filename="../CommandDoc.cpp" line="720"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation>Mostra el gràfic de dependències dels objectes en el document actiu</translation>
     </message>
@@ -13010,7 +13011,7 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="729"/>
+      <location filename="../CommandDoc.cpp" line="732"/>
       <source>Dependency Graph</source>
       <translation>Gràfic de de&amp;pendència</translation>
     </message>
@@ -13018,12 +13019,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="748"/>
+      <location filename="../CommandDoc.cpp" line="751"/>
       <source>Export Dependency &amp;Graph…</source>
       <translation>Exporta el &amp;graf de dependències…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="749"/>
+      <location filename="../CommandDoc.cpp" line="752"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation>Exporta el graph de dependència com a fitxer Graphviz (.gv)</translation>
     </message>
@@ -13031,12 +13032,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="868"/>
+      <location filename="../CommandDoc.cpp" line="871"/>
       <source>Save &amp;As…</source>
       <translation>Des&amp;a com…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="869"/>
+      <location filename="../CommandDoc.cpp" line="872"/>
       <source>Saves the active document under a new file name</source>
       <translation>Desa el document actiu amb un altre nom</translation>
     </message>
@@ -13044,12 +13045,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="904"/>
       <source>Save a Cop&amp;y…</source>
       <translation>Desa una &amp;còpia…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="903"/>
+      <location filename="../CommandDoc.cpp" line="906"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation>Desa una còpia del document actiu amb un altre nom</translation>
     </message>
@@ -13057,17 +13058,17 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1008"/>
+      <location filename="../CommandDoc.cpp" line="1011"/>
       <source>Revert Document</source>
       <translation>Torneu a la versió anterior del document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1010"/>
+      <location filename="../CommandDoc.cpp" line="1013"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation>Això descartarà tots els canvis des de l'última acció de desar el fitxer.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1012"/>
+      <location filename="../CommandDoc.cpp" line="1015"/>
       <source>Continue?</source>
       <translation>Continuar?</translation>
     </message>
@@ -13075,12 +13076,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1037"/>
+      <location filename="../CommandDoc.cpp" line="1040"/>
       <source>Doc&amp;ument Information</source>
       <translation>Informació del doc&amp;ument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1039"/>
+      <location filename="../CommandDoc.cpp" line="1042"/>
       <source>Shows information about the active document</source>
       <translation>Mostra informació sobre el document actiu</translation>
     </message>
@@ -13088,12 +13089,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1069"/>
+      <location filename="../CommandDoc.cpp" line="1072"/>
       <source>Do&amp;cument Utility</source>
       <translation>Utilitat del do&amp;cument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1071"/>
+      <location filename="../CommandDoc.cpp" line="1074"/>
       <source>Extracts or creates document files</source>
       <translation>Extreu o crea fitxers de documents</translation>
     </message>
@@ -13101,12 +13102,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1097"/>
+      <location filename="../CommandDoc.cpp" line="1100"/>
       <source>&amp;Print</source>
       <translation>Im&amp;primir</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1099"/>
+      <location filename="../CommandDoc.cpp" line="1102"/>
       <source>Prints the active document</source>
       <translation>Imprimeix el document actiu</translation>
     </message>
@@ -13114,12 +13115,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1130"/>
+      <location filename="../CommandDoc.cpp" line="1133"/>
       <source>Print Previe&amp;w</source>
       <translation>&amp;Vista prèvia d'impressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1132"/>
+      <location filename="../CommandDoc.cpp" line="1135"/>
       <source>Previews the active document before printing</source>
       <translation>Previsualitza el document actiu abans d'imprimir</translation>
     </message>
@@ -13127,12 +13128,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1161"/>
+      <location filename="../CommandDoc.cpp" line="1164"/>
       <source>Export P&amp;DF</source>
       <translation>Exporta com a P&amp;DF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1163"/>
+      <location filename="../CommandDoc.cpp" line="1166"/>
       <source>Exports the active document as a PDF file</source>
       <translation>Exporta el document actiu com a fitxer PDF</translation>
     </message>
@@ -13140,12 +13141,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1423"/>
+      <location filename="../CommandDoc.cpp" line="1426"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation>Duplica la selecci&amp;ó</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1424"/>
+      <location filename="../CommandDoc.cpp" line="1427"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation>Duplica els objectes seleccionats i els l'afegeix al document actiu</translation>
     </message>
@@ -13153,12 +13154,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1800"/>
+      <location filename="../CommandDoc.cpp" line="1803"/>
       <source>Recompute</source>
       <translation>Recalcula</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1801"/>
+      <location filename="../CommandDoc.cpp" line="1804"/>
       <source>Recomputes the active document</source>
       <translation>Recalcula el document actiu</translation>
     </message>
@@ -13166,7 +13167,7 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1829"/>
+      <location filename="../CommandDoc.cpp" line="1832"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13180,12 +13181,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1929"/>
+      <location filename="../CommandDoc.cpp" line="1932"/>
       <source>Transform</source>
       <translation>Transforma</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1931"/>
+      <location filename="../CommandDoc.cpp" line="1934"/>
       <source>Transforms the selected object</source>
       <translation>Transforma l'objecte seleccionat</translation>
     </message>
@@ -13193,12 +13194,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1956"/>
+      <location filename="../CommandDoc.cpp" line="1985"/>
       <source>P&amp;lacement</source>
       <translation>&amp;Ubicació</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1958"/>
+      <location filename="../CommandDoc.cpp" line="1987"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation>Obre l'editor de col·locació per ajustar la col·locació de l'objecte seleccionat</translation>
     </message>
@@ -13206,12 +13207,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2067"/>
+      <location filename="../CommandDoc.cpp" line="2082"/>
       <source>Ali&amp;gn To…</source>
       <translation>Alinea a…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2069"/>
+      <location filename="../CommandDoc.cpp" line="2084"/>
       <source>Aligns the selected objects</source>
       <translation>Alinea els objectes seleccionats</translation>
     </message>
@@ -14396,13 +14397,13 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1263"/>
-      <location filename="../FileDialog.cpp" line="1273"/>
+      <location filename="../FileDialog.cpp" line="1274"/>
+      <location filename="../FileDialog.cpp" line="1284"/>
       <source>Select a File</source>
       <translation>Seleccionar un fitxer</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1283"/>
+      <location filename="../FileDialog.cpp" line="1294"/>
       <source>Select a Directory</source>
       <translation>Seleccioneu un directori</translation>
     </message>
@@ -14418,7 +14419,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2250"/>
+      <location filename="../OverlayWidgets.cpp" line="2244"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>Desplaçar el ratolí, Esc per aturar-ho</translation>
     </message>
@@ -14434,7 +14435,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4330"/>
+      <location filename="../Tree.cpp" line="4319"/>
       <source>Tree View</source>
       <translation>Vista d'Arbre</translation>
     </message>
@@ -14915,12 +14916,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdOpenGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="82"/>
+      <location filename="../CommandDoc.cpp" line="85"/>
       <source>&amp;Open…</source>
       <translation>&amp;Obrir…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="83"/>
+      <location filename="../CommandDoc.cpp" line="86"/>
       <source>Opens a document or imports files</source>
       <translation>Obre un document o importa fitxers</translation>
     </message>
@@ -14928,12 +14929,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdSaveGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="963"/>
+      <location filename="../CommandDoc.cpp" line="966"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="964"/>
+      <location filename="../CommandDoc.cpp" line="967"/>
       <source>Saves the active document</source>
       <translation>Desa el document actiu</translation>
     </message>

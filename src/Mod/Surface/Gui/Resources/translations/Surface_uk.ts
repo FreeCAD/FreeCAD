@@ -428,7 +428,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
@@ -446,7 +446,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="333"/>
       <source>Sections</source>
-      <translation>Секції</translation>
+      <translation>Перерізи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>

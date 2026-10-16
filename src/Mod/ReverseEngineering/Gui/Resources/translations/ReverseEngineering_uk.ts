@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="142"/>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Площина</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
@@ -234,7 +234,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="160"/>
       <source>Placement</source>
-      <translation>Розташувати</translation>
+      <translation>Розміщення</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="216"/>
@@ -392,7 +392,7 @@
       <location filename="../../Command.cpp" line="120"/>
       <location filename="../../Command.cpp" line="612"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="82"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Площина</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="61"/>
       <source>All</source>
-      <translation>Всі</translation>
+      <translation>Усі</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="81"/>
@@ -511,7 +511,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Площина</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>

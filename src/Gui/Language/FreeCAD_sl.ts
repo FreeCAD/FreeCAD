@@ -63,12 +63,12 @@
       <translation>Uvozi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1612"/>
+      <location filename="../CommandDoc.cpp" line="1615"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2404"/>
+      <location filename="../CommandDoc.cpp" line="2419"/>
       <source>Paste expressions</source>
       <translation>Prilepi izraze</translation>
     </message>
@@ -128,7 +128,7 @@
       <translation>Poravnaj</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="459"/>
+      <location filename="../Placement.cpp" line="467"/>
       <source>Placement</source>
       <translation>Postavitev</translation>
     </message>
@@ -4746,7 +4746,7 @@ The preference system is the one set in the general preferences.</translation>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1160"/>
+      <location filename="../Placement.cpp" line="1168"/>
       <source>Placement</source>
       <translation>Postavitev</translation>
     </message>
@@ -5321,17 +5321,17 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Ponastavi</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="753"/>
+      <location filename="../Placement.cpp" line="761"/>
       <source>Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation type="unfinished">Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="854"/>
+      <location filename="../Placement.cpp" line="862"/>
       <source>Incorrect Quantity</source>
       <translation type="unfinished">Incorrect Quantity</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="856"/>
+      <location filename="../Placement.cpp" line="864"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
       <translation type="unfinished">There are input fields with incorrect input. Ensure valid placement values!</translation>
     </message>
@@ -5934,53 +5934,53 @@ Save all changes?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="329"/>
+      <location filename="../GraphvizView.cpp" line="234"/>
       <source>Graphviz not found</source>
       <translation>Graphviza ni mogoče najti</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="336"/>
+      <location filename="../GraphvizView.cpp" line="229"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>Programa Graphviz ni bilo mogoče najti v vašem sistemu.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="337"/>
+      <location filename="../GraphvizView.cpp" line="230"/>
       <source>Read more about it here.</source>
       <translation>Več preberite tukaj.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="338"/>
+      <location filename="../GraphvizView.cpp" line="231"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Ali želite določiti namestitveno mesto, če je že nameščen?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="349"/>
+      <location filename="../GraphvizView.cpp" line="235"/>
       <source>Graphviz installation path</source>
       <translation>Namestitvena pot Graphviza</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="389"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed</source>
       <translation>Graphvizu je spodletelo</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="390"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed to create an image file</source>
       <translation>Graphvizu ni uspelo ustvariti slikovne datoteke</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="493"/>
+      <location filename="../GraphvizView.cpp" line="398"/>
       <source>Bitmap</source>
       <translation>Točkovna slika</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="519"/>
-      <location filename="../CommandDoc.cpp" line="762"/>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
       <source>Export Graph</source>
       <translation type="unfinished">Export Graph</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="611"/>
+      <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation type="unfinished">Export graph</translation>
     </message>
@@ -6936,12 +6936,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1376"/>
+      <location filename="../FileDialog.cpp" line="1387"/>
       <source>Select Module</source>
       <translation type="unfinished">Select Module</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1378"/>
+      <location filename="../FileDialog.cpp" line="1389"/>
       <source>Open %1 as</source>
       <translation>Odpri %1 kot</translation>
     </message>
@@ -7370,6 +7370,7 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="266"/>
+      <location filename="Translator.cpp" line="278"/>
       <source>Spanish</source>
       <translation>Španščina</translation>
     </message>
@@ -7458,7 +7459,7 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4258"/>
+      <location filename="../Tree.cpp" line="4247"/>
       <source>Search</source>
       <translation>Poišči</translation>
     </message>
@@ -7501,153 +7502,153 @@ Specify another directory?</translation>
       <translation>Skupina</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3392"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
+      <location filename="../Tree.cpp" line="3392"/>
       <source>File does not exist.</source>
       <translation>Datoteka ne obstaja.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Failed to open directory.</source>
       <translation type="unfinished">Failed to open directory.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3892"/>
       <source>Labels &amp; Attributes</source>
       <translation>Oznake in atributi</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3904"/>
+      <location filename="../Tree.cpp" line="3893"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3894"/>
       <source>Internal name</source>
       <translation>Interno ime</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3907"/>
+      <location filename="../Tree.cpp" line="3896"/>
       <source>Show Items Hidden in Tree View</source>
       <translation type="unfinished">Show Items Hidden in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation type="unfinished">Shows items that are marked as 'hidden' in the tree view</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Toggle Visibility in Tree View</source>
       <translation type="unfinished">Toggle Visibility in Tree View</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Create Group</source>
       <translation type="unfinished">Create Group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Creates a group</source>
       <translation type="unfinished">Creates a group</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3910"/>
       <source>Renames object</source>
       <translation type="unfinished">Renames object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3923"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Finish Editing</source>
       <translation type="unfinished">Finish Editing</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3913"/>
       <source>Finishes editing object</source>
       <translation type="unfinished">Finishes editing object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Add Dependent Objects to Selection</source>
       <translation type="unfinished">Add Dependent Objects to Selection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Close Document</source>
       <translation type="unfinished">Close Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3930"/>
+      <location filename="../Tree.cpp" line="3919"/>
       <source>Closes the document</source>
       <translation type="unfinished">Closes the document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Reveals the current file location in Finder</source>
       <translation type="unfinished">Reveals the current file location in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Opens the current file location</source>
       <translation type="unfinished">Opens the current file location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3941"/>
+      <location filename="../Tree.cpp" line="3930"/>
       <source>Reload Document</source>
       <translation type="unfinished">Reload Document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reloads a partially loaded document</source>
       <translation type="unfinished">Reloads a partially loaded document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3933"/>
       <source>Skip Recomputes</source>
       <translation type="unfinished">Skip Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Enables or disables the recomputations of document</source>
       <translation type="unfinished">Enables or disables the recomputations of document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3936"/>
       <source>Allow Partial Recomputes</source>
       <translation type="unfinished">Allow Partial Recomputes</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation type="unfinished">Enables or disables the recomputating editing object when 'skip recomputation' is enabled</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3952"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3956"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Recompute Object</source>
       <translation type="unfinished">Recompute Object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3957"/>
+      <location filename="../Tree.cpp" line="3946"/>
       <source>Recomputes the selected object</source>
       <translation type="unfinished">Recomputes the selected object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Preklopi vidnost izbranih elementov v v drevesni strukturi</translation>
     </message>
@@ -7667,33 +7668,33 @@ Specify another directory?</translation>
       <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6617"/>
+      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="6624"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3916"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Izboru doda vse odvisne objekte</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Reveal in Finder</source>
       <translation type="unfinished">Reveal in Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Open File Location</source>
       <translation type="unfinished">Open File Location</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6585"/>
+      <location filename="../Tree.cpp" line="6592"/>
       <source> (but must be executed)</source>
       <translation> (vendar mora biti izvedeno)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6588"/>
+      <location filename="../Tree.cpp" line="6595"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Interno ime: %2</translation>
     </message>
@@ -8140,104 +8141,104 @@ Check the report view for more details.</translation>
       <translation>Pri nalaganju datoteke je prišlo do resnih napak. Določeni podatki so bili lahko spremenjeni ali pa sploh niso bili obnovljeni. Če projekt shranite, bo najverjetneje prišlo do izgube podatkov.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="156"/>
-      <location filename="../CommandDoc.cpp" line="282"/>
+      <location filename="../CommandDoc.cpp" line="159"/>
+      <location filename="../CommandDoc.cpp" line="285"/>
       <source>Supported formats</source>
       <translation>Podprti zapisi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="190"/>
+      <location filename="../CommandDoc.cpp" line="193"/>
       <source>Open Document</source>
       <translation type="unfinished">Open Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="316"/>
+      <location filename="../CommandDoc.cpp" line="319"/>
       <source>Import File</source>
       <translation type="unfinished">Import File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="603"/>
+      <location filename="../CommandDoc.cpp" line="606"/>
       <source>Export File</source>
       <translation type="unfinished">Export File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="671"/>
-      <location filename="../CommandDoc.cpp" line="683"/>
+      <location filename="../CommandDoc.cpp" line="674"/>
+      <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation type="unfinished">Merge Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../Document.cpp" line="1749"/>
       <location filename="../Document.cpp" line="1879"/>
       <source>%1 document</source>
       <translation type="unfinished">%1 document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="684"/>
+      <location filename="../CommandDoc.cpp" line="687"/>
       <source>Cannot merge document with itself.</source>
       <translation>Dokumenta ni mogoče združiti samega s sabo.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1111"/>
+      <location filename="../CommandDoc.cpp" line="1114"/>
       <source>Printing…</source>
       <translation type="unfinished">Printing…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1174"/>
+      <location filename="../CommandDoc.cpp" line="1177"/>
       <source>Exporting PDF…</source>
       <translation type="unfinished">Exporting PDF…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1464"/>
+      <location filename="../CommandDoc.cpp" line="1467"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation type="unfinished">The exported object contains an external link. Save the document.at least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1764"/>
-      <location filename="../CommandDoc.cpp" line="1774"/>
+      <location filename="../CommandDoc.cpp" line="1767"/>
+      <location filename="../CommandDoc.cpp" line="1777"/>
       <source>Delete Failed</source>
       <translation type="unfinished">Delete Failed</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2272"/>
+      <location filename="../CommandDoc.cpp" line="2287"/>
       <source>Copy Selected</source>
       <translation type="unfinished">Copy Selected</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2273"/>
+      <location filename="../CommandDoc.cpp" line="2288"/>
       <source>Copy Active Document</source>
       <translation type="unfinished">Copy Active Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2274"/>
+      <location filename="../CommandDoc.cpp" line="2289"/>
       <source>Copy All Documents</source>
       <translation type="unfinished">Copy All Documents</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2392"/>
+      <location filename="../CommandDoc.cpp" line="2407"/>
       <source>Expression Error</source>
       <translation type="unfinished">Expression Error</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2393"/>
+      <location filename="../CommandDoc.cpp" line="2408"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to parse some of the expressions.
 Check the report view for more details.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1828"/>
+      <location filename="../CommandDoc.cpp" line="1831"/>
       <source>Dependency error</source>
       <translation type="unfinished">Dependency error</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2275"/>
+      <location filename="../CommandDoc.cpp" line="2290"/>
       <source>Paste</source>
       <translation>Prilepi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2427"/>
+      <location filename="../CommandDoc.cpp" line="2442"/>
       <source>Failed to paste expressions</source>
       <translation>Izraza ni bilo mogoče prilepiti</translation>
     </message>
@@ -8779,7 +8780,7 @@ Izberite "Prekini" za prekinitev</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="996"/>
-      <location filename="../CommandDoc.cpp" line="1463"/>
+      <location filename="../CommandDoc.cpp" line="1466"/>
       <source>Unsaved Document</source>
       <translation type="unfinished">Unsaved Document</translation>
     </message>
@@ -8897,8 +8898,8 @@ Izberite "Prekini" za prekinitev</translation>
       <translation>Ni bilo mogoče dodati lastnosti v '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2779"/>
-      <location filename="../Tree.cpp" line="3176"/>
+      <location filename="../Tree.cpp" line="2768"/>
+      <location filename="../Tree.cpp" line="3165"/>
       <source>Drag &amp; drop failed</source>
       <translation>Povleci-spusti spodletelo</translation>
     </message>
@@ -9010,18 +9011,18 @@ the current copy will be lost.
       <translation>Legenda barv</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1122"/>
+      <location filename="../OverlayManager.cpp" line="1130"/>
       <source>Toggle overlay</source>
       <translation>Preklopi prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2594"/>
-      <location filename="../OverlayManager.cpp" line="1123"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
+      <location filename="../OverlayManager.cpp" line="1131"/>
       <source>Toggle floating window</source>
       <translation>Preklopi plavajoče okno</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1124"/>
+      <location filename="../OverlayManager.cpp" line="1132"/>
       <source>Close dock window</source>
       <translation>Zapri usidrana okna</translation>
     </message>
@@ -9329,12 +9330,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1345"/>
+      <location filename="../CommandDoc.cpp" line="1348"/>
       <source>&amp;Copy</source>
       <translation>&amp;Kopiraj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1346"/>
+      <location filename="../CommandDoc.cpp" line="1349"/>
       <source>Copies the selection to the clipboard</source>
       <translation type="unfinished">Copies the selection to the clipboard</translation>
     </message>
@@ -9342,12 +9343,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1317"/>
+      <location filename="../CommandDoc.cpp" line="1320"/>
       <source>Cu&amp;t</source>
       <translation>&amp;Izreži</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1318"/>
+      <location filename="../CommandDoc.cpp" line="1321"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation type="unfinished">Removes the selection and copies it to the clipboard</translation>
     </message>
@@ -9355,12 +9356,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1580"/>
+      <location filename="../CommandDoc.cpp" line="1583"/>
       <source>&amp;Delete</source>
       <translation>I&amp;zbriši</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1581"/>
+      <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Deletes the selected objects</source>
       <translation>Izbriše izbrane predmete</translation>
     </message>
@@ -9404,12 +9405,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2140"/>
+      <location filename="../CommandDoc.cpp" line="2155"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation type="unfinished">Toggle &amp;Edit Mode</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2141"/>
+      <location filename="../CommandDoc.cpp" line="2156"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Preklopi način urejanja izbranih predmetov</translation>
     </message>
@@ -9417,22 +9418,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="367"/>
+      <location filename="../CommandDoc.cpp" line="370"/>
       <source>&amp;Export…</source>
       <translation type="unfinished">&amp;Export…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="368"/>
+      <location filename="../CommandDoc.cpp" line="371"/>
       <source>Exports an object in the active document</source>
       <translation type="unfinished">Exports an object in the active document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="516"/>
+      <location filename="../CommandDoc.cpp" line="519"/>
       <source>No Selection</source>
       <translation type="unfinished">No Selection</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="517"/>
+      <location filename="../CommandDoc.cpp" line="520"/>
       <source>Select objects to export before using the Export command.</source>
       <translation type="unfinished">Select objects to export before using the Export command.</translation>
     </message>
@@ -9440,12 +9441,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2222"/>
+      <location filename="../CommandDoc.cpp" line="2237"/>
       <source>Expression Actions</source>
       <translation type="unfinished">Expression Actions</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2223"/>
+      <location filename="../CommandDoc.cpp" line="2238"/>
       <source>Actions that apply to expressions</source>
       <translation>Dejanja, ki veljajo za izraze</translation>
     </message>
@@ -9492,12 +9493,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="267"/>
+      <location filename="../CommandDoc.cpp" line="270"/>
       <source>&amp;Import…</source>
       <translation type="unfinished">&amp;Import…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="268"/>
+      <location filename="../CommandDoc.cpp" line="271"/>
       <source>Imports a file into the active document</source>
       <translation type="unfinished">Imports a file into the active document</translation>
     </message>
@@ -9531,12 +9532,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="655"/>
+      <location filename="../CommandDoc.cpp" line="658"/>
       <source>&amp;Merge Document</source>
       <translation type="unfinished">&amp;Merge Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="657"/>
+      <location filename="../CommandDoc.cpp" line="660"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation type="unfinished">Merges another FreeCAD document into the active one</translation>
     </message>
@@ -9550,12 +9551,12 @@ the current copy will be lost.
       <translation>Neimenovan</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="793"/>
+      <location filename="../CommandDoc.cpp" line="796"/>
       <source>&amp;New Document</source>
       <translation type="unfinished">&amp;New Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="794"/>
+      <location filename="../CommandDoc.cpp" line="797"/>
       <source>Creates a new empty document</source>
       <translation type="unfinished">Creates a new empty document</translation>
     </message>
@@ -9576,22 +9577,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="140"/>
+      <location filename="../CommandDoc.cpp" line="143"/>
       <source>&amp;Open…</source>
       <translation type="unfinished">&amp;Open…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="141"/>
+      <location filename="../CommandDoc.cpp" line="144"/>
       <source>Opens a document or imports files</source>
       <translation type="unfinished">Opens a document or imports files</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="234"/>
+      <location filename="../CommandDoc.cpp" line="237"/>
       <source>Cannot Open File</source>
       <translation type="unfinished">Cannot Open File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="235"/>
+      <location filename="../CommandDoc.cpp" line="238"/>
       <source>Loading the file %1 is not supported</source>
       <translation>Nalaganje datoteke %1 ni podprto</translation>
     </message>
@@ -9599,12 +9600,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1381"/>
+      <location filename="../CommandDoc.cpp" line="1384"/>
       <source>&amp;Paste</source>
       <translation>&amp;Prilepi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1382"/>
+      <location filename="../CommandDoc.cpp" line="1385"/>
       <source>Pastes the contents of the clipboard</source>
       <translation type="unfinished">Pastes the contents of the clipboard</translation>
     </message>
@@ -9612,12 +9613,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1194"/>
+      <location filename="../CommandDoc.cpp" line="1197"/>
       <source>E&amp;xit</source>
       <translation>Iz&amp;hod</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1195"/>
+      <location filename="../CommandDoc.cpp" line="1198"/>
       <source>Quits the application</source>
       <translation>Zapre program</translation>
     </message>
@@ -9638,12 +9639,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1273"/>
+      <location filename="../CommandDoc.cpp" line="1276"/>
       <source>&amp;Redo</source>
       <translation>&amp;Uveljavi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1274"/>
+      <location filename="../CommandDoc.cpp" line="1277"/>
       <source>Redoes a previously undone action</source>
       <translation>Uveljavi prej razveljavljeno dejanje</translation>
     </message>
@@ -9651,12 +9652,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="995"/>
+      <location filename="../CommandDoc.cpp" line="998"/>
       <source>Rever&amp;t</source>
       <translation>Pov&amp;rni</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="996"/>
+      <location filename="../CommandDoc.cpp" line="999"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Povrnitev na shranjeno različico te datoteke</translation>
     </message>
@@ -9664,12 +9665,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="827"/>
+      <location filename="../CommandDoc.cpp" line="830"/>
       <source>&amp;Save</source>
       <translation>&amp;Shrani</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
       <source>Saves the active document</source>
       <translation type="unfinished">Saves the active document</translation>
     </message>
@@ -9677,12 +9678,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="934"/>
+      <location filename="../CommandDoc.cpp" line="937"/>
       <source>Sa&amp;ve All</source>
       <translation>Shrani vs&amp;e</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="935"/>
+      <location filename="../CommandDoc.cpp" line="938"/>
       <source>Saves all open documents</source>
       <translation type="unfinished">Saves all open documents</translation>
     </message>
@@ -9690,12 +9691,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1526"/>
+      <location filename="../CommandDoc.cpp" line="1529"/>
       <source>Select &amp;All</source>
       <translation>Izberi &amp;vse</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1527"/>
+      <location filename="../CommandDoc.cpp" line="1530"/>
       <source>Selects all objects in the active document</source>
       <translation type="unfinished">Selects all objects in the active document</translation>
     </message>
@@ -9755,12 +9756,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1228"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>&amp;Undo</source>
       <translation>&amp;Razveljavi</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1229"/>
+      <location filename="../CommandDoc.cpp" line="1232"/>
       <source>Undoes the previous action</source>
       <translation type="unfinished">Undoes the previous action</translation>
     </message>
@@ -10119,7 +10120,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1704"/>
+      <location filename="../CommandDoc.cpp" line="1707"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10130,7 +10131,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1718"/>
+      <location filename="../CommandDoc.cpp" line="1721"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
@@ -10211,12 +10212,12 @@ Continue?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1485"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1486"/>
+      <location filename="../CommandDoc.cpp" line="1489"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
@@ -12027,7 +12028,7 @@ the region are non-opaque.</translation>
       <translation>Preklopi prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1148"/>
+      <location filename="../OverlayWidgets.cpp" line="1144"/>
       <source>Select auto show/hide mode</source>
       <translation type="unfinished">Select auto show/hide mode</translation>
     </message>
@@ -12035,12 +12036,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2182"/>
+      <location filename="../CommandDoc.cpp" line="2197"/>
       <source>Propert&amp;ies</source>
       <translation>&amp;Lastnosti</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2183"/>
+      <location filename="../CommandDoc.cpp" line="2198"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Shows the property view, which displays the properties of the selected object.</translation>
     </message>
@@ -12411,12 +12412,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2019"/>
+      <location filename="../CommandDoc.cpp" line="2041"/>
       <source>Trans&amp;form</source>
       <translation>&amp;Transformiraj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2020"/>
+      <location filename="../CommandDoc.cpp" line="2042"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation type="unfinished">Transforms the selected object in the 3D view</translation>
     </message>
@@ -13016,12 +13017,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="715"/>
+      <location filename="../CommandDoc.cpp" line="718"/>
       <source>Dependency Gra&amp;ph</source>
       <translation type="unfinished">Dependency Gra&amp;ph</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="717"/>
+      <location filename="../CommandDoc.cpp" line="720"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation type="unfinished">Shows the dependency graph of the objects in the active document</translation>
     </message>
@@ -13029,7 +13030,7 @@ the region are non-opaque.</translation>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="729"/>
+      <location filename="../CommandDoc.cpp" line="732"/>
       <source>Dependency Graph</source>
       <translation type="unfinished">Dependency Graph</translation>
     </message>
@@ -13037,12 +13038,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="748"/>
+      <location filename="../CommandDoc.cpp" line="751"/>
       <source>Export Dependency &amp;Graph…</source>
       <translation type="unfinished">Export Dependency &amp;Graph…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="749"/>
+      <location filename="../CommandDoc.cpp" line="752"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation type="unfinished">Exports the dependency graph as a Graphviz (.gv) file</translation>
     </message>
@@ -13050,12 +13051,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="868"/>
+      <location filename="../CommandDoc.cpp" line="871"/>
       <source>Save &amp;As…</source>
       <translation type="unfinished">Save &amp;As…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="869"/>
+      <location filename="../CommandDoc.cpp" line="872"/>
       <source>Saves the active document under a new file name</source>
       <translation type="unfinished">Saves the active document under a new file name</translation>
     </message>
@@ -13063,12 +13064,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="904"/>
       <source>Save a Cop&amp;y…</source>
       <translation type="unfinished">Save a Cop&amp;y…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="903"/>
+      <location filename="../CommandDoc.cpp" line="906"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation type="unfinished">Saves a copy of the active document under a new file name</translation>
     </message>
@@ -13076,17 +13077,17 @@ the region are non-opaque.</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1008"/>
+      <location filename="../CommandDoc.cpp" line="1011"/>
       <source>Revert Document</source>
       <translation type="unfinished">Revert Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1010"/>
+      <location filename="../CommandDoc.cpp" line="1013"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation type="unfinished">This will discard all the changes since the last file save.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1012"/>
+      <location filename="../CommandDoc.cpp" line="1015"/>
       <source>Continue?</source>
       <translation type="unfinished">Continue?</translation>
     </message>
@@ -13094,12 +13095,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1037"/>
+      <location filename="../CommandDoc.cpp" line="1040"/>
       <source>Doc&amp;ument Information</source>
       <translation type="unfinished">Doc&amp;ument Information</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1039"/>
+      <location filename="../CommandDoc.cpp" line="1042"/>
       <source>Shows information about the active document</source>
       <translation type="unfinished">Shows information about the active document</translation>
     </message>
@@ -13107,12 +13108,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1069"/>
+      <location filename="../CommandDoc.cpp" line="1072"/>
       <source>Do&amp;cument Utility</source>
       <translation type="unfinished">Do&amp;cument Utility</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1071"/>
+      <location filename="../CommandDoc.cpp" line="1074"/>
       <source>Extracts or creates document files</source>
       <translation type="unfinished">Extracts or creates document files</translation>
     </message>
@@ -13120,12 +13121,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1097"/>
+      <location filename="../CommandDoc.cpp" line="1100"/>
       <source>&amp;Print</source>
       <translation type="unfinished">&amp;Print</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1099"/>
+      <location filename="../CommandDoc.cpp" line="1102"/>
       <source>Prints the active document</source>
       <translation type="unfinished">Prints the active document</translation>
     </message>
@@ -13133,12 +13134,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1130"/>
+      <location filename="../CommandDoc.cpp" line="1133"/>
       <source>Print Previe&amp;w</source>
       <translation type="unfinished">Print Previe&amp;w</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1132"/>
+      <location filename="../CommandDoc.cpp" line="1135"/>
       <source>Previews the active document before printing</source>
       <translation type="unfinished">Previews the active document before printing</translation>
     </message>
@@ -13146,12 +13147,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1161"/>
+      <location filename="../CommandDoc.cpp" line="1164"/>
       <source>Export P&amp;DF</source>
       <translation type="unfinished">Export P&amp;DF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1163"/>
+      <location filename="../CommandDoc.cpp" line="1166"/>
       <source>Exports the active document as a PDF file</source>
       <translation type="unfinished">Exports the active document as a PDF file</translation>
     </message>
@@ -13159,12 +13160,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1423"/>
+      <location filename="../CommandDoc.cpp" line="1426"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation type="unfinished">Duplicate Selecti&amp;on</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1424"/>
+      <location filename="../CommandDoc.cpp" line="1427"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation type="unfinished">Duplicates the selected objects to the active document</translation>
     </message>
@@ -13172,12 +13173,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1800"/>
+      <location filename="../CommandDoc.cpp" line="1803"/>
       <source>Recompute</source>
       <translation>Preračunaj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1801"/>
+      <location filename="../CommandDoc.cpp" line="1804"/>
       <source>Recomputes the active document</source>
       <translation type="unfinished">Recomputes the active document</translation>
     </message>
@@ -13185,7 +13186,7 @@ the region are non-opaque.</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1829"/>
+      <location filename="../CommandDoc.cpp" line="1832"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13199,12 +13200,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1929"/>
+      <location filename="../CommandDoc.cpp" line="1932"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1931"/>
+      <location filename="../CommandDoc.cpp" line="1934"/>
       <source>Transforms the selected object</source>
       <translation type="unfinished">Transforms the selected object</translation>
     </message>
@@ -13212,12 +13213,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1956"/>
+      <location filename="../CommandDoc.cpp" line="1985"/>
       <source>P&amp;lacement</source>
       <translation type="unfinished">P&amp;lacement</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1958"/>
+      <location filename="../CommandDoc.cpp" line="1987"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation type="unfinished">Opens the placement editor to adjust the placement of the selected object</translation>
     </message>
@@ -13225,12 +13226,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2067"/>
+      <location filename="../CommandDoc.cpp" line="2082"/>
       <source>Ali&amp;gn To…</source>
       <translation type="unfinished">Ali&amp;gn To…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2069"/>
+      <location filename="../CommandDoc.cpp" line="2084"/>
       <source>Aligns the selected objects</source>
       <translation type="unfinished">Aligns the selected objects</translation>
     </message>
@@ -14415,13 +14416,13 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1263"/>
-      <location filename="../FileDialog.cpp" line="1273"/>
+      <location filename="../FileDialog.cpp" line="1274"/>
+      <location filename="../FileDialog.cpp" line="1284"/>
       <source>Select a File</source>
       <translation type="unfinished">Select a File</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1283"/>
+      <location filename="../FileDialog.cpp" line="1294"/>
       <source>Select a Directory</source>
       <translation type="unfinished">Select a Directory</translation>
     </message>
@@ -14437,7 +14438,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2250"/>
+      <location filename="../OverlayWidgets.cpp" line="2244"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation type="unfinished">Mouse pass through, Esc to stop</translation>
     </message>
@@ -14453,7 +14454,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4330"/>
+      <location filename="../Tree.cpp" line="4319"/>
       <source>Tree View</source>
       <translation type="unfinished">Tree View</translation>
     </message>
@@ -14936,12 +14937,12 @@ treated as shortcut key sequence 'F, F'.</translation>
   <context>
     <name>StdCmdOpenGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="82"/>
+      <location filename="../CommandDoc.cpp" line="85"/>
       <source>&amp;Open…</source>
       <translation type="unfinished">&amp;Open…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="83"/>
+      <location filename="../CommandDoc.cpp" line="86"/>
       <source>Opens a document or imports files</source>
       <translation type="unfinished">Opens a document or imports files</translation>
     </message>
@@ -14949,12 +14950,12 @@ treated as shortcut key sequence 'F, F'.</translation>
   <context>
     <name>StdCmdSaveGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="963"/>
+      <location filename="../CommandDoc.cpp" line="966"/>
       <source>Save</source>
       <translation>Shrani</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="964"/>
+      <location filename="../CommandDoc.cpp" line="967"/>
       <source>Saves the active document</source>
       <translation type="unfinished">Saves the active document</translation>
     </message>

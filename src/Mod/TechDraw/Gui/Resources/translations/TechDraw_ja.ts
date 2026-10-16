@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="983"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
+      <translation>2つの選択点を通過する表示用の線を追加</translation>
     </message>
   </context>
   <context>
@@ -1582,7 +1582,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1970"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature</translation>
+      <translation>オブジェクトまたはフィーチャーの水平方向の範囲（全体長さ）を示す寸法を挿入します。</translation>
     </message>
   </context>
   <context>
@@ -2085,7 +2085,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2095"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature</translation>
+      <translation>オブジェクトまたはフィーチャーの垂直方向の範囲（全体長さ）を示す寸法を挿入します。</translation>
     </message>
   </context>
   <context>
@@ -2158,11 +2158,11 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1774"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>スプレッドシートビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>ページをDXFファイルに保存</translation>
     </message>
@@ -3028,7 +3028,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.cpp" line="258"/>
       <source>Document Source</source>
-      <translation type="unfinished">Document Source</translation>
+      <translation>ドキュメントソース</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="355"/>
@@ -3126,7 +3126,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Select a template file</source>
-      <translation type="unfinished">Select a template file</translation>
+      <translation>テンプレートファイルを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -3136,7 +3136,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>選択されていません</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
@@ -3303,17 +3303,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1922"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>DXFファイルを保存</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2174"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>選択された方向は基準方向の %1 度以内です。選択された方向を %2 に置き換えますか？</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2179"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>方向が基準に近いです</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -3512,7 +3512,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="122"/>
       <source>Can not make hole circle for %1</source>
-      <translation type="unfinished">Can not make hole circle for %1</translation>
+      <translation>%1 の穴の円を作れません</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="244"/>
@@ -3523,7 +3523,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="245"/>
       <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <source>Can not make centerlines for %1</source>
-      <translation type="unfinished">Can not make centerlines for %1</translation>
+      <translation>%1 の中心線を作れません</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="305"/>
@@ -3554,12 +3554,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="984"/>
       <source>Select a center for the circle.</source>
-      <translation type="unfinished">Select a center for the circle.</translation>
+      <translation>円の中心を選択</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1677"/>
       <source>TechDraw extend/shorten line</source>
-      <translation type="unfinished">TechDraw extend/shorten line</translation>
+      <translation>TechDraw 線の延長/短縮</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1884"/>
@@ -3574,12 +3574,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2222"/>
       <source>TechDraw create thread circle</source>
-      <translation type="unfinished">TechDraw create thread circle</translation>
+      <translation>TechDraw ねじ山の円の作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2223"/>
       <source>Can not make thread circle for %1</source>
-      <translation type="unfinished">Can not make thread circle for %1</translation>
+      <translation>%1 のねじ山の円を作れません</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2240"/>
@@ -3751,7 +3751,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="365"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>画像ファイルを選択</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="421"/>
@@ -3795,27 +3795,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>この機能にはページが必要です。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="870"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Export Page as PDF</source>
       <translation>ページをPDFとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="777"/>
+      <location filename="../../MDIViewPage.cpp" line="772"/>
       <source>Export page as SVG</source>
       <translation>ページをSVGとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="806"/>
+      <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Export page as DXF</source>
       <translation>ページをDXFとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>Unable to Write File</source>
       <translation>ファイルを書き込めません</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="854"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCADは書き込み用ファイル %1 を開けませんでいた。別のプログラムがファイルを開いている可能性があります。</translation>
     </message>
@@ -4068,7 +4068,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="119"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>接頭辞テキスト</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1985"/>
@@ -4234,7 +4234,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>パラメーターエラー</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="287"/>
+      <location filename="../../PagePrinter.cpp" line="300"/>
       <source>Document Name:</source>
       <translation>ドキュメント名</translation>
     </message>
@@ -4291,12 +4291,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../SymbolChooser.cpp" line="61"/>
       <source>Select a Symbol</source>
-      <translation type="unfinished">Select a Symbol</translation>
+      <translation>記号を選択</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="58"/>
       <source>Updates the text</source>
-      <translation type="unfinished">Updates the text</translation>
+      <translation>テキストを更新</translation>
     </message>
   </context>
   <context>
@@ -4713,27 +4713,27 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>面検出アルゴリズム</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>最新または旧来の面検出アルゴリズムを使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4860,14 +4860,12 @@ Each unit is approx. 0.1 mm wide</source>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>チェックが入っていて、かつ面検出アルゴリズムが対応している場合、FreeCADは各図形面が「材料」を表しているのか、それとも「穴」を表しているのかを判別しようと試みます。面が非常に多い場合、この検出処理は低速になることがあります。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>空隙を表す面を識別</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
@@ -5399,7 +5397,7 @@ for using drawings as a 1:1 cutting guide.
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="646"/>
       <source>Transparent faces</source>
       <translation>透明な面</translation>
     </message>
@@ -5414,12 +5412,17 @@ for using drawings as a 1:1 cutting guide.
       <translation>引き出し線のデフォルト色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
+      <source>Face color</source>
+      <translation>面の色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Object faces will be transparent</source>
       <translation>オブジェクトの面は透明になります。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="659"/>
       <source>Face color (if not transparent)</source>
       <translation>面の色（透明でない場合）</translation>
     </message>
@@ -5429,17 +5432,17 @@ for using drawings as a 1:1 cutting guide.
       <translation>モノクロ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
-      <translation type="unfinished">Break line</translation>
+      <translation>破断線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
-      <translation type="unfinished">Break line color for broken views</translation>
+      <translation>分解ビューの破断線の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5669,42 +5672,42 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="595"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>スナップ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックされている場合、新しい寸法が定位置にスナップするように設定されます。 チェックされていない場合、新しい寸法はスナップしません。個々の寸法のスナップは&amp;quot;AllowSnap&amp;quot; プロパティで調整できます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
       <source>Snap dimensions</source>
-      <translation type="unfinished">Snap dimensions</translation>
+      <translation>スナップの寸法</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;テキストが中央位置にスナップされる範囲となる寸法テキストの長さの割合。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
       <source>Dimension text factor</source>
-      <translation type="unfinished">Dimension text factor</translation>
+      <translation>寸法テキストの係数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
       <source>Chain factor</source>
-      <translation type="unfinished">Chain factor</translation>
+      <translation>連鎖の係数</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;寸法が連鎖寸法または縦座標寸法としてスナップする範囲となる寸法間の間隔の割合。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;注意: ビューのスナップ設定は、標準タブにあります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
@@ -6079,7 +6082,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
-      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+      <translation>配置ターゲットからビューサイズのこの割合で示される範囲内にビューが近づくと、そのビューを配置位置にスナップ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
@@ -6089,7 +6092,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;注意: 寸法のスナップ設定は、寸法タブにあります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1071"/>
@@ -6322,17 +6325,17 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
       <source>Screen Mode</source>
-      <translation type="unfinished">Screen Mode</translation>
+      <translation>スクリーンモード</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
       <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
-      <translation type="unfinished">Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</translation>
+      <translation>ページに合わせた拡大縮小の代わりに、画面上で一定サイズで頂点とエッジを描画します。 ページのコンテキストメニューから切り替えることもできます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
       <source>Screen mode</source>
-      <translation type="unfinished">Screen mode</translation>
+      <translation>スクリーンモード</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
@@ -6342,7 +6345,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
       <source>Size of vertex dots on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Size of vertex dots on screen. Only used in screen mode.</translation>
+      <translation>スクリーン上での頂点ドットのサイズ。スクリーンモードでのみ使用されます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
@@ -6353,12 +6356,12 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
       <source>Edge width</source>
-      <translation type="unfinished">Edge width</translation>
+      <translation>エッジ幅</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
       <source>Width of edges on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Width of edges on screen. Only used in screen mode.</translation>
+      <translation>スクリーン上でのエッジの幅。スクリーンモードでのみ使用されます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
@@ -6371,22 +6374,22 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
-      <translation type="unfinished">&amp;Keep Updated</translation>
+      <translation>常に更新(&amp;K)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
-      <translation type="unfinished">Show &amp;Frames</translation>
+      <translation>フレームを表示(&amp;F)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
-      <translation type="unfinished">Show &amp;Grid</translation>
+      <translation>グリッドを表示(&amp;G)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="111"/>
       <source>Screen &amp;Mode</source>
-      <translation type="unfinished">Screen &amp;Mode</translation>
+      <translation>スクリーンモード(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="114"/>
@@ -6431,7 +6434,7 @@ Do you want to continue?</source>
       <translation>プリンターは図面とは異なるサイズの用紙に印刷します。このまま印刷しますか？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1433"/>
+      <location filename="../../MDIViewPage.cpp" line="1416"/>
       <source>Selected:</source>
       <translation>選択済み</translation>
     </message>
@@ -6494,7 +6497,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Bubble Appearance</source>
-      <translation type="unfinished">Bubble Appearance</translation>
+      <translation>バブルの外観</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="118"/>
@@ -6574,7 +6577,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="291"/>
       <source>Kink length</source>
-      <translation type="unfinished">Kink length</translation>
+      <translation>基線の長さ</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="298"/>
@@ -6599,7 +6602,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="312"/>
       <source>Symbol scale</source>
-      <translation type="unfinished">Symbol scale</translation>
+      <translation>記号の拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="319"/>
@@ -6662,7 +6665,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="77"/>
       <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
-      <translation type="unfinished">The centerline is positioned at the center of the combined bounding box of the selected elements</translation>
+      <translation>中心線は、選択した要素の全体バウンディングボックスの中心に配置されます</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="95"/>
@@ -6688,27 +6691,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="150"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="174"/>
       <source>Shifts the line up (+) or down (-)</source>
-      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+      <translation>線を上(+)または下(-)に移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="190"/>
       <source>Shifts the line left (-) or right (+)</source>
-      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+      <translation>線を左(+)または右(-)に移動</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="220"/>
       <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
-      <translation type="unfinished">Rotates the line counterclockwise (+) or clockwise (-)</translation>
+      <translation>線を反時計回り(+)または時計回り(-)に回転</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="246"/>
       <source>Extends the line by the specified amount beyond its natural endpoints</source>
-      <translation type="unfinished">Extends the line by the specified amount beyond its natural endpoints</translation>
+      <translation>本来の端点を超えて指定量だけ線分を延長</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="264"/>
@@ -6925,7 +6928,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="158"/>
       <location filename="../../TaskCosVertex.cpp" line="250"/>
       <source>Pick Point</source>
-      <translation type="unfinished">Pick Point</translation>
+      <translation>点をピック</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="114"/>
@@ -7372,7 +7375,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="91"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="194"/>
@@ -7607,33 +7610,33 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
       <source>Override Angles</source>
-      <translation type="unfinished">Override Angles</translation>
+      <translation>角度を上書き</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>選択したエッジまたは頂点と合う補助線の角度を設定</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
       <location filename="../../TaskDimension.ui" line="403"/>
       <source>°</source>
-      <translation type="unfinished">°</translation>
+      <translation>°</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>選択したエッジまたは頂点と合う寸法線の角度を設定</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>
       <source>Resets the dimension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the dimension line angle to the default orthographic value</translation>
+      <translation>寸法線の角度をデフォルトの直交値にリセット</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="423"/>
       <source>Resets the extension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the extension line angle to the default orthographic value</translation>
+      <translation>補助線の角度をデフォルトの直交値にリセット</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="390"/>
@@ -8024,8 +8027,8 @@ You can pick further points to get line segments.</source>
     <message numerus="yes">
       <location filename="../../TaskLineDecor.cpp" line="81"/>
       <source>%n line(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n line(s)</numerusform>
+      <translation>
+        <numerusform>%n 線</numerusform>
       </translation>
     </message>
   </context>
@@ -8827,7 +8830,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="88"/>
       <source>Applies autofill to this field</source>
-      <translation type="unfinished">Applies autofill to this field</translation>
+      <translation>このフィールドに自動入力を適用</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="101"/>
@@ -9099,22 +9102,22 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="91"/>
       <source>Replace References With Selection</source>
-      <translation type="unfinished">Replace References With Selection</translation>
+      <translation>参照を選択対象と置き換え</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="107"/>
       <source>2D References</source>
-      <translation type="unfinished">2D References</translation>
+      <translation>2D参照</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="202"/>
       <source>3D References</source>
-      <translation type="unfinished">3D References</translation>
+      <translation>3D参照</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="246"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>サブ要素</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="31"/>
@@ -9600,7 +9603,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
       <source>The selected vertex this offset vertex is based on</source>
-      <translation type="unfinished">The selected vertex this offset vertex is based on</translation>
+      <translation>選択した頂点のこのオフセット頂点は以下に基づいています</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
@@ -9615,7 +9618,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
       <source>The X offset distance from the source vertex</source>
-      <translation type="unfinished">The X offset distance from the source vertex</translation>
+      <translation>元頂点からのX方向オフセット距離</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -10343,7 +10346,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>サブ要素</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="247"/>
@@ -10372,17 +10375,17 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
       <source>Spreadsheet View Parameters</source>
-      <translation type="unfinished">Spreadsheet View Parameters</translation>
+      <translation>スプレッドシートビューのパラメーター</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="20"/>
       <source>Range:</source>
-      <translation type="unfinished">Range:</translation>
+      <translation>範囲:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="27"/>
       <source>Enter the top-left cell of the range (e.g., A1)</source>
-      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+      <translation>範囲の左上のセルを入力（例: A1）</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="30"/>
@@ -10392,52 +10395,52 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="37"/>
       <source> to </source>
-      <translation type="unfinished"> to </translation>
+      <translation>～</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="44"/>
       <source>Enter the bottom-right cell of the range (e.g., B2)</source>
-      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+      <translation>範囲の右下のセルを入力（例: B2）</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="47"/>
       <source>B2</source>
-      <translation type="unfinished">B2</translation>
+      <translation>B2</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="54"/>
       <source>View Appearance</source>
-      <translation type="unfinished">View Appearance</translation>
+      <translation>ビューの外観</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="60"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>拡大縮小率:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="67"/>
       <source>Scale of the view. Let you adjust the overall size of the table.</source>
-      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+      <translation>ビューの拡大縮小率。表の全体サイズを調整できます。</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="83"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>フォント:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="93"/>
       <source>Text Size:</source>
-      <translation type="unfinished">Text Size:</translation>
+      <translation>テキストのサイズ:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="100"/>
       <source>Font size in points</source>
-      <translation type="unfinished">Font size in points</translation>
+      <translation>フォントサイズ（ポイント単位）</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="119"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>テキストの色:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="126"/>
@@ -10447,22 +10450,22 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="140"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>線幅:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="147"/>
       <source>Width of the cell border lines</source>
-      <translation type="unfinished">Width of the cell border lines</translation>
+      <translation>セルの境界線の幅</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="172"/>
       <source>Claim spreadsheet as child</source>
-      <translation type="unfinished">Claim spreadsheet as child</translation>
+      <translation>子としてスプレッドシートを要求</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="175"/>
       <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
-      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
+      <translation>チェックされている場合、このビューはツリー内で関連するスプレッドシートを子として要求します。</translation>
     </message>
   </context>
   <context>
@@ -10486,12 +10489,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
+      <translation>無効な範囲</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>The specified cell range is invalid. Please correct it.</source>
-      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+      <translation>指定されたセル範囲が無効です。修正してください。</translation>
     </message>
   </context>
   <context>
@@ -10499,12 +10502,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>スプレッドシートビューを作成</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
       <source>Edit Spreadsheet View</source>
-      <translation type="unfinished">Edit Spreadsheet View</translation>
+      <translation>スプレッドシートビューを編集</translation>
     </message>
   </context>
   <context>
@@ -10522,7 +10525,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="1951"/>
       <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
+      <translation>現在のページをPDFとしてエクスポート</translation>
     </message>
   </context>
   <context>
@@ -10548,12 +10551,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandDecorate.cpp" line="78"/>
       <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
+      <translation>ビューフレームを切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="79"/>
       <source>Toggles visibility of view frames and vertices</source>
-      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+      <translation>ビューフレームと頂点の表示状態を切り替え</translation>
     </message>
   </context>
   <context>
@@ -10571,7 +10574,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandDecorate.cpp" line="142"/>
       <source>Toggles the grid on the active page</source>
-      <translation type="unfinished">Toggles the grid on the active page</translation>
+      <translation>アクティブなページのグリッドを切り替え</translation>
     </message>
   </context>
   <context>
@@ -10587,7 +10590,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>行を追加</translation>
     </message>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>

@@ -6552,7 +6552,7 @@ Por favor, primero seleccione un tipo de resultado.</translation>
       <translation>Ningún objeto resultante</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6563,7 +6563,7 @@ Módulo correcto encontrado en:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6572,24 +6572,24 @@ Should this module be loaded instead?</source>
 ¿Debe cargarse este módulo en su lugar?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
       <translation>No se encontró ningún módulo coincidente en la ruta de Python actual.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation>Conflicto del módulo Python VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation>Conflicto del módulo Python VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Esta funcionalidad no está disponible debido a un conflicto con el módulo Python de VTK</translation>
     </message>

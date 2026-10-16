@@ -502,7 +502,7 @@
       <translation>אתחל</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1232"/>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
       <translation>(מְמוּצָע)</translation>
     </message>

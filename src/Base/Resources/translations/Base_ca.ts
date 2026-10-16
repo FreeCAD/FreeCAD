@@ -59,7 +59,7 @@
     <message>
       <location filename="../../Exception.cpp" line="321"/>
       <source>File not found</source>
-      <translation>No s'ha trobat el fitxer.</translation>
+      <translation>No s'ha trobat el fitxer</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="323"/>

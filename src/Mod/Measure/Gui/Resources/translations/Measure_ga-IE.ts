@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+      <translation>Fad ainmniúil: %1, Fad an ais: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -502,7 +502,7 @@
       <translation>Athshocrú</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1232"/>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
       <translation> (Meán)</translation>
     </message>

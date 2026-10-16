@@ -518,7 +518,7 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <translation>Reset</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1232"/>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
       <translation>(Przeciętne)</translation>
     </message>

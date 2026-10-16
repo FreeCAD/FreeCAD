@@ -735,8 +735,8 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.cpp" line="47"/>
       <source>Allows referring to a cell by an alias name, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Allows referring to a cell by an alias name, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>エイリアス名でセルを参照できます。
+例えばSpreadsheet.B1の代わりにSpreadsheet.my_alias_nameを使えます。</translation>
     </message>
   </context>
   <context>
@@ -1269,62 +1269,62 @@ Defaults to: %V = %A
     <message>
       <location filename="../../PropertiesDialog.cpp" line="342"/>
       <source>Alias conflicts with a reserved unit token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved unit token used by expressions</translation>
+      <translation>エイリアスが式で使用されている予約済みの単位の単語と競合しています</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="343"/>
       <source>Invalid: reserved unit token</source>
-      <translation type="unfinished">Invalid: reserved unit token</translation>
+      <translation>無効: 予約済み単位単語</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="346"/>
       <source>Alias conflicts with a reserved constant token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved constant token used by expressions</translation>
+      <translation>エイリアスが式で使用されている予約済みの定数の単語と競合しています</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="347"/>
       <source>Invalid: reserved constant token</source>
-      <translation type="unfinished">Invalid: reserved constant token</translation>
+      <translation>無効: 予約済み定数単語</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="350"/>
       <source>Alias already defined</source>
-      <translation type="unfinished">Alias already defined</translation>
+      <translation>エイリアスは既に定義されています</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="351"/>
       <source>Invalid: alias already exists</source>
-      <translation type="unfinished">Invalid: alias already exists</translation>
+      <translation>無効: エイリアスは既に存在します</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="354"/>
       <source>Alias cannot look like a cell address such as A1 or C12</source>
-      <translation type="unfinished">Alias cannot look like a cell address such as A1 or C12</translation>
+      <translation>エイリアスはA1やC12などセルのアドレスのように見えません</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="355"/>
       <source>Invalid: alias matches cell address pattern</source>
-      <translation type="unfinished">Invalid: alias matches cell address pattern</translation>
+      <translation>無効: エイリアスがセルのアドレスのパターンに一致</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="358"/>
       <source>Alias conflicts with an existing spreadsheet property name</source>
-      <translation type="unfinished">Alias conflicts with an existing spreadsheet property name</translation>
+      <translation>エイリアスが既存のスプレッドシートのプロパティ名と競合しています</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="359"/>
       <source>Invalid: conflicts with existing property name</source>
-      <translation type="unfinished">Invalid: conflicts with existing property name</translation>
+      <translation>無効: 既存のプロパティ名と競合</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="362"/>
       <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
-      <translation type="unfinished">Alias must start with a letter and contain only letters, digits, and '_'</translation>
+      <translation>エイリアスは文字で始まり、文字、数字、および '_' のみで構成されている必要があります</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="363"/>
       <source>Invalid: bad alias syntax</source>
-      <translation type="unfinished">Invalid: bad alias syntax</translation>
+      <translation>無効: 正しくないエイリアス構文</translation>
     </message>
   </context>
 </TS>

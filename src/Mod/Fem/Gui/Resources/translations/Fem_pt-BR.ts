@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="294"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Restrição de Contato</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="295"/>
@@ -971,7 +971,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="317"/>
@@ -1103,22 +1103,22 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Number of tasks</source>
-      <translation type="unfinished">Number of tasks</translation>
+      <translation>Número de tarefas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="241"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <translation>Número de tarefas paralelas. Defina como '1' se o Elmer não usar MPI.&lt;br&gt; Recomenda-se usar um número par de núcleos para aproveitar as simetrias da malha &lt;br&gt;(Usar 8 núcleos pode ser mais rápido do que 9 núcleos).&lt;br&gt; Em casos extremos, o ElmerSolver pode não convergir se o número de núcleo for muito alto.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="257"/>
       <source>Threads per task</source>
-      <translation type="unfinished">Threads per task</translation>
+      <translation>Linha de execução por tarefa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="267"/>
       <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
-      <translation type="unfinished">Number of threads per task. Take effect if Elmer uses OpenMP.</translation>
+      <translation>Número de linhas de execução por tarefa. Pegue o efeito Elmer e use o OpenMP.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="288"/>
@@ -1128,12 +1128,12 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="294"/>
       <source>Save result in binary format</source>
-      <translation type="unfinished">Save result in binary format</translation>
+      <translation>Salve o resultado no formato binário</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Use o formato binário</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="313"/>
@@ -1201,17 +1201,16 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Todos: Todos os elementos serão exportados
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+Mais alto: Apenas os elementos mais altos serão exportados. Isso significa volumes para uma malha volumétrica e faces para uma malha de casca.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM: Apenas os elementos FEM serão exportados. Isso significa apenas que arestas que não pertencem a faces e faces que não pertencem a volumes.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>parâmetro do elemento: Todos: todos os elementos, Mais altos: apenas as peças mais altas, FEM: Apenas os materiais FEM (apenas arestas que não pertencem a faces e faces que não pertencem a volumes)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="84"/>
@@ -1219,10 +1218,9 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Grupos de malha também são exportados.
+Cada recurso de análise e, se houver materiais diferentes, o material consiste em dois grupos de malha — face e nós onde
+a restrição ou o material é aplicado.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="59"/>
@@ -1277,46 +1275,44 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working Directory for Solving Analysis and Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
+      <translation>Diretório do trabalho para resolução de análise e malhas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Crie um diretório na mesma pasta em que o arquivo FCStd do documento está localizado. Use a Subpasta para cada objeto (por exemplo, para um arquivo ./mydoc.FCStd e um solucionador com o rótulo Elmer002, use ./mydoc/Elmer002).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>Diretório personalizado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>Crie um subdiretório para cada objeto. Nomeie o diretório com o nome do solucionador, precedido pelo nome do documento. Deixe em branco para usar o diretório inicial do usuário.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>Editor de arquivo de entrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>Caminho do editor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>Deixe em branco para usar o editor interno padrão do FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
       <source>Create mesh groups for analysis reference shapes (experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (experimental)</translation>
+      <translation>Crie grupos de malha para analisar formas de referência de análise (experimental)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="238"/>
@@ -1383,12 +1379,12 @@ adicionar um recipiente de análise</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="134"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Execução '%1' não encontrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="141"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>Diretório '%1' não encontrado</translation>
     </message>
   </context>
   <context>
@@ -1402,7 +1398,7 @@ adicionar um recipiente de análise</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh Binary</source>
-      <translation type="unfinished">Gmsh Binary</translation>
+      <translation>Binário Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
@@ -1412,7 +1408,7 @@ adicionar um recipiente de análise</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
       <source>Gmsh path</source>
-      <translation type="unfinished">Gmsh path</translation>
+      <translation>Caminho do Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="101"/>
@@ -1422,32 +1418,32 @@ adicionar um recipiente de análise</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="109"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Verbosidade do log</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="116"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Nível de verbosidade impresso no painel de tarefas</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="135"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Número de linha</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="145"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Número de linhas usadas para a malha</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Execução '%1' não encontrada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
       <source>Silent</source>
-      <translation type="unfinished">Silent</translation>
+      <translation>Silencioso</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
@@ -2257,13 +2253,13 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="302"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Objeto externo selecionado não é suportado</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="314"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="383"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>A seleção deve consistir apenas faces! (arestas no modelo 2D)</translation>
     </message>
   </context>
   <context>
@@ -2271,7 +2267,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="100"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Selecione o tipo da geometria única: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="100"/>
@@ -2312,7 +2308,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Objetos externos selecionados não são suportados</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="171"/>
@@ -2330,7 +2326,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="77"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Selecione o tipo da geometria: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="77"/>
@@ -2420,7 +2416,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="153"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Objetos externos selecionados não são suportados</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="162"/>
@@ -2433,12 +2429,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="103"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Selecione o tipo da geometria: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="103"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Vértice, Aresta, Face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
@@ -2464,7 +2460,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="218"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Objeto externo selecionado não é suportado</translation>
     </message>
   </context>
   <context>
@@ -2540,7 +2536,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="166"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Selecione o tipo da geometria única: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="215"/>
@@ -2805,17 +2801,17 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Rádio de curvatura/diâmetro do tubo</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>Ângulo de curvatura</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump characteristic</source>
-      <translation type="unfinished">Pump characteristic</translation>
+      <translation>Característica da bomba</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
@@ -2825,12 +2821,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas section parameter</source>
-      <translation type="unfinished">Gas section parameter</translation>
+      <translation>Parâmetro da seção de gás</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open channel section parameter</source>
-      <translation type="unfinished">Open channel section parameter</translation>
+      <translation>Parâmetro da seção do canal aberto</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2860,7 +2856,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie Parameter</source>
-      <translation type="unfinished">Tie Parameter</translation>
+      <translation>Parâmetro de ligação</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="56"/>
@@ -2870,17 +2866,17 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>Habilitar ajuste</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="70"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Inverter mestre</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Inverter escravo</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2907,12 +2903,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>Parâmetro de centrífuga</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>Frequência da rotação</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2922,7 +2918,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>Section Print Parameter</source>
-      <translation type="unfinished">Section Print Parameter</translation>
+      <translation>Parâmetro de impressão da seção</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -2932,12 +2928,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>Condição de contorno</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>Potencial</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="60"/>
@@ -2947,7 +2943,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>Potencial eletromagnético</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="100"/>
@@ -2960,64 +2956,64 @@ com forças atuantes harmônicas/oscilantes</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="140"/>
       <source>Real part of scalar potential</source>
-      <translation type="unfinished">Real part of scalar potential</translation>
+      <translation>Parte real do potencial escalar</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="191"/>
       <source>Real part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte real do componente x do potencial vetorial
+Observação: não tem efeito se um sólido foi selecionado</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="214"/>
       <source>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte imaginária do componente x do potencial vetorial
+Observação: Se o sólido for selecionado não haverá efeito</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="244"/>
       <source>Real part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte real do componente y do potencial vetorial
+Observação: Não tem efeito se o sólido for selecionado</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="267"/>
       <source>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte imaginária do componente z do potencial vetorial
+Observação: Não tem efeito se o sólido for selecionado</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="297"/>
       <source>Real part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte real do componente z do potencial vetorial
+Observação: Não há efeito se o sólido for selecionado</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="320"/>
       <source>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Parte imaginária do componente z do potencial vetorial
+Observação: Não há efeito se o sólido for selecionado</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="381"/>
       <source>Electric flux density</source>
-      <translation type="unfinished">Electric flux density</translation>
+      <translation>Densidade do fluxo elétrico</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="614"/>
       <source>Capacitance body</source>
-      <translation type="unfinished">Capacitance body</translation>
+      <translation>Corpo capacitativo</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="617"/>
       <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate capacity matrix' in Electrostatic equation</translation>
+      <translation>Habilitado por 'Calcular matriz capacitativa' na equação eletrostática</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="358"/>
@@ -3027,62 +3023,62 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="348"/>
       <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+      <translation>Aproximação do campo distante assumindo simetria esférica</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="351"/>
       <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
+      <translation>Campo distante</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>Potencial constante</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="373"/>
       <source>Neumann</source>
-      <translation type="unfinished">Neumann</translation>
+      <translation>Neumann</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
-      <translation type="unfinished">Normal component of electric displacement field</translation>
+      <translation>Componente normal do campo de deslocamento elétrico</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
       <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
+      <translation>Para definir densidade do fluxo magnético</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>Densidade de fluxo magnético</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
       <source>Real part of magnetic flux density x-component</source>
-      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
+      <translation>Parte real da densidade do fluxo magnético — componente x</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="481"/>
       <source>Imaginary part of magnetic flux density x-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
+      <translation>Parte imaginária da densidade do fluxo magnético — componente y</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="510"/>
       <source>Real part of magnetic flux density y-component</source>
-      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
+      <translation>Parte real da densidade do fluxo magnético — y componente</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="532"/>
       <source>Imaginary part of magnetic flux density y-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
+      <translation>Parte imaginária da densidade do fluxo magnético — componente z</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="561"/>
       <source>Real part of magnetic flux density z-component</source>
-      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
+      <translation>Parte real da densidade do fluxo magnético — componente z</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
@@ -3092,17 +3088,17 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="608"/>
       <source>Capacitance</source>
-      <translation type="unfinished">Capacitance</translation>
+      <translation>Capacitação</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="39"/>
       <source>Dirichlet</source>
-      <translation type="unfinished">Dirichlet</translation>
+      <translation>Dirichlet</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="81"/>
       <source>To define scalar potential and magnetic vector potential</source>
-      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+      <translation>Para definir o potencial escalar e o potencial vetorial magnético</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="39"/>
@@ -3140,7 +3136,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam Section Rotation</source>
-      <translation type="unfinished">Beam Section Rotation</translation>
+      <translation>Rotação da seção da Viga</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3155,17 +3151,17 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation type="unfinished">Mesh Boundary Layer Settings</translation>
+      <translation>Configurações da camada limite da malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Maximum layers</source>
-      <translation type="unfinished">Maximum layers</translation>
+      <translation>Camadas máximas</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
       <source>Minimum/1st thickness</source>
-      <translation type="unfinished">Minimum/1st thickness</translation>
+      <translation>Espessura mínima/1</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
@@ -3175,12 +3171,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Grupo de malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier Used for Mesh Export</source>
-      <translation type="unfinished">Identifier Used for Mesh Export</translation>
+      <translation>Identificador usado para exportação de malha</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3195,13 +3191,13 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam Section Parameter</source>
-      <translation type="unfinished">Beam Section Parameter</translation>
+      <translation>Parâmetro da seção da viga</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
-      <translation type="unfinished">Cross-Section Parameter</translation>
+      <translation>Parâmetro da seção transversal</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
@@ -3235,7 +3231,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Diâmetro externo</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
@@ -3621,7 +3617,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>Min</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
@@ -3637,7 +3633,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>Max</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
@@ -3899,7 +3895,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3922,27 +3918,27 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
@@ -5050,12 +5046,12 @@ Para possíveis variáveis, consulte a caixa de descrição abaixo.</translation
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="255"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Inverter mestre</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Inverter escravo</translation>
     </message>
   </context>
   <context>
@@ -6552,7 +6548,7 @@ Por favor, selecione primeiramente um tipo de resultado.</translation>
       <translation>Nenhum objeto resultante</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6563,7 +6559,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6572,7 +6568,7 @@ Should this module be loaded instead?</source>
 Should this module be loaded instead?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6581,17 +6577,17 @@ No matching module was found in the current Python path.</source>
 No matching module was found in the current Python path.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation type="unfinished">VTK Python module conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>
@@ -7611,17 +7607,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="117"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation type="unfinished">Level of verbosity printed on the task panel</translation>
+      <translation>Nível de verbosidade impresso no painel de tarefas</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="136"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Número de linha</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="146"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Número de linhas usadas para a malha</translation>
     </message>
   </context>
   <context>
@@ -8429,7 +8425,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Grupo de malha</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>

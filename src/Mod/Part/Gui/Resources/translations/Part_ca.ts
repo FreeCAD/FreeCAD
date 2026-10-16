@@ -2263,7 +2263,7 @@ La vista de la càmera determina la direcció de la projecció.</translation>
       <translation>Convertir malla</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1579"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Edit attachment</source>
       <translation>Editar adjunt</translation>
     </message>
@@ -5486,82 +5486,82 @@ de l'objecte que s'adjunta.</translation>
       <translation>Dos cares</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="413"/>
+      <location filename="../../TaskAttacher.cpp" line="421"/>
       <source>OCC error: %1</source>
       <translation>OCC error: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="416"/>
+      <location filename="../../TaskAttacher.cpp" line="424"/>
       <source>unknown error</source>
       <translation>error desconegut</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="419"/>
+      <location filename="../../TaskAttacher.cpp" line="427"/>
       <source>Attachment mode failed: %1</source>
       <translation>Mode d'afecció ha fallat: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="424"/>
+      <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Not attached</source>
       <translation>No adjuntes</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="432"/>
+      <location filename="../../TaskAttacher.cpp" line="440"/>
       <source>Attached with mode %1</source>
       <translation>S'adjunta amb mode de %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1027"/>
+      <location filename="../../TaskAttacher.cpp" line="1080"/>
       <source>Selecting…</source>
       <translation>Seleccionant…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="930"/>
+      <location filename="../../TaskAttacher.cpp" line="983"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="436"/>
+      <location filename="../../TaskAttacher.cpp" line="444"/>
       <source>Attachment Offset (in its local coordinate system):</source>
       <translation>Equidistància de l'adjunció (en el seu sistema de coordenades local):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="437"/>
+      <location filename="../../TaskAttacher.cpp" line="445"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Equidistància adjunt (inactiu - no adjunts):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="937"/>
+      <location filename="../../TaskAttacher.cpp" line="990"/>
       <source>Edge</source>
       <translation>Vora</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="944"/>
+      <location filename="../../TaskAttacher.cpp" line="997"/>
       <source>Vertex</source>
       <translation>Vèrtex</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1033"/>
+      <location filename="../../TaskAttacher.cpp" line="1086"/>
       <source>Reference%1</source>
       <translation>Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1155"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>No es pot editar perquè la rotació Equidistància adjunt està restringida per les expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1185"/>
+      <location filename="../../TaskAttacher.cpp" line="1238"/>
       <source>Reference combinations:</source>
       <translation>Combinacions de referència:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1207"/>
+      <location filename="../../TaskAttacher.cpp" line="1260"/>
       <source>%1 (add %2)</source>
       <translation>%1 (afegir %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1210"/>
+      <location filename="../../TaskAttacher.cpp" line="1263"/>
       <source>%1 (add more references)</source>
       <translation>%1 (afegir més referències)</translation>
     </message>
@@ -5857,22 +5857,22 @@ Comprovacions d'operació booleana individual:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1471"/>
+      <location filename="../../TaskAttacher.cpp" line="1543"/>
       <source>Attachment</source>
       <translation>Adjunt</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1492"/>
+      <location filename="../../TaskAttacher.cpp" line="1564"/>
       <source>%1 select reference</source>
       <translation>%1 seleccioneu la referència</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1498"/>
+      <location filename="../../TaskAttacher.cpp" line="1570"/>
       <source>%1 select and confirm</source>
       <translation>%1 seleccioneu i confirmeu</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1648"/>
+      <location filename="../../TaskAttacher.cpp" line="1731"/>
       <source>Datum dialog: input error</source>
       <translation>Diàleg de referència: error d'entrada</translation>
     </message>
@@ -6227,8 +6227,8 @@ Vol continuar?</translation>
       <translation>Seleccioneu 2 vores o 2 filferros.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskAttacher.cpp" line="116"/>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskAttacher.cpp" line="121"/>
       <source>No reference selected</source>
       <translation>Cap referència seleccionat</translation>
     </message>
@@ -7871,6 +7871,21 @@ S'eliminaran els volums superposats de les formes.</translation>
       <source>Symmetry</source>
       <translation>Simetria</translation>
     </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation>Comença a la forma seleccionada</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation>Eix binormal</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation>Invertir direcció binormal</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::PatternPathParametersWidget</name>
@@ -7944,15 +7959,25 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
       <source>Point object</source>
       <translation>Objecte de punts</translation>
     </message>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
       <source>Select Point Object</source>
       <translation>Selecciona l'objecte de punts</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation>Relacionat amb el primer</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation>Índex del punt d'origen</translation>
     </message>
   </context>
   <context>
@@ -8079,7 +8104,7 @@ S'eliminaran els volums superposats de les formes.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="144"/>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
       <source>Direction 2</source>
       <translation>Direcció 2</translation>
     </message>
@@ -8112,74 +8137,74 @@ S'eliminaran els volums superposats de les formes.</translation>
       <translation>Matriu d'enllaços lineal</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
       <source>Selecting…</source>
       <translation>Seleccionant…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
       <source>Select Object</source>
       <translation>Selecciona l'objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
       <source>Select an object to link</source>
       <translation>Seleccioneu un objecte per a enllaçar</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="547"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
       <source>Object X-axis</source>
       <translation>Eix X de l'objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
       <source>Object Y-axis</source>
       <translation>Eix Y de l'objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object Z-axis</source>
       <translation>Eix Z de l'objecte</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Select reference…</source>
       <translation>Seleccionar referència…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
       <source>Select connected path edges</source>
       <translation>Seleccioneu arestes de camí connectades</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
       <source>Select a sketch or shape containing points</source>
       <translation>Seleccioneu un croquis o una forma que contingui punts</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
       <source>Select a rotation axis</source>
       <translation>Seleccioneu un eix de rotació</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select a direction reference</source>
       <translation>Seleccioneu una referència de direcció</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
       <source>Input Error</source>
       <translation>Error d'entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
       <source>Select an object to link.</source>
       <translation>Seleccioneu un objecte per a enllaçar.</translation>
     </message>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection</source>
-      <translation>Сверка</translation>
+      <translation>Проверка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Inspection</source>
-      <translation>Сверка</translation>
+      <translation>Проверка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>

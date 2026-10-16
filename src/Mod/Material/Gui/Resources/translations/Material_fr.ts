@@ -727,7 +727,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>Enregistrer par-dessus le fichier d'origine peut endommager d'autres documents. Ceci n'est pas recommandé.</translation>
+      <translation>Enregistrer par-dessus le fichier d'origine peut entraîner des problèmes dans d'autres documents. Ceci n'est pas recommandé.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="223"/>
@@ -762,7 +762,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation>Il n'est pas recommandé d'enregistrer une copie, car cela peut endommager d'autres documents. Il est recommandé d'enregistrer en tant que nouveau matériau.</translation>
+      <translation>Enregistrer une copie peut entraîner des problèmes dans d'autres documents. Il est recommandé d'enregistrer en tant que nouveau matériau.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="256"/>
