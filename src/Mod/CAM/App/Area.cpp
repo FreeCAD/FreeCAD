@@ -2285,7 +2285,10 @@ void Area::build()
         }
 
         if (myParams.Outline) {
-            myArea->Reorder();
+            if (op == OperationCompound) {
+                // (Order/orientation is already correct for clipper operations)
+                myArea->Reorder();
+            }
             for (auto it = myArea->m_curves.begin(), itNext = it; it != myArea->m_curves.end();
                  it = itNext) {
                 ++itNext;
