@@ -438,18 +438,36 @@ class DynapathPost(PostProcessor):
             return None
         return f"L{self._seconds(seconds)}"
 
-    def _convert_arc_move(self, command: Path.Command) -> str:
-        """I and J name the center absolutely; there is no K on a Delta arc."""
-        params = {k: v for k, v in command.Parameters.items() if k != "K"}
-        if self.values.get("ABSOLUTE_ARC_CENTERS", True):
-            previous = self.machine_state.previous
-            for word, axis in (("I", "X"), ("J", "Y")):
-                if word in params:
-                    start = previous.get(axis)
-                    if start is None:
-                        start = getattr(self.machine_state, axis, 0.0) or 0.0
-                    params[word] = params[word] + start
-        return self._convert_move(Path.Command(command.Name, params, command.Annotations))
+    def _optimize_duplicates_doubles(self, postables):
+        """I and J name the center absolutely; there is no K on a Delta arc.
+
+        The arcs are rewritten here, before duplicate suppression: with
+        duplicate commands off, an arc after the first in a run loses its G2/G3
+        and is no longer converted as an arc."""
+        absolute = self.values.get("ABSOLUTE_ARC_CENTERS", True)
+        position = {"X": 0.0, "Y": 0.0}
+        for _, sublist in postables:
+            for item in sublist:
+                if not item.path:
+                    continue
+                commands = []
+                changed = False
+                for cmd in item.path.Commands:
+                    if cmd.Name in Constants.GCODE_MOVE_ARC:
+                        params = {k: v for k, v in cmd.Parameters.items() if k != "K"}
+                        if absolute:
+                            for word, axis in (("I", "X"), ("J", "Y")):
+                                if word in params:
+                                    params[word] = params[word] + position[axis]
+                        cmd = Path.Command(cmd.Name, params, cmd.Annotations)
+                        changed = True
+                    for axis in position:
+                        if axis in cmd.Parameters:
+                            position[axis] = cmd.Parameters[axis]
+                    commands.append(cmd)
+                if changed:
+                    item.path = Path.Path(commands)
+        super()._optimize_duplicates_doubles(postables)
 
     def _convert_drill_cycle(self, command: Path.Command) -> str:
         """A quill cycle in Dynapath words: K for the peck, L for the dwell, O
