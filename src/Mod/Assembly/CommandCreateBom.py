@@ -78,7 +78,9 @@ class CommandCreateBom:
         }
 
     def IsActive(self):
-        return True
+        if Gui.Control.activeDialog():
+            return False
+        return App.ActiveDocument is not None
 
     def Activated(self):
         self.panel = TaskAssemblyCreateBom()
