@@ -24,7 +24,6 @@
 
 #include <Inventor/SbString.h>
 #include <QApplication>
-#include <set>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -155,7 +154,14 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
             continue;
         }
         const auto* geometry = Obj->getGeometry(GeoId);
-        if (!geometry || geometry->is<Part::GeomBSplineCurve>()) {
+        if (!geometry) {
+            continue;
+        }
+        // Preserve existing splines and auxiliary geometry, including pole circles selected alone.
+        // External splines are allowed so that conversion can create an internal copy.
+        if (GeoId >= 0
+            && (geometry->is<Part::GeomBSplineCurve>()
+                || Obj->getGeometryFacade(GeoId)->isInternalAligned())) {
             continue;
         }
         long id = 0;
@@ -168,21 +174,6 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     if (selectedGeometry.empty()) {
         return;
     }
-
-    // A box selection can include both a conic and its axes. Convert only the parent.
-    std::set<int> selectedIds;
-    for (const auto& [geoId, id] : selectedGeometry) {
-        selectedIds.insert(geoId);
-    }
-    std::set<int> auxiliaryIds;
-    for (const auto* constraint : Obj->Constraints.getValues()) {
-        if (constraint->Type == InternalAlignment && selectedIds.contains(constraint->Second)) {
-            auxiliaryIds.insert(constraint->First);
-        }
-    }
-    std::erase_if(selectedGeometry, [&auxiliaryIds](const auto& entry) {
-        return auxiliaryIds.contains(entry.first);
-    });
 
     auto findGeometry = [Obj](long id) -> int {
         for (int index = 0; index <= Obj->getHighestCurveIndex(); ++index) {
