@@ -268,6 +268,39 @@ class TestDynapathPost(PathTestUtils.PathTestBase):
             ],
         )
 
+    def test_arc_centers_absolute_without_duplicate_commands(self):
+        """The second arc of a run has no G2 word, and its center is still absolute."""
+        self.post._machine.output.duplicates.commands = False
+        lines = self.op_lines(
+            [
+                "G0 X10 Y0 Z18",
+                "G2 X0 Y10 Z18 I-10 J0 F100",
+                "G2 X-10 Y0 Z18 I0 J-10 F100",
+                "G2 X0 Y-10 Z18 I10 J0 F100",
+            ]
+        )
+        self.assertEqual(
+            lines,
+            [
+                "G0X10.000Y0.000Z18.000",
+                "G2X0.000Y10.000Z18.000I0.000J0.000F6000.000",
+                "X-10.000Y0.000Z18.000I0.000J0.000F6000.000",
+                "X0.000Y-10.000Z18.000I0.000J0.000F6000.000",
+            ],
+        )
+
+    def test_arc_centers_absolute_in_inches_without_duplicate_commands(self):
+        self.post._machine.output.units = OutputUnits.IMPERIAL
+        self.post._machine.output.duplicates.commands = False
+        lines = self.op_lines(
+            [
+                "G0 X25.4 Y0 Z25.4",
+                "G2 X0 Y25.4 Z25.4 I-25.4 J0 F100",
+                "G2 X-25.4 Y0 Z25.4 I0 J-25.4 F100",
+            ]
+        )
+        self.assertEqual("X-1.000Y0.000Z1.000I0.000J0.000F236.220", lines[2])
+
     def test_arc_centers_absolute_in_inches(self):
         self.post._machine.output.units = OutputUnits.IMPERIAL
         lines = self.op_lines(["G0 X25.4 Y0 Z25.4", "G2 X0 Y25.4 Z25.4 I-25.4 J0 F100"])
