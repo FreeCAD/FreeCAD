@@ -119,13 +119,34 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 
 void DlgSettings3DViewPart::saveSettings()
 {
+    // Snapshot the stored prefs before saving so we only push to existing
+    // documents when the user actually changed a value (see #33020). Opening
+    // Preferences and pressing OK without changes must not wipe per-object
+    // Deviation/AngularDeflection. Deliberate changes still propagate to open
+    // documents, preserving the previous bulk-apply behavior until an
+    // explicit per-document apply action exists (see #33440).
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+    const double oldDeviation = hPart->GetFloat("MeshDeviation", 0.5);
+    const double oldAngular = hPart->GetFloat("MeshAngularDeflection", 28.5);
+
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+
+    const double newDeviation = hPart->GetFloat("MeshDeviation", 0.5);
+    const double newAngular = hPart->GetFloat("MeshAngularDeflection", 28.5);
+    if (oldDeviation == newDeviation && oldAngular == newAngular) {
+        return;
+    }
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
     for (auto it : docs) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(it);
+        if (!doc) {
+            continue;
+        }
         std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
             ViewProviderPart::getClassTypeId()
         );
