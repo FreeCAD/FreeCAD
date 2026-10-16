@@ -156,6 +156,7 @@ private:
     clock::time_point mLastProcessSim = clock::time_point::min();
 
     GuiDisplay* mGui = nullptr;
+    QColor mBackground;
     Dummy3DViewer* mDummyViewer = nullptr;
 };
 
