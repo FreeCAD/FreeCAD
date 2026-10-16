@@ -813,7 +813,12 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
             case mm0Intersection:
                 return TwoStrings(
                     qApp->translate("Attacher0D", "Intersection", "AttachmentPoint mode caption"),
-                    qApp->translate("Attacher0D", "Not implemented", "AttachmentPoint mode tooltip")
+                    qApp->translate(
+                        "Attacher0D",
+                        "Put Datum point at the intersection of two edges, or of an edge and a "
+                        "face.",
+                        "AttachmentPoint mode tooltip"
+                    )
                 );
             case mm0Vertex:
                 return TwoStrings(

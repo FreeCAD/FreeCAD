@@ -1239,8 +1239,7 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
     // As of now we support:
     //     Single selected vertex: place the balloon tip end here
     //     Single selected edge:   place the balloon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
-    //
-    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
+    //     Single selected face:   place the balloon tip at its center of mass
 
     if (subNames.size() != 1) {
         // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
@@ -1270,6 +1269,15 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
         if (geo) {
             Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
             placement = viewPart->mapToScene(midPoint.x, midPoint.y);
+            return true;
+        }
+    }
+    else if (geoType == "Face") {
+        TechDraw::FacePtr face =
+            static_cast<DrawViewPart*>(viewPart->getViewObject())->getFace(subNames[0]);
+        if (face) {
+            Base::Vector3d center(Rez::guiX(face->getCenter()));
+            placement = viewPart->mapToScene(center.x, center.y);
             return true;
         }
     }

@@ -107,7 +107,7 @@ LinearPatternExtension::LinearPatternExtension()
         "Direction 1",
         App::Prop_None,
         "(Experimental and subject to change. To enable "
-        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "this in the UI you can add a boolean parameter 'ExperimentalFeatures' in "
         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
         "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
     );
@@ -175,7 +175,7 @@ LinearPatternExtension::LinearPatternExtension()
         "Direction 2",
         App::Prop_None,
         "(Experimental and subject to change. To enable "
-        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "this in the UI you can add a boolean parameter 'ExperimentalFeatures' in "
         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
         "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
     );
