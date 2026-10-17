@@ -139,7 +139,8 @@ struct TaskInfo
     TaskPanel* taskPanel {nullptr};
     TaskDialog* ActiveDialog {nullptr};
     TaskEditControl* ActiveCtrl {nullptr};
-    App::Document* Document {nullptr};
+    const App::Document* Document {nullptr};
+    bool hasTaskWatcher {false};
 };
 
 /** TaskView class
@@ -152,6 +153,8 @@ class GuiExport TaskView: public QStackedWidget, public Gui::SelectionSingleton:
     Q_OBJECT
 
 public:
+    using TaskIndex = int;
+
     explicit TaskView(QWidget* parent = nullptr);
     ~TaskView() override;
 
@@ -184,13 +187,9 @@ public:
     void setRestoreWidth(bool on);
     bool shouldRestoreWidth() const;
 
-    std::optional<TaskInfo> currentTaskInfo() const;
-
     TaskDialog* dialog(App::Document* doc);
 
-    // Show the task info at the index
-    // or taskwatcher if index = -1
-    void setShownTaskInfo(int index);
+    void setShownTaskInfo(TaskIndex index);
 
 Q_SIGNALS:
     void taskUpdate();
@@ -215,14 +214,20 @@ private:
     void slotRedoDocument(const App::Document&);
     void transactionChangeOnDocument(const App::Document&, bool undo);
 
+    void setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt);
+
+    bool isIndexValid(TaskIndex index) const;
+
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     bool event(QEvent* event) override;
 
-    void addTaskWatcher();
-    void removeTaskWatcher();
+    void addTaskWatcher(TaskIndex index);
+    void removeActiveTaskWatcher();
+    void removeTaskWatcher(TaskInfo& taskInfo);
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();
+
     /// used by Gui::Control to register Dialogs, returns true if the dialog was not already there
     bool showDialog(TaskDialog* dlg, App::Document* doc);
     // removes the running dialog after accept() or reject() from the TaskView
@@ -232,7 +237,6 @@ protected:
     void setShowTaskWatcher(bool show);
 
     std::vector<TaskWatcher*> ActiveWatcher;
-    TaskPanel* TaskWatcherPanel;
 
     // First index of the stack is reserved to the active watcher
     std::vector<TaskInfo> taskInfos;
