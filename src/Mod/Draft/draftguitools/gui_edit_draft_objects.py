@@ -815,7 +815,7 @@ class DraftBezCurveGuiTools(GuiTools):
                     changep = 1
                 else:
                     App.Console.PrintWarning(
-                        translate("draft", "Cannot change knot belonging to pole %d" % point) + "\n"
+                        translate("draft", "Cannot change knot belonging to pole %d") % point + "\n"
                     )
                     return
                 if knot:

@@ -693,7 +693,9 @@ def makePanelCut(panel, name=None):
         "Part::FeaturePython",
         baseClassName="PanelCut",
         internalName="PanelCut",
-        defaultLabel=name if name else translate("Arch", f"View of {panel.Label}"),
+        defaultLabel=(
+            name if name else translate("Arch", "View of {panel.Label}").format(panel=panel)
+        ),
         moduleName="ArchPanel",
         viewProviderName="ViewProviderPanelCut",
     )

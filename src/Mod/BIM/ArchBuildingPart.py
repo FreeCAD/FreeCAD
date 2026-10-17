@@ -1221,7 +1221,10 @@ class ViewProviderBuildingPart:
         else:
             wp.align_to_selection()
             FreeCAD.Console.PrintMessage(
-                translate("Arch", f"Active working plane set to {self.Object.Label}") + "\n"
+                translate("Arch", "Active working plane set to {self.Object.Label}").format(
+                    self=self
+                )
+                + "\n"
             )
 
     def writeCamera(self):
