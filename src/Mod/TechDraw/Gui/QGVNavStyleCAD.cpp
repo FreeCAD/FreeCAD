@@ -82,11 +82,6 @@ void QGVNavStyleCAD::handleMousePressEvent(QMouseEvent *event)
 
 void QGVNavStyleCAD::handleMouseMoveEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     //if the mouse moves between press and release, then it isn't a click
     if (m_clickPending) {
         stopClick();
@@ -132,10 +127,6 @@ void QGVNavStyleCAD::handleMouseMoveEvent(QMouseEvent *event)
 void QGVNavStyleCAD::handleMouseReleaseEvent(QMouseEvent *event)
 {
 //    Base::Console().message("QGVNSCAD::handleMouseReleaseEvent() - button: {}\n", event->button());
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (event->button() == Qt::MiddleButton) {
         if (m_clickPending && (m_clickButton == Qt::MiddleButton)) {
             stopClick();
