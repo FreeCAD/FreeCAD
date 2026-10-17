@@ -164,7 +164,7 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbViewScale">
+         <widget class="QComboBox" name="cbViewCustomScale">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -181,25 +181,10 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Default scale for views if 'View scale type' is 'Custom'</string>
+           <string>Default scale for views if 'View scale type' is 'Custom'. You can enter ratios like 1:10 or 1/10.</string>
           </property>
-          <property name="statusTip">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="decimals">
-           <number>2</number>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultViewScale</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
+          <property name="editable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
