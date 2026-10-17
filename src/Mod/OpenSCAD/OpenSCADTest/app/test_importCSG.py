@@ -191,6 +191,26 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 3108.8677, 3)
         FreeCAD.closeDocument(doc.Name)
 
+    def test_import_intersection_nary(self):
+        # 3-ary intersection() should import without AttributeError (issue #29309)
+        csg = (
+            "intersection() {\n"
+            "    cube(size = [15, 15, 15], center = true);\n"
+            "    sphere($fn = 0, $fa = 12, $fs = 2, r = 10);\n"
+            "    cube(size = [8, 8, 20], center = true);\n"
+            "}\n"
+        )
+        filename = self.temp_dir.name + os.path.sep + "intersection_nary.csg"
+        with open(filename, "w") as f:
+            f.write(csg)
+        doc = importCSG.open(filename)
+        obj = doc.getObject("intersection")
+        self.assertIsNotNone(obj)
+        self.assertEqual(obj.TypeId, "Part::MultiCommon")
+        self.assertFalse(obj.Shape.isNull())
+        self.assertAlmostEqual(obj.Shape.Volume, 960.0)
+        FreeCAD.closeDocument(doc.Name)
+
     def test_import_union(self):
         doc = self.utility_create_scad("union() { cube(15, center=true); sphere(10); }", "union")
         object = doc.ActiveObject
