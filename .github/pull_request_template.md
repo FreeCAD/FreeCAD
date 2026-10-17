@@ -14,7 +14,7 @@ FreeCAD does not accept raw and unverified AI output in PRs and no AI output in 
 Please check the following box:
 -->
 
-- [ ] This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR is done by me personally.
+- [ ] This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR, including **PR description, comments and commit messages** is done by me personally.
 
 <!--
 If your work has been assisted by AI, please disclose the used technology in the PR description (in natural language) and with git trailers in the commit messages:
