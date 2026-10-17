@@ -418,7 +418,7 @@ void SheetView::changeEvent(QEvent* event)
             QTimer::singleShot(300, sub, [sub, this]() {
                 QMenu* menu = sub->systemMenu();
                 menu->addSeparator();
-                QAction* act = menu->addAction(tr("Toggle alternate rows"));
+                QAction* act = menu->addAction(tr("Alternating Row Colors"));
                 act->setCheckable(true);
                 act->setChecked(ui->cells->alternatingRowColors());
                 connect(act, &QAction::triggered, ui->cells, &SheetTableView::setAlternatingRowColors);
