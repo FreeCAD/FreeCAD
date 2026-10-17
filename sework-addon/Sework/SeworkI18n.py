@@ -28,6 +28,8 @@ EXTRA = {
     # Textos encontrados na auditoria visual (sem tradução na versão 1.1.4)
     "Search preferences…": "Buscar nas preferências…", "Search preferences...": "Buscar nas preferências...",
     "&Content": "&Conteúdo", "&Alias": "&Apelido", "Pad": "Extrusão",
+    # Painéis de extrusão/cavidade: mesmos termos dos valores de propriedade
+    "Through all": "Através de tudo", "To last": "Até a última face", "To first": "Até a primeira face",
     # Botões padrão dos diálogos (vêm do Qt, sem tradução no FreeCAD)
     "Close": "Fechar", "&Close": "&Fechar", "Cancel": "Cancelar", "&Cancel": "&Cancelar",
     "Apply": "Aplicar", "&Apply": "&Aplicar", "Help": "Ajuda", "&Help": "&Ajuda",
@@ -181,6 +183,11 @@ class SeworkTranslator(QtCore.QTranslator):
         except Exception:  # pragma: no cover
             PROPS = {}
         self._props = PROPS
+        try:
+            from SeworkEnums import ENUMS
+        except Exception:  # pragma: no cover
+            ENUMS = {}
+        self._enums = ENUMS
         self._ctx = {}
         for (c, k), v in GLOSSARIO.items():
             self._ctx[(c, k)] = v
@@ -193,6 +200,8 @@ class SeworkTranslator(QtCore.QTranslator):
             hit = self._props.get(sourceText)
             if hit:
                 return hit
+        if context == "App::PropertyEnumeration":
+            return self._enums.get(sourceText)
         hit = self._ctx.get((context, sourceText)) or self._t.get(sourceText)
         if hit:
             return hit

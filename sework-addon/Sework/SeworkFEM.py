@@ -639,6 +639,8 @@ def calcular(est, modos=None):
         return False, "O cálculo terminou sem resultados. Veja o painel Relatório.", 0.0
     dt = round(time.time() - t0, 1)
     est.put("SeworkCalculadoEm", time.strftime("%d/%m/%Y %H:%M"))
+    if not getattr(est, "_em_convergencia", False):
+        est.put("SeworkConvergencia", "")
     est.put("SeworkResultadoVelho", False, "App::PropertyBool")
     est.put("SeworkTempoCalculo", dt, "App::PropertyFloat")
     try:
@@ -646,6 +648,59 @@ def calcular(est, modos=None):
     except Exception:
         pass
     return True, "", dt
+
+
+LIMITE_CONVERGENCIA = 5.0   # % de variação entre as duas malhas mais finas
+
+
+def convergencia(est, fatores=(1.0, 0.7, 0.5), ordem="2nd", progresso=None):
+    """Recalcula com malhas cada vez mais finas e compara tensão e deslocamento máximos.
+
+    Retorna lista de dicionários {tamanho, nos, svm, u}. A última malha (a mais fina) fica no estudo.
+    Grava o resultado em SeworkConvergencia (JSON) para o relatório.
+    """
+    import json
+    m = est.malha
+    if m is None:
+        raise RuntimeError("Gere a malha antes de verificar a convergência.")
+    base = _q(str(m.CharacteristicLengthMax), "mm") or 1.0
+    est._em_convergencia = True
+    linhas = []
+    for i, f in enumerate(fatores):
+        if progresso:
+            progresso(i, len(fatores))
+        tam = base * f
+        ok, msg = gerar_malha(est, tam, ordem)
+        if not ok:
+            raise RuntimeError("Malha de {} falhou: {}".format(fmt(tam, 2, "mm"), msg))
+        ok, erro, _dt = calcular(est)
+        if not ok:
+            raise RuntimeError(erro)
+        e = estatisticas(est)
+        linhas.append({"tamanho": tam, "nos": est.malha.FemMesh.NodeCount, "svm": e.get("svm_max"),
+                       "u": e.get("u_max")})
+    est.put("SeworkConvergencia", json.dumps(linhas))
+    return linhas
+
+
+def avaliar_convergencia(linhas):
+    """(convergiu_tensao, convergiu_desloc, var_tensao_%, var_desloc_%) entre as duas malhas mais finas."""
+    if len(linhas) < 2:
+        return None
+    a, b = linhas[-2], linhas[-1]
+
+    def var(x, y):
+        return abs(y - x) / abs(y) * 100.0 if x and y else None
+    vs, vu = var(a["svm"], b["svm"]), var(a["u"], b["u"])
+    return (vs is not None and vs <= LIMITE_CONVERGENCIA, vu is not None and vu <= LIMITE_CONVERGENCIA, vs, vu)
+
+
+def linhas_convergencia(est):
+    import json
+    try:
+        return json.loads(est.get("SeworkConvergencia", "") or "[]")
+    except ValueError:
+        return []
 
 
 # =========================================================================== interface
@@ -1441,11 +1496,77 @@ class Assistente(QtWidgets.QWidget):
         b3.clicked.connect(lambda: mostrar_campo(self.est(), "modelo"))
         self.bts_res = _linha(b1, b2, b3, "stretch")
         lay.addWidget(self.bts_res)
+        self.bt_conv = QtWidgets.QPushButton("Verificar convergência da malha")
+        self.bt_conv.setToolTip("Recalcula com malhas 30% e 50% menores e compara os resultados")
+        self.bt_conv.clicked.connect(self._convergencia)
+        lay.addWidget(_linha(self.bt_conv, "stretch"))
+        self.tab_conv = QtWidgets.QTableWidget(0, 4)
+        self.tab_conv.setHorizontalHeaderLabels(["Elemento", "Nós", "σ máx. (MPa)", "δ máx. (mm)"])
+        self.tab_conv.verticalHeader().setVisible(False)
+        self.tab_conv.horizontalHeader().setStretchLastSection(True)
+        self.tab_conv.setMaximumHeight(130)
+        lay.addWidget(self.tab_conv)
+        self.lb_conv = QtWidgets.QLabel("")
+        self.lb_conv.setObjectName("SwMsg")
+        self.lb_conv.setWordWrap(True)
+        lay.addWidget(self.lb_conv)
         lay.addWidget(_dica("Picos de tensão em cantos vivos e nos pontos de fixação costumam ser efeito do "
                             "modelo (singularidade). Refine a malha: se o pico continuar subindo, avalie a "
                             "tensão um pouco afastada do canto."))
 
+    def _convergencia(self):
+        est = self.est()
+        r = QtWidgets.QMessageBox.question(
+            self, "Convergência da malha",
+            "O modelo será calculado mais duas vezes, com elementos 30% e 50% menores. "
+            "Pode levar alguns minutos. Continuar?")
+        if r != QtWidgets.QMessageBox.Yes:
+            return
+        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        try:
+            def prog(i, n):
+                self.lb_conv.setText("Calculando malha {} de {}…".format(i + 1, n))
+                self.lb_conv.setVisible(True)
+                QtWidgets.QApplication.processEvents()
+            convergencia(est, ordem=getattr(est.malha, "ElementOrder", "2nd"), progresso=prog)
+            mostrar_campo(est, "tensao")
+        except Exception as exc:
+            QtWidgets.QApplication.restoreOverrideCursor()
+            self._erro(str(exc))
+            return
+        QtWidgets.QApplication.restoreOverrideCursor()
+        self.atualizar(force=True)
+
+    def _mostrar_convergencia(self, est):
+        linhas = linhas_convergencia(est) if est.tipo == "static" else []
+        self.tab_conv.setVisible(bool(linhas))
+        self.lb_conv.setVisible(bool(linhas))
+        self.bt_conv.setVisible(est.tipo == "static" and bool(est.resultados))
+        if not linhas:
+            return
+        self.tab_conv.setRowCount(len(linhas))
+        for i, l in enumerate(linhas):
+            for j, v in enumerate((fmt(l["tamanho"], 2, "mm"), fmt(l["nos"], 0), fmt(l["svm"], 1), fmt(l["u"], 4))):
+                self.tab_conv.setItem(i, j, QtWidgets.QTableWidgetItem(v))
+        av = avaliar_convergencia(linhas)
+        cs, cu, vs, vu = av
+        if cs and cu:
+            txt, nivel = ("Convergiu: entre as duas malhas mais finas a tensão variou {} e o deslocamento {} "
+                          "(limite {} %).".format(fmt(vs, 1, "%"), fmt(vu, 1, "%"), fmt(LIMITE_CONVERGENCIA, 0))), "ok"
+        elif cu and not cs:
+            txt, nivel = ("O deslocamento convergiu ({}), mas a tensão máxima ainda variou {}. Isso costuma indicar "
+                          "concentração em canto vivo ou na fixação (singularidade): avalie a tensão um pouco "
+                          "afastada do ponto de pico ou arredonde o canto.".format(fmt(vu, 1, "%"), fmt(vs, 1, "%"))), "aviso"
+        else:
+            txt, nivel = ("Ainda não convergiu (tensão {}, deslocamento {}). Refine mais a malha antes de usar "
+                          "o resultado.".format(fmt(vs, 1, "%"), fmt(vu, 1, "%"))), "erro"
+        self.lb_conv.setText(txt)
+        self.lb_conv.setProperty("nivel", nivel)
+        self.lb_conv.style().unpolish(self.lb_conv)
+        self.lb_conv.style().polish(self.lb_conv)
+
     def _mostrar_resultados(self, est):
+        self._mostrar_convergencia(est)
         e = estatisticas(est)
         freq = est.tipo == "frequency"
         for w in (self.c_tensao, self.c_desl, self.c_fs):

@@ -220,6 +220,19 @@ def _corpo(est, doc, imgs, largura):
                       cab=["Modo", "Frequência"], larguras=["30%", "70%"]))
         h.append(_img(doc, "deslocamento", imgs.get("deslocamento"), "Figura 3 — Forma do modo exibido", largura))
 
+    conv = F.linhas_convergencia(est) if tipo == "static" else []
+    if conv:
+        h.append("<h2>Convergência da malha</h2>")
+        h.append(_tab([[F.fmt(l["tamanho"], 2, "mm"), F.fmt(l["nos"], 0), F.fmt(l["svm"], 1, "MPa"),
+                        F.fmt(l["u"], 4, "mm")] for l in conv],
+                      cab=["Elemento máx.", "Nós", "σ máx.", "δ máx."], larguras=["25%", "20%", "27%", "28%"]))
+        cs, cu, vs, vu = F.avaliar_convergencia(conv)
+        h.append("<p>Entre as duas malhas mais finas, a tensão máxima variou %s e o deslocamento máximo %s "
+                 "(critério adotado: até %s %%). %s</p>" % (
+                     F.fmt(vs, 1, "%"), F.fmt(vu, 1, "%"), F.fmt(F.LIMITE_CONVERGENCIA, 0),
+                     "Os resultados convergiram." if (cs and cu) else
+                     ("O deslocamento convergiu; a variação da tensão indica concentração localizada que deve ser "
+                      "avaliada pelo responsável técnico." if cu else "Os resultados ainda variam com a malha.")))
     h.append("<h1>8. Premissas e limitações</h1>")
     prem = ["Material linear elástico, homogêneo e isotrópico; não há plasticidade no modelo.",
             "Pequenos deslocamentos e pequenas deformações (sem não linearidade geométrica).",

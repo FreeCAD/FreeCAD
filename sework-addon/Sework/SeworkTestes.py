@@ -174,6 +174,24 @@ class T04Glossario(unittest.TestCase):
         for (ctx, src), esperado in casos.items():
             self.assertEqual(tr.translate(ctx, src), esperado)
 
+    def test_valores_de_lista_do_editor_de_propriedades(self):
+        import SeworkI18n as I
+        tr = I.SeworkTranslator(I.EXTRA, "")
+        c = "App::PropertyEnumeration"
+        self.assertEqual(tr.translate(c, "Length"), "Dimensão")
+        self.assertEqual(tr.translate(c, "ThroughAll"), "Através de tudo")
+        self.assertEqual(tr.translate(c, "One side"), "Um lado")
+        self.assertEqual(tr.translate(c, "static"), "estática")
+        self.assertIsNone(tr.translate(c, "ValorQueNaoExiste"), "sem tradução deve devolver None (Qt usa o original)")
+        # termo ambíguo (estilo de linha × categoria de material) fica sem tradução de propósito
+        self.assertIsNone(tr.translate(c, "Solid"))
+
+    def test_painel_usa_os_mesmos_termos(self):
+        import SeworkI18n as I
+        import SeworkEnums as E
+        tr = I.SeworkTranslator(I.EXTRA, "")
+        self.assertEqual(tr.translate("PartDesignGui::TaskPadPocketParameters", "Through all"), E.ENUMS["ThroughAll"])
+
     def test_glossario_nao_vaza_para_outros_contextos(self):
         import SeworkI18n as I
         tr = I.SeworkTranslator(I.EXTRA, "")
@@ -407,6 +425,26 @@ class T07Validacao(unittest.TestCase):
         self.assertAlmostEqual(media, sigma, delta=0.07 * sigma,
                                msg="σ FEM %.2f × analítico %.2f MPa" % (media, sigma))
 
+    def test_convergencia_da_malha(self):
+        # Barra tracionada: o deslocamento tem de convergir (variação pequena entre malhas)
+        import ObjectsFem
+        import SeworkFEM as F
+        L, a, Fn = 100.0, 10.0, 1000.0
+        est, o, _p = _estudo_viga(self.doc, L=L, b=a, h=a)
+        c = ObjectsFem.makeConstraintForce(self.doc, "Forca")
+        c.References = [(o, _face(o, lambda f: abs(f.CenterOfMass.x - L) < 1e-6))]
+        c.Force = "%s N" % Fn
+        est.analise.addObject(c)
+        self.doc.recompute()
+        self.assertTrue(F.gerar_malha(F.Estudo(self.doc), 6.0, "2nd")[0])
+        self.assertTrue(F.calcular(F.Estudo(self.doc))[0])
+        linhas = F.convergencia(F.Estudo(self.doc))
+        self.assertEqual(len(linhas), 3)
+        self.assertGreater(linhas[-1]["nos"], linhas[0]["nos"], "a malha tem de ficar mais fina")
+        cs, cu, vs, vu = F.avaliar_convergencia(linhas)
+        self.assertTrue(cu, "deslocamento não convergiu: %.2f %%" % vu)
+        self.assertEqual(len(F.linhas_convergencia(F.Estudo(self.doc))), 3, "resultado não foi gravado")
+
     def test_primeira_frequencia_natural(self):
         # f1 = (1,8751²/2π)·√(E·I/(ρ·A·L⁴)), flexão em torno do eixo de menor inércia
         import SeworkFEM as F
@@ -516,9 +554,83 @@ class T09Interface(unittest.TestCase):
         self.assertGreaterEqual(rb.content.height(), 126)
 
 
+# ======================================================================= tutorial
+class T10Tutorial(unittest.TestCase):
+    """Os passos do tutorial são detectados conforme a peça é construída."""
+
+    def test_passos_detectados_em_ordem(self):
+        import Part
+        import Sketcher
+        import SeworkTutorial as T
+        doc = _doc_teste("SeworkTesteTutorial")
+        try:
+            FreeCAD.setActiveDocument(doc.Name)
+            self.assertEqual(T.passo_atual(T.estado()), 1, "documento criado → próximo é o corpo")
+            body = doc.addObject("PartDesign::Body", "Body")
+            xy = [f for f in body.Origin.OriginFeatures if getattr(f, "Role", "") == "XY_Plane"][0]
+            sk = body.newObject("Sketcher::SketchObject", "Sketch")
+            sk.AttachmentSupport = [(xy, "")]
+            sk.MapMode = "FlatFace"
+            doc.recompute()
+            self.assertEqual(T.passo_atual(T.estado()), 3, "esboço criado → próximo é o retângulo")
+            p = [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(60, 0, 0), FreeCAD.Vector(60, 40, 0), FreeCAD.Vector(0, 40, 0)]
+            for i in range(4):
+                sk.addGeometry(Part.LineSegment(p[i], p[(i + 1) % 4]))
+            for i in range(4):
+                sk.addConstraint(Sketcher.Constraint("Coincident", i, 2, (i + 1) % 4, 1))
+            doc.recompute()
+            self.assertEqual(T.passo_atual(T.estado()), 4, "retângulo → próximo são as cotas")
+            sk.addConstraint(Sketcher.Constraint("DistanceX", 0, 1, 0, 2, 60.0))
+            sk.addConstraint(Sketcher.Constraint("DistanceY", 1, 1, 1, 2, 40.0))
+            doc.recompute()
+            pad = body.newObject("PartDesign::Pad", "Pad")
+            pad.Profile = sk
+            pad.Length = 10
+            doc.recompute()
+            self.assertEqual(T.passo_atual(T.estado()), 7, "extrusão feita → próximo é o furo")
+            sk2 = body.newObject("Sketcher::SketchObject", "Sketch001")
+            sk2.AttachmentSupport = [(xy, "")]
+            sk2.MapMode = "FlatFace"
+            sk2.addGeometry(Part.Circle(FreeCAD.Vector(30, 20, 0), FreeCAD.Vector(0, 0, 1), 6))
+            doc.recompute()
+            poc = body.newObject("PartDesign::Pocket", "Pocket")
+            poc.Profile = sk2
+            poc.Type = "ThroughAll"
+            poc.Midplane = True
+            doc.recompute()
+            self.assertTrue(T.estado()[7], "furo não detectado")
+            arestas = [i + 1 for i, e in enumerate(poc.Shape.Edges)
+                       if e.BoundBox.ZLength > 9 and e.BoundBox.XLength < 1e-6 and e.BoundBox.YLength < 1e-6]
+            fil = body.newObject("PartDesign::Fillet", "Fillet")
+            fil.Base = (poc, ["Edge%d" % i for i in arestas])
+            fil.Radius = 5
+            doc.recompute()
+            feitos = T.estado()
+            self.assertEqual(feitos[:9], [True] * 9, feitos)
+            self.assertFalse(feitos[9], "documento não salvo ainda")
+        finally:
+            _fechar(doc)
+
+    def test_mostrar_onde_encontra_os_botoes(self):
+        import SeworkRibbon
+        import SeworkTutorial as T
+        if SeworkRibbon._state.get("ribbon") is None:
+            self.skipTest("faixa Sework não instalada nesta sessão")
+        for i in (0, 9):     # Novo e Salvar ficam na barra rápida
+            _t, _x, aba, cmds, _k = T.PASSOS[i]
+            self.assertTrue(T.destacar(aba, cmds), "botão do passo %d não encontrado" % (i + 1))
+
+    def test_painel_abre(self):
+        import SeworkTutorial as T
+        w = T.Tutorial()
+        self.assertEqual(len(w.itens), len(T.PASSOS))
+        w.timer.stop()
+        w.deleteLater()
+
+
 # ======================================================================= execução
 RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T03bTrocaDeTema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias,
-           T09Interface]
+           T09Interface, T10Tutorial]
 COMPLETOS = RAPIDOS + [T07Validacao, T08Relatorio]
 
 

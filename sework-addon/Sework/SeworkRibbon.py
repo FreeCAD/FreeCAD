@@ -259,6 +259,7 @@ TABS = [
             ("Sework_TemaIcones", S, "Tema de ícones"), ("Sework_BarrasClassicas", S, "Barras clássicas"),
             ("Sework_RemoverSplash", S, "Splash original"), ("Sework_ModoDistribuicao", S, "Modo distribuição"),
         ]),
+        ("Aprender", [("Sework_Tutorial", L, "Tutorial\nprimeira peça")]),
         ("Qualidade", [("Sework_Testes", L, "Testes\nautomáticos")]),
     ]},
 ]
@@ -811,8 +812,11 @@ class SeworkRibbon(QtWidgets.QWidget):
                     icon = QtGui.QIcon(ic)
             except Exception:
                 pass
-            act = menu.addAction(icon, label)
+            # QAction explicita: a sobrecarga addAction(icone, texto) do PySide às vezes devolve outro tipo
+            QAction = getattr(QtGui, "QAction", None) or QtWidgets.QAction
+            act = QAction(icon, label, menu)
             act.triggered.connect(lambda checked=False, k=key: FreeCADGui.activateWorkbench(k))
+            menu.addAction(act)
 
     def _toggle_collapse(self, *args):
         vis = not self.content.isVisible()

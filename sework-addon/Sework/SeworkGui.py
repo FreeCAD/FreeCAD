@@ -639,6 +639,8 @@ def register_commands():
         FreeCADGui.addCommand("Sework_AssistenteFEM", SeworkFEM.CmdAssistenteFEM())
         import SeworkTestes
         FreeCADGui.addCommand("Sework_Testes", SeworkTestes.CmdTestes())
+        import SeworkTutorial
+        FreeCADGui.addCommand("Sework_Tutorial", SeworkTutorial.CmdTutorial())
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: assistente de simulação indisponível: {}\n".format(exc))
 

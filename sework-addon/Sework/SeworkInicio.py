@@ -78,6 +78,14 @@ def _thumb(path, size):
 
 
 # ---------------------------------------------------------------- ações
+def _abrir_tutorial():
+    try:
+        import SeworkTutorial
+        SeworkTutorial.mostrar()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: tutorial indisponível: {}\n".format(exc))
+
+
 def _new(kind):
     if kind == "abrir":
         FreeCADGui.runCommand("Std_Open")
@@ -240,6 +248,15 @@ class InicioSework(QtWidgets.QWidget):
         for c in range(3):
             grid.setColumnStretch(c, 1)
         self.v.addLayout(grid)
+        tut = QtWidgets.QPushButton("Primeira vez no FreeCAD?  Faça o tutorial da primeira peça (10 passos)  ›")
+        tut.setObjectName("SwTutLink")
+        tut.setCursor(QtCore.Qt.PointingHandCursor)
+        tut.setFlat(True)
+        tut.setStyleSheet(SeworkEstilo.tema(
+            "QPushButton#SwTutLink { text-align: left; color: #003A70; font-weight: 600; border: none; "
+            "background: transparent; padding: 6px 2px; } QPushButton#SwTutLink:hover { color: #C99A00; }"))
+        tut.clicked.connect(_abrir_tutorial)
+        self.v.addWidget(tut)
 
         # recentes
         rec = _recent()
