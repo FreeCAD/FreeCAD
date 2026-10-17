@@ -5034,9 +5034,14 @@ bool ViewProviderSketch::hasMissingExternalGeometry() const
 
 QString ViewProviderSketch::getToolTip() const
 {
-    return hasMissingExternalGeometry()
-        ? tr("Missing external geometry")
-        : QString();
+    QString tip = ViewProviderDocumentObject::getToolTip();
+    if (hasMissingExternalGeometry()) {
+        if (!tip.isEmpty()) {
+            tip += QStringLiteral("<br/><br/>");
+        }
+        tip += tr("Missing external geometry");
+    }
+    return tip;
 }
 
 QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
