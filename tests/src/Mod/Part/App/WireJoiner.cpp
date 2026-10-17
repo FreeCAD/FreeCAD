@@ -7,7 +7,13 @@
 
 #include "PartTestHelpers.h"
 
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+
 #include <BRepBuilderAPI_MakeShape.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -926,6 +932,337 @@ TEST_F(WireJoinerTest, IsDeleted)
     // edge5 is smaller that the smallest shape that can be considered with the given value of
     // tolerance and therefore deleted
     EXPECT_TRUE(wjIsDeleted.IsDeleted(edge5));
+}
+
+TEST_F(WireJoinerTest, setTightBoundRegions)
+{
+    // Arrange
+
+    // Create various circles and lines that will be used for the WireJoiner objects tests.
+    // All the circles have a radius of 10
+
+    auto circle1 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(0.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle2 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(10.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle3 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(12.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle4 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(24.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle5 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(5.0, 8.660254, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle6 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(18.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle7 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(9.0, 15.6, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+
+    // The 4 sides of a square with corners (0.0, 0.0, 0.0) and (20.0, 20.0, 0.0)
+    auto side1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(20.0, 0.0, 0.0)).Edge()};
+    auto side2 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 0.0, 0.0), gp_Pnt(20.0, 20.0, 0.0)).Edge()};
+    auto side3 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 20.0, 0.0), gp_Pnt(0.0, 20.0, 0.0)).Edge()};
+    auto side4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 20.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+
+    // Lines going from one side of the square to the opposite one
+    auto line1 {BRepBuilderAPI_MakeEdge(gp_Pnt(10.0, 0.0, 0.0), gp_Pnt(10.0, 20.0, 0.0)).Edge()};
+    auto line2 {BRepBuilderAPI_MakeEdge(gp_Pnt(7.0, 0.0, 0.0), gp_Pnt(7.0, 20.0, 0.0)).Edge()};
+    auto line3 {BRepBuilderAPI_MakeEdge(gp_Pnt(14.0, 0.0, 0.0), gp_Pnt(14.0, 20.0, 0.0)).Edge()};
+    auto line4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 10.0, 0.0), gp_Pnt(20.0, 10.0, 0.0)).Edge()};
+
+    // A vector of edges used as argument for wjTwoCircles.addShape(). 2 overlapping circles make
+    // 3 regions, each closed by 2 edges
+    std::vector<TopoDS_Shape> edgesTwoCircles {circle1, circle2};
+    // A vector of edges used as argument for wjCirclesInARow.addShape(). 3 circles in a row make
+    // 5 regions. The one in the middle is closed by 4 edges
+    std::vector<TopoDS_Shape> edgesCirclesInARow {circle1, circle3, circle4};
+    // A vector of edges used as argument for wjVenn.addShape(). 3 circles overlapping like in a
+    // Venn diagram make 7 regions, all closed by 3 or 4 edges
+    std::vector<TopoDS_Shape> edgesVenn {circle1, circle2, circle5};
+    // A vector of edges used as argument for wjNoCommonPoint.addShape(). 3 circles where every
+    // pair overlaps but there is no area common to all 3 make 7 regions, one of them is the small
+    // gap in the middle
+    std::vector<TopoDS_Shape> edgesNoCommonPoint {circle1, circle6, circle7};
+    // A vector of edges used as argument for wjSquareOneLine.addShape(). 2 regions, each closed by
+    // 2 edges after the edges are merged
+    std::vector<TopoDS_Shape> edgesSquareOneLine {side1, side2, side3, side4, line1};
+    // A vector of edges used as argument for wjSquareTwoLines.addShape(). 3 regions, the one in the
+    // middle is closed by 4 edges
+    std::vector<TopoDS_Shape> edgesSquareTwoLines {side1, side2, side3, side4, line2, line3};
+    // A vector of edges used as argument for wjSquarePlus.addShape(). 4 regions, all closed by 4
+    // edges
+    std::vector<TopoDS_Shape> edgesSquarePlus {side1, side2, side3, side4, line1, line4};
+
+    // WireJoiner objects where setTightBound() and setMergeEdges() will be set to true, like in
+    // SketchObject::buildInternals()
+    auto wjTwoCircles {WireJoiner()};
+    auto wjCirclesInARow {WireJoiner()};
+    auto wjVenn {WireJoiner()};
+    auto wjNoCommonPoint {WireJoiner()};
+    auto wjSquareOneLine {WireJoiner()};
+    auto wjSquareTwoLines {WireJoiner()};
+    auto wjSquarePlus {WireJoiner()};
+
+    // Empty TopoShapes that will contain the shapes returned by getResultWires()
+    auto wiresTwoCircles {TopoShape(1)};
+    auto wiresCirclesInARow {TopoShape(2)};
+    auto wiresVenn {TopoShape(3)};
+    auto wiresNoCommonPoint {TopoShape(4)};
+    auto wiresSquareOneLine {TopoShape(5)};
+    auto wiresSquareTwoLines {TopoShape(6)};
+    auto wiresSquarePlus {TopoShape(7)};
+
+    // Empty TopoShapes that will contain the shapes returned by getOpenWires()
+    auto openTwoCircles {TopoShape(8)};
+    auto openCirclesInARow {TopoShape(9)};
+    auto openVenn {TopoShape(10)};
+    auto openNoCommonPoint {TopoShape(11)};
+    auto openSquareOneLine {TopoShape(12)};
+    auto openSquareTwoLines {TopoShape(13)};
+    auto openSquarePlus {TopoShape(14)};
+
+    // Empty TopoShapes that will contain the faces made from wiresVenn and wiresSquarePlus
+    auto facesVenn {TopoShape(15)};
+    auto facesSquarePlus {TopoShape(16)};
+
+    // Act
+
+    wjTwoCircles.addShape(edgesTwoCircles);
+    wjTwoCircles.setTightBound();
+    wjTwoCircles.setMergeEdges();
+    // wjTwoCircles.Build() is called by wjTwoCircles.getResultWires()
+    wjTwoCircles.getResultWires(wiresTwoCircles);
+    wjTwoCircles.getOpenWires(openTwoCircles);
+
+    wjCirclesInARow.addShape(edgesCirclesInARow);
+    wjCirclesInARow.setTightBound();
+    wjCirclesInARow.setMergeEdges();
+    wjCirclesInARow.getResultWires(wiresCirclesInARow);
+    wjCirclesInARow.getOpenWires(openCirclesInARow);
+
+    wjVenn.addShape(edgesVenn);
+    wjVenn.setTightBound();
+    wjVenn.setMergeEdges();
+    wjVenn.getResultWires(wiresVenn);
+    wjVenn.getOpenWires(openVenn);
+
+    wjNoCommonPoint.addShape(edgesNoCommonPoint);
+    wjNoCommonPoint.setTightBound();
+    wjNoCommonPoint.setMergeEdges();
+    wjNoCommonPoint.getResultWires(wiresNoCommonPoint);
+    wjNoCommonPoint.getOpenWires(openNoCommonPoint);
+
+    wjSquareOneLine.addShape(edgesSquareOneLine);
+    wjSquareOneLine.setTightBound();
+    wjSquareOneLine.setMergeEdges();
+    wjSquareOneLine.getResultWires(wiresSquareOneLine);
+    wjSquareOneLine.getOpenWires(openSquareOneLine);
+
+    wjSquareTwoLines.addShape(edgesSquareTwoLines);
+    wjSquareTwoLines.setTightBound();
+    wjSquareTwoLines.setMergeEdges();
+    wjSquareTwoLines.getResultWires(wiresSquareTwoLines);
+    wjSquareTwoLines.getOpenWires(openSquareTwoLines);
+
+    wjSquarePlus.addShape(edgesSquarePlus);
+    wjSquarePlus.setTightBound();
+    wjSquarePlus.setMergeEdges();
+    wjSquarePlus.getResultWires(wiresSquarePlus);
+    wjSquarePlus.getOpenWires(openSquarePlus);
+
+    // Make a face for every region, like SketchObject::buildInternals() does for old sketches
+    facesVenn.makeElementFace(wiresVenn.getSubTopoShapes(TopAbs_WIRE), "", "Part::FaceMakerRing", nullptr);
+    facesSquarePlus.makeElementFace(
+        wiresSquarePlus.getSubTopoShapes(TopAbs_WIRE),
+        "",
+        "Part::FaceMakerRing",
+        nullptr
+    );
+
+    // Assert
+
+    // There should be one closed wire for every region
+    EXPECT_EQ(wiresTwoCircles.getSubTopoShapes(TopAbs_WIRE).size(), 3);
+    EXPECT_EQ(wiresCirclesInARow.getSubTopoShapes(TopAbs_WIRE).size(), 5);
+    EXPECT_EQ(wiresVenn.getSubTopoShapes(TopAbs_WIRE).size(), 7);
+    EXPECT_EQ(wiresNoCommonPoint.getSubTopoShapes(TopAbs_WIRE).size(), 7);
+    EXPECT_EQ(wiresSquareOneLine.getSubTopoShapes(TopAbs_WIRE).size(), 2);
+    EXPECT_EQ(wiresSquareTwoLines.getSubTopoShapes(TopAbs_WIRE).size(), 3);
+    EXPECT_EQ(wiresSquarePlus.getSubTopoShapes(TopAbs_WIRE).size(), 4);
+
+    // Every edge is part of some region, therefore there should be no open wires
+    EXPECT_TRUE(openTwoCircles.isNull());
+    EXPECT_TRUE(openCirclesInARow.isNull());
+    EXPECT_TRUE(openVenn.isNull());
+    EXPECT_TRUE(openNoCommonPoint.isNull());
+    EXPECT_TRUE(openSquareOneLine.isNull());
+    EXPECT_TRUE(openSquareTwoLines.isNull());
+    EXPECT_TRUE(openSquarePlus.isNull());
+
+    // In the Venn diagram the centers are 10 apart, the same as the radius. The region common to
+    // all 3 circles is a Reuleaux triangle with area (pi - sqrt(3)) / 2 * r^2. Every pair of
+    // circles overlaps in a lens with area 2 * pi / 3 * r^2 - sqrt(3) / 2 * r^2, and the 3 regions
+    // shared by 2 circles are these lenses minus the Reuleaux triangle. The remaining area of each
+    // circle is the region covered only by that circle.
+    const double pi = std::numbers::pi;
+    const double sqrt3 = std::sqrt(3.0);
+    const double center = (pi - sqrt3) / 2 * 100.0;
+    const double lens = (2 * pi / 3 - sqrt3 / 2) * 100.0;
+    const double twoCircles = lens - center;
+    const double oneCircle = pi * 100.0 - 2 * twoCircles - center;
+    std::vector<double>
+        expectedVenn {twoCircles, twoCircles, twoCircles, center, oneCircle, oneCircle, oneCircle};
+    std::vector<double> areasVenn;
+    for (const auto& face : facesVenn.getSubShapes(TopAbs_FACE)) {
+        areasVenn.push_back(getArea(face));
+    }
+    std::sort(areasVenn.begin(), areasVenn.end());
+    ASSERT_EQ(areasVenn.size(), expectedVenn.size());
+    for (size_t i = 0; i < areasVenn.size(); ++i) {
+        EXPECT_NEAR(areasVenn[i], expectedVenn[i], 1e-6);
+    }
+
+    // The plus sign splits the square in 4 squares of 10 x 10
+    auto facesPlus {facesSquarePlus.getSubShapes(TopAbs_FACE)};
+    EXPECT_EQ(facesPlus.size(), 4);
+    for (const auto& face : facesPlus) {
+        EXPECT_NEAR(getArea(face), 100.0, 1e-6);
+    }
+}
+
+TEST_F(WireJoinerTest, setOpenWiresOnly)
+{
+    // Arrange
+
+    // Create various edges that will be used for the WireJoiner objects tests
+
+    // The 4 sides of a square with corners (0.0, 0.0, 0.0) and (20.0, 20.0, 0.0)
+    auto side1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(20.0, 0.0, 0.0)).Edge()};
+    auto side2 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 0.0, 0.0), gp_Pnt(20.0, 20.0, 0.0)).Edge()};
+    auto side3 {BRepBuilderAPI_MakeEdge(gp_Pnt(20.0, 20.0, 0.0), gp_Pnt(0.0, 20.0, 0.0)).Edge()};
+    auto side4 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 20.0, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge()};
+    // A line going through the square and sticking out on both sides
+    auto line1 {BRepBuilderAPI_MakeEdge(gp_Pnt(10.0, -5.0, 0.0), gp_Pnt(10.0, 25.0, 0.0)).Edge()};
+    // A line going from line1 into the right half of the square
+    auto line2 {BRepBuilderAPI_MakeEdge(gp_Pnt(10.0, 10.0, 0.0), gp_Pnt(15.0, 10.0, 0.0)).Edge()};
+
+    // 3 circles overlapping like in a Venn diagram, all with a radius of 10
+    auto circle1 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(0.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle2 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(10.0, 0.0, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    auto circle3 {
+        BRepBuilderAPI_MakeEdge(gp_Circ(gp_Ax2(gp_Pnt(5.0, 8.660254, 0.0), gp::DZ()), 10.0)).Edge()
+    };
+    // A line going through all 3 circles and sticking out on both sides
+    auto line3 {BRepBuilderAPI_MakeEdge(gp_Pnt(-15.0, 3.0, 0.0), gp_Pnt(25.0, 3.0, 0.0)).Edge()};
+
+    // Vectors of TopoShape edges used as argument for the addShape() calls. A Tag and an element
+    // map are needed for every TopoShape, otherwise the open wires won't have mapped names to
+    // compare
+    std::vector<TopoShape> edgesSquare;
+    std::vector<TopoShape> edgesCircles;
+    long tag {1};
+    for (const auto& edge : {side1, side2, side3, side4, line1, line2}) {
+        auto shape {TopoShape(tag++)};
+        shape.setShape(edge);
+        shape.mapSubElement(shape);
+        edgesSquare.push_back(shape);
+    }
+    for (const auto& edge : {circle1, circle2, circle3, line3}) {
+        auto shape {TopoShape(tag++)};
+        shape.setShape(edge);
+        shape.mapSubElement(shape);
+        edgesCircles.push_back(shape);
+    }
+
+    // A WireJoiner object where the value of setOpenWiresOnly() will be changed but no shapes will
+    // be built
+    auto wjNoBuild {WireJoiner()};
+
+    // WireJoiner objects where setOpenWiresOnly() will be set to false
+    auto wjSquare {WireJoiner()};
+    auto wjCircles {WireJoiner()};
+    // WireJoiner objects where setOpenWiresOnly() will be set to true
+    auto wjSquareOpenOnly {WireJoiner()};
+    auto wjCirclesOpenOnly {WireJoiner()};
+
+    // Empty TopoShapes that will contain the shapes returned by getOpenWires()
+    auto wireSquare {TopoShape(tag++)};
+    auto wireCircles {TopoShape(tag++)};
+    auto wireSquareOpenOnly {TopoShape(tag++)};
+    auto wireCirclesOpenOnly {TopoShape(tag++)};
+
+    // Act
+
+    // Changing only the value of setOpenWiresOnly(). This should set wjNoBuild.IsDone() to false
+    wjNoBuild.setOpenWiresOnly(true);
+
+    wjSquare.addShape(edgesSquare);
+    wjSquare.setOpenWiresOnly(false);
+    // wjSquare.Build() is called by wjSquare.getOpenWires()
+    wjSquare.getOpenWires(wireSquare, "SKF");
+
+    wjCircles.addShape(edgesCircles);
+    wjCircles.setOpenWiresOnly(false);
+    wjCircles.getOpenWires(wireCircles, "SKF");
+
+    wjSquareOpenOnly.addShape(edgesSquare);
+    // same as wjSquareOpenOnly.setOpenWiresOnly(true);
+    wjSquareOpenOnly.setOpenWiresOnly();
+    // Calling wjSquareOpenOnly.getOpenWires() will stop after a closed wire has been searched for
+    // every edge, without finding the tight bound wires
+    wjSquareOpenOnly.getOpenWires(wireSquareOpenOnly, "SKF");
+
+    wjCirclesOpenOnly.addShape(edgesCircles);
+    wjCirclesOpenOnly.setOpenWiresOnly();
+    wjCirclesOpenOnly.getOpenWires(wireCirclesOpenOnly, "SKF");
+
+    // Assert
+
+    // Without calling wjNoBuild.Build() the value of wjNoBuild.IsDone() should be false even if we
+    // only changed the value of setOpenWiresOnly()
+    EXPECT_FALSE(wjNoBuild.IsDone());
+
+    // With setOpenWiresOnly() set to true no result wires are made
+    EXPECT_TRUE(wjSquareOpenOnly.Shape().IsNull());
+    EXPECT_TRUE(wjCirclesOpenOnly.Shape().IsNull());
+
+    // The open wires are the 2 pieces of line1 outside the square. line2 is open too, but it
+    // isn't split, and getOpenWires() leaves out the wires made only of original edges
+    EXPECT_EQ(wireSquare.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+    EXPECT_EQ(wireSquareOpenOnly.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+
+    // The open wires are the 2 pieces of line3 outside the circles
+    EXPECT_EQ(wireCircles.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+    EXPECT_EQ(wireCirclesOpenOnly.getSubTopoShapes(TopAbs_EDGE).size(), 2);
+
+    // The open wires found with and without setOpenWiresOnly() should have the same element names
+    for (const char* type : {"Edge", "Vertex"}) {
+        for (int i = 1; i <= wireSquare.countSubShapes(type); ++i) {
+            auto name {Data::IndexedName::fromConst(type, i)};
+            EXPECT_TRUE(wireSquare.getMappedName(name));
+            EXPECT_EQ(
+                wireSquareOpenOnly.getMappedName(name).toString(),
+                wireSquare.getMappedName(name).toString()
+            );
+        }
+        for (int i = 1; i <= wireCircles.countSubShapes(type); ++i) {
+            auto name {Data::IndexedName::fromConst(type, i)};
+            EXPECT_TRUE(wireCircles.getMappedName(name));
+            EXPECT_EQ(
+                wireCirclesOpenOnly.getMappedName(name).toString(),
+                wireCircles.getMappedName(name).toString()
+            );
+        }
+    }
 }
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
