@@ -422,7 +422,6 @@ void TaskDressUpParameters::convertSelectionToElements(
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-    Q_UNUSED(widget)
 
     if (DressUpView.expired()) {
         return;
@@ -450,11 +449,18 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
         return;
     }
     try {
-        setupTransaction();
-        pcDressUp->Base.setValue(base, subValues);
+        updateFeature(pcDressUp, subValues);
+        if (widget) {
+            QSignalBlocker block(widget);
+            widget->clear();
+            for (const auto& name : subValues) {
+                widget->addItem(QString::fromStdString(name));
+            }
+        }
     }
     catch (Base::Exception& e) {
         e.reportException();
+        return;
     }
 }
 
