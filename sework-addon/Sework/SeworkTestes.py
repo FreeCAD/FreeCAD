@@ -132,6 +132,38 @@ class T03Tema(unittest.TestCase):
             self.assertGreater(len(self.E.qss()), 5000)
 
 
+class T03bTrocaDeTema(unittest.TestCase):
+    """Regressão: a troca de tema às vezes não pegava porque a nova janela abria antes da antiga gravar."""
+
+    def test_comando_espera_o_processo_atual(self):
+        import SeworkGui
+        prog, args = SeworkGui.comando_reabrir(1234, r"C:\Program Files\FreeCAD 1.1\bin\FreeCAD.exe")
+        txt = " ".join([prog] + list(args))
+        self.assertIn("1234", txt)
+        if os.name == "nt":
+            self.assertIn("Wait-Process", txt)
+            self.assertLess(txt.index("Wait-Process"), txt.index("Start-Process"))
+
+    def test_preferencias_gravadas_no_disco(self):
+        import SeworkGui
+        self.assertTrue(SeworkGui.salvar_parametros())
+        cfg = os.path.join(FreeCAD.getUserAppDataDir(), "user.cfg")
+        self.assertLess(time.time() - os.path.getmtime(cfg), 10, "user.cfg não foi gravado agora")
+
+    def test_aplicar_tema_e_voltar(self):
+        import SeworkGui
+        import SeworkEstilo
+        antes = SeworkEstilo.escuro()
+        try:
+            SeworkGui.aplicar_tema(not antes)
+            self.assertEqual(SeworkEstilo.escuro(), not antes)
+            with open(os.path.join(FreeCAD.getUserAppDataDir(), "user.cfg"), encoding="utf-8") as f:
+                txt = f.read()
+            self.assertIn('Name="TemaEscuro" Value="%d"' % int(not antes), txt)
+        finally:
+            SeworkGui.aplicar_tema(antes)
+
+
 class T04Glossario(unittest.TestCase):
     def test_termos(self):
         import SeworkI18n as I
@@ -485,7 +517,7 @@ class T09Interface(unittest.TestCase):
 
 
 # ======================================================================= execução
-RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias,
+RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T03bTrocaDeTema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias,
            T09Interface]
 COMPLETOS = RAPIDOS + [T07Validacao, T08Relatorio]
 

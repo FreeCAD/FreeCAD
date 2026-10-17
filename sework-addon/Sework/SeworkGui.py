@@ -201,28 +201,68 @@ class CmdTemaEscuro:
         import SeworkEstilo
         novo = not SeworkEstilo.escuro()
         mw = FreeCADGui.getMainWindow()
-        pend = [d.Label for d in FreeCAD.listDocuments().values()
-                if d.isTouched() or any(o.isTouched() for o in d.Objects)]
-        texto = "Mudar para o tema {}?".format("escuro" if novo else "claro")
-        texto += "\n\nO FreeCAD será reaberto para aplicar cores e ícones."
-        if pend:
-            texto += "\n\nSalve antes os documentos com alterações: " + ", ".join(pend)
+        texto = ("Mudar para o tema {}?\n\nO FreeCAD será fechado e aberto de novo para aplicar cores e ícones. "
+                 "Se houver documentos com alterações, ele pergunta se quer salvar.").format(
+                     "escuro" if novo else "claro")
         r = QtWidgets.QMessageBox.question(mw, APP_NAME, texto,
                                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if r != QtWidgets.QMessageBox.Yes:
             return
-        _params().SetBool("TemaEscuro", novo)
-        SeworkEstilo.apply_base_theme_params()
-        SeworkEstilo.apply_background(force=True)
-        SeworkEstilo.apply_view_colors(force=True)
-        install_icon_theme()
-        if pend:
-            QtWidgets.QMessageBox.information(mw, APP_NAME, "Tema salvo. Feche e abra o FreeCAD para ver a mudança.")
+        aplicar_tema(novo)
+        reabrir_freecad()
+
+
+def aplicar_tema(escuro):
+    """Grava a escolha e prepara cores, parâmetros e ícones para a próxima abertura."""
+    import SeworkEstilo
+    _params().SetBool("TemaEscuro", bool(escuro))
+    SeworkEstilo.apply_base_theme_params()
+    SeworkEstilo.apply_background(force=True)
+    SeworkEstilo.apply_view_colors(force=True)
+    install_icon_theme()
+    salvar_parametros()
+
+
+def salvar_parametros():
+    """Grava o user.cfg agora: senão a nova janela pode ler a configuração antiga."""
+    try:
+        FreeCAD.saveParameter()
+        return True
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: não foi possível gravar as preferências: {}\n".format(exc))
+        return False
+
+
+def comando_reabrir(pid, exe):
+    """Programa e argumentos que esperam este FreeCAD terminar e só então abrem outro."""
+    if os.name == "nt":
+        ps = ("Wait-Process -Id {pid} -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 500; "
+              "Start-Process -FilePath '{exe}'").format(pid=int(pid), exe=exe.replace("'", "''"))
+        return "powershell.exe", ["-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", ps]
+    sh = "while kill -0 {pid} 2>/dev/null; do sleep 0.3; done; sleep 0.5; \"{exe}\" >/dev/null 2>&1 &".format(
+        pid=int(pid), exe=exe.replace('"', '\\"'))
+    return "/bin/sh", ["-c", sh]
+
+
+def reabrir_freecad():
+    """Fecha o FreeCAD (com as perguntas de salvar) e, se fechou mesmo, abre de novo depois que ele sair.
+
+    Antes, a nova janela era aberta antes da antiga fechar: às vezes ela lia o user.cfg antigo e o tema
+    não mudava. Agora a nova só abre depois que este processo termina.
+    """
+    mw = FreeCADGui.getMainWindow()
+
+    def fechar():
+        salvar_parametros()
+        if not mw.close():          # usuário cancelou ao ser perguntado sobre salvar
+            QtWidgets.QMessageBox.information(
+                mw, APP_NAME, "Tema gravado. Ele será aplicado na próxima vez que o FreeCAD abrir.")
             return
-        for d in list(FreeCAD.listDocuments().values()):
-            FreeCAD.closeDocument(d.Name)
-        QtCore.QProcess.startDetached(QtCore.QCoreApplication.applicationFilePath(), [])
-        QtCore.QTimer.singleShot(200, mw.close)
+        prog, args = comando_reabrir(QtCore.QCoreApplication.applicationPid(),
+                                     QtCore.QCoreApplication.applicationFilePath())
+        QtCore.QProcess.startDetached(prog, args)
+
+    QtCore.QTimer.singleShot(100, fechar)
 
 
 class CmdTemaIcones:
