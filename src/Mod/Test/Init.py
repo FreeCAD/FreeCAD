@@ -32,6 +32,7 @@ FreeCAD.__unit_test__ += [
     "TestLinkSuppression",
     "TestIntPairList",
     "Metadata",
+    "PropertyAlias",
     "Recompute",
     "StringHasher",
     "UnicodeTests",

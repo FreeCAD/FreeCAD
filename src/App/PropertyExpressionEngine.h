@@ -289,12 +289,12 @@ public:
     void renameExpressions(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
     /**
-     * @brief Rename object identifiers in the registered expressions.
+     * @brief Rewrite object identifiers in every stored expression.
      *
-     * @param[in] paths A map with the current and new object identifiers.
+     * @param[in] paths Map of current to new identifiers.
+     * @return The number of references rewritten.
      */
-    void
-    renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
+    int renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
     /**
      * @brief Create a canonical object identifier of the given object \a p.
