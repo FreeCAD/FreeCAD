@@ -69,7 +69,7 @@ class Quantity(PyObjectBase):
     @constmethod
     def getUserPreferred(self) -> Tuple[str, float, str]:
         """
-        Returns a quantity with the translation factor and a string with the prevered unit
+        Returns tuple with (quantity incl. unit, translation factor, unit)
         """
         ...
 
