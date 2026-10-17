@@ -16,27 +16,54 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_text">
        <property name="text">
-        <string>Text</string>
+        <string>&amp;Text</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEdit_text</cstring>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_text"/>
+      <widget class="QLineEdit" name="lineEdit_text">
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_font">
        <property name="text">
-        <string>Font</string>
+        <string>&amp;Font</string>
+       </property>
+       <property name="buddy">
+        <cstring>comboBox_font</cstring>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox_font"/>
+      <widget class="QComboBox" name="comboBox_font">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
-     <item row="2" column="0" colspan="2">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_sizeBy">
+       <property name="text">
+        <string>Size by</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <layout class="QHBoxLayout" name="layoutType">
        <item>
         <widget class="QRadioButton" name="radioButton_height">
@@ -48,11 +75,24 @@
        <item>
         <widget class="QRadioButton" name="radioButton_width">
          <property name="text">
-         <string>Width</string>
+          <string>Width</string>
          </property>
         </widget>
        </item>
-     </layout>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
     </item>
     </layout>
    </item>
