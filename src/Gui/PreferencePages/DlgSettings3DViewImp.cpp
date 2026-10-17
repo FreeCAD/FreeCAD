@@ -58,6 +58,7 @@ void DlgSettings3DViewImp::saveSettings()
     saveAntiAliasing();
     saveRenderCache();
     saveMarkerSize();
+    saveDatumSize();
 
     ui->comboTransparentRender->onSave();
     ui->CheckBox_CornerCoordSystem->onSave();
@@ -67,7 +68,6 @@ void DlgSettings3DViewImp::saveSettings()
     ui->CheckBox_use_SW_OpenGL->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->FloatSpinBox_EyeDistance->onSave();
-    ui->FloatSpinBox_DatumScale->onSave();
     ui->SpinBox_MaxFrameRate->onSave();
     ui->axisLetterColor->onSave();
     ui->radioPerspective->onSave();
@@ -86,7 +86,6 @@ void DlgSettings3DViewImp::loadSettings()
     ui->CheckBox_use_SW_OpenGL->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->FloatSpinBox_EyeDistance->onRestore();
-    ui->FloatSpinBox_DatumScale->onRestore();
     ui->SpinBox_MaxFrameRate->onRestore();
     ui->axisLetterColor->onRestore();
     ui->radioPerspective->onRestore();
@@ -99,6 +98,7 @@ void DlgSettings3DViewImp::loadSettings()
     loadAntiAliasing();
     loadRenderCache();
     loadMarkerSize();
+    loadDatumSize();
 }
 
 void DlgSettings3DViewImp::addAntiAliasing()
@@ -197,6 +197,20 @@ void DlgSettings3DViewImp::loadMarkerSize()
     }
     ui->boxMarkerSize->setCurrentIndex(marker);
     // NOLINTEND
+}
+
+void DlgSettings3DViewImp::saveDatumSize()
+{
+    ViewParams::instance()->setDatumPointSize(ui->spinDatumPoint->value());
+    ViewParams::instance()->setDatumLineSize(ui->spinDatumLine->value());
+    ViewParams::instance()->setDatumPlaneSize(ui->spinDatumPlane->value());
+}
+
+void DlgSettings3DViewImp::loadDatumSize()
+{
+    ui->spinDatumPoint->setValue(ViewParams::instance()->getDatumPointSize());
+    ui->spinDatumLine->setValue(ViewParams::instance()->getDatumLineSize());
+    ui->spinDatumPlane->setValue(ViewParams::instance()->getDatumPlaneSize());
 }
 
 void DlgSettings3DViewImp::resetSettingsToDefaults()
