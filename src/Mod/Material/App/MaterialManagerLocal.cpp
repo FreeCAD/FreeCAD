@@ -35,6 +35,7 @@
 #include "MaterialFilter.h"
 #include "MaterialLibrary.h"
 #include "MaterialLoader.h"
+#include "MaterialManager.h"
 #include "MaterialManagerLocal.h"
 #include "ModelManager.h"
 #include "ModelUuids.h"
@@ -428,9 +429,18 @@ void MaterialManagerLocal::saveMaterial(const std::shared_ptr<MaterialLibraryLoc
                                         bool saveInherited) const
 {
     if (library->isLocal()) {
+        bool fileExisted = library->fileExists(path);
         auto newMaterial =
             library->saveMaterial(material, path, overwrite, saveAsCopy, saveInherited);
         (*_materialMap)[newMaterial->getUUID()] = newMaterial;
+
+        auto& manager = MaterialManager::getManager();
+        if (fileExisted) {
+            manager.notifyChangedMaterial(*newMaterial);
+        }
+        else {
+            manager.notifyCreatedMaterial(*newMaterial);
+        }
     }
 }
 
