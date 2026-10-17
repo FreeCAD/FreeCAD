@@ -6,6 +6,7 @@ mudanças de modo em tempo real (lê as propriedades do objeto em edição).
 """
 
 import FreeCAD
+import SeworkEstilo
 import FreeCADGui
 
 try:
@@ -33,7 +34,7 @@ QSS = """
 #SeworkGuiaLegenda { color: #4A5866; font-size: 8pt; }
 #SeworkGuiaAlerta { background: #FFF6D6; color: #4D3B00; font-size: 8.5pt; border-left: 3px solid #E0A100;
                     border-radius: 4px; padding: 6px 8px; }
-#SeworkGuia QToolButton { border: none; color: #66727F; padding: 0 2px; }
+#SeworkGuia QToolButton { border: none; background: transparent; color: #66727F; padding: 0 2px; }
 #SeworkGuia QToolButton:hover { color: #003A70; }
 """
 
@@ -200,7 +201,7 @@ class GuiaFrame(QtWidgets.QFrame):
         super().__init__(parent)
         self.setObjectName("SeworkGuia")
         self.setAttribute(QtCore.Qt.WA_StyledBackground, True)
-        self.setStyleSheet(QSS)
+        self.setStyleSheet(SeworkEstilo.tema(QSS))
         lay = QtWidgets.QVBoxLayout(self)
         lay.setContentsMargins(10, 8, 10, 8)
         lay.setSpacing(4)
@@ -282,6 +283,14 @@ class GuiaFrame(QtWidgets.QFrame):
         dpr = self.devicePixelRatioF()
         img = QtGui.QImage(int(w * dpr), int(h * dpr), QtGui.QImage.Format_ARGB32_Premultiplied)
         img.fill(0)
+        if SeworkEstilo.escuro():
+            # ilustração mantém as cores claras, sobre um cartão claro
+            pb = QtGui.QPainter(img)
+            pb.setRenderHint(QtGui.QPainter.Antialiasing)
+            pb.setPen(QtCore.Qt.NoPen)
+            pb.setBrush(QtGui.QColor("#E9EEF4"))
+            pb.drawRoundedRect(QtCore.QRectF(0, 0, img.width(), img.height()), 8 * dpr, 8 * dpr)
+            pb.end()
         r = QtSvg.QSvgRenderer(QtCore.QByteArray(self._svg.encode("utf-8")))
         p = QtGui.QPainter(img)
         p.setRenderHint(QtGui.QPainter.Antialiasing)

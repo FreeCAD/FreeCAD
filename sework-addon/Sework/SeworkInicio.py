@@ -4,6 +4,7 @@ import os
 import zipfile
 
 import FreeCAD
+import SeworkEstilo
 import FreeCADGui
 from PySide import QtCore, QtGui, QtWidgets
 
@@ -173,7 +174,7 @@ class InicioSework(QtWidgets.QWidget):
         super().__init__(parent)
         self.setObjectName("SeworkInicio")
         self.setAttribute(QtCore.Qt.WA_StyledBackground, True)
-        self.setStyleSheet(QSS)
+        self.setStyleSheet(SeworkEstilo.tema(QSS))
         self.setWindowTitle(TITLE)
         outer = QtWidgets.QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)

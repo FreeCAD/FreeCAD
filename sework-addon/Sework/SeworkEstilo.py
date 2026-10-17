@@ -40,13 +40,89 @@ ARESTA = "#1E2A38"      # arestas das peças
 R_CARD = 8
 R_CTRL = 6
 
+# ---------------------------------------------------------------- tema escuro
+# Todo o estilo é escrito nas cores claras; no tema escuro cada cor passa por
+# cor_escura(), conforme o papel dela: "fundo" (fundos e bordas) ou "texto".
+ESC_FUNDO = {NAVY: "#2F6FB5", NAVY_HOVER: "#3C82CC", YEL: YEL, "#C99A00": "#E5B000", "#E0A100": "#E5B000",
+             "#B7C3CF": "#4A5866",
+             # superfícies: cartões um pouco mais claros que o fundo da janela
+             "#FFFFFF": "#1F252D", "#FBFCFE": "#232A33", "#FAFBFD": "#222831", "#F7F9FC": "#1B2129",
+             "#F5F8FC": "#1A1F26", "#F4F7FB": "#1A1F26", "#F3F5F8": "#161A20", "#EEF0F3": "#161A20",
+             # destaque de passagem do mouse e pressionado
+             "#EAF1F8": "#2A3644", "#EEF3F9": "#283240", "#EEF2F8": "#2A3644", "#D3E1EF": "#33465A",
+             "#D8E6F3": "#33465A"}
+ESC_TEXTO = {NAVY: "#8CBCEB", NAVY_HOVER: "#A9CEF3", "#FFFFFF": "#F1F4F8", YEL: YEL, "#C99A00": "#F7BE00",
+             "#0B5CAD": "#8CBCEB"}
+FUNDO_3D_ESC = "#1C2129"
+TEXTO_PROPS = ("color", "selection-color", "qproperty-groupTextColor", "stroke")
+
+
+def escuro():
+    return _params().GetBool("TemaEscuro", False)
+
+
+def cor_escura(hexcolor, papel="fundo"):
+    up = hexcolor.upper()
+    tab = ESC_TEXTO if papel == "texto" else ESC_FUNDO
+    if up in tab:
+        return tab[up]
+    c = QtGui.QColor(hexcolor)
+    h, sat, lum = c.hslHueF(), c.hslSaturationF(), c.lightnessF()
+    h = max(h, 0.0)
+    if papel == "texto":
+        # textos mais próximos do branco (legibilidade no fundo escuro)
+        if lum <= 0.47:
+            lum = 0.98 - lum * 0.5
+            sat = sat * 0.6
+        elif lum >= 0.8:
+            lum = max(lum, 0.92)
+        else:
+            lum = max(lum, 0.74)
+    else:
+        if lum >= 0.7:
+            lum = 0.11 + (1.0 - lum) * 0.9
+            sat = sat * (0.75 if sat > 0.6 else 0.45)
+        elif lum > 0.35:
+            lum = lum * 0.62
+        else:
+            lum = min(0.9, 0.86 - lum)
+    return QtGui.QColor.fromHslF(h, min(sat, 1.0), max(0.0, min(lum, 1.0))).name().upper()
+
+
+def tema(texto):
+    """Converte cores de uma folha de estilo, HTML ou SVG para o tema ativo."""
+    if not escuro() or not texto:
+        return texto
+    import re
+    hexre = re.compile(r"#[0-9A-Fa-f]{6}\b")
+
+    def decl(m):
+        prop, sep, val = m.group(1), m.group(2), m.group(3)
+        if "gradient" in val.lower():      # faixas de marca (azul Sework) ficam como estão
+            return m.group(0)
+        p = prop.lower()
+        papel = "texto" if p in TEXTO_PROPS or p.endswith("textcolor") else "fundo"
+        return prop + sep + hexre.sub(lambda k: cor_escura(k.group(0), papel), val)
+
+    # declarações CSS e estilos HTML: prop: valor
+    texto = re.sub(r"([A-Za-z-]+)(\s*:\s*)([^;{}\"'<>]*?#[0-9A-Fa-f]{6}[^;{}\"'<>]*)", decl, texto)
+    # atributos SVG
+    texto = re.sub(r'(fill|stroke)="(#[0-9A-Fa-f]{6})"',
+                   lambda m: '%s="%s"' % (m.group(1), cor_escura(m.group(2), "texto" if m.group(1) == "stroke" else "fundo")),
+                   texto)
+    return texto
+
+
+def cor(hexcolor, papel="fundo"):
+    return cor_escura(hexcolor, papel) if escuro() else hexcolor
+
 
 def _params():
     return FreeCAD.ParamGet(PARAM_PATH)
 
 
 def _ui_dir():
-    return os.path.join(FreeCAD.getUserAppDataDir(), "SeworkUI")
+    return os.path.join(FreeCAD.getUserAppDataDir(), "SeworkUIEscuro" if escuro() else "SeworkUI")
 
 
 def _url(name):
@@ -106,7 +182,7 @@ def write_ui_files():
     d = _ui_dir()
     os.makedirs(d, exist_ok=True)
     for name, fn in UI_FILES.items():
-        data = fn()
+        data = tema(fn())
         p = os.path.join(d, name)
         try:
             if os.path.isfile(p) and open(p, encoding="utf-8").read() == data:
@@ -158,24 +234,27 @@ def _rgba_uint(hexcolor):
 def apply_background(force=False):
     """Fundo da vista 3D em cor única. Aplica uma vez (o usuário pode mudar depois)."""
     p = _params()
-    if p.GetBool("CoresVista2", False) and not force:
+    nome_tema = "escuro" if escuro() else "claro"
+    if p.GetBool("CoresVista2", False) and p.GetString("TemaFundo", "claro") == nome_tema and not force:
         return
+    fundo = FUNDO_3D_ESC if escuro() else FUNDO_3D
     v = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
     v.SetBool("Simple", True)
     v.SetBool("Gradient", False)
     v.SetBool("RadialGradient", False)
-    v.SetUnsigned("BackgroundColor", _rgba_uint(FUNDO_3D))
+    v.SetUnsigned("BackgroundColor", _rgba_uint(fundo))
     v.SetBool("RandomColor", False)
     v.SetUnsigned("DefaultShapeColor", _rgba_uint(PECA))
     v.SetUnsigned("DefaultShapeLineColor", _rgba_uint(ARESTA))
     p.SetBool("CoresVista2", True)
+    p.SetString("TemaFundo", nome_tema)
     # vistas já abertas
     try:
         for doc in FreeCAD.listDocuments().values():
             gd = FreeCADGui.getDocument(doc.Name)
             for view in gd.mdiViewsOfType("Gui::View3DInventor") if gd else []:
                 try:
-                    view.setBackgroundColor(QtGui.QColor(FUNDO_3D)) if hasattr(view, "setBackgroundColor") else None
+                    view.setBackgroundColor(QtGui.QColor(fundo)) if hasattr(view, "setBackgroundColor") else None
                 except Exception:
                     pass
     except Exception:
@@ -226,6 +305,31 @@ NAVICUBE = {
 }
 VIEW_COLORS_VERSION = 3
 
+# Tema escuro: o que muda em relação às cores acima (linhas azul-marinho somem no fundo escuro)
+VIEW_COLORS_ESC = {
+    "SelectionColor": "#5AA2EB",
+    "SketchEdgeColor": "#8CBCEB", "SketchVertexColor": "#8CBCEB",
+    "EditedEdgeColor": "#E3ECF5", "EditedVertexColor": "#F1F4F8",
+    "ConstructionColor": "#7FA8D6", "InternalAlignedGeoColor": "#5F7F9F",
+    "FullyConstraintElementColor": "#5CC79C", "FullyConstrainedColor": "#5CC79C",
+    "FullyConstraintConstructionElementColor": "#3F8F70", "FullyConstraintInternalAlignmentColor": "#3A6B5A",
+    "InvalidSketchColor": "#E07A64", "ConstrainedDimColor": "#F08C73", "ConstrainedIcoColor": "#F08C73",
+    "NonDrivingConstrDimColor": "#7FA8D6", "ExprBasedConstrDimColor": "#F2A33A",
+    "DeactivatedConstrDimColor": "#6B7785", "ExternalColor": "#B98BE0", "ExternalDefiningColor": "#9A6CC9",
+    "CursorTextColor": "#E3ECF5", "InformationColor": "#E6ECF2",
+}
+# Console Python e editor de macros no tema escuro (no claro os padrões do FreeCAD voltam)
+EDITOR_COLORS_ESC = {
+    "Text": "#EEF2F6", "Bookmark": "#3FB6C9", "Breakpoint": "#E05A4A", "Keyword": "#7FB3EA",
+    "Comment": "#6FBF8F", "Block comment": "#7A8794", "Number": "#E0B36A", "String": "#E59A86",
+    "Character": "#E59A86", "Class name": "#F7BE00", "Define name": "#F7BE00", "Operator": "#A3B0BC",
+    "Python output": "#B8C4A0", "Python error": "#F08C73", "Current line highlight": "#263040",
+}
+SKETCH_GENERAL_ESC = {"GridLineColor": "#343C47"}
+TREE_COLORS_ESC = {"TreeActiveColor": "#5A4A12", "TreeEditColor": "#2D4560"}
+TECHDRAW_COLORS_ESC = {"Background": "#2A3038"}
+NAVICUBE_ESC = {"BaseColor": ("#2D3A49", 0xE6), "EmphaseColor": ("#8CBCEB", 0xFF), "HiliteColor": ("#F7BE00", 0xFF)}
+
 
 def _rgba(hexcolor, alpha=0xFF):
     c = QtGui.QColor(hexcolor)
@@ -235,22 +339,38 @@ def _rgba(hexcolor, alpha=0xFF):
 def apply_view_colors(force=False):
     """Cubo de navegação, seleção, eixos e esboço nas cores Sework (uma vez por versão)."""
     p = _params()
-    if p.GetInt("CoresVistaVersao", 0) >= VIEW_COLORS_VERSION and not force:
+    esc = escuro()
+    nome_tema = "escuro" if esc else "claro"
+    if (p.GetInt("CoresVistaVersao", 0) >= VIEW_COLORS_VERSION and p.GetString("TemaCores", "claro") == nome_tema
+            and not force):
         return
+
+    def junta(base, extra):
+        d = dict(base)
+        if esc:
+            d.update(extra)
+        return d
+
     v = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-    for k, c in VIEW_COLORS.items():
+    for k, c in junta(VIEW_COLORS, VIEW_COLORS_ESC).items():
         v.SetUnsigned(k, _rgba(c))
     g = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher/General")
-    for k, c in SKETCH_GENERAL.items():
+    for k, c in junta(SKETCH_GENERAL, SKETCH_GENERAL_ESC).items():
         g.SetUnsigned(k, _rgba(c))
+    ed = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
+    for k, c in EDITOR_COLORS_ESC.items():
+        if esc:
+            ed.SetUnsigned(k, _rgba(c, 0))
+        else:
+            ed.RemUnsigned(k)      # volta ao padrão do FreeCAD
     t = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
-    for k, c in TREE_COLORS.items():
+    for k, c in junta(TREE_COLORS, TREE_COLORS_ESC).items():
         t.SetUnsigned(k, _rgba(c))
     td = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/Colors")
-    for k, c in TECHDRAW_COLORS.items():
+    for k, c in junta(TECHDRAW_COLORS, TECHDRAW_COLORS_ESC).items():
         td.SetUnsigned(k, _rgba(c))
     n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/NaviCube")
-    for k, (c, a) in NAVICUBE["colors"].items():
+    for k, (c, a) in junta(NAVICUBE["colors"], NAVICUBE_ESC).items():
         n.SetUnsigned(k, _rgba(c, a))
     for k, t in NAVICUBE["text"].items():
         n.SetString(k, t)
@@ -259,10 +379,68 @@ def apply_view_colors(force=False):
     for k, f in NAVICUBE["float"].items():
         n.SetFloat(k, f)
     p.SetInt("CoresVistaVersao", VIEW_COLORS_VERSION)
+    p.SetString("TemaCores", nome_tema)
 
 
 # ---------------------------------------------------------------- folha de estilo
+# ---------------------------------------------------------------- parâmetros do stylesheet base
+# O stylesheet do FreeCAD (FreeCAD.qss) usa variáveis (@PrimaryColor...). No tema escuro
+# sobrescrevemos as principais em Themes/UserParameters; no claro elas são removidas.
+TEMA_BASE_ESC = {
+    "PrimaryColor": "#161A20", "TextForegroundColor": "#E6ECF2", "TextDisabledColor": "#7D8996",
+    "InActiveTabBackgroundColor": "#161A20", "ActiveTabBackgroundColor": "#1F252D",
+    "TabbarBackgroundColor": "#161A20", "GeneralBorderColor": "#2E3742", "GeneralBorderHoverColor": "#4E657C",
+    "GeneralBackgroundHoverColor": "#2A3644", "GeneralHeaderBackgroundColor": "#1A1F26",
+    "GeneralGridLinesColor": "#2E3742", "TextEditFieldBackgroundColor": "#1F252D",
+    "MenuBackgroundColor": "#1F252D", "DialogBackgroundColor": "#161A20", "GroupboxBackgroundColor": "#1F252D",
+    "ButtonTopBackgroundColor": "#1F252D", "ButtonBottomBackgroundColor": "#1B2129",
+    "ScrollbarBackgroundColor": "#161A20", "StylesheetIconsColor": "white", "TextUrlColor": "#8CBCEB",
+    "SketcherConflictingConstraintsColor": "#fc6c6c", "SketcherEmptySketchColor": "#ffffff",
+    "SketcherFullyConstrainedColor": "#8cff5b", "SketcherMalformedConstraintsColor": "#fc6c6c",
+    "SketcherPartiallyRedundantConstraintsColor": "#77cbff", "SketcherRedundantConstraintsColor": "#ffa256",
+    "SketcherSolverFailedColor": "#ff9090", "SketcherUnderConstrainedColor": "#ffffff",
+}
+
+
+def apply_base_theme_params():
+    g = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Themes/UserParameters")
+    if escuro():
+        for k, v in TEMA_BASE_ESC.items():
+            if g.GetString(k, "") != v:
+                g.SetString(k, v)
+    else:
+        for k in TEMA_BASE_ESC:
+            if g.GetString(k, ""):
+                g.RemString(k)
+
+
+QSS_SO_ESCURO = """
+/* tema escuro: abas que o stylesheet base do FreeCAD pinta de branco (mesmos seletores, vêm depois) */
+QTabBar, QTabBar#mdiAreaTabBar { background-color: #161A20; }
+QTabBar#mdiAreaTabBar::tab:bottom:selected { background-color: #1F252D; border-top: 1px solid #1F252D; }
+QTabBar::tab:top, QDockWidget QTabBar::tab:top { background-color: #161A20; color: #C9D3DD; border-color: #2E3742; }
+QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected { background-color: #1F252D; color: #8CBCEB; border-color: #2E3742; }
+QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover { background-color: #2A3644; }
+QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom { background-color: #161A20; color: #C9D3DD; border-color: #2E3742; }
+QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected { background-color: #1F252D; color: #8CBCEB; border-color: #2E3742; }
+QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:hover { background-color: #2A3644; }
+QTabBar::tab:left, QDockWidget QTabBar::tab:left { background-color: #161A20; color: #C9D3DD; border-color: #2E3742; }
+QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected { background-color: #1F252D; color: #8CBCEB; border-color: #2E3742; }
+QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover { background-color: #2A3644; }
+QTabBar::tab:right, QDockWidget QTabBar::tab:right { background-color: #161A20; color: #C9D3DD; border-color: #2E3742; }
+QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected { background-color: #1F252D; color: #8CBCEB; border-color: #2E3742; }
+QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hover { background-color: #2A3644; }
+QMdiArea { background: #161A20; }
+QPlainTextEdit, QTextEdit { background: #1F252D; color: #E6ECF2; }
+"""
+
+
 def qss():
+    css = tema(_qss_claro())
+    return css + QSS_SO_ESCURO if escuro() else css
+
+
+def _qss_claro():
     u = _url
     return """
 /* ===== Sework: padrão único de janelas ===== */
@@ -507,6 +685,7 @@ def install():
         return
     write_ui_files()
     install_font()
+    apply_base_theme_params()
     apply_background()
     apply_view_colors()
     start_icon_fixer()

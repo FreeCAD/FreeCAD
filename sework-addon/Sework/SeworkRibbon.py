@@ -236,7 +236,8 @@ TABS = [
     ]},
     {"id": "sework", "label": "Sework", "wb": None, "panels": [
         ("Sework", [
-            ("Sework_Inicio", L, "Tela\ninicial"), ("Sework_AplicarTema", L, "Aplicar\ntema"), ("Sework_Sobre", L, "Sobre"),
+            ("Sework_Inicio", L, "Tela\ninicial"), ("Sework_AplicarTema", L, "Aplicar\ntema"),
+            ("Sework_TemaEscuro", L, "Tema\nescuro"), ("Sework_Sobre", L, "Sobre"),
         ]),
         ("Interface", [
             ("Sework_TemaIcones", S, "Tema de ícones"), ("Sework_BarrasClassicas", S, "Barras clássicas"),
@@ -296,9 +297,11 @@ GLOBAL_QSS = """
 /*SEWORK-BEGIN*/
 QMenuBar { background: #FFFFFF; border: none; border-bottom: 1px solid #E3EAF2; padding: 2px 6px; }
 QMenuBar::item { padding: 4px 10px; border-radius: 4px; color: #1F2A36; background: transparent; }
+QMenuBar::item:disabled { color: #9AA7B4; }
 QMenuBar::item:selected { background: #EAF1F8; color: #003A70; }
-QMenu { background: #FFFFFF; border: 1px solid #D5DEE8; padding: 4px; }
-QMenu::item { padding: 5px 26px 5px 26px; border-radius: 4px; }
+QMenu { background: #FFFFFF; color: #1F2A36; border: 1px solid #D5DEE8; padding: 4px; }
+QMenu::item { padding: 5px 26px 5px 26px; border-radius: 4px; color: #1F2A36; background: transparent; }
+QMenu::item:disabled { color: #9AA7B4; }
 QMenu::item:selected { background: #EAF1F8; color: #003A70; }
 QMenu::separator { height: 1px; background: #E3EAF2; margin: 4px 8px; }
 QStatusBar { background: #F5F8FC; border-top: 1px solid #E3EAF2; color: #4A5866; }
@@ -378,6 +381,23 @@ _DIS_CACHE = {}
 _TIP_CACHE = {}
 
 
+def _t(texto):
+    """Cores do tema ativo (claro ou escuro)."""
+    try:
+        import SeworkEstilo
+        return SeworkEstilo.tema(texto)
+    except Exception:
+        return texto
+
+
+def _escuro():
+    try:
+        import SeworkEstilo
+        return SeworkEstilo.escuro()
+    except Exception:
+        return False
+
+
 def _disabled_pixmap(pm):
     """Versão desabilitada legível: véu cinza-azulado sobre o ícone, 78 % de opacidade."""
     tinted = QtGui.QPixmap(pm.size())
@@ -385,12 +405,13 @@ def _disabled_pixmap(pm):
     p = QtGui.QPainter(tinted)
     p.drawPixmap(0, 0, pm)
     p.setCompositionMode(QtGui.QPainter.CompositionMode_SourceAtop)
-    p.fillRect(tinted.rect(), QtGui.QColor(150, 166, 186, 120))
+    if not _escuro():
+        p.fillRect(tinted.rect(), QtGui.QColor(150, 166, 186, 120))
     p.end()
     out = QtGui.QPixmap(pm.size())
     out.fill(QtCore.Qt.transparent)
     p = QtGui.QPainter(out)
-    p.setOpacity(0.78)
+    p.setOpacity(0.5 if _escuro() else 0.78)
     p.drawPixmap(0, 0, tinted)
     p.end()
     out.setDevicePixelRatio(pm.devicePixelRatio())
@@ -457,6 +478,7 @@ def _rich_tip(icon, title, desc, shortcut):
     if shortcut:
         body += ("<div style='margin-top:6px'><span style='background:#EEF2F8; color:#003A70; "
                  "font-weight:600'>&nbsp;{}&nbsp;</span></div>").format(shortcut)
+    body = _t(body)
     if not img:
         return "<div style='max-width:300px'>{}</div>".format(body)
     return ("<table cellspacing='0' cellpadding='0'><tr>"
@@ -465,6 +487,19 @@ def _rich_tip(icon, title, desc, shortcut):
 
 
 # --------------------------------------------------------------------------
+L_ALTURA = 90   # botão grande: ícone + rótulo em até duas linhas (+ seta de menu)
+S_ALTURA = 28   # botão pequeno (três por coluna)
+
+
+def _quebra(texto):
+    """Rótulos longos dos botões grandes em duas linhas, quebrando no espaço mais central."""
+    if "\n" in texto or len(texto) <= 11 or " " not in texto:
+        return texto
+    meio = len(texto) / 2.0
+    pos = min((i for i, c in enumerate(texto) if c == " "), key=lambda i: abs(i - meio))
+    return texto[:pos] + "\n" + texto[pos + 1:]
+
+
 class RibbonButton(QtWidgets.QToolButton):
     """Botão ligado a uma ou várias QActions de um comando do FreeCAD."""
 
@@ -481,13 +516,13 @@ class RibbonButton(QtWidgets.QToolButton):
             self.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
             self.setIconSize(QtCore.QSize(ICON_L, ICON_L))
             self.setMinimumWidth(54)
-            self.setFixedHeight(76)
+            self.setFixedHeight(L_ALTURA)
             self.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         else:
             self.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
             self.setIconSize(QtCore.QSize(ICON_S, ICON_S))
             self.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
-            self.setFixedHeight(25)
+            self.setFixedHeight(S_ALTURA)
         if len(actions) > 1:
             menu = QtWidgets.QMenu(self)
             for a in actions:
@@ -525,7 +560,8 @@ class RibbonButton(QtWidgets.QToolButton):
                     icon = x.icon()
                     break
         self.setIcon(_with_disabled(icon, ICON_L if self._size == L else ICON_S))
-        self.setText(self._label if self._label else _clean(a.text()))
+        txt = self._label if self._label else _clean(a.text())
+        self.setText(_quebra(txt) if self._size == L else txt)
         action_title = _clean(a.text())
         title = self._label.replace("\n", " ") if (self._label and len(self._actions) == 1) else action_title
         desc = _tip_desc(a.toolTip() or a.statusTip(), (title, action_title))
@@ -558,7 +594,7 @@ class RibbonPanel(QtWidgets.QFrame):
         cap = QtWidgets.QLabel(title)
         cap.setObjectName("SeworkPanelTitle")
         cap.setAlignment(QtCore.Qt.AlignCenter)
-        cap.setFixedHeight(18)
+        cap.setFixedHeight(20)
         outer.addWidget(cap)
         self._col = None
         self.count = 0
@@ -586,7 +622,7 @@ class SeworkRibbon(QtWidgets.QWidget):
         super().__init__(parent)
         self.setObjectName("SeworkRibbon")
         self.setAttribute(QtCore.Qt.WA_StyledBackground, True)
-        self.setStyleSheet(RIBBON_QSS)
+        self.setStyleSheet(_t(RIBBON_QSS))
         self._tabs = list(TABS)
         self._dynamic = None  # aba gerada para bancadas sem aba própria
         self._edit_prev = None
@@ -640,9 +676,9 @@ class SeworkRibbon(QtWidgets.QWidget):
         self.content.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.content.viewport().setAutoFillBackground(True)
         pal = self.content.viewport().palette()
-        pal.setColor(QtGui.QPalette.Window, QtGui.QColor("#FFFFFF"))
+        pal.setColor(QtGui.QPalette.Window, QtGui.QColor(_t("background: #FFFFFF").split(": ")[1]))
         self.content.viewport().setPalette(pal)
-        self.content.setFixedHeight(_params().GetInt("RibbonHeight", 104))
+        self.content.setFixedHeight(max(_params().GetInt("RibbonHeight", 126), 126))
         lay.addWidget(self.content)
 
     # ---- barra de acesso rápido (direita)
@@ -658,7 +694,7 @@ class SeworkRibbon(QtWidgets.QWidget):
             if name == "|":
                 sep = QtWidgets.QFrame(box)
                 sep.setFrameShape(QtWidgets.QFrame.VLine)
-                sep.setStyleSheet("color: #D5DEE8;")
+                sep.setStyleSheet("color: #3A4450;" if _escuro() else "color: #D5DEE8;")
                 sep.setFixedHeight(18)
                 hl.addSpacing(4)
                 hl.addWidget(sep)
@@ -879,13 +915,33 @@ def _hide_native_toolbars():
 
 
 def _force_light_scheme():
-    """Windows em modo escuro faz o Qt 6 pintar de escuro o que o tema não cobre."""
+    """Fixa o esquema de cores do Qt no tema Sework (claro ou escuro), independente do Windows."""
     try:
         hints = QtGui.QGuiApplication.styleHints()
-        if hasattr(hints, "setColorScheme") and hints.colorScheme() != QtCore.Qt.ColorScheme.Light:
-            hints.setColorScheme(QtCore.Qt.ColorScheme.Light)
+        alvo = QtCore.Qt.ColorScheme.Dark if _escuro() else QtCore.Qt.ColorScheme.Light
+        if hasattr(hints, "setColorScheme") and hints.colorScheme() != alvo:
+            hints.setColorScheme(alvo)
     except Exception:
         pass
+    if _escuro() and not _state.get("paleta"):
+        _state["paleta"] = True
+        try:
+            app = QtWidgets.QApplication.instance()
+            pal = QtGui.QPalette(app.palette())
+            for role, c in ((QtGui.QPalette.Window, "#161A20"), (QtGui.QPalette.Base, "#1F252D"),
+                            (QtGui.QPalette.AlternateBase, "#1B2129"), (QtGui.QPalette.Button, "#1F252D"),
+                            (QtGui.QPalette.WindowText, "#E6ECF2"), (QtGui.QPalette.Text, "#E6ECF2"),
+                            (QtGui.QPalette.ButtonText, "#E6ECF2"), (QtGui.QPalette.ToolTipBase, "#1F252D"),
+                            (QtGui.QPalette.ToolTipText, "#E6ECF2"), (QtGui.QPalette.Highlight, "#2F6FB5"),
+                            (QtGui.QPalette.HighlightedText, "#F1F4F8"), (QtGui.QPalette.Link, "#8CBCEB"),
+                            (QtGui.QPalette.PlaceholderText, "#6B7785")):
+                pal.setColor(role, QtGui.QColor(c))
+            pal.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.Text, QtGui.QColor("#7D8996"))
+            pal.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, QtGui.QColor("#7D8996"))
+            pal.setColor(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, QtGui.QColor("#7D8996"))
+            app.setPalette(pal)
+        except Exception:
+            pass
 
 
 def _apply_global_qss():
@@ -901,7 +957,7 @@ def _apply_global_qss():
             extra = SeworkEstilo.qss()
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: estilo das janelas não aplicado: {}\n".format(exc))
-    app.setStyleSheet(css + "\n" + GLOBAL_QSS.replace("/*SEWORK-END*/", extra + "\n/*SEWORK-END*/"))
+    app.setStyleSheet(css + "\n" + _t(GLOBAL_QSS).replace("/*SEWORK-END*/", extra + "\n/*SEWORK-END*/"))
 
 
 def _tick():
@@ -930,7 +986,7 @@ def install():
     bar.setFloatable(False)
     bar.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
     bar.toggleViewAction().setVisible(False)
-    bar.setStyleSheet("QToolBar#SeworkRibbonBar { border: none; padding: 0; margin: 0; spacing: 0; background: #FFFFFF; }")
+    bar.setStyleSheet(_t("QToolBar#SeworkRibbonBar { border: none; padding: 0; margin: 0; spacing: 0; background: #FFFFFF; }"))
     ribbon = SeworkRibbon(bar)
     ribbon.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
     bar.addWidget(ribbon)

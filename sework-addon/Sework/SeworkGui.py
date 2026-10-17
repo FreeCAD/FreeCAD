@@ -146,10 +146,83 @@ def install_icon_theme():
                 z.extractall(dest)
             _params().SetString("IconThemeStamp", stamp)
             FreeCAD.Console.PrintMessage("Sework: tema de ícones instalado (vale na próxima abertura).\n")
+        try:
+            import SeworkEstilo
+            if SeworkEstilo.escuro():
+                dest = _icon_dir_escuro(dest, stamp)
+        except Exception as exc:  # pragma: no cover
+            FreeCAD.Console.PrintWarning("Sework: ícones do tema escuro não gerados: {}\n".format(exc))
         if bitmaps.GetString(ICON_PATH_KEY, "") != dest:
             bitmaps.SetString(ICON_PATH_KEY, dest)
     except (OSError, zipfile.BadZipFile) as exc:
         FreeCAD.Console.PrintWarning("Sework: tema de ícones não instalado: {}\n".format(exc))
+
+
+# Contornos azul-marinho/grafite somem no fundo escuro: viram claros nos ícones.
+ICONES_ESCURO = {"#1e2a38": "#c9d6e3", "#003a70": "#8cbceb", "#9fb1c4": "#6f8296"}
+
+
+def _icon_dir_escuro(dest, stamp):
+    """Cópia recolorida do tema de ícones para o modo escuro."""
+    import re
+    esc = dest.rstrip("/\\") + "Escuro"
+    if _params().GetString("IconThemeStampEscuro", "") == stamp and os.path.isdir(esc):
+        return esc
+    shutil.rmtree(esc, ignore_errors=True)
+    pat = re.compile("|".join(ICONES_ESCURO), re.I)
+    for raiz, _dirs, arqs in os.walk(dest):
+        alvo = os.path.join(esc, os.path.relpath(raiz, dest))
+        os.makedirs(alvo, exist_ok=True)
+        for a in arqs:
+            src = os.path.join(raiz, a)
+            if a.lower().endswith(".svg"):
+                with open(src, encoding="utf-8", errors="ignore") as f:
+                    txt = f.read()
+                with open(os.path.join(alvo, a), "w", encoding="utf-8") as f:
+                    f.write(pat.sub(lambda m: ICONES_ESCURO[m.group(0).lower()], txt))
+            else:
+                shutil.copy2(src, os.path.join(alvo, a))
+    _params().SetString("IconThemeStampEscuro", stamp)
+    return esc
+
+
+class CmdTemaEscuro:
+    def GetResources(self):
+        return {
+            "Pixmap": os.path.join(ADDON_DIR, "Resources", "icons", "tema_escuro.svg"),
+            "MenuText": "Tema escuro",
+            "ToolTip": "Alterna entre o tema claro e o tema escuro Sework (reabre o FreeCAD)",
+        }
+
+    def IsActive(self):
+        return True
+
+    def Activated(self):
+        import SeworkEstilo
+        novo = not SeworkEstilo.escuro()
+        mw = FreeCADGui.getMainWindow()
+        pend = [d.Label for d in FreeCAD.listDocuments().values()
+                if d.isTouched() or any(o.isTouched() for o in d.Objects)]
+        texto = "Mudar para o tema {}?".format("escuro" if novo else "claro")
+        texto += "\n\nO FreeCAD será reaberto para aplicar cores e ícones."
+        if pend:
+            texto += "\n\nSalve antes os documentos com alterações: " + ", ".join(pend)
+        r = QtWidgets.QMessageBox.question(mw, APP_NAME, texto,
+                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        if r != QtWidgets.QMessageBox.Yes:
+            return
+        _params().SetBool("TemaEscuro", novo)
+        SeworkEstilo.apply_base_theme_params()
+        SeworkEstilo.apply_background(force=True)
+        SeworkEstilo.apply_view_colors(force=True)
+        install_icon_theme()
+        if pend:
+            QtWidgets.QMessageBox.information(mw, APP_NAME, "Tema salvo. Feche e abra o FreeCAD para ver a mudança.")
+            return
+        for d in list(FreeCAD.listDocuments().values()):
+            FreeCAD.closeDocument(d.Name)
+        QtCore.QProcess.startDetached(QtCore.QCoreApplication.applicationFilePath(), [])
+        QtCore.QTimer.singleShot(200, mw.close)
 
 
 class CmdTemaIcones:
@@ -515,6 +588,7 @@ def register_commands():
     FreeCADGui.addCommand("Sework_BarrasClassicas", CmdBarrasClassicas())
     FreeCADGui.addCommand("Sework_TemaIcones", CmdTemaIcones())
     FreeCADGui.addCommand("Sework_ModoDistribuicao", CmdModoDistribuicao())
+    FreeCADGui.addCommand("Sework_TemaEscuro", CmdTemaEscuro())
     try:
         import SeworkInicio
         FreeCADGui.addCommand("Sework_Inicio", SeworkInicio.CmdInicio())

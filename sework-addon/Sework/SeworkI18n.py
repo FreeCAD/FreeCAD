@@ -237,6 +237,29 @@ def install():
         qm = os.path.join(ADDON_DIR, "translations", "sework_ptbr.qm")
         _state["tr"] = SeworkTranslator(EXTRA, qm if os.path.isfile(qm) else "")
     raise_priority()
+    QtCore.QTimer.singleShot(1500, retitle_docks)
+
+
+DOCK_TITULOS = {"Report view": "Relatório", "Python console": "Console Python"}
+
+
+def retitle_docks():
+    """Painéis criados antes do tradutor carregar ficam com título em inglês."""
+    if _state["tr"] is None:
+        return
+    try:
+        import FreeCADGui
+        from PySide import QtWidgets
+        mw = FreeCADGui.getMainWindow()
+        for dock in mw.findChildren(QtWidgets.QDockWidget):
+            novo = DOCK_TITULOS.get(dock.objectName())
+            if novo and dock.windowTitle() != novo:
+                dock.setWindowTitle(novo)
+                act = dock.toggleViewAction()
+                if act is not None:
+                    act.setText(novo)
+    except Exception:  # pragma: no cover
+        pass
 
 
 def uninstall():

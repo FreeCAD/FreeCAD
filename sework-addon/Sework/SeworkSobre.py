@@ -4,6 +4,8 @@ import os
 
 from PySide import QtCore, QtGui, QtWidgets
 
+import SeworkEstilo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ICON_SVG = os.path.join(HERE, "Resources", "icons", "sework.svg")
 ICON_PNG = os.path.join(HERE, "Resources", "icons", "sework.png")
@@ -37,7 +39,7 @@ class SobreDialog(QtWidgets.QDialog):
         super().__init__(parent)
         self.setObjectName("SwSobre")
         self.setWindowTitle("Sobre o FreeCAD Sework")
-        self.setStyleSheet(QSS)
+        self.setStyleSheet(SeworkEstilo.tema(QSS))
         self.setMinimumWidth(520)
         v = QtWidgets.QVBoxLayout(self)
         v.setContentsMargins(0, 0, 0, 16)
