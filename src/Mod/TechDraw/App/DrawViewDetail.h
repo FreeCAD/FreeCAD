@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "DrawViewPart.h"
@@ -77,10 +78,10 @@ public:
 
     std::string makeCaption();
 
-    void detailExec(TopoDS_Shape& s,
+    void detailExec(const Part::TopoShape& s,
                     DrawViewPart* baseView,
                     DrawViewSection* sectionAlias);
-    void makeDetailShape(const TopoDS_Shape& shape,
+    void makeDetailShape(const Part::TopoShape& shape,
                          DrawViewPart* dvp,
                          DrawViewSection* dvs);
     void postHlrTasks(void) override;
@@ -94,7 +95,7 @@ public:
                                       gp_Dir& projDir);
 
     std::vector<DrawViewDetail*> getDetailRefs() const override;
-    TopoDS_Shape getDetailShape() const { return m_detailShape; }
+    Part::TopoShape getDetailShape() const { return m_detailShape; }
 
     Base::Vector3d mapPoint3dToDetail(const Base::Vector3d& inPoint) const;
 
@@ -108,7 +109,7 @@ protected:
     double m_fudge;
     bool debugDetail() const;
 
-    TopoDS_Shape m_scaledShape;
+    Part::TopoShape m_scaledShape;
     gp_Ax2 m_viewAxis;
 
     QMetaObject::Connection connectDetailWatcher;
@@ -121,7 +122,7 @@ protected:
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;
 
-    TopoDS_Shape m_detailShape;
+    Part::TopoShape m_detailShape;
 };
 
 using DrawViewDetailPython = App::FeaturePythonT<DrawViewDetail>;
