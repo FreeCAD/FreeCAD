@@ -180,9 +180,15 @@ std::string PythonConverter::convert(
 )
 {
     if (constraints.size() == 1) {
-        auto cg = convert(constraints[0], geoIdMode);
+        auto cg = process(constraints[0], geoIdMode);
 
-        return boost::str(boost::format("%s.%s\n") % doc % cg);
+        std::string command = "c = " + cg;
+        if (constraints[0]->Name.size()) {
+            command += "\nc.Name = '" + constraints[0]->Name + "'";
+        }
+        command += "\n" + doc + ".addConstraint(c)\n";
+
+        return command;
     }
 
     std::string constraintlist = "constraintList = []";
@@ -190,9 +196,12 @@ std::string PythonConverter::convert(
     for (auto constraint : constraints) {
         auto cg = process(constraint, geoIdMode);
 
-        constraintlist = boost::str(
-            boost::format("%s\nconstraintList.append(%s)") % constraintlist % cg
-        );
+        // Create the object, set the name if it exists, then append it
+        constraintlist += "\nc = " + cg;
+        if (constraint->Name.size()) {
+            constraintlist += "\nc.Name = '" + constraint->Name + "'";
+        }
+        constraintlist += "\nconstraintList.append(c)";
     }
 
     if (!constraints.empty()) {
