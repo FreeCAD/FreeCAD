@@ -22,6 +22,7 @@
 # ***************************************************************************
 
 import os
+import tempfile
 
 import Path
 from CAMTests import PathTestUtils
@@ -88,13 +89,16 @@ class TestDxfPost(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path([])
         self.job.PostProcessorArgs = ()
 
-        result = self.post.export()[0][1]
-        self.assertEqual(None, result)
-        with open("-", "r") as dxf:
-            lines = dxf.readlines()
-            self.assertEqual("999\n", lines[0])
-            # if "TABLE\n" != lines[3]:
-            #    print("info: Generated DXF file content:")
-            #    print(lines)
-        # Clean up after testing
-        os.remove("-")
+        # The dxf post writes to the file name "-" in the current directory.
+        # Run it in a temporary directory so that nothing is left behind.
+        with tempfile.TemporaryDirectory() as tmpdir:
+            cwd = os.getcwd()
+            os.chdir(tmpdir)
+            try:
+                result = self.post.export()[0][1]
+                self.assertEqual(None, result)
+                with open("-", "r") as dxf:
+                    lines = dxf.readlines()
+            finally:
+                os.chdir(cwd)
+        self.assertEqual("999\n", lines[0])
