@@ -52,6 +52,7 @@ enum class MeasureElementType
     CURVE,  // Has a length but no radius or axis
     DISC,
     PLANE,
+    PLANESEGMENT,
     CYLINDER,
     VOLUME,
     SURFACE,
