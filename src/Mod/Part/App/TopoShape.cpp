@@ -123,6 +123,7 @@
 #include <Law_BSpline.hxx>
 #include <Law_BSpFunc.hxx>
 #include <Law_Constant.hxx>
+#include <Poly_Triangulation.hxx>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <ShapeExtend_Explorer.hxx>
 #include <ShapeFix_Shape.hxx>
@@ -165,6 +166,7 @@
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Parallel.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
@@ -3598,26 +3600,45 @@ TopoDS_Shape TopoShape::removeSplitter() const
 
 void TopoShape::getDomains(std::vector<Domain>& domains) const
 {
-    std::size_t countFaces = 0;
+    std::vector<TopoDS_Face> faces;
+    std::size_t nodeCount = 0;
     for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
-        ++countFaces;
-    }
-    domains.reserve(countFaces);
+        const TopoDS_Face& face = TopoDS::Face(xp.Current());
+        faces.push_back(face);
 
-    for (TopExp_Explorer xp(this->_Shape, TopAbs_FACE); xp.More(); xp.Next()) {
-        TopoDS_Face face = TopoDS::Face(xp.Current());
-
-        std::vector<gp_Pnt> points;
-        std::vector<Poly_Triangle> facets;
-        if (!Tools::getTriangulation(face, points, facets)) {
-            // For a face that cannot be meshed append an empty domain.
-            // It's important for some algorithms (e.g. color mapping) that the numbers of
-            // faces and domains match
-            Domain domain;
-            domains.push_back(domain);
+        TopLoc_Location loc;
+        const Handle(Poly_Triangulation) & tria = BRep_Tool::Triangulation(face, loc);
+        if (!tria.IsNull()) {
+            nodeCount += tria->NbNodes();
         }
-        else {
-            Domain domain;
+    }
+
+    // Faces that cannot be meshed keep an empty domain. It's important for some
+    // algorithms (e.g. color mapping) that the numbers of faces and domains match.
+    const std::size_t offset = domains.size();
+    domains.resize(offset + faces.size());
+
+    // Every face is read from its own triangulation and written to its own domain,
+    // so the conversion can be spread over threads once there is enough of it.
+    constexpr std::size_t parallelNodeThreshold = 20000;
+    const unsigned int threadLimit = nodeCount < parallelNodeThreshold ? 1U : 0U;
+
+    // Shapes made of very many small faces would otherwise spend more time claiming
+    // faces than converting them, so hand them out in blocks.
+    const std::size_t grainSize = Base::balancedGrainSize(faces.size(), threadLimit);
+
+    Base::parallelFor(
+        std::size_t(0),
+        faces.size(),
+        [&](std::size_t i) {
+            std::vector<gp_Pnt> points;
+            std::vector<Poly_Triangle> facets;
+            if (!Tools::getTriangulation(faces[i], points, facets)) {
+                return;
+            }
+
+            Domain& domain = domains[offset + i];
+
             // copy the points
             domain.points.reserve(points.size());
             for (const auto& it : points) {
@@ -3638,10 +3659,10 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
                 tria.I3 = N3;
                 domain.facets.push_back(tria);
             }
-
-            domains.push_back(domain);
-        }
-    }
+        },
+        grainSize,
+        threadLimit
+    );
 }
 
 void TopoShape::getFacesFromDomains(
