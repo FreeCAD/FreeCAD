@@ -1739,9 +1739,20 @@ void ExpLineEdit::finishFormulaDialog()
 
 void ExpLineEdit::keyPressEvent(QKeyEvent* event)
 {
-    if (m_tentativeDiscard || !hasExpression()) {
-        QLineEdit::keyPressEvent(event);
+    if (!m_tentativeDiscard && hasExpression()) {
+        return;
     }
+
+    if (isBound() && event->text() == QStringLiteral("=")) {
+        const int selLen = selectionLength();
+        if (selLen == text().size() || (selLen == 0 && cursorPosition() == 0)) {
+            event->accept();
+            openFormulaDialog();
+            return;
+        }
+    }
+
+    QLineEdit::keyPressEvent(event);
 }
 
 void ExpLineEdit::stashExpression()
