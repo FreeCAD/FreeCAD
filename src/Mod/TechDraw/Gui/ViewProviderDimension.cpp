@@ -28,6 +28,7 @@
 # include <QAction>
 # include <QColor>
 # include <QMenu>
+# include <QCursor>
 
 
 #include <QMessageBox>
@@ -54,6 +55,7 @@
 #include "QGIViewDimension.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDimension.h"
+#include "DimensionQuickEdit.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -159,7 +161,7 @@ bool ViewProviderDimension::setEdit(int ModNum)
     Gui::Selection().clearSelection();
     auto qgivDimension(dynamic_cast<QGIViewDimension*>(getQView()));
     if (qgivDimension) {
-        Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, this));
+        DimensionQuickEdit::showFor(this, QCursor::pos());
     }
     return true;
 }
