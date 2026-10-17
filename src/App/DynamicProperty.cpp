@@ -40,6 +40,7 @@
 #include "DynamicProperty.h"
 #include "Application.h"
 #include "Property.h"
+#include "PropertyExpressionEngine.h"
 #include "PropertyContainer.h"
 
 
@@ -498,6 +499,7 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
         d.property->myName = d.name.c_str();
     });
 
+    PropertyExpressionContainer::handleDynamicPropertyRename(*prop, oldName.c_str());
     GetApplication().signalRenameDynamicProperty(*prop, oldName.c_str());
 
     return true;
