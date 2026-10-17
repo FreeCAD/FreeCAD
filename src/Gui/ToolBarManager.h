@@ -156,7 +156,7 @@ public:
         ForceHidden,     // Forces a toolbar to hide and hides the toggle action
         ForceAvailable,  // Forces a toolbar toggle action to show, visibility depends on user config
         RestoreDefault,  // Restores a toolbar toggle action default, visibility as user config
-        SaveState,       // Saves the state of the toolbars
+        SaveState,       // Saves visibility only for toolbars available to the user
     };
 
     /// The one and only instance.
@@ -173,8 +173,6 @@ public:
 
     void setState(const QList<QString>& names, State state);
     void setState(const QString& name, State state);
-    bool isAnyVisible(const QList<QString>& names);
-    bool isVisible(const QString& name);
 
 
     int toolBarIconSize(QWidget* widget = nullptr) const;
