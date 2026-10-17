@@ -551,12 +551,18 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     if (hasUnconnectedDragPart) {
         prepareMbdForIslandDrag(dragParts);
     }
-    else {
-        solve();
+    else if (solve() != 0) {
+        // A failed solve can leave ASMT joints without initialized constraints.
+        // Neither drag steps nor postDrag may use that partial system.
+        objectPartMap.clear();
+        mbdAssembly.reset();
     }
     bundleFixed = false;
 
     draggedParts.clear();
+    if (!mbdAssembly) {
+        return;
+    }
 
     for (auto part : dragParts) {
         const bool isRigidClustered = getRigidRepresentative(part) != nullptr;
