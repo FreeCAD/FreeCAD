@@ -644,6 +644,21 @@ def _start_inicio():
         FreeCAD.Console.PrintWarning("Sework: tela inicial não aberta: {}\n".format(exc))
 
 
+MATERIAIS_DIR = os.path.join(ADDON_DIR, "Resources", "Materials")
+
+
+def install_materials():
+    """Registra a biblioteca de materiais Sework (aços do mercado brasileiro) no FreeCAD."""
+    if not os.path.isdir(MATERIAIS_DIR):
+        return
+    g = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material/Resources/Modules/Sework")
+    if g.GetString("ModuleDir", "") != MATERIAIS_DIR:
+        g.SetString("ModuleDir", MATERIAIS_DIR)
+    if g.GetString("ModuleIcon", "") != ICON_PATH:
+        g.SetString("ModuleIcon", ICON_PATH)
+    g.SetBool("ModuleReadOnly", True)
+
+
 def startup():
     try:
         hold_splash()
@@ -655,7 +670,7 @@ def startup():
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: tela inicial: {}\n".format(exc))
     register_commands()
-    for fn in (apply_document_prefs, apply_template_prefs, install_folha_observer):
+    for fn in (install_materials, apply_document_prefs, apply_template_prefs, install_folha_observer):
         try:
             fn()
         except Exception as exc:

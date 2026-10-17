@@ -307,6 +307,15 @@ RIBBON_QSS = """
 #SeworkRibbon QToolButton[sw_size="S"][popupMode="1"] { padding-right: 14px; }
 #SeworkRibbon QToolButton::menu-arrow { width: 7px; height: 7px; }
 #SeworkQuick QToolButton { padding: 3px; border-radius: 4px; }
+#SeworkTabRow QToolButton#SeworkWbBtn {
+    background: #FFFFFF; color: #003A70; font-weight: 600; font-size: 9pt;
+    border: 1px solid #C9D5E2; border-radius: 6px; padding: 3px 22px 3px 10px; margin: 0 2px;
+}
+#SeworkTabRow QToolButton#SeworkWbBtn:hover { background: #EAF1F8; border-color: #7FA3C9; }
+#SeworkTabRow QToolButton#SeworkWbBtn::menu-indicator {
+    subcontrol-origin: padding; subcontrol-position: center right; right: 7px; width: 9px; height: 9px;
+}
+#SeworkWbSep { color: #D5DEE8; background: transparent; }
 """
 
 # Estilo global complementar (aplicado sobre o tema do FreeCAD)
@@ -668,6 +677,14 @@ class SeworkRibbon(QtWidgets.QWidget):
             brand.setText("Sework")
         brand.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         rl.addWidget(brand)
+        rl.addWidget(self._build_wb_button())
+        sep = QtWidgets.QFrame()
+        sep.setObjectName("SeworkWbSep")
+        sep.setFrameShape(QtWidgets.QFrame.VLine)
+        sep.setFixedHeight(20)
+        rl.addSpacing(4)
+        rl.addWidget(sep)
+        rl.addSpacing(2)
         self.tabbar = QtWidgets.QTabBar()
         self.tabbar.setDrawBase(False)
         self.tabbar.setExpanding(False)
@@ -697,6 +714,38 @@ class SeworkRibbon(QtWidgets.QWidget):
         self.content.viewport().setPalette(pal)
         self.content.setFixedHeight(max(_params().GetInt("RibbonHeight", 126), 126))
         lay.addWidget(self.content)
+
+    # ---- seletor de bancadas (logo após a marca)
+    def _build_wb_button(self):
+        b = QtWidgets.QToolButton()
+        b.setObjectName("SeworkWbBtn")
+        b.setText("Bancadas")
+        b.setToolTip("Trocar de bancada de trabalho")
+        b.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+        b.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
+        b.setCursor(QtCore.Qt.PointingHandCursor)
+        try:
+            import SeworkEstilo
+            b.setStyleSheet("QToolButton::menu-indicator { image: url(%s); }" % SeworkEstilo._url("chev_down.svg"))
+        except Exception:
+            pass
+        menu = QtWidgets.QMenu(b)
+        menu.aboutToShow.connect(lambda m=menu: self._fill_wb_menu(m))
+        b.setMenu(menu)
+        self._wb_btn = b
+        return b
+
+    def _rotulo_bancada(self, name):
+        b = getattr(self, "_wb_btn", None)
+        if b is None:
+            return
+        try:
+            wb = FreeCADGui.getWorkbench(name)
+            nome = WB_NAMES.get(name) or getattr(wb, "MenuText", name)
+        except Exception:
+            nome = WB_NAMES.get(name, name)
+        b.setText(nome if name not in ("NoneWorkbench", "StartWorkbench") else "Bancadas")
+        b.setToolTip("Bancada ativa: {}. Clique para trocar.".format(nome))
 
     # ---- barra de acesso rápido (direita)
     def _build_quick(self):
@@ -736,16 +785,7 @@ class SeworkRibbon(QtWidgets.QWidget):
                 b.setIconSize(QtCore.QSize(18, 18))
                 b.setFixedSize(28, 28)
                 hl.addWidget(b)
-        wbbtn = QtWidgets.QToolButton(box)
-        wbbtn.setText("Bancadas")
-        wbbtn.setToolTip("Trocar de bancada de trabalho")
-        wbbtn.setPopupMode(QtWidgets.QToolButton.InstantPopup)
-        wbbtn.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
-        menu = QtWidgets.QMenu(wbbtn)
-        menu.aboutToShow.connect(lambda m=menu: self._fill_wb_menu(m))
-        wbbtn.setMenu(menu)
         hl.addSpacing(8)
-        hl.addWidget(wbbtn)
         col = QtWidgets.QToolButton(box)
         col.setArrowType(QtCore.Qt.UpArrow)
         col.setToolTip("Recolher / expandir a faixa (ou duplo clique na aba)")
@@ -821,6 +861,7 @@ class SeworkRibbon(QtWidgets.QWidget):
             name = name or FreeCADGui.activeWorkbench().name()
         except Exception:
             return
+        self._rotulo_bancada(name)
         for t in self._tabs:
             if t.get("wb") == name:
                 self.select_tab(t["id"])

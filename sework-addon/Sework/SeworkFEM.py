@@ -237,6 +237,13 @@ class Estudo:
 # =========================================================================== materiais
 _CACHE_MAT = {}
 
+# Biblioteca Sework (aços do mercado brasileiro) aparece primeiro
+PASTAS_SEWORK = [("Acos para vasos de pressao", "Sework · Aços para vasos de pressão"),
+                 ("Acos estruturais", "Sework · Aços estruturais"),
+                 ("Tubos e forjados", "Sework · Tubos e forjados"),
+                 ("Acos inoxidaveis", "Sework · Aços inoxidáveis"),
+                 ("Acos para construcao mecanica", "Sework · Construção mecânica"),
+                 ("Aluminio", "Sework · Alumínio")]
 GRUPOS_MAT = [("Steel", "Aços e ferros fundidos"), ("Aluminum", "Alumínio"), ("Iron", "Ferro"),
               ("Copper", "Cobre e latão"), ("Titanium", "Titânio"), ("Alloys", "Ligas"),
               ("Metal", "Outros metais"), ("", "Outros")]
@@ -260,15 +267,19 @@ def materiais():
                 continue
             pasta = m.Directory or ""
             grupo = "Outros"
-            for chave, nome in GRUPOS_MAT:
-                if chave and chave in pasta:
-                    grupo = nome
-                    break
+            if m.LibraryName == "Sework":
+                grupo = next((nome for chave, nome in PASTAS_SEWORK if chave in pasta), "Sework")
+            else:
+                for chave, nome in GRUPOS_MAT:
+                    if chave and chave in pasta:
+                        grupo = nome
+                        break
             lista.append({"uuid": uuid, "nome": m.Name, "grupo": grupo, "pasta": pasta,
-                          "biblioteca": m.LibraryName, "props": dict(p)})
+                          "biblioteca": m.LibraryName, "props": dict(p),
+                          "descricao": getattr(m, "Description", "") or ""})
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: biblioteca de materiais indisponível: {}\n".format(exc))
-    ordem = {nome: i for i, (_c, nome) in enumerate(GRUPOS_MAT)}
+    ordem = {nome: i for i, (_c, nome) in enumerate(PASTAS_SEWORK + GRUPOS_MAT)}
     lista.sort(key=lambda d: (ordem.get(d["grupo"], 99), d["nome"].lower()))
     _CACHE_MAT["lista"] = lista
     return lista
@@ -969,6 +980,13 @@ class Assistente(QtWidgets.QWidget):
         self.lb_mat.setWordWrap(True)
         self.lb_mat.setTextFormat(QtCore.Qt.RichText)
         lay.addWidget(self.lb_mat)
+        self.sp_sy = QtWidgets.QDoubleSpinBox()
+        self.sp_sy.setRange(0.0, 3000.0)
+        self.sp_sy.setDecimals(0)
+        self.sp_sy.setSuffix(" MPa")
+        self.sp_sy.setSpecialValueText("usar o da biblioteca")
+        lay.addWidget(QtWidgets.QLabel("Limite de escoamento do certificado (opcional)"))
+        lay.addWidget(self.sp_sy)
         b = QtWidgets.QPushButton("Aplicar material à peça")
         b.clicked.connect(self._aplicar_mat)
         lay.addWidget(_linha(b, "stretch"))
@@ -1026,6 +1044,8 @@ class Assistente(QtWidgets.QWidget):
         html = "<table cellspacing='0' cellpadding='2'>" + "".join(
             "<tr><td style='color:#5B6876'>{}</td><td style='padding-left:10px'><b>{}</b></td></tr>".format(a, b)
             for a, b in linhas) + "</table>"
+        if d.get("descricao"):
+            html += "<p style='color:#5B6876; font-size:8pt; margin-top:4px'>{}</p>".format(d["descricao"])
         self.lb_mat.setText(SeworkEstilo.tema(html))
 
     def _aplicar_mat(self):
@@ -1046,7 +1066,12 @@ class Assistente(QtWidgets.QWidget):
                 m = ObjectsFem.makeMaterialSolid(est.doc, "Material")
                 est.analise.addObject(m)
             mat = Materials.MaterialManager().getMaterial(d["uuid"])
-            m.Material = mat.Properties
+            props = dict(mat.Properties)
+            sy_cert = self.sp_sy.value()
+            if sy_cert > 0:
+                props["YieldStrength"] = "{} MPa".format(sy_cert)
+            est.put("SeworkSyCertificado", float(sy_cert), "App::PropertyFloat")
+            m.Material = props
             if hasattr(m, "UUID"):
                 m.UUID = mat.UUID
             m.References = []

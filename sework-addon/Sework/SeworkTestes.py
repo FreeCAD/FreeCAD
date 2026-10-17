@@ -162,6 +162,50 @@ class T05Materiais(unittest.TestCase):
         self.assertAlmostEqual(p["nu"], 0.3, delta=1e-6)
 
 
+class T05bMateriaisSework(unittest.TestCase):
+    """Biblioteca Sework: mínimos de especificação conferidos (ver tools/gerar_materiais.py)."""
+    ESPERADO = {  # nome: (Sy, Su, E)
+        "ASTM A36": (250, 400, 203000), "NBR 7007 MR250": (250, 400, 203000),
+        "NBR 7007 AR350": (350, 450, 203000), "ASTM A572 Gr 50": (345, 450, 203000),
+        "ASTM A283 Gr C": (205, 380, 203000), "ASTM A285 Gr C (SA-285 C)": (205, 380, 203000),
+        "ASTM A516 Gr 60 (SA-516 60)": (220, 415, 203000), "ASTM A516 Gr 70 (SA-516 70)": (260, 485, 203000),
+        "ASTM A515 Gr 70 (SA-515 70)": (260, 485, 203000), "ASTM A106 Gr B (SA-106 B)": (240, 415, 203000),
+        "ASTM A53 Gr B (SA-53 B)": (240, 415, 203000), "ASTM A105 (SA-105)": (250, 485, 203000),
+        "ASTM A500 Gr B (tubo redondo)": (290, 400, 203000), "AISI 304 (A240)": (205, 515, 195000),
+        "AISI 304L (A240)": (170, 485, 195000), "AISI 316 (A240)": (205, 515, 195000),
+        "Alumínio 6061-T6 (B209)": (240, 290, 69000),
+    }
+
+    def test_biblioteca_registrada_e_valores(self):
+        import SeworkFEM as F
+        sew = {d["nome"]: d for d in F.materiais() if d["biblioteca"] == "Sework"}
+        if not sew:
+            self.skipTest("biblioteca Sework ainda não carregada (reabra o FreeCAD)")
+        for nome, (sy, su, e) in self.ESPERADO.items():
+            self.assertIn(nome, sew, "material ausente: " + nome)
+            p = F.props_mat(sew[nome]["props"])
+            self.assertAlmostEqual(p["Sy"], sy, delta=0.5, msg=nome)
+            self.assertAlmostEqual(p["Su"], su, delta=0.5, msg=nome)
+            self.assertAlmostEqual(p["E"], e, delta=1.0, msg=nome)
+            self.assertIsNotNone(p["rho"], nome)
+            self.assertIsNotNone(p["nu"], nome)
+
+    def test_sae_sem_escoamento_de_norma(self):
+        import SeworkFEM as F
+        sew = {d["nome"]: d for d in F.materiais() if d["biblioteca"] == "Sework"}
+        if not sew:
+            self.skipTest("biblioteca Sework ainda não carregada")
+        for nome in ("SAE 1020", "SAE 1045"):
+            self.assertIsNone(F.props_mat(sew[nome]["props"])["Sy"], nome)
+
+    def test_sework_aparece_primeiro(self):
+        import SeworkFEM as F
+        lst = F.materiais()
+        if not any(d["biblioteca"] == "Sework" for d in lst):
+            self.skipTest("biblioteca Sework ainda não carregada")
+        self.assertEqual(lst[0]["biblioteca"], "Sework")
+
+
 # ======================================================================= verificações do assistente
 class T06Pendencias(unittest.TestCase):
     def setUp(self):
@@ -382,8 +426,40 @@ class T08Relatorio(unittest.TestCase):
         self.assertGreater(os.path.getsize(caminho), 20000)
 
 
+# ======================================================================= interface
+class T09Interface(unittest.TestCase):
+    def _faixa(self):
+        import SeworkRibbon
+        rb = SeworkRibbon._state.get("ribbon")
+        if rb is None:
+            self.skipTest("faixa Sework não instalada nesta sessão")
+        return rb
+
+    def test_seletor_de_bancadas_apos_a_marca(self):
+        from PySide import QtWidgets
+        rb = self._faixa()
+        linha = rb.findChild(QtWidgets.QWidget, "SeworkTabRow")
+        lay = linha.layout()
+        nomes = [lay.itemAt(i).widget().objectName() for i in range(lay.count()) if lay.itemAt(i).widget()]
+        self.assertEqual(nomes[:2], ["SeworkBrand", "SeworkWbBtn"], nomes)
+
+    def test_menu_de_bancadas_lista_bancadas(self):
+        from PySide import QtWidgets
+        rb = self._faixa()
+        m = QtWidgets.QMenu()
+        rb._fill_wb_menu(m)
+        textos = [a.text() for a in m.actions() if a.text()]
+        self.assertGreater(len(textos), 5)
+        self.assertTrue(any("Simulação" in t or "FEM" in t for t in textos), textos)
+
+    def test_altura_da_faixa(self):
+        rb = self._faixa()
+        self.assertGreaterEqual(rb.content.height(), 126)
+
+
 # ======================================================================= execução
-RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T04Glossario, T05Materiais, T06Pendencias]
+RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias,
+           T09Interface]
 COMPLETOS = RAPIDOS + [T07Validacao, T08Relatorio]
 
 
@@ -407,6 +483,10 @@ class _Resultado(unittest.TextTestResult):
     def addSuccess(self, test):
         super().addSuccess(test)
         self._reg(test, "ok")
+
+    def addSkip(self, test, reason):
+        super().addSkip(test, reason)
+        self._reg(test, "pulado", reason)
 
     def addFailure(self, test, err):
         super().addFailure(test, err)
@@ -437,7 +517,7 @@ def _executar(completo):
     t0 = time.time()
     res = runner.run(suite)
     total = res.testsRun
-    aprov = total - len(res.failures) - len(res.errors)
+    aprov = total - len(res.failures) - len(res.errors) - len(res.skipped)
     linhas = ["FreeCAD Sework — testes automáticos — %s" % time.strftime("%d/%m/%Y %H:%M"),
               "%d de %d aprovados em %.1f s" % (aprov, total, time.time() - t0), ""]
     if NUMEROS:
@@ -447,7 +527,7 @@ def _executar(completo):
                           % (g, fem, ana, un, 100.0 * (fem - ana) / ana))
         linhas.append("")
     for st, nome, dt, det in res.linhas:
-        linhas.append("[%s] %s (%.1f s)" % ({"ok": " OK ", "falhou": "FALHOU", "erro": " ERRO "}[st], nome, dt))
+        linhas.append("[%s] %s (%.1f s)" % ({"ok": " OK ", "falhou": "FALHOU", "erro": " ERRO ", "pulado": "PULADO"}[st], nome, dt))
         if det:
             linhas.append("      " + det.replace("\n", "\n      "))
     with open(LOG, "w", encoding="utf-8") as f:
@@ -476,7 +556,7 @@ def _dialogo(aprov, total, linhas):
     html = []
     for st, nome, dt, det in linhas:
         simb = {"ok": "<span style='color:#2E8B6A'>✓</span>", "falhou": "<span style='color:#B5523F'>✕</span>",
-                "erro": "<span style='color:#B5523F'>✕</span>"}[st]
+                "erro": "<span style='color:#B5523F'>✕</span>", "pulado": "<span style='color:#E0A100'>–</span>"}[st]
         html.append("<p style='margin:2px 0'>%s <b>%s</b> <span style='color:#5B6876'>(%.1f s)</span>%s</p>" % (
             simb, nome.replace("_", " "), dt,
             ("<br><span style='color:#7A2E20; font-size:8pt'>%s</span>" % det.replace("\n", "<br>")) if det else ""))

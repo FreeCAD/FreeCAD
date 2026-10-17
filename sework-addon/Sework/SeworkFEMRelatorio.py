@@ -149,13 +149,14 @@ def _corpo(est, doc, imgs, largura):
                _par("Módulo de elasticidade", F.fmt(pm["E"] / 1000.0 if pm.get("E") else None, 1, "GPa")),
                _par("Coeficiente de Poisson", F.fmt(pm.get("nu"), 2)),
                _par("Densidade", F.fmt(pm.get("rho"), 0, "kg/m³")),
-               _par("Limite de escoamento", F.fmt(pm.get("Sy"), 0, "MPa")),
+               _par("Limite de escoamento", F.fmt(pm.get("Sy"), 0, "MPa") +
+                    (" (certificado)" if est.get("SeworkSyCertificado", 0) else "")),
                _par("Resistência à tração", F.fmt(pm.get("Su"), 0, "MPa"))]
         if pm.get("norma"):
             lin.append(_par("Referência na biblioteca", ("%s %s" % (pm["norma"], pm.get("numero", ""))).strip()))
         h.append(_tab(lin, larguras=["40%", "60%"]))
-        h.append("<p class='nota'>Propriedades da biblioteca de materiais do FreeCAD, modelo linear elástico "
-                 "isotrópico. Devem ser confirmadas com o certificado do material empregado.</p>")
+        h.append("<p class='nota'>Propriedades da biblioteca de materiais do FreeCAD Sework, modelo linear "
+                 "elástico isotrópico. Devem ser confirmadas com o certificado do material empregado.</p>")
 
     h.append("<h1>4. Condições de contorno</h1>")
     h.append("<h2>Fixações</h2>")
