@@ -156,7 +156,13 @@ StdOrthographicCamera::StdOrthographicCamera()
 void StdOrthographicCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
+        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        SoCamera* cam = view ? view->getViewer()->getSoRenderManager()->getCamera() : nullptr;
+        bool changed = !cam || cam->getTypeId() != SoOrthographicCamera::getClassTypeId();
         getGuiApplication()->sendMsgToActiveView("OrthographicCamera");
+        if (view && changed) {
+            view->syncCameraTypePref(true);
+        }
     }
 }
 
@@ -203,7 +209,13 @@ StdPerspectiveCamera::StdPerspectiveCamera()
 void StdPerspectiveCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
+        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        SoCamera* cam = view ? view->getViewer()->getSoRenderManager()->getCamera() : nullptr;
+        bool changed = !cam || cam->getTypeId() != SoPerspectiveCamera::getClassTypeId();
         getGuiApplication()->sendMsgToActiveView("PerspectiveCamera");
+        if (view && changed) {
+            view->syncCameraTypePref(false);
+        }
     }
 }
 
