@@ -36,6 +36,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 
 import TechDrawTools
+from TechDrawTools.TaskHoleShaftFit import TaskHoleShaftFit
 
 translate = App.Qt.translate
 
@@ -62,7 +63,7 @@ class CommandHoleShaftFit:
         sel = Gui.Selection.getSelectionEx()
         # if sel and sel[0].Object.TypeId == 'TechDraw::DrawViewDimension':
         if sel[0].Object.TypeId == "TechDraw::DrawViewDimension":
-            self.ui = TechDrawTools.TaskHoleShaftFit(sel)
+            self.ui = TaskHoleShaftFit(sel)
             Gui.Control.showDialog(self.ui)
         else:
             msgBox = QtGui.QMessageBox()
