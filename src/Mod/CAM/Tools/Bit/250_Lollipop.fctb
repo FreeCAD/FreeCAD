@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "1/4in Lollipop",
+  "shape": "lollipop.fcstd",
+  "shape-type": "Lollipop",
+  "parameter": {
+    "CuttingEdgeHeight": "0.2333 in",
+    "Diameter": "0.2500 in",
+    "Flutes": "2",
+    "Length": "2.0000 in",
+    "NeckDiameter": "0.1250 in",
+    "NeckHeight": "0.5000 in",
+    "ShankDiameter": "0.2500 in",
+    "Units": "Imperial"
+  },
+  "attribute": {}
+}
