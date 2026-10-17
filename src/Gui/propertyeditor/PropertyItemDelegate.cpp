@@ -227,19 +227,32 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
         auto* comboBox = qobject_cast<QComboBox*>(o);
         if (comboBox) {
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-            if (parentEditor && parentEditor->activeEditor == comboBox) {
-                comboBox->showPopup();
-            }
-        }
-        auto* checkBox = qobject_cast<QCheckBox*>(o);
-        if (checkBox) {
-            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
             FC_LOG(
                 "FocusIn: " << o->metaObject()->className() << " activeEditor="
                             << (parentEditor && parentEditor->activeEditor
                                     ? parentEditor->activeEditor->metaObject()->className()
                                     : "nullptr")
             );
+
+            if (parentEditor && parentEditor->activeEditor == comboBox
+                && !comboBox->property("popupAutoOpened").toBool()) {
+
+                // the focus goes to the QComboBox when closing the popup, this avoids re-opening it
+                // when the popup closes in a loop, effectively blocking the user :(
+                comboBox->setProperty("popupAutoOpened", true);
+
+                QPointer<QComboBox> guardedCombo(comboBox);
+
+                QTimer::singleShot(0, this, [guardedCombo]() {
+                    if (guardedCombo) {
+                        guardedCombo->showPopup();
+                    }
+                });
+            }
+        }
+        auto* checkBox = qobject_cast<QCheckBox*>(o);
+        if (checkBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
             if (parentEditor && parentEditor->activeEditor == checkBox) {
                 if (this->pressed) {
                     checkBox->toggle();

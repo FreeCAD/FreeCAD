@@ -14,12 +14,8 @@ LargeComboBox::LargeComboBox(QWidget* parent)
         }
 
         setCurrentIndex(sourceRow);
-        Q_EMIT activated(sourceRow);
         hidePopup();
-    });
-
-    connect(m_popup, &LargeComboBoxPopup::popupClosed, this, []() {
-        // Do not invoke QComboBox::hidePopup() here.
+        Q_EMIT activated(sourceRow);
     });
 }
 

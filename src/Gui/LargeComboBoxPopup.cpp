@@ -318,14 +318,16 @@ int LargeComboBoxPopup::selectedSourceRow() const
 
 void LargeComboBoxPopup::updateViewMode()
 {
-    if (m_grid) {
+    m_view->setVisible(!m_grid);
+    m_gridView->setVisible(m_grid);
+    /*if (m_grid) {
         m_view->hide();
         m_gridView->show();
     }
     else {
         m_gridView->hide();
         m_view->show();
-    }
+    }*/
 }
 
 int LargeComboBoxPopup::calculateItemHeight() const
@@ -617,9 +619,9 @@ void LargeComboBoxPopup::popup(QWidget* relativeTo)
 
     show();
     raise();
-    activateWindow();
+    //    activateWindow();
 
-    setFocus(Qt::PopupFocusReason);
+    //    setFocus(Qt::PopupFocusReason);
 
     if (m_searchable) {
         m_search->setFocus(Qt::PopupFocusReason);
