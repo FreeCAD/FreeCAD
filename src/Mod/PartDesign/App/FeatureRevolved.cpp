@@ -279,6 +279,10 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     TopoShape sketchshape = getTopoShapeVerifiedFace();
 
+    if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        sketchshape.markOwnership(getID());
+    }
+
     // if the Base property has a valid shape, fuse the AddShape into it
     TopoShape base = tryGetBaseShape();
 
@@ -336,7 +340,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     }
 
     // Generate the revolution tool first; PartDesign applies the final base operation below.
-    TopoShape result(0, getDocument()->getStringHasher());
+    TopoShape result = makeTopoShape(false);
     TopoShape supportface = tryGetSupportShape();
 
     supportface.move(invObjLoc);
@@ -556,7 +560,7 @@ TopoShape Revolved::tryToRevolveToFace(
     }
 
     auto makeRevolution = [&](Part::RevolMode mode, Standard_Boolean modify) {
-        TopoShape revolution(0, getDocument()->getStringHasher());
+        TopoShape revolution = makeTopoShape();
         revolution.makeElementRevolution(
             base,
             TopoDS::Face(sketchshape.getShape()),
@@ -578,7 +582,7 @@ TopoShape Revolved::tryToRevolveToFace(
             return baseResult;
         }
 
-        TopoShape tool(0, getDocument()->getStringHasher());
+        TopoShape tool = makeTopoShape();
         tool.makeElementCut({baseResult, base}, Part::OpCodes::Revolve);
         if (tool.isNull() || tool.getShape().IsNull()) {
             throw Base::RuntimeError("Could not extract generated revolution tool!");
@@ -587,7 +591,7 @@ TopoShape Revolved::tryToRevolveToFace(
     };
 
     auto makeRemovedVolume = [&](const TopoShape& baseResult) {
-        TopoShape tool(0, getDocument()->getStringHasher());
+        TopoShape tool = makeTopoShape();
         tool.makeElementCut({base, baseResult}, Part::OpCodes::Revolve);
         if (tool.isNull() || tool.getShape().IsNull()) {
             throw Base::RuntimeError("Could not extract generated groove tool!");
@@ -642,7 +646,7 @@ TopoShape Revolved::generateSingleRevolutionSide(
     Part::RevolMode revolMode
 )
 {
-    TopoShape revolution(0, getDocument()->getStringHasher());
+    TopoShape revolution = makeTopoShape();
     const bool isThroughAll = method == RevolMethod::ThroughAll
         && revolMode == Part::RevolMode::CutFromBase;
 
@@ -700,7 +704,7 @@ TopoShape Revolved::getRevolutionUpToFace(
 
 TopoShape Revolved::tryGetBaseShape() const
 {
-    TopoShape base;
+    TopoShape base = makeTopoShape(false);
     try {
         base = getBaseTopoShape();
     }
@@ -713,7 +717,7 @@ TopoShape Revolved::tryGetBaseShape() const
 
 TopoShape Revolved::tryGetSupportShape() const
 {
-    TopoShape supportface(0);
+    TopoShape supportface = makeTopoShape(false);
     try {
         supportface = getSupportFace();
     }

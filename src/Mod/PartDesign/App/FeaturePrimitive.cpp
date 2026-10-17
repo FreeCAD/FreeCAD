@@ -80,7 +80,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         FeatureAddSub::execute();
 
         // if we have no base we just add the standard primitive shape
-        TopoShape primitiveShape;
+        TopoShape primitiveShape = makeTopoShape(false);
         primitiveShape.setShape(primitive);
 
         TopoShape base;
@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         }
         AddSubShape.setValue(primitiveShape);
 
-        TopoShape boolOp(0);
+        TopoShape boolOp = makeTopoShape(false);
         try {
             boolOp.makeElementBoolean(
                 getBooleanMaker(),
@@ -589,7 +589,7 @@ App::DocumentObjectExecReturn* Torus::execute()
                                       Base::toRadians<double>(Angle3.getValue()));
         return FeaturePrimitive::execute(mkTorus.Solid());
 #else
-        Part::TopoShape shape;
+        Part::TopoShape shape = makeTopoShape(false);
         return FeaturePrimitive::execute(shape.makeTorus(
             Radius1.getValue(),
             Radius2.getValue(),

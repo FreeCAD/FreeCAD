@@ -35,13 +35,16 @@
 #include <Base/Parameter.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
+#include <App/MappedName.h>
 
 #include "Application.h"
 #include "ApplicationPy.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
+#include "ElementNamingUtils.h"
 #include "RecoverySnapshot.h"
+#include "StringHasher.h"
 
 #include <Base/CrashReporter/Manager.h>
 
@@ -1100,6 +1103,162 @@ PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
         Py_Return;
     }
     PY_CATCH
+}
+
+PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* args)
+{
+    const char* inputName;
+
+    if (!PyArg_ParseTuple(args, "s", &inputName)) {
+        return nullptr;
+    }
+
+    Data::MappedName inputMappedName {inputName};
+    const Data::DecodedMappedName& decodedName = inputMappedName.getDecodedMappedName();
+
+    PyObject* returnTuple = PyTuple_New(2);
+    PyObject* sectionList = PyList_New(0);
+
+    PyTuple_SetItem(
+        returnTuple,
+        0,
+        PyUnicode_DecodeUTF8(decodedName.ownerTag.c_str(), decodedName.ownerTag.size(), nullptr)
+    );
+
+    PyTuple_SetItem(
+        returnTuple,
+        1,
+        sectionList
+    );
+
+    auto stringVectorToPyList = [](const std::vector<std::string>& vector) -> PyObject* {
+        PyObject* pyList = PyList_New(0);
+
+        for (const std::string& vectorString : vector) {
+            PyList_Append(pyList, PyUnicode_DecodeUTF8(vectorString.c_str(), vectorString.size(), nullptr));
+        }
+
+        return pyList;
+    };
+
+    for (const Data::DecodedMappedSection& loopSection : decodedName.sections) {
+        PyObject* sectionDict = PyDict_New();
+
+        PyDict_SetItemString(sectionDict, "referenceIDs", stringVectorToPyList(loopSection.referenceIDs));
+        PyDict_SetItemString(sectionDict, "linkedNames", stringVectorToPyList(loopSection.linkedNames));
+        PyDict_SetItemString(sectionDict, "iterationTag", PyUnicode_DecodeUTF8(loopSection.iterationTag.c_str(), loopSection.iterationTag.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "opCode", PyUnicode_DecodeUTF8(loopSection.opCode.c_str(), loopSection.opCode.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "index", PyUnicode_DecodeUTF8(loopSection.index.c_str(), loopSection.index.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "elementType", PyUnicode_DecodeUTF8(&loopSection.elementType, 1, nullptr));
+        PyDict_SetItemString(sectionDict, "duplicateCount", PyUnicode_DecodeUTF8(loopSection.duplicateCount.c_str(), loopSection.duplicateCount.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "mapperFlags", stringVectorToPyList(loopSection.mapperFlags));
+        PyDict_SetItemString(sectionDict, "connectedElements", stringVectorToPyList(loopSection.connectedElements));
+    
+        PyList_Append(sectionList, sectionDict);
+    }
+
+    return returnTuple;
+}
+
+PyObject* ApplicationPy::sMakeEncodedSection(PyObject* /*self*/, PyObject* args, PyObject* keywds)
+{
+    static const std::array<const char*, 11> encodedNameArgs {
+        "referenceIDs",
+        "linkedNames",
+        "iterationTag",
+        "opCode",
+        "index",
+        "elementType",
+        "duplicateCount",
+        "mapperFlags",
+        "connectedElements",
+        nullptr
+    };
+
+    PyObject* referenceIDs = nullptr;
+    PyObject* linkedNames = nullptr;
+    const char* iterationTag = nullptr;
+    const char* opCode = nullptr;
+    const char* index = nullptr;
+    const char* elementType = nullptr;
+    const char* duplicateCount = nullptr;
+    PyObject* mapperFlags = nullptr;
+    PyObject* connectedElements = nullptr;
+
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            keywds,
+            "|OOsssssOO",
+            encodedNameArgs,
+            &referenceIDs,
+            &linkedNames,
+            &iterationTag,
+            &opCode,
+            &index,
+            &elementType,
+            &duplicateCount,
+            &mapperFlags,
+            &connectedElements
+        ))
+    {
+        return nullptr;
+    }
+
+    if (iterationTag == nullptr) {
+        iterationTag = "0";
+    }
+
+    if (opCode == nullptr) {
+        opCode = "MKR";
+    }
+
+    if (index == nullptr) {
+        index = "0";
+    }
+
+    if (elementType == nullptr) {
+        elementType = "E";
+    }
+
+    if (duplicateCount == nullptr) {
+        duplicateCount = "0";
+    }
+
+    auto PyListToStringVector = [](PyObject* pyList) -> std::vector<std::string> {
+        std::vector<std::string> returnVector;
+
+        if (pyList != nullptr) {
+            if (PyList_Check(pyList)) {
+                Py_ssize_t pyListSize = PyList_Size(pyList);
+
+                for (Py_ssize_t i = 0; i < pyListSize; i++) {
+                    PyObject *item = PyList_GetItem(pyList, i);
+                        
+                    if (item != nullptr) {
+                        if (PyUnicode_Check(item)) {
+                            returnVector.emplace_back(PyUnicode_AsUTF8(item));
+                        }
+                    }
+                }
+            }
+        }
+
+        return returnVector;
+    };
+
+    std::string mappedSection = Data::MappedName::makeEncodedSection(
+        PyListToStringVector(referenceIDs),
+        PyListToStringVector(linkedNames),
+        {iterationTag},
+        opCode,
+        {index},
+        elementType[0],
+        {duplicateCount},
+        PyListToStringVector(mapperFlags),
+        PyListToStringVector(connectedElements)
+    );
+
+    return PyUnicode_DecodeUTF8(mappedSection.c_str(), mappedSection.size(), nullptr);
 }
 
 PyObject* ApplicationPy::sGetLastCrashReport(PyObject* /*self*/, PyObject* args)

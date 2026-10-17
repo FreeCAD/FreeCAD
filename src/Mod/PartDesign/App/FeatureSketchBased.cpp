@@ -130,6 +130,9 @@ ProfileBased::ProfileBased()
         App::Prop_None,
         "Allow multiple faces in profile"
     );
+
+    Profile.useMultipleMatchedNames(true);
+    Profile.allowDuplicateLinks(false);
 }
 
 short ProfileBased::mustExecute() const
@@ -231,13 +234,13 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
     auto obj = profile ? profile : Profile.getValue();
     if (!obj || !obj->getNameInDocument()) {
         if (silent) {
-            return TopoShape();
+            return makeTopoShape();
         }
         throw Base::ValueError("No profile linked");
     }
     const auto& subs = profile ? _subs : Profile.getSubValues();
     try {
-        TopoShape shape;
+        TopoShape shape = makeTopoShape();
         if (AllowMultiFace.getValue()) {
             if (subs.empty()) {
                 shape = Part::Feature::getTopoShape(
@@ -258,7 +261,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
 
                     if (subshape.isNull()) {
                         if (silent) {
-                            return {};
+                            return makeTopoShape();
                         }
                         FC_THROWM(
                             Base::CADKernelError,
@@ -290,7 +293,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
             }
             throw Base::CADKernelError("Linked shape object is empty");
         }
-        TopoShape openshape;
+        TopoShape openshape = makeTopoShape();
         if (!shape.hasSubShape(TopAbs_FACE)) {
             try {
                 if (!shape.hasSubShape(TopAbs_WIRE)) {
@@ -316,7 +319,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                                 TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                             );
                             if (wires.empty()) {
-                                shape = TopoShape();
+                                shape = makeTopoShape();
                             }
                             else {
                                 shape.makeElementCompound(
@@ -339,13 +342,13 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
             }
             catch (const Base::Exception&) {
                 if (silent) {
-                    return TopoShape();
+                    return makeTopoShape();
                 }
                 throw;
             }
             catch (const Standard_Failure&) {
                 if (silent) {
-                    return TopoShape();
+                    return makeTopoShape();
                 }
                 throw;
             }
@@ -353,7 +356,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
         int count = shape.countSubShapes(TopAbs_FACE);
         if (!count && !allowOpen) {
             if (silent) {
-                return TopoShape();
+                return makeTopoShape();
             }
             throw Base::CADKernelError("Cannot make face from profile");
         }
@@ -382,7 +385,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
     }
     catch (Standard_Failure&) {
         if (silent) {
-            return TopoShape();
+            return makeTopoShape();
         }
         throw;
     }
@@ -422,7 +425,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const
                     shape = faces.front();
                 }
                 else {
-                    shape = TopoShape().makeCompound(faces);
+                    shape = makeTopoShape(false).makeCompound(faces);
                 }
             }
             if (!err) {
@@ -496,7 +499,7 @@ TopoShape ProfileBased::getProfileShape(Part::ShapeOptions subShapeOptions) cons
         for (auto& sub : subs) {
             shapes.push_back(Part::Feature::getTopoShape(profile, subShapeOptions, sub.c_str()));
         }
-        shape = TopoShape(shape.Tag).makeElementCompound(shapes);
+        shape = makeTopoShape(shape.Tag).makeElementCompound(shapes);
     }
     if (shape.isNull()) {
         throw Part::NullShapeException("Linked shape object is empty");

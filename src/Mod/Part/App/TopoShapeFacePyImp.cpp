@@ -65,6 +65,7 @@
 
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
+#include <App/Document.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
@@ -129,6 +130,10 @@ PyObject* TopoShapeFacePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  //
 // constructor method
 int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Face
         getTopoShapePtr()->setShape(TopoDS_Face());
@@ -663,12 +668,10 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject* args) const
     }
 
     try {
+        TopoShape* thisShape = this->getTopoShapePtr();
         Base::Vector3d pt = Py::Vector(pPnt, false).toVector();
-        BRepPrimAPI_MakeHalfSpace mkHS(
-            TopoDS::Face(this->getTopoShapePtr()->getShape()),
-            gp_Pnt(pt.x, pt.y, pt.z)
-        );
-        return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
+        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Face(thisShape->getShape()), gp_Pnt(pt.x, pt.y, pt.z));
+        return new TopoShapeSolidPy(new TopoShape(thisShape->getHistoryAlgorithm(), mkHS.Solid()));
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -1026,13 +1029,16 @@ Py::Object TopoShapeFacePy::getWire() const
 
 Py::Object TopoShapeFacePy::getOuterWire() const
 {
-    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+    TopoShape* topoShape = getTopoShapePtr();
+    const TopoDS_Shape& shape = topoShape->getShape();
     if (shape.IsNull()) {
         throw Py::RuntimeError("Null shape");
     }
     if (shape.ShapeType() == TopAbs_FACE) {
         TopoDS_Wire wire = BRepTools::OuterWire(TopoDS::Face(shape));
-        Base::PyObjectBase* wirepy = new TopoShapeWirePy(new TopoShape(wire));
+        Base::PyObjectBase* wirepy = new TopoShapeWirePy(
+            new TopoShape(topoShape->getHistoryAlgorithm(), wire)
+        );
         wirepy->setNotTracking();
         return Py::asObject(wirepy);
     }

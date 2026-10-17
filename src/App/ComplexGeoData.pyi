@@ -166,6 +166,3 @@ class ComplexGeoData(Persistence):
 
     ElementReverseMap: Final[dict[str, str | list[str]]] = {}
     """Get a dict of element reverse mapping"""
-
-    ElementMapVersion: Final[str] = ""
-    """Element map version"""
