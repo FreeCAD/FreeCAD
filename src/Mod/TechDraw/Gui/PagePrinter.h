@@ -121,7 +121,6 @@ public:
     static void savePDF(ViewProviderPage* vpPage, const std::string& file);
 
     static void postRenderCleanUp(QGSPage* ourScene,
-                                    TechDraw::DrawPage* dPage,
                                     QGISVGTemplate* ourTemplate);
     static void preRenderSetUp(TechDrawGui::ViewProviderPage* vpp,
                                QGSPage*& ourScene,
