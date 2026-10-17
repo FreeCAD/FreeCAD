@@ -153,14 +153,19 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        // Surface the raw OCC message with context; do not assume a single cause
+        // since Standard_Failure here can come from edge Add(), post-processing, or
+        // any OCC operation in this block.
+        std::string msg = e.GetMessageString();
+        std::string fullMsg = "Fillet failed: " + msg
+            + ". Check that the radius is not too large, edges are valid, "
+              "and the shape has no zero-length or degenerate edges.";
+        return new App::DocumentObjectExecReturn(fullMsg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
             "Exception",
-            "Fillet operation failed. The selected edges may contain geometry that cannot be "
-            "filleted together. "
-            "Try filleting edges individually or with a smaller radius."
+            "Fillet operation failed. Try a smaller radius or fillet edges individually."
         ));
     }
 }
