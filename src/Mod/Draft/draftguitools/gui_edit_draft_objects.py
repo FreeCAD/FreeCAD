@@ -56,6 +56,7 @@ import DraftVecUtils
 from draftutils.translate import translate
 import draftutils.utils as utils
 from draftutils.messages import _err
+from draftobjects import base as draft_base
 
 import draftguitools.gui_trackers as trackers
 
@@ -176,6 +177,7 @@ class DraftWireGuiTools(GuiTools):
         if obj.Closed and edgeIndex == len(obj.Points):
             # last segment when object is closed
             newPoints.append(edit_command.localize_vector(obj, newPoint))
+        draft_base.shift_point_attachments(obj, edgeIndex, 1)
         obj.Points = newPoints
 
         obj.recompute()
@@ -187,6 +189,7 @@ class DraftWireGuiTools(GuiTools):
 
         pts = obj.Points
         pts.pop(node_idx)
+        draft_base.shift_point_attachments(obj, node_idx, -1)
         obj.Points = pts
 
         obj.recompute()
@@ -196,12 +199,15 @@ class DraftWireGuiTools(GuiTools):
         obj.recompute()
 
     def reverse_wire(self, obj):
+        point_count = len(obj.Points)
         obj.Points = reversed(obj.Points)
+        draft_base.reverse_point_attachments(obj, point_count)
         obj.recompute()
 
     def set_first_point(self, obj, node_idx):
         pts = obj.Points
         obj.Points = pts[node_idx:] + pts[0:node_idx]
+        draft_base.rotate_point_attachments(obj, len(pts), node_idx)
         obj.recompute()
 
 
@@ -245,10 +251,12 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
         for i in range(len(uPoints) - 1):
             if (uNewPoint > uPoints[i]) and (uNewPoint < uPoints[i + 1]):
                 pts.insert(i + 1, pt)
+                draft_base.shift_point_attachments(obj, i + 1, 1)
                 break
         # DNC: fix: add points to last segment if curve is closed
         if obj.Closed and (uNewPoint > uPoints[-1]):
             pts.append(pt)
+            draft_base.shift_point_attachments(obj, len(pts) - 1, 1)
         obj.Points = pts
 
         obj.recompute()
@@ -572,6 +580,19 @@ class DraftPolygonGuiTools(GuiTools):
         elif node_idx == 1:
             obj.Radius = v.Length
         obj.recompute()
+
+
+class DraftPointGuiTools(GuiTools):
+
+    def get_edit_points(self, obj):
+        return [App.Vector(0, 0, 0)]
+
+    def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
+        point = obj.Placement.multVec(v)
+        obj.X = point.x
+        obj.Y = point.y
+        obj.Z = point.z
+        obj.Placement.Base = point
 
 
 class DraftDimensionGuiTools(GuiTools):
@@ -927,6 +948,7 @@ class DraftBezCurveGuiTools(GuiTools):
 
         pts = obj.Points
         pts.pop(node_idx)
+        draft_base.shift_point_attachments(obj, node_idx, -1)
         obj.Points = pts
         obj.Proxy.resetcontinuity(obj)
         obj.recompute()
@@ -936,7 +958,9 @@ class DraftBezCurveGuiTools(GuiTools):
         obj.recompute()
 
     def reverse_wire(self, obj):
+        point_count = len(obj.Points)
         obj.Points = reversed(obj.Points)
+        draft_base.reverse_point_attachments(obj, point_count)
         obj.recompute()
 
 
