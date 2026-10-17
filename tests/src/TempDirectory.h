@@ -3,7 +3,9 @@
 #pragma once
 
 #include <Base/FileInfo.h>
+#include <Base/Uuid.h>
 
+#include <chrono>
 #include <filesystem>
 #include <stdexcept>
 #include <string>
@@ -18,20 +20,21 @@ class TempDirectory
 public:
     explicit TempDirectory(const std::string& prefix = "fctest")
     {
-        auto base = std::filesystem::path(Base::FileInfo::getTempPath());
-        for (int suffix = 0;; ++suffix) {
-            auto candidate = base / (prefix + "_" + std::to_string(suffix));
-            std::error_code ec;
-            if (std::filesystem::create_directory(candidate, ec)) {
-                _path = candidate;
-                return;
-            }
-            if (ec && ec != std::errc::file_exists) {
-                throw std::runtime_error(
-                    "Unable to create temporary test directory: " + candidate.string()
-                );
-            }
+        const auto base = std::filesystem::path(Base::FileInfo::getTempPath());
+        const auto timestamp = std::chrono::duration_cast<std::chrono::microseconds>(
+                                   std::chrono::system_clock::now().time_since_epoch()
+        )
+                                   .count();
+        const auto candidate = base
+            / (prefix + "_" + std::to_string(timestamp) + "_" + Base::Uuid::createUuid());
+
+        std::error_code ec;
+        if (!std::filesystem::create_directory(candidate, ec) || ec) {
+            throw std::runtime_error(
+                "Unable to create temporary test directory: " + candidate.string()
+            );
         }
+        _path = candidate;
     }
 
     ~TempDirectory()

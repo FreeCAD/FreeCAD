@@ -146,6 +146,7 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <Base/Translation.h>
 #include <BRep_Tool.hxx>
 #include <TopoDS.hxx>
 #include <memory>

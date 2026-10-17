@@ -86,6 +86,16 @@ std::string translate(
     return translator()->translate(context, sourceText, disambiguation, n);
 }
 
+std::string vformat(std::string_view context, std::string_view pattern, std::format_args args)
+{
+    try {
+        return std::vformat(translate(context, pattern), args);
+    }
+    catch (const std::format_error&) {
+        return std::vformat(pattern, args);
+    }
+}
+
 bool installTranslator(std::string_view filename)
 {
     return translator()->installTranslator(filename);

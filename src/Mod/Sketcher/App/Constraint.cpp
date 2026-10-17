@@ -22,11 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QDateTime>
 #include <boost/random.hpp>
 #include <algorithm>
 #include <cmath>
 #include <format>
+#include <random>
 #include <ranges>
 #include <stdexcept>
 #include <string>
@@ -65,7 +65,7 @@ Constraint::Constraint()
     boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
-        ran.seed(QDateTime::currentMSecsSinceEpoch() & 0xffffffff);
+        ran.seed(std::random_device {}());
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);

@@ -33,6 +33,7 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
