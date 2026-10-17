@@ -360,7 +360,7 @@ WheelEventFilter::WheelEventFilter(QObject* parent)
 
 bool WheelEventFilter::isEnabled() const
 {
-    return hGrp->GetBool("ComboBoxWheelEventFilter", true);
+    return hGrp->GetBool("LargeComboBoxWheelEventFilter", true);
 }
 
 namespace

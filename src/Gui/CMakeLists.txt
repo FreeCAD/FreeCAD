@@ -298,6 +298,8 @@ generate_from_py(AxisOrigin)
 generate_from_py(Command)
 generate_from_py(EditableDatumLabel)
 generate_from_py(Navigation/NavigationStyle)
+generate_from_py(LargeComboBox)
+
 generate_module_from_py(
     FreeCADGui
     FreeCADGui_MODULE_GENERATED_SRCS
@@ -331,6 +333,7 @@ SET(FreeCADGui_Pyi_SRCS
     AxisOrigin.pyi
     Command.pyi
     EditableDatumLabel.pyi
+    LargeComboBox.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADGui_Pyi_SRCS})
 
@@ -530,6 +533,10 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgObjectSelection.h
     Dialogs/DlgAddProperty.h
     VectorListEditor.h
+    LargeComboBoxFilterModel.h
+    LargeComboBoxPopup.h
+    LargeComboBox.h
+    LargeComboBoxGridModel.h
 )
 
 SET(Dialog_SRCS
@@ -1130,6 +1137,10 @@ SET(Widget_CPP_SRCS
     ElideCheckBox.cpp
     FontScaledSVG.cpp
     SplitButton.cpp
+    LargeComboBoxFilterModel.cpp
+    LargeComboBoxPopup.cpp
+    LargeComboBox.cpp
+    LargeComboBoxGridModel.cpp
 )
 if(WIN32)
     SET(Widget_CPP_SRCS
@@ -1321,6 +1332,7 @@ SET(FreeCADGui_CPP_SRCS
     StyleParameters/ParameterManager.cpp
     StyleParameters/Diagnostics.cpp
     StyleParameters/ColorShading.cpp
+    LargeComboBoxPyImp.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
