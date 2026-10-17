@@ -153,6 +153,8 @@ class GuiExport TaskView: public QStackedWidget, public Gui::SelectionSingleton:
     Q_OBJECT
 
 public:
+    using TaskIndex = int;
+
     explicit TaskView(QWidget* parent = nullptr);
     ~TaskView() override;
 
@@ -187,8 +189,7 @@ public:
 
     TaskDialog* dialog(App::Document* doc);
 
-    void setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt);
-    void setShownTaskInfo(size_t index);
+    void setShownTaskInfo(TaskIndex index);
 
 Q_SIGNALS:
     void taskUpdate();
@@ -213,12 +214,16 @@ private:
     void slotRedoDocument(const App::Document&);
     void transactionChangeOnDocument(const App::Document&, bool undo);
 
+    void setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt);
+
+    bool isIndexValid(TaskIndex index) const;
+
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     bool event(QEvent* event) override;
 
-    void addTaskWatcher(int index);
-    void removeTaskWatcher();
+    void addTaskWatcher(TaskIndex index);
+    void removeActiveTaskWatcher();
     void removeTaskWatcher(TaskInfo& taskInfo);
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();

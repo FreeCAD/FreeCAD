@@ -299,7 +299,7 @@ TaskView::~TaskView()
 
 bool TaskView::isEmpty(bool includeWatcher) const
 {
-    if (currentIndex() == -1) {
+    if (!isIndexValid(currentIndex())) {
         return true;
     }
     if (taskInfos[currentIndex()].ActiveCtrl || taskInfos[currentIndex()].ActiveDialog) {
@@ -352,7 +352,7 @@ bool TaskView::event(QEvent* event)
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
 {
-    if (currentIndex() != -1 && taskInfos[currentIndex()].ActiveCtrl
+    if (isIndexValid(currentIndex()) && taskInfos[currentIndex()].ActiveCtrl
         && taskInfos[currentIndex()].ActiveDialog) {
         TaskInfo taskInfo = taskInfos[currentIndex()];
 
@@ -433,7 +433,7 @@ void TaskView::adjustMinimumSizeHint()
 QSize TaskView::minimumSizeHint() const
 {
     QSize ms;
-    if (currentIndex() == -1) {
+    if (!isIndexValid(currentIndex())) {
         ms = QSize(1, 1);
     }
     else {
@@ -454,7 +454,7 @@ void TaskView::slotActiveDocument(const App::Document& doc)
     auto taskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = taskInfo != taskInfos.end() && taskInfo->ActiveDialog;
     if (taskInfo == taskInfos.end()) {
-        taskInfos.push_back(
+        taskInfos.emplace_back(
             TaskInfo {
                 .taskPanel = new TaskPanel(this),
                 .Document = &doc,
@@ -512,11 +512,13 @@ void TaskView::slotDeletedDocument(const Gui::Document& guiDoc)
 {
     const App::Document* doc = guiDoc.getDocument();
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
-    if (foundTaskInfo != taskInfos.end()
-        && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
-        foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-        // the dialog may have been removed in the meantime
-        foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    if (foundTaskInfo != taskInfos.end()) {
+        if (auto dialog = foundTaskInfo->ActiveDialog;
+            dialog && dialog->isAutoCloseOnDeletedDocument()) {
+            dialog->autoClosedOnDeletedDocument();
+            // the dialog may have been removed in the meantime
+            foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        }
     }
 
     // The dialog must not outlive its document, whether or not it asked to be auto-closed:
@@ -607,7 +609,7 @@ void TaskView::OnChange(
         || Reason.Type == SelectionChanges::SetSelection
         || Reason.Type == SelectionChanges::RmvSelection) {
 
-        if (currentIndex() != -1 && !taskInfos[currentIndex()].ActiveDialog) {
+        if (isIndexValid(currentIndex()) && !taskInfos[currentIndex()].ActiveDialog) {
             updateWatcher();
         }
     }
@@ -629,7 +631,7 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
         removeTaskWatcher(*taskInfo);
     }
     else {
-        taskInfos.push_back(TaskInfo {.taskPanel = new TaskPanel(this), .Document = doc});
+        taskInfos.emplace_back(TaskInfo {.taskPanel = new TaskPanel(this), .Document = doc});
         taskInfo = std::prev(taskInfos.end());
         addWidget(taskInfo->taskPanel);
     }
@@ -843,18 +845,18 @@ void TaskView::clearTaskWatcher()
 {
     std::vector<TaskWatcher*> watcher;
 
-    removeTaskWatcher();
+    removeActiveTaskWatcher();
     // make sure to delete the old watchers
     addTaskWatcher(watcher);
 }
 
-void TaskView::addTaskWatcher(int index)
+void TaskView::addTaskWatcher(TaskIndex index)
 {
-    if (index < 0) {
+    if (!isIndexValid(index)) {
         return;
     }
 
-    removeTaskWatcher();
+    removeActiveTaskWatcher();
 
     TaskInfo& taskInfo = taskInfos[index];
     if (taskInfo.ActiveDialog) {
@@ -920,6 +922,10 @@ TaskDialog* TaskView::dialog(App::Document* doc)
     auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     return foundTaskInfo == taskInfos.end() ? nullptr : foundTaskInfo->ActiveDialog;
 }
+bool TaskView::isIndexValid(TaskIndex index) const
+{
+    return index != -1;  // -1 comes from qt, this is the invalid qtstackedwidget index
+}
 void TaskView::setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt)
 {
     if (infoIt == taskInfos.end()) {
@@ -927,7 +933,7 @@ void TaskView::setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt)
     }
     setShownTaskInfo(std::distance(taskInfos.begin(), infoIt));
 }
-void TaskView::setShownTaskInfo(size_t index)
+void TaskView::setShownTaskInfo(TaskIndex index)
 {
     // We assume index is in range
 
@@ -935,17 +941,19 @@ void TaskView::setShownTaskInfo(size_t index)
 
     setCurrentIndex(index);
 
-    if (initIndex != -1 && taskInfos[initIndex].ActiveDialog) {
-        Gui::Selection().rmvSelectionGate();
-        taskInfos[initIndex].ActiveDialog->deactivate();
+    if (isIndexValid(initIndex)) {
+        if (auto dialog = taskInfos[initIndex].ActiveDialog) {
+            Gui::Selection().rmvSelectionGate();
+            dialog->deactivate();
+        }
     }
 
-    if (taskInfos[index].ActiveDialog) {
-        taskInfos[index].ActiveDialog->activate();
+    if (auto dialog = taskInfos[index].ActiveDialog) {
+        dialog->activate();
     }
 }
 
-void TaskView::removeTaskWatcher()
+void TaskView::removeActiveTaskWatcher()
 {
     auto taskInfoWithTaskWatcher = std::ranges::find(taskInfos, true, &TaskInfo::hasTaskWatcher);
     if (taskInfoWithTaskWatcher != taskInfos.end()) {
@@ -1042,7 +1050,7 @@ void TaskView::clearActionStyle()
 {
     QSint::ActionPanelScheme::defaultScheme()->clearActionStyle();
 
-    if (currentIndex() == -1) {
+    if (!isIndexValid(currentIndex())) {
         return;
     }
     taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(
@@ -1053,7 +1061,7 @@ void TaskView::clearActionStyle()
 void TaskView::restoreActionStyle()
 {
     QSint::ActionPanelScheme::defaultScheme()->restoreActionStyle();
-    if (currentIndex() == -1) {
+    if (!isIndexValid(currentIndex())) {
         return;
     }
     taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(
