@@ -57,11 +57,13 @@ Assisted-by: GPT-4o-2024-08-06
 
 ### PR template
 
-We ask the contributor in the Pull Request template to mark a required checkbox that says “This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR is done by me personally.”. Don't be afraid that your English is not perfect - we are mostly non-native speakers. We don't recommend using machine translation, but if you do - add original text too.
+We ask the contributor in the Pull Request template to mark a required checkbox that says “This PR is not unverified AI output, I take responsibility for it, and all communication from my side in this PR, including **PR description, comments and commit messages** is done by me personally.”. Don't be afraid that your English is not perfect - we are mostly non-native speakers. We don't recommend using machine translation, but if you do - add original text too.
 
-### “Unverified” label
+### New contributors
 
-PRs from outside the Developers group will be marked as "Unverified" to help us find potential violations.  After several successful contributions we will add new contributors to the groups - but don't hesitate to ask us to do it sooner.
+For new contributors wanting to participate in FreeCAD development, we tolerate but discourage the use of AI tools for generating code, which will not help you build a good mental model of the code and help you learn. AI agents are an expert tool that require a good pre-existing knowledge of programming concepts and of the current architecture of the app to be used effectively.
+
+PRs from contributors outside of the "FreeCAD Developers" GitHub group will be scrutinized to find potential violations of the AI policy. Maintainers reserve the right to close any contribution that does not adhere the policy. After several successful contributions, we will add new contributors to the group - but don't hesitate to ask us to do it sooner.
 
 
 This policy is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
