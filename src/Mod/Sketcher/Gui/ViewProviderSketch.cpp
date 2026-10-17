@@ -4350,12 +4350,13 @@ bool ViewProviderSketch::setEdit(int ModNum)
 }
 void ViewProviderSketch::setupActiveAndInEdit()
 {
-    if (!listener) {
-        // intercept del key press from main app
-        listener = std::make_unique<ShortcutListener>(this);
-
-        Gui::getMainWindow()->installEventFilter(listener.get());
+    if (listener) {
+        return;
     }
+
+    // intercept del key press from main app
+    listener = std::make_unique<ShortcutListener>(this);
+    Gui::getMainWindow()->installEventFilter(listener.get());
     attachSelection();
 
     Workbench::enterEditMode();
@@ -4366,10 +4367,12 @@ void ViewProviderSketch::setupActiveAndInEdit()
 }
 void ViewProviderSketch::unsetupActiveAndInEdit()
 {
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener.get());
-        listener.reset();
+    if (!listener) {
+        return;
     }
+
+    Gui::getMainWindow()->removeEventFilter(listener.get());
+    listener.reset();
     detachSelection();
 
     Workbench::leaveEditMode();
@@ -4528,11 +4531,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
-
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener.get());
-        listener.reset();
-    }
 
     if (isInEditMode()) {
         if (sketchHandler) {

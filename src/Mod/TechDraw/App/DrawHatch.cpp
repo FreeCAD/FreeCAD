@@ -33,6 +33,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawHatch.h"
 #include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
 #include "DrawUtil.h"
@@ -229,6 +230,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawHatchPython, TechDraw::DrawHatch)
 template<> const char* TechDraw::DrawHatchPython::getViewProviderName(void) const {
     return "TechDrawGui::ViewProviderHatch";
+}
+template<>
+PyObject* TechDraw::DrawHatchPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawHatchPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

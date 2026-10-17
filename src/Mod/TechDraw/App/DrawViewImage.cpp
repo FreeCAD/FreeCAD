@@ -31,7 +31,9 @@
 #include <Base/FileInfo.h>
 
 #include "DrawUtil.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewImage.h"
+#include "DrawViewPy.h"
 
 
 using namespace TechDraw;
@@ -117,6 +119,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewImagePython, TechDraw::DrawViewImage)
 template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderImage";
+}
+template<>
+PyObject* TechDraw::DrawViewImagePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

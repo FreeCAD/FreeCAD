@@ -49,6 +49,11 @@ Visible = Dict[str, bool]
 
 POST_TYPE = "machine"
 
+PREAMBLE = """G17 G54 G40 G49 G80 G90"""
+POSTAMBLE = """M05
+G17 G54 G90 G80 G40
+M2"""
+
 
 class Mach3_Mach4(PostProcessor):
     """The Mach3_Mach4 post processor class."""
@@ -91,42 +96,16 @@ class Mach3_Mach4(PostProcessor):
         #
         values["OUTPUT_MACHINE_NAME"] = True
         #
-        # The order of parameters.
-        #
-        # mach3_mach4 doesn't want K properties on XY plane; Arcs need work.
-        #
-        values["PARAMETER_ORDER"] = [
-            "X",
-            "Y",
-            "Z",
-            "A",
-            "B",
-            "C",
-            "I",
-            "J",
-            "F",
-            "S",
-            "T",
-            "Q",
-            "R",
-            "L",
-            "H",
-            "D",
-            "P",
-        ]
-        #
         # Any commands in this value will be output as the last commands
         # in the G-code file.
         #
-        values["POSTAMBLE"] = """M05
-G17 G54 G90 G80 G40
-M2"""
+        values["POSTAMBLE"] = POSTAMBLE
         values["POSTPROCESSOR_FILE_NAME"] = __name__
         #
         # Any commands in this value will be output after the header and
         # safety block at the beginning of the G-code file.
         #
-        values["PREAMBLE"] = """G17 G54 G40 G49 G80 G90"""
+        values["PREAMBLE"] = PREAMBLE
         #
         # Output the machine name for mach3_mach4 instead of the machine units alone.
         #
@@ -148,3 +127,24 @@ M2"""
         and output 'real' GCode suitable for a Mach3_4 3 axis mill.
         """
         return tooltip
+
+    @classmethod
+    def get_common_property_schema(cls):
+        """Mach3_Mach4 defaults for the common properties."""
+        common_props = super().get_common_property_schema()
+
+        for prop in common_props:
+            name = prop["name"]
+            if name == "file_extension":
+                prop["default"] = "nc"
+            elif name == "preamble":
+                prop["default"] = PREAMBLE
+            elif name == "postamble":
+                prop["default"] = POSTAMBLE
+            elif name == "supports_tool_radius_compensation":
+                prop["default"] = True
+            elif name == "spindle_decimals":
+                # S takes an integer.
+                prop["default"] = 0
+
+        return common_props

@@ -46,9 +46,9 @@ class CommandCreateSnapshot:
     def GetResources(self):
         return {
             "Pixmap": "Std_ViewScreenShot",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_Snapshot", "Snapshot"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSnapshot", "Snapshot"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Assembly_Snapshot",
+                "Assembly_CreateSnapshot",
                 "Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.",
             ),
             "CmdType": "ForEdit",

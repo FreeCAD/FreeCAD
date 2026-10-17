@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <sstream>
 # include <QDomDocument>
 
 
@@ -33,6 +32,8 @@
 #include "DrawPage.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"
+
+#include <App/FeaturePythonPyImp.h>
 
 
 using namespace TechDraw;
@@ -235,6 +236,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSymbolPython, TechDraw::DrawViewSymbo
 template<> const char* TechDraw::DrawViewSymbolPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderSymbol";
+}
+template<>
+PyObject* TechDraw::DrawViewSymbolPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewSymbolPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

@@ -1341,28 +1341,12 @@ void ToolBarManager::setState(const QString& name, State state)
             tb->toggleViewAction()->setVisible(false);  // not visible in context menus
             tb->hide();                                 // toolbar not visible
         }
-        else if (state == State::SaveState) {
+        else if (state == State::SaveState && tb->toggleViewAction()->isVisible()) {
+            // Unavailable toolbars are hidden by the context, not by the user.
             auto show = tb->isVisible();
             saveVisibility(show, policy);
         }
     }
-}
-bool ToolBarManager::isAnyVisible(const QList<QString>& names)
-{
-    for (auto& name : names) {
-        if (!isVisible(name)) {
-            return true;
-        }
-    }
-    return false;
-}
-bool ToolBarManager::isVisible(const QString& name)
-{
-    QToolBar* tb = findToolBar(toolBars(), name);
-    if (tb) {
-        return tb->isVisible();
-    }
-    return false;
 }
 
 #include "moc_ToolBarManager.cpp"
