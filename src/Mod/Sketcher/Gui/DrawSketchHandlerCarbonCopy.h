@@ -25,6 +25,7 @@
 #pragma once
 
 #include <QApplication>
+#include <QMouseEvent>
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -126,6 +127,30 @@ public:
     }
 };
 
+class CarbonCopyTreeWidgetFilter: public QObject
+{
+    Q_OBJECT
+public:
+    explicit CarbonCopyTreeWidgetFilter(QObject* parent = nullptr)
+        : QObject(parent)
+    {}
+
+protected:
+    bool eventFilter(QObject*, QEvent* event) override
+    {
+        // Filter out mouse move events
+        // to prevent drag-selection in the TreeWidget,
+        // avoiding repeated CarbonCopy execution
+        if (event->type() == QEvent::MouseMove) {
+            auto* mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->buttons() != Qt::NoButton) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
 class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerCarbonCopy)
@@ -221,6 +246,13 @@ private:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+
+        treeWidgetFilter = std::make_unique<CarbonCopyTreeWidgetFilter>();
+        tree = SketcherGui::findModelTreeWidget();
+        if (tree && treeWidgetFilter) {
+            tree->installEventFilter(treeWidgetFilter.get());
+            tree->viewport()->installEventFilter(treeWidgetFilter.get());
+        }
     }
 
     QString getCrosshairCursorSVGName() const override
@@ -232,7 +264,18 @@ private:
     {
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
+        if (tree && treeWidgetFilter) {
+            tree->removeEventFilter(treeWidgetFilter.get());
+            tree->viewport()->removeEventFilter(treeWidgetFilter.get());
+        }
+        if (treeWidgetFilter) {
+            treeWidgetFilter.reset();
+        }
+        tree = nullptr;
     }
+
+    Gui::TreeWidget* tree = nullptr;
+    std::unique_ptr<CarbonCopyTreeWidgetFilter> treeWidgetFilter;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override

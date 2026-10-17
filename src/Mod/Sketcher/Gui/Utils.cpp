@@ -29,8 +29,10 @@
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <Gui/ComboView.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/DockWindowManager.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -1008,4 +1010,26 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
         }
     }
     return -1;
+}
+
+Gui::TreeWidget* SketcherGui::findModelTreeWidget()
+{
+    // The target dock's name depends on the tree mode
+    // (Independent -> "Tree view", Combined -> "Model").
+    auto* mgr = Gui::DockWindowManager::instance();
+
+    auto* dock = mgr->getDockWindow("Tree view");
+    if (!dock || !dock->inherits("Gui::TreeDockWidget")) {
+        dock = mgr->getDockWindow("Model");
+        if (!dock || !dock->inherits("Gui::DockWnd::ComboView")) {
+            return nullptr;
+        }
+    }
+
+    for (auto* w : dock->findChildren<QWidget*>()) {
+        if (w->inherits("Gui::TreeWidget")) {
+            return static_cast<Gui::TreeWidget*>(w);
+        }
+    }
+    return nullptr;
 }
