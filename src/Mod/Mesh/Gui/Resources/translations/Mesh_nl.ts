@@ -1671,12 +1671,12 @@ to a smoother appearance.
       <translation>Berekenen</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>No selection</source>
       <translation>Geen selectie</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Selecteer een gebied alvorens het oppervlak aan te brengen.</translation>
     </message>
@@ -1940,29 +1940,29 @@ to a smoother appearance.
       <translation>Bol</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="376"/>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="379"/>
+      <location filename="../../SegmentationBestFit.cpp" line="404"/>
       <source>Base</source>
       <translation>Basis</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="377"/>
+      <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <source>Normal</source>
       <translation>Loodrechte lijn</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="402"/>
+      <location filename="../../SegmentationBestFit.cpp" line="405"/>
       <source>Axis</source>
       <translation>As</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="403"/>
-      <location filename="../../SegmentationBestFit.cpp" line="429"/>
+      <location filename="../../SegmentationBestFit.cpp" line="406"/>
+      <location filename="../../SegmentationBestFit.cpp" line="433"/>
       <source>Radius</source>
       <translation>Radius</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="432"/>
       <source>Center</source>
       <translation>Middelpunt</translation>
     </message>

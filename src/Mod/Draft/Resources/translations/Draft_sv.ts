@@ -3050,48 +3050,48 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <source>Relative</source>
       <translation>Relativ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Global</source>
       <translation>Global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
-      <location filename="../../DraftGui.py" line="1142"/>
+      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="1155"/>
       <source>Continue</source>
       <translation>Fortsätt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>Om markerad, kommer kommandot inte att avslutas förrän kommandoknappen trycks in igen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>Om detta är markerat placeras nästa mått i en kedja med det föregående måttet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="795"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Set Working Plane</source>
       <translation>Ställ in arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Select Edge</source>
       <translation>Välj kant</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="822"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_scale.py" line="229"/>
@@ -3099,7 +3099,7 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
       <translation>Kopiera</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Wipe</source>
       <translation>Rensa</translation>
     </message>
@@ -3180,283 +3180,283 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
       <translation>Position:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="669"/>
-      <location filename="../../DraftGui.py" line="698"/>
-      <location filename="../../DraftGui.py" line="1849"/>
-      <location filename="../../DraftGui.py" line="1867"/>
+      <location filename="../../DraftGui.py" line="682"/>
+      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="1862"/>
+      <location filename="../../DraftGui.py" line="1880"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="710"/>
       <source>active command:</source>
       <translation>aktivt kommando:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="712"/>
       <source>Active Draft command</source>
       <translation>Aktivt släppningskommando</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="713"/>
       <source>X coordinate of the point</source>
       <translation>X-koordinat för punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="714"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="702"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="721"/>
       <source>Length</source>
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <location filename="../../draftguitools/gui_trimex.py" line="303"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
-      <location filename="../../DraftGui.py" line="1125"/>
+      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="1138"/>
       <source>Radius</source>
       <translation>Radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="838"/>
       <source>Creates the text object and finishes the command</source>
       <translation>Skapar textobjektet och avslutar kommandot</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="847"/>
+      <location filename="../../DraftGui.py" line="860"/>
       <source>Changes the default style for new objects</source>
       <translation>Ändrar standardstil för nya objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="848"/>
+      <location filename="../../DraftGui.py" line="861"/>
       <source>Toggles construction mode</source>
       <translation>Växlar konstruktionsläge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1076"/>
+      <location filename="../../DraftGui.py" line="1089"/>
       <source>Label Type</source>
       <translation>Etikettyp</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1126"/>
+      <location filename="../../DraftGui.py" line="1139"/>
       <source>Radius of Circle</source>
       <translation>Cirkelns radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Koordinater i förhållande till den senaste punkten eller till koordinatsystemets origo
 om det är den första punkten som ska anges</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="704"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Y coordinate of the point</source>
       <translation>Y-koordinat för punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Z coordinate of the point</source>
       <translation>Z-koordinat för punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Enter Point</source>
       <translation>Ange punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Length of the current segment</source>
       <translation>Längd på det aktuella segmentet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="725"/>
       <source>Angle of the current segment</source>
       <translation>Vinkel för aktuellt segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Radius of the circle</source>
       <translation>Cirkelns radie</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Koordinater i förhållande till det globala koordinatsystemet.
 Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="746"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Finish</source>
       <translation>Slutför</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="750"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Avslutar den aktuella ritnings- eller redigeringsoperationen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2082"/>
+      <location filename="../../DraftGui.py" line="2095"/>
       <source>Modify Objects</source>
       <translation>Modifiera objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2244"/>
+      <location filename="../../DraftGui.py" line="2257"/>
       <source>Facebinder Elements</source>
       <translation>Ytbindarelement</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="789"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Om detta är markerat utförs en förskjutning i OCC-stil i stället för den klassiska förskjutningen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>OCC-style offset</source>
       <translation>Förskjutning i OCC-stil</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="791"/>
       <source>Undo</source>
       <translation>Ångra</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="825"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Om markerat kommer objekt att kopieras istället för att flyttas</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Undo the last segment</source>
       <translation>Ångra det sista segmentet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Enter a point with given coordinates</source>
       <translation>Ange en punkt med givna koordinater</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>Make face</source>
       <translation>Gör ansikte</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="744"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Om detta är markerat fylls objektet med en yta.
 Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är aktiverad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>Chained mode</source>
       <translation>Kedjat läge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Finishes and closes the current line</source>
       <translation>Avslutar och sluter den aktuella linjen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="806"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Raderar de befintliga segmenten av denna linje och börjar om från den sista punkten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Omorienterar arbetsplanet efter det sista segmentet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Väljer en befintlig kant som ska mätas med detta mått</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>Sides</source>
       <translation>Sidor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="807"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Number of sides</source>
       <translation>Antal sidor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Modify subelements</source>
       <translation>Modifiera underelement</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="834"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Om markerad, kommer underelement att ändras istället för hela objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="849"/>
-      <location filename="../../DraftGui.py" line="1855"/>
-      <location filename="../../DraftGui.py" line="1873"/>
+      <location filename="../../DraftGui.py" line="862"/>
+      <location filename="../../DraftGui.py" line="1868"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Autogroup off</source>
       <translation>Automatisk gruppering av</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="983"/>
+      <location filename="../../DraftGui.py" line="996"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>Rad</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="998"/>
+      <location filename="../../DraftGui.py" line="1011"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1021"/>
+      <location filename="../../DraftGui.py" line="1034"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1026"/>
+      <location filename="../../DraftGui.py" line="1039"/>
       <source>Arc</source>
       <translation>Båge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1031"/>
+      <location filename="../../DraftGui.py" line="1044"/>
       <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>Rotera</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1037"/>
+      <location filename="../../DraftGui.py" line="1050"/>
       <source>Point</source>
       <translation>Poäng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1074"/>
+      <location filename="../../DraftGui.py" line="1087"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1093"/>
+      <location filename="../../DraftGui.py" line="1106"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3464,32 +3464,32 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
       <translation>Förskjutning</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1098"/>
-      <location filename="../../DraftGui.py" line="1118"/>
+      <location filename="../../DraftGui.py" line="1111"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <location filename="../../draftguitools/gui_trimex.py" line="299"/>
       <source>Distance</source>
       <translation>Avstånd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1099"/>
-      <location filename="../../DraftGui.py" line="1119"/>
+      <location filename="../../DraftGui.py" line="1112"/>
+      <location filename="../../DraftGui.py" line="1132"/>
       <location filename="../../draftguitools/gui_trimex.py" line="300"/>
       <source>Offset distance</source>
       <translation>Förskjutningsavstånd</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../DraftGui.py" line="1128"/>
       <location filename="../../draftguitools/gui_trimex.py" line="84"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1219"/>
-      <location filename="../../DraftGui.py" line="1221"/>
-      <location filename="../../DraftGui.py" line="1222"/>
-      <location filename="../../DraftGui.py" line="1224"/>
-      <location filename="../../DraftGui.py" line="1225"/>
-      <location filename="../../DraftGui.py" line="1226"/>
+      <location filename="../../DraftGui.py" line="1232"/>
+      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1235"/>
+      <location filename="../../DraftGui.py" line="1237"/>
+      <location filename="../../DraftGui.py" line="1238"/>
+      <location filename="../../DraftGui.py" line="1239"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3497,12 +3497,12 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
       <translation>Lokal {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1228"/>
-      <location filename="../../DraftGui.py" line="1229"/>
-      <location filename="../../DraftGui.py" line="1230"/>
-      <location filename="../../DraftGui.py" line="1232"/>
-      <location filename="../../DraftGui.py" line="1233"/>
-      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1241"/>
+      <location filename="../../DraftGui.py" line="1242"/>
+      <location filename="../../DraftGui.py" line="1243"/>
+      <location filename="../../DraftGui.py" line="1245"/>
+      <location filename="../../DraftGui.py" line="1246"/>
+      <location filename="../../DraftGui.py" line="1247"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3510,27 +3510,27 @@ Inte tillgängligt om inställningen ”Skapa Part-primitiver om möjligt” är
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1863"/>
+      <location filename="../../DraftGui.py" line="1876"/>
       <source>Autogroup:</source>
       <translation>Automatisk gruppering:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2063"/>
+      <location filename="../../DraftGui.py" line="2076"/>
       <source>Create Objects</source>
       <translation>Skapa objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2241"/>
+      <location filename="../../DraftGui.py" line="2254"/>
       <source>Faces</source>
       <translation>Ansikten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2242"/>
+      <location filename="../../DraftGui.py" line="2255"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2243"/>
+      <location filename="../../DraftGui.py" line="2256"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
@@ -3901,7 +3901,7 @@ eller försök spara till en lägre DWG-version.</translation>
       <translation>Välj placeringspunkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="835"/>
       <location filename="../../draftguitools/gui_texts.py" line="133"/>
       <source>Create Text</source>
       <translation>Skapa text</translation>
@@ -4528,17 +4528,17 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <translation>Trimex stöder inte denna objekttyp</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="589"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="590"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Det går inte att trimma dessa objekt, endast Draft-trådar och Draft-bågar stöds</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="610"/>
       <source>These objects do not intersect</source>
       <translation>Dessa objekt korsar inte varandra</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="613"/>
       <source>Too many intersection points</source>
       <translation>För många skärningspunkter</translation>
     </message>
@@ -4565,7 +4565,7 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="199"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="715"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="716"/>
       <source>Select a single face to extrude</source>
       <translation>Markera en enda yta att extrudera</translation>
     </message>
@@ -4575,37 +4575,37 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <translation>Förskjutningsvinkel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="592"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="593"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Det går inte att trimma dessa objekt, för många trådar</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="688"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="689"/>
       <source>%1 pick target</source>
       <translation>%1 välj mål</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="690"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="691"/>
       <source>Hold %1 free direction</source>
       <translation>Håll ned %1 för fri riktning</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="693"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Hold %1 keep active endpoint</source>
       <translation>Håll ned %1 för att behålla den aktiva ändpunkten</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="696"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="697"/>
       <source>Hold %1 invert trim direction</source>
       <translation>Håll ned %1 för att invertera trimningsriktningen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="705"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
       <source>Extrude Face</source>
       <translation>Extrudera yta</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="707"/>
       <source>Select a face to extrude</source>
       <translation>Markera en yta att extrudera</translation>
     </message>
@@ -5023,7 +5023,7 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <translation>Välj ett objekt att uppgradera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="91"/>
       <source>Upgrade</source>
       <translation>Uppgradera</translation>
     </message>
@@ -5053,7 +5053,7 @@ Den slutliga vinkeln blir basvinkeln plus denna vinkel.</translation>
       <translation>Reparera</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="91"/>
       <source>Downgrade</source>
       <translation>Nedgradera</translation>
     </message>

@@ -880,27 +880,27 @@ invalid constraints, and degenerate geometry</source>
       <translation>Renombrar restricción de croquis</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Point</source>
       <translation>Punto de arrastre</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Curve</source>
       <translation>Arrastrar curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2214"/>
       <source>Drag geometries</source>
       <translation>Arrastrar geometrías</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1417"/>
       <source>Drag Constraint</source>
       <translation>Restricción de arrastre</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1666"/>
       <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
@@ -947,18 +947,18 @@ invalid constraints, and degenerate geometry</source>
       <translation>Geometrías de simetría</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="464"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
       <source>Add line to sketch polyline</source>
       <translation>Añadir línea a croquis de polilínea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="494"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
       <source>Add arc to sketch polyline</source>
       <translation>Añadir arco a croquis de polilínea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1296"/>
       <source>Add sketch polyline</source>
       <translation>Añadir polilínea de croquis</translation>
     </message>
@@ -1007,54 +1007,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3006"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>No está solicitando ningún cambio en la multiplicidad de nudos.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2998"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3176"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2984"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3162"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de geometría B-spline (GeoID) está fuera de los límites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3192"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3178"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>El índice de geometría (GeoID) proporcionado no es una B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3013"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>El índice de nudos está fuera de los límites. Tenga en cuenta que de acuerdo con la notación OCC, el primer nudo tiene índice 1 y no 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3043"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3029"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicidad no puede incrementarse más allá del grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3054"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3040"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicidad no puede ser disminuida más allá de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3070"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3056"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC es incapaz de disminuir la multiplicidad dentro de la tolerancia máxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3183"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3169"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El nudo no puede tener una multiplicidad cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3205"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3191"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>La multiplicidad del nodo no puede ser mayor que el grado de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3215"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3201"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>El nudo no puede ser insertado fuera del rango de parámetros de la B-spline.</translation>
     </message>
@@ -2045,7 +2045,7 @@ Seleccione una línea o un eje en su lugar.</translation>
       <translation>%1 Elige el punto inferior derecho</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
       <source>Polyline Parameters</source>
       <translation>Parámetros de polilínea</translation>
     </message>
@@ -4056,112 +4056,112 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4181"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4205"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>El croquis no es válido y no puede editarse.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La siguiente restricción es parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Las siguientes restricciones son parcialmente redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Edit Sketch</source>
       <translation>Croquis de edición</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4182"/>
       <source>Close this dialog?</source>
       <translation>¿Cerrar este cuadro de diálogo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4203"/>
       <source>Invalid Sketch</source>
       <translation>Croquis no válido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4204"/>
       <source>Open the sketch validation tool?</source>
       <translation>¿Abrir la herramienta de validación de bocetos?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following constraint:</source>
       <translation>Eliminar la siguiente restricción:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Eliminar al menos una de las siguientes restricciones:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Eliminar la siguiente restricción redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Eliminar las siguientes restricciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Eliminar la siguiente restricción mal formada:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Eliminar las siguientes restricciones mal formadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
       <source>Empty sketch</source>
       <translation>Croquis vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
       <source>Malformed constraints:</source>
       <translation>Restricciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
       <source>Redundant constraints:</source>
       <translation>Restricciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grado de libertad</numerusform>
@@ -4169,12 +4169,12 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
       <source>Missing external geometry</source>
       <translation>Falta geometría externa</translation>
     </message>
@@ -4663,7 +4663,7 @@ El algoritmo QR de Eigen Sparse está optimizado para matrices dispersas; genera
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
       <source>and %1 more</source>
       <translation>y %1 más</translation>
     </message>
@@ -4906,9 +4906,9 @@ El espaciado de la cuadrícula cambia si se reduce por debajo del tamaño de pí
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
@@ -4978,7 +4978,7 @@ El espaciado de la cuadrícula cambia si se reduce por debajo del tamaño de pí
       <translation>Restricción no válida</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="512"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
       <source>Failed to add arc</source>
       <translation>Falló al añadir el arco</translation>
     </message>
@@ -4993,7 +4993,7 @@ El espaciado de la cuadrícula cambia si se reduce por debajo del tamaño de pí
       <translation>Error al crear B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1413"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Error al eliminar el último polo/nudo</translation>
@@ -5033,7 +5033,7 @@ El espaciado de la cuadrícula cambia si se reduce por debajo del tamaño de pí
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="145"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
       <source>Failed to add line</source>
       <translation>Error al añadir línea</translation>
     </message>
@@ -7974,22 +7974,22 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick first point</source>
       <translation>%1 Elegir el primer punto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
       <source>%1 pick next point</source>
       <translation>%1 Elegir el siguiente punto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
       <source>%1 finish</source>
       <translation>%1 Terminar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
       <source>%1 switch mode</source>
       <translation>Cambio de modo</translation>
     </message>
@@ -8437,37 +8437,37 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
   <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
       <source>%1 switch to arc</source>
       <translation>%1 cambiar a arco</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
       <source>%1 switch to line</source>
       <translation>%1 cambiar a línea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
       <source>%1 toggle fillet</source>
       <translation>%1 alternar redondeo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
       <source>%1 undo last point</source>
       <translation>%1 Deshacer el último punto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
       <source>%1 pick first point</source>
       <translation>%1 Elegir el primer punto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
       <source>%1 pick next point</source>
       <translation>%1 Elegir el siguiente punto</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
       <source>%1 finish</source>
       <translation>%1 Terminar</translation>
     </message>
@@ -8475,12 +8475,12 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1767"/>
       <source>Line</source>
       <translation>Línea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1731"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1768"/>
       <source>Arc</source>
       <translation>Arco</translation>
     </message>
@@ -8488,12 +8488,12 @@ Los puntos deben estar más cerca de una quinta parte del espacio de la cuadríc
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1737"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1774"/>
       <source>Fillet (F)</source>
       <translation>Redondeo (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1741"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1778"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation>Añade un redondeo entre la línea actual y la anterior</translation>
     </message>

@@ -878,7 +878,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation>Nombre de Punts</translation>
+      <translation>Nombre de punts</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
@@ -1664,12 +1664,12 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
       <translation>Calcula</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>No selection</source>
       <translation>No s'ha seleccionat</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Abans d'ajustar la superfície, seleccioneu una àrea.</translation>
     </message>
@@ -1933,29 +1933,29 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
       <translation>Esfera</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="376"/>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="379"/>
+      <location filename="../../SegmentationBestFit.cpp" line="404"/>
       <source>Base</source>
       <translation>Base</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="377"/>
+      <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="402"/>
+      <location filename="../../SegmentationBestFit.cpp" line="405"/>
       <source>Axis</source>
       <translation>Eix</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="403"/>
-      <location filename="../../SegmentationBestFit.cpp" line="429"/>
+      <location filename="../../SegmentationBestFit.cpp" line="406"/>
+      <location filename="../../SegmentationBestFit.cpp" line="433"/>
       <source>Radius</source>
       <translation>Radi</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="432"/>
       <source>Center</source>
       <translation>Centre</translation>
     </message>
@@ -2317,7 +2317,7 @@ Visiteu https://openscad.org/ per a instal·lar-lo.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation>Nombre de Punts</translation>
+      <translation>Nombre de punts</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>

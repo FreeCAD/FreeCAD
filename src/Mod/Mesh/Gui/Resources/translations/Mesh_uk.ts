@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="994"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Поперечні перерізи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -1290,7 +1290,7 @@
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No Active Document</source>
-      <translation type="unfinished">No Active Document</translation>
+      <translation>Немає активного документа</translation>
     </message>
   </context>
   <context>
@@ -1670,12 +1670,12 @@ to a smoother appearance.
       <translation>Обчислити</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>No selection</source>
       <translation>Нічого не вибрано</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Перед градуюванням поверхні виберіть область.</translation>
     </message>
@@ -1835,7 +1835,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Площина</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1900,7 +1900,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation>Площини</translation>
+      <translation>Площина</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
@@ -1939,29 +1939,29 @@ to a smoother appearance.
       <translation>Сфера</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="376"/>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="379"/>
+      <location filename="../../SegmentationBestFit.cpp" line="404"/>
       <source>Base</source>
       <translation>Основа</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="377"/>
+      <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <source>Normal</source>
       <translation>Звичайна</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="402"/>
+      <location filename="../../SegmentationBestFit.cpp" line="405"/>
       <source>Axis</source>
       <translation>Вісь</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="403"/>
-      <location filename="../../SegmentationBestFit.cpp" line="429"/>
+      <location filename="../../SegmentationBestFit.cpp" line="406"/>
+      <location filename="../../SegmentationBestFit.cpp" line="433"/>
       <source>Radius</source>
       <translation>Радіус</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="432"/>
       <source>Center</source>
       <translation>Центр</translation>
     </message>

@@ -1003,7 +1003,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Choose an option below. Or define a working plane by selecting 1 to 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</source>
-      <translation type="unfinished">Choose an option below. Or define a working plane by selecting 1 to 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</translation>
+      <translation>以下のオプションを選択してください。 または1～3つの頂点、1つ以上のシェイプ、あるいは作業平面プロキシを選択して作業平面を定義し、3Dビューをクリックして確認してください。</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="214"/>
@@ -2059,7 +2059,7 @@ a raw wire from the original shape is added</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Apply cuts</source>
-      <translation type="unfinished">Apply cuts</translation>
+      <translation>切断を適用</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2076,16 +2076,14 @@ a raw wire from the original shape is added</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="190"/>
       <source>Maximum deviation for approximation of complex curves</source>
-      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+      <translation>複素曲線の近似用の最大偏位</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="210"/>
       <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
 Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
 Set to zero to disable approximation.</source>
-      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
-Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
-Set to zero to disable approximation.</translation>
+      <translation>楕円、双曲線、放物線、およびベジェ曲線やB-スプライン曲線を円弧や直線で近似する際の最大偏差。CAMワークベンチなどで利用可能です。0に設定すると、近似は無効になります。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="256"/>
@@ -2753,7 +2751,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>Note: DXF options apply to DWG files as well.</source>
-      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
+      <translation>注意: DXFオプションはDWGファイルにも適用されます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3004,48 +3002,48 @@ if they match the X, Y or Z axis of the global coordinate system</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <source>Relative</source>
       <translation>相対</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Global</source>
       <translation>全体</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
-      <location filename="../../DraftGui.py" line="1142"/>
+      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="1155"/>
       <source>Continue</source>
       <translation>続行</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>チェックされている場合、再びコマンドボタンを押すまでコマンドが終了しなくなります。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>チェックした場合、次の寸法は前に配置された寸法とともに連鎖内に配置されます。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="795"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Set Working Plane</source>
       <translation>作業平面を設定</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Select Edge</source>
       <translation>エッジを選択</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="822"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_scale.py" line="229"/>
@@ -3053,7 +3051,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>コピー</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Wipe</source>
       <translation>ワイプ</translation>
     </message>
@@ -3134,282 +3132,282 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>位置:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="669"/>
-      <location filename="../../DraftGui.py" line="698"/>
-      <location filename="../../DraftGui.py" line="1849"/>
-      <location filename="../../DraftGui.py" line="1867"/>
+      <location filename="../../DraftGui.py" line="682"/>
+      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="1862"/>
+      <location filename="../../DraftGui.py" line="1880"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="710"/>
       <source>active command:</source>
       <translation>アクティブコマンド:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="712"/>
       <source>Active Draft command</source>
       <translation>アクティブなドラフトコマンド</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="713"/>
       <source>X coordinate of the point</source>
       <translation>点のX座標</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="714"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="702"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="721"/>
       <source>Length</source>
       <translation>長さ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <location filename="../../draftguitools/gui_trimex.py" line="303"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
-      <location filename="../../DraftGui.py" line="1125"/>
+      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="1138"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="838"/>
       <source>Creates the text object and finishes the command</source>
       <translation>テキストオブジェクトを作成し、コマンドを終了</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="847"/>
+      <location filename="../../DraftGui.py" line="860"/>
       <source>Changes the default style for new objects</source>
       <translation>新規オブジェクトのデフォルトのスタイルを変更</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="848"/>
+      <location filename="../../DraftGui.py" line="861"/>
       <source>Toggles construction mode</source>
       <translation>構築モードの切り替え</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1076"/>
+      <location filename="../../DraftGui.py" line="1089"/>
       <source>Label Type</source>
       <translation>ラベルタイプ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1126"/>
+      <location filename="../../DraftGui.py" line="1139"/>
       <source>Radius of Circle</source>
       <translation>円の半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>最初の点が設定されている場合、最後の点からの相対座標または座標系原点</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="704"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Y coordinate of the point</source>
       <translation>点のY座標</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Z coordinate of the point</source>
       <translation>点のZ座標</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Enter Point</source>
       <translation>点を入力</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Length of the current segment</source>
       <translation>現在のセグメントの長さ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="725"/>
       <source>Angle of the current segment</source>
       <translation>現在のセグメントの角度</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Radius of the circle</source>
       <translation>円の半径</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>グローバル座標系に対する相対座標。
 作業平面座標系を使用する場合はチェックを外します。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="746"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Finish</source>
       <translation>完了</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="750"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>現在の製図、または編集操作を終了</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2082"/>
+      <location filename="../../DraftGui.py" line="2095"/>
       <source>Modify Objects</source>
       <translation>オブジェクトを変更</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2244"/>
+      <location filename="../../DraftGui.py" line="2257"/>
       <source>Facebinder Elements</source>
       <translation>フェイスバインダー要素</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="789"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>チェックされている場合、従来のオフセットの代わりにくOCCスタイルのオフセットが行われます。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>OCC-style offset</source>
       <translation>OCCスタイルのオフセット</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="791"/>
       <source>Undo</source>
       <translation>元に戻す</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="825"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>チェックされている場合、オブジェクトは移動ではなくコピーされます。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Undo the last segment</source>
       <translation>最後のセグメントを元に戻す</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Enter a point with given coordinates</source>
       <translation>指定座標の点を入力</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>Make face</source>
       <translation>面を作成</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="744"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>チェックした場合、オブジェクトは面で埋められます。
 「パート・プリミティブを使用」設定が有効な場合は使用できません。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>Chained mode</source>
       <translation>連鎖モード</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Finishes and closes the current line</source>
       <translation>現在の線を閉じて終了</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="806"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>直線の既存のセグメントを消去して最後の点から再開</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>最後のセグメントで作業平面を再設定</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>この寸法で計測したい既存エッジを選択</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>Sides</source>
       <translation>側辺</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="807"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Number of sides</source>
       <translation>辺の数</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Modify subelements</source>
       <translation>サブ要素を変更</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="834"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>チェックされている場合、オブジェクト全体ではなくサブ要素が変更されます。</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="849"/>
-      <location filename="../../DraftGui.py" line="1855"/>
-      <location filename="../../DraftGui.py" line="1873"/>
+      <location filename="../../DraftGui.py" line="862"/>
+      <location filename="../../DraftGui.py" line="1868"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Autogroup off</source>
       <translation>自動グループ無効</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="983"/>
+      <location filename="../../DraftGui.py" line="996"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="998"/>
+      <location filename="../../DraftGui.py" line="1011"/>
       <source>DWire</source>
       <translation>Dワイヤー</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1021"/>
+      <location filename="../../DraftGui.py" line="1034"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1026"/>
+      <location filename="../../DraftGui.py" line="1039"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1031"/>
+      <location filename="../../DraftGui.py" line="1044"/>
       <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1037"/>
+      <location filename="../../DraftGui.py" line="1050"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1074"/>
+      <location filename="../../DraftGui.py" line="1087"/>
       <source>Label</source>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1093"/>
+      <location filename="../../DraftGui.py" line="1106"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3417,32 +3415,32 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>オフセット</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1098"/>
-      <location filename="../../DraftGui.py" line="1118"/>
+      <location filename="../../DraftGui.py" line="1111"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <location filename="../../draftguitools/gui_trimex.py" line="299"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1099"/>
-      <location filename="../../DraftGui.py" line="1119"/>
+      <location filename="../../DraftGui.py" line="1112"/>
+      <location filename="../../DraftGui.py" line="1132"/>
       <location filename="../../draftguitools/gui_trimex.py" line="300"/>
       <source>Offset distance</source>
       <translation>オフセットの距離</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../DraftGui.py" line="1128"/>
       <location filename="../../draftguitools/gui_trimex.py" line="84"/>
       <source>Trimex</source>
       <translation>トリメックス</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1219"/>
-      <location filename="../../DraftGui.py" line="1221"/>
-      <location filename="../../DraftGui.py" line="1222"/>
-      <location filename="../../DraftGui.py" line="1224"/>
-      <location filename="../../DraftGui.py" line="1225"/>
-      <location filename="../../DraftGui.py" line="1226"/>
+      <location filename="../../DraftGui.py" line="1232"/>
+      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1235"/>
+      <location filename="../../DraftGui.py" line="1237"/>
+      <location filename="../../DraftGui.py" line="1238"/>
+      <location filename="../../DraftGui.py" line="1239"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3450,12 +3448,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>ローカル {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1228"/>
-      <location filename="../../DraftGui.py" line="1229"/>
-      <location filename="../../DraftGui.py" line="1230"/>
-      <location filename="../../DraftGui.py" line="1232"/>
-      <location filename="../../DraftGui.py" line="1233"/>
-      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1241"/>
+      <location filename="../../DraftGui.py" line="1242"/>
+      <location filename="../../DraftGui.py" line="1243"/>
+      <location filename="../../DraftGui.py" line="1245"/>
+      <location filename="../../DraftGui.py" line="1246"/>
+      <location filename="../../DraftGui.py" line="1247"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3463,27 +3461,27 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>グローバル {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1863"/>
+      <location filename="../../DraftGui.py" line="1876"/>
       <source>Autogroup:</source>
       <translation>自動グループ:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2063"/>
+      <location filename="../../DraftGui.py" line="2076"/>
       <source>Create Objects</source>
-      <translation type="unfinished">Create Objects</translation>
+      <translation>オブジェクトを作成</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2241"/>
+      <location filename="../../DraftGui.py" line="2254"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2242"/>
+      <location filename="../../DraftGui.py" line="2255"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2243"/>
+      <location filename="../../DraftGui.py" line="2256"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
@@ -3753,17 +3751,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="243"/>
       <source>%1 pick arrow point</source>
-      <translation type="unfinished">%1 pick arrow point</translation>
+      <translation>%1 矢印点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="247"/>
       <source>%1 pick corner point</source>
-      <translation type="unfinished">%1 pick corner point</translation>
+      <translation>%1 コーナー点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="251"/>
       <source>%1 pick text point</source>
-      <translation type="unfinished">%1 pick text point</translation>
+      <translation>%1 がテキスト点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
@@ -3852,7 +3850,7 @@ or try saving to a lower DWG version.</source>
       <translation>配置点を選択</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="835"/>
       <location filename="../../draftguitools/gui_texts.py" line="133"/>
       <source>Create Text</source>
       <translation>テキストを作成</translation>
@@ -3896,7 +3894,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
+      <translation>%1 開始点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="259"/>
@@ -3961,42 +3959,42 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
       <source>Hold %1 constrain</source>
-      <translation type="unfinished">Hold %1 constrain</translation>
+      <translation>%1 押下で拘束</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
       <source>Hold %1 horizontal/vertical dimension</source>
-      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
+      <translation>%1 押下で水平/垂直寸法</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
       <source>Hold %1 radial dimension</source>
-      <translation type="unfinished">Hold %1 radial dimension</translation>
+      <translation>%1 押下で半径寸法</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
       <source>Hold %1 snap</source>
-      <translation type="unfinished">Hold %1 snap</translation>
+      <translation>%1 押下でスナップ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="98"/>
       <source>Hold %1 copy</source>
-      <translation type="unfinished">Hold %1 copy</translation>
+      <translation>%1 押下でコピー</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="114"/>
       <source>%1 select objects to modify</source>
-      <translation type="unfinished">%1 select objects to modify</translation>
+      <translation>%1 変更するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="116"/>
       <source>%1 select object to modify</source>
-      <translation type="unfinished">%1 select object to modify</translation>
+      <translation>%1 変更するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
       <source>%1 / %2 / %3 switch constraint</source>
-      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+      <translation>%1 / %2 / %3 拘束を切り替え</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="143"/>
@@ -4016,12 +4014,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="172"/>
       <source>%1 / hold %2 select edge</source>
-      <translation type="unfinished">%1 / hold %2 select edge</translation>
+      <translation>%1 / %2 押下でエッジ選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="174"/>
       <source>Hold %1 select edge</source>
-      <translation type="unfinished">Hold %1 select edge</translation>
+      <translation>%1 押下でエッジ選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="490"/>
@@ -4103,7 +4101,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="86"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
-      <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
+      <translation>ドラフト線、ワイヤー、曲線のみハイライト可能</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="120"/>
@@ -4113,7 +4111,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
-      <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
+      <translation>%1 サブ要素の移動、回転、拡大縮小を実行</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="298"/>
@@ -4123,17 +4121,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="374"/>
       <source>%1 select object to edit</source>
-      <translation type="unfinished">%1 select object to edit</translation>
+      <translation>%1 編集するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="382"/>
       <source>%1 pick node to edit</source>
-      <translation type="unfinished">%1 pick node to edit</translation>
+      <translation>%1 編集するノードを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
-      <translation type="unfinished">%1 options for hovered node/edge</translation>
+      <translation>%1 カーソルと重なったノード/エッジを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="387"/>
@@ -4145,7 +4143,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
       <source>%1 place node</source>
-      <translation type="unfinished">%1 place node</translation>
+      <translation>%1 ノードを配置</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="541"/>
@@ -4305,17 +4303,17 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
-      <translation type="unfinished">%1 pick rotation center</translation>
+      <translation>%1 回転中心を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
-      <translation type="unfinished">%1 pick base angle</translation>
+      <translation>%1 基準角度を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
-      <translation type="unfinished">%1 pick rotation angle</translation>
+      <translation>%1 回転角度を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
@@ -4479,17 +4477,17 @@ The final angle will be the base angle plus this amount.</source>
       <translation>トリメックスはこのオブジェクトタイプをサポートしていません</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="589"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="590"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>これらのオブジェクトをトリムすることはできません。サポートされているのはドラフトのワイヤーと円弧のみです。</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="610"/>
       <source>These objects do not intersect</source>
       <translation>これらのオブジェクトは交差してません</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="613"/>
       <source>Too many intersection points</source>
       <translation>交点が多すぎます</translation>
     </message>
@@ -4506,7 +4504,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
-      <translation type="unfinished">%1 pick distance</translation>
+      <translation>%1 距離を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="189"/>
@@ -4516,9 +4514,9 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="199"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="715"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="716"/>
       <source>Select a single face to extrude</source>
-      <translation type="unfinished">Select a single face to extrude</translation>
+      <translation>押し出す面を1つ選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="304"/>
@@ -4526,39 +4524,39 @@ The final angle will be the base angle plus this amount.</source>
       <translation>オフセット角度</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="592"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="593"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>これらのオブジェクトはワイヤーが多すぎてトリミングできません。</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="688"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="689"/>
       <source>%1 pick target</source>
-      <translation type="unfinished">%1 pick target</translation>
+      <translation>%1 対象を選択</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="690"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="691"/>
       <source>Hold %1 free direction</source>
-      <translation type="unfinished">Hold %1 free direction</translation>
+      <translation>%1 押下で自由な方向</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="693"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Hold %1 keep active endpoint</source>
-      <translation type="unfinished">Hold %1 keep active endpoint</translation>
+      <translation>%1 押下で終点をアクティブなまま維持</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="696"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="697"/>
       <source>Hold %1 invert trim direction</source>
-      <translation type="unfinished">Hold %1 invert trim direction</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="705"/>
-      <source>Extrude Face</source>
-      <translation type="unfinished">Extrude Face</translation>
+      <translation>%1 押下でトリム方向を反転</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="706"/>
+      <source>Extrude Face</source>
+      <translation>面押し出し</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="707"/>
       <source>Select a face to extrude</source>
-      <translation type="unfinished">Select a face to extrude</translation>
+      <translation>押し出す面を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="75"/>
@@ -4590,7 +4588,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
       <source>Set Point as First</source>
-      <translation type="unfinished">Set Point as First</translation>
+      <translation>最初に点を設定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
@@ -4728,12 +4726,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 は最初の点とノットを定義</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 は次の点とノットを定義</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4796,17 +4794,17 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
-      <translation type="unfinished">%1 pick base point</translation>
+      <translation>%1 基準点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
-      <translation type="unfinished">%1 pick reference distance</translation>
+      <translation>%1 参照距離を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
-      <translation type="unfinished">%1 pick new distance</translation>
+      <translation>%1 新しい距離を選択</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="162"/>
@@ -4829,27 +4827,27 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
-      <translation type="unfinished">%1 pick dimension position</translation>
+      <translation>%1 寸法位置を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
-      <translation type="unfinished">%1 select edge</translation>
+      <translation>%1 エッジを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
-      <translation type="unfinished">%1 pick next dimension point</translation>
+      <translation>%1 次の寸法点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
-      <translation type="unfinished">%1 pick first dimension point</translation>
+      <translation>%1 最初の寸法点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
-      <translation type="unfinished">%1 pick second dimension point</translation>
+      <translation>%1 2番目の寸法点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
@@ -4874,22 +4872,22 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="536"/>
       <source>%1 pick first point of selection rectangle</source>
-      <translation type="unfinished">%1 pick first point of selection rectangle</translation>
+      <translation>%1 選択矩形の最初の点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="538"/>
       <source>%1 pick opposite point of selection rectangle</source>
-      <translation type="unfinished">%1 pick opposite point of selection rectangle</translation>
+      <translation>%1 選択矩形の反対の点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="540"/>
       <source>%1 pick start point of displacement</source>
-      <translation type="unfinished">%1 pick start point of displacement</translation>
+      <translation>%1 変位の始点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="542"/>
       <source>%1 pick end point of displacement</source>
-      <translation type="unfinished">%1 pick end point of displacement</translation>
+      <translation>%1 変位の終点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="180"/>
@@ -4945,12 +4943,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="210"/>
       <source>%1 pick start point of mirror line</source>
-      <translation type="unfinished">%1 pick start point of mirror line</translation>
+      <translation>%1 鏡像線の始点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="212"/>
       <source>%1 pick end point of mirror line</source>
-      <translation type="unfinished">%1 pick end point of mirror line</translation>
+      <translation>%1 鏡像線の終点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -4974,7 +4972,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>アップグレードするオブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="91"/>
       <source>Upgrade</source>
       <translation>アップグレード</translation>
     </message>
@@ -5004,7 +5002,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>修復</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="91"/>
       <source>Downgrade</source>
       <translation>ダウングレード</translation>
     </message>
@@ -5972,7 +5970,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="123"/>
       <source>%1 click on a line to split it</source>
-      <translation type="unfinished">%1 click on a line to split it</translation>
+      <translation>%1 クリックで線を分割</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="76"/>
@@ -6092,24 +6090,24 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="../../draftobjects/hatch.py" line="243"/>
       <source>No valid faces for hatch</source>
-      <translation type="unfinished">No valid faces for hatch</translation>
+      <translation>ハッチングのための有効な面がありません</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>カメラビューを保存</translation>
     </message>
     <message>
       <location filename="../../drafttests/test_lines_gui.py" line="56"/>
       <location filename="../../drafttests/test_lines_gui.py" line="94"/>
       <location filename="../../draftguitools/gui_lines.py" line="246"/>
       <source>Point identical to previous point</source>
-      <translation type="unfinished">Point identical to previous point</translation>
+      <translation>点が前の点と一致しています</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
-      <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
+      <translation>3D入力時に値を固定維持します。ロックアイコンまたはダブルクリックでフィールドのロックを解除できます。</translation>
     </message>
   </context>
   <context>
@@ -6659,7 +6657,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="93"/>
       <source>Trims or extends the selected object</source>
-      <translation type="unfinished">Trims or extends the selected object</translation>
+      <translation>選択したオブジェクトをトリムまたは拡張</translation>
     </message>
   </context>
   <context>
@@ -6946,7 +6944,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The objects and faces used by this object</source>
-      <translation type="unfinished">The objects and faces used by this object</translation>
+      <translation>このオブジェクトで使用されるオブジェクトと面</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="63"/>
@@ -8933,7 +8931,7 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
-      <translation type="unfinished">Flattened SVG</translation>
+      <translation>平面化SVG</translation>
     </message>
   </context>
   <context>
@@ -8941,14 +8939,14 @@ shape. Best for viewing very large files with maximum performance.</source>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
       <source>Force 2D View Update</source>
-      <translation type="unfinished">Force 2D View Update</translation>
+      <translation>強制的に2Dビューを更新</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
       <source>Forces an update of the selected 2D Views or all 2D Views in the document.
 The 'Auto Update' property of the views is ignored.</source>
-      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
-The 'Auto Update' property of the views is ignored.</translation>
+      <translation>選択した2Dビューまたはドキュメント内のすべての2Dビューに更新を強制します。
+ビューの「Auto Update」プロパティは無視されます。</translation>
     </message>
   </context>
   <context>
@@ -8956,12 +8954,12 @@ The 'Auto Update' property of the views is ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="176"/>
       <source>2D View Tools</source>
-      <translation type="unfinished">2D View Tools</translation>
+      <translation>2Dビューツール</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="180"/>
       <source>Tools to create and update 2D Views</source>
-      <translation type="unfinished">Tools to create and update 2D Views</translation>
+      <translation>2Dビューを作成、更新するためのツール</translation>
     </message>
   </context>
 </TS>

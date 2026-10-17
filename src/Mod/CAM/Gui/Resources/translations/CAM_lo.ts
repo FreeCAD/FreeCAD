@@ -96,7 +96,7 @@
       <translation>ສ້າງວັດຖຸປະສົມເສັ້ນທາງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="350"/>
       <source>Create Path Shape</source>
       <translation>ສ້າງຮູບຊົງເສັ້ນທາງ</translation>
     </message>
@@ -1487,7 +1487,7 @@ Does not affect the toolpath point spacing (Sample Interval).</translation>
       <translation type="unfinished">Peck retract</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="81"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="85"/>
       <source>Extend depth</source>
       <translation>ຂະຫຍາຍຄວາມເລິກ</translation>
@@ -1504,7 +1504,7 @@ Does not affect the toolpath point spacing (Sample Interval).</translation>
       <translation>ການເຈາະແບບຕັດຂີ້ເຫຼັກ (Chip break)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="48"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="125"/>
       <source>Dwell</source>
       <translation>ການຢຸດແຊ່ (Dwell)</translation>
@@ -1515,28 +1515,23 @@ Does not affect the toolpath point spacing (Sample Interval).</translation>
       <translation>ຟອມ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
-      <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
-      <translation>⚠ ຄຳເຕືອນ: ການດຳເນີນການ Tapping ແບບນີ້ແມ່ນລ້າສະໄໝແລ້ວ ແລະ ຈະຖືກລຶບອອກໃນອະນາຄົດ. ກະລຸນາໃຊ້ການດຳເນີນການ Drilling ແລ້ວຕັ້ງ Strategy ເປັນ &apos;Tapping&apos; ແທນ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="41"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="78"/>
       <source>Time</source>
       <translation>ເວລາ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="61"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="45"/>
       <source>Tap tip</source>
       <translation>ປາຍດອກຕາບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="66"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="50"/>
       <source>2x tap tip</source>
       <translation>2 ເທົ່າຂອງປາຍດອກຕາບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="56"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="40"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="100"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
@@ -4898,60 +4893,60 @@ Default: 3 mm</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="274"/>
+      <location filename="../../../InitGui.py" line="270"/>
       <source>Project Setup</source>
       <translation>ການຕັ້ງຄ່າໂຄງການ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="278"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tool Commands</source>
       <translation>ຄຳສັ່ງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="282"/>
+      <location filename="../../../InitGui.py" line="278"/>
       <source>New Operations</source>
       <translation>ການເຮັດວຽກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
-      <location filename="../../../InitGui.py" line="325"/>
+      <location filename="../../../InitGui.py" line="282"/>
+      <location filename="../../../InitGui.py" line="321"/>
       <source>Path Modification</source>
       <translation>ການປັບແຕ່ງເສັ້ນທາງ (Path)</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="289"/>
+      <location filename="../../../InitGui.py" line="285"/>
       <source>Helpful Tools</source>
       <translation>ເຄື່ອງມືທີ່ມີປະໂຫຍດ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="292"/>
-      <location filename="../../../InitGui.py" line="310"/>
-      <location filename="../../../InitGui.py" line="317"/>
-      <location filename="../../../InitGui.py" line="324"/>
-      <location filename="../../../InitGui.py" line="332"/>
-      <location filename="../../../InitGui.py" line="338"/>
-      <location filename="../../../InitGui.py" line="340"/>
-      <location filename="../../../InitGui.py" line="343"/>
+      <location filename="../../../InitGui.py" line="288"/>
+      <location filename="../../../InitGui.py" line="306"/>
+      <location filename="../../../InitGui.py" line="313"/>
+      <location filename="../../../InitGui.py" line="320"/>
+      <location filename="../../../InitGui.py" line="328"/>
+      <location filename="../../../InitGui.py" line="334"/>
+      <location filename="../../../InitGui.py" line="336"/>
+      <location filename="../../../InitGui.py" line="339"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="311"/>
+      <location filename="../../../InitGui.py" line="307"/>
       <source>Path Dressup</source>
       <translation>ການຕົກແຕ່ງເສັ້ນທາງ (Path Dressup)</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="318"/>
+      <location filename="../../../InitGui.py" line="314"/>
       <source>Supplemental Commands</source>
       <translation>ຄຳສັ່ງເພີ່ມເຕີມ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="333"/>
+      <location filename="../../../InitGui.py" line="329"/>
       <source>Specialty Operations</source>
       <translation>ການເຮັດວຽກສະເພາະດ້ານ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="344"/>
+      <location filename="../../../InitGui.py" line="340"/>
       <source>Utils</source>
       <translation>ເຄື່ອງມືອຸປະໂພກ (Utils)</translation>
     </message>
@@ -5509,117 +5504,122 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>ແຍກສ່ວນຕ່າງໆໃຫ້ເປັນສ່ວນຍ່ອຍໆຕາມຄວາມຍາວນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="122"/>
+      <location filename="../../../Path/Main/Job.py" line="296"/>
       <source>The G-code output file for this project</source>
       <translation>ໄຟລ໌ G-code ຜົນຜະລິດສຳລັບໂຄງການນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="128"/>
+      <location filename="../../../Path/Main/Job.py" line="302"/>
       <source>Select the Post Processor</source>
       <translation>ເລືອກຕົວປະມວນຜົນຫຼັງ (Post Processor)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="137"/>
+      <location filename="../../../Path/Main/Job.py" line="311"/>
       <source>Arguments for the Post Processor (specific to the script)</source>
       <translation>ອາກິວເມັນສຳລັບຕົວປະມວນຜົນຫຼັງ (ສະເພາະກັບສະຄຣິບນັ້ນໆ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="143"/>
-      <location filename="../../../Path/Main/Job.py" line="150"/>
+      <location filename="../../../Path/Main/Job.py" line="317"/>
+      <location filename="../../../Path/Main/Job.py" line="324"/>
       <source>Last Time the Job was post processed</source>
       <translation>ເວລາຫຼ້າສຸດທີ່ວຽກນີ້ຖືກປະມວນຜົນຫຼັງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="158"/>
+      <location filename="../../../Path/Main/Job.py" line="332"/>
       <source>An optional description for this job</source>
       <translation>ຄຳອະທິບາຍເພີ່ມເຕີມສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="164"/>
+      <location filename="../../../Path/Main/Job.py" line="338"/>
       <source>Job Cycle Time Estimation</source>
       <translation>ການຄາດຄະເນເວລາຮອບການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="174"/>
+      <location filename="../../../Path/Main/Job.py" line="348"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
       <translation>ສຳລັບການຄິດໄລ່ເສັ້ນທາງ (Paths); ຄ່ານ້ອຍຈະເພີ່ມຄວາມຊັດເຈນ ແຕ່ເຮັດໃຫ້ການຄິດໄລ່ຊ້າລົງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="181"/>
+      <location filename="../../../Path/Main/Job.py" line="355"/>
       <source>Solid object to be used as stock.</source>
       <translation>ວັດຖຸແຂງທີ່ຈະໃຊ້ເປັນວັດສະດຸຊິ້ນງານ (stock).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="190"/>
+      <location filename="../../../Path/Main/Job.py" line="364"/>
       <source>Compound path of all operations in the order they are processed.</source>
       <translation>ເສັ້ນທາງປະສົມຂອງທຸກຂັ້ນຕອນການເຮັດວຽກຕາມລຳດັບການປະມວນຜົນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="197"/>
+      <location filename="../../../Path/Main/Job.py" line="371"/>
       <source>Select the Type of Job</source>
       <translation>ເລືອກປະເພດຂອງວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="205"/>
-      <location filename="../../../Path/Main/Job.py" line="635"/>
+      <location filename="../../../Path/Main/Job.py" line="379"/>
+      <location filename="../../../Path/Main/Job.py" line="848"/>
       <source>Split output into multiple G-code files</source>
       <translation>ແຍກຜົນຜະລິດເປັນຫຼາຍໄຟລ໌ G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="211"/>
-      <location filename="../../../Path/Main/Job.py" line="626"/>
+      <location filename="../../../Path/Main/Job.py" line="385"/>
+      <location filename="../../../Path/Main/Job.py" line="839"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>ຖ້າມີຫຼາຍ WCS, ໃຫ້ຈັດລຽງຜົນຜະລິດດ້ວຍວິທີນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="217"/>
-      <location filename="../../../Path/Main/Job.py" line="617"/>
+      <location filename="../../../Path/Main/Job.py" line="391"/>
+      <location filename="../../../Path/Main/Job.py" line="830"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>ລະບົບພິກັດການເຮັດວຽກ (WCS) ສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="223"/>
-      <location filename="../../../Path/Main/Job.py" line="556"/>
-      <location filename="../../../Path/Main/Job.py" line="565"/>
-      <location filename="../../../Path/Main/Job.py" line="653"/>
+      <location filename="../../../Path/Main/Job.py" line="397"/>
+      <location filename="../../../Path/Main/Job.py" line="769"/>
+      <location filename="../../../Path/Main/Job.py" line="778"/>
+      <location filename="../../../Path/Main/Job.py" line="866"/>
       <source>The Machine for the Job</source>
       <translation>ເຄື່ອງຈັກສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="232"/>
-      <location filename="../../../Path/Main/Job.py" line="663"/>
+      <location filename="../../../Path/Main/Job.py" line="406"/>
+      <location filename="../../../Path/Main/Job.py" line="876"/>
       <source>JSON dict of postprocessor properties that override machine defaults for this job</source>
       <translation>JSON dict ຂອງຄຸນສົມບັດຕົວປະມວນຜົນຫຼັງທີ່ຈະຂຽນທັບຄ່າເລີ່ມຕົ້ນຂອງເຄື່ອງຈັກສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="334"/>
+      <location filename="../../../Path/Main/Job.py" line="508"/>
       <source>Group of named work planes the Operations can share</source>
       <translation type="unfinished">Group of named work planes the Operations can share</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="370"/>
+      <location filename="../../../Path/Main/Job.py" line="544"/>
       <source>SetupSheet holding the settings for this job</source>
       <translation>SetupSheet ທີ່ເກັບການຕັ້ງຄ່າຕ່າງໆສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="389"/>
+      <location filename="../../../Path/Main/Job.py" line="563"/>
       <source>The base objects for all operations</source>
       <translation>ວັດຖຸພື້ນຖານສຳລັບທຸກການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="419"/>
+      <location filename="../../../Path/Main/Job.py" line="593"/>
       <source>Collection of all tool controllers for the job</source>
       <translation>ການຮວບຮວມຕົວຄວບຄຸມເຄື່ອງມືທັງໝົດສຳລັບວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="270"/>
-      <location filename="../../../Path/Op/Base.py" line="629"/>
-      <location filename="../../../Path/Main/Job.py" line="598"/>
+      <location filename="../../../Path/Main/Job.py" line="653"/>
+      <source>The links to models taken out of the Job, for when they are added back</source>
+      <translation type="unfinished">The links to models taken out of the Job, for when they are added back</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="313"/>
+      <location filename="../../../Path/Op/Base.py" line="672"/>
+      <location filename="../../../Path/Main/Job.py" line="811"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>ການຄາດຄະເນເວລາຮອບຂອງການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="644"/>
+      <location filename="../../../Path/Main/Job.py" line="857"/>
       <source>Select the type of Job</source>
       <translation>ເລືອກປະເພດຂອງວຽກ</translation>
     </message>
@@ -5700,7 +5700,7 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>ໝາຍເລກໄລຍະຫ່າງຂອງອຸປະກອນຈັບຢຶດ (Fixture Offset)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="244"/>
+      <location filename="../../../Path/Op/Base.py" line="287"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>ຕັ້ງເປັນ False ເພື່ອປ້ອງກັນບໍ່ໃຫ້ການເຮັດວຽກນີ້ສ້າງລະຫັດ (code)</translation>
@@ -5967,38 +5967,38 @@ Set to zero to disable limitation by ramp angle</source>
       <translation>ແຍກສ່ວນໂຄ້ງ (Arcs) ເປັນສ່ວນຍ່ອຍໆ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="162"/>
+      <location filename="../../../Path/Op/Base.py" line="205"/>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="68"/>
       <source>The base geometry for this operation</source>
       <translation>ເລຂາຄະນິດພື້ນຖານສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="171"/>
+      <location filename="../../../Path/Op/Base.py" line="214"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>ເກັບຄ່າທີ່ຄິດໄລ່ໄດ້ສຳລັບຄວາມເລິກເລີ່ມຕົ້ນ (StartDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="179"/>
+      <location filename="../../../Path/Op/Base.py" line="222"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>ເກັບຄ່າທີ່ຄິດໄລ່ໄດ້ສຳລັບຄວາມເລິກສຸດທ້າຍ (FinalDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="187"/>
+      <location filename="../../../Path/Op/Base.py" line="230"/>
       <source>Holds the diameter of the tool</source>
       <translation>ເກັບຄ່າເສັ້ນຜ່ານສູນກາງຂອງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="195"/>
+      <location filename="../../../Path/Op/Base.py" line="238"/>
       <source>Holds the max Z value of Stock</source>
       <translation>ເກັບຄ່າ Z ສູງສຸດຂອງວັດສະດຸຊິ້ນງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="202"/>
+      <location filename="../../../Path/Op/Base.py" line="245"/>
       <source>Holds the min Z value of Stock</source>
       <translation>ເກັບຄ່າ Z ຕ່ຳສຸດຂອງວັດສະດຸຊິ້ນງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="219"/>
+      <location filename="../../../Path/Op/Base.py" line="262"/>
       <source>Method collision detection to create optimal path between areas
 
 Clearance Height: no collision detection, uses clearance height for rapid moves between areas
@@ -6015,86 +6015,86 @@ Tool Diameter: ສົມດູນ - ກວດສອບໄລຍະຫ່າງ�
 Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະຫ່າງໂດຍໃຊ້ພາກສ່ວນຕັດຂວາງຂອງຮູບຊົງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="232"/>
+      <location filename="../../../Path/Op/Base.py" line="275"/>
       <source>Distance for collision detection</source>
       <translation>ໄລຍະຫ່າງສຳລັບການກວດສອບການຕຳກັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="252"/>
-      <location filename="../../../Path/Op/Base.py" line="638"/>
+      <location filename="../../../Path/Op/Base.py" line="295"/>
+      <location filename="../../../Path/Op/Base.py" line="681"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>ເປີດໃຊ້ງານຕົວປະມວນຜົນຫຼັງເພື່ອເພີ່ມຄຳສັ່ງລົບລະຫັດ (block delete commands)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="258"/>
+      <location filename="../../../Path/Op/Base.py" line="301"/>
       <source>An optional comment for this Operation</source>
       <translation>ຄຳອະທິບາຍເພີ່ມເຕີມສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="264"/>
+      <location filename="../../../Path/Op/Base.py" line="307"/>
       <source>User Assigned Label</source>
       <translation>ປ້າຍຊື່ທີ່ຜູ້ໃຊ້ກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="292"/>
+      <location filename="../../../Path/Op/Base.py" line="335"/>
       <source>Base locations for this operation</source>
       <translation>ຕຳແໜ່ງພື້ນຖານສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="303"/>
+      <location filename="../../../Path/Op/Base.py" line="346"/>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="90"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມືທີ່ຈະຖືກໃຊ້ໃນການຄິດໄລ່ເສັ້ນທາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="312"/>
+      <location filename="../../../Path/Op/Base.py" line="355"/>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="96"/>
       <source>Coolant mode for this operation</source>
       <translation>ໂໝດລະບົບຫຼໍ່ເຢັນສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="320"/>
+      <location filename="../../../Path/Op/Base.py" line="363"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນຂອງເຄື່ອງມື - ຄວາມເລິກຂອງການກັດຄັ້ງທຳອິດໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="326"/>
+      <location filename="../../../Path/Op/Base.py" line="369"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>ຄວາມເລິກສຸດທ້າຍຂອງເຄື່ອງມື - ຄ່າຕ່ຳສຸດໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="340"/>
+      <location filename="../../../Path/Op/Base.py" line="383"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນສຳລັບໃຊ້ພາຍໃນເທົ່ານັ້ນ ເພື່ອຫາຄ່າທີ່ກ່ຽວຂ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="351"/>
-      <location filename="../../../Path/Op/Base.py" line="646"/>
+      <location filename="../../../Path/Op/Base.py" line="394"/>
+      <location filename="../../../Path/Op/Base.py" line="689"/>
       <source>Incremental Step Down of Tool</source>
       <translation>ໄລຍະກິນເລິກສະສົມຂອງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="359"/>
+      <location filename="../../../Path/Op/Base.py" line="402"/>
       <source>Maximum material removed on final pass.</source>
       <translation>ປະລິມານວັດສະດຸສູງສຸດທີ່ຈະຖືກກັດອອກໃນຮອບສຸດທ້າຍ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="370"/>
+      <location filename="../../../Path/Op/Base.py" line="413"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>ຄວາມສູງທີ່ຈຳເປັນເພື່ອໃຫ້ພົ້ນຈາກໂຕຈັບຢຶດ ແລະ ສິ່ງກີດຂວາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="376"/>
+      <location filename="../../../Path/Op/Base.py" line="419"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>ຄວາມສູງປອດໄພສຳລັບການເຄື່ອນທີ່ໄວລະຫວ່າງຕຳແໜ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="384"/>
+      <location filename="../../../Path/Op/Base.py" line="427"/>
       <source>The start point of this path</source>
       <translation>ຈຸດເລີ່ມຕົ້ນຂອງເສັ້ນທາງນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="390"/>
+      <location filename="../../../Path/Op/Base.py" line="433"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
       <location filename="../../../Path/Op/Slot.py" line="223"/>
       <location filename="../../../Path/Op/PlanarSurface.py" line="544"/>
@@ -6103,22 +6103,22 @@ Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະ�
       <translation>ຕັ້ງເປັນ True, ຖ້າຕ້ອງການກຳນົດຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="398"/>
+      <location filename="../../../Path/Op/Base.py" line="441"/>
       <source>Lower limit of the turning diameter</source>
       <translation>ຂີດຈຳກັດຕ່ຳສຸດຂອງເສັ້ນຜ່ານສູນກາງການກຶງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="404"/>
+      <location filename="../../../Path/Op/Base.py" line="447"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>ຂີດຈຳກັດສູງສຸດຂອງເສັ້ນຜ່ານສູນກາງການກຶງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="495"/>
+      <location filename="../../../Path/Op/Base.py" line="538"/>
       <source>The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</source>
       <translation type="unfinished">The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="609"/>
+      <location filename="../../../Path/Op/Base.py" line="652"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
       <source>Coolant option for this operation</source>
       <translation>ຕົວເລືອກລະບົບຫຼໍ່ເຢັນສຳລັບການເຮັດວຽກນີ້</translation>
@@ -6350,17 +6350,17 @@ Automatic - ຈັດລຽງເສັ້ນດ້ວຍວິທີເພື�
       <translation>ເລີ່ມການກັດຈາກດ້ານໃນ ຫຼື ດ້ານນອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="100"/>
+      <location filename="../../../Path/Op/MillFace.py" line="108"/>
       <source>Shape to use for calculating Boundary</source>
       <translation>ຮູບຊົງທີ່ຈະໃຊ້ໃນການຄິດໄລ່ຂອບເຂດ (Boundary)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="108"/>
+      <location filename="../../../Path/Op/MillFace.py" line="116"/>
       <source>Clear edges of surface (Only applicable to BoundBox)</source>
       <translation>ກັດລ້າງຂອບຂອງຜິວໜ້າ (ໃຊ້ໄດ້ສະເພາະກັບ BoundBox ເທົ່ານັ້ນ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="115"/>
+      <location filename="../../../Path/Op/MillFace.py" line="123"/>
       <source>Exclude milling raised areas inside the face.</source>
       <translation>ຍົກເວັ້ນການກັດໃນພື້ນທີ່ທີ່ນູນຂຶ້ນມາພາຍໃນໜ້າຜິວນັ້ນ.</translation>
     </message>
@@ -7832,7 +7832,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>ນຳໃຊ້ການຍົກ G99: ຍົກເຄື່ອງມືຂຶ້ນຫາພຽງແຕ່ StartDepth ລະຫວ່າງຮູຕ່າງໆໃນການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Workplane.py" line="148"/>
+      <location filename="../../../Path/Main/Workplane.py" line="180"/>
       <source>Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on this plane run. Empty: the Job&apos;s own fixture.</source>
       <translation type="unfinished">Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on this plane run. Empty: the Job&apos;s own fixture.</translation>
     </message>
@@ -7901,7 +7901,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>ບໍ່ພົບງານສຳລັບການເຮັດວຽກ %s.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Area.py" line="293"/>
+      <location filename="../../../Path/Op/Area.py" line="294"/>
       <source>%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</source>
       <translation type="unfinished">%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</translation>
     </message>
@@ -8032,47 +8032,47 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>ກຳລັງຕັ້ງຄ່າເລີ່ມຕົ້ນ LinearDeflection ເປັນ 0.001 ມມ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="779"/>
+      <location filename="../../../Path/Op/Surface.py" line="788"/>
       <source>No job</source>
       <translation>ບໍ່ມີງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="804"/>
+      <location filename="../../../Path/Op/Surface.py" line="813"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
       <translation>ກຳລັງຍົກເລີກການເຮັດວຽກ 3D Surface. ເກີດຂໍ້ຜິດພາດໃນການສ້າງຫົວກັດ OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1015"/>
+      <location filename="../../../Path/Op/Surface.py" line="1024"/>
       <source>operation time is</source>
       <translation>ເວລາການເຮັດວຽກແມ່ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1020"/>
+      <location filename="../../../Path/Op/Surface.py" line="1029"/>
       <source>Canceled 3D Surface operation.</source>
       <translation>ຍົກເລີກການເຮັດວຽກ 3D Surface ແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1120"/>
+      <location filename="../../../Path/Op/Surface.py" line="1129"/>
       <source>No profile geometry shape returned.</source>
       <translation>ບໍ່ມີຮູບຊົງເລຂາຄະນິດຂອງ Profile ຖືກສົ່ງກັບມາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1127"/>
+      <location filename="../../../Path/Op/Surface.py" line="1136"/>
       <source>No profile path geometry returned.</source>
       <translation>ບໍ່ມີເລຂາຄະນິດຂອງເສັ້ນທາງ Profile ຖືກສົ່ງກັບມາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1142"/>
+      <location filename="../../../Path/Op/Surface.py" line="1151"/>
       <source>No clearing shape returned.</source>
       <translation>ບໍ່ມີຮູບຊົງການກັດລ້າງຖືກສົ່ງກັບມາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1148"/>
+      <location filename="../../../Path/Op/Surface.py" line="1157"/>
       <source>No clearing path geometry returned.</source>
       <translation>ບໍ່ມີເລຂາຄະນິດຂອງເສັ້ນທາງການກັດລ້າງຖືກສົ່ງກັບມາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="1168"/>
+      <location filename="../../../Path/Op/Surface.py" line="1177"/>
       <source>No scan data to convert to G-code.</source>
       <translation>ບໍ່ມີຂໍ້ມູນການສະແກນເພື່ອແປງເປັນ G-code.</translation>
     </message>
@@ -8300,59 +8300,59 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>ກຳລັງຕັ້ງຄ່າເລີ່ມຕົ້ນ LinearDeflection ເປັນ 0.0001 ມມ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="658"/>
-      <location filename="../../../Path/Op/Waterline.py" line="666"/>
+      <location filename="../../../Path/Op/Waterline.py" line="667"/>
+      <location filename="../../../Path/Op/Waterline.py" line="675"/>
       <source>Sample interval limits are 0.0001 to 25.4 millimeters.</source>
       <translation>ຂີດຈຳກັດຊ່ວງໄລຍະການສຸ່ມຕົວຢ່າງແມ່ນ 0.0001 ຫາ 25.4 ມິນລີແມັດ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="676"/>
-      <location filename="../../../Path/Op/Waterline.py" line="684"/>
+      <location filename="../../../Path/Op/Waterline.py" line="685"/>
+      <location filename="../../../Path/Op/Waterline.py" line="693"/>
       <source>Min Sample interval limits are 0.0001 to 25.4 millimeters.</source>
       <translation>ຂີດຈຳກັດຊ່ວງໄລຍະການສຸ່ມຕົວຢ່າງຂັ້ນຕ່ຳແມ່ນ 0.0001 ຫາ 25.4 ມິນລີແມັດ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="691"/>
+      <location filename="../../../Path/Op/Waterline.py" line="700"/>
       <source>Cut pattern angle limits are +-360 degrees.</source>
       <translation>ຂີດຈຳກັດມຸມຂອງຮູບແບບການກັດແມ່ນ +-360 ອົງສາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="696"/>
+      <location filename="../../../Path/Op/Waterline.py" line="705"/>
       <source>Cut pattern angle limits are +- 360 degrees.</source>
       <translation>ຂີດຈຳກັດມຸມຂອງຮູບແບບການກັດແມ່ນ +- 360 ອົງສາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="712"/>
+      <location filename="../../../Path/Op/Waterline.py" line="721"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
       <translation>AvoidLastX_Faces: ອະນຸຍາດສະເພາະຄ່າສູນ ຫຼື ຄ່າບວກເທົ່ານັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="720"/>
+      <location filename="../../../Path/Op/Waterline.py" line="729"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
       <translation>AvoidLastX_Faces: ການຫຼີກເວັ້ນໜ້າ X ສຸດທ້າຍຈຳກັດຢູ່ທີ່ 100 ໜ້າ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="799"/>
+      <location filename="../../../Path/Op/Waterline.py" line="808"/>
       <source>No JOB</source>
       <translation>ບໍ່ມີງານ (JOB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="824"/>
+      <location filename="../../../Path/Op/Waterline.py" line="833"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
       <translation>ກຳລັງຍົກເລີກການເຮັດວຽກ Waterline. ເກີດຂໍ້ຜິດພາດໃນການສ້າງຫົວກັດ OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1043"/>
+      <location filename="../../../Path/Op/Waterline.py" line="1052"/>
       <source>operation time is</source>
       <translation>ເວລາການເຮັດວຽກແມ່ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1286"/>
+      <location filename="../../../Path/Op/Waterline.py" line="1295"/>
       <source>The toolpath has exceeded the stock bounding box limits. Consider using a Boundary Dressup.</source>
       <translation>ເສັ້ນທາງເຄື່ອງມືເກີນຂີດຈຳກັດຂອບເຂດຂອງວັດຖຸດິບ. ພິຈາລະນາການໃຊ້ Boundary Dressup.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1413"/>
+      <location filename="../../../Path/Op/Waterline.py" line="1422"/>
       <source>Step Down above model. Skipping height : </source>
       <translation>Step Down ຢູ່ເໜືອໂມເດວ. ກຳລັງຂ້າມຄວາມສູງ : </translation>
     </message>
@@ -8365,103 +8365,133 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>ຕັ້ງເປັນ False ເພື່ອປ້ອງກັນບໍ່ໃຫ້ການເຮັດວຽກສ້າງລະຫັດ (Code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="311"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
       <source>Edit</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="315"/>
-      <source>Set Work Plane from Face</source>
-      <translation type="unfinished">Set Work Plane from Face</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="342"/>
-      <source>Select a planar face to set a work plane from.</source>
-      <translation type="unfinished">Select a planar face to set a work plane from.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="356"/>
-      <source>Set %s to work plane %s</source>
-      <translation type="unfinished">Set %s to work plane %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="369"/>
-      <source>Click on a planar face to set the work plane for %s</source>
-      <translation type="unfinished">Click on a planar face to set the work plane for %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="816"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
       <source>Base Geometry</source>
       <translation>ເລຂາຄະນິດພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="936"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
       <source>Multiple operations are labeled as</source>
       <translation>ມີຫຼາຍການເຮັດວຽກທີ່ຖືກຕິດປ້າຍເປັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1010"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
       <source>Base Location</source>
       <translation>ຕຳແໜ່ງພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1238"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
       <source>Heights</source>
       <translation>ຄວາມສູງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1401"/>
-      <source>Tool Controller</source>
-      <translation>ຕົວຄວບຄຸມເຄື່ອງມື</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1155"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>ຄວາມເລິກສຸດທ້າຍ (FinalDepth) ບໍ່ສາມາດແກ້ໄຂໄດ້ສຳລັບການເຮັດວຽກນີ້.
 ຖ້າຈຳເປັນຕ້ອງຕັ້ງ FinalDepth ດ້ວຍຕົນເອງ, ກະລຸນາເລືອກການເຮັດວຽກອື່ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1438"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
+      <source>Operation Deleted</source>
+      <translation type="unfinished">Operation Deleted</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
+      <source>Set Work Plane from Face</source>
+      <translation type="unfinished">Set Work Plane from Face</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="351"/>
+      <source>Select a planar face to set a work plane from.</source>
+      <translation type="unfinished">Select a planar face to set a work plane from.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="365"/>
+      <source>Set %s to work plane %s</source>
+      <translation type="unfinished">Set %s to work plane %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="378"/>
+      <source>Click on a planar face to set the work plane for %s</source>
+      <translation type="unfinished">Click on a planar face to set the work plane for %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="402"/>
+      <source>u26a0 Deprecated: {}</source>
+      <translation type="unfinished">u26a0 Deprecated: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
+      <source>Tool Controller</source>
+      <translation>ຕົວຄວບຄຸມເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
       <source>Diameters</source>
       <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1470"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1504"/>
       <source>AreaOp Operation</source>
       <translation>ການເຮັດວຽກ AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1537"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1571"/>
       <source>Operation</source>
       <translation>ການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1604"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>ຍົກເລີກການສ້າງ AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1767"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
       <source>Start Point Selection</source>
       <translation>ການເລືອກຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1768"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
       <source>Selects the start point</source>
       <translation>ເລືອກຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1818"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>ບໍ່ພົບຕົວຄວບຄຸມເຄື່ອງມືທີ່ເໝາະສົມ.
 ກຳລັງຍົກເລີກການສ້າງການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1822"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1886"/>
       <source>No tool controller, aborting op creation</source>
       <translation>ບໍ່ມີຕົວຄວບຄຸມເຄື່ອງມື, ກຳລັງຍົກເລີກການສ້າງການເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="75"/>
+      <source>{} has been deleted and no longer generates a toolpath. It is replaced by {}.</source>
+      <translation type="unfinished">{} has been deleted and no longer generates a toolpath. It is replaced by {}.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="81"/>
+      <source>{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</source>
+      <translation type="unfinished">{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="86"/>
+      <source>{} is deprecated and will be hidden in the next release. It is replaced by {}.</source>
+      <translation type="unfinished">{} is deprecated and will be hidden in the next release. It is replaced by {}.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="1585"/>
+      <source>This operation has been deleted and no longer generates a toolpath.</source>
+      <translation type="unfinished">This operation has been deleted and no longer generates a toolpath.</translation>
     </message>
   </context>
   <context>
@@ -8539,7 +8569,7 @@ Aborting op creation</source>
       <location filename="../../../InitGui.py" line="114"/>
       <location filename="../../../InitGui.py" line="118"/>
       <location filename="../../../InitGui.py" line="122"/>
-      <location filename="../../../InitGui.py" line="361"/>
+      <location filename="../../../InitGui.py" line="357"/>
       <location filename="../../AppPathGui.cpp" line="92"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -8556,7 +8586,7 @@ Aborting op creation</source>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="266"/>
+      <location filename="../../../InitGui.py" line="262"/>
       <source>3D Operations</source>
       <translation>ການເຮັດວຽກແບບ 3D</translation>
     </message>
@@ -9015,7 +9045,7 @@ Without sub selection:
   <context>
     <name>CAM_Job</name>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="278"/>
+      <location filename="../../../Path/Main/Job.py" line="452"/>
       <source>Fixture</source>
       <translation>ອຸປະກອນຍຶດ (Fixture)</translation>
     </message>
@@ -9052,7 +9082,7 @@ Without sub selection:
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="157"/>
-      <location filename="../../../Path/Main/Job.py" line="279"/>
+      <location filename="../../../Path/Main/Job.py" line="453"/>
       <source>Tool</source>
       <translation>ເຄື່ອງມື</translation>
     </message>
@@ -9083,28 +9113,28 @@ Without sub selection:
       <translation>ວຽກນີ້ບໍ່ມີການອັບເດດເຄື່ອງມື.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="280"/>
+      <location filename="../../../Path/Main/Job.py" line="454"/>
       <source>Operation</source>
       <translation>ການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="283"/>
+      <location filename="../../../Path/Main/Job.py" line="457"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="63"/>
       <source>2D</source>
       <translation>2D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="284"/>
+      <location filename="../../../Path/Main/Job.py" line="458"/>
       <source>2.5D</source>
       <translation>2.5D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="285"/>
+      <location filename="../../../Path/Main/Job.py" line="459"/>
       <source>Lathe</source>
       <translation>ເຄື່ອງກຶງ (Lathe)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="286"/>
+      <location filename="../../../Path/Main/Job.py" line="460"/>
       <source>Multiaxis</source>
       <translation>ຫຼາຍແກນ (Multiaxis)</translation>
     </message>
@@ -9149,47 +9179,66 @@ Without sub selection:
       <translation>ເລກເຄື່ອງມື {} ຖືກໃຊ້ໂດຍ {} ແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2020"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
+      <source>The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</source>
+      <translation type="unfinished">The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2121"/>
       <source>Add one.</source>
       <translation>ເພີ່ມອັນໜຶ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1696"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1755"/>
       <source>Unsupported stock object %s</source>
       <translation>ວັດຖຸດິບ %s ບໍ່ຮອງຮັບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1712"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1771"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>ບໍ່ຮອງຮັບປະເພດວັດສະດຸ %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1795"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1854"/>
       <source>Model Selection</source>
       <translation>ການເລືອກແບບຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2019"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1909"/>
+      <source>Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
+
+Take it out?</source>
+      <translation type="unfinished">Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
+
+Take it out?</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1912"/>
+      <source>Take the model out</source>
+      <translation type="unfinished">Take the model out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2120"/>
       <source>Warning</source>
       <translation>ຄຳເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2021"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2122"/>
       <source>Ok</source>
       <translation>ຕົກລົງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2023"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2124"/>
       <source>Add</source>
       <translation>ເພີ່ມ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2135"/>
       <source>This job has no base model.</source>
       <translation>ວຽກນີ້ບໍ່ມີແບບຈຳລອງພື້ນຖານ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2041"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2142"/>
       <source>This job has no tool.</source>
       <translation>ວຽກນີ້ບໍ່ມີເຄື່ອງມື.</translation>
     </message>
@@ -9204,42 +9253,42 @@ Without sub selection:
       <translation>ວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="282"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="277"/>
       <source>Model</source>
       <translation>ແບບຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="283"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="278"/>
       <source>Count</source>
       <translation>ຈຳນວນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="136"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="131"/>
       <source>Velocity expressed per minute (recommended for G-code)</source>
       <translation>ຄວາມໄວທີ່ສະແດງຕໍ່ນາທີ (ແນະນຳສຳລັບ G-code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="142"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="137"/>
       <source>Velocity expressed per second. Unsafe for G-code feed rates.</source>
       <translation>ຄວາມໄວທີ່ສະແດງຕໍ່ວິນາທີ. ບໍ່ປອດໄພສຳລັບອັດຕາການປ້ອນ G-code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="396"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>(none)</source>
       <translation>(ບໍ່ມີ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="490"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="485"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>ພື້ນຖານ -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="500"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="495"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>ກ່ອງ: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="515"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="510"/>
       <source>Unsupported stock type</source>
       <translation>ບໍ່ຮອງຮັບປະເພດວັດສະດຸ</translation>
     </message>
@@ -9335,7 +9384,7 @@ G-code ພາຍໃຕ້ເຄີເຊີກຳນົດຕຳແໜ່ງກ�
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="506"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="501"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>ຮູບຊົງກະບອກ: %.2f x %.2f</translation>
     </message>
@@ -9603,59 +9652,74 @@ G-code ພາຍໃຕ້ເຄີເຊີກຳນົດຕຳແໜ່ງກ�
       <translation>ວັນທີ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="248"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="277"/>
       <source>The Job&apos;s last post-processed file is missing</source>
       <translation>ໄຟລ໌ທີ່ປະມວນຜົນຫຼ້າສຸດຂອງວຽກນີ້ຫາຍສາບສູນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="385"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="310"/>
+      <source>Operation &apos;{}&apos; is missing from the output: {}</source>
+      <translation type="unfinished">Operation &apos;{}&apos; is missing from the output: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="318"/>
+      <source>Operation &apos;{}&apos; is deprecated: {}</source>
+      <translation type="unfinished">Operation &apos;{}&apos; is deprecated: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="456"/>
       <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
       <translation>ໝາຍເລກເຄື່ອງມື {} ແມ່ນເຄື່ອງມືແບບເກົ່າ. ເຄື່ອງມືແບບເກົ່າບໍ່ 
                     ຮອງຮັບໂດຍ Path-Sanity</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="397"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="468"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>ໝາຍເລກເຄື່ອງມື {} ຖືກໃຊ້ໂດຍເຄື່ອງມືຫຼາຍອັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="502"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation>ບໍ່ພົບຮູບຮ່າງເຄື່ອງມືສຳລັບ TC: {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="456"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="527"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມື &apos;{}&apos; ບໍ່ມີອັດຕາການປ້ອນ (feedrate)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="468"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="539"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມື &apos;{}&apos; ບໍ່ມີຄວາມໄວຮອບ (spindlespeed)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="494"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="565"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມື &apos;{}&apos; ບໍ່ໄດ້ຖືກໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="659"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="730"/>
       <source>No operations found in job</source>
       <translation>ບໍ່ພົບການດຳເນີນງານໃນວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="669"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="740"/>
       <source>No model/base geometry found in job</source>
       <translation>ບໍ່ພົບແບບຈຳລອງ/ເລຂາຄະນິດພື້ນຖານໃນວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="356"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="427"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>ພິຈາລະນາການກຳນົດວັດສະດຸວຽກ (Stock Material)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="204"/>
+      <source>Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</source>
+      <translation type="unfinished">Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="260"/>
       <source>The Job has not been post-processed</source>
       <translation>ວຽກນີ້ຍັງບໍ່ທັນໄດ້ຮັບການປະມວນຜົນຫຼັງ</translation>
     </message>
@@ -9771,77 +9835,77 @@ G-code ພາຍໃຕ້ເຄີເຊີກຳນົດຕຳແໜ່ງກ�
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="461"/>
+      <location filename="../../../Path/Op/Base.py" line="504"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="462"/>
+      <location filename="../../../Path/Op/Base.py" line="505"/>
       <source>Flood</source>
       <translation>ແບບຖ້ວມ (Flood)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="463"/>
+      <location filename="../../../Path/Op/Base.py" line="506"/>
       <source>Mist</source>
       <translation>ແບບລະອອງ (Mist)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="974"/>
+      <location filename="../../../Path/Op/Base.py" line="1031"/>
       <source>No parent job found for operation</source>
       <translation type="unfinished">No parent job found for operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="980"/>
+      <location filename="../../../Path/Op/Base.py" line="1037"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1124"/>
+      <location filename="../../../Path/Op/Base.py" line="1181"/>
       <source>%s: Final depth is above start depth</source>
       <translation type="unfinished">%s: Final depth is above start depth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1133"/>
+      <location filename="../../../Path/Op/Base.py" line="1190"/>
       <source>%s: Start depth is above safe height</source>
       <translation type="unfinished">%s: Start depth is above safe height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1140"/>
+      <location filename="../../../Path/Op/Base.py" line="1197"/>
       <source>%s: Safe height is above clearance height</source>
       <translation type="unfinished">%s: Safe height is above clearance height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1471"/>
+      <location filename="../../../Path/Op/Base.py" line="1528"/>
       <source>Base object %s.%s already in the list</source>
       <translation type="unfinished">Base object %s.%s already in the list</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1481"/>
+      <location filename="../../../Path/Op/Base.py" line="1538"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation type="unfinished">Base object %s.%s rejected by operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="623"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="657"/>
       <source>Copy {0}…</source>
       <translation>ຄັດລອກ {0}…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="624"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="658"/>
       <source>New tool controller…</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມືໃໝ່…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="675"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="709"/>
       <source>This tool controller is used by 1 other operation.</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມືນີ້ຖືກໃຊ້ໂດຍ 1 ການດຳເນີນການອື່ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="678"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="712"/>
       <source>This tool controller is used by {0} other operations.</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມືນີ້ຖືກໃຊ້ໂດຍການດຳເນີນງານອື່ນ {0} ອັນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1209"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1243"/>
       <source>None (Job XY)</source>
       <translation type="unfinished">None (Job XY)</translation>
     </message>
@@ -9849,17 +9913,17 @@ G-code ພາຍໃຕ້ເຄີເຊີກຳນົດຕຳແໜ່ງກ�
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="966"/>
+      <location filename="../../../Path/Op/Base.py" line="1023"/>
       <source>%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</source>
       <translation type="unfinished">%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1313"/>
+      <location filename="../../../Path/Op/Base.py" line="1370"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>ບໍ່ໄດ້ເລືອກຕົວຄວບຄຸມເຄື່ອງມື. ພວກເຮົາຕ້ອງການເຄື່ອງມືເພື່ອສ້າງເສັ້ນທາງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1331"/>
+      <location filename="../../../Path/Op/Base.py" line="1388"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>ບໍ່ພົບເຄື່ອງມື ຫຼື ເສັ້ນຜ່ານສູນກາງເປັນສູນ. ພວກເຮົາຕ້ອງການເຄື່ອງມືເພື່ອສ້າງເສັ້ນທາງ.</translation>
     </message>
@@ -10567,72 +10631,72 @@ This will not delete the toolbits contained within it.</source>
       <translation type="unfinished">Certain G0&apos;s become G1 for operations that have &quot;No-Engagement Feedrate&quot;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="1936"/>
+      <location filename="../../../Path/Post/Processor.py" line="1939"/>
       <source>{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</source>
       <translation type="unfinished">{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="1938"/>
+      <location filename="../../../Path/Post/Processor.py" line="1941"/>
       <source>the Job</source>
       <translation type="unfinished">the Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="1957"/>
+      <location filename="../../../Path/Post/Processor.py" line="1960"/>
       <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</source>
       <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="1967"/>
+      <location filename="../../../Path/Post/Processor.py" line="1970"/>
       <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</source>
       <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="1977"/>
+      <location filename="../../../Path/Post/Processor.py" line="1980"/>
       <source>{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</source>
       <translation type="unfinished">{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2115"/>
+      <location filename="../../../Path/Post/Processor.py" line="2121"/>
       <source>{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</source>
       <translation type="unfinished">{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="2158"/>
+      <location filename="../../../Path/Post/Processor.py" line="2164"/>
       <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</source>
       <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3296"/>
+      <location filename="../../../Path/Post/Processor.py" line="3306"/>
       <source>The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</source>
       <translation type="unfinished">The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3321"/>
+      <location filename="../../../Path/Post/Processor.py" line="3331"/>
       <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</source>
       <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3333"/>
+      <location filename="../../../Path/Post/Processor.py" line="3343"/>
       <source>Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</source>
       <translation type="unfinished">Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3456"/>
+      <location filename="../../../Path/Post/Processor.py" line="3488"/>
       <source> (in the Custom op, uncheck Post Process Output, or put &apos;!&apos; in front of specific command)</source>
       <translation>(ໃນການປະຕິບັດການກຳນົດເອງ, ຍົກເລີກການເລືອກ Post Process Output, ຫຼື ໃສ່ &apos;!&apos; ໄວ້ທາງໜ້າຄຳສັ່ງສະເພາະ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3788"/>
+      <location filename="../../../Path/Post/Processor.py" line="3833"/>
       <source>S parameter is required for a tapping operation</source>
       <translation type="unfinished">S parameter is required for a tapping operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3796"/>
+      <location filename="../../../Path/Post/Processor.py" line="3841"/>
       <source>S parameter must be &gt; 0 for a tapping operation</source>
       <translation type="unfinished">S parameter must be &gt; 0 for a tapping operation</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3981"/>
+      <location filename="../../../Path/Post/Processor.py" line="4026"/>
       <source>{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</source>
       <translation type="unfinished">{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</translation>
     </message>
@@ -10826,52 +10890,72 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
       <translation type="unfinished">Generic Sheet Cutting post processor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="168"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="170"/>
       <source>Automatic Tool Changer</source>
       <translation>ຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="174"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="176"/>
       <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
       <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="180"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="182"/>
       <source>Automatic Spindle Control</source>
       <translation>ການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="186"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="188"/>
       <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
       <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="193"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="195"/>
       <source>OpenSBP post processor for ShopBot controllers</source>
       <translation>ຕົວປະມວນຜົນຫຼັງ OpenSBP ສຳລັບ ShopBot</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="108"/>
+      <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
+      <translation type="unfinished">G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="117"/>
+      <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</source>
+      <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="127"/>
       <source>Path Blending Mode</source>
       <translation>ໂໝດການປະສົມເສັ້ນທາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="134"/>
       <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
       <translation>ໂໝດການປະສົມເສັ້ນທາງ: G61, G61.1, G64.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="140"/>
       <source>Blend Tolerance</source>
       <translation>ຄ່າຄວາມຄາດເຄື່ອນໃນການປະສົມ (Blend Tolerance)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="149"/>
       <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
       <translation>ຄ່າຄວາມຄາດເຄື່ອນສຳລັບໂໝດ BLEND.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="155"/>
+      <source>Tilted work plane: kinematics select</source>
+      <translation type="unfinished">Tilted work plane: kinematics select</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="163"/>
+      <source>A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</source>
+      <translation type="unfinished">A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="170"/>
       <source>LinuxCNC post processor</source>
       <translation>ຕົວປະມວນຜົນຫຼັງ LinuxCNC</translation>
     </message>
@@ -10881,112 +10965,112 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
       <translation>ຕົວປະມວນຜົນຫຼັງ Marlin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="143"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="138"/>
       <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool to machine Z zero; G91 G28 Z0 followed by G90 references it. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
       <translation type="unfinished">G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool to machine Z zero; G91 G28 Z0 followed by G90 references it. Left empty, nothing clears the part before the table turns, and the sanity check says so.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="151"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="146"/>
       <source>G-code inserted after the rotary axes have moved. Under the DWO rotation strategy this is where the control&apos;s dynamic fixture offset is selected: G54.2 P1 on a Fanuc with that option. Under TWP the plane command handles the rotation and this block is usually empty.</source>
       <translation type="unfinished">G-code inserted after the rotary axes have moved. Under the DWO rotation strategy this is where the control&apos;s dynamic fixture offset is selected: G54.2 P1 on a Fanuc with that option. Under TWP the plane command handles the rotation and this block is usually empty.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="160"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="155"/>
       <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</source>
       <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="170"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="165"/>
       <source>Program Number</source>
       <translation type="unfinished">Program Number</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="179"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="174"/>
       <source>The O number written after the leading % mark, zero-padded to four digits. 0 writes no O line. The control files the program under this number when it is loaded.</source>
       <translation type="unfinished">The O number written after the leading % mark, zero-padded to four digits. 0 writes no O line. The control files the program under this number when it is loaded.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="185"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="180"/>
       <source>Tape Marks (%)</source>
       <translation type="unfinished">Tape Marks (%)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="190"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="185"/>
       <source>Write % as the first and last line, as tape-format DNC expects.</source>
       <translation type="unfinished">Write % as the first and last line, as tape-format DNC expects.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="196"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="191"/>
       <source>Upper-Case Output</source>
       <translation type="unfinished">Upper-Case Output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="202"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="197"/>
       <source>Write the whole program in upper case, comments included. Older controls read nothing else.</source>
       <translation type="unfinished">Write the whole program in upper case, comments included. Older controls read nothing else.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="208"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="203"/>
       <source>Dwell in Milliseconds</source>
       <translation type="unfinished">Dwell in Milliseconds</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="215"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="210"/>
       <source>Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</source>
       <translation type="unfinished">Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="221"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="216"/>
       <source>Rigid Tapping (M29)</source>
       <translation type="unfinished">Rigid Tapping (M29)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="229"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="224"/>
       <source>Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</source>
       <translation type="unfinished">Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="235"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="230"/>
       <source>Parametric Tool Length Offset</source>
       <translation type="unfinished">Parametric Tool Length Offset</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="242"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="237"/>
       <source>After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</source>
       <translation type="unfinished">After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="248"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="243"/>
       <source>Park Empty Spindle at End</source>
       <translation type="unfinished">Park Empty Spindle at End</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="255"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="250"/>
       <source>Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</source>
       <translation type="unfinished">Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="261"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="256"/>
       <source>Empty-Spindle Retract</source>
       <translation type="unfinished">Empty-Spindle Retract</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="267"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="262"/>
       <source>The retract written between M05 and M6 T0 when the empty-spindle park is on.</source>
       <translation type="unfinished">The retract written between M05 and M6 T0 when the empty-spindle park is on.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="278"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="273"/>
       <source>Fanuc post processor</source>
       <translation type="unfinished">Fanuc post processor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="352"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="347"/>
       <source>Rigid tapping needs a spindle speed: {op} taps with {cmd} and no S has been commanded</source>
       <translation type="unfinished">Rigid tapping needs a spindle speed: {op} taps with {cmd} and no S has been commanded</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="513"/>
+      <location filename="../../../Path/Post/scripts/fanuc_post.py" line="508"/>
       <source>&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</source>
       <translation type="unfinished">&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</translation>
     </message>
@@ -11036,12 +11120,12 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
       <translation>ການດຳເນີນງານແບບປັບຕົວບໍ່ສາມາດກຳນົດຂອບເຂດໄດ້. ທ່ານໄດ້ເລືອກເລຂາຄະນິດພື້ນຖານແລ້ວຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="105"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="106"/>
       <source>No Job found to add a work plane to.</source>
       <translation type="unfinished">No Job found to add a work plane to.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="125"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="137"/>
       <source>Created %s at the Job origin. Select a planar face before the command to derive one from the model.</source>
       <translation type="unfinished">Created %s at the Job origin. Select a planar face before the command to derive one from the model.</translation>
     </message>
@@ -11150,7 +11234,7 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
       <translation type="unfinished">Automatic cone angle definition allowed only for cone faces</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="760"/>
+      <location filename="../../../Path/Op/Helix.py" line="761"/>
       <source>Skipped hole at position %s</source>
       <translation type="unfinished">Skipped hole at position %s</translation>
     </message>
@@ -11158,22 +11242,22 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
   <context>
     <name>CAM_Pocket</name>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="72"/>
+      <location filename="../../../Path/Op/MillFace.py" line="73"/>
       <source>Boundbox</source>
       <translation>ຂອບເຂດວັດຖຸ (Boundbox)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="73"/>
+      <location filename="../../../Path/Op/MillFace.py" line="74"/>
       <source>Face Region</source>
       <translation>ພື້ນທີ່ຜິວໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="74"/>
+      <location filename="../../../Path/Op/MillFace.py" line="75"/>
       <source>Perimeter</source>
       <translation>ເສັ້ນຮອບຮູບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFace.py" line="75"/>
+      <location filename="../../../Path/Op/MillFace.py" line="76"/>
       <source>Stock</source>
       <translation>ວັດສະດຸ (Stock)</translation>
     </message>
@@ -11623,6 +11707,16 @@ Allowed selection only from one model:
       <translation>ແນວໝູນ (Rotational)</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Surface.py" line="591"/>
+      <source>The Rotational scan type</source>
+      <translation type="unfinished">The Rotational scan type</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Surface.py" line="592"/>
+      <source>the Rotary Surface operation</source>
+      <translation type="unfinished">the Rotary Surface operation</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
       <source>3D Surface</source>
       <translation>ພື້ນຜິວ 3 ມິຕິ (3D Surface)</translation>
@@ -11856,6 +11950,16 @@ Allowed selection only from one model:
       <source>Create a Facing Operation from a model or face</source>
       <translation>ສ້າງການເຮັດວຽກປາດໜ້າ ຈາກໂມເດວ ຫຼື ໜ້າພຽງ</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Op/MillFace.py" line="96"/>
+      <source>The Face operation</source>
+      <translation type="unfinished">The Face operation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFace.py" line="97"/>
+      <source>the Mill Facing operation</source>
+      <translation type="unfinished">the Mill Facing operation</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Pocket3D</name>
@@ -11923,6 +12027,16 @@ Several operations can be used with identical tool controller and coolant mode</
       <source>Create a Waterline toolpath from a model</source>
       <translation>ສ້າງເສັ້ນທາງເຄື່ອງມື Waterline ຈາກໂມເດວ</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="582"/>
+      <source>The Waterline operation</source>
+      <translation type="unfinished">The Waterline operation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="585"/>
+      <source>the Planar Surface operation with Strategy set to &apos;Waterline&apos;</source>
+      <translation type="unfinished">the Planar Surface operation with Strategy set to &apos;Waterline&apos;</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Post</name>
@@ -11954,17 +12068,17 @@ Several operations can be used with identical tool controller and coolant mode</
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3202"/>
+      <location filename="../../../Path/Post/Processor.py" line="3212"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</source>
       <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3214"/>
+      <location filename="../../../Path/Post/Processor.py" line="3224"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</source>
       <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="3238"/>
+      <location filename="../../../Path/Post/Processor.py" line="3248"/>
       <source>Machine defines {} toolheads; spindle speed was not checked against their limits</source>
       <translation type="unfinished">Machine defines {} toolheads; spindle speed was not checked against their limits</translation>
     </message>
@@ -11986,7 +12100,7 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="176"/>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1540"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1542"/>
       <source>(Legacy post-processor)</source>
       <translation type="unfinished">(Legacy post-processor)</translation>
     </message>
@@ -12283,6 +12397,16 @@ Tool number for {}:</source>
       <location filename="../../../Path/Op/Tapping.py" line="76"/>
       <source>2x Drill Tip</source>
       <translation>2 ເທົ່າ ປາຍດອກເຈາະ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="297"/>
+      <source>The Tapping operation</source>
+      <translation type="unfinished">The Tapping operation</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="298"/>
+      <source>the Drilling operation with Strategy set to &apos;Tapping&apos;</source>
+      <translation type="unfinished">the Drilling operation with Strategy set to &apos;Tapping&apos;</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Tapping.py" line="172"/>
@@ -13384,7 +13508,7 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
       <source>Kinematics</source>
       <translation>ກົນໄກການເຄື່ອນໄຫວ (Kinematics)</translation>
     </message>
@@ -13405,13 +13529,13 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1016"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
       <source>TCP Supported</source>
       <translation>ຮອງຮັບ TCP</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1038"/>
       <source>Rotation Strategy</source>
       <translation type="unfinished">Rotation Strategy</translation>
     </message>
@@ -13422,8 +13546,8 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1201"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1350"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
       <source>Role</source>
       <translation>ບົດບາດ</translation>
     </message>
@@ -13434,15 +13558,15 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1225"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1374"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
       <source>Sequence</source>
       <translation>ລຳດັບ</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1312"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1303"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1445"/>
       <source>Joint Origin</source>
       <translation>ຈຸດກຳເນີດຂອງຂໍ້ຕໍ່</translation>
     </message>
@@ -13453,356 +13577,356 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1467"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1458"/>
       <source>Solution Preference</source>
       <translation>ສິ່ງທີ່ເລືອກສຳລັບຄຳຕອບ</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1475"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1466"/>
       <source>Allow Flip</source>
       <translation>ອະນຸຍາດໃຫ້ພິກ</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1488"/>
       <source>Wrap Strategy</source>
       <translation>ກົນລະຍຸດການຫໍ່</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="352"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="338"/>
       <source>Custom Machine</source>
       <translation>ເຄື່ອງຈັກກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="357"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="343"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>ເຄື່ອງກຶງ 2 ແກນ (X, Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="348"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>ເຄື່ອງກັດ 3 ແກນ (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="367"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="353"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>ເຄື່ອງກັດ 4 ແກນ (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="372"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="358"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>ເຄື່ອງກັດ 4 ແກນ (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="377"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="363"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>ເຄື່ອງກັດ 5 ແກນ (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="382"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="368"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>ເຄື່ອງກັດ 5 ແກນ (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="419"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="634"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="620"/>
       <source>Machine Editor</source>
       <translation>ຕົວແກ້ໄຂເຄື່ອງຈັກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="435"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
       <source>Machine</source>
       <translation>ເຄື່ອງຈັກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="440"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
       <source>Toolheads</source>
       <translation>ຫົວເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="445"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
       <source>Postprocessor</source>
       <translation>ໂພສໂປຣເຊັສເຊີ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="450"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
       <source>Options</source>
       <translation>ທາງເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="477"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2288"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2279"/>
       <source>Edit as Text</source>
       <translation>ແກ້ໄຂເປັນຂໍ້ຄວາມ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="481"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
       <source>Validate</source>
       <translation type="unfinished">Validate</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="488"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="474"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation type="unfinished">Check this machine for problems that would stop it loading or would silently drop settings</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="498"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="484"/>
       <source>Save</source>
       <translation>ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="501"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
       <source>Close</source>
       <translation>ປິດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="803"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="789"/>
       <source>Remove Toolhead</source>
       <translation>ລົບຫົວເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="804"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>ລົບຫົວເຄື່ອງມື? ການກະທຳນີ້ບໍ່ສາມາດຍົກເລີກໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="873"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="951"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="978"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="863"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
       <source>Custom</source>
       <translation>ກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="881"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="871"/>
       <source>Template Load Error</source>
       <translation>ຂໍ້ຜິດພາດໃນການໂຫຼດແມ່ແບບ (Template)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="882"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
       <source>Could not load template</source>
       <translation>ບໍ່ສາມາດໂຫຼດແມ່ແບບໄດ້</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="931"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="921"/>
       <source>Name</source>
       <translation>ຊື່</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
       <source>Load settings from an existing machine template</source>
       <translation>ໂຫຼດການຕັ້ງຄ່າຈາກແມ່ແບບເຄື່ອງຈັກທີ່ມີຢູ່</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="984"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="975"/>
       <source>Template</source>
       <translation>ແມ່ແບບ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="988"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="979"/>
       <source>Manufacturer</source>
       <translation>ຜູ້ຜະລິດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="992"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
       <source>Description</source>
       <translation>ລາຍລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
       <source>Metric</source>
       <translation>ເມດຕຣິກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="996"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
       <source>Imperial</source>
       <translation>ອິມພິຣຽວ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
       <source>Units</source>
       <translation>ຫົວໜ່ວຍ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1004"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1022"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1013"/>
       <source>Not declared</source>
       <translation type="unfinished">Not declared</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1023"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
       <source>Dynamic work offset (DWO)</source>
       <translation type="unfinished">Dynamic work offset (DWO)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1024"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
       <source>Tilted work plane (TWP)</source>
       <translation type="unfinished">Tilted work plane (TWP)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1027"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
       <source>Post transform (not available yet)</source>
       <translation type="unfinished">Post transform (not available yet)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1040"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
       <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
       <translation type="unfinished">How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1056"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
       <source>Notes</source>
       <translation>ໝາຍເຫດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1062"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1053"/>
       <source>Axes</source>
       <translation>ແກນ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1090"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1081"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1082"/>
       <source>Add Toolhead</source>
       <translation>ເພີ່ມຫົວເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1207"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
       <source>Parent</source>
       <translation>ຕົ້ນສັງກັດ (Parent)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1243"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1234"/>
       <source>Direction</source>
       <translation>ທິດທາງ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1254"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1382"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1245"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1373"/>
       <source>Min Limit</source>
       <translation>ຂີດຈຳກັດຕໍ່າສຸດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1264"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1255"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
       <source>Max Limit</source>
       <translation>ຂີດຈຳກັດສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1274"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1398"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1265"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
       <source>Max Velocity</source>
       <translation>ຄວາມໄວສູງສຸດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1416"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1407"/>
       <source>Rotation Axis</source>
       <translation>ແກນໝູນ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1485"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
       <source>Prefer Positive</source>
       <translation>ເນັ້ນຄ່າບວກ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1862"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1853"/>
       <source>Postprocessor Selection</source>
       <translation>ການເລືອກໂພສໂປຣເຊັສເຊີ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1872"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>ເລືອກໄຟລ໌ໂພສໂປຣເຊັສສຳລັບເຄື່ອງຈັກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1898"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1889"/>
       <source>Post Processor:</source>
       <translation>ໂພສໂປຣເຊັສເຊີ:</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1904"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1895"/>
       <source>Postprocessor Configuration</source>
       <translation>ການຕັ້ງຄ່າໂພສໂປຣເຊັສເຊີ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2293"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2455"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2446"/>
       <source>JSON Error</source>
       <translation>ຂໍ້ຜິດພາດ JSON</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2294"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2351"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2456"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2342"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2447"/>
       <source>Invalid JSON: {}</source>
       <translation>JSON ບໍ່ຖືກຕ້ອງ: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2299"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2318"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2462"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2309"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2300"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2291"/>
       <source>Failed to parse data: {}</source>
       <translation>ການວິເຄາະຂໍ້ມູນຫຼົ້ມເຫຼວ: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2313"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2304"/>
       <source>Edit as Form</source>
       <translation>ແກ້ໄຂເປັນແບບຟອມ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2319"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2310"/>
       <source>Failed to generate JSON: {}</source>
       <translation>ການສ້າງ JSON ຫຼົ້ມເຫຼວ: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2350"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2357"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2373"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2364"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
       <source>Validation</source>
       <translation type="unfinished">Validation</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2358"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
       <source>This machine does not load: {}</source>
       <translation type="unfinished">This machine does not load: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2374"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2365"/>
       <source>No problems found.</source>
       <translation type="unfinished">No problems found.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2371"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation type="unfinished">{} error(s) and {} warning(s) found.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2385"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2376"/>
       <source>{} warning(s) found.</source>
       <translation type="unfinished">{} warning(s) found.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2429"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2420"/>
       <source>Duplicate Machine Name</source>
       <translation>ຊື່ເຄື່ອງຈັກຊ້ຳກັນ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2424"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>ເຄື່ອງຈັກທີ່ມີຊື່ '{}' ມີຢູ່ແລ້ວ. ກະລຸນາເລືອກຊື່ອື່ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2463"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2454"/>
       <source>Failed to save: {}</source>
       <translation>ການບັນທຶກຫຼົ້ມເຫຼວ: {}</translation>
     </message>
@@ -14588,7 +14712,7 @@ You can enable feature Close Open Path</source>
       <translation>ບໍ່ພົບໜ້າ ຫຼື ຂອບທີ່ໃຊ້ໄດ້ໃນເລຂາຄະນິດພື້ນຖານ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Flute.py" line="2125"/>
+      <location filename="../../../Path/Op/Flute.py" line="2127"/>
       <source>Could not determine centerline for: {}
 </source>
       <translation>ບໍ່ສາມາດກຳນົດເສັ້ນແກນກາງສຳລັບ: {}</translation>
@@ -14800,7 +14924,7 @@ Supported tool types: flat, bull-nose, V-bit.</source>
       <translation>ບໍ່ມີງານ (JOB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PlanarSurface.py" line="1791"/>
+      <location filename="../../../Path/Op/PlanarSurface.py" line="1793"/>
       <source>Error creating OCL cutter from tool parameters.</source>
       <translation type="unfinished">Error creating OCL cutter from tool parameters.</translation>
     </message>
@@ -14881,7 +15005,7 @@ Supported tool types: flat, bull-nose, V-bit.</source>
   <context>
     <name>Waterline</name>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1390"/>
+      <location filename="../../../Path/Op/Waterline.py" line="1399"/>
       <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
       <translation>: ຂັ້ນຕອນທີ່ຢູ່ລຸ່ມໜ້າພຽງເທິງສຸດຂອງໂມເດວເທົ່ານັ້ນທີ່ຈະຖືກປະມວນຜົນ.</translation>
     </message>
@@ -14910,14 +15034,20 @@ Supported tool types: flat, bull-nose, V-bit.</source>
   <context>
     <name>CAM_Workplane</name>
     <message>
-      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="79"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="80"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="121"/>
       <source>Work Plane</source>
       <translation type="unfinished">Work Plane</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="84"/>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="85"/>
       <source>Create a named work plane on the Job, from a selected planar face or at the Job origin. Operations can share one work plane.</source>
       <translation type="unfinished">Create a named work plane on the Job, from a selected planar face or at the Job origin. Operations can share one work plane.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="122"/>
+      <source>Name</source>
+      <translation>ຊື່</translation>
     </message>
   </context>
   <context>

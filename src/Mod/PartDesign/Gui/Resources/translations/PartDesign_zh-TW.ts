@@ -206,17 +206,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2870"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2861"/>
+      <location filename="../../Command.cpp" line="2871"/>
       <source>Boolean Operation</source>
       <translation>布林運算</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>對選取物件與作用中主體執行布林運算</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2729"/>
+      <location filename="../../Command.cpp" line="2739"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2730"/>
+      <location filename="../../Command.cpp" line="2740"/>
       <source>Multi-Transform</source>
       <translation>多重轉換</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2741"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>對選取的特徵或作用中主體套用多重轉換</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2635"/>
       <source>Polar Pattern</source>
       <translation>極座標陣列</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2636"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>以環狀陣列複製選取的特徵或作用中主體</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2696"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2687"/>
+      <location filename="../../Command.cpp" line="2697"/>
       <source>Scale</source>
       <translation>縮放</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2688"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Scales the selected features or the active body</source>
       <translation>縮放選取的特徵或作用中主體</translation>
     </message>
@@ -905,28 +905,28 @@ so that self intersection is avoided.</source>
       <translation>製作拷貝</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2794"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>轉換為多重轉換特徵</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="266"/>
+      <location filename="../../SketchWorkflow.cpp" line="289"/>
       <source>Sketch on Face</source>
       <translation>在面上草圖</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="328"/>
+      <location filename="../../SketchWorkflow.cpp" line="351"/>
       <source>Make copy</source>
       <translation>製作拷貝</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="530"/>
-      <location filename="../../SketchWorkflow.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="553"/>
+      <location filename="../../SketchWorkflow.cpp" line="813"/>
       <source>New Sketch</source>
       <translation>新草圖</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Create Boolean</source>
       <translation>建立布林運算</translation>
     </message>
@@ -989,7 +989,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>點圖樣</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
@@ -1688,12 +1688,12 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="107"/>
+      <location filename="../../TaskDatumParameters.cpp" line="110"/>
       <source>Incompatible Reference Set</source>
       <translation>不相容的參考集合</translation>
     </message>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="109"/>
+      <location filename="../../TaskDatumParameters.cpp" line="112"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>沒有適合當前參考集的附件模式。如果您選擇繼續，該特徵將保留在它現在的位置，並且不會隨著參考的變化而移動。是否繼續 ?</translation>
     </message>
@@ -1917,52 +1917,52 @@ If zero, it is equal to Radius2</source>
       <translation>建立交叉參照</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Valid</source>
       <translation>有效</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="70"/>
+      <location filename="../../TaskFeaturePick.cpp" line="81"/>
       <source>Invalid shape</source>
       <translation>非有效形狀</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="72"/>
+      <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>No wire in sketch</source>
       <translation>草圖找不到線段</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="74"/>
+      <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Sketch already used by other feature</source>
       <translation>草圖已被其他特徵使用</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="76"/>
+      <location filename="../../TaskFeaturePick.cpp" line="87"/>
       <source>Belongs to another body</source>
       <translation>屬於另一個主體</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="78"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Belongs to another part</source>
       <translation>屬於另一個零件</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="91"/>
       <source>Doesn't belong to any body</source>
       <translation>不屬於任何主體</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="82"/>
+      <location filename="../../TaskFeaturePick.cpp" line="93"/>
       <source>Base plane</source>
       <translation>基準面</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="84"/>
+      <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Feature is located after the tip of the body</source>
       <translation>特徵位於主體端點之後</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="96"/>
+      <location filename="../../TaskFeaturePick.cpp" line="107"/>
       <source>Select Attachment</source>
       <translation>選取依附</translation>
     </message>
@@ -2451,17 +2451,17 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
       <source>Add Circular Pattern</source>
-      <translation type="unfinished">Add Circular Pattern</translation>
+      <translation>新增圓形圖樣</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
       <source>Add Path Pattern</source>
-      <translation type="unfinished">Add Path Pattern</translation>
+      <translation>新增路徑圖樣</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
       <source>Add Point Pattern</source>
-      <translation type="unfinished">Add Point Pattern</translation>
+      <translation>新增點圖樣</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
@@ -3532,42 +3532,42 @@ measured along the specified direction</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="836"/>
+      <location filename="../../SketchWorkflow.cpp" line="851"/>
       <source>Several sub-elements selected</source>
       <translation>多個次元素被選取</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="837"/>
+      <location filename="../../SketchWorkflow.cpp" line="852"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>請選取單一的面作為草圖支撐！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="844"/>
+      <location filename="../../SketchWorkflow.cpp" line="859"/>
       <source>Select a face as support for a sketch!</source>
       <translation>請選取一個面作為草圖支撐！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="851"/>
+      <location filename="../../SketchWorkflow.cpp" line="866"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>草圖支撐需要平面！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="858"/>
+      <location filename="../../SketchWorkflow.cpp" line="873"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>請先建立平面或選取要繪製草圖的面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="843"/>
+      <location filename="../../SketchWorkflow.cpp" line="858"/>
       <source>No support face selected</source>
       <translation>未選取支撐面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="850"/>
+      <location filename="../../SketchWorkflow.cpp" line="865"/>
       <source>No planar support</source>
       <translation>沒有平面支撐</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="857"/>
+      <location filename="../../SketchWorkflow.cpp" line="872"/>
       <source>No valid planes in this document</source>
       <translation>本文件中沒有有效的平面</translation>
     </message>
@@ -3575,7 +3575,7 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1194"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
+      <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>於工作面板已開啟對話窗</translation>
@@ -3624,7 +3624,7 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1195"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>關閉此對話方塊？</translation>
@@ -4901,12 +4901,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="426"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>被鏈接物件不是零件設計特徵</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="435"/>
       <source>Tip shape is empty</source>
       <translation>尖端形狀為空</translation>
     </message>
@@ -5637,12 +5637,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2928"/>
+      <location filename="../../Command.cpp" line="2938"/>
       <source>Create Datum</source>
       <translation>建立基準</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2939"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>建立基準物件或局部座標系</translation>
     </message>
@@ -5650,12 +5650,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2963"/>
+      <location filename="../../Command.cpp" line="2973"/>
       <source>Create Datum</source>
       <translation>建立基準</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2964"/>
+      <location filename="../../Command.cpp" line="2974"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>建立基準物件或局部座標系</translation>
     </message>
@@ -5884,32 +5884,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="415"/>
+      <location filename="../../TaskPatternParameters.cpp" line="425"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>選取含有陣列點的草圖或形狀</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="421"/>
+      <location filename="../../TaskPatternParameters.cpp" line="431"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>選取草圖、子形狀連結器或路徑邊</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="430"/>
+      <location filename="../../TaskPatternParameters.cpp" line="440"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>選取方向參考（邊、面、基準線）</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="494"/>
+      <location filename="../../TaskPatternParameters.cpp" line="504"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>選取無效。請選取含有點的草圖或形狀。</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="497"/>
+      <location filename="../../TaskPatternParameters.cpp" line="507"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>選取無效。請選取草圖、子形狀連結器或路徑邊。</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="499"/>
+      <location filename="../../TaskPatternParameters.cpp" line="509"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>無效選取。請選取邊、平面或基準線。</translation>
     </message>
@@ -5976,17 +5976,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignPathPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2547"/>
+      <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
       <translation>路徑圖樣</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2548"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
       <translation>沿著路徑複製所選的特徵或作用中主體</translation>
     </message>
@@ -5994,17 +5994,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2584"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>PartDesign</source>
       <translation>零件設計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>點圖樣</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2586"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation>按照形狀上的點位複製所選的特徵或作用中主體</translation>
     </message>
@@ -6022,12 +6022,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../ViewProviderPathPattern.h" line="18"/>
       <source>Path Pattern Parameters</source>
-      <translation type="unfinished">Path Pattern Parameters</translation>
+      <translation>路徑圖樣參數</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
       <source>Edit Path Pattern</source>
-      <translation type="unfinished">Edit Path Pattern</translation>
+      <translation>編輯路徑圖樣</translation>
     </message>
   </context>
   <context>
@@ -6068,12 +6068,12 @@ Adjust the parameters and try again.</source>
     <message>
       <location filename="../../ViewProviderCircularPattern.h" line="18"/>
       <source>Circular Pattern Parameters</source>
-      <translation type="unfinished">Circular Pattern Parameters</translation>
+      <translation>圓形圖樣參數</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
       <source>Edit Circular Pattern</source>
-      <translation type="unfinished">Edit Circular Pattern</translation>
+      <translation>編輯圓形圖樣</translation>
     </message>
   </context>
   <context>
@@ -6089,12 +6089,12 @@ Adjust the parameters and try again.</source>
     <message>
       <location filename="../../ViewProviderPointPattern.h" line="18"/>
       <source>Point Pattern Parameters</source>
-      <translation type="unfinished">Point Pattern Parameters</translation>
+      <translation>點圖樣參數</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
       <source>Edit Point Pattern</source>
-      <translation type="unfinished">Edit Point Pattern</translation>
+      <translation>編輯點圖樣</translation>
     </message>
   </context>
 </TS>

@@ -2162,7 +2162,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>Desar pàgina com a DXF</translation>
     </message>
@@ -3795,27 +3795,27 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Aquesta funció necessita una pàgina.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="870"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Export Page as PDF</source>
       <translation>Exporta la pàgina com a PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="777"/>
+      <location filename="../../MDIViewPage.cpp" line="772"/>
       <source>Export page as SVG</source>
       <translation>Exporta la Pàgina com a SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="806"/>
+      <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Export page as DXF</source>
       <translation>Exporta la pàgina com a DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>Unable to Write File</source>
       <translation>No s'ha pogut escriure el fitxer</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="854"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>El FreeCAD no pot obrir el fitxer %1 per a escriure-hi.  És possible que el fitxer estigui obert en un altre programa.</translation>
     </message>
@@ -4234,7 +4234,7 @@ Si no hi ha cap objecte seleccionat, s'obre un navegador de fitxers per seleccio
       <translation>Error de paràmetre</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="287"/>
+      <location filename="../../PagePrinter.cpp" line="300"/>
       <source>Document Name:</source>
       <translation>Nom del document:</translation>
     </message>
@@ -5404,7 +5404,7 @@ quan s'utilitzen dibuixos com a guia de tall 1:1.
       <translation>Vèrtex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="646"/>
       <source>Transparent faces</source>
       <translation>Cares transparents</translation>
     </message>
@@ -5419,12 +5419,17 @@ quan s'utilitzen dibuixos com a guia de tall 1:1.
       <translation>Color per defecte per a les línies guia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
+      <source>Face color</source>
+      <translation>Color de cara</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Object faces will be transparent</source>
       <translation>Les cares de l'objecte seran transparents</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="659"/>
       <source>Face color (if not transparent)</source>
       <translation>Color de la cara (si no és transparent)</translation>
     </message>
@@ -5434,17 +5439,17 @@ quan s'utilitzen dibuixos com a guia de tall 1:1.
       <translation>Monocrom</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
       <translation>Línia de trencament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
       <translation>Color de la línia de trencament de les vistes trencades</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Els elements en &lt;span style=&quot; font-style:italic;&quot;&gt;cursiva&lt;/span&gt; són els valors predeterminats per a objectes nous. No tenen cap efecte sobre els objectes existents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6436,7 +6441,7 @@ Do you want to continue?</source>
       <translation>La impressora utilitza una mida de paper diferent que la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1433"/>
+      <location filename="../../MDIViewPage.cpp" line="1416"/>
       <source>Selected:</source>
       <translation>Seleccionat:</translation>
     </message>

@@ -208,17 +208,17 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2870"/>
       <source>PartDesign</source>
       <translation>Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2861"/>
+      <location filename="../../Command.cpp" line="2871"/>
       <source>Boolean Operation</source>
       <translation>Operacja logiczna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Stosuje operacje logiczne z zaznaczonymi obiektami i aktywną Zawartością</translation>
     </message>
@@ -496,17 +496,17 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2729"/>
+      <location filename="../../Command.cpp" line="2739"/>
       <source>PartDesign</source>
       <translation>Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2730"/>
+      <location filename="../../Command.cpp" line="2740"/>
       <source>Multi-Transform</source>
       <translation>Przekształcenie wielokrotne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2741"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Stosuje wiele przekształceń do zaznaczonych cech lub aktywnej bryły</translation>
     </message>
@@ -604,17 +604,17 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>PartDesign</source>
       <translation>Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2635"/>
       <source>Polar Pattern</source>
       <translation>Szyk biegunowy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2636"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplikuje zaznaczone cechy lub aktywną zawartość w szyku biegunowym</translation>
     </message>
@@ -640,17 +640,17 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2696"/>
       <source>PartDesign</source>
       <translation>Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2687"/>
+      <location filename="../../Command.cpp" line="2697"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2688"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Scales the selected features or the active body</source>
       <translation>Skaluje zaznaczone cechy lub aktywną bryłę</translation>
     </message>
@@ -907,28 +907,28 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
       <translation>Utwórz kopię</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2794"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Konwertuj jako cechę wielokrotnej transformacji</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="266"/>
+      <location filename="../../SketchWorkflow.cpp" line="289"/>
       <source>Sketch on Face</source>
       <translation>Szkic na powierzchni</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="328"/>
+      <location filename="../../SketchWorkflow.cpp" line="351"/>
       <source>Make copy</source>
       <translation>Utwórz kopię</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="530"/>
-      <location filename="../../SketchWorkflow.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="553"/>
+      <location filename="../../SketchWorkflow.cpp" line="813"/>
       <source>New Sketch</source>
       <translation>Nowy szkic</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Create Boolean</source>
       <translation>Utwórz cechę funkcją logiczną</translation>
     </message>
@@ -1693,12 +1693,12 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
   <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="107"/>
+      <location filename="../../TaskDatumParameters.cpp" line="110"/>
       <source>Incompatible Reference Set</source>
       <translation>Niekompatybilny zestaw odniesień</translation>
     </message>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="109"/>
+      <location filename="../../TaskDatumParameters.cpp" line="112"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Nie ma trybu dołączania, który pasowałby do obecnego zestawu odniesień. Jeśli zdecydujesz się kontynuować, właściwość pozostanie tam, gdzie jest teraz i nie zostanie przeniesiona, gdy referencje się zmienią. Kontynuować?</translation>
     </message>
@@ -1923,52 +1923,52 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
       <translation>Utwórz dowiązanie</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Valid</source>
       <translation>Poprawny</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="70"/>
+      <location filename="../../TaskFeaturePick.cpp" line="81"/>
       <source>Invalid shape</source>
       <translation>Nieodpowiedni kształt</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="72"/>
+      <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>No wire in sketch</source>
       <translation>Nie znaleziono polilinii w szkicu</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="74"/>
+      <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Sketch already used by other feature</source>
       <translation>Szkic jest już używany przez inną cechę</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="76"/>
+      <location filename="../../TaskFeaturePick.cpp" line="87"/>
       <source>Belongs to another body</source>
       <translation>Należy do innego kontenera</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="78"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Belongs to another part</source>
       <translation>Należy do innej części</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="91"/>
       <source>Doesn't belong to any body</source>
       <translation>Nie należy do żadnej zawartości</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="82"/>
+      <location filename="../../TaskFeaturePick.cpp" line="93"/>
       <source>Base plane</source>
       <translation>Płaszczyzna podstawowa</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="84"/>
+      <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Feature is located after the tip of the body</source>
       <translation>Cecha jest umieszczona za czubkiem</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="96"/>
+      <location filename="../../TaskFeaturePick.cpp" line="107"/>
       <source>Select Attachment</source>
       <translation>Wybierz dołączenie</translation>
     </message>
@@ -3542,42 +3542,42 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="836"/>
+      <location filename="../../SketchWorkflow.cpp" line="851"/>
       <source>Several sub-elements selected</source>
       <translation>Wybrano kilka podelementów</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="837"/>
+      <location filename="../../SketchWorkflow.cpp" line="852"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Zaznacz jedną ścianę jako podparcie dla szkicu!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="844"/>
+      <location filename="../../SketchWorkflow.cpp" line="859"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Wybierz ścianę jako podparcie dla szkicu!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="851"/>
+      <location filename="../../SketchWorkflow.cpp" line="866"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Do szkicu wymagana jest ściana płaska jako podparcie!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="858"/>
+      <location filename="../../SketchWorkflow.cpp" line="873"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Najpierw utwórz płaszczyznę lub wybierz ścianę, na której chcesz szkicować.</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="843"/>
+      <location filename="../../SketchWorkflow.cpp" line="858"/>
       <source>No support face selected</source>
       <translation>Nie wybrano ściany bazowej</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="850"/>
+      <location filename="../../SketchWorkflow.cpp" line="865"/>
       <source>No planar support</source>
       <translation>Brak płaskiej powierzchni</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="857"/>
+      <location filename="../../SketchWorkflow.cpp" line="872"/>
       <source>No valid planes in this document</source>
       <translation>Brak prawidłowej płaszczyzny w tym dokumencie</translation>
     </message>
@@ -3585,7 +3585,7 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../Command.cpp" line="1194"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
+      <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
@@ -3634,7 +3634,7 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../Command.cpp" line="1195"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
@@ -4921,12 +4921,12 @@ Zainstaluj ją, aby włączyć tę funkcję.</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="426"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Powiązany obiekt nie ma cech środowiska Projekt Części</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="435"/>
       <source>Tip shape is empty</source>
       <translation>Kształt czubka nie został zdefiniowany</translation>
     </message>
@@ -5662,12 +5662,12 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2928"/>
+      <location filename="../../Command.cpp" line="2938"/>
       <source>Create Datum</source>
       <translation>Utwórz układ odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2939"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Tworzy obiekt odniesienia lub system współrzędnych lokalnych</translation>
     </message>
@@ -5675,12 +5675,12 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2963"/>
+      <location filename="../../Command.cpp" line="2973"/>
       <source>Create Datum</source>
       <translation>Utwórz układ odniesienia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2964"/>
+      <location filename="../../Command.cpp" line="2974"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Tworzy obiekt odniesienia lub system współrzędnych lokalnych</translation>
     </message>
@@ -5909,32 +5909,32 @@ Może to oznaczać, że nie zostanie usunięty żaden materiał lub wystąpił p
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="415"/>
+      <location filename="../../TaskPatternParameters.cpp" line="425"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Wybierz szkic lub kształt zawierający punkty szyku</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="421"/>
+      <location filename="../../TaskPatternParameters.cpp" line="431"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Wybierz szkic, łącznik kształtów podrzędnych lub krawędź ścieżki</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="430"/>
+      <location filename="../../TaskPatternParameters.cpp" line="440"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Wybierz odniesienie kierunku (krawędź, ścianę, linię odniesienia).</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="494"/>
+      <location filename="../../TaskPatternParameters.cpp" line="504"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Nieprawidłowy wybór. Wybierz szkic lub kształt zawierający punkty.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="497"/>
+      <location filename="../../TaskPatternParameters.cpp" line="507"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Nieprawidłowy wybór. Wybierz szkic, łącznik kształtów podrzędnych lub krawędź ścieżki.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="499"/>
+      <location filename="../../TaskPatternParameters.cpp" line="509"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Nieprawidłowy wybór. 
 Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
@@ -6002,17 +6002,17 @@ Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
   <context>
     <name>CmdPartDesignPathPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>PartDesign</source>
       <translation>Projekt części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2547"/>
+      <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
       <translation>Wzór ścieżki</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2548"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
       <translation>Powiela wybrane cechy lub aktywną zawartość wzdłuż ścieżki</translation>
     </message>
@@ -6020,17 +6020,17 @@ Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2584"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>PartDesign</source>
       <translation>Projekt części</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
       <translation>Wzór punktowy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2586"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation>Powiela wybrane cechy lub aktywną zawartość w punktach z kształtu</translation>
     </message>

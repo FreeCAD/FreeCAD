@@ -46,7 +46,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
       <source>Ignore</source>
-      <translation>Ignora</translation>
+      <translation>Ignorar</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
       <source>Ignore</source>
-      <translation>Ignora</translation>
+      <translation>Ignorar</translation>
     </message>
   </context>
   <context>

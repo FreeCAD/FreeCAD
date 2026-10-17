@@ -881,27 +881,27 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Athainmnigh srian sceitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Point</source>
       <translation>Pointe Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Curve</source>
       <translation>Cuar Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2214"/>
       <source>Drag geometries</source>
       <translation>Geoiméadrachtaí tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1417"/>
       <source>Drag Constraint</source>
       <translation>Srian Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1666"/>
       <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
@@ -948,18 +948,18 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Geoiméadrachtaí siméadrachta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="464"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
       <source>Add line to sketch polyline</source>
       <translation>Cuir líne le polalíne sceitseála</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="494"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
       <source>Add arc to sketch polyline</source>
       <translation>Cuir stua le sceitseáil polalíne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1296"/>
       <source>Add sketch polyline</source>
       <translation>Cuir polalíne sceitse leis</translation>
     </message>
@@ -1008,54 +1008,54 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3006"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Níl tú ag iarraidh aon athrú ar iolracht snaidhmeanna.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2998"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3176"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2984"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3162"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Tá Innéacs Geoiméadrachta B-spline (GeoID) lasmuigh de theorainneacha.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3192"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3178"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Ní splíne-B é an tInnéacs Geoiméadrachta (GeoId) a chuirtear ar fáil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3013"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Tá innéacs an snaidhme lasmuigh de theorainneacha. Tabhair faoi deara, de réir nótaíocht OCC, go bhfuil innéacs 1 ag an gcéad snaidhm agus ní nialas.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3043"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3029"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Ní féidir an iolracht a mhéadú thar chéim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3054"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3040"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Ní féidir an iolracht a laghdú thar náid.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3070"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3056"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>Ní féidir le OCC an iolracht a laghdú laistigh den lamháltas uasta.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3183"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3169"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ní féidir iolracht nialasach a bheith ag snaidhm.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3205"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3191"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Ní féidir le hiolracht snaidhmeanna a bheith níos airde ná céim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3215"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3201"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Ní féidir snaidhm a chur isteach lasmuigh de raon paraiméadar B-spline.</translation>
     </message>
@@ -2045,7 +2045,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>%1 roghnaigh pointe bun ar dheis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
       <source>Polyline Parameters</source>
       <translation>Paraiméadair Pholalíne</translation>
     </message>
@@ -4054,112 +4054,112 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4181"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4205"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Tá an sceitse neamhbhailí agus ní féidir é a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Tá an srian seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tá na srianta seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4182"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4203"/>
       <source>Invalid Sketch</source>
       <translation>Sceitse Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4204"/>
       <source>Open the sketch validation tool?</source>
       <translation>An uirlis bailíochtaithe sceitse a oscailt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following constraint:</source>
       <translation>Bain an srian seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Bain ceann amháin ar a laghad de na srianta seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Bain an srian iomarcach seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Bain na srianta iomarcacha seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Bain an srian mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Bain na srianta mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
       <source>Empty sketch</source>
       <translation>Sceitse folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
       <source>Over-constrained:</source>
       <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
       <source>Malformed constraints:</source>
       <translation>Srianta mífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
       <source>Redundant constraints:</source>
       <translation>Srianta iomarcacha:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Partially redundant:</source>
       <translation>Go páirteach iomarcach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
       <source>Solver failed to converge</source>
       <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
       <source>Under-constrained:</source>
       <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Céim Saoirse</numerusform>
@@ -4170,12 +4170,12 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
       <source>Fully constrained</source>
       <translation>Srianta go hiomlán</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
       <source>Missing external geometry</source>
       <translation>Geoiméadracht sheachtrach ar iarraidh</translation>
     </message>
@@ -4666,7 +4666,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
       <source>and %1 more</source>
       <translation>agus %1 eile</translation>
     </message>
@@ -4909,9 +4909,9 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
@@ -4981,7 +4981,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Srian neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="512"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
       <source>Failed to add arc</source>
       <translation>Theip ar stua a chur leis</translation>
     </message>
@@ -4996,7 +4996,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Earráid ag cruthú B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1413"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Earráid ag scriosadh an chuaille/an snaidhm dheireanaigh</translation>
@@ -5036,7 +5036,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="145"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
       <source>Failed to add line</source>
       <translation>Theip ar líne a chur leis</translation>
     </message>
@@ -7976,22 +7976,22 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
       <source>%1 finish</source>
       <translation>Críoch %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
       <source>%1 switch mode</source>
       <translation>%1 mód lasctha</translation>
     </message>
@@ -8439,37 +8439,37 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
       <source>%1 switch to arc</source>
       <translation>%1 athraigh go stua</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
       <source>%1 switch to line</source>
       <translation>%1 athraigh go líne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
       <source>%1 toggle fillet</source>
       <translation>%1 filléad scoránaigh</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
       <source>%1 undo last point</source>
       <translation>%1 cealaigh an pointe deireanach</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
       <source>%1 finish</source>
       <translation>Críoch %1</translation>
     </message>
@@ -8477,12 +8477,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1767"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1731"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1768"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
@@ -8490,12 +8490,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1737"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1774"/>
       <source>Fillet (F)</source>
       <translation>Filléad (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1741"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1778"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation>Cuireann filléid idir an líne reatha agus an líne roimhe seo</translation>
     </message>

@@ -206,17 +206,17 @@ para evitar autointersecciones.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2870"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2861"/>
+      <location filename="../../Command.cpp" line="2871"/>
       <source>Boolean Operation</source>
       <translation>Operación booleana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Aplica operaciones booleanas entre los objetos seleccionados y el cuerpo activo</translation>
     </message>
@@ -494,17 +494,17 @@ para evitar autointersecciones.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2729"/>
+      <location filename="../../Command.cpp" line="2739"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2730"/>
+      <location filename="../../Command.cpp" line="2740"/>
       <source>Multi-Transform</source>
       <translation>Transformación múltiple</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2741"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Aplica varias transformaciones a las operaciones seleccionadas o al cuerpo activo</translation>
     </message>
@@ -602,17 +602,17 @@ para evitar autointersecciones.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2635"/>
       <source>Polar Pattern</source>
       <translation>Patrón polar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2636"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Duplica las operaciones seleccionadas o el cuerpo activo en un patrón circular</translation>
     </message>
@@ -638,17 +638,17 @@ para evitar autointersecciones.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2696"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2687"/>
+      <location filename="../../Command.cpp" line="2697"/>
       <source>Scale</source>
       <translation>Escalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2688"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Scales the selected features or the active body</source>
       <translation>Escala las operaciones seleccionadas o el cuerpo activo</translation>
     </message>
@@ -905,28 +905,28 @@ para evitar autointersecciones.</translation>
       <translation>Crear copia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2794"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Convertir en operación de transformación múltiple</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="266"/>
+      <location filename="../../SketchWorkflow.cpp" line="289"/>
       <source>Sketch on Face</source>
       <translation>Croquis sobre cara</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="328"/>
+      <location filename="../../SketchWorkflow.cpp" line="351"/>
       <source>Make copy</source>
       <translation>Crear copia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="530"/>
-      <location filename="../../SketchWorkflow.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="553"/>
+      <location filename="../../SketchWorkflow.cpp" line="813"/>
       <source>New Sketch</source>
       <translation>Croquis nuevo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Create Boolean</source>
       <translation>Crear booleana</translation>
     </message>
@@ -1691,12 +1691,12 @@ Si es cero, es igual a Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="107"/>
+      <location filename="../../TaskDatumParameters.cpp" line="110"/>
       <source>Incompatible Reference Set</source>
       <translation>Conjunto de referencias incompatible</translation>
     </message>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="109"/>
+      <location filename="../../TaskDatumParameters.cpp" line="112"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Ningún modo de anclaje se ajusta al conjunto de referencias actual. Si continúa, la operación se quedará donde está y no se moverá cuando cambien las referencias. ¿Continuar?</translation>
     </message>
@@ -1921,52 +1921,52 @@ Si es cero, es igual a Radius2</translation>
       <translation>Crear una referencia cruzada</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Valid</source>
       <translation>Válido</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="70"/>
+      <location filename="../../TaskFeaturePick.cpp" line="81"/>
       <source>Invalid shape</source>
       <translation>Forma no válida</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="72"/>
+      <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>No wire in sketch</source>
       <translation>El croquis no tiene alambres</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="74"/>
+      <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Sketch already used by other feature</source>
       <translation>Otra operación ya usa el croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="76"/>
+      <location filename="../../TaskFeaturePick.cpp" line="87"/>
       <source>Belongs to another body</source>
       <translation>Pertenece a otro cuerpo</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="78"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Belongs to another part</source>
       <translation>Pertenece a otra pieza</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="91"/>
       <source>Doesn't belong to any body</source>
       <translation>No pertenece a ningún cuerpo</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="82"/>
+      <location filename="../../TaskFeaturePick.cpp" line="93"/>
       <source>Base plane</source>
       <translation>Plano base</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="84"/>
+      <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Feature is located after the tip of the body</source>
       <translation>La operación está después de la punta del cuerpo</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="96"/>
+      <location filename="../../TaskFeaturePick.cpp" line="107"/>
       <source>Select Attachment</source>
       <translation>Seleccionar anclaje</translation>
     </message>
@@ -3540,42 +3540,42 @@ mide a lo largo de la dirección indicada</translation>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="836"/>
+      <location filename="../../SketchWorkflow.cpp" line="851"/>
       <source>Several sub-elements selected</source>
       <translation>Hay varios subelementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="837"/>
+      <location filename="../../SketchWorkflow.cpp" line="852"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>¡Seleccione una sola cara como soporte del croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="844"/>
+      <location filename="../../SketchWorkflow.cpp" line="859"/>
       <source>Select a face as support for a sketch!</source>
       <translation>¡Seleccione una cara como soporte del croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="851"/>
+      <location filename="../../SketchWorkflow.cpp" line="866"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>¡Se necesita una cara plana como soporte del croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="858"/>
+      <location filename="../../SketchWorkflow.cpp" line="873"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Cree primero un plano o seleccione una cara donde dibujar el croquis</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="843"/>
+      <location filename="../../SketchWorkflow.cpp" line="858"/>
       <source>No support face selected</source>
       <translation>No hay ninguna cara de soporte seleccionada</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="850"/>
+      <location filename="../../SketchWorkflow.cpp" line="865"/>
       <source>No planar support</source>
       <translation>No hay soporte plano</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="857"/>
+      <location filename="../../SketchWorkflow.cpp" line="872"/>
       <source>No valid planes in this document</source>
       <translation>No hay planos válidos en este documento</translation>
     </message>
@@ -3583,7 +3583,7 @@ mide a lo largo de la dirección indicada</translation>
       <location filename="../../Command.cpp" line="1194"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
+      <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ya hay un diálogo abierto en el panel de tareas</translation>
@@ -3632,7 +3632,7 @@ mide a lo largo de la dirección indicada</translation>
       <location filename="../../Command.cpp" line="1195"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>¿Cerrar este diálogo?</translation>
@@ -4916,12 +4916,12 @@ más de 90: radio mayor en el fondo</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="426"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>El objeto enlazado no es una operación de PartDesign</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="435"/>
       <source>Tip shape is empty</source>
       <translation>La forma de la punta está vacía</translation>
     </message>
@@ -5654,12 +5654,12 @@ No se permiten entidades que se intersequen ni varias caras en un croquis.</tran
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2928"/>
+      <location filename="../../Command.cpp" line="2938"/>
       <source>Create Datum</source>
       <translation>Crear referencia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2939"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un objeto de referencia o un sistema de coordenadas local</translation>
     </message>
@@ -5667,12 +5667,12 @@ No se permiten entidades que se intersequen ni varias caras en un croquis.</tran
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2963"/>
+      <location filename="../../Command.cpp" line="2973"/>
       <source>Create Datum</source>
       <translation>Crear referencia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2964"/>
+      <location filename="../../Command.cpp" line="2974"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Crea un objeto de referencia o un sistema de coordenadas local</translation>
     </message>
@@ -5901,32 +5901,32 @@ No se permiten entidades que se intersequen ni varias caras en un croquis.</tran
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="415"/>
+      <location filename="../../TaskPatternParameters.cpp" line="425"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation>Seleccione un croquis o una forma que contenga los puntos del patrón</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="421"/>
+      <location filename="../../TaskPatternParameters.cpp" line="431"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation>Seleccione un croquis, un vinculador de subforma o una arista de trayectoria</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="430"/>
+      <location filename="../../TaskPatternParameters.cpp" line="440"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation>Seleccione una referencia de dirección (arista, cara, línea de referencia)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="494"/>
+      <location filename="../../TaskPatternParameters.cpp" line="504"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation>Selección no válida. Seleccione un croquis o una forma que contenga puntos.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="497"/>
+      <location filename="../../TaskPatternParameters.cpp" line="507"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation>Selección no válida. Seleccione un croquis, un vinculador de subforma o una arista de trayectoria.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="499"/>
+      <location filename="../../TaskPatternParameters.cpp" line="509"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Selección no válida. Seleccione una arista, una cara plana o una línea de referencia.</translation>
     </message>
@@ -5993,17 +5993,17 @@ No se permiten entidades que se intersequen ni varias caras en un croquis.</tran
   <context>
     <name>CmdPartDesignPathPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2547"/>
+      <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
       <translation>Patrón por trayectoria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2548"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
       <translation>Duplica las operaciones seleccionadas o el cuerpo activo a lo largo de una trayectoria</translation>
     </message>
@@ -6011,17 +6011,17 @@ No se permiten entidades que se intersequen ni varias caras en un croquis.</tran
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2584"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>PartDesign</source>
       <translation>Diseño de parte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
       <translation>Patrón por puntos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2586"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation>Duplica las operaciones seleccionadas o el cuerpo activo en los puntos de una forma</translation>
     </message>

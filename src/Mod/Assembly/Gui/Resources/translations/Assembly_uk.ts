@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="50"/>
       <source>Export currently active assembly as a ASMT file.</source>
-      <translation>Експортуйте поточну активну збірку як файл ASMT.</translation>
+      <translation>Експортує поточну активну збірку у файл ASMT.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
-      <translation>Вирішити збірку</translation>
+      <translation>Розв'язати збірку</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
-      <translation>Вирішує поточну активну збірку.</translation>
+      <translation>Розв'язує поточну активну збірку.</translation>
     </message>
   </context>
   <context>
@@ -106,27 +106,27 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Зафіксовано</translation>
+      <translation>Фіксоване</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Revolute</source>
-      <translation>Обертання</translation>
+      <translation>Обертальне</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Cylindrical</source>
-      <translation>Циліндричний</translation>
+      <translation>Циліндричне</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation>Повзунок</translation>
+      <translation>Повзункове</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <source>Ball</source>
-      <translation>Куля</translation>
+      <translation>Кульове</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../../JointObject.py" line="56"/>
       <source>Parallel</source>
-      <translation>Паралельно</translation>
+      <translation>Паралельне</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="57"/>
       <source>Perpendicular</source>
-      <translation>Перпендикулярний</translation>
+      <translation>Перпендикулярне</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../../JointObject.py" line="59"/>
       <source>RackPinion</source>
-      <translation>Рейкова шестерня</translation>
+      <translation>Рейка-шестерня</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="60"/>
@@ -162,7 +162,7 @@
     <message>
       <location filename="../../../JointObject.py" line="61"/>
       <source>Gears</source>
-      <translation>Шестерня</translation>
+      <translation>Шестерні</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="62"/>
@@ -177,12 +177,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1249"/>
       <source>Edit Joint</source>
-      <translation type="unfinished">Edit Joint</translation>
+      <translation>Редагувати з'єднання</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1431"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>Оновити збережені положення</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1876"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
-      <translation>Радіус кроку</translation>
+      <translation>Радіус ділильного кола</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -252,7 +252,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="284"/>
       <source>Duplicate Name</source>
-      <translation>Дублювати назву</translation>
+      <translation>Назва вже існує</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="285"/>
@@ -277,12 +277,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Тільки деталі: додає до специфікації лише контейнери деталей та підзбірки. Тверді тіла, такі як тіла Part Design, кріплення або примітиви верстату Part, ігноруються.</translation>
+      <translation>Тільки деталі: додає до специфікації лише контейнери деталей та підзбірки. Суцільні тіла, як-от тіла Part Design, кріплення або примітиви робочого середовища Part, ігноруються.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Columns</source>
-      <translation>Колонки</translation>
+      <translation>Стовпці</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="399"/>
@@ -302,7 +302,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
-      <translation>Формат експортованого файлу можна налаштувати в параметрах верстату Spreadsheet</translation>
+      <translation>Формат експортованого файлу можна налаштувати в параметрах робочого середовища Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="393"/>
@@ -364,7 +364,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
+      <translation>Великими літерами позначено змінні, які потрібно замінити реальними значеннями. 'initialValue' автоматично замінюється поточним кутом або відстанню. Докладніше про кожен приклад — у його підказці.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
@@ -499,7 +499,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) не встановлено. Він потрібен для експорту відео.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
@@ -514,7 +514,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
-      <translation>Анімація збірки…</translation>
+      <translation>Збирання анімації…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1150"/>
@@ -524,12 +524,12 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
-      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+      <translation>PyAv не встановлено. Він потрібен для експорту відео.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Невідомий формат експорту відео</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="170"/>
@@ -549,7 +549,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
-      <translation>Фіксація</translation>
+      <translation>Закріплення</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="258"/>
@@ -569,7 +569,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>Радіальне переміщення</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -579,22 +579,22 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateView.py" line="400"/>
       <source>Translation</source>
-      <translation>Переклад</translation>
+      <translation>Переміщення</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>Кут цього переміщення рознесеного виду</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>Відстань цього переміщення рознесеного виду</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>Редагувати розміщення</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation>Це відстань з'єднання. Використовується тільки для з'єднання "Відстань" і "Рейка і шестерня" (радіус кроку), "Гвинт" і "Шестерня і ремінь" (радіус1)</translation>
+      <translation>Це відстань з'єднання. Використовується тільки з'єднаннями "Відстань", "Рейка-шестерня" (радіус ділильного кола), "Гвинт", "Шестерні" та "Ремінь" (радіус1)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="415"/>
@@ -719,7 +719,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../JointObject.py" line="1295"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Список посилань на компоненти, які потрібно згрупувати разом</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1454"/>
@@ -735,7 +735,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
-      <translation>Це рух переміщення. Кінцеве розміщення є результатом початкового розміщення *цього розміщення.</translation>
+      <translation>Це рух переміщення. Кінцеве розміщення є результатом добутку: початкове розміщення * це розміщення.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="548"/>
@@ -760,7 +760,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
-      <translation>Глобальна похибка інтегрування.</translation>
+      <translation>Допустима глобальна похибка інтегрування.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="164"/>
@@ -775,7 +775,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
-      <translation>З'єднання, яке рухається під час руху</translation>
+      <translation>З'єднання, яким керує цей рух</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="328"/>
@@ -790,22 +790,22 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Список компонентів, збережених у цьому знімку.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Список відповідних розміщень компонентів.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Список станів видимості компонентів.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Якщо увімкнено, після відновлення розміщень зі знімка збірку буде розв'язано.</translation>
     </message>
   </context>
   <context>
@@ -878,7 +878,7 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
-      <translation>Зворотній напрямок</translation>
+      <translation>Змінити напрям</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
@@ -888,12 +888,12 @@ SLOPE — крутизна переходів між 0 та H1 і H2 до 0 в �
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
       <source>Rotate</source>
-      <translation>Обертання</translation>
+      <translation>Повернути</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
-      <translation>Обмеження</translation>
+      <translation>Межі</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
@@ -988,8 +988,8 @@ You can change this behavior at any time by either right-clicking the sub-assemb
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation>Журналювання кроків переміщення солвера. Корисно для звіту про помилку.
-Файли називаються "runPreDrag.asmt" та "dragging.log" і розташовані у стандартній директорії std::ofstream (у Windows — на робочому столі)</translation>
+      <translation>Записувати в журнал кроки перетягування розв'язувача. Корисно для звіту про помилку.
+Файли називаються "runPreDrag.asmt" та "dragging.log" і розташовані в типовому каталозі std::ofstream (у Windows — на робочому столі)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
@@ -1004,12 +1004,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation>Esc - вихід з режиму редагування</translation>
+      <translation>Esc — вихід з режиму редагування</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation>Журнал послідовних етапів</translation>
+      <translation>Журнал кроків перетягування</translation>
     </message>
   </context>
   <context>
@@ -1042,37 +1042,37 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
-      <translation>Пошкоджені з'єднання:</translation>
+      <translation>Некоректні з'єднання:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
       <source>and %1 more</source>
-      <translation>та %1 більше</translation>
+      <translation>і ще %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
-      <translation>Рішення не сходиться</translation>
+      <translation>Розв'язувач не зійшовся</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
-      <translation>Частково обмежений:</translation>
+      <translation>Недостатньо обмежено:</translation>
     </message>
     <message numerus="yes">
       <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Ступені свободи</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n ступінь вільності</numerusform>
+        <numerusform>%n ступені вільності</numerusform>
+        <numerusform>%n ступенів вільності</numerusform>
+        <numerusform>%n ступеня вільності</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
-      <translation>Повністю обмежений</translation>
+      <translation>Повністю обмежено</translation>
     </message>
   </context>
   <context>
@@ -1085,7 +1085,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Створює гвинтове з'єднання, яке зв'язує деталь з повзунковим з'єднанням з деталлю з обертальним з'єднанням&lt;/p&gt;&lt;p&gt;Виберіть ті самі системи координат, що й для обертального та повзункового з'єднань. Радіус кроку визначає співвідношення руху між обертовим гвинтом та ковзною деталлю.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Створює гвинтове з'єднання, яке зв'язує деталь з повзунковим з'єднанням з деталлю з обертальним з'єднанням&lt;/p&gt;&lt;p&gt;Виберіть ті самі системи координат, що й для обертального та повзункового з'єднань. Радіус ділильного кола визначає співвідношення руху між обертовим гвинтом та ковзною деталлю.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1093,7 +1093,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
-      <translation>З'єднання шестерень/ремінь</translation>
+      <translation>З'єднання шестерень/ременя</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="395"/>
@@ -1106,7 +1106,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="14"/>
       <source>Exploded View</source>
-      <translation>Вибуховий вигляд</translation>
+      <translation>Рознесений вид</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
@@ -1136,7 +1136,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation>Дочірні вузли</translation>
+      <translation>Дочірні елементи підзбірок</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
@@ -1161,7 +1161,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation>Додає до специфікації лише контейнери деталей та підзбірки. Тверді тіла (напр. тіла, кріплення, примітиви) виключаються.</translation>
+      <translation>Додає до специфікації лише контейнери деталей та підзбірки. Суцільні тіла (напр. тіла, кріплення, примітиви) виключаються.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1215,7 +1215,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
-      <translation>Показати або приховати жорсткість</translation>
+      <translation>Перемкнути жорсткість</translation>
     </message>
   </context>
   <context>
@@ -1295,7 +1295,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation>Глобальна похибка</translation>
+      <translation>Допустима глобальна похибка</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
@@ -1315,7 +1315,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
       <source>Tolerance</source>
-      <translation>Точність</translation>
+      <translation>Допуск</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="168"/>
@@ -1325,7 +1325,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="205"/>
       <source>Frame</source>
-      <translation>Рамка</translation>
+      <translation>Кадр</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
@@ -1340,7 +1340,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
-      <translation>Відтворення назад</translation>
+      <translation>Відтворити назад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
@@ -1400,7 +1400,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Якщо активна збірка: створює з'єднання, яке жорстко скріплює дві деталі, не допускаючи жодного переміщення чи обертання&lt;/p&gt;&lt;p&gt;2 - Якщо активна деталь: розміщує вкладені деталі, суміщаючи вибрані системи координат. Переміщується друга вибрана деталь.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1517,7 +1517,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Створює з'єднання рейка-шестерня, яке зв'язує деталь з повзунковим з'єднанням з деталлю з обертальним з'єднанням&lt;/p&gt;&lt;p&gt;Виберіть ті самі системи координат, що й для обертального та повзункового з'єднань. Радіус кроку визначає співвідношення руху між рейкою та шестернею.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Створює з'єднання рейка-шестерня, яке зв'язує деталь з повзунковим з'єднанням з деталлю з обертальним з'єднанням&lt;/p&gt;&lt;p&gt;Виберіть ті самі системи координат, що й для обертального та повзункового з'єднань. Радіус ділильного кола визначає співвідношення руху між рейкою та шестернею.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1551,12 +1551,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
-      <translation>Перемкнути фіксацію</translation>
+      <translation>Перемкнути закріплення</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation>&lt;p&gt;Перемикає фіксацію деталі.&lt;/p&gt;&lt;p&gt;Фіксація деталі назавжди блокує її положення у збірці, запобігаючи будь-якому руху або обертанню.</translation>
+      <translation>&lt;p&gt;Перемикає закріплення деталі.&lt;/p&gt;&lt;p&gt;Закріплення назавжди фіксує положення деталі у збірці, не допускаючи жодного переміщення чи обертання.</translation>
     </message>
   </context>
   <context>
@@ -1577,12 +1577,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
-      <translation>Вибуховий вигляд</translation>
+      <translation>Рознесений вид</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation>Створює вибуховий вигляд поточної збірки</translation>
+      <translation>Створює рознесений вид поточної збірки</translation>
     </message>
   </context>
   <context>
@@ -1608,31 +1608,31 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
-      <translation>Повідомлення солвера</translation>
+      <translation>Повідомлення розв'язувача</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Selects these conflicting joints</source>
-      <translation type="unfinished">Selects these conflicting joints</translation>
+      <translation>Виділяє ці суперечливі з'єднання</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Selects these redundant joints</source>
-      <translation type="unfinished">Selects these redundant joints</translation>
+      <translation>Виділяє ці надлишкові з'єднання</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Selects these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>У збірці є необмежені компоненти, які й дають ці ступені вільності.
+Виділяє ці необмежені компоненти.
+Примітка: наразі виділяються лише деталі без з'єднань, а не обмежені деталі, які ще мають вільні ступені вільності.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
-      <translation type="unfinished">Selects these malformed joints</translation>
+      <translation>Виділяє ці некоректні з'єднання</translation>
     </message>
   </context>
   <context>
@@ -1640,22 +1640,22 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Знімок</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Зберігає поточний стан збірки (розміщення та видимість). Подвійне клацання на об'єкті знімка повертає збірку до цього стану.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Створити знімок</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Відновити знімок</translation>
     </message>
   </context>
   <context>
@@ -1663,17 +1663,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
       <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+      <translation>Виберіть щонайменше 2 компоненти, щоб створити жорстку групу</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="536"/>
       <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
+      <translation>Створити жорстку групу</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Створити жорстку групу.&lt;/p&gt;&lt;p&gt;Створює жорстку групу, яка назавжди скріплює вибрані компоненти разом.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1686,7 +1686,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to Linked Assembly</source>
-      <translation type="unfinished">Go to Linked Assembly</translation>
+      <translation>Перейти до пов'язаної збірки</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1704,12 +1704,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="166"/>
       <source>Select Conflicting Constraints</source>
-      <translation>Вибрати конфліктуючі обмеження</translation>
+      <translation>Вибрати суперечливі обмеження</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation>Вибирає конфліктуючі з'єднання в активній збірці</translation>
+      <translation>Вибирає суперечливі з'єднання в активній збірці</translation>
     </message>
   </context>
   <context>
@@ -1745,7 +1745,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation>Вибирає пошкоджені з'єднання в активній збірці</translation>
+      <translation>Вибирає некоректні з'єднання в активній збірці</translation>
     </message>
   </context>
   <context>
@@ -1758,7 +1758,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select Components With DoFs</source>
-      <translation type="unfinished">Select Components With DoFs</translation>
+      <translation>Вибрати компоненти зі ступенями вільності</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1776,7 +1776,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select Component Joints</source>
-      <translation type="unfinished">Select Component Joints</translation>
+      <translation>Вибрати з'єднання компонента</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

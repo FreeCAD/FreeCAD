@@ -234,7 +234,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="160"/>
       <source>Placement</source>
-      <translation>Ubicación</translation>
+      <translation>Posición</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>

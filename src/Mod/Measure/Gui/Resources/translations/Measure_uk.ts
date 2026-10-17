@@ -309,7 +309,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
       <source>Custom</source>
-      <translation>Підлаштувати</translation>
+      <translation>Власний</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
@@ -502,7 +502,7 @@
       <translation>Скинути</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1232"/>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
       <translation type="unfinished"> (Average)</translation>
     </message>

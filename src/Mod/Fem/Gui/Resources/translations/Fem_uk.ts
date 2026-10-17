@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="1321"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1322"/>
@@ -365,7 +365,7 @@
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
   </context>
   <context>
@@ -523,7 +523,7 @@
       <location filename="../../Command.cpp" line="2443"/>
       <location filename="../../Command.cpp" line="2454"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
   </context>
   <context>
@@ -1228,7 +1228,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="59"/>
       <source>All</source>
-      <translation>Всі</translation>
+      <translation>Усі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="64"/>
@@ -1459,7 +1459,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
       <source>Warnings</source>
-      <translation>Застереження</translation>
+      <translation>Попередження</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
@@ -2093,7 +2093,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="702"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="711"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="675"/>
@@ -2196,7 +2196,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="319"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="334"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="319"/>
@@ -6085,7 +6085,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
       <source>Solve</source>
-      <translation>Розв’язати</translation>
+      <translation>Розв'язати</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
@@ -6095,7 +6095,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Результати</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
@@ -6564,7 +6564,7 @@ Please select a result type first.</source>
       <translation>Немає обʼєкта результату</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6575,7 +6575,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6584,7 +6584,7 @@ Should this module be loaded instead?</source>
 Should this module be loaded instead?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6593,17 +6593,17 @@ No matching module was found in the current Python path.</source>
 No matching module was found in the current Python path.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation type="unfinished">VTK Python module conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>
@@ -7431,7 +7431,7 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../TaskCreateElementSet.cpp" line="512"/>
       <location filename="../../TaskCreateElementSet.cpp" line="609"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Неправильний вибір</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="243"/>
@@ -8004,7 +8004,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="353"/>
       <source>All</source>
-      <translation>Всі</translation>
+      <translation>Усі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="358"/>
@@ -9112,7 +9112,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="80"/>
       <source>All</source>
-      <translation>Всі</translation>
+      <translation>Усі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="80"/>

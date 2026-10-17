@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>面間の中間面</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>面の原点は2つの平面の間に位置し、その向きは両面のなす角を二等分します。平面が平行でない場合、面は両面の交線を含みます。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>面間の中間面</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>面の原点は2つの平面の間に位置し、その向きは両面のなす角を二等分します。平面が平行でない場合、面は両面の交線を含みます。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -2195,7 +2195,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>円形リンク整列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2210,12 +2210,12 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>直線状リンク配列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>軸周状リンク整列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -2263,7 +2263,7 @@ of the projection.</source>
       <translation>メッシュを変換</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1579"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Edit attachment</source>
       <translation>添付ファイルを編集</translation>
     </message>
@@ -2870,8 +2870,8 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgExtrusion.cpp" line="585"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>押し出しの作成に失敗しました。
+押し出しができませんでした。</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="610"/>
@@ -3230,7 +3230,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
+      <translation>インポート中にすべてのシェイプを単一のコンパウンドに統合し、パート・インスタンスを解決し、変換を適用。 インポート時間が増加しますが、ジオメトリーの精度やレンダリングの品質に影響はありません。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3583,17 +3583,17 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="493"/>
       <source>Height of the cylinder along the local Z axis</source>
-      <translation type="unfinished">Height of the cylinder along the local Z axis</translation>
+      <translation>ローカルZ軸に沿った円柱の高さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="516"/>
       <source>Skew angle of the cylinder in the first direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the first direction</translation>
+      <translation>円柱の第1方向の傾斜角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="542"/>
       <source>Skew angle of the cylinder in the second direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the second direction</translation>
+      <translation>円柱の第2方向の傾斜角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="593"/>
@@ -3603,7 +3603,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="600"/>
       <source>Rotation angle of the cylinder cross-section</source>
-      <translation type="unfinished">Rotation angle of the cylinder cross-section</translation>
+      <translation>円柱断面の回転角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="670"/>
@@ -3615,7 +3615,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="677"/>
       <source>Radius of the cone at the bottom</source>
-      <translation type="unfinished">Radius of the cone at the bottom</translation>
+      <translation>円錐の下部半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="693"/>
@@ -3627,12 +3627,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="700"/>
       <source>Radius of the cone at the top</source>
-      <translation type="unfinished">Radius of the cone at the top</translation>
+      <translation>円錐の上部半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="723"/>
       <source>Height of the cone along the local Z axis</source>
-      <translation type="unfinished">Height of the cone along the local Z axis</translation>
+      <translation>ローカルZ軸に沿った円錐の高さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="765"/>
@@ -3643,7 +3643,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="772"/>
       <source>Rotation angle of the cone cross-section</source>
-      <translation type="unfinished">Rotation angle of the cone cross-section</translation>
+      <translation>円錐断面の回転角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="849"/>
@@ -3660,7 +3660,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="901"/>
       <source>Rotation angle of the sphere cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the sphere cross-section around the local Z axis</translation>
+      <translation>ローカルZ軸周りの球断面の回転角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="917"/>
@@ -3670,22 +3670,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
       <source>Start angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">Start angle of the sphere along the local Z axis</translation>
+      <translation>Z軸に沿った球の開始角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="956"/>
       <source>End angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">End angle of the sphere along the local Z axis</translation>
+      <translation>Z軸に沿った球の終了角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1033"/>
       <source>Radius of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Z axis</translation>
+      <translation>Z軸に沿った楕円体の半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1056"/>
       <source>Radius of the ellipsoid along the local X axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local X axis</translation>
+      <translation>X軸に沿った楕円体の半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1072"/>
@@ -3695,12 +3695,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1079"/>
       <source>Radius of the ellipsoid along the local Y axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Y axis</translation>
+      <translation>Y軸に沿った楕円体の半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1131"/>
       <source>Rotation angle of the ellipsoid cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the ellipsoid cross-section around the local Z axis</translation>
+      <translation>ローカルZ軸周りの楕円体断面の回転角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
@@ -3711,37 +3711,37 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Start angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Start angle of the ellipsoid along the local Z axis</translation>
+      <translation>Z軸に沿った楕円体の開始角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1186"/>
       <source>End angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">End angle of the ellipsoid along the local Z axis</translation>
+      <translation>Z軸に沿った楕円体の終了角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1260"/>
       <source>Radius from the center of the torus to the center of the cross-section</source>
-      <translation type="unfinished">Radius from the center of the torus to the center of the cross-section</translation>
+      <translation>トーラス中心から断面中心までの半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1283"/>
       <source>Radius of the torus cross-section</source>
-      <translation type="unfinished">Radius of the torus cross-section</translation>
+      <translation>トーラス断面の半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
       <source>Rotation angle of the torus cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the torus cross-section around the local Z axis</translation>
+      <translation>ローカルZ軸周りのトーラス断面の回転角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1358"/>
       <source>Start angle of the torus cross-section</source>
-      <translation type="unfinished">Start angle of the torus cross-section</translation>
+      <translation>トーラス断面の開始角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1390"/>
       <source>End angle of the torus cross-section</source>
-      <translation type="unfinished">End angle of the torus cross-section</translation>
+      <translation>トーラス断面の終了角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1460"/>
@@ -3752,7 +3752,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1467"/>
       <source>Number of sides of the polygon cross-section</source>
-      <translation type="unfinished">Number of sides of the polygon cross-section</translation>
+      <translation>多角形断面の辺の数</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
@@ -3763,22 +3763,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
       <source>Circumradius of the polygon cross-section</source>
-      <translation type="unfinished">Circumradius of the polygon cross-section</translation>
+      <translation>多角形断面の外接円半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
       <source>Height of the prism along the local Z axis</source>
-      <translation type="unfinished">Height of the prism along the local Z axis</translation>
+      <translation>ローカルZ軸に沿った多角柱の高さ</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1539"/>
       <source>Skew angle of the prism in the first direction</source>
-      <translation type="unfinished">Skew angle of the prism in the first direction</translation>
+      <translation>多角柱の第1方向の傾斜角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1565"/>
       <source>Skew angle of the prism in the second direction</source>
-      <translation type="unfinished">Skew angle of the prism in the second direction</translation>
+      <translation>多角柱の第2方向の傾斜角度</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1611"/>
@@ -3788,12 +3788,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1618"/>
       <source>Minimum X value of the base face</source>
-      <translation type="unfinished">Minimum X value of the base face</translation>
+      <translation>底面の最小X値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1631"/>
       <source>Maximum X value of the base face</source>
-      <translation type="unfinished">Maximum X value of the base face</translation>
+      <translation>底面の最大X値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1647"/>
@@ -3803,12 +3803,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1654"/>
       <source>Minimum Y value (height start)</source>
-      <translation type="unfinished">Minimum Y value (height start)</translation>
+      <translation>最小Y値（開始高さ）</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1667"/>
       <source>Maximum Y value (height end)</source>
-      <translation type="unfinished">Maximum Y value (height end)</translation>
+      <translation>最大Y値 (終了高さ)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1683"/>
@@ -3818,12 +3818,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1690"/>
       <source>Minimum Z value of the base face</source>
-      <translation type="unfinished">Minimum Z value of the base face</translation>
+      <translation>底面の最小Z値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1703"/>
       <source>Maximum Z value of the base face</source>
-      <translation type="unfinished">Maximum Z value of the base face</translation>
+      <translation>底面の最大Z値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1719"/>
@@ -3833,12 +3833,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1726"/>
       <source>Minimum X value of the top face</source>
-      <translation type="unfinished">Minimum X value of the top face</translation>
+      <translation>上面の最小X値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1742"/>
       <source>Maximum X value of the top face</source>
-      <translation type="unfinished">Maximum X value of the top face</translation>
+      <translation>上面の最大X値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1758"/>
@@ -3848,12 +3848,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
       <source>Minimum Z value of the top face</source>
-      <translation type="unfinished">Minimum Z value of the top face</translation>
+      <translation>上面の最小Z値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1781"/>
       <source>Maximum Z value of the top face</source>
-      <translation type="unfinished">Maximum Z value of the top face</translation>
+      <translation>上面の最大Z値</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1848"/>
@@ -3945,7 +3945,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2200"/>
       <source>Define the circle by selecting 3 points in the 3D view</source>
-      <translation type="unfinished">Define the circle by selecting 3 points in the 3D view</translation>
+      <translation>3Dビューで3点を選択して円を定義</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2203"/>
@@ -4048,7 +4048,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
       <source>Circumradius of the regular polygon</source>
-      <translation type="unfinished">Circumradius of the regular polygon</translation>
+      <translation>正多角形の外接円半径</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="509"/>
@@ -4108,7 +4108,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2654"/>
       <source>C&amp;reate</source>
-      <translation type="unfinished">C&amp;reate</translation>
+      <translation>作成(&amp;R)</translation>
     </message>
   </context>
   <context>
@@ -4335,7 +4335,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="538"/>
       <source>Selecting… (Line or Arc)</source>
-      <translation type="unfinished">Selecting… (Line or Arc)</translation>
+      <translation>選択…（線または円弧）</translation>
     </message>
   </context>
   <context>
@@ -4421,7 +4421,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="145"/>
       <source>Currently not implemented: this option does not yet modify automatically generated Part feature names</source>
-      <translation type="unfinished">Currently not implemented: this option does not yet modify automatically generated Part feature names</translation>
+      <translation>まだ実装されていません: このオプションでは自動生成されたパートフィーチャー名はまだ変更されません</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
@@ -4431,7 +4431,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
       <source>Specifies which profile geometry types are accepted by the Part Design Hole feature</source>
-      <translation type="unfinished">Specifies which profile geometry types are accepted by the Part Design Hole feature</translation>
+      <translation>パートデザインのホール・フィーチャーによって、どのプロファイルジオメトリーのタイプを受け入れるかを指定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="181"/>
@@ -4441,7 +4441,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="194"/>
       <source>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</source>
-      <translation type="unfinished">Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</translation>
+      <translation>ホール・ツールが穴の中心として自動検出して使用するスケッチ要素（点、円、円弧）を指定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="207"/>
@@ -4466,7 +4466,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="258"/>
       <source>Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</source>
-      <translation type="unfinished">Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</translation>
+      <translation>パートデザインでShiftキーを押しながら新しいスケッチを作成する場合に必ずアタッチ用ダイアログを開きます。 そうでない場合は、単一の面またはデータム平面の選択でだけダイアログをスキップします。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="261"/>
@@ -4541,7 +4541,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
       <source>Enables larger snapping increments while  manipulating draggers</source>
-      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+      <translation>ドラッグ操作中の大きなスナップ増分を有効化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
@@ -4551,7 +4551,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
       <source>Defines the modifier key used for fine snapping while dragging</source>
-      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+      <translation>ドラッグ中の高精度スナップに使用する修飾キーを定義</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="472"/>
@@ -4571,7 +4571,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="515"/>
       <source>Multiplies the base movement increment when coarse snapping is active</source>
-      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+      <translation>低精度スナップが有効な場合に基本移動増分を乗算</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="532"/>
@@ -4581,7 +4581,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="548"/>
       <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
-      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
+      <translation>低精度スナップが有効な場合に適用される角度単位の回転ステップを設定</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4591,32 +4591,32 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="33"/>
       <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation type="unfinished">Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</translation>
+      <translation>エラー検出のために、ブーリアン演算ごとにジオメトリー（BRep）を検証します。注意：複雑なモデルではパフォーマンスが低下する可能性があります。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="55"/>
       <source>Automatic refinement of Part Boolean results</source>
-      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+      <translation>パートのブーリアン演算結果を自動で高精度化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
-      <translation type="unfinished">Refines Part Boolean results by removing redundant edges and merging adjacent faces</translation>
+      <translation>冗長なエッジを削除して隣接面を結合することで、パートのブーリアン演算結果を高精度化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Automatic refinement of Part Design features</source>
-      <translation type="unfinished">Automatic refinement of Part Design features</translation>
+      <translation>パートデザインのフィーチャーを自動で高精度化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
       <source>Refines Part Design features after creation by removing unnecessary edges</source>
-      <translation type="unfinished">Refines Part Design features after creation by removing unnecessary edges</translation>
+      <translation>不要なエッジを削除して作成後にパートデザインのフィーチャーを高精度化</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation type="unfinished">Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</translation>
+      <translation>新しいボディーで複数のつながっていないソリッド（コンパウンド）を許可するよう設定。チェックを外すと、ボディーは単一の連続したソリッドのみに厳密に制限されます。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -5478,82 +5478,82 @@ of the object being attached.</source>
       <translation>面を反転</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="413"/>
+      <location filename="../../TaskAttacher.cpp" line="421"/>
       <source>OCC error: %1</source>
       <translation>OCCエラー: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="416"/>
+      <location filename="../../TaskAttacher.cpp" line="424"/>
       <source>unknown error</source>
       <translation>不明なエラー</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="419"/>
+      <location filename="../../TaskAttacher.cpp" line="427"/>
       <source>Attachment mode failed: %1</source>
       <translation>アタッチメントモード失敗: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="424"/>
+      <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Not attached</source>
       <translation>アタッチされていません。</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="432"/>
+      <location filename="../../TaskAttacher.cpp" line="440"/>
       <source>Attached with mode %1</source>
       <translation>モード %1 でアタッチ</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1027"/>
+      <location filename="../../TaskAttacher.cpp" line="1080"/>
       <source>Selecting…</source>
       <translation>選択…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="930"/>
+      <location filename="../../TaskAttacher.cpp" line="983"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="436"/>
+      <location filename="../../TaskAttacher.cpp" line="444"/>
       <source>Attachment Offset (in its local coordinate system):</source>
       <translation>アタッチメント・オフセット（ローカル座標系）：</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="437"/>
+      <location filename="../../TaskAttacher.cpp" line="445"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>アタッチメントオフセット(非アクティブ - アタッチされていません)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="937"/>
+      <location filename="../../TaskAttacher.cpp" line="990"/>
       <source>Edge</source>
       <translation>エッジ</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="944"/>
+      <location filename="../../TaskAttacher.cpp" line="997"/>
       <source>Vertex</source>
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1033"/>
+      <location filename="../../TaskAttacher.cpp" line="1086"/>
       <source>Reference%1</source>
       <translation>参照 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1155"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>AttachmentOffsetの回転が式によって束縛されているため、編集できません。</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1185"/>
+      <location filename="../../TaskAttacher.cpp" line="1238"/>
       <source>Reference combinations:</source>
       <translation>参照の組み合わせ:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1207"/>
+      <location filename="../../TaskAttacher.cpp" line="1260"/>
       <source>%1 (add %2)</source>
       <translation>%1（%2を追加）</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1210"/>
+      <location filename="../../TaskAttacher.cpp" line="1263"/>
       <source>%1 (add more references)</source>
       <translation>%1（さらに参照を追加）</translation>
     </message>
@@ -5849,22 +5849,22 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1471"/>
+      <location filename="../../TaskAttacher.cpp" line="1543"/>
       <source>Attachment</source>
       <translation>アタッチメント</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1492"/>
+      <location filename="../../TaskAttacher.cpp" line="1564"/>
       <source>%1 select reference</source>
       <translation>%1 参照を選択</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1498"/>
+      <location filename="../../TaskAttacher.cpp" line="1570"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 選択と確認</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1648"/>
+      <location filename="../../TaskAttacher.cpp" line="1731"/>
       <source>Datum dialog: input error</source>
       <translation>データムダイアログ: 入力エラー</translation>
     </message>
@@ -6204,12 +6204,12 @@ Continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2553"/>
       <source>Select at most one object to array.</source>
-      <translation type="unfinished">Select at most one object to array.</translation>
+      <translation>整列させるオブジェクトを1つだけ選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Select one object from the active document.</source>
-      <translation type="unfinished">Select one object from the active document.</translation>
+      <translation>アクティブなドキュメントからオブジェクトを1つ選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2282"/>
@@ -6217,8 +6217,8 @@ Continue?</source>
       <translation>2つのエッジまたは2つのワイヤーのいずれかを選択</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskAttacher.cpp" line="116"/>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskAttacher.cpp" line="121"/>
       <source>No reference selected</source>
       <translation>参照が選択されていません。</translation>
     </message>
@@ -7791,12 +7791,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="161"/>
       <source>Preview requires a Part-based view provider; none found for %1.</source>
-      <translation type="unfinished">Preview requires a Part-based view provider; none found for %1.</translation>
+      <translation>プレビューにはパートベースのビュープロバイダーが必要です。 %1では見つかりませんでした。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
-      <translation type="unfinished">unknown object</translation>
+      <translation>不明なオブジェクト</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
@@ -7818,12 +7818,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="17"/>
       <source>Linked object</source>
-      <translation type="unfinished">Linked object</translation>
+      <translation>リンク・オブジェクト</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>オブジェクトを選択</translation>
     </message>
   </context>
   <context>
@@ -7831,7 +7831,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>円形パターン</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7851,12 +7851,27 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
       <source>Concentric circles</source>
-      <translation type="unfinished">Concentric circles</translation>
+      <translation>同心円</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
       <source>Symmetry</source>
       <translation>対称</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation>選択したシェイプで開始</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation>従法線軸</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation>従法線方向を反転</translation>
     </message>
   </context>
   <context>
@@ -7870,12 +7885,12 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
       <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
-      <translation type="unfinished">Select Path</translation>
+      <translation>パスを選択</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
       <source>Spacing mode</source>
-      <translation type="unfinished">Spacing mode</translation>
+      <translation>間隔モード</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="10"/>
@@ -7890,56 +7905,66 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="14"/>
       <source>Start offset</source>
-      <translation type="unfinished">Start offset</translation>
+      <translation>開始オフセット</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="16"/>
       <source>End offset</source>
-      <translation type="unfinished">End offset</translation>
+      <translation>終了オフセット</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
       <source>Reverse path</source>
-      <translation type="unfinished">Reverse path</translation>
+      <translation>パスを反転</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="19"/>
       <source>Align to path</source>
-      <translation type="unfinished">Align to path</translation>
+      <translation>パスに揃える</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count</source>
-      <translation type="unfinished">Fixed count</translation>
+      <translation>固定数</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed spacing</source>
-      <translation type="unfinished">Fixed spacing</translation>
+      <translation>固定間隔</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
       <source>Fixed count and spacing</source>
-      <translation type="unfinished">Fixed count and spacing</translation>
+      <translation>固定数と間隔</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
-      <translation type="unfinished">(+%1)</translation>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
       <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
+      <translation>点オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
       <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
+      <translation>点オブジェクトを選択</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation>最初のものに対して相対</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation>原点インデックス</translation>
     </message>
   </context>
   <context>
@@ -7952,12 +7977,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>円形リンク整列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+      <translation>リンク・オブジェクトによる同心円状整列を作成</translation>
     </message>
   </context>
   <context>
@@ -7975,7 +8000,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
       <source>Creates an array of linked objects along a path</source>
-      <translation type="unfinished">Creates an array of linked objects along a path</translation>
+      <translation>リンク・オブジェクトによるパスに沿った整列を作成</translation>
     </message>
   </context>
   <context>
@@ -7993,7 +8018,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
       <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
+      <translation>スケッチまたはシェイプの各点にリンク・オブジェクトの整列を作成</translation>
     </message>
   </context>
   <context>
@@ -8006,12 +8031,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>直線状リンク配列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
       <source>Creates a linear array of linked objects</source>
-      <translation type="unfinished">Creates a linear array of linked objects</translation>
+      <translation>リンク・オブジェクトによる直線状整列を作成</translation>
     </message>
   </context>
   <context>
@@ -8024,12 +8049,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>軸周状リンク整列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
       <source>Creates a polar array of linked objects</source>
-      <translation type="unfinished">Creates a polar array of linked objects</translation>
+      <translation>リンク・オブジェクトによる軸周状整列を作成</translation>
     </message>
   </context>
   <context>
@@ -8042,12 +8067,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2950"/>
       <source>Link Arrays</source>
-      <translation type="unfinished">Link Arrays</translation>
+      <translation>リンク整列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2951"/>
       <source>Creates link arrays</source>
-      <translation type="unfinished">Creates link arrays</translation>
+      <translation>リンク整列を作成</translation>
     </message>
   </context>
   <context>
@@ -8055,18 +8080,18 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="226"/>
       <source>Restores this instance</source>
-      <translation type="unfinished">Restores this instance</translation>
+      <translation>このインスタンスを復元</translation>
     </message>
     <message>
       <location filename="../../PatternInstanceControls.cpp" line="231"/>
       <source>Suppresses this instance</source>
-      <translation type="unfinished">Suppresses this instance</translation>
+      <translation>このインスタンスを抑制</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="144"/>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
       <source>Direction 2</source>
       <translation>セクション 2</translation>
     </message>
@@ -8076,7 +8101,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>円形リンク整列</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
@@ -8091,84 +8116,84 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>軸周状リンク整列</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>直線状リンク配列</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
       <source>Selecting…</source>
       <translation>選択…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>オブジェクトを選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
       <source>Select an object to link</source>
-      <translation type="unfinished">Select an object to link</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="547"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
-      <source>Object X-axis</source>
-      <translation type="unfinished">Object X-axis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
-      <source>Object Y-axis</source>
-      <translation type="unfinished">Object Y-axis</translation>
+      <translation>リンクするオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
-      <source>Object Z-axis</source>
-      <translation type="unfinished">Object Z-axis</translation>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
+      <source>Object X-axis</source>
+      <translation>オブジェクト X軸</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
+      <source>Object Y-axis</source>
+      <translation>オブジェクト Y軸</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
+      <source>Object Z-axis</source>
+      <translation>オブジェクト Z軸</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Select reference…</source>
       <translation>参照を選択...</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
       <source>Select connected path edges</source>
-      <translation type="unfinished">Select connected path edges</translation>
+      <translation>接続するパスのエッジを選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
       <source>Select a sketch or shape containing points</source>
-      <translation type="unfinished">Select a sketch or shape containing points</translation>
+      <translation>点を含むスケッチまたはシェイプを選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
       <source>Select a rotation axis</source>
-      <translation type="unfinished">Select a rotation axis</translation>
+      <translation>回転軸を選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select a direction reference</source>
-      <translation type="unfinished">Select a direction reference</translation>
+      <translation>方向参照を選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
       <source>Input Error</source>
       <translation>入力エラー</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
       <source>Select an object to link.</source>
-      <translation type="unfinished">Select an object to link.</translation>
+      <translation>リンクするオブジェクトを選択</translation>
     </message>
   </context>
   <context>

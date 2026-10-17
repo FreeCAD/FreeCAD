@@ -16,7 +16,7 @@
     <message>
       <location filename="../../CommandInsertRobot.cpp" line="48"/>
       <source>Adds a tool shape to the robot</source>
-      <translation type="unfinished">Adds a tool shape to the robot</translation>
+      <translation>Додати інструмент форми до робота</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Розмістити робота</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="204"/>

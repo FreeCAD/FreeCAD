@@ -64,7 +64,7 @@
     <message>
       <location filename="../../Exception.cpp" line="323"/>
       <source>No permission to read the file</source>
-      <translation type="unfinished">No permission to read the file</translation>
+      <translation>Немає дозволу на читання файлу</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="325"/>

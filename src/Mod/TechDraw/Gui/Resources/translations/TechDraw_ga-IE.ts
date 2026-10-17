@@ -2162,7 +2162,7 @@ Mura roghnaítear aon réad, osclaítear brabhsálaí comhad chun comhad SVG nó
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>Sábháil leathanach go DXF</translation>
     </message>
@@ -3795,27 +3795,27 @@ Mura roghnaítear aon réad, osclaítear brabhsálaí comhad chun comhad SVG nó
       <translation>Teastaíonn leathanach don fheidhm seo.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="870"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Export Page as PDF</source>
       <translation>Easpórtáil Leathanach mar PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="777"/>
+      <location filename="../../MDIViewPage.cpp" line="772"/>
       <source>Export page as SVG</source>
       <translation>Easpórtáil leathanach mar SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="806"/>
+      <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Export page as DXF</source>
       <translation>Easpórtáil leathanach mar DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>Unable to Write File</source>
       <translation>Ní féidir an comhad a scríobh</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="854"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>Ní féidir le FreeCAD an comhad %1 a oscailt le haghaidh scríbhneoireachta. Seans go bhfuil an comhad oscailte i gclár eile.</translation>
     </message>
@@ -4234,7 +4234,7 @@ Mura roghnaítear aon réad, osclaítear brabhsálaí comhad chun comhad SVG nó
       <translation>Earráid Paraiméadair</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="287"/>
+      <location filename="../../PagePrinter.cpp" line="300"/>
       <source>Document Name:</source>
       <translation>Ainm an Doiciméid:</translation>
     </message>
@@ -5410,7 +5410,7 @@ chun líníochtaí a úsáid mar threoir ghearrtha 1:1.
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="646"/>
       <source>Transparent faces</source>
       <translation>Aghaidheanna trédhearcacha</translation>
     </message>
@@ -5425,12 +5425,17 @@ chun líníochtaí a úsáid mar threoir ghearrtha 1:1.
       <translation>Dath réamhshocraithe do línte ceannaire</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
+      <source>Face color</source>
+      <translation>Dath aghaidhe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Object faces will be transparent</source>
       <translation>Beidh aghaidheanna réad trédhearcach</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="659"/>
       <source>Face color (if not transparent)</source>
       <translation>Dath aghaidhe (mura bhfuil sé trédhearcach)</translation>
     </message>
@@ -5440,17 +5445,17 @@ chun líníochtaí a úsáid mar threoir ghearrtha 1:1.
       <translation>Monacrómach</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
       <translation>Líne briste</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
       <translation>Dath líne briste le haghaidh radharcanna briste</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nóta:&lt;/span&gt; s luachanna réamhshocraithe iad míreanna i gcló &lt;span style=&quot; font-style:italic;&quot;&gt;Iodálach&lt;/span&gt; le haghaidh réada nua. Níl aon éifeacht acu ar réada atá ann cheana féin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6446,7 +6451,7 @@ Do you want to continue?</source>
 Ar mhaith leat leanúint ar aghaidh?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1433"/>
+      <location filename="../../MDIViewPage.cpp" line="1416"/>
       <source>Selected:</source>
       <translation>Roghnaithe:</translation>
     </message>

@@ -1669,12 +1669,12 @@ k hladšímu vzhledu.
       <translation>Vypočítat</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>No selection</source>
       <translation>Žádný výběr</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="308"/>
+      <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Vyberte oblast před proložením plochy.</translation>
     </message>
@@ -1938,29 +1938,29 @@ k hladšímu vzhledu.
       <translation>Koule</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="376"/>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
+      <location filename="../../SegmentationBestFit.cpp" line="379"/>
+      <location filename="../../SegmentationBestFit.cpp" line="404"/>
       <source>Base</source>
       <translation>Základna</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="377"/>
+      <location filename="../../SegmentationBestFit.cpp" line="380"/>
       <source>Normal</source>
       <translation>Normála</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="402"/>
+      <location filename="../../SegmentationBestFit.cpp" line="405"/>
       <source>Axis</source>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="403"/>
-      <location filename="../../SegmentationBestFit.cpp" line="429"/>
+      <location filename="../../SegmentationBestFit.cpp" line="406"/>
+      <location filename="../../SegmentationBestFit.cpp" line="433"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="432"/>
       <source>Center</source>
       <translation>Střed</translation>
     </message>

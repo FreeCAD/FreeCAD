@@ -144,7 +144,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Секції</translation>
+      <translation>Перерізи</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -490,7 +490,7 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
       <source>No Active Document</source>
-      <translation type="unfinished">No Active Document</translation>
+      <translation>Немає активного документа</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

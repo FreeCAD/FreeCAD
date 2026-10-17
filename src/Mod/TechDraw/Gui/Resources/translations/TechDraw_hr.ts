@@ -2162,7 +2162,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>Spremi stranicu u DXF formatu</translation>
     </message>
@@ -3795,27 +3795,27 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Ova funkcija treba stranicu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="870"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Export Page as PDF</source>
       <translation>Izvoz stranicu u PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="777"/>
+      <location filename="../../MDIViewPage.cpp" line="772"/>
       <source>Export page as SVG</source>
       <translation>Izvoz Stranice u SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="806"/>
+      <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Export page as DXF</source>
       <translation>Izvezi stranicu u DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>Unable to Write File</source>
       <translation type="unfinished">Unable to Write File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="854"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
@@ -4236,7 +4236,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Greška u parametru</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="287"/>
+      <location filename="../../PagePrinter.cpp" line="300"/>
       <source>Document Name:</source>
       <translation>Naziv dokumenta:</translation>
     </message>
@@ -5431,7 +5431,7 @@ za korištenje crteža kao vodič za rezanje 1:1.
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="646"/>
       <source>Transparent faces</source>
       <translation>Prozirne površine</translation>
     </message>
@@ -5446,12 +5446,17 @@ za korištenje crteža kao vodič za rezanje 1:1.
       <translation>Zadana boja linija vodilice</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
+      <source>Face color</source>
+      <translation>Boja lica</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Object faces will be transparent</source>
       <translation>Naličja objekta će biti prozirna</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="659"/>
       <source>Face color (if not transparent)</source>
       <translation>Boja lica (ako nije prozirno)</translation>
     </message>
@@ -5461,17 +5466,17 @@ za korištenje crteža kao vodič za rezanje 1:1.
       <translation>Crno-bijelo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
       <translation type="unfinished">Break line</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
       <translation type="unfinished">Break line color for broken views</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Bilješka:&lt;/span&gt; Stavke u &lt;span style=&quot; font-style:italic;&quot;&gt;nakošen&lt;/span&gt; su zadane vrijednosti za nove objekte. Oni nemaju utjecaja na postojeće objekte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6482,7 +6487,7 @@ Do you want to continue?</source>
       <translation>Pisač koristi drugu veličinu papra nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1433"/>
+      <location filename="../../MDIViewPage.cpp" line="1416"/>
       <source>Selected:</source>
       <translation>Odabrane:</translation>
     </message>

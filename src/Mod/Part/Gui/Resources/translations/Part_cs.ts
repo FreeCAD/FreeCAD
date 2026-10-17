@@ -2264,7 +2264,7 @@ Směr projekce určuje pohled kamery.</translation>
       <translation>Převést síť</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1579"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Edit attachment</source>
       <translation>Upravit připojení</translation>
     </message>
@@ -5495,82 +5495,82 @@ připojeného objektu.</translation>
       <translation>Otočit strany</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="413"/>
+      <location filename="../../TaskAttacher.cpp" line="421"/>
       <source>OCC error: %1</source>
       <translation>OCC chyba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="416"/>
+      <location filename="../../TaskAttacher.cpp" line="424"/>
       <source>unknown error</source>
       <translation>neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="419"/>
+      <location filename="../../TaskAttacher.cpp" line="427"/>
       <source>Attachment mode failed: %1</source>
       <translation>Režim připojení selhal: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="424"/>
+      <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Not attached</source>
       <translation>Není připojeno</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="432"/>
+      <location filename="../../TaskAttacher.cpp" line="440"/>
       <source>Attached with mode %1</source>
       <translation>Připojené v módu %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1027"/>
+      <location filename="../../TaskAttacher.cpp" line="1080"/>
       <source>Selecting…</source>
       <translation>Výběr…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="930"/>
+      <location filename="../../TaskAttacher.cpp" line="983"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="436"/>
+      <location filename="../../TaskAttacher.cpp" line="444"/>
       <source>Attachment Offset (in its local coordinate system):</source>
       <translation>Odsazení připojení (v jeho lokálním souřadnicovém systému):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="437"/>
+      <location filename="../../TaskAttacher.cpp" line="445"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="937"/>
+      <location filename="../../TaskAttacher.cpp" line="990"/>
       <source>Edge</source>
       <translation>Hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="944"/>
+      <location filename="../../TaskAttacher.cpp" line="997"/>
       <source>Vertex</source>
       <translation>Vrchol</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1033"/>
+      <location filename="../../TaskAttacher.cpp" line="1086"/>
       <source>Reference%1</source>
       <translation>Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1155"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Není upravitelné, protože otočení odsazeného připojení je vázáno výrazy.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1185"/>
+      <location filename="../../TaskAttacher.cpp" line="1238"/>
       <source>Reference combinations:</source>
       <translation>Kombinace referencí:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1207"/>
+      <location filename="../../TaskAttacher.cpp" line="1260"/>
       <source>%1 (add %2)</source>
       <translation>%1 (přidat %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1210"/>
+      <location filename="../../TaskAttacher.cpp" line="1263"/>
       <source>%1 (add more references)</source>
       <translation>%1 (přidat více referencí)</translation>
     </message>
@@ -5873,22 +5873,22 @@ Kontroly jednotlivých booleovských operací:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1471"/>
+      <location filename="../../TaskAttacher.cpp" line="1543"/>
       <source>Attachment</source>
       <translation>Připojení</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1492"/>
+      <location filename="../../TaskAttacher.cpp" line="1564"/>
       <source>%1 select reference</source>
       <translation>%1 výběr reference</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1498"/>
+      <location filename="../../TaskAttacher.cpp" line="1570"/>
       <source>%1 select and confirm</source>
       <translation>%1 vybrat a potvrdit</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1648"/>
+      <location filename="../../TaskAttacher.cpp" line="1731"/>
       <source>Datum dialog: input error</source>
       <translation>Dialogové okno Reference: chyba zadání</translation>
     </message>
@@ -6243,8 +6243,8 @@ Chcete pokračovat?</translation>
       <translation>Vyberte buď 2 hrany, nebo 2 čáry.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskAttacher.cpp" line="116"/>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskAttacher.cpp" line="121"/>
       <source>No reference selected</source>
       <translation>Není vybrána reference</translation>
     </message>
@@ -7887,6 +7887,21 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <source>Symmetry</source>
       <translation>Symetrie</translation>
     </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation type="unfinished">Start at selected shape</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation type="unfinished">Binormal axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation type="unfinished">Flip binormal direction</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::PatternPathParametersWidget</name>
@@ -7960,15 +7975,25 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
       <source>Point object</source>
       <translation>Bodový objekt</translation>
     </message>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
       <source>Select Point Object</source>
       <translation>Vybrat bodový objek</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation type="unfinished">Relative to first</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation type="unfinished">Origin point index</translation>
     </message>
   </context>
   <context>
@@ -8095,7 +8120,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="144"/>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
       <source>Direction 2</source>
       <translation>Směr 2</translation>
     </message>
@@ -8128,74 +8153,74 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <translation type="unfinished">Linear Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
       <source>Selecting…</source>
       <translation>Výběr…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
       <source>Select Object</source>
       <translation type="unfinished">Select Object</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
       <source>Select an object to link</source>
       <translation type="unfinished">Select an object to link</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="547"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
       <source>Object X-axis</source>
       <translation type="unfinished">Object X-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
       <source>Object Y-axis</source>
       <translation type="unfinished">Object Y-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object Z-axis</source>
       <translation type="unfinished">Object Z-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Select reference…</source>
       <translation>Vybrat referenci…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
       <source>Select connected path edges</source>
       <translation type="unfinished">Select connected path edges</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
       <source>Select a sketch or shape containing points</source>
       <translation type="unfinished">Select a sketch or shape containing points</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
       <source>Select a rotation axis</source>
       <translation type="unfinished">Select a rotation axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select a direction reference</source>
       <translation type="unfinished">Select a direction reference</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
       <source>Input Error</source>
       <translation>Chyba vstupu</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
       <source>Select an object to link.</source>
       <translation type="unfinished">Select an object to link.</translation>
     </message>

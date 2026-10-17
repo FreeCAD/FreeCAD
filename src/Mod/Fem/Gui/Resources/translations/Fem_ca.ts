@@ -6566,7 +6566,7 @@ Primer, seleccioneu un tipus de resultat.</translation>
       <translation>Cap objecte resultat</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6577,7 +6577,7 @@ Mòdul correcte trobat a:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6586,7 +6586,7 @@ Should this module be loaded instead?</source>
 S'hauria de carregar aquest mòdul altrament?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6595,17 +6595,17 @@ No matching module was found in the current Python path.</source>
 No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation>Conflicte de mòduls Python de VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation>Conflicte de mòduls Python de VTK</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Aquesta funcionalitat no està disponible a causa d'un conflicte de mòduls Python de VTK</translation>
     </message>

@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+      <translation>公称距離: %1、軸距離: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -502,7 +502,7 @@
       <translation>リセット</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1232"/>
+      <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
       <translation> (平均)</translation>
     </message>
@@ -552,7 +552,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <translation>幾何的中心</translation>
     </message>
   </context>
 </TS>

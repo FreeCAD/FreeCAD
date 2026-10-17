@@ -3046,48 +3046,48 @@ if they match the X, Y or Z axis of the global coordinate system</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <source>Relative</source>
       <translation>Адносна</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Global</source>
       <translation>Глабальны</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
-      <location filename="../../DraftGui.py" line="1142"/>
+      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="1155"/>
       <source>Continue</source>
       <translation>Працягнуць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="773"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>Калі птушка, каманда не завершыцца, пакуль зноў не націснеце кнопку каманды</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>Калі птушка, наступнае вымярэнне будзе змешчана ў ланцуг з раней размешчаным вымярэннем</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="795"/>
       <source>Close</source>
       <translation>Зачыніць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Set Working Plane</source>
       <translation>Задаць працоўную плоскасць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="801"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Select Edge</source>
       <translation>Абраць рабро</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="809"/>
+      <location filename="../../DraftGui.py" line="822"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_scale.py" line="229"/>
@@ -3095,7 +3095,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Скапіраваць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="786"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Wipe</source>
       <translation>Сцерці</translation>
     </message>
@@ -3176,282 +3176,282 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Становішча:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="669"/>
-      <location filename="../../DraftGui.py" line="698"/>
-      <location filename="../../DraftGui.py" line="1849"/>
-      <location filename="../../DraftGui.py" line="1867"/>
+      <location filename="../../DraftGui.py" line="682"/>
+      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="1862"/>
+      <location filename="../../DraftGui.py" line="1880"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Нічога</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="710"/>
       <source>active command:</source>
       <translation>бягучая каманда:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="712"/>
       <source>Active Draft command</source>
       <translation>Бягучая каманда Чарнавіка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="713"/>
       <source>X coordinate of the point</source>
       <translation>Каардыната X кропкі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="714"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="702"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="721"/>
       <source>Length</source>
       <translation>Даўжыня</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <location filename="../../draftguitools/gui_trimex.py" line="303"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
-      <location filename="../../DraftGui.py" line="1125"/>
+      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="1138"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="838"/>
       <source>Creates the text object and finishes the command</source>
       <translation>Стварае тэкставы аб'ект і завяршае выкананне каманды</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="847"/>
+      <location filename="../../DraftGui.py" line="860"/>
       <source>Changes the default style for new objects</source>
       <translation>Змяняе першапачатковы стыль да новых аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="848"/>
+      <location filename="../../DraftGui.py" line="861"/>
       <source>Toggles construction mode</source>
       <translation>Пераключае будаўнічы рэжым</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1076"/>
+      <location filename="../../DraftGui.py" line="1089"/>
       <source>Label Type</source>
       <translation>Тып меткі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1126"/>
+      <location filename="../../DraftGui.py" line="1139"/>
       <source>Radius of Circle</source>
       <translation>Радыус акружнасці</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Каардынаты адносна апошняй кропкі ці пачатку сістэмы каардынат, калі гэта першая зададзеная кропка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="704"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Y coordinate of the point</source>
       <translation>Каардыната Y кропкі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Z coordinate of the point</source>
       <translation>Каардыната Z кропкі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Enter Point</source>
       <translation>Увядзіце кропку</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Length of the current segment</source>
       <translation>Даўжыня бягучага адрэзку</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="725"/>
       <source>Angle of the current segment</source>
       <translation>Вугал бягучага адрэзку</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Radius of the circle</source>
       <translation>Радыус акружнасці</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Каардынаты адносна глабальнай сістэмы каардынат.
 Не птушка, каб ужыць сістэму каардынат працоўнай плоскасці</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="746"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Finish</source>
       <translation>Скончыць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="750"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Скончыць бягучую аперацыю малявання чарцяжа ці змены</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2082"/>
+      <location filename="../../DraftGui.py" line="2095"/>
       <source>Modify Objects</source>
       <translation>Змяніць аб'екты</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2244"/>
+      <location filename="../../DraftGui.py" line="2257"/>
       <source>Facebinder Elements</source>
       <translation>Элементы злучаных паверхняў</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="789"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Калі птушка, замест класічнага зрушэння будзе ўжыта зрушэнне ў стылі OpenCASCADE</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="769"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>OCC-style offset</source>
       <translation>Зрушэнне ў стылі OpenCASCADE</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="791"/>
       <source>Undo</source>
       <translation>Адкаціць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="825"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Калі птушка, аб'екты будуць скапіраваныя, а не зрушаныя</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Undo the last segment</source>
       <translation>Адкаціць апошні адрэзак</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Enter a point with given coordinates</source>
       <translation>Увядзіце кропку з зададзенымі каардынатамі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>Make face</source>
       <translation>Зрабіць грань</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="744"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Калі птушка, аб'ект будзе запоўнены гранню.
 Недаступна, калі ўключана налада 'Ужываць першасныя дэталі'</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>Chained mode</source>
       <translation>Рэжым звязвання</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="784"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Finishes and closes the current line</source>
       <translation>Скончыць і замкнуць бягучую лінію</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="806"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Сцірае існуючыя адрэзкі лініі і пачынае зноўку з апошняй кропкі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Пераарыентуе працоўную плоскасць па апошняму адрэзку</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="805"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Абірае існуючае рабро, якое будзе вымераны з дапамогай вымярэння</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>Sides</source>
       <translation>Бакі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="807"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Number of sides</source>
       <translation>Колькасць бакоў</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="815"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>Modify subelements</source>
       <translation>Змена ўкладзеных элементаў</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="821"/>
+      <location filename="../../DraftGui.py" line="834"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Калі птушка, замест цэлых аб'ектаў будуць змененыя ўкладзеныя элементы</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="849"/>
-      <location filename="../../DraftGui.py" line="1855"/>
-      <location filename="../../DraftGui.py" line="1873"/>
+      <location filename="../../DraftGui.py" line="862"/>
+      <location filename="../../DraftGui.py" line="1868"/>
+      <location filename="../../DraftGui.py" line="1886"/>
       <source>Autogroup off</source>
       <translation>Аўтаматычнае групаванне выключана</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="983"/>
+      <location filename="../../DraftGui.py" line="996"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="998"/>
+      <location filename="../../DraftGui.py" line="1011"/>
       <source>DWire</source>
       <translation>Ломаная лінія</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1021"/>
+      <location filename="../../DraftGui.py" line="1034"/>
       <source>Circle</source>
       <translation>Акружнасць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1026"/>
+      <location filename="../../DraftGui.py" line="1039"/>
       <source>Arc</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1031"/>
+      <location filename="../../DraftGui.py" line="1044"/>
       <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>Павярнуць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1037"/>
+      <location filename="../../DraftGui.py" line="1050"/>
       <source>Point</source>
       <translation>Кропка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1074"/>
+      <location filename="../../DraftGui.py" line="1087"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1093"/>
+      <location filename="../../DraftGui.py" line="1106"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3459,32 +3459,32 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1098"/>
-      <location filename="../../DraftGui.py" line="1118"/>
+      <location filename="../../DraftGui.py" line="1111"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <location filename="../../draftguitools/gui_trimex.py" line="299"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1099"/>
-      <location filename="../../DraftGui.py" line="1119"/>
+      <location filename="../../DraftGui.py" line="1112"/>
+      <location filename="../../DraftGui.py" line="1132"/>
       <location filename="../../draftguitools/gui_trimex.py" line="300"/>
       <source>Offset distance</source>
       <translation>Адлегласць зрушэння</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../DraftGui.py" line="1128"/>
       <location filename="../../draftguitools/gui_trimex.py" line="84"/>
       <source>Trimex</source>
       <translation>Абрэзаць / падоўжыць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1219"/>
-      <location filename="../../DraftGui.py" line="1221"/>
-      <location filename="../../DraftGui.py" line="1222"/>
-      <location filename="../../DraftGui.py" line="1224"/>
-      <location filename="../../DraftGui.py" line="1225"/>
-      <location filename="../../DraftGui.py" line="1226"/>
+      <location filename="../../DraftGui.py" line="1232"/>
+      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1235"/>
+      <location filename="../../DraftGui.py" line="1237"/>
+      <location filename="../../DraftGui.py" line="1238"/>
+      <location filename="../../DraftGui.py" line="1239"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3492,12 +3492,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Лакальны {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1228"/>
-      <location filename="../../DraftGui.py" line="1229"/>
-      <location filename="../../DraftGui.py" line="1230"/>
-      <location filename="../../DraftGui.py" line="1232"/>
-      <location filename="../../DraftGui.py" line="1233"/>
-      <location filename="../../DraftGui.py" line="1234"/>
+      <location filename="../../DraftGui.py" line="1241"/>
+      <location filename="../../DraftGui.py" line="1242"/>
+      <location filename="../../DraftGui.py" line="1243"/>
+      <location filename="../../DraftGui.py" line="1245"/>
+      <location filename="../../DraftGui.py" line="1246"/>
+      <location filename="../../DraftGui.py" line="1247"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3505,27 +3505,27 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Глабальны {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1863"/>
+      <location filename="../../DraftGui.py" line="1876"/>
       <source>Autogroup:</source>
       <translation>Аўтаматычнае групаванне:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2063"/>
+      <location filename="../../DraftGui.py" line="2076"/>
       <source>Create Objects</source>
       <translation>Стварыць аб'екты</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2241"/>
+      <location filename="../../DraftGui.py" line="2254"/>
       <source>Faces</source>
       <translation>Грані</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2242"/>
+      <location filename="../../DraftGui.py" line="2255"/>
       <source>Remove</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2243"/>
+      <location filename="../../DraftGui.py" line="2256"/>
       <source>Add</source>
       <translation>Дадаць</translation>
     </message>
@@ -3898,7 +3898,7 @@ or try saving to a lower DWG version.</source>
       <translation>Выбраць месцазнаходжанне кропкі</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="835"/>
       <location filename="../../draftguitools/gui_texts.py" line="133"/>
       <source>Create Text</source>
       <translation>Стварыць тэкст</translation>
@@ -4527,17 +4527,17 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Абрэзаць / падоўжыць не падтрымлівае дадзены тып аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="589"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="590"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Немагчыма абрэзаць аб'екты, падтрымліваюцца толькі ломаныя лініі і дугі чарнавіка</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="610"/>
       <source>These objects do not intersect</source>
       <translation>Аб'екты не перасякаюцца</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="613"/>
       <source>Too many intersection points</source>
       <translation>Зашмат кропак скрыжавання</translation>
     </message>
@@ -4564,7 +4564,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="199"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="715"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="716"/>
       <source>Select a single face to extrude</source>
       <translation>Абраць адну грань для выдушвання</translation>
     </message>
@@ -4574,37 +4574,37 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Вугал зрушэння</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="592"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="593"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Немагчыма абрэзаць аб'екты, зашмат ломаных ліній</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="688"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="689"/>
       <source>%1 pick target</source>
       <translation>Выбраць мэту %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="690"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="691"/>
       <source>Hold %1 free direction</source>
       <translation>Утрымліваць %1 вольнага напрамку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="693"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
       <source>Hold %1 keep active endpoint</source>
       <translation>Утрымліваць %1 пакінутую актыўную канцавую кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="696"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="697"/>
       <source>Hold %1 invert trim direction</source>
       <translation>Утрымліваць %1 для змены напрамку абрэзкі</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="705"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
       <source>Extrude Face</source>
       <translation>Выдушыць грань</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="707"/>
       <source>Select a face to extrude</source>
       <translation>Абраць грань для выдушвання</translation>
     </message>
@@ -5022,7 +5022,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Абярыце аб'ект для абнаўлення</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="91"/>
       <source>Upgrade</source>
       <translation>Абнавіць</translation>
     </message>
@@ -5052,7 +5052,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Выправіць</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="93"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="91"/>
       <source>Downgrade</source>
       <translation>Разбіць</translation>
     </message>

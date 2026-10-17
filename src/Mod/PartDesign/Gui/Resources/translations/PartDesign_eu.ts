@@ -205,17 +205,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2860"/>
+      <location filename="../../Command.cpp" line="2870"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2861"/>
+      <location filename="../../Command.cpp" line="2871"/>
       <source>Boolean Operation</source>
       <translation>Eragiketa boolearra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2862"/>
+      <location filename="../../Command.cpp" line="2872"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
     </message>
@@ -493,17 +493,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2729"/>
+      <location filename="../../Command.cpp" line="2739"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2730"/>
+      <location filename="../../Command.cpp" line="2740"/>
       <source>Multi-Transform</source>
       <translation type="unfinished">Multi-Transform</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2741"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
     </message>
@@ -601,17 +601,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2634"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2635"/>
       <source>Polar Pattern</source>
       <translation type="unfinished">Polar Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2636"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation type="unfinished">Duplicates the selected features or the active body in a circular pattern</translation>
     </message>
@@ -637,17 +637,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2686"/>
+      <location filename="../../Command.cpp" line="2696"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2687"/>
+      <location filename="../../Command.cpp" line="2697"/>
       <source>Scale</source>
       <translation>Eskala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2688"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>Scales the selected features or the active body</source>
       <translation type="unfinished">Scales the selected features or the active body</translation>
     </message>
@@ -904,28 +904,28 @@ so that self intersection is avoided.</source>
       <translation type="unfinished">Make Copy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2784"/>
+      <location filename="../../Command.cpp" line="2794"/>
       <source>Convert to Multi-Transform feature</source>
       <translation type="unfinished">Convert to Multi-Transform feature</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="266"/>
+      <location filename="../../SketchWorkflow.cpp" line="289"/>
       <source>Sketch on Face</source>
       <translation type="unfinished">Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="328"/>
+      <location filename="../../SketchWorkflow.cpp" line="351"/>
       <source>Make copy</source>
       <translation>Egin kopia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="530"/>
-      <location filename="../../SketchWorkflow.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="553"/>
+      <location filename="../../SketchWorkflow.cpp" line="813"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2881"/>
+      <location filename="../../Command.cpp" line="2891"/>
       <source>Create Boolean</source>
       <translation>Sortu boolearra</translation>
     </message>
@@ -1690,12 +1690,12 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgDatumParameters</name>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="107"/>
+      <location filename="../../TaskDatumParameters.cpp" line="110"/>
       <source>Incompatible Reference Set</source>
       <translation type="unfinished">Incompatible Reference Set</translation>
     </message>
     <message>
-      <location filename="../../TaskDatumParameters.cpp" line="109"/>
+      <location filename="../../TaskDatumParameters.cpp" line="112"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
       <translation>Ez dago uneko erreferentzia multzoari doitzen zaion eranste modurik. Jarraitzea aukeratzen baduzu, elementuak orain dagoen tokian jarraituko du, eta ez da mugituko erreferentziak aldatzen diren arte. Jarraitu?</translation>
     </message>
@@ -1920,52 +1920,52 @@ If zero, it is equal to Radius2</translation>
       <translation>Sortu erreferentzia gurutzatua</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Valid</source>
       <translation>Baliozkoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="70"/>
+      <location filename="../../TaskFeaturePick.cpp" line="81"/>
       <source>Invalid shape</source>
       <translation>Baliogabeko forma</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="72"/>
+      <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>No wire in sketch</source>
       <translation>Alanbrerik ez krokisean</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="74"/>
+      <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Sketch already used by other feature</source>
       <translation>Beste elementu bat dagoeneko krokisa ari da erabiltzen</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="76"/>
+      <location filename="../../TaskFeaturePick.cpp" line="87"/>
       <source>Belongs to another body</source>
       <translation>Beste gorputz batena da</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="78"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Belongs to another part</source>
       <translation>Beste pieza batena da</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="91"/>
       <source>Doesn't belong to any body</source>
       <translation>Ez da gorputz batekoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="82"/>
+      <location filename="../../TaskFeaturePick.cpp" line="93"/>
       <source>Base plane</source>
       <translation>Oinarri-planoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="84"/>
+      <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Feature is located after the tip of the body</source>
       <translation type="unfinished">Feature is located after the tip of the body</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="96"/>
+      <location filename="../../TaskFeaturePick.cpp" line="107"/>
       <source>Select Attachment</source>
       <translation type="unfinished">Select Attachment</translation>
     </message>
@@ -3539,42 +3539,42 @@ zehaztutako norabidean</translation>
       <translation>Errorea</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="836"/>
+      <location filename="../../SketchWorkflow.cpp" line="851"/>
       <source>Several sub-elements selected</source>
       <translation>Azpielementu bat baino gehiago hautatu da</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="837"/>
+      <location filename="../../SketchWorkflow.cpp" line="852"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="844"/>
+      <location filename="../../SketchWorkflow.cpp" line="859"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="851"/>
+      <location filename="../../SketchWorkflow.cpp" line="866"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="858"/>
+      <location filename="../../SketchWorkflow.cpp" line="873"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="843"/>
+      <location filename="../../SketchWorkflow.cpp" line="858"/>
       <source>No support face selected</source>
       <translation>Ez da euskarri-aurpegirik hautatu</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="850"/>
+      <location filename="../../SketchWorkflow.cpp" line="865"/>
       <source>No planar support</source>
       <translation>Ez dago euskarri planarrik</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="857"/>
+      <location filename="../../SketchWorkflow.cpp" line="872"/>
       <source>No valid planes in this document</source>
       <translation>Ez dago baliozko planorik dokumentu honetan</translation>
     </message>
@@ -3582,7 +3582,7 @@ zehaztutako norabidean</translation>
       <location filename="../../Command.cpp" line="1194"/>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
+      <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Elkarrizketa-koadro bat irekita dago ataza-panelean</translation>
@@ -3631,7 +3631,7 @@ zehaztutako norabidean</translation>
       <location filename="../../Command.cpp" line="1195"/>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
@@ -4913,12 +4913,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="408"/>
+      <location filename="../../../App/Body.cpp" line="426"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Estekatutako objektua ez da PartDesign elementua</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="417"/>
+      <location filename="../../../App/Body.cpp" line="435"/>
       <source>Tip shape is empty</source>
       <translation>Puntaren forma hutsik dago</translation>
     </message>
@@ -5651,12 +5651,12 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2928"/>
+      <location filename="../../Command.cpp" line="2938"/>
       <source>Create Datum</source>
       <translation type="unfinished">Create Datum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2929"/>
+      <location filename="../../Command.cpp" line="2939"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation type="unfinished">Creates a datum object or local coordinate system</translation>
     </message>
@@ -5664,12 +5664,12 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2963"/>
+      <location filename="../../Command.cpp" line="2973"/>
       <source>Create Datum</source>
       <translation type="unfinished">Create Datum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2964"/>
+      <location filename="../../Command.cpp" line="2974"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation type="unfinished">Creates a datum object or local coordinate system</translation>
     </message>
@@ -5898,32 +5898,32 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="415"/>
+      <location filename="../../TaskPatternParameters.cpp" line="425"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation type="unfinished">Select a sketch or shape containing the pattern points</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="421"/>
+      <location filename="../../TaskPatternParameters.cpp" line="431"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation type="unfinished">Select a sketch, Sub-Shape Binder, or path edge</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="430"/>
+      <location filename="../../TaskPatternParameters.cpp" line="440"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="494"/>
+      <location filename="../../TaskPatternParameters.cpp" line="504"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation type="unfinished">Invalid selection. Select a sketch or shape containing points.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="497"/>
+      <location filename="../../TaskPatternParameters.cpp" line="507"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation type="unfinished">Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="499"/>
+      <location filename="../../TaskPatternParameters.cpp" line="509"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
     </message>
@@ -5990,17 +5990,17 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
   <context>
     <name>CmdPartDesignPathPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2547"/>
+      <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
       <translation type="unfinished">Path Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2548"/>
+      <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
       <translation type="unfinished">Duplicates the selected features or the active body along a path</translation>
     </message>
@@ -6008,17 +6008,17 @@ Ez da onartzen krokis bateko entitateak edo aurpegi anitz ebakitzea.</translatio
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2584"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>PartDesign</source>
       <translation>PartDesign</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2585"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
       <translation type="unfinished">Point Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2586"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
     </message>

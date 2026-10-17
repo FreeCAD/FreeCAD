@@ -63,12 +63,12 @@
       <translation>ນຳເຂົ້າ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1612"/>
+      <location filename="../CommandDoc.cpp" line="1615"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2404"/>
+      <location filename="../CommandDoc.cpp" line="2419"/>
       <source>Paste expressions</source>
       <translation>ວາງນິພົດ</translation>
     </message>
@@ -128,7 +128,7 @@
       <translation>ຈັດວາງ</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="459"/>
+      <location filename="../Placement.cpp" line="467"/>
       <source>Placement</source>
       <translation>ການວາງຕຳແໜ່ງ</translation>
     </message>
@@ -4743,7 +4743,7 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="1160"/>
+      <location filename="../Placement.cpp" line="1168"/>
       <source>Placement</source>
       <translation>ການວາງຕຳແໜ່ງ</translation>
     </message>
@@ -5320,17 +5320,17 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>ຄືນຄ່າໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="753"/>
+      <location filename="../Placement.cpp" line="761"/>
       <source>Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation>ເລືອກ 1, 2, ຫຼື 3 ຈຸດ ກ່ອນຈະຄລິກປຸ່ມນີ້. ຈຸດອາດຈະຢູ່ເທິງຈຸດຍອດ, ໜ້າພຽງ, ຫຼື ຂອບ. ຖ້າຢູ່ເທິງໜ້າພຽງ ຫຼື ຂອບ, ຈຸດທີ່ໃຊ້ຈະເປັນຈຸດທີ່ຕຳແໜ່ງເມົາສ໌ຕາມໜ້າພຽງ ຫຼື ຂອບນັ້ນ. ຖ້າເລືອກ 1 ຈຸດ, ມັນຈະຖືກໃຊ້ເປັນຈຸດໃຈກາງຂອງການໝູນ. ຖ້າເລືອກ 2 ຈຸດ, ຈຸດເຄິ່ງກາງລະຫວ່າງພວກມັນຈະເປັນຈຸດໃຈກາງຂອງການໝູນ ແລະ ຈະມີການສ້າງແກນກຳນົດເອງໃໝ່ຖ້າຈຳເປັນ. ຖ້າເລືອກ 3 ຈຸດ, ຈຸດທຳອິດຈະກາຍເປັນຈຸດໃຈກາງຂອງການໝູນ ແລະ ຕັ້ງຢູ່ເທິງເວັກເຕີທີ່ຕັ້ງສາກກັບໜ້າພຽງທີ່ກຳນົດໂດຍ 3 ຈຸດນັ້ນ. ຂໍ້ມູນໄລຍະຫ່າງ ແລະ ມຸມບາງຢ່າງຈະຖືກສະແດງໃນສ່ວນລາຍງານ (report view), ເຊິ່ງມີປະໂຫຍດໃນການຈັດວາງວັດຖຸ. ເພື່ອຄວາມສະດວກ ເມື່ອໃຊ້ Shift + ຄລິກ, ໄລຍະຫ່າງ ຫຼື ມຸມທີ່ເໝາະສົມຈະຖືກສຳເນົາໄວ້ໃນຄລິບບອດ.</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="854"/>
+      <location filename="../Placement.cpp" line="862"/>
       <source>Incorrect Quantity</source>
       <translation>ຈຳນວນບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="856"/>
+      <location filename="../Placement.cpp" line="864"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
       <translation>ມີບ່ອນປ້ອນຂໍ້ມູນທີ່ບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດສອບຄ່າການວາງຕຳແໜ່ງໃຫ້ຖືກຕ້ອງ!</translation>
     </message>
@@ -5932,53 +5932,53 @@ Save all changes?</source>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="329"/>
+      <location filename="../GraphvizView.cpp" line="234"/>
       <source>Graphviz not found</source>
       <translation>ບໍ່ພົບ Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="336"/>
+      <location filename="../GraphvizView.cpp" line="229"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>ບໍ່ພົບ Graphviz ໃນລະບົບຂອງທ່ານ.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="337"/>
+      <location filename="../GraphvizView.cpp" line="230"/>
       <source>Read more about it here.</source>
       <translation>ອ່ານເພີ່ມເຕີມຢູ່ບ່ອນນີ້.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="338"/>
+      <location filename="../GraphvizView.cpp" line="231"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>ຕ້ອງການລະບຸເສັ້ນທາງການຕິດຕັ້ງບໍ່ ຖ້າມັນຖືກຕິດຕັ້ງໄວ້ແລ້ວ?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="349"/>
+      <location filename="../GraphvizView.cpp" line="235"/>
       <source>Graphviz installation path</source>
       <translation>ເສັ້ນທາງການຕິດຕັ້ງ Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="389"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed</source>
       <translation>Graphviz ລົ້ມເຫຼວ</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="390"/>
+      <location filename="../GraphvizView.cpp" line="373"/>
       <source>Graphviz failed to create an image file</source>
       <translation>Graphviz ບໍ່ສາມາດສ້າງໄຟລ໌ຮູບພາບໄດ້</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="493"/>
+      <location filename="../GraphvizView.cpp" line="398"/>
       <source>Bitmap</source>
       <translation>ບິດແມັບ (Bitmap)</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="519"/>
-      <location filename="../CommandDoc.cpp" line="762"/>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <location filename="../CommandDoc.cpp" line="765"/>
       <source>Export Graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="611"/>
+      <location filename="../GraphvizView.cpp" line="474"/>
       <source>Export graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
@@ -6934,12 +6934,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1376"/>
+      <location filename="../FileDialog.cpp" line="1387"/>
       <source>Select Module</source>
       <translation>ເລືອກໂມດູນ</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1378"/>
+      <location filename="../FileDialog.cpp" line="1389"/>
       <source>Open %1 as</source>
       <translation>ເປີດ %1 ເປັນ</translation>
     </message>
@@ -7368,6 +7368,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="Translator.cpp" line="266"/>
+      <location filename="Translator.cpp" line="278"/>
       <source>Spanish</source>
       <translation>ພາສາສະເປນ</translation>
     </message>
@@ -7456,7 +7457,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4258"/>
+      <location filename="../Tree.cpp" line="4247"/>
       <source>Search</source>
       <translation>ຊອກຫາ</translation>
     </message>
@@ -7499,153 +7500,153 @@ Specify another directory?</source>
       <translation>ກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3392"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3403"/>
+      <location filename="../Tree.cpp" line="3392"/>
       <source>File does not exist.</source>
       <translation>ບໍ່ມີໄຟລ໌ນີ້ຢູ່.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3424"/>
+      <location filename="../Tree.cpp" line="3413"/>
       <source>Failed to open directory.</source>
       <translation>ເປີດໂຟນເດີຫຼົ້ມເຫຼວ.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3892"/>
       <source>Labels &amp; Attributes</source>
       <translation>ປ້າຍຊື່ ແລະ ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3904"/>
+      <location filename="../Tree.cpp" line="3893"/>
       <source>Description</source>
       <translation>ຄຳອະທິບາຍ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3894"/>
       <source>Internal name</source>
       <translation>ຊື່ພາຍໃນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3907"/>
+      <location filename="../Tree.cpp" line="3896"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ສະແດງລາຍການທີ່ເຊື່ອງໄວ້ໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>ສະແດງລາຍການທີ່ຖືກໝາຍວ່າ 'ເຊື່ອງ' ໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>ສະຫຼັບການສະແດງຜົນໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Create Group</source>
       <translation>ສ້າງກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Creates a group</source>
       <translation>ສ້າງກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3910"/>
       <source>Renames object</source>
       <translation>ປ່ຽນຊື່ວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3923"/>
+      <location filename="../Tree.cpp" line="3912"/>
       <source>Finish Editing</source>
       <translation>ສິ້ນສຸດການແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3913"/>
       <source>Finishes editing object</source>
       <translation>ສິ້ນສຸດການແກ້ໄຂວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>ເພີ່ມວັດຖຸທີ່ກ່ຽວຂ້ອງເຂົ້າໃນການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Close Document</source>
       <translation>ປິດເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3930"/>
+      <location filename="../Tree.cpp" line="3919"/>
       <source>Closes the document</source>
       <translation>ປິດເອກະສານນີ້</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Reveals the current file location in Finder</source>
       <translation>ສະແດງທີ່ຕັ້ງໄຟລ໌ປັດຈຸບັນໃນ Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Opens the current file location</source>
       <translation>ເປີດທີ່ຕັ້ງໄຟລ໌ປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3941"/>
+      <location filename="../Tree.cpp" line="3930"/>
       <source>Reload Document</source>
       <translation>ໂຫຼດເອກະສານຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3942"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reloads a partially loaded document</source>
       <translation>ໂຫຼດເອກະສານທີ່ໂຫຼດມາບໍ່ຄົບຖ້ວນຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3933"/>
       <source>Skip Recomputes</source>
       <translation>ຂ້າມການຄິດໄລ່ຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3945"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ເປີດ ຫຼື ປິດການຄິດໄລ່ຄືນຂອງເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3936"/>
       <source>Allow Partial Recomputes</source>
       <translation>ອະນຸຍາດໃຫ້ຄິດໄລ່ຄືນບາງສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>ເປີດ ຫຼື ປິດການຄິດໄລ່ຄືນຂອງວັດຖຸທີ່ກຳລັງແກ້ໄຂ ເມື່ອເປີດໃຊ້ 'ຂ້າມການຄິດໄລ່ຄືນ'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3952"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Mark to Recompute</source>
       <translation>ໝາຍໄວ້ເພື່ອຄິດໄລ່ຄືນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3953"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Marks this object to be recomputed</source>
       <translation>ໝາຍວັດຖຸນີ້ເພື່ອໃຫ້ຄິດໄລ່ຄືນ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3956"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Recompute Object</source>
       <translation>ຄິດໄລ່ວັດຖຸຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3957"/>
+      <location filename="../Tree.cpp" line="3946"/>
       <source>Recomputes the selected object</source>
       <translation>ຄິດໄລ່ວັດຖຸທີ່ເລືອກຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3903"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>ເປີດ/ປິດການສະແດງຜົນຂອງລາຍການທີ່ເລືອກໃນມຸມມອງແບບຕົ້ນໄມ້</translation>
     </message>
@@ -7665,33 +7666,33 @@ Specify another directory?</source>
       <translation>ສະແດງຖັນລາຍລະອຽດສໍາລັບລາຍການ. ສາມາດຕັ້ງຄ່າຄໍາອະທິບາຍຂອງລາຍການໄດ້ໂດຍການແກ້ໄຂຄຸນສົມບັດ 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
-      <location filename="../Tree.cpp" line="6617"/>
+      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="6624"/>
       <source>Rename</source>
       <translation>ປ່ຽນຊື່</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3927"/>
+      <location filename="../Tree.cpp" line="3916"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>ເພີ່ມວັດຖຸທີ່ກ່ຽວຂ້ອງທັງໝົດເຂົ້າໃນການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Reveal in Finder</source>
       <translation>ສະແດງໃນ Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3937"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Open File Location</source>
       <translation>ເປີດທີ່ຕັ້ງໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6585"/>
+      <location filename="../Tree.cpp" line="6592"/>
       <source> (but must be executed)</source>
       <translation> (ແຕ່ຕ້ອງໄດ້ຮັບການປະຕິບັດ)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6588"/>
+      <location filename="../Tree.cpp" line="6595"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, ຊື່ພາຍໃນ: %2</translation>
     </message>
@@ -8134,103 +8135,103 @@ Check the report view for more details.</source>
       <translation>ມີຂໍ້ຜິດພາດຮ້າຍແຮງໃນຂະນະທີ່ໂຫຼດໄຟລ໌. ຂໍ້ມູນບາງຢ່າງອາດຈະຖືກປ່ຽນແປງ ຫຼື ບໍ່ສາມາດກູ້ຄືນໄດ້ເລີຍ. ການບັນທຶກໂຄງການອາດຈະເຮັດໃຫ້ສູນເສຍຂໍ້ມູນ.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="156"/>
-      <location filename="../CommandDoc.cpp" line="282"/>
+      <location filename="../CommandDoc.cpp" line="159"/>
+      <location filename="../CommandDoc.cpp" line="285"/>
       <source>Supported formats</source>
       <translation>ຮູບແບບທີ່ຮອງຮັບ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="190"/>
+      <location filename="../CommandDoc.cpp" line="193"/>
       <source>Open Document</source>
       <translation>ເປີດເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="316"/>
+      <location filename="../CommandDoc.cpp" line="319"/>
       <source>Import File</source>
       <translation>ນຳເຂົ້າໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="603"/>
+      <location filename="../CommandDoc.cpp" line="606"/>
       <source>Export File</source>
       <translation>ສົ່ງອອກໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="671"/>
-      <location filename="../CommandDoc.cpp" line="683"/>
+      <location filename="../CommandDoc.cpp" line="674"/>
+      <location filename="../CommandDoc.cpp" line="686"/>
       <source>Merge Document</source>
       <translation>ຮວມເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
+      <location filename="../CommandDoc.cpp" line="676"/>
       <location filename="../Document.cpp" line="1749"/>
       <location filename="../Document.cpp" line="1879"/>
       <source>%1 document</source>
       <translation>ເອກະສານ %1</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="684"/>
+      <location filename="../CommandDoc.cpp" line="687"/>
       <source>Cannot merge document with itself.</source>
       <translation>ບໍ່ສາມາດຮວມເອກະສານເຂົ້າກັບຕົວມັນເອງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1111"/>
+      <location filename="../CommandDoc.cpp" line="1114"/>
       <source>Printing…</source>
       <translation>ກຳລັງພິມ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1174"/>
+      <location filename="../CommandDoc.cpp" line="1177"/>
       <source>Exporting PDF…</source>
       <translation>ກຳລັງສົ່ງອອກເປັນ PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1464"/>
+      <location filename="../CommandDoc.cpp" line="1467"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation>ວັດຖຸທີ່ສົ່ງອອກມີລິ້ງພາຍນອກ. ໃຫ້ບັນທຶກເອກະສານຢ່າງໜ້ອຍໜຶ່ງຄັ້ງກ່ອນການສົ່ງອອກ.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1764"/>
-      <location filename="../CommandDoc.cpp" line="1774"/>
+      <location filename="../CommandDoc.cpp" line="1767"/>
+      <location filename="../CommandDoc.cpp" line="1777"/>
       <source>Delete Failed</source>
       <translation>ການລຶບບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2272"/>
+      <location filename="../CommandDoc.cpp" line="2287"/>
       <source>Copy Selected</source>
       <translation>ສຳເນົາສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2273"/>
+      <location filename="../CommandDoc.cpp" line="2288"/>
       <source>Copy Active Document</source>
       <translation>ສຳເນົາເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2274"/>
+      <location filename="../CommandDoc.cpp" line="2289"/>
       <source>Copy All Documents</source>
       <translation>ສຳເນົາເອກະສານທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2392"/>
+      <location filename="../CommandDoc.cpp" line="2407"/>
       <source>Expression Error</source>
       <translation>ຂໍ້ຜິດພາດຂອງນິພົດ (Expression Error)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2393"/>
+      <location filename="../CommandDoc.cpp" line="2408"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation>ບໍ່ສາມາດແປງບາງນິພົດໄດ້. ກວດເບິ່ງມຸມມອງລາຍງານສຳລັບລາຍລະອຽດເພີ່ມເຕີມ.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1828"/>
+      <location filename="../CommandDoc.cpp" line="1831"/>
       <source>Dependency error</source>
       <translation>ຂໍ້ຜິດພາດການຂຶ້ນຕໍ່ກັນ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2275"/>
+      <location filename="../CommandDoc.cpp" line="2290"/>
       <source>Paste</source>
       <translation>ວາງ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2427"/>
+      <location filename="../CommandDoc.cpp" line="2442"/>
       <source>Failed to paste expressions</source>
       <translation>ບໍ່ສາມາດວາງນິພົດໄດ້</translation>
     </message>
@@ -8772,7 +8773,7 @@ Choose 'Abort' to abort</source>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="996"/>
-      <location filename="../CommandDoc.cpp" line="1463"/>
+      <location filename="../CommandDoc.cpp" line="1466"/>
       <source>Unsaved Document</source>
       <translation>ເອກະສານທີ່ຍັງບໍ່ທັນບັນທຶກ</translation>
     </message>
@@ -8890,8 +8891,8 @@ Choose 'Abort' to abort</source>
       <translation>ເພີ່ມຄຸນສົມບັດໃຫ້ '%1' ບໍ່ສຳເລັດ: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2779"/>
-      <location filename="../Tree.cpp" line="3176"/>
+      <location filename="../Tree.cpp" line="2768"/>
+      <location filename="../Tree.cpp" line="3165"/>
       <source>Drag &amp; drop failed</source>
       <translation>ການລາກ ແລະ ວາງ ບໍ່ສຳເລັດ</translation>
     </message>
@@ -9002,18 +9003,18 @@ the current copy will be lost.
       <translation>ຄຳອະທິບາຍສີ</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1122"/>
+      <location filename="../OverlayManager.cpp" line="1130"/>
       <source>Toggle overlay</source>
       <translation>ສະຫຼັບການວາງຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2594"/>
-      <location filename="../OverlayManager.cpp" line="1123"/>
+      <location filename="../OverlayWidgets.cpp" line="2588"/>
+      <location filename="../OverlayManager.cpp" line="1131"/>
       <source>Toggle floating window</source>
       <translation>ເປີດ/ປິດໜ້າຕ່າງລອຍ</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1124"/>
+      <location filename="../OverlayManager.cpp" line="1132"/>
       <source>Close dock window</source>
       <translation>ປິດໜ້າຕ່າງທີ່ຕິດແໜ້ນ</translation>
     </message>
@@ -9321,12 +9322,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1345"/>
+      <location filename="../CommandDoc.cpp" line="1348"/>
       <source>&amp;Copy</source>
       <translation>&amp;ສຳເນົາ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1346"/>
+      <location filename="../CommandDoc.cpp" line="1349"/>
       <source>Copies the selection to the clipboard</source>
       <translation>ສຳເນົາສິ່ງທີ່ເລືອກໄປຍັງຄລິບບອດ</translation>
     </message>
@@ -9334,12 +9335,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1317"/>
+      <location filename="../CommandDoc.cpp" line="1320"/>
       <source>Cu&amp;t</source>
       <translation>&amp;ຕັດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1318"/>
+      <location filename="../CommandDoc.cpp" line="1321"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation>ຍ້າຍສິ່ງທີ່ເລືອກໄປຍັງຄລິບບອດ</translation>
     </message>
@@ -9347,12 +9348,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1580"/>
+      <location filename="../CommandDoc.cpp" line="1583"/>
       <source>&amp;Delete</source>
       <translation>&amp;ລຶບ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1581"/>
+      <location filename="../CommandDoc.cpp" line="1584"/>
       <source>Deletes the selected objects</source>
       <translation>ລຶບວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -9396,12 +9397,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2140"/>
+      <location filename="../CommandDoc.cpp" line="2155"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation>ເປີດ/ປິດ ໂໝດແກ້&amp;ໄຂ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2141"/>
+      <location filename="../CommandDoc.cpp" line="2156"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>ເປີດ ຫຼື ປິດໂໝດແກ້ໄຂຂອງວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -9409,22 +9410,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="367"/>
+      <location filename="../CommandDoc.cpp" line="370"/>
       <source>&amp;Export…</source>
       <translation>&amp;ສົ່ງອອກ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="368"/>
+      <location filename="../CommandDoc.cpp" line="371"/>
       <source>Exports an object in the active document</source>
       <translation>ສົ່ງອອກວັດຖຸໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="516"/>
+      <location filename="../CommandDoc.cpp" line="519"/>
       <source>No Selection</source>
       <translation>ບໍ່ມີການເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="517"/>
+      <location filename="../CommandDoc.cpp" line="520"/>
       <source>Select objects to export before using the Export command.</source>
       <translation>ເລືອກວັດຖຸທີ່ຈະສົ່ງອອກກ່ອນໃຊ້ຄຳສັ່ງສົ່ງອອກ.</translation>
     </message>
@@ -9432,12 +9433,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2222"/>
+      <location filename="../CommandDoc.cpp" line="2237"/>
       <source>Expression Actions</source>
       <translation>ການຈັດການນິພົດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2223"/>
+      <location filename="../CommandDoc.cpp" line="2238"/>
       <source>Actions that apply to expressions</source>
       <translation>ການຈັດການທີ່ນຳໃຊ້ກັບນິພົດ</translation>
     </message>
@@ -9484,12 +9485,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="267"/>
+      <location filename="../CommandDoc.cpp" line="270"/>
       <source>&amp;Import…</source>
       <translation>&amp;ນຳເຂົ້າ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="268"/>
+      <location filename="../CommandDoc.cpp" line="271"/>
       <source>Imports a file into the active document</source>
       <translation>ນຳເຂົ້າໄຟລ໌ໄປຍັງເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -9523,12 +9524,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="655"/>
+      <location filename="../CommandDoc.cpp" line="658"/>
       <source>&amp;Merge Document</source>
       <translation>&amp;ຮວມເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="657"/>
+      <location filename="../CommandDoc.cpp" line="660"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation>ຮວມເອກະສານ FreeCAD ອື່ນເຂົ້າໃນເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
@@ -9542,12 +9543,12 @@ the current copy will be lost.
       <translation>ບໍ່ມີຊື່</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="793"/>
+      <location filename="../CommandDoc.cpp" line="796"/>
       <source>&amp;New Document</source>
       <translation>&amp;ເອກະສານໃໝ່</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="794"/>
+      <location filename="../CommandDoc.cpp" line="797"/>
       <source>Creates a new empty document</source>
       <translation>ສ້າງເອກະສານໃໝ່ທີ່ວ່າງເປົ່າ</translation>
     </message>
@@ -9568,22 +9569,22 @@ the current copy will be lost.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="140"/>
+      <location filename="../CommandDoc.cpp" line="143"/>
       <source>&amp;Open…</source>
       <translation>&amp;ເປີດ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="141"/>
+      <location filename="../CommandDoc.cpp" line="144"/>
       <source>Opens a document or imports files</source>
       <translation>ເປີດເອກະສານ ຫຼື ນຳເຂົ້າໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="234"/>
+      <location filename="../CommandDoc.cpp" line="237"/>
       <source>Cannot Open File</source>
       <translation>ບໍ່ສາມາດເປີດໄຟລ໌ໄດ້</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="235"/>
+      <location filename="../CommandDoc.cpp" line="238"/>
       <source>Loading the file %1 is not supported</source>
       <translation>ບໍ່ຮອງຮັບການໂຫຼດໄຟລ໌ %1</translation>
     </message>
@@ -9591,12 +9592,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1381"/>
+      <location filename="../CommandDoc.cpp" line="1384"/>
       <source>&amp;Paste</source>
       <translation>&amp;ວາງ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1382"/>
+      <location filename="../CommandDoc.cpp" line="1385"/>
       <source>Pastes the contents of the clipboard</source>
       <translation>ວາງເນື້ອໃນຈາກຄລິບບອດ</translation>
     </message>
@@ -9604,12 +9605,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1194"/>
+      <location filename="../CommandDoc.cpp" line="1197"/>
       <source>E&amp;xit</source>
       <translation>&amp;ອອກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1195"/>
+      <location filename="../CommandDoc.cpp" line="1198"/>
       <source>Quits the application</source>
       <translation>ອອກຈາກໂປຣແກຣມ</translation>
     </message>
@@ -9630,12 +9631,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1273"/>
+      <location filename="../CommandDoc.cpp" line="1276"/>
       <source>&amp;Redo</source>
       <translation>&amp;ເຮັດຄືນ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1274"/>
+      <location filename="../CommandDoc.cpp" line="1277"/>
       <source>Redoes a previously undone action</source>
       <translation>ເຮັດຄືນການກະທຳທີ່ໄດ້ຍົກເລີກໄປກ່ອນໜ້ານີ້</translation>
     </message>
@@ -9643,12 +9644,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="995"/>
+      <location filename="../CommandDoc.cpp" line="998"/>
       <source>Rever&amp;t</source>
       <translation>&amp;ຄືນສະພາບ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="996"/>
+      <location filename="../CommandDoc.cpp" line="999"/>
       <source>Reverts to the saved version of this file</source>
       <translation>ຄືນສະພາບໄປຍັງເວີຊັນທີ່ບັນທຶກໄວ້ຂອງໄຟລ໌ນີ້</translation>
     </message>
@@ -9656,12 +9657,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="827"/>
+      <location filename="../CommandDoc.cpp" line="830"/>
       <source>&amp;Save</source>
       <translation>&amp;ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
       <source>Saves the active document</source>
       <translation>ບັນທຶກເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
@@ -9669,12 +9670,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="934"/>
+      <location filename="../CommandDoc.cpp" line="937"/>
       <source>Sa&amp;ve All</source>
       <translation>ບັນທຶກທັງ&amp;ໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="935"/>
+      <location filename="../CommandDoc.cpp" line="938"/>
       <source>Saves all open documents</source>
       <translation>ບັນທຶກເອກະສານທີ່ເປີດຢູ່ທັງໝົດ</translation>
     </message>
@@ -9682,12 +9683,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1526"/>
+      <location filename="../CommandDoc.cpp" line="1529"/>
       <source>Select &amp;All</source>
       <translation>ເລືອກທັງ&amp;ໝົດ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1527"/>
+      <location filename="../CommandDoc.cpp" line="1530"/>
       <source>Selects all objects in the active document</source>
       <translation>ເລືອກວັດຖຸທັງໝົດໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -9747,12 +9748,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1228"/>
+      <location filename="../CommandDoc.cpp" line="1231"/>
       <source>&amp;Undo</source>
       <translation>&amp;ຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1229"/>
+      <location filename="../CommandDoc.cpp" line="1232"/>
       <source>Undoes the previous action</source>
       <translation>ຍົກເລີກການກະທຳກ່ອນໜ້ານີ້</translation>
     </message>
@@ -10111,7 +10112,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1704"/>
+      <location filename="../CommandDoc.cpp" line="1707"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10122,7 +10123,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1718"/>
+      <location filename="../CommandDoc.cpp" line="1721"/>
       <source>Object Dependencies</source>
       <translation>ການຂຶ້ນຕໍ່ກັນຂອງວັດຖຸ</translation>
     </message>
@@ -10203,12 +10204,12 @@ Continue?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1485"/>
+      <location filename="../CommandDoc.cpp" line="1488"/>
       <source>Object Dependencies</source>
       <translation>ການຂຶ້ນຕໍ່ກັນຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1486"/>
+      <location filename="../CommandDoc.cpp" line="1489"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>ເພື່ອເຊື່ອມຕໍ່ຫາວັດຖຸພາຍນອກ, ເອກະສານຕ້ອງໄດ້ຮັບການບັນທຶກຢ່າງໜ້ອຍໜຶ່ງຄັ້ງ.
@@ -12018,7 +12019,7 @@ the region are non-opaque.</source>
       <translation>ສະຫຼັບການວາງຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="1148"/>
+      <location filename="../OverlayWidgets.cpp" line="1144"/>
       <source>Select auto show/hide mode</source>
       <translation>ເລືອກໂໝດສະແດງ/ເຊື່ອງອັດຕະໂນມັດ</translation>
     </message>
@@ -12026,12 +12027,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2182"/>
+      <location filename="../CommandDoc.cpp" line="2197"/>
       <source>Propert&amp;ies</source>
       <translation>ຄຸນສົມບັດ (&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2183"/>
+      <location filename="../CommandDoc.cpp" line="2198"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation>ສະແດງມຸມມອງຄຸນສົມບັດ ເຊິ່ງຈະສະແດງຄຸນສົມບັດຂອງວັດຖຸທີ່ຖືກເລືອກ.</translation>
     </message>
@@ -12402,12 +12403,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2019"/>
+      <location filename="../CommandDoc.cpp" line="2041"/>
       <source>Trans&amp;form</source>
       <translation>ປັບປ່ຽນຮູບຮ່າງ (&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2020"/>
+      <location filename="../CommandDoc.cpp" line="2042"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation>ປັບປ່ຽນຮູບຮ່າງວັດຖຸທີ່ເລືອກໃນມຸມມອງ 3D</translation>
     </message>
@@ -13007,12 +13008,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="715"/>
+      <location filename="../CommandDoc.cpp" line="718"/>
       <source>Dependency Gra&amp;ph</source>
       <translation>ແຜນພູມການຂຶ້ນຕໍ່ກັນ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="717"/>
+      <location filename="../CommandDoc.cpp" line="720"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation>ສະແດງແຜນພູມການຂຶ້ນຕໍ່ກັນຂອງວັດຖຸໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13020,7 +13021,7 @@ the region are non-opaque.</source>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="729"/>
+      <location filename="../CommandDoc.cpp" line="732"/>
       <source>Dependency Graph</source>
       <translation>ແຜນພູມການຂຶ້ນຕໍ່ກັນ</translation>
     </message>
@@ -13028,12 +13029,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="748"/>
+      <location filename="../CommandDoc.cpp" line="751"/>
       <source>Export Dependency &amp;Graph…</source>
       <translation>ສົ່ງອອກແຜນພູມການຂຶ້ນຕໍ່ກັນ…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="749"/>
+      <location filename="../CommandDoc.cpp" line="752"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation>ສົ່ງອອກແຜນພູມການຂຶ້ນຕໍ່ກັນເປັນໄຟລ໌ Graphviz (.gv)</translation>
     </message>
@@ -13041,12 +13042,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="868"/>
+      <location filename="../CommandDoc.cpp" line="871"/>
       <source>Save &amp;As…</source>
       <translation>ບັນທຶກເປັນ…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="869"/>
+      <location filename="../CommandDoc.cpp" line="872"/>
       <source>Saves the active document under a new file name</source>
       <translation>ບັນທຶກເອກະສານທີ່ໃຊ້ງານຢູ່ພາຍໃຕ້ຊື່ໄຟລ໌ໃໝ່</translation>
     </message>
@@ -13054,12 +13055,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="904"/>
       <source>Save a Cop&amp;y…</source>
       <translation>ບັນທຶກສຳເນົາ…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="903"/>
+      <location filename="../CommandDoc.cpp" line="906"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation>ບັນທຶກສຳເນົາຂອງເອກະສານທີ່ໃຊ້ງານຢູ່ພາຍໃຕ້ຊື່ໄຟລ໌ໃໝ່</translation>
     </message>
@@ -13067,17 +13068,17 @@ the region are non-opaque.</source>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1008"/>
+      <location filename="../CommandDoc.cpp" line="1011"/>
       <source>Revert Document</source>
       <translation>ຄືນຄ່າເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1010"/>
+      <location filename="../CommandDoc.cpp" line="1013"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation>ສິ່ງນີ້ຈະຍົກເລີກການປ່ຽນແປງທັງໝົດນັບຕັ້ງແຕ່ການບັນທຶກໄຟລ໌ຄັ້ງຫຼ້າສຸດ.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1012"/>
+      <location filename="../CommandDoc.cpp" line="1015"/>
       <source>Continue?</source>
       <translation>ສືບຕໍ່ບໍ່?</translation>
     </message>
@@ -13085,12 +13086,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1037"/>
+      <location filename="../CommandDoc.cpp" line="1040"/>
       <source>Doc&amp;ument Information</source>
       <translation>ຂໍ້ມູນເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1039"/>
+      <location filename="../CommandDoc.cpp" line="1042"/>
       <source>Shows information about the active document</source>
       <translation>ສະແດງຂໍ້ມູນກ່ຽວກັບເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13098,12 +13099,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1069"/>
+      <location filename="../CommandDoc.cpp" line="1072"/>
       <source>Do&amp;cument Utility</source>
       <translation>ເຄື່ອງມືຊ່ວຍເຫຼືອເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1071"/>
+      <location filename="../CommandDoc.cpp" line="1074"/>
       <source>Extracts or creates document files</source>
       <translation>ແຍກ ຫຼື ສ້າງໄຟລ໌ເອກະສານ</translation>
     </message>
@@ -13111,12 +13112,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1097"/>
+      <location filename="../CommandDoc.cpp" line="1100"/>
       <source>&amp;Print</source>
       <translation>ພິມ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1099"/>
+      <location filename="../CommandDoc.cpp" line="1102"/>
       <source>Prints the active document</source>
       <translation>ພິມເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13124,12 +13125,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1130"/>
+      <location filename="../CommandDoc.cpp" line="1133"/>
       <source>Print Previe&amp;w</source>
       <translation>ເບິ່ງຕົວຢ່າງກ່ອນພິມ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1132"/>
+      <location filename="../CommandDoc.cpp" line="1135"/>
       <source>Previews the active document before printing</source>
       <translation>ເບິ່ງຕົວຢ່າງເອກະສານທີ່ໃຊ້ງານຢູ່ກ່ອນການພິມ</translation>
     </message>
@@ -13137,12 +13138,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1161"/>
+      <location filename="../CommandDoc.cpp" line="1164"/>
       <source>Export P&amp;DF</source>
       <translation>ສົ່ງອອກເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1163"/>
+      <location filename="../CommandDoc.cpp" line="1166"/>
       <source>Exports the active document as a PDF file</source>
       <translation>ສົ່ງອອກເອກະສານທີ່ໃຊ້ງານຢູ່ເປັນໄຟລ໌ PDF</translation>
     </message>
@@ -13150,12 +13151,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1423"/>
+      <location filename="../CommandDoc.cpp" line="1426"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation>ເຮັດສຳເນົາສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1424"/>
+      <location filename="../CommandDoc.cpp" line="1427"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation>ເຮັດສຳເນົາວັດຖຸທີ່ເລືອກໄວ້ໃນເອກະສານທີ່ໃຊ້ງານຢູ່</translation>
     </message>
@@ -13163,12 +13164,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1800"/>
+      <location filename="../CommandDoc.cpp" line="1803"/>
       <source>Recompute</source>
       <translation>ຄິດໄລ່ຄືນໃໝ່</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1801"/>
+      <location filename="../CommandDoc.cpp" line="1804"/>
       <source>Recomputes the active document</source>
       <translation>ຄິດໄລ່ເອກະສານທີ່ໃຊ້ງານຢູ່ຄືນໃໝ່</translation>
     </message>
@@ -13176,7 +13177,7 @@ the region are non-opaque.</source>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1829"/>
+      <location filename="../CommandDoc.cpp" line="1832"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13190,12 +13191,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1929"/>
+      <location filename="../CommandDoc.cpp" line="1932"/>
       <source>Transform</source>
       <translation>ແປງຮູບ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1931"/>
+      <location filename="../CommandDoc.cpp" line="1934"/>
       <source>Transforms the selected object</source>
       <translation>ແປງຮູບວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -13203,12 +13204,12 @@ Proceed?</source>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1956"/>
+      <location filename="../CommandDoc.cpp" line="1985"/>
       <source>P&amp;lacement</source>
       <translation>ການວາງຕຳແໜ່ງ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1958"/>
+      <location filename="../CommandDoc.cpp" line="1987"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation>ເປີດຕົວແກ້ໄຂການວາງຕຳແໜ່ງເພື່ອປັບການວາງຂອງວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -13216,12 +13217,12 @@ Proceed?</source>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2067"/>
+      <location filename="../CommandDoc.cpp" line="2082"/>
       <source>Ali&amp;gn To…</source>
       <translation>ຈັດວາງໃຫ້ກົງກັບ…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2069"/>
+      <location filename="../CommandDoc.cpp" line="2084"/>
       <source>Aligns the selected objects</source>
       <translation>ຈັດວາງວັດຖຸທີ່ເລືອກໃຫ້ກົງກັນ</translation>
     </message>
@@ -14406,13 +14407,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1263"/>
-      <location filename="../FileDialog.cpp" line="1273"/>
+      <location filename="../FileDialog.cpp" line="1274"/>
+      <location filename="../FileDialog.cpp" line="1284"/>
       <source>Select a File</source>
       <translation>ເລືອກໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1283"/>
+      <location filename="../FileDialog.cpp" line="1294"/>
       <source>Select a Directory</source>
       <translation>ເລືອກໄດເຣັກທໍຣີ</translation>
     </message>
@@ -14428,7 +14429,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::OverlayTitleBar</name>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2250"/>
+      <location filename="../OverlayWidgets.cpp" line="2244"/>
       <source>Mouse pass through, Esc to stop</source>
       <translation>ເມົາຜ່ານໄດ້, ກົດ Esc ເພື່ອຢຸດ</translation>
     </message>
@@ -14444,7 +14445,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4330"/>
+      <location filename="../Tree.cpp" line="4319"/>
       <source>Tree View</source>
       <translation>ມຸມມອງຜັງຕົ້ນໄມ້</translation>
     </message>
@@ -14927,12 +14928,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdOpenGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="82"/>
+      <location filename="../CommandDoc.cpp" line="85"/>
       <source>&amp;Open…</source>
       <translation>&amp;ເປີດ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="83"/>
+      <location filename="../CommandDoc.cpp" line="86"/>
       <source>Opens a document or imports files</source>
       <translation>ເປີດເອກະສານ ຫຼື ນຳເຂົ້າໄຟລ໌</translation>
     </message>
@@ -14940,12 +14941,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdSaveGroup</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="963"/>
+      <location filename="../CommandDoc.cpp" line="966"/>
       <source>Save</source>
       <translation>ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="964"/>
+      <location filename="../CommandDoc.cpp" line="967"/>
       <source>Saves the active document</source>
       <translation>ບັນທຶກເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>

@@ -881,27 +881,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>ესკიზის შეზღუდვისთვის სახელის გადარქმევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Point</source>
       <translation>გადაათრიეთ წერტილი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Curve</source>
       <translation>რკალის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2214"/>
       <source>Drag geometries</source>
       <translation>გეომეტრიების გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1417"/>
       <source>Drag Constraint</source>
       <translation>შეზღუდვის გადათრევა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1666"/>
       <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
@@ -948,18 +948,18 @@ invalid constraints, and degenerate geometry</translation>
       <translation>სიმეტრიის გეომეტრიები</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="464"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
       <source>Add line to sketch polyline</source>
       <translation>ესკიზის პოლიხაზზე ხაზის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="494"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
       <source>Add arc to sketch polyline</source>
       <translation>ესკიზის პოლიხაზზე რკალის დამატება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1296"/>
       <source>Add sketch polyline</source>
       <translation>ესკიზის პოლიხაზის დამატება</translation>
     </message>
@@ -1008,54 +1008,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3006"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>თქვენ არ ითხოვთ ცვლილებას კვანძის გაყოფადობაში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2998"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3176"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2984"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3162"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-სპლაინის გეომეტრიის ინდექსი (GeoID) დაშვებულ ლიმიტებს გარეთაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3192"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3178"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>გეომეტრიის მითითებული ინდექსი (GeoID) B-სპლაინს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3013"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>კვანძის ინდექსი საზღვრებს გარეთაა. დაიმახსოვრეთ, რომ OCC ნოტაციების შესაბამისად, პირველი კვანძის ინდექსი 1-ია და არა 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3043"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3029"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>სიმრავლე არ შეიძლება გაიზარდოს B-სპლაინის დონის მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3054"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3040"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>სიმრავლე არ შეიძლება შემცირდეს ნულს მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3070"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3056"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-ს არ შეუძლია შეამციროს სიმრავლე მაქსიმალური ტოლერანტობის ფარგლებში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3183"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3169"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>კვანძებს არ შეიძლება ნულოვანი მამრავლი ჰქონდეს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3205"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3191"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>კვანძის მამრავლი არ შეიძლება B-სპლაინის დონეზე დიდი იყოს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3215"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3201"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>კვანძის ჩასმა B-სპლაინის პარამეტრების დიაპაზონის გარეთ შეუძლებელია.</translation>
     </message>
@@ -2045,7 +2045,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>%1 აირჩიეთ ქვედა მარჯვენა წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
       <source>Polyline Parameters</source>
       <translation>პოლიხაზის პარამეტრები</translation>
     </message>
@@ -4055,112 +4055,112 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4181"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4205"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>ესკიზი არასწორია. მისი ჩასწორება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraint is partially redundant:</source>
       <translation>ეს შეზღუდვა ნაწილობრივ დამატებითია:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>The following constraints are partially redundant:</source>
       <translation>ეს შეზღუდვები ნაწილობრივ დამატებითია:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Edit Sketch</source>
       <translation>ესკიზის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4182"/>
       <source>Close this dialog?</source>
       <translation>დავხურო ეს დიალოგი?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4203"/>
       <source>Invalid Sketch</source>
       <translation>არასწორი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4204"/>
       <source>Open the sketch validation tool?</source>
       <translation>გავხსნა ესკიზის შემოწმების ხელსაწყო?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following constraint:</source>
       <translation>წაიშლება შემდეგი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>მოიღეთ, მინიმუმ, ერთ-ერთი შემდეგი შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraint:</source>
       <translation>წაშალეთ შემდეგი დამატებითი შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>Remove the following redundant constraints:</source>
       <translation>წაშალეთ შემდეგი დამატებითი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraint:</source>
       <translation>წაშალეთ შემდეგი დეფორმირებული შეზღუდვა:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
       <source>Remove the following malformed constraints:</source>
       <translation>წაშალეთ შემდეგი დეფორმირებული შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
       <source>Empty sketch</source>
       <translation>ცარიელი ესკიზი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
       <source>Over-constrained:</source>
       <translation>ზედმეტად-შეზღუდული:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
       <source>Malformed constraints:</source>
       <translation>არასწორად შექმნილი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
       <source>Redundant constraints:</source>
       <translation>დამატებითი შეზღუდვები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Partially redundant:</source>
       <translation>ნაწილობრივ დამატებითი:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
       <source>Solver failed to converge</source>
       <translation>ამომხსნელის შეცდომა შეერთების დროს</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
       <source>Under-constrained:</source>
       <translation>საკმარისზე ნაკლებად შეზღუდული:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n თავისუფლების ხარისხი</numerusform>
@@ -4168,12 +4168,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
       <source>Fully constrained</source>
       <translation>სრულად შეზღუდული</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
       <source>Missing external geometry</source>
       <translation type="unfinished">Missing external geometry</translation>
     </message>
@@ -4664,7 +4664,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
       <source>and %1 more</source>
       <translation>და %1 სხვა</translation>
     </message>
@@ -4907,9 +4907,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
@@ -4979,7 +4979,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>არასწორი შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="512"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
       <source>Failed to add arc</source>
       <translation>რკალის დამატების შეცდომა</translation>
     </message>
@@ -4994,7 +4994,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>B-სპლაინის შექმნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1413"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>ბოლო პოლუსის/კვანძის წაშლის შეცდომა</translation>
@@ -5034,7 +5034,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="145"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
       <source>Failed to add line</source>
       <translation>ხაზის დამატების შეცდომა</translation>
     </message>
@@ -7974,22 +7974,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick first point</source>
       <translation>%1 მიუთითეთ პირველი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
       <source>%1 pick next point</source>
       <translation>%1 მიუთითეთ შემდეგი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
       <source>%1 finish</source>
       <translation>%1 დასრულება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
       <source>%1 switch mode</source>
       <translation>%1 რეჟიმის გადართვა</translation>
     </message>
@@ -8437,37 +8437,37 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
       <source>%1 switch to arc</source>
       <translation>%1 რკალზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
       <source>%1 switch to line</source>
       <translation>%1 ხაზზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
       <source>%1 toggle fillet</source>
       <translation>%1 მომრგვალებული ნაზოლის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
       <source>%1 undo last point</source>
       <translation>%1 ბოლო წერტილის გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
       <source>%1 pick first point</source>
       <translation>%1 მიუთითეთ პირველი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
       <source>%1 pick next point</source>
       <translation>%1 მიუთითეთ შემდეგი წერტილი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
       <source>%1 finish</source>
       <translation>%1 დასრულება</translation>
     </message>
@@ -8475,12 +8475,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1767"/>
       <source>Line</source>
       <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1731"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1768"/>
       <source>Arc</source>
       <translation>რკალი</translation>
     </message>
@@ -8488,12 +8488,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1737"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1774"/>
       <source>Fillet (F)</source>
       <translation>მომრგვალებული ნაზოლი (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1741"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1778"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation type="unfinished">Adds a fillet between the current and previous line</translation>
     </message>

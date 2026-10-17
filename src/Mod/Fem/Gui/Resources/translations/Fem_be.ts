@@ -6565,7 +6565,7 @@ Please select a result type first.</source>
       <translation>Без аб'екта выніку</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6576,7 +6576,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6585,7 +6585,7 @@ Should this module be loaded instead?</source>
 Ці варта замест гэтага загружаць дадзены модуль?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6594,17 +6594,17 @@ No matching module was found in the current Python path.</source>
 У бягучым шляху да Python не было знойдзена падыходнага модуля.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation>Канфлікт модуля VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation>Канфлікт модуля VTK Python</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>Функцыянальнасць недаступная з-за канфлікту модуляў VTK у Python</translation>
     </message>

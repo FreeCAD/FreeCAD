@@ -2162,7 +2162,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para se
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
-      <location filename="../../PagePrinter.cpp" line="478"/>
+      <location filename="../../PagePrinter.cpp" line="497"/>
       <source>Save page to DXF</source>
       <translation>Guardar la hoja como DXF</translation>
     </message>
@@ -3795,27 +3795,27 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para se
       <translation>Esta función necesita una hoja.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="870"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Export Page as PDF</source>
       <translation>Exportar la hoja como PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="777"/>
+      <location filename="../../MDIViewPage.cpp" line="772"/>
       <source>Export page as SVG</source>
       <translation>Exportar la hoja como SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="806"/>
+      <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Export page as DXF</source>
       <translation>Exportar la hoja como DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="853"/>
+      <location filename="../../MDIViewPage.cpp" line="836"/>
       <source>Unable to Write File</source>
       <translation>No se puede escribir el archivo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="854"/>
+      <location filename="../../MDIViewPage.cpp" line="837"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD no puede abrir el archivo %1 para escritura. Es posible que esté abierto en otro programa.</translation>
     </message>
@@ -4234,7 +4234,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para se
       <translation>Error de parámetro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="287"/>
+      <location filename="../../PagePrinter.cpp" line="300"/>
       <source>Document Name:</source>
       <translation>Nombre del documento:</translation>
     </message>
@@ -5408,7 +5408,7 @@ al usar los dibujos como plantilla de corte a escala 1:1.
       <translation>Vértice</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="646"/>
       <source>Transparent faces</source>
       <translation>Caras transparentes</translation>
     </message>
@@ -5423,12 +5423,17 @@ al usar los dibujos como plantilla de corte a escala 1:1.
       <translation>Color predeterminado de las directrices</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
+      <source>Face color</source>
+      <translation>Color de las caras</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Object faces will be transparent</source>
       <translation>Las caras de los objetos serán transparentes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="659"/>
       <source>Face color (if not transparent)</source>
       <translation>Color de las caras (si no son transparentes)</translation>
     </message>
@@ -5438,17 +5443,17 @@ al usar los dibujos como plantilla de corte a escala 1:1.
       <translation>Monocromo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
       <translation>Línea de interrupción</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
       <translation>Color de la línea de interrupción en las vistas interrumpidas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Artículos en cursiva &lt;span style=&quot; font-style:italic;&quot;&gt;&lt;/span&gt; son valores predeterminados para nuevos objetos. No tienen ningún efecto sobre los objetos existentes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6443,7 +6448,7 @@ Do you want to continue?</source>
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1433"/>
+      <location filename="../../MDIViewPage.cpp" line="1416"/>
       <source>Selected:</source>
       <translation>Seleccionados:</translation>
     </message>

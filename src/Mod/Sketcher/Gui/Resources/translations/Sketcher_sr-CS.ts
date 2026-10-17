@@ -881,27 +881,27 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Preimenuj ograničenja skice</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Point</source>
       <translation>Prevuci tačku</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2206"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Curve</source>
       <translation>Prevuci krivu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2214"/>
       <source>Drag geometries</source>
       <translation>Prevlači geometriju</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1417"/>
       <source>Drag Constraint</source>
       <translation>Prevuci ograničenje</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1666"/>
       <location filename="../../CommandConstraints.cpp" line="10627"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1350"/>
       <source>Modify sketch constraints</source>
@@ -948,18 +948,18 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Geometrija simetričnosti</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="464"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
       <source>Add line to sketch polyline</source>
       <translation>Dodaj duž izlomljenoj liniji</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="494"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
       <source>Add arc to sketch polyline</source>
       <translation>Dodaj luk izlomljenoj liniji</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1296"/>
       <source>Add sketch polyline</source>
       <translation>Dodaj izlomljenu liniju</translation>
     </message>
@@ -1008,54 +1008,54 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3006"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate promenu u mnogostrukosti čvorova.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2998"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3176"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2984"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3162"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks B-Splajn geometrije (GeoID) je van granica.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3015"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3192"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3178"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Navedeni Geometrijski index (GeoId) nije B-splajn kriva.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3013"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks čvorova je van granica. Imajte na umu da u skladu sa OCC napomenom, prvi čvor ima indeks 1, a ne nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3043"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3029"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Mnogostrukost se ne može povećati iznad stepena B-splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3054"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3040"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Mnogostrukost ne može biti manja od nule.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3070"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3056"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nije u stanju da smanji mnogostrukost unutar maksimalne tolerancije.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3183"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3169"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Čvor ne može imati nultu mnogostrukost.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3205"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3191"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Mnogostrukost čvorova ne može biti veća od stepena B-Splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3215"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3201"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Čvor se ne može umetnuti izvan opsega parametara B-Splajna.</translation>
     </message>
@@ -2045,7 +2045,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation type="unfinished">%1 pick bottom-right point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
       <source>Polyline Parameters</source>
       <translation>Parametri izlomljene linije</translation>
     </message>
@@ -4057,112 +4057,112 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4181"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4198"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4205"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skica sadrži greške i ne može biti menjana.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4402"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Sledeće ograničenje je suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Sledeća ograničenja su suvišna:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Edit Sketch</source>
       <translation>Uredi skicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4182"/>
       <source>Close this dialog?</source>
       <translation>Zatvori ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4203"/>
       <source>Invalid Sketch</source>
       <translation>Neispravna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4204"/>
       <source>Open the sketch validation tool?</source>
       <translation>Da li želiš da otvoriš alatku za proveru skice?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following constraint:</source>
       <translation>Ukloni sledeće ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Ukloni bar jedno od sledećih ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4395"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Ukloni sledeće suvišno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Ukloni sledeća suvišna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Ukloni sledeće oštećeno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Ukloni sledeća oštećena ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4469"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
       <source>Empty sketch</source>
       <translation>Prazna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
       <source>Over-constrained:</source>
       <translation>Previše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
       <source>Malformed constraints:</source>
       <translation>Oštećena ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
       <source>Redundant constraints:</source>
       <translation>Suviše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4494"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Partially redundant:</source>
       <translation>Delimično suviše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspeo da se približi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
       <source>Under-constrained:</source>
       <translation>Nedovoljno ograničena skica:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4509"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Stepeni slobode</numerusform>
@@ -4171,12 +4171,12 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5039"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
       <source>Missing external geometry</source>
       <translation type="unfinished">Missing external geometry</translation>
     </message>
@@ -4667,7 +4667,7 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
       <source>and %1 more</source>
       <translation>i %1 više</translation>
     </message>
@@ -4910,9 +4910,9 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
       <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1412"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
@@ -4982,7 +4982,7 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Neispravno ograničenje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="512"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
       <source>Failed to add arc</source>
       <translation>Dodavanje luka nije uspelo</translation>
     </message>
@@ -4997,7 +4997,7 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Greška prilikom pravljenja B-Splajn krive</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1413"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Greška prilikom brisanja zadnje kontrolne tačke/čvora B-Splajn krive</translation>
@@ -5037,7 +5037,7 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="145"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
       <source>Failed to add line</source>
       <translation>Dodavanje duži nije uspelo</translation>
     </message>
@@ -7977,22 +7977,22 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick first point</source>
       <translation>%1 izaberi prvu tačku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
       <source>%1 pick next point</source>
       <translation>%1 izaberi sledeću tačku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
       <source>%1 finish</source>
       <translation>%1 završi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
       <source>%1 switch mode</source>
       <translation>%1 promeni režim</translation>
     </message>
@@ -8440,37 +8440,37 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
       <source>%1 switch to arc</source>
       <translation>%1 promeni na kružni luk</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
       <source>%1 switch to line</source>
       <translation>%1 promeni na duž</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
       <source>%1 toggle fillet</source>
       <translation>%1 uklj/isklj zaobljenje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
       <source>%1 undo last point</source>
       <translation>%1 poništi zadnju tačku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
       <source>%1 pick first point</source>
       <translation>%1 izaberi prvu tačku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
       <source>%1 pick next point</source>
       <translation>%1 izaberi sledeću tačku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
       <source>%1 finish</source>
       <translation>%1 završi</translation>
     </message>
@@ -8478,12 +8478,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1767"/>
       <source>Line</source>
       <translation>Duž</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1731"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1768"/>
       <source>Arc</source>
       <translation>Kružni luk</translation>
     </message>
@@ -8491,12 +8491,12 @@ Tačke se moraju nalaziti na udaljenosti manjoj od 1/5 razmaka linija mreže da 
   <context>
     <name>TaskSketcherTool_c1_PolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1737"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1774"/>
       <source>Fillet (F)</source>
       <translation>Zaobljenje (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1741"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1778"/>
       <source>Adds a fillet between the current and previous line</source>
       <translation>Dodaj zaobljenje između trenutnog i prethodnog segmenta</translation>
     </message>

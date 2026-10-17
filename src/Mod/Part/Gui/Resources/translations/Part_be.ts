@@ -2269,7 +2269,7 @@ of the projection.</source>
       <translation>Пераўтварыць паліганальную сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1579"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Edit attachment</source>
       <translation>Змяніць мацаванне</translation>
     </message>
@@ -5502,82 +5502,82 @@ of the object being attached.</source>
       <translation>Павярнуць бакі</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="413"/>
+      <location filename="../../TaskAttacher.cpp" line="421"/>
       <source>OCC error: %1</source>
       <translation>Памылка OpenCASCADE: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="416"/>
+      <location filename="../../TaskAttacher.cpp" line="424"/>
       <source>unknown error</source>
       <translation>невядомая памылка</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="419"/>
+      <location filename="../../TaskAttacher.cpp" line="427"/>
       <source>Attachment mode failed: %1</source>
       <translation>Памылка рэжыму прымацавання: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="424"/>
+      <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Not attached</source>
       <translation>Не прымацаваны</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="432"/>
+      <location filename="../../TaskAttacher.cpp" line="440"/>
       <source>Attached with mode %1</source>
       <translation>Прымацаваны ў рэжыме %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1027"/>
+      <location filename="../../TaskAttacher.cpp" line="1080"/>
       <source>Selecting…</source>
       <translation>Выбар…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="930"/>
+      <location filename="../../TaskAttacher.cpp" line="983"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="436"/>
+      <location filename="../../TaskAttacher.cpp" line="444"/>
       <source>Attachment Offset (in its local coordinate system):</source>
       <translation>Зрушэнне прымацавання (у лакальнай сістэме каардынат):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="437"/>
+      <location filename="../../TaskAttacher.cpp" line="445"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Зрушэнне прымацавання (неактыўны - не прымацаваны):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="937"/>
+      <location filename="../../TaskAttacher.cpp" line="990"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="944"/>
+      <location filename="../../TaskAttacher.cpp" line="997"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1033"/>
+      <location filename="../../TaskAttacher.cpp" line="1086"/>
       <source>Reference%1</source>
       <translation>Апора%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1102"/>
+      <location filename="../../TaskAttacher.cpp" line="1155"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Недаступны для змены, паколькі вярчэнне Зрушэння прымацавання абмежавана выразамі.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1185"/>
+      <location filename="../../TaskAttacher.cpp" line="1238"/>
       <source>Reference combinations:</source>
       <translation>Камбінацыі арыенціраў:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1207"/>
+      <location filename="../../TaskAttacher.cpp" line="1260"/>
       <source>%1 (add %2)</source>
       <translation>%1 (дадаць %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1210"/>
+      <location filename="../../TaskAttacher.cpp" line="1263"/>
       <source>%1 (add more references)</source>
       <translation>%1 (дадаць болей арыенціраў)</translation>
     </message>
@@ -5881,22 +5881,22 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1471"/>
+      <location filename="../../TaskAttacher.cpp" line="1543"/>
       <source>Attachment</source>
       <translation>Прымацаваць</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1492"/>
+      <location filename="../../TaskAttacher.cpp" line="1564"/>
       <source>%1 select reference</source>
       <translation>%1 абраць апорны элемент</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1498"/>
+      <location filename="../../TaskAttacher.cpp" line="1570"/>
       <source>%1 select and confirm</source>
       <translation>Абраць %1 і пацвердзіць</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1648"/>
+      <location filename="../../TaskAttacher.cpp" line="1731"/>
       <source>Datum dialog: input error</source>
       <translation>Дыялог пункту адліку: памылка ўводу</translation>
     </message>
@@ -6252,8 +6252,8 @@ Continue?</source>
       <translation>Абярыце альбо два рабра, альбо дзве ломаныя лініі.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskAttacher.cpp" line="116"/>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskAttacher.cpp" line="121"/>
       <source>No reference selected</source>
       <translation>Без абраных спасылак</translation>
     </message>
@@ -7902,6 +7902,21 @@ Overlapping volumes of the shapes will be removed.</source>
       <source>Symmetry</source>
       <translation>Сіметрыя</translation>
     </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
+      <source>Start at selected shape</source>
+      <translation>Пачаць з абранай фігуры</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
+      <source>Binormal axis</source>
+      <translation>Бінармальная вось</translation>
+    </message>
+    <message>
+      <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
+      <source>Flip binormal direction</source>
+      <translation>Перавярнуць бінармальны напрамак</translation>
+    </message>
   </context>
   <context>
     <name>PartGui::PatternPathParametersWidget</name>
@@ -7975,15 +7990,25 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::PatternPointParametersWidget</name>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="19"/>
       <source>Point object</source>
       <translation>Кропкавы аб'ект</translation>
     </message>
     <message>
-      <location filename="../../PatternPointParametersWidget.ui" line="14"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="48"/>
+      <location filename="../../PatternPointParametersWidget.ui" line="29"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
       <source>Select Point Object</source>
       <translation>Абраць кропкавы аб'ект</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="36"/>
+      <source>Relative to first</source>
+      <translation>Адносна першага</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPointParametersWidget.ui" line="46"/>
+      <source>Origin point index</source>
+      <translation>Індэкс кропкі пачатку каардынат</translation>
     </message>
   </context>
   <context>
@@ -8110,7 +8135,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="144"/>
+      <location filename="../../TaskPatternParameters.cpp" line="147"/>
       <source>Direction 2</source>
       <translation>Напрамак 2</translation>
     </message>
@@ -8143,74 +8168,74 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>Лінейны масіў спасылак</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="302"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
       <source>Selecting…</source>
       <translation>Выбар…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="308"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
       <source>Select Object</source>
       <translation>Абраць аб'ект</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="326"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
       <source>Select an object to link</source>
       <translation>Абярыце аб'ект для сувязі</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="547"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="565"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="580"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
       <source>Object X-axis</source>
       <translation>Аб'ект восі X</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="551"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="568"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="586"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
       <source>Object Y-axis</source>
       <translation>Аб'ект восі Y</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="572"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="589"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object Z-axis</source>
       <translation>Аб'ект восі Z</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="595"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Select reference…</source>
       <translation>Абраць апорны элемент…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="724"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
       <source>Select connected path edges</source>
       <translation>Абраць рэбры злучанай траекторыі</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="727"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
       <source>Select a sketch or shape containing points</source>
       <translation>Абраць эскіз ці фігуру, якія змяшчаюць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="731"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
       <source>Select a rotation axis</source>
       <translation>Абраць вось вярчэння</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="733"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select a direction reference</source>
       <translation>Абраць апорны напрамак</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="862"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
       <source>Select an object to link.</source>
       <translation>Абярыце аб'ект для сувязі.</translation>
     </message>

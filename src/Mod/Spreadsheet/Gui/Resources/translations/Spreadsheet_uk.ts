@@ -669,7 +669,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Ліворуч</translation>
+      <translation>Зліва</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -680,7 +680,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Направо</translation>
+      <translation>Справа</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -690,7 +690,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Згори</translation>
+      <translation>Зверху</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
@@ -1227,7 +1227,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
-      <translation>Експорт в PDF</translation>
+      <translation>Експорт у PDF</translation>
     </message>
   </context>
   <context>

@@ -6546,7 +6546,7 @@ Please select a result type first.</source>
       <translation>ບໍ່ມີວັດຖຸຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="172"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
       <source>
 
 Correct module found in: 
@@ -6557,7 +6557,7 @@ Correct module found in:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="180"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="177"/>
       <source>
 
 Should this module be loaded instead?</source>
@@ -6566,7 +6566,7 @@ Should this module be loaded instead?</source>
 ຄວນໂຫລດໂມດູນນີ້ແທນຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="197"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
@@ -6575,17 +6575,17 @@ No matching module was found in the current Python path.</source>
 ບໍ່ພົບໂມດູນທີ່ກົງກັນໃນ Python path ປັດຈຸບັນ.</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="201"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
       <translation>ໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
       <translation>ໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/vtk_module_handling.py" line="230"/>
+      <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
       <translation>ຟັງຊັນນີ້ບໍ່ສາມາດໃຊ້ງານໄດ້ເນື່ອງຈາກໂມດູນ VTK Python ຂັດແຍ້ງກັນ</translation>
     </message>
