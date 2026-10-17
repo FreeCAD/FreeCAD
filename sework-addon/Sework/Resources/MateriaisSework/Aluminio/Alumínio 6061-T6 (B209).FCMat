@@ -1,0 +1,24 @@
+---
+# Biblioteca de materiais Sework Engenharia
+General:
+  UUID: "30ee5312-ff79-58aa-b908-3cca377fcbe1"
+  Author: "Sework Engenharia"
+  License: "CC-BY-4.0"
+  Name: "Alumínio 6061-T6 (B209)"
+  Description: "Limites mínimos da especificação ASTM B209 6061-T6. Fonte da conferência: matmatch.com. Módulo de elasticidade conforme ASME B31.1 a 21 °C; densidade e Poisson típicos. Confirme com o certificado do material."
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Liga de alumínio tratada"
+    MaterialNumber: "6061-T6"
+    StandardCode: "ASTM B209"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "2700 kg/m^3"
+    PoissonRatio: "0.33"
+    YoungsModulus: "69000 MPa"
+    YieldStrength: "240 MPa"
+    UltimateTensileStrength: "290 MPa"

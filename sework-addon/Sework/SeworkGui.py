@@ -644,7 +644,7 @@ def _start_inicio():
         FreeCAD.Console.PrintWarning("Sework: tela inicial não aberta: {}\n".format(exc))
 
 
-MATERIAIS_DIR = os.path.join(ADDON_DIR, "Resources", "Materials")
+MATERIAIS_DIR = os.path.join(ADDON_DIR, "Resources", "MateriaisSework")
 
 
 def install_materials():

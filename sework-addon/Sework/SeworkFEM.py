@@ -274,7 +274,8 @@ def materiais():
                     if chave and chave in pasta:
                         grupo = nome
                         break
-            lista.append({"uuid": uuid, "nome": m.Name, "grupo": grupo, "pasta": pasta,
+            nome = p.get("Name") or m.Name
+            lista.append({"uuid": uuid, "nome": nome, "grupo": grupo, "pasta": pasta,
                           "biblioteca": m.LibraryName, "props": dict(p),
                           "descricao": getattr(m, "Description", "") or ""})
     except Exception as exc:
@@ -972,6 +973,10 @@ class Assistente(QtWidgets.QWidget):
         self.busca_mat.setPlaceholderText("Buscar material…")
         self.busca_mat.textChanged.connect(self._filtrar_mat)
         lay.addWidget(self.busca_mat)
+        self.ck_so_sy = QtWidgets.QCheckBox("Mostrar só materiais com limite de escoamento")
+        self.ck_so_sy.setChecked(True)
+        self.ck_so_sy.toggled.connect(lambda _v: self._carregar_materiais(self.busca_mat.text()))
+        lay.addWidget(self.ck_so_sy)
         self.cb_mat = QtWidgets.QComboBox()
         self.cb_mat.setMaxVisibleItems(18)
         self.cb_mat.currentIndexChanged.connect(self._mostrar_mat)
@@ -1003,8 +1008,12 @@ class Assistente(QtWidgets.QWidget):
         f = filtro.lower().strip()
         grupo = None
         modelo = self.cb_mat.model()
+        so_sy = self.ck_so_sy.isChecked()
         for d in lst:
             if f and f not in d["nome"].lower() and f not in d["grupo"].lower():
+                continue
+            sy = props_mat(d["props"])["Sy"]
+            if so_sy and not sy and d["uuid"] != uuid_est:
                 continue
             if d["grupo"] != grupo:
                 grupo = d["grupo"]
@@ -1012,7 +1021,8 @@ class Assistente(QtWidgets.QWidget):
                 it = modelo.item(self.cb_mat.count() - 1)
                 if it is not None:
                     it.setEnabled(False)
-            self.cb_mat.addItem(d["nome"], d["uuid"])
+            self.cb_mat.addItem("{}   ·   {}".format(d["nome"], "Sy {} MPa".format(fmt(sy, 0)) if sy
+                                                   else "sem limite de escoamento"), d["uuid"])
         alvo = atual or uuid_est
         i = self.cb_mat.findData(alvo) if alvo else -1
         if i < 0:

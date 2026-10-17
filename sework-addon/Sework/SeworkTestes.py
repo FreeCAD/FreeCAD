@@ -452,6 +452,33 @@ class T09Interface(unittest.TestCase):
         self.assertGreater(len(textos), 5)
         self.assertTrue(any("Simulação" in t or "FEM" in t for t in textos), textos)
 
+    def test_aplicar_material_sework_pelo_assistente(self):
+        """Regressão: aplicar um material Sework pelo painel mantém o limite de escoamento."""
+        import Part
+        import SeworkFEM as F
+        doc = _doc_teste("SeworkTesteAplicar")
+        try:
+            o = doc.addObject("Part::Feature", "Bloco")
+            o.Shape = Part.makeBox(50, 20, 10)
+            doc.recompute()
+            F.Estudo(doc).garantir(o)
+            a = F.Assistente()
+            erros = []
+            a._erro = erros.append
+            a._carregar_materiais("A516")
+            d = next(x for x in F.materiais() if x["nome"] == "ASTM A516 Gr 70 (SA-516 70)")
+            a.cb_mat.setCurrentIndex(a.cb_mat.findData(d["uuid"]))
+            a._aplicar_mat()
+            self.assertEqual(erros, [])
+            est = F.Estudo(doc)
+            p = F.props_mat(est.material.Material)
+            self.assertAlmostEqual(p["Sy"], 260.0, delta=0.5)
+            self.assertEqual(F.avaliar(est)["material"][0], F.OK)
+            a.timer.stop()
+            a.deleteLater()
+        finally:
+            _fechar(doc)
+
     def test_altura_da_faixa(self):
         rb = self._faixa()
         self.assertGreaterEqual(rb.content.height(), 126)

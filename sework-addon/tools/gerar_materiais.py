@@ -94,11 +94,12 @@ def main(destino):
     for m in MATERIAIS:
         pasta = os.path.join(destino, m[0])
         os.makedirs(pasta, exist_ok=True)
-        arq = re.sub(r"[^A-Za-z0-9_.-]+", "_", m[1].replace("í", "i")).strip("_") + ".FCMat"
+        # O FreeCAD usa o nome do arquivo como nome do material: o arquivo leva o nome legível
+        arq = re.sub(r'[\\/:*?"<>|]+', "-", m[1]) + ".FCMat"
         with open(os.path.join(pasta, arq), "w", encoding="utf-8") as f:
             f.write(cartao(*m))
     print(len(MATERIAIS), "cartões em", destino)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..", "Sework", "Resources", "Materials"))
+    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..", "Sework", "Resources", "MateriaisSework"))
