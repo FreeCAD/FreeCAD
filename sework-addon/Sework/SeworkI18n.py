@@ -129,6 +129,38 @@ EXTRA = {
     "Part Design Transformation Features": "Padrões de peça", "Sketcher Tools": "Ferramentas de esboço",
 }
 
+# Glossário Sework por contexto: corrige termos da tradução oficial que
+# confundem o usuário brasileiro ("Preencher" para Pad, "Perfuração" para
+# Pocket, "Filete" para Fillet...). Chave: (contexto do Qt, texto de origem).
+GLOSSARIO = {
+    ("CmdPartDesignPad", "Pad"): "Extrusão",
+    ("CmdPartDesignPocket", "Pocket"): "Cavidade",
+    ("CmdPartDesignFillet", "Fillet"): "Arredondamento",
+    ("CmdPartFillet", "Fillet"): "Arredondamento",
+    ("WizardShaftTable", "Fillet"): "Arredondamento",
+    ("CmdPartDesignDraft", "Draft"): "Ângulo de saída",
+    ("CmdPartDesignThickness", "Thickness"): "Casca",
+    ("CmdPartThickness", "Thickness"): "Casca",
+    ("CmdPartDesignShapeBinder", "Shape Binder"): "Vínculo de forma",
+    ("CmdPartDesignSubShapeBinder", "Sub-Shape Binder"): "Vínculo de subforma",
+    ("CmdPartDesignAdditiveLoft", "Additive Loft"): "Loft aditivo",
+    ("CmdPartDesignSubtractiveLoft", "Subtractive Loft"): "Loft subtrativo",
+    ("CmdPartDesignAdditivePipe", "Additive Pipe"): "Varredura aditiva",
+    ("CmdPartDesignSubtractivePipe", "Subtractive Pipe"): "Varredura subtrativa",
+    ("CmdPartDesignClone", "Clone"): "Clone",
+    ("CmdPartRevolve", "Revolve"): "Revolução",
+    ("CmdPartBox", "Cube"): "Caixa",
+    ("CmdPartBox", "Creates a solid cube"): "Cria uma caixa sólida (bloco retangular)",
+    ("CmdPartCut", "Cut"): "Subtrair",
+    ("CmdPartCommon", "Intersection"): "Interseção",
+    ("PartGui::DlgRevolution", "Revolve"): "Revolução",
+    ("CmdTechDrawDetailView", "Detail View"): "Vista de detalhe",
+    ("CmdTechDrawSectionView", "Section View"): "Vista em corte",
+    ("CmdTechDrawSectionGroup", "Section View"): "Vista em corte",
+    ("TechDrawGui::TaskBalloon", "Balloon"): "Balão",
+    ("DrawViewBalloon", "Balloon"): "Balão",
+}
+
 
 class SeworkTranslator(QtCore.QTranslator):
     """Um único tradutor: dicionário EXTRA primeiro, depois o .qm completo.
@@ -149,6 +181,10 @@ class SeworkTranslator(QtCore.QTranslator):
         except Exception:  # pragma: no cover
             PROPS = {}
         self._props = PROPS
+        self._ctx = {}
+        for (c, k), v in GLOSSARIO.items():
+            self._ctx[(c, k)] = v
+            self._ctx.setdefault((c, k.replace("&", "")), v.replace("&", ""))
         self._qm = QtCore.QTranslator()
         self._qm_ok = bool(qm_path) and self._qm.load(qm_path)
 
@@ -157,7 +193,7 @@ class SeworkTranslator(QtCore.QTranslator):
             hit = self._props.get(sourceText)
             if hit:
                 return hit
-        hit = self._t.get(sourceText)
+        hit = self._ctx.get((context, sourceText)) or self._t.get(sourceText)
         if hit:
             return hit
         if self._qm_ok:

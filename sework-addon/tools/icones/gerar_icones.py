@@ -21,13 +21,14 @@ import familia_3d
 import familia_esboco
 import familia_geral
 import familia_painel
+import familia_desenho
 
 VERSAO = "Sework Guia 2.0"
 
 
 def todos():
     out = {}
-    for fam in (familia_3d, familia_esboco, familia_geral, familia_painel):
+    for fam in (familia_3d, familia_esboco, familia_geral, familia_painel, familia_desenho):
         for nome, fn in fam.ICONS.items():
             base = nome[4:] if nome.startswith("SUB:") else os.path.basename(nome)
             if base.endswith(".svg"):
@@ -45,6 +46,9 @@ def main():
         if fn not in cache:
             cache[fn] = fn().svg()
         novos[nome + ".svg"] = cache[fn]
+        # O FreeCAD procura ícones "actions/Nome" numa subpasta actions/ do tema
+        if "/" not in nome:
+            novos["actions/" + nome + ".svg"] = cache[fn]
     base = {f: os.path.join(tema, f) for f in os.listdir(tema) if f.endswith(".svg")}
     hoje = datetime.date.today().strftime("%d/%m/%Y")
     with zipfile.ZipFile(saida, "w", zipfile.ZIP_DEFLATED) as z:

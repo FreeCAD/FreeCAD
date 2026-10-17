@@ -74,3 +74,5 @@ tsupdate_stdout.log
 # pixi environments
 *.egg-info
 .pixi
+
+sework-build/compilacao.log

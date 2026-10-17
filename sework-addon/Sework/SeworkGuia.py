@@ -31,6 +31,8 @@ QSS = """
 #SeworkGuiaTitulo { color: #003A70; font-weight: 700; font-size: 10pt; }
 #SeworkGuiaTexto { color: #33404D; font-size: 9pt; }
 #SeworkGuiaLegenda { color: #4A5866; font-size: 8pt; }
+#SeworkGuiaAlerta { background: #FFF6D6; color: #4D3B00; font-size: 8.5pt; border-left: 3px solid #E0A100;
+                    border-radius: 4px; padding: 6px 8px; }
 #SeworkGuia QToolButton { border: none; color: #66727F; padding: 0 2px; }
 #SeworkGuia QToolButton:hover { color: #003A70; }
 """
@@ -69,6 +71,69 @@ POCKET_TXT = {
     "UpToFirst": "O corte para na primeira face que encontrar.",
     "UpToShape": "Selecione a forma onde o corte deve parar.",
 }
+
+
+# ---------------------------------------------------------------- boas práticas
+PROFILE_TYPES = ("PartDesign::Pad", "PartDesign::Pocket", "PartDesign::Revolution", "PartDesign::Groove",
+                 "PartDesign::Hole")
+STABLE_SUPPORT = ("App::Plane", "App::Line", "App::Point", "App::Origin", "PartDesign::Plane", "PartDesign::Line",
+                  "PartDesign::Point", "PartDesign::CoordinateSystem", "App::LocalCoordinateSystem")
+
+MSG_FACE = ("Este esboço está preso a uma face criada pelo próprio modelo. Se uma operação anterior mudar, "
+            "a face pode ser renumerada e o esboço perde a referência. Prefira anexá-lo a um plano da origem "
+            "ou a um plano de referência.")
+MSG_FILLET = ("Há operações depois deste {} no histórico. Arredondamentos e chanfros mudam a numeração das "
+              "arestas e costumam quebrar o que vem depois: quando possível, deixe-os para o fim do modelo.")
+
+
+def _profile_sketch(obj):
+    prof = _get(obj, "Profile")
+    if isinstance(prof, (tuple, list)) and prof:
+        prof = prof[0]
+    return prof if prof is not None and getattr(prof, "TypeId", "") == "Sketcher::SketchObject" else None
+
+
+def _on_generated_face(sk):
+    sup = _get(sk, "AttachmentSupport") or _get(sk, "Support") or []
+    for item in sup:
+        o = item[0] if isinstance(item, (tuple, list)) else item
+        if o is None:
+            continue
+        if getattr(o, "TypeId", "") not in STABLE_SUPPORT and str(getattr(o, "TypeId", "")).startswith(("PartDesign::", "Part::")):
+            return True
+    return False
+
+
+def _features_after(obj):
+    try:
+        body = obj.getParentGeoFeatureGroup()
+        grp = list(body.Group)
+        i = grp.index(obj)
+    except Exception:
+        return False
+    for o in grp[i + 1:]:
+        if getattr(o, "TypeId", "").startswith("PartDesign::") and o.isDerivedFrom("PartDesign::Feature") \
+                and not o.TypeId.startswith(("PartDesign::Plane", "PartDesign::Line", "PartDesign::Point")):
+            return True
+    return False
+
+
+def alerts(obj):
+    """Lista de avisos de boas práticas para o objeto em edição."""
+    out = []
+    t = getattr(obj, "TypeId", "")
+    try:
+        if t == "Sketcher::SketchObject" and _on_generated_face(obj):
+            out.append(MSG_FACE)
+        elif t in PROFILE_TYPES:
+            sk = _profile_sketch(obj)
+            if sk is not None and _on_generated_face(sk):
+                out.append(MSG_FACE)
+        if t in ("PartDesign::Fillet", "PartDesign::Chamfer") and _features_after(obj):
+            out.append(MSG_FILLET.format("arredondamento" if t.endswith("Fillet") else "chanfro"))
+    except Exception:
+        pass
+    return out
 
 
 def describe(obj):
@@ -163,6 +228,11 @@ class GuiaFrame(QtWidgets.QFrame):
         self.text.setObjectName("SeworkGuiaTexto")
         self.text.setWordWrap(True)
         lay.addWidget(self.text)
+        self.alert = QtWidgets.QLabel()
+        self.alert.setObjectName("SeworkGuiaAlerta")
+        self.alert.setWordWrap(True)
+        self.alert.setVisible(False)
+        lay.addWidget(self.alert)
         self._svg = None
         self._apply_collapsed()
 
@@ -171,8 +241,9 @@ class GuiaFrame(QtWidgets.QFrame):
 
     def _apply_collapsed(self):
         c = self._collapsed()
-        self.image.setVisible(not c)
-        self.legend.setVisible(not c)
+        has = bool(getattr(self, "_svg", None))
+        self.image.setVisible(not c and has)
+        self.legend.setVisible(not c and has)
         self.toggle.setText("mostrar ▾" if c else "ocultar ▴")
 
     def _toggle(self):
@@ -180,11 +251,19 @@ class GuiaFrame(QtWidgets.QFrame):
         self._apply_collapsed()
         self._render()
 
+    def set_alerts(self, msgs):
+        self.alert.setText("\n\n".join("⚠  " + m for m in msgs))
+        self.alert.setVisible(bool(msgs))
+
     def set_content(self, title, g, text):
-        self.title.setText("Como funciona · " + title)
+        self.title.setText(("Como funciona · " if g is not None else "Boa prática · ") + title)
         self.text.setText(text)
-        self._svg = g.svg()
-        items = getattr(g, "legend", [])
+        self.text.setVisible(bool(text))
+        self.image.setVisible(g is not None and not self._collapsed())
+        self.toggle.setVisible(g is not None)
+        self._svg = g.svg() if g is not None else None
+        self._apply_collapsed()
+        items = getattr(g, "legend", []) if g is not None else []
         self.legend.setText("&nbsp;&nbsp;".join(
             "<span style='color:%s'>■</span>&nbsp;%s" % (c if c.upper() != "#FFFFFF" else "#C9D2DC", t) for c, t in items))
         self._render()
@@ -261,11 +340,16 @@ class Guia:
             return
         gdoc = FreeCADGui.ActiveDocument
         vp = gdoc.getInEdit() if gdoc else None
-        info = describe(vp.Object) if vp is not None else None
+        obj = vp.Object if vp is not None else None
+        info = describe(obj) if obj is not None else None
+        warn = alerts(obj) if obj is not None else []
+        if info is None and warn:
+            info = (("alerta", obj.TypeId), obj.Label, None, "")
         if info is None:
             self._drop()
             return
         key, title, g, text = info
+        key = (key, tuple(warn))
         panel = self._task_panel()
         if panel is None:
             return
@@ -284,6 +368,7 @@ class Guia:
         if key != self.key:
             self.key = key
             self.frame.set_content(title, g, text)
+            self.frame.set_alerts(warn)
 
 
 _guia = {"obj": None}

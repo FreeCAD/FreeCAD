@@ -147,7 +147,7 @@ TABS = [
     ]},
     {"id": "solidos", "label": "Sólidos", "wb": "PartWorkbench", "panels": [
         ("Primitivas", [
-            ("Part_Box", L, "Cubo"), ("Part_Cylinder", L, "Cilindro"),
+            ("Part_Box", L, "Caixa"), ("Part_Cylinder", L, "Cilindro"),
             ("Part_Sphere", S, "Esfera"), ("Part_Cone", S, "Cone"), ("Part_Torus", S, "Toro"),
             ("Part_Tube", S, "Tubo"), ("Part_Primitives", S, "Mais primitivas"), ("Part_Builder", S, "Construtor"),
         ]),
@@ -653,8 +653,30 @@ class SeworkRibbon(QtWidgets.QWidget):
         hl.setContentsMargins(0, 0, 0, 0)
         hl.setSpacing(1)
         for name, tip in (("Std_New", "Novo"), ("Std_Open", "Abrir"), ("Std_Save", "Salvar"),
-                          ("Std_Undo", "Desfazer"), ("Std_Redo", "Refazer")):
+                          ("Std_Undo", "Desfazer"), ("Std_Redo", "Refazer"), ("|", ""),
+                          ("Std_Measure", "Medir")):
+            if name == "|":
+                sep = QtWidgets.QFrame(box)
+                sep.setFrameShape(QtWidgets.QFrame.VLine)
+                sep.setStyleSheet("color: #D5DEE8;")
+                sep.setFixedHeight(18)
+                hl.addSpacing(4)
+                hl.addWidget(sep)
+                hl.addSpacing(4)
+                continue
             acts = _cmd_actions(name)
+            if not acts:
+                # Comandos padrão também podem ainda não ter QAction quando a faixa
+                # é montada; usamos uma ação própria que executa o comando.
+                try:
+                    cmd = FreeCADGui.Command.get(name)
+                except Exception:
+                    cmd = None
+                if cmd is not None:
+                    a = _own_action(name, cmd)
+                    if a is not None:
+                        a.setToolTip(tip)
+                        acts = [a]
             if acts:
                 b = RibbonButton(acts[:1], S, "", box)
                 b.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)

@@ -483,3 +483,14 @@ ICONS["preferences-sketcher"] = sketch_obj
 ICONS["preferences-part_design"] = _F3.ICONS["PartDesign_Body"]
 # "Part/Part Design" vira o caminho preferences-part/part_design.svg
 ICONS["SUB:preferences-part/part_design"] = _F3.ICONS["PartDesign_Body"]
+
+
+@icon("tree-pre-sel", "Std_ClarifySelection")
+def clarify_selection():
+    g = flat()
+    for i, (x, y, col) in enumerate(((6, 6, SOLID[2]), (14, 14, SOLID[1]), (22, 22, SOLID[0]))):
+        raw(g, '<rect x="%d" y="%d" width="26" height="22" rx="3" fill="%s" fill-opacity="0.85" stroke="%s" stroke-width="2.4"/>'
+            % (x, y, col, OUT))
+    raw(g, '<path d="M 34 30 L 34 58 L 41 51 L 46 61 L 51 59 L 46 49 L 56 49 Z" fill="%s" stroke="%s" stroke-width="2.4" '
+           'stroke-linejoin="round"/>' % (YEL[0], OUT))
+    return g

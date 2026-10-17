@@ -274,6 +274,164 @@ class CmdSobre:
         return True
 
 
+# ------------------------------------------------------------- documentos: backups e modelos
+DOC_PREFS = {
+    # grupo BaseApp/Preferences/Document
+    "bool": {"CreateBackupFiles": True, "UseFCBakExtension": True, "AutoSaveEnabled": True,
+             "RecoveryEnabled": True, "SaveThumbnail": True},
+    "int": {"CountBackupFiles": 5, "AutoSaveTimeout": 5, "MaxUndoSize": 50},
+    "str": {"prefCompany": "Sework Engenharia"},
+}
+DOC_PREFS_VERSION = 1
+TEMPLATE_DIR = os.path.join(RES_DIR, "templates")
+TEMPLATE_DEFAULT = "Sework_A3_Paisagem.svg"
+
+
+def apply_document_prefs():
+    """Backups com data, recuperação a cada 5 min e 50 passos de desfazer (uma vez por versão)."""
+    if _params().GetInt("DocPrefsVersao", 0) >= DOC_PREFS_VERSION:
+        return
+    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
+    for k, v in DOC_PREFS["bool"].items():
+        d.SetBool(k, v)
+    for k, v in DOC_PREFS["int"].items():
+        d.SetInt(k, v)
+    for k, v in DOC_PREFS["str"].items():
+        if not d.GetString(k, ""):
+            d.SetString(k, v)
+    _params().SetInt("DocPrefsVersao", DOC_PREFS_VERSION)
+
+
+def apply_template_prefs():
+    """Modelos de folha Sework como padrão do Desenho técnico.
+
+    Reaplica sempre que o caminho anterior era da Sework (muda entre versões do FreeCAD),
+    mas não mexe se o usuário escolheu outra pasta ou outro modelo.
+    """
+    if not os.path.isdir(TEMPLATE_DIR):
+        return
+    f = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/Files")
+    cur_dir = f.GetString("TemplateDir", "")
+    cur_file = f.GetString("TemplateFile", "")
+    ours = lambda p: (not p) or ("Sework" in p and "templates" in p.replace("\\", "/"))
+    if ours(cur_dir):
+        f.SetString("TemplateDir", TEMPLATE_DIR)
+    if ours(cur_file):
+        f.SetString("TemplateFile", os.path.join(TEMPLATE_DIR, TEMPLATE_DEFAULT))
+
+
+class _FolhaObserver:
+    """Ao criar uma folha com modelo Sework, grava a data em dd/mm/aaaa.
+
+    O preenchimento automático do FreeCAD usa o formato do sistema em inglês ("17 Oct 2026").
+    """
+
+    def slotCreatedObject(self, obj):
+        try:
+            if obj.TypeId == "TechDraw::DrawSVGTemplate":
+                QtCore.QTimer.singleShot(700, lambda o=obj: _fix_folha_date(o))
+        except Exception:
+            pass
+
+
+def _fix_folha_date(obj):
+    import re
+    import time
+    try:
+        if "Sework" not in (obj.Template or ""):
+            return
+        et = dict(obj.EditableTexts)
+        if "data" in et and not re.match(r"^\d{2}/\d{2}/\d{4}$", et["data"].strip()):
+            et["data"] = time.strftime("%d/%m/%Y")
+            obj.EditableTexts = et
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: data da folha: {}\n".format(exc))
+
+
+_folha_obs = {"obj": None}
+
+
+def install_folha_observer():
+    if _folha_obs["obj"] is None:
+        _folha_obs["obj"] = _FolhaObserver()
+        FreeCAD.addDocumentObserver(_folha_obs["obj"])
+
+
+# ------------------------------------------------------------- splash por tempo mínimo
+def _process_start():
+    """Hora (epoch) em que o FreeCAD foi aberto; no Windows lê do próprio processo."""
+    import time
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = ctypes.windll.kernel32
+        c, e, kt, u = (wintypes.FILETIME() for _ in range(4))
+        if k.GetProcessTimes(k.GetCurrentProcess(), ctypes.byref(c), ctypes.byref(e), ctypes.byref(kt), ctypes.byref(u)):
+            val = (c.dwHighDateTime << 32) | c.dwLowDateTime
+            return val / 1e7 - 11644473600.0
+    except Exception:
+        pass
+    return time.time()
+
+
+_splash_hold = {"obj": None, "copy": None}
+
+
+def _splash_copy_close():
+    cp = _splash_hold.get("copy")
+    _splash_hold["copy"] = None
+    if cp is not None:
+        try:
+            cp.close()
+            cp.deleteLater()
+        except RuntimeError:
+            pass
+
+
+class _SplashHold(QtCore.QObject):
+    """Quando o FreeCAD fecha a splash, mostra uma cópia no mesmo lugar até o tempo mínimo.
+
+    O objeto e a cópia ficam presos à aplicação, não à splash: o FreeCAD apaga a splash
+    original logo depois de fechá-la, e levaria junto o cronômetro.
+    """
+
+    def __init__(self, splash, until):
+        super().__init__(QtWidgets.QApplication.instance())
+        self.splash = splash
+        self.until = until
+        self.done = False
+        splash.installEventFilter(self)
+
+    def eventFilter(self, obj, ev):
+        if not self.done and obj is self.splash and ev.type() in (QtCore.QEvent.Hide, QtCore.QEvent.Close):
+            self.done = True
+            import time
+            rest = self.until - time.time()
+            if rest > 0.1:
+                cp = QtWidgets.QSplashScreen(self.splash.pixmap(), QtCore.Qt.WindowStaysOnTopHint)
+                cp.setGeometry(self.splash.geometry())
+                cp.show()
+                cp.raise_()
+                cp.repaint()
+                _splash_hold["copy"] = cp
+                QtCore.QTimer.singleShot(int(rest * 1000), _splash_copy_close)
+            # rede de segurança: nunca deixar a cópia presa
+            QtCore.QTimer.singleShot(int(max(rest, 0) * 1000) + 3000, _splash_copy_close)
+        return False
+
+
+def hold_splash():
+    secs = min(_params().GetFloat("SplashSegundos", 3.0), 10.0)
+    if secs <= 0:
+        return
+    app = QtWidgets.QApplication.instance()
+    splash = next((w for w in app.topLevelWidgets()
+                   if isinstance(w, QtWidgets.QSplashScreen) and w.isVisible()), None)
+    if splash is None:
+        return
+    _splash_hold["obj"] = _SplashHold(splash, _process_start() + secs)
+
+
 # ------------------------------------------------------------- modo distribuição
 DEV_DOCKS = ("Python console", "Report view")
 
@@ -407,11 +565,20 @@ def _start_inicio():
 
 def startup():
     try:
+        hold_splash()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: splash: {}\n".format(exc))
+    try:
         import SeworkInicio
         SeworkInicio.prepare()
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: tela inicial: {}\n".format(exc))
     register_commands()
+    for fn in (apply_document_prefs, apply_template_prefs, install_folha_observer):
+        try:
+            fn()
+        except Exception as exc:
+            FreeCAD.Console.PrintWarning("Sework: {}: {}\n".format(fn.__name__, exc))
     install_splash()
     install_translations()
     install_icon_theme()

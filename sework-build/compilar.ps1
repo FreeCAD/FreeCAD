@@ -139,5 +139,17 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# Addon Sework na pasta de configurações da versão compilada (ex.: v27-1)
+try {
+    $vj = Get-Content (Join-Path $repo "version.json") -Raw | ConvertFrom-Json
+    $vdir = Join-Path $env:APPDATA ("FreeCAD\v{0}-{1}\Mod\Sework" -f $vj.version_major, $vj.version_minor)
+    $src = Join-Path $repo "sework-addon\Sework"
+    if (Test-Path $src) {
+        New-Item -ItemType Directory -Force -Path $vdir | Out-Null
+        Copy-Item -Path (Join-Path $src "*") -Destination $vdir -Recurse -Force
+        Ok "Addon Sework instalado em $vdir"
+    }
+} catch { Aviso "Não foi possível instalar o addon Sework na versão compilada: $_" }
+
 Write-Host ""
 Write-Host "Compilado. Para abrir o FreeCAD Sework compilado:  pixi run freecad" -ForegroundColor Green
