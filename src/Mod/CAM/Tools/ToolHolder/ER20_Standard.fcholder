@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER20 nut, standard",
+  "units": "mm",
+  "type": "ER20",
+  "profile": [
+    [0, 0],
+    [16.1, 0],
+    [17.5, 1.4],
+    [17.5, 19],
+    [0, 19]
+  ],
+  "notes": "Round clamping nut, M25x1.5 thread.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}

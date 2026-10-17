@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER11 nut, standard",
+  "units": "mm",
+  "type": "ER11",
+  "profile": [
+    [0, 0],
+    [8.5, 0],
+    [9.5, 1.0],
+    [9.5, 11.3],
+    [0, 11.3]
+  ],
+  "notes": "Round clamping nut, M14x0.75 thread.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}
