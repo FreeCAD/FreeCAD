@@ -1916,6 +1916,11 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
         }
     }
 
+    // Get the dimension font size from TechDraw's preferences to pass to the exporter.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 3.5);
+
     //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
@@ -1931,8 +1936,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     doCommand(Doc, "import TechDraw");
     auto filespec = DU::cleanFilespecBackslash(
         Base::Tools::escapeEncodeFilename(fileName.toStdString()));
-    doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
-              filespec.c_str());
+    doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\", %f)", PageName.c_str(),
+              filespec.c_str(), fontSize);
     commitCommand();
 }
 
