@@ -20,10 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <vector>
 
 #include "DlgSettingsReportView.h"
 #include "ui_DlgSettingsReportView.h"
+#include "ThemeDefaults.h"
 
+namespace
+{
+constexpr const char* outputWindowGroup = "BaseApp/Preferences/OutputWindow";
+
+const std::vector<std::string>& reportViewColors()
+{
+    static const std::vector<std::string> colors = {
+        "colorText",
+        "colorLogging",
+        "colorWarning",
+        "colorError",
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace Gui::Dialog;
 
@@ -89,6 +107,23 @@ void DlgSettingsReportView::loadSettings()
     ui->pythonError->blockSignals(true);
     ui->pythonError->onRestore();
     ui->pythonError->blockSignals(false);
+}
+
+
+void DlgSettingsReportView::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(outputWindowGroup, reportViewColors());
+}
+
+void DlgSettingsReportView::resetSettingsToDefaults()
+{
+    ThemeDefaults::removeColors(outputWindowGroup, reportViewColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**

@@ -20,11 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QPushButton>
+#include <string>
+#include <vector>
 
+#include <QPushButton>
 
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
+#include "ThemeDefaults.h"
+
+namespace
+{
+
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+constexpr const char* treeViewGroup = "BaseApp/Preferences/TreeView";
+
+const std::vector<std::string>& viewColors()
+{
+    static const std::vector<std::string> colors = {
+        "BackgroundColor",
+        "BackgroundColor2",
+        "BackgroundColor3",
+        "BackgroundColor4",
+        "CbLabelColor",
+    };
+    return colors;
+}
+
+const std::vector<std::string>& treeViewColors()
+{
+    static const std::vector<std::string> colors = {
+        "TreeEditColor",
+        "TreeActiveColor",
+    };
+    return colors;
+}
+
+const std::vector<std::string>& viewBools()
+{
+    static const std::vector<std::string> bools = {
+        "Simple",
+        "Gradient",
+        "RadialGradient",
+        "UseBackgroundColorMid",
+    };
+    return bools;
+}
+}  // namespace
 
 
 using namespace Gui::Dialog;
@@ -103,6 +145,25 @@ void DlgSettingsViewColor::loadSettings()
     else {
         onRadioButtonRadialGradientToggled(true);
     }
+}
+
+void DlgSettingsViewColor::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(viewGroup, viewColors());
+    ThemeDefaults::applyColors(treeViewGroup, treeViewColors());
+    ThemeDefaults::applyBools(viewGroup, viewBools());
+}
+
+void DlgSettingsViewColor::resetSettingsToDefaults()
+{
+    ThemeDefaults::removeColors(viewGroup, viewColors());
+    ThemeDefaults::removeColors(treeViewGroup, treeViewColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**
