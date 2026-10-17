@@ -251,6 +251,7 @@ public:
     ~RecentFilesAction() override;
 
     void appendFile(const QString&);
+    void removeFile(const QString&);
     void activateFile(int);
     void resizeList(int);
 
