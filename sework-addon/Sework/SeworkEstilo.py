@@ -52,7 +52,9 @@ ESC_FUNDO = {NAVY: "#2F6FB5", NAVY_HOVER: "#3C82CC", YEL: YEL, "#C99A00": "#E5B0
              "#EAF1F8": "#2A3644", "#EEF3F9": "#283240", "#EEF2F8": "#2A3644", "#D3E1EF": "#33465A",
              "#D8E6F3": "#33465A"}
 ESC_TEXTO = {NAVY: "#8CBCEB", NAVY_HOVER: "#A9CEF3", "#FFFFFF": "#F1F4F8", YEL: YEL, "#C99A00": "#F7BE00",
-             "#0B5CAD": "#8CBCEB"}
+             "#0B5CAD": "#8CBCEB",
+             # textos desabilitados continuam visivelmente apagados
+             "#9AA7B4": "#7D8996", "#A3ADB8": "#7D8996", "#8A96A3": "#8C98A5"}
 FUNDO_3D_ESC = "#1C2129"
 TEXTO_PROPS = ("color", "selection-color", "qproperty-groupTextColor", "stroke")
 

@@ -234,6 +234,22 @@ TABS = [
             ("Spreadsheet_AlignVCenter", S, "Meio"), ("Spreadsheet_AlignBottom", S, "Base"),
         ]),
     ]},
+    {"id": "simulacao", "label": "Simulação", "wb": "FemWorkbench", "panels": [
+        # Na ordem em que a análise precisa ser montada
+        ("Assistente", [("Sework_AssistenteFEM", L, "Assistente\nde simulação")]),
+        ("1 · Estudo", [("FEM_Analysis", L, "Novo\nestudo"), ("FEM_SolverCalculiXCcxTools", L, "Solver\nCalculiX")]),
+        ("2 · Material", [("FEM_MaterialSolid", L, "Material\nsólido"), ("FEM_MaterialEditor", S, "Editor de materiais")]),
+        ("3 · Fixações", [("FEM_ConstraintFixed", L, "Fixação"), ("FEM_ConstraintDisplacement", S, "Deslocamento imposto"),
+                          ("FEM_ConstraintSpring", S, "Mola (apoio elástico)")]),
+        ("4 · Cargas", [("FEM_ConstraintForce", L, "Força"), ("FEM_ConstraintPressure", S, "Pressão"),
+                        ("FEM_ConstraintSelfWeight", S, "Peso próprio"), ("FEM_ConstraintCentrif", S, "Centrífuga")]),
+        ("5 · Malha", [("FEM_MeshGmshFromShape", L, "Gerar\nmalha"), ("FEM_MeshRegion", S, "Refino local"),
+                       ("FEM_MeshDisplayInfo", S, "Dados da malha"), ("FEM_MeshClear", S, "Limpar malha")]),
+        ("6 · Calcular", [("FEM_SolverRun", L, "Calcular"), ("FEM_SolverControl", S, "Controle do solver")]),
+        ("7 · Resultados", [("FEM_ResultShow", L, "Ver\nresultados"), ("FEM_PostFilterWarp", S, "Deformada"),
+                            ("FEM_PostFilterClipScalar", S, "Recorte por valor"), ("FEM_PostFilterDataAlongLine", S, "Gráfico ao longo de linha"),
+                            ("FEM_ResultsPurge", S, "Limpar resultados")]),
+    ]},
     {"id": "sework", "label": "Sework", "wb": None, "panels": [
         ("Sework", [
             ("Sework_Inicio", L, "Tela\ninicial"), ("Sework_AplicarTema", L, "Aplicar\ntema"),
@@ -243,6 +259,7 @@ TABS = [
             ("Sework_TemaIcones", S, "Tema de ícones"), ("Sework_BarrasClassicas", S, "Barras clássicas"),
             ("Sework_RemoverSplash", S, "Splash original"), ("Sework_ModoDistribuicao", S, "Modo distribuição"),
         ]),
+        ("Qualidade", [("Sework_Testes", L, "Testes\nautomáticos")]),
     ]},
 ]
 
@@ -332,7 +349,7 @@ def _cmd_actions(name):
         acts = [a for a in (cmd.getAction() or []) if a is not None]
     except Exception:
         acts = []
-    if not acts and name.startswith("Sework_"):
+    if not acts and (name.startswith("Sework_") or name.startswith("FEM_")):
         acts = [_own_action(name, cmd)]
     return [a for a in acts if a is not None]
 

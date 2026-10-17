@@ -594,6 +594,13 @@ def register_commands():
         FreeCADGui.addCommand("Sework_Inicio", SeworkInicio.CmdInicio())
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: tela inicial indisponível: {}\n".format(exc))
+    try:
+        import SeworkFEM
+        FreeCADGui.addCommand("Sework_AssistenteFEM", SeworkFEM.CmdAssistenteFEM())
+        import SeworkTestes
+        FreeCADGui.addCommand("Sework_Testes", SeworkTestes.CmdTestes())
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: assistente de simulação indisponível: {}\n".format(exc))
 
 
 def install_translations():
