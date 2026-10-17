@@ -2416,6 +2416,7 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
         // without having been docked before.
         if (mode != CreateViewMode::Clone) {
             getMainWindow()->addWindow(view3D);
+            getDocument()->setStatus(App::Document::HiddenDoc, false);
         }
 
         view3D->getViewer()->redraw();
