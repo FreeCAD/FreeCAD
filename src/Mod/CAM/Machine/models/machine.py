@@ -25,7 +25,8 @@ import Path
 import FreeCAD
 import pathlib
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional, Tuple, Callable
+from typing import Any
+from collections.abc import Callable
 from collections import namedtuple
 from enum import Enum
 
@@ -169,12 +170,11 @@ class ProcessingOptions:
     tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
-    f_for_rapid_moves = False
     xy_before_z_after_tool_change: bool = (
         False  # Decompose first move after tool change: XY first, then Z
     )
 
-    return_to: Optional[Tuple[float, float, float]] = None  # (x, y, z) or None
+    return_to: tuple[float, float, float] | None = None  # (x, y, z) or None
 
 
 # ============================================================================
@@ -186,8 +186,8 @@ class ProcessingOptions:
 class BaseFrame:
     """Base coordinate frame definition."""
 
-    origin: List[float] = field(default_factory=lambda: [0, 0, 0])
-    orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
+    origin: list[float] = field(default_factory=lambda: [0, 0, 0])
+    orientation_quaternion: list[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
 
 class RotationStrategy(Enum):
@@ -247,8 +247,8 @@ class LinearAxis:
     max_velocity: float = 10000
     sequence: int = 0
     role: AxisRole = AxisRole.TABLE_LINEAR
-    parent: Optional[str] = None
-    joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
+    parent: str | None = None
+    joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
 
     def __post_init__(self):
         """Normalize direction vector and validate parameters after initialization"""
@@ -343,8 +343,8 @@ class RotaryAxis:
     sequence: int = 0
     prefer_positive: bool = True
     role: AxisRole = AxisRole.TABLE_ROTARY
-    parent: Optional[str] = None
-    joint_origin: List[float] = field(default_factory=lambda: [0, 0, 0])
+    parent: str | None = None
+    joint_origin: list[float] = field(default_factory=lambda: [0, 0, 0])
     solution_preference: str = "shortest"  # "shortest", "positive", "negative"
     allow_flip: bool = True
     wrap_strategy: WrapStrategy = WrapStrategy.UNWOUND
@@ -547,7 +547,7 @@ class Toolhead:
 
     name: str
     toolhead_type: ToolheadType = ToolheadType.ROTARY
-    id: Optional[str] = None
+    id: str | None = None
 
     # Power and performance specifications
     max_power_kw: float = 0
@@ -566,13 +566,13 @@ class Toolhead:
     toolhead_wait: float = 0.0  # seconds to wait after toolhead start
 
     # Type-specific parameters
-    laser_wavelength: Optional[float] = None  # nm, for lasers
-    laser_focus_range: Optional[Tuple[float, float]] = None  # min/max focus distance
-    waterjet_pressure: Optional[float] = None  # bar, for waterjets
-    plasma_amperage: Optional[float] = None  # amps, for plasma
+    laser_wavelength: float | None = None  # nm, for lasers
+    laser_focus_range: tuple[float, float] | None = None  # min/max focus distance
+    waterjet_pressure: float | None = None  # bar, for waterjets
+    plasma_amperage: float | None = None  # amps, for plasma
 
     # Capabilities (auto-generated based on type)
-    capabilities: Optional[ToolheadCapabilities] = None
+    capabilities: ToolheadCapabilities | None = None
 
     def __post_init__(self):
         """Set default values and capabilities"""
@@ -586,9 +586,8 @@ class Toolhead:
         elif self.toolhead_type == ToolheadType.WATERJET:
             if self.waterjet_pressure is None:
                 self.waterjet_pressure = 4000.0  # Default 4000 bar
-        elif self.toolhead_type == ToolheadType.PLASMA:
-            if self.plasma_amperage is None:
-                self.plasma_amperage = 45.0  # Default 45 amps
+        elif self.toolhead_type == ToolheadType.PLASMA and self.plasma_amperage is None:
+            self.plasma_amperage = 45.0  # Default 45 amps
 
     def is_rotary(self) -> bool:
         """Check if this is a rotary toolhead."""
@@ -736,16 +735,16 @@ class Machine:
     description: str = ""
 
     # Machine components
-    linear_axes: Dict[str, LinearAxis] = field(default_factory=dict)
-    rotary_axes: Dict[str, RotaryAxis] = field(default_factory=dict)
-    toolheads: List[Toolhead] = field(default_factory=list)
+    linear_axes: dict[str, LinearAxis] = field(default_factory=dict)
+    rotary_axes: dict[str, RotaryAxis] = field(default_factory=dict)
+    toolheads: list[Toolhead] = field(default_factory=list)
 
     # Kinematics configuration
     kinematics: Kinematics = field(default_factory=Kinematics)
 
     # Rotary axis configuration (legacy - will be deprecated)
-    primary_rotary_axis: Optional[str] = None
-    secondary_rotary_axis: Optional[str] = None
+    primary_rotary_axis: str | None = None
+    secondary_rotary_axis: str | None = None
     compound_moves: bool = True
     prefer_positive_rotation: bool = True
 
@@ -764,10 +763,10 @@ class Machine:
 
     # Post-processor selection and configuration
     postprocessor_file_name: str = ""
-    postprocessor_properties: Dict[str, Any] = field(default_factory=dict)
+    postprocessor_properties: dict[str, Any] = field(default_factory=dict)
 
     # Dynamic state (for runtime)
-    parameter_functions: Dict[str, Callable] = field(default_factory=dict)
+    parameter_functions: dict[str, Callable] = field(default_factory=dict)
 
     def __post_init__(self):
         """Initialize computed fields and handle backward compatibility"""
@@ -871,14 +870,14 @@ class Machine:
         return len(self.rotary_axes) == 1
 
     @property
-    def motion_commands(self) -> List[str]:
+    def motion_commands(self) -> list[str]:
         """Get list of motion commands that change position"""
         import Path.Geom as PathGeom
 
         return PathGeom.CmdMoveAll
 
     @property
-    def rapid_moves(self) -> List[str]:
+    def rapid_moves(self) -> list[str]:
         """Get list of rapid move commands"""
         import Path.Geom as PathGeom
 
@@ -971,7 +970,7 @@ class Machine:
         """Get a rotary axis by name"""
         return self.rotary_axes.get(name)
 
-    def get_spindle_by_index(self, index: int) -> Optional[Toolhead]:
+    def get_spindle_by_index(self, index: int) -> Toolhead | None:
         """Get toolhead by index (legacy compatibility method).
 
         Args:
@@ -985,12 +984,12 @@ class Machine:
         return None
 
     @property
-    def spindles(self) -> List[Toolhead]:
+    def spindles(self) -> list[Toolhead]:
         """Legacy compatibility property for toolheads."""
         return self.toolheads
 
     @spindles.setter
-    def spindles(self, value: List[Toolhead]):
+    def spindles(self, value: list[Toolhead]):
         """Legacy compatibility setter for toolheads."""
         self.toolheads = value
 
@@ -1254,7 +1253,7 @@ class Machine:
         self.secondary_rotary_axis = None
         self.compound_moves = True
 
-    def validate_kinematic_chain(self) -> List[str]:
+    def validate_kinematic_chain(self) -> list[str]:
         """Validate the kinematic chain configuration.
 
         Returns:
@@ -1294,7 +1293,7 @@ class Machine:
 
         return errors
 
-    def _get_kinematic_chains(self) -> Dict[str, List]:
+    def _get_kinematic_chains(self) -> dict[str, list]:
         """Group axes by their kinematic chains.
 
         Returns:
@@ -1326,7 +1325,7 @@ class Machine:
 
         return chains
 
-    def get_axis_chain(self, axis_name: str) -> List[str]:
+    def get_axis_chain(self, axis_name: str) -> list[str]:
         """Get the kinematic chain for a specific axis.
 
         Args:
@@ -1474,7 +1473,7 @@ class Machine:
         self.compound_moves = True
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Machine":
+    def from_dict(cls, data: dict[str, Any]) -> "Machine":
         """Deserialize configuration from dictionary (supports both old and new formats)"""
         machine_data = data.get("machine", data)  # Support both old and new formats
 

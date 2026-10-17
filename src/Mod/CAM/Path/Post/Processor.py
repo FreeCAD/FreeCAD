@@ -32,7 +32,7 @@ import os
 import re
 import sys
 import itertools
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 import datetime
 from contextlib import contextmanager
 from itertools import groupby
@@ -51,6 +51,7 @@ from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
+import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Util as PathUtil
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
@@ -206,18 +207,18 @@ class _HeaderBuilder:
 #
 # Define some types that are used throughout this file.
 #
-Defaults = Dict[str, bool]
+Defaults = dict[str, bool]
 FormatHelp = str
-GCodeOrNone = Optional[str]
-GCodeSections = List[Tuple[str, GCodeOrNone]]
+GCodeOrNone = str | None
+GCodeSections = list[tuple[str, GCodeOrNone]]
 Parser = argparse.ArgumentParser
-ParserArgs = Union[None, str, argparse.Namespace]
-Postables = Union[List, List[Tuple[str, List]]]
-Section = Tuple[str, List]
-Sublist = List
+ParserArgs = None | str | argparse.Namespace
+Postables = list | list[tuple[str, list]]
+Section = tuple[str, list]
+Sublist = list
 Units = str
-Values = Dict[str, Any]
-Visible = Dict[str, bool]
+Values = dict[str, Any]
+Visible = dict[str, bool]
 
 
 # ---------------------------------------------------------------------------
@@ -255,7 +256,7 @@ VALID_SCOPES = (SCOPE_MACHINE, SCOPE_JOB, SCOPE_RUN, SCOPE_INTERNAL)
 DEFAULT_SCOPE = SCOPE_JOB
 
 
-def property_scope(prop: Dict[str, Any]) -> str:
+def property_scope(prop: dict[str, Any]) -> str:
     """Return the scope of a property schema entry.
 
     Reads the "scope" key.  For backwards compatibility with schemas written
@@ -287,7 +288,7 @@ def property_scope(prop: Dict[str, Any]) -> str:
     return scope
 
 
-def properties_in_scope(schema, *scopes) -> List[Dict[str, Any]]:
+def properties_in_scope(schema, *scopes) -> list[dict[str, Any]]:
     """Filter a property schema down to the entries in the given scopes.
 
     Args:
@@ -359,7 +360,7 @@ class PostProcessorFactory:
 
                 try:
                     PostClass = getattr(module, class_name)
-                except AttributeError as e:
+                except AttributeError:
                     # Return an instance of WrapperPost if no valid class is found
                     Path.Log.debug(f"Post processor {postname} is a script")
                     return WrapperPost(job, module_path, module_name)
@@ -409,7 +410,7 @@ class PostProcessor:
     PLANE_COMMAND = TiltedWorkPlane.PlaneCommand.G68_2
 
     @classmethod
-    def get_common_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_common_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return schema for common properties that all postprocessors should expose.
 
@@ -777,7 +778,7 @@ class PostProcessor:
         ]
 
     @classmethod
-    def get_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return schema describing configurable properties for this postprocessor.
 
@@ -812,7 +813,7 @@ class PostProcessor:
         return []
 
     @classmethod
-    def get_full_property_schema(cls) -> List[Dict[str, Any]]:
+    def get_full_property_schema(cls) -> list[dict[str, Any]]:
         """
         Return the complete property schema including both common and postprocessor-specific properties.
 
@@ -1065,10 +1066,13 @@ class PostProcessor:
         self.values["OUTPUT_DOUBLES"] = getattr(duplicates, "parameters", False)
 
         # Processing options
-        for (
-            option
-        ) in "split_arcs f_for_rapid_moves translate_rapid_moves translate_drill_cycles tool_change xy_before_z_after_tool_change filter_inefficient_moves".split(
-            " "
+        for option in (
+            "filter_inefficient_moves",
+            "split_arcs",
+            "translate_drill_cycles",
+            "translate_rapid_moves",
+            "tool_change",
+            "xy_before_z_after_tool_change",
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
 
@@ -1140,7 +1144,7 @@ class PostProcessor:
             if name and name not in self._machine.postprocessor_properties:
                 default = prop.get("default", "")
                 self._machine.postprocessor_properties[name] = default
-                Path.Log.debug(f"Schema default applied: {name} = {repr(default)}")
+                Path.Log.debug(f"Schema default applied: {name} = {default!r}")
 
     def build_configuration_bundle(self, overrides=None):
         """Build the complete postprocessor configuration as a flat dict.
@@ -1172,7 +1176,7 @@ class PostProcessor:
         schema = self.get_full_property_schema()
         schema_keys = {x["name"] for x in schema}
         # HACK: not really schema-keys, but no-where else to deal with
-        schema_keys |= set("comment selected_fixtures job_author".split(" "))
+        schema_keys |= {"comment", "selected_fixtures", "job_author"}
 
         for prop in schema:
             name = prop.get("name", "")
@@ -1301,18 +1305,16 @@ class PostProcessor:
                 gcodeheader.add_machine_info(self.values["MACHINE_NAME"])
 
             # Add project file if enabled
-            if self.values["PROJECT_FILE_IN_HEADER"] and self._job:
-                if hasattr(self._job, "Document") and self._job.Document:
-                    project_file = self._job.Document.FileName
-                    if project_file:
-                        gcodeheader.add_project_file(project_file)
+            if self.values["PROJECT_FILE_IN_HEADER"] and getattr(self._job, "Document", None):
+                project_file = self._job.Document.FileName
+                if project_file:
+                    gcodeheader.add_project_file(project_file)
 
             # Add document name if enabled
-            if self.values["DOCUMENT_NAME_IN_HEADER"] and self._job:
-                if hasattr(self._job, "Document") and self._job.Document:
-                    doc_name = self._job.Document.Label
-                    if doc_name:
-                        gcodeheader.add_document_name(doc_name)
+            if self.values["DOCUMENT_NAME_IN_HEADER"] and getattr(self._job, "Document", None):
+                doc_name = self._job.Document.Label
+                if doc_name:
+                    gcodeheader.add_document_name(doc_name)
 
             # Add description if enabled
             if self.values["DESCRIPTION_IN_HEADER"]:
@@ -1347,15 +1349,28 @@ class PostProcessor:
                             if tool_key not in seen_tools:
                                 seen_tools.add(tool_key)
                                 gcodeheader.add_tool(tool_key, item.label)
-                    elif item.item_type == "fixture":
-                        if list_fixtures:
-                            if item.path and item.path.Commands:
-                                fixture_name = item.path.Commands[0].Name
-                                if fixture_name not in seen_fixtures:
-                                    seen_fixtures.add(fixture_name)
-                                    gcodeheader.add_fixture(fixture_name)
+                    elif (
+                        item.item_type == "fixture"
+                        and list_fixtures
+                        and item.path
+                        and item.path.Commands
+                    ):
+                        fixture_name = item.path.Commands[0].Name
+                        if fixture_name not in seen_fixtures:
+                            seen_fixtures.add(fixture_name)
+                            gcodeheader.add_fixture(fixture_name)
 
         return gcodeheader
+
+    def _expand_rapid_feed(self, postables):
+        """Add missed rapid feed"""
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.source and getattr(item.source, "ToolController", None):
+                    commands = PathFeedRate.setFeedRate(
+                        item.path.Commands, item.source.ToolController, onlyMissed=True
+                    )
+                    item.path = Path.Path(commands)
 
     def _add_line_numbers(self, postables):
         """Add N word if we are line-numbering
@@ -1386,7 +1401,7 @@ class PostProcessor:
                     if item.data["str"] != "" and not item.data["str"].endswith("\n"):
                         # count last line
                         str_lines += 1
-                    for _ in range(0, str_lines):
+                    for _ in range(str_lines):
                         next(line_number)
 
                 # number Path.Command's
@@ -1541,7 +1556,7 @@ class PostProcessor:
                             cmd.Name = "G1"
                             try:
                                 feed = float(feed_str)
-                            except:
+                            except Exception:
                                 # any conversion error
                                 raise CAMAttributeError(
                                     f"Expected ANNOT_NO_ENGAGEMENT_FEED to be convertable to a float, saw '{feed_str}'",
@@ -2091,7 +2106,7 @@ class PostProcessor:
         positions: of the poses that reach the plane the solver prefers the
         nearest, so operations on one plane keep one pose.
         Returns (positions, reason); positions is None when unreachable."""
-        import Path.Base.Generator.rotation as rotation
+        from Path.Base.Generator import rotation
 
         if not _tool_axis_tilted(placement):
             return {axis.name: 0.0 for axis in chain}, None
@@ -2219,7 +2234,7 @@ class PostProcessor:
         with and without a rotary machine, so a two-sided job on a
         three-axis machine can give each side its own fixture.
         """
-        import Path.Base.Generator.rotation as rotation
+        from Path.Base.Generator import rotation
         from Machine.models.machine import RotationStrategy
 
         machine = self._machine
@@ -2458,7 +2473,7 @@ class PostProcessor:
 
             except (ValueError, AttributeError) as e:  # FIXCAME
                 Path.Log.error(f"Failed to convert a command to output {cmd.Name}: {e}")
-                raise e
+                raise
 
     def _expand_post_item(self, postables) -> None:
         """Expand post-block lines for a postable item based on its type.
@@ -2507,13 +2522,16 @@ class PostProcessor:
         self,
         label: str,
         contents: str | list[str] | Path.Command | list[Path.Command] | list[Any],
-        extra_data={},
+        extra_data=None,
     ) -> Postable:
         """Makes a Postable with the right kind of args and item_type
         for the supported inputs.
         A postable contents=[] is fine, it's just a marker with no content
         extra_data is added to the `data`
         """
+        if extra_data is None:
+            extra_data = {}
+
         if isinstance(contents, str):
             args = {"item_type": "str", "data": {"str": contents}, "path": None, "source": None}
         elif isinstance(contents, Path.Command):
@@ -2794,7 +2812,6 @@ class PostProcessor:
 
     def _convert_start_section(self, section_name, sublist):
         """Override if your PP needs to notice when each section (file) starts"""
-        pass
 
     def _convert_job_sections(self, postables):
         """Convert each section to output-code"""
@@ -2832,7 +2849,7 @@ class PostProcessor:
 
         return job_sections
 
-    def export2(self) -> Union[None, GCodeSections]:
+    def export2(self) -> None | GCodeSections:
         """
         Process jobs through all postprocessing stages to produce final G-code.
 
@@ -2873,6 +2890,9 @@ class PostProcessor:
         # path from its work plane's frame into the frame the machine reaches,
         # and command the rotaries it was solved for.
         postables = self._expand_workplane_frames(postables)
+
+        if self._machine.postprocessor_properties.get("f_for_rapid_moves"):
+            self._expand_rapid_feed(postables)
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
@@ -2927,7 +2947,7 @@ class PostProcessor:
 
         return job_sections
 
-    def export(self) -> Union[None, GCodeSections]:
+    def export(self) -> None | GCodeSections:
         """Process the parser arguments, then postprocess the 'postables'."""
         args: ParserArgs
         flag: bool
@@ -2996,7 +3016,6 @@ class PostProcessor:
 
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
-        #
         PostUtilsArguments.init_shared_values(values)
         #
         # Set any values here that need to override the default values set
@@ -3004,7 +3023,7 @@ class PostProcessor:
         #
         values["UNITS"] = self._units
 
-    def process_arguments(self) -> Tuple[bool, ParserArgs]:
+    def process_arguments(self) -> tuple[bool, ParserArgs]:
         """Process any arguments to the postprocessor."""
         #
         # This function is separated out to make it easier to inherit from this class.
@@ -3096,7 +3115,6 @@ class PostProcessor:
         Args:
             gcode_sections: List of (section_name, gcode) tuples containing all generated G-code
         """
-        pass
 
     def _expand_postprocessor_commands(self, postables):
         """
@@ -3109,7 +3127,6 @@ class PostProcessor:
         Args:
             postables: List of (section_name, items) tuples
         """
-        pass
 
     def pre_processing_dialog(self):
         """
@@ -3349,7 +3366,7 @@ class PostProcessor:
         """Whether consecutive operations solve to different rotary positions
         on this post's machine. An unreachable plane is skipped here; the
         export refuses it with the reason."""
-        import Path.Base.Generator.rotation as rotation
+        from Path.Base.Generator import rotation
         import Path.Dressup.Utils as PathDressup
 
         chain = rotation.build_kinematic_chain(self._machine)
@@ -3478,7 +3495,7 @@ class PostProcessor:
             if (
                 self._operation
                 and getattr(self._operation, "source", None)
-                and getattr(self._operation.source, "Proxy")
+                and getattr(self._operation.source, "Proxy", None)
                 and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
             ):
                 extra = translate(
@@ -3761,19 +3778,18 @@ class PostProcessor:
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]
-                if not self.values["OUTPUT_DOUBLES"]:
-                    # Suppress parameters that haven't changed
-                    if (
-                        parameter in self.machine_state.Tracked
-                        and self.machine_state.previous[parameter] == current_value
-                    ):
-                        continue  # Skip this parameter
-                elif (
+                if (
                     parameter == "F"
                     and command_name in Constants.GCODE_MOVE_RAPID
-                    and (not self.values["F_FOR_RAPID_MOVES"] or current_value == 0.0)
-                ):
-                    continue  # no F for G0, or the F is 0.0 which should be skipped too
+                    and not self.values["F_FOR_RAPID_MOVES"]
+                ):  # Skip F for G0
+                    continue
+                if (
+                    not self.values["OUTPUT_DOUBLES"]
+                    and parameter in self.machine_state.Tracked
+                    and self.machine_state.previous[parameter] == current_value
+                ):  # Suppress parameters that haven't changed
+                    continue
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
@@ -3964,7 +3980,7 @@ class WrapperPost(PostProcessor):
     """Wrapper class for old post processors that are scripts."""
 
     def __init__(self, job, script_path, module_name, *args, **kwargs):
-        super().__init__(job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs)
+        super().__init__(job, *args, tooltip=None, tooltipargs=None, units=None, **kwargs)
         self.script_path = script_path
         self.module_name = module_name
         Path.Log.debug(f"WrapperPost.__init__({script_path})")
