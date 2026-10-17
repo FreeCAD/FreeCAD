@@ -22,6 +22,7 @@
 # ***************************************************************************
 
 import unittest
+import math
 
 import FreeCAD
 import Part
@@ -356,6 +357,26 @@ class TestPad(unittest.TestCase):
         self.Pad.UpToFace = (self.Doc.XZ_Plane, [""])
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pad.Shape.Volume, 1.5)
+
+    def testPadTaperedSmallCircle(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/33427
+        # Inward taper on a small circle used to crash in OCC's offset algorithm
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.Circle(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), 1), False)
+        self.Doc.recompute()
+
+        pad = body.newObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        pad.Length = 10
+        pad.TaperAngle = -1
+        self.Doc.recompute()
+
+        self.assertTrue(pad.Shape.isValid())
+        r1 = 1.0
+        r2 = r1 - 10 * math.tan(math.radians(1))
+        expected = math.pi * 10 / 3 * (r1 * r1 + r1 * r2 + r2 * r2)
+        self.assertAlmostEqual(pad.Shape.Volume, expected, places=4)
 
     def tearDown(self):
         # closing doc
