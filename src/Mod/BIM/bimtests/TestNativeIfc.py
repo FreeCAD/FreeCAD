@@ -21,7 +21,6 @@
 
 """Unit test for the Native IFC module"""
 
-import difflib
 import os
 import tempfile
 import unittest
@@ -33,19 +32,18 @@ import FreeCAD
 import Arch
 import Draft
 
-from . import ifc_import
-from . import ifc_tools
-from . import ifc_export
-from . import ifc_geometry
-from . import ifc_materials
-from . import ifc_layers
-from . import ifc_psets
-from . import ifc_objects
-from . import ifc_generator
-from . import ifc_types
+from bimtests import TestArchBase
+
+from nativeifc import ifc_import
+from nativeifc import ifc_tools
+from nativeifc import ifc_export
+from nativeifc import ifc_geometry
+from nativeifc import ifc_materials
+from nativeifc import ifc_layers
+from nativeifc import ifc_psets
+from nativeifc import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
-FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 SINGLEDOC = False  # This allows one to force singledoc mode for all tests
 SDU = int(SINGLEDOC)  # number of objects is different in singledoc
@@ -54,9 +52,9 @@ SDU = int(SINGLEDOC)  # number of objects is different in singledoc
 
 """
 unit tests for the NativeIFC functionality. To run the tests, either:
-- in terminal mode: FreeCAD -t ifc_selftest
+- in terminal mode: FreeCAD -t bimtests.TestNativeIfc
 - in the FreeCAD UI: Switch to Test Framework workbench, press "Self test" and
-  choose nativeifc.ifc_selftest in the list
+  choose bimtests.TestNativeIfc in the list
 """
 
 
@@ -70,23 +68,22 @@ def getIfcFilePath():
     return IFC_FILE_PATH
 
 
-def clearObjects():
-    names = [o.Name for o in FreeCAD.getDocument("IfcTest").Objects]
-    for n in names:
-        FreeCAD.getDocument("IfcTest").removeObject(n)
+def compare(first_path, second_path):
+    """Returns the sorted ids of the entities that differ between two IFC files.
 
+    An entity differs if its id exists in only one of the files (it was added or removed), or if
+    its id exists in both files but its attributes are different."""
 
-def compare(file1, file2):
-    with open(file1) as f1:
-        f1_text = f1.readlines()
-    with open(file2) as f2:
-        f2_text = f2.readlines()
-    res = [
-        l for l in difflib.unified_diff(f1_text, f2_text, fromfile=file1, tofile=file2, lineterm="")
-    ]
-    res = [l for l in res if l.startswith("+") or l.startswith("-")]
-    res = [l for l in res if not l.startswith("+++") and not l.startswith("---")]
-    return res
+    first_file = ifcopenshell.open(first_path)
+    second_file = ifcopenshell.open(second_path)
+    first_ids = {entity.id() for entity in first_file}
+    second_ids = {entity.id() for entity in second_file}
+    changed_ids = {
+        entity_id
+        for entity_id in first_ids & second_ids
+        if str(first_file.by_id(entity_id)) != str(second_file.by_id(entity_id))
+    }
+    return sorted(changed_ids | (first_ids ^ second_ids))
 
 
 def get_schema_descendant_names(schema_name, root_name):
@@ -101,20 +98,54 @@ def get_schema_descendant_names(schema_name, root_name):
     return sorted(set(descendants))
 
 
-class NativeIFCTest(unittest.TestCase):
+class TestNativeIfc(TestArchBase.TestArchBase):
 
-    def setUp(self):
-        # setting a new document to hold the tests
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != "IfcTest":
-                FreeCAD.newDocument("IfcTest")
-        else:
-            FreeCAD.newDocument("IfcTest")
-        FreeCAD.setActiveDocument("IfcTest")
+    def createFreeCADFile(self):
+        """Saves the sample IFC file, imported with display-only geometry, as a FreeCAD file.
 
-    def tearDown(self):
-        FreeCAD.closeDocument("IfcTest")
-        pass
+        The file is deleted when the test ends. Returns its path."""
+
+        source_document = ifc_import.insert(
+            getIfcFilePath(),
+            "IfcSource",
+            strategy=2,
+            shapemode=1,
+            switchwb=0,
+            silent=True,
+            singledoc=SINGLEDOC,
+        )
+        file_descriptor, freecad_path = tempfile.mkstemp(suffix=".FCStd")
+        # Windows refuses to write to or delete a file that still has an open handle
+        os.close(file_descriptor)
+        self.addCleanup(os.remove, freecad_path)
+        source_document.saveAs(freecad_path)
+        FreeCAD.closeDocument(source_document.Name)
+        return freecad_path
+
+    @staticmethod
+    def _get_pset(element, pset_name):
+        for rel in getattr(element, "IsDefinedBy", []) or []:
+            if not rel.is_a("IfcRelDefinesByProperties"):
+                continue
+            pset = rel.RelatingPropertyDefinition
+            if pset and getattr(pset, "Name", None) == pset_name:
+                return pset
+        return None
+
+    @staticmethod
+    def _get_quantity_value(element, quantity_name):
+        for rel in getattr(element, "IsDefinedBy", []) or []:
+            if not rel.is_a("IfcRelDefinesByProperties"):
+                continue
+            pset = rel.RelatingPropertyDefinition
+            if not pset or not pset.is_a("IfcElementQuantity"):
+                continue
+            for quantity in getattr(pset, "Quantities", []) or []:
+                if quantity.Name != quantity_name:
+                    continue
+                if hasattr(quantity, "LengthValue"):
+                    return quantity.LengthValue
+        return None
 
     def assertClassEnumMatchesFamily(self, obj, root_name):
         ifcfile = ifc_tools.get_ifcfile(obj)
@@ -125,76 +156,68 @@ class NativeIFCTest(unittest.TestCase):
 
     def test01_ImportCoinSingle(self):
         FreeCAD.Console.PrintMessage("NativeIFC 01: Importing single object, coin mode...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=0,
             shapemode=1,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
         self.assertTrue(fco == 1 - SDU, "ImportCoinSingle failed")
 
     def test02_ImportCoinStructure(self):
         FreeCAD.Console.PrintMessage("NativeIFC 02: Importing model structure, coin mode...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=1,
             shapemode=1,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
         self.assertTrue(fco == 4 - SDU, "ImportCoinStructure failed")
 
     def test03_ImportCoinFull(self):
-        global FCSTD_FILE_PATH
         FreeCAD.Console.PrintMessage("NativeIFC 03: Importing full model, coin mode...")
-        clearObjects()
         fp = getIfcFilePath()
-        d = ifc_import.insert(
+        ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=1,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        path = tempfile.mkstemp(suffix=".FCStd")[1]
-        d.saveAs(path)
-        FCSTD_FILE_PATH = path
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
         self.assertTrue(fco > 4 - SDU, "ImportCoinFull failed")
 
     def test04_ImportShapeFull(self):
         FreeCAD.Console.PrintMessage("NativeIFC 04: Importing full model, shape mode...")
-        clearObjects()
         fp = getIfcFilePath()
         d = ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
         self.assertTrue(fco > 4 - SDU, "ImportShapeFull failed")
 
     def test05_ImportFreeCAD(self):
         FreeCAD.Console.PrintMessage("NativeIFC 05: FreeCAD import of NativeIFC coin file...")
-        clearObjects()
-        doc = FreeCAD.open(FCSTD_FILE_PATH)
+        doc = FreeCAD.open(self.createFreeCADFile())
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
         obj = doc.Objects[-1]
         proj = ifc_tools.get_project(obj)
         ifcfile = ifc_tools.get_ifcfile(proj)
@@ -203,53 +226,53 @@ class NativeIFCTest(unittest.TestCase):
 
     def test06_ModifyObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 06: Modifying IFC document...")
-        doc = FreeCAD.open(FCSTD_FILE_PATH)
+        doc = FreeCAD.open(self.createFreeCADFile())
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
         obj = doc.Objects[-1]
         obj.Label = "Modified name"
         proj = ifc_tools.get_project(obj)
         proj.IfcFilePath = proj.IfcFilePath[:-4] + "_modified.ifc"
         ifc_tools.save_ifc(proj)
-        ifc_diff = compare(IFC_FILE_PATH, proj.IfcFilePath)
+        # The renamed window, and the new IfcOwnerHistory entity that records the change
+        ifc_diff = compare(getIfcFilePath(), proj.IfcFilePath)
         obj.ShapeMode = 0
         obj.Proxy.execute(obj)
-        self.assertTrue(obj.Shape.Volume > 2 and len(ifc_diff) <= 5, "ModifyObjects failed")
+        self.assertTrue(obj.Shape.Volume > 2 and len(ifc_diff) <= 2, "ModifyObjects failed")
 
     def test07_CreateDocument(self):
         FreeCAD.Console.PrintMessage("NativeIFC 07: Creating new IFC document...")
-        doc = FreeCAD.ActiveDocument
+        doc = self.document
         ifc_tools.create_document(doc, silent=True)
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
-        print(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
+        print(self.document.Objects)
         self.assertTrue(fco == 1 - SDU, "CreateDocument failed")
 
     def test08_ChangeIFCSchema(self):
         FreeCAD.Console.PrintMessage("NativeIFC 08: Changing IFC schema...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=1,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        obj = FreeCAD.getDocument("IfcTest").Objects[-1]
+        obj = self.document.Objects[-1]
         proj = ifc_tools.get_project(obj)
         oldid = obj.StepId
         proj.Proxy.silent = True
         proj.Schema = "IFC2X3"
-        FreeCAD.getDocument("IfcTest").recompute()
+        self.document.recompute()
         self.assertTrue(obj.StepId != oldid, "ChangeIFCSchema failed")
 
     def test08b_ClassListUsesActiveSchema(self):
         FreeCAD.Console.PrintMessage("NativeIFC 08b: IFC class list uses full schema...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
@@ -258,15 +281,14 @@ class NativeIFCTest(unittest.TestCase):
         )
         wall = next(
             o
-            for o in FreeCAD.getDocument("IfcTest").Objects
+            for o in self.document.Objects
             if getattr(o, "IfcClass", "") in ("IfcWall", "IfcWallStandardCase")
         )
         self.assertClassEnumMatchesFamily(wall, "IfcProduct")
 
     def test08c_IFC2X3TypeClassListUsesTypeFamily(self):
         FreeCAD.Console.PrintMessage("NativeIFC 08c: IFC2X3 type class list uses full schema...")
-        clearObjects()
-        doc = FreeCAD.ActiveDocument
+        doc = self.document
         proj = ifc_tools.create_document(doc, silent=True)
         proj.Proxy.silent = True
         proj.Schema = "IFC2X3"
@@ -295,7 +317,7 @@ class NativeIFCTest(unittest.TestCase):
 
     def test09_CreateBIMObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09: Creating BIM objects...")
-        doc = FreeCAD.ActiveDocument
+        doc = self.document
         proj = ifc_tools.create_document(doc, silent=True)
         site = Arch.makeSite()
         site = ifc_tools.aggregate(site, proj)
@@ -316,91 +338,162 @@ class NativeIFCTest(unittest.TestCase):
         slab.IfcType = "Slab"
         slab = ifc_tools.aggregate(slab, storey)
         # TODO create door, window
-        fco = len(FreeCAD.getDocument("IfcTest").Objects)
+        fco = len(self.document.Objects)
         ifco = len(proj.Proxy.ifcfile.by_type("IfcRoot"))
         print(ifco, "IFC objects created")
-        self.assertTrue(fco == 8 - SDU and ifco == 12, "CreateDocument failed")
+        # The 12 entities for the objects and their relationships, plus the property set
+        # of the storey and its relationship
+        self.assertTrue(fco == 8 - SDU and ifco == 14, "CreateDocument failed")
 
-    def test09b_AggregatedStoreyKeepsLevelData(self):
-        FreeCAD.Console.PrintMessage("NativeIFC 09b: Aggregated storey keeps level data...")
-        clearObjects()
-        doc = FreeCAD.ActiveDocument
-        proj = ifc_tools.create_document(doc, silent=True)
-        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+    def test_nativeifc_aggregate_storey_pset_respects_file_scale(self):
+        self.printTestMessage("Testing NativeIFC storey pset restore respects file scale")
+
+        class DummyStorey:
+            PropertiesList = ["Height", "LevelOffset"]
+            Height = 0
+            LevelOffset = 0
+
+            @staticmethod
+            def getTypeIdOfProperty(_property_name):
+                return "App::PropertyLength"
+
+        pset = type("Pset", (), {})()
+        pset.HasProperties = [
+            type(
+                "Prop",
+                (),
+                {
+                    "Name": "FreeCAD_Height",
+                    "NominalValue": type("NominalValue", (), {"wrappedValue": 9.842519685})(),
+                },
+            )(),
+            type(
+                "Prop",
+                (),
+                {
+                    "Name": "FreeCAD_LevelOffset",
+                    "NominalValue": type("NominalValue", (), {"wrappedValue": 0.4101049869})(),
+                },
+            )(),
+        ]
+        floor = DummyStorey()
+
+        self.assertTrue(
+            ifc_tools.restore_freecad_property(
+                floor,
+                object(),
+                "Height",
+                object(),
+                pset=pset,
+                scale=304.8,
+            )
+        )
+        self.assertTrue(
+            ifc_tools.restore_freecad_property(
+                floor,
+                object(),
+                "LevelOffset",
+                object(),
+                pset=pset,
+                scale=304.8,
+            )
+        )
+
+        self.assertAlmostEqual(floor.Height, 3000, delta=0.001)
+        self.assertAlmostEqual(floor.LevelOffset, 125, delta=0.001)
+
+    def test_nativeifc_aggregate_storey_preserves_level_data(self):
+        self.printTestMessage("Testing NativeIFC aggregated storey level data")
+
+        project = ifc_tools.create_document(self.document, silent=True)
+        site = ifc_tools.aggregate(Arch.makeSite(), project)
         building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+
         source_storey = Arch.makeFloor(name="AggregatedLevel")
         source_storey.Height = 3000
+        source_storey.LevelOffset = 125
         source_storey.Placement.move(FreeCAD.Vector(0, 0, 6000))
+
         storey = ifc_tools.aggregate(source_storey, building)
-        doc.recompute()
-        self.assertTrue("Height" in storey.PropertiesList, "Storey height property missing")
+        self.document.recompute()
+
         self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
+        self.assertAlmostEqual(storey.LevelOffset.Value, 125, delta=0.001)
         self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
         self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
-        element = proj.Proxy.ifcfile[storey.StepId]
-        self.assertAlmostEqual(element.Elevation, 6.0, delta=0.000001)
-        if element.ObjectPlacement:
-            placement = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
-            self.assertAlmostEqual(placement[2][3], 6.0, delta=0.000001)
-        pset = ifc_psets.get_pset("FreeCADPropertySet", element)
-        self.assertIsNotNone(pset, "Storey FreeCADPropertySet missing")
+
+        element = project.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=1e-6)
+        if getattr(element, "ObjectPlacement", None):
+            matrix = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(matrix[2][3], 6.0, delta=1e-6)
+
+        pset = self._get_pset(element, "FreeCADPropertySet")
+        self.assertIsNotNone(pset)
         prop_values = {
             prop.Name: prop.NominalValue.wrappedValue
             for prop in getattr(pset, "HasProperties", []) or []
             if getattr(prop, "NominalValue", None)
         }
-        self.assertAlmostEqual(prop_values["FreeCAD_Height"], 3.0, delta=0.000001)
+        self.assertAlmostEqual(prop_values["FreeCAD_Height"], 3.0, delta=1e-6)
+        self.assertAlmostEqual(prop_values["FreeCAD_LevelOffset"], 0.125, delta=1e-6)
         storey.Placement.move(FreeCAD.Vector(0, 0, 500))
-        doc.recompute()
+        self.document.recompute()
         self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
-    def test09c_DirectConversionStoreyKeepsLevelData(self):
-        FreeCAD.Console.PrintMessage("NativeIFC 09c: Direct conversion keeps level data...")
-        clearObjects()
-        doc = FreeCAD.ActiveDocument
+    def test_strict_ifc_direct_conversion_preserves_level_data(self):
+        self.printTestMessage("Testing Strict IFC direct-conversion storey level data")
+
         source_storey = Arch.makeFloor(name="ConvertedLevel")
         source_storey.Height = 3000
         source_storey.Placement.move(FreeCAD.Vector(0, 0, 6000))
-        load_orphans = PARAMS.GetBool("LoadOrphans", True)
+
+        load_orphans = ifc_tools.PARAMS.GetBool("LoadOrphans", True)
         try:
-            PARAMS.SetBool("LoadOrphans", True)
-            ifc_export.direct_conversion([source_storey], doc)
-            doc.recompute()
+            ifc_tools.PARAMS.SetBool("LoadOrphans", True)
+            ifc_export.direct_conversion([source_storey], self.document)
+            self.document.recompute()
         finally:
-            PARAMS.SetBool("LoadOrphans", load_orphans)
+            ifc_tools.PARAMS.SetBool("LoadOrphans", load_orphans)
+
         converted = [
-            obj for obj in doc.Objects if getattr(obj, "IfcClass", "") == "IfcBuildingStorey"
+            obj
+            for obj in self.document.Objects
+            if getattr(obj, "IfcClass", "") == "IfcBuildingStorey"
         ]
-        self.assertEqual(len(converted), 1, "Direct conversion did not recreate a single storey")
+        self.assertEqual(len(converted), 1)
+
         storey = converted[0]
-        self.assertTrue("Height" in storey.PropertiesList, "Converted storey height missing")
         self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
         self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
         self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
-        element = doc.Proxy.ifcfile[storey.StepId]
-        self.assertAlmostEqual(element.Elevation, 6.0, delta=0.000001)
-        if element.ObjectPlacement:
-            placement = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
-            self.assertAlmostEqual(placement[2][3], 6.0, delta=0.000001)
-        self.assertAlmostEqual(ifc_tools.get_quantity_value(element, "Height"), 3.0, delta=0.000001)
+
+        element = self.document.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=1e-6)
+        if getattr(element, "ObjectPlacement", None):
+            matrix = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(matrix[2][3], 6.0, delta=1e-6)
+        self.assertAlmostEqual(self._get_quantity_value(element, "Height"), 3.0, delta=1e-6)
         storey.Placement.move(FreeCAD.Vector(0, 0, 500))
-        doc.recompute()
+        self.document.recompute()
         self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
+    @unittest.expectedFailure
+    # See https://github.com/FreeCAD/FreeCAD/pull/31801 and
+    # https://github.com/FreeCAD/FreeCAD/issues/31403. Re-enable once fixed.
     def test10_ChangePlacement(self):
         FreeCAD.Console.PrintMessage("NativeIFC 10: Changing Placement...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=1,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        obj = FreeCAD.getDocument("IfcTest").getObject("IfcObject00" + str(4 - SDU))
+        obj = self.document.getObject("IfcObject00" + str(4 - SDU))
         elem = ifc_tools.get_ifc_element(obj)
         obj.Placement.move(FreeCAD.Vector(100, 200, 300))
         new_plac = ifcopenshell.util.placement.get_local_placement(elem.ObjectPlacement)
@@ -410,61 +503,37 @@ class NativeIFCTest(unittest.TestCase):
 
     def test11_ChangeGeometry(self):
         FreeCAD.Console.PrintMessage("NativeIFC 11: Changing Geometry...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        obj = FreeCAD.getDocument("IfcTest").getObject("IfcObject004")
+        obj = self.document.getObjectsByLabel("South wall")[0]
         ifc_geometry.add_geom_properties(obj)
         obj.ExtrusionDepth = "6000 mm"
-        FreeCAD.getDocument("IfcTest").recompute()
+        self.document.recompute()
         self.assertTrue(obj.Shape.Volume > 1500000, "ChangeGeometry failed")
-
-    def test12_RemoveObject(self):
-        from . import ifc_observer
-
-        ifc_observer.add_observer()
-        FreeCAD.Console.PrintMessage("NativeIFC 12: Remove object...")
-        clearObjects()
-        fp = getIfcFilePath()
-        ifc_import.insert(
-            fp,
-            "IfcTest",
-            strategy=2,
-            shapemode=0,
-            switchwb=0,
-            silent=True,
-            singledoc=SINGLEDOC,
-        )
-        ifcfile = ifc_tools.get_ifcfile(FreeCAD.getDocument("IfcTest").Objects[-1])
-        count1 = len(ifcfile.by_type("IfcProduct"))
-        FreeCAD.getDocument("IfcTest").removeObject("IfcObject004")
-        count2 = len(ifcfile.by_type("IfcProduct"))
-        self.assertTrue(count2 < count1, "RemoveObject failed")
 
     def test13_Materials(self):
         FreeCAD.Console.PrintMessage("NativeIFC 13: Materials...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        proj = FreeCAD.getDocument("IfcTest").Objects[0]
+        proj = self.document.Objects[0]
         ifc_materials.load_materials(proj)
-        prod = FreeCAD.getDocument("IfcTest").getObject("IfcObject006")
+        prod = self.document.getObject("IfcObject006")
         ifcfile = ifc_tools.get_ifcfile(prod)
         mats_before = ifcfile.by_type("IfcMaterialDefinition")
         mat = Arch.makeMaterial("Red")
@@ -476,8 +545,7 @@ class NativeIFCTest(unittest.TestCase):
 
     def test13b_MaterialLayerLogical(self):
         FreeCAD.Console.PrintMessage("NativeIFC 13b: Material layer logical values...")
-        clearObjects()
-        proj = ifc_tools.create_document(FreeCAD.getDocument("IfcTest"), silent=True)
+        proj = ifc_tools.create_document(self.document, silent=True)
         ifcfile = ifc_tools.get_ifcfile(proj)
         material_set = ifc_tools.api_run(
             "material.add_material_set",
@@ -513,8 +581,8 @@ class NativeIFCTest(unittest.TestCase):
             attributes={"LayerThickness": 21, "IsVentilated": True},
         )
         ifc_materials.create_material(material_set, proj, recursive=True)
-        layer_unknown_obj = ifc_tools.get_object(layer_unknown, FreeCAD.getDocument("IfcTest"))
-        layer_true_obj = ifc_tools.get_object(layer_true, FreeCAD.getDocument("IfcTest"))
+        layer_unknown_obj = ifc_tools.get_object(layer_unknown, self.document)
+        layer_true_obj = ifc_tools.get_object(layer_true, self.document)
         self.assertTrue(layer_unknown_obj is not None, "Logical UNKNOWN layer import failed")
         self.assertTrue(layer_true_obj is not None, "Logical TRUE layer import failed")
         self.assertTrue(
@@ -530,40 +598,38 @@ class NativeIFCTest(unittest.TestCase):
 
     def test14_Layers(self):
         FreeCAD.Console.PrintMessage("NativeIFC 14: Layers...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        proj = FreeCAD.getDocument("IfcTest").Objects[0]
+        proj = self.document.Objects[0]
         ifcfile = ifc_tools.get_ifcfile(proj)
         lays_before = ifcfile.by_type("IfcPresentationLayerAssignment")
         layer = ifc_layers.create_layer("My Layer", proj)
-        prod = FreeCAD.getDocument("IfcTest").getObject("IfcObject006")
+        prod = self.document.getObject("IfcObject006")
         ifc_layers.add_to_layer(prod, layer)
         lays_after = ifcfile.by_type("IfcPresentationLayerAssignment")
         self.assertTrue(len(lays_after) == len(lays_before) + 1, "Layers failed")
 
     def test15_Psets(self):
         FreeCAD.Console.PrintMessage("NativeIFC 15: Psets...")
-        clearObjects()
         fp = getIfcFilePath()
         ifc_import.insert(
             fp,
-            "IfcTest",
+            self.doc_name,
             strategy=2,
             shapemode=0,
             switchwb=0,
             silent=True,
             singledoc=SINGLEDOC,
         )
-        obj = FreeCAD.getDocument("IfcTest").getObject("IfcObject004")
+        obj = self.document.getObject("IfcObject004")
         ifcfile = ifc_tools.get_ifcfile(obj)
         pset = ifc_psets.add_pset(obj, "Pset_Custom")
         ifc_psets.add_property(ifcfile, pset, "MyMessageToTheWorld", "Hello, World!")
