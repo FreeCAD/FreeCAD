@@ -21,6 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
+#include <format>
 #include <string>
 
 
@@ -114,10 +115,10 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().log("Local display name '{}'\n", getDisplayName().toStdString());
-        Base::Console().log("Remote display name '{}'\n",
-                            other.getDisplayName().toStdString());
-        throw InvalidProperty("Model display names don't match");
+        throw InvalidProperty(
+            std::format("Model display names don't match (local '{}', remote '{}')",
+                        getDisplayName().toStdString(),
+                        other.getDisplayName().toStdString()));
     }
     if (_propertyType != other._propertyType) {
         throw InvalidProperty("Model property types don't match");
@@ -136,9 +137,10 @@ void ModelProperty::validate(const ModelProperty& other) const
     }
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().log("Local property column count {}\n", _columns.size());
-        Base::Console().log("Remote property column count {}\n", other._columns.size());
-        throw InvalidProperty("Model property column counts don't match");
+        throw InvalidProperty(
+            std::format("Model property column counts don't match (local {}, remote {})",
+                        _columns.size(),
+                        other._columns.size()));
     }
     for (size_t i = 0; i < _columns.size(); i++) {
         _columns[i].validate(other._columns[i]);
