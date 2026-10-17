@@ -2,7 +2,7 @@
 <package format="1">
   <name>Sework</name>
   <description>Identidade visual Sework Engenharia para o FreeCAD: splash, ícone, título da janela, tema de cores e bancada Sework.</description>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <date>2026-10-16</date>
   <maintainer email="sework@sework.com.br">Sework Engenharia</maintainer>
   <license file="LICENSE">LGPL-2.1-or-later</license>

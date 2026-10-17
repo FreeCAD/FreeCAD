@@ -25,6 +25,16 @@ PARAM_PATH = "User parameter:BaseApp/Preferences/Mod/Sework"
 
 # Textos de origem (inglês) -> português. Aceleradores (&) são opcionais.
 EXTRA = {
+    # Textos encontrados na auditoria visual (sem tradução na versão 1.1.4)
+    "Search preferences…": "Buscar nas preferências…", "Search preferences...": "Buscar nas preferências...",
+    "&Content": "&Conteúdo", "&Alias": "&Apelido", "Pad": "Extrusão",
+    # Botões padrão dos diálogos (vêm do Qt, sem tradução no FreeCAD)
+    "Close": "Fechar", "&Close": "&Fechar", "Cancel": "Cancelar", "&Cancel": "&Cancelar",
+    "Apply": "Aplicar", "&Apply": "&Aplicar", "Help": "Ajuda", "&Help": "&Ajuda",
+    "Reset": "Redefinir", "Restore Defaults": "Restaurar padrões", "&Yes": "&Sim", "&No": "&Não",
+    "Yes to &All": "Sim para &todos", "N&o to All": "Nã&o para todos", "Save": "Salvar", "&Save": "&Salvar",
+    "Save All": "Salvar todos", "Discard": "Descartar", "Don't Save": "Não salvar", "Abort": "Abortar",
+    "Retry": "Tentar de novo", "Ignore": "Ignorar", "&OK": "&OK", "Open": "Abrir", "&Open": "&Abrir",
     # Vistas
     "&1 Front": "&1 Frontal", "&2 Top": "&2 Superior", "&3 Right": "&3 Direita",
     "&4 Rear": "&4 Traseira", "&5 Bottom": "&5 Inferior", "&6 Left": "&6 Esquerda",
@@ -103,6 +113,16 @@ EXTRA = {
     "Surface Finish Symbol": "Símbolo de rugosidade", "Insert SVG": "Inserir SVG",
     "Vertical Length Dimension": "Cota vertical", "Vertical Extent Dimension": "Cota de extensão vertical",
     "New View": "Nova vista", "Weld Symbol": "Símbolo de solda",
+    # Títulos dos painéis de tarefa
+    "Pad parameters": "Parâmetros da extrusão", "Pad Parameters": "Parâmetros da extrusão",
+    "Pocket parameters": "Parâmetros da cavidade", "Pocket Parameters": "Parâmetros da cavidade",
+    "Revolution parameters": "Parâmetros da revolução", "Revolution Parameters": "Parâmetros da revolução",
+    "Groove parameters": "Parâmetros da ranhura", "Groove Parameters": "Parâmetros da ranhura",
+    "Hole parameters": "Parâmetros do furo", "Hole Parameters": "Parâmetros do furo",
+    "Fillet parameters": "Parâmetros do arredondamento", "Fillet Parameters": "Parâmetros do arredondamento",
+    "Chamfer parameters": "Parâmetros do chanfro", "Chamfer Parameters": "Parâmetros do chanfro",
+    "Thickness parameters": "Parâmetros da casca", "Draft parameters": "Parâmetros do ângulo de saída",
+    "Sketch normal": "Normal do esboço", "Taper angle": "Ângulo de inclinação",
     # Barras de ferramentas (títulos)
     "Individual Views": "Vistas individuais", "Part Design Helper Features": "Auxiliares de peça",
     "Part Design Modeling Features": "Modelagem de peça", "Part Design Dress-Up Features": "Acabamento de peça",
@@ -124,10 +144,19 @@ class SeworkTranslator(QtCore.QTranslator):
             bare = k.replace("&", "")
             if bare not in self._t:
                 self._t[bare] = v.replace("&", "")
+        try:
+            from SeworkPropNames import PROPS
+        except Exception:  # pragma: no cover
+            PROPS = {}
+        self._props = PROPS
         self._qm = QtCore.QTranslator()
         self._qm_ok = bool(qm_path) and self._qm.load(qm_path)
 
     def translate(self, context, sourceText, disambiguation=None, n=-1):
+        if context == "App::Property":
+            hit = self._props.get(sourceText)
+            if hit:
+                return hit
         hit = self._t.get(sourceText)
         if hit:
             return hit

@@ -236,11 +236,11 @@ TABS = [
     ]},
     {"id": "sework", "label": "Sework", "wb": None, "panels": [
         ("Sework", [
-            ("Sework_AplicarTema", L, "Aplicar\ntema"), ("Sework_Sobre", L, "Sobre"),
+            ("Sework_Inicio", L, "Tela\ninicial"), ("Sework_AplicarTema", L, "Aplicar\ntema"), ("Sework_Sobre", L, "Sobre"),
         ]),
         ("Interface", [
             ("Sework_TemaIcones", S, "Tema de ícones"), ("Sework_BarrasClassicas", S, "Barras clássicas"),
-            ("Sework_RemoverSplash", S, "Splash original"),
+            ("Sework_RemoverSplash", S, "Splash original"), ("Sework_ModoDistribuicao", S, "Modo distribuição"),
         ]),
     ]},
 ]
@@ -261,7 +261,7 @@ RIBBON_QSS = """
     color: #003A70; background: #FFFFFF; font-weight: 600;
     border-top: 3px solid #F7BE00; border-left: 1px solid #DCE4EC; border-right: 1px solid #DCE4EC;
 }
-#SeworkBrand { color: #003A70; font-weight: 700; font-size: 10pt; padding: 0 12px 0 10px; }
+#SeworkBrand { color: #003A70; font-weight: 700; font-size: 10.5pt; padding: 0 14px 0 8px; }
 #SeworkContent { background: #FFFFFF; border: none; border-bottom: 1px solid #DCE4EC; }
 #SeworkContent > QWidget, #SeworkPage, #SeworkCol { background: #FFFFFF; }
 #SeworkPage QWidget, #SeworkPage QLabel { background: #FFFFFF; color: #1F2A36; }
@@ -305,7 +305,7 @@ QStatusBar { background: #F5F8FC; border-top: 1px solid #E3EAF2; color: #4A5866;
 QDockWidget { font-weight: 600; color: #003A70; }
 QDockWidget::title { background: #F5F8FC; padding: 6px 8px; border-bottom: 1px solid #E3EAF2; }
 QTabBar::tab:selected { color: #003A70; }
-QToolTip { background: #003A70; color: #FFFFFF; border: none; padding: 6px 8px; border-radius: 4px; }
+QToolTip { background: #FFFFFF; color: #1F2A36; border: 1px solid #D5DEE8; padding: 8px 10px; }
 /*SEWORK-END*/
 """
 
@@ -326,10 +326,142 @@ def _cmd_actions(name):
     if cmd is None:
         return []
     try:
-        acts = cmd.getAction() or []
+        acts = [a for a in (cmd.getAction() or []) if a is not None]
     except Exception:
-        return []
+        acts = []
+    if not acts and name.startswith("Sework_"):
+        acts = [_own_action(name, cmd)]
     return [a for a in acts if a is not None]
+
+
+_OWN_ACTIONS = {}
+
+
+def _own_action(name, cmd):
+    """O FreeCAD só cria a QAction de um comando Python quando alguma barra/menu o usa.
+
+    Os comandos Sework só entram em barras da bancada Sework, então antes de ela ser
+    ativada eles não têm ação. Criamos uma ação própria que executa o comando.
+    """
+    if name in _OWN_ACTIONS:
+        return _OWN_ACTIONS[name]
+    try:
+        info = cmd.getInfo()
+    except Exception:
+        info = {}
+    import os as _os
+    QAction = getattr(QtGui, "QAction", None) or QtWidgets.QAction
+    act = QAction(FreeCADGui.getMainWindow())
+    act.setText(info.get("menuText") or name)
+    tip = info.get("toolTip") or ""
+    act.setToolTip(tip)
+    act.setStatusTip(tip)
+    pix = info.get("pixmap") or ""
+    if pix and _os.path.isfile(pix):
+        act.setIcon(QtGui.QIcon(pix))
+    elif pix:
+        try:
+            act.setIcon(FreeCADGui.getIcon(pix))
+        except Exception:
+            pass
+    act.triggered.connect(lambda checked=False, n=name: FreeCADGui.runCommand(n, 0))
+    _OWN_ACTIONS[name] = act
+    return act
+
+
+# -------------------------------------------------------------------------- ícones e dicas
+import hashlib
+import os
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_DIS_CACHE = {}
+_TIP_CACHE = {}
+
+
+def _disabled_pixmap(pm):
+    """Versão desabilitada legível: véu cinza-azulado sobre o ícone, 78 % de opacidade."""
+    tinted = QtGui.QPixmap(pm.size())
+    tinted.fill(QtCore.Qt.transparent)
+    p = QtGui.QPainter(tinted)
+    p.drawPixmap(0, 0, pm)
+    p.setCompositionMode(QtGui.QPainter.CompositionMode_SourceAtop)
+    p.fillRect(tinted.rect(), QtGui.QColor(150, 166, 186, 120))
+    p.end()
+    out = QtGui.QPixmap(pm.size())
+    out.fill(QtCore.Qt.transparent)
+    p = QtGui.QPainter(out)
+    p.setOpacity(0.78)
+    p.drawPixmap(0, 0, tinted)
+    p.end()
+    out.setDevicePixelRatio(pm.devicePixelRatio())
+    return out
+
+
+def _with_disabled(icon, size):
+    """Mesmo ícone, com o modo Desabilitado desenhado pela Sework."""
+    if icon.isNull():
+        return icon
+    key = (icon.cacheKey(), size)
+    if key in _DIS_CACHE:
+        return _DIS_CACHE[key]
+    dpr = 2.0
+    pm = icon.pixmap(QtCore.QSize(size, size) * dpr)
+    pm.setDevicePixelRatio(dpr)
+    out = QtGui.QIcon()
+    out.addPixmap(pm, QtGui.QIcon.Normal)
+    out.addPixmap(pm, QtGui.QIcon.Active)
+    out.addPixmap(_disabled_pixmap(pm), QtGui.QIcon.Disabled)
+    _DIS_CACHE[key] = out
+    return out
+
+
+def _tip_image(icon):
+    """Grava o ícone em 44 px para usar na dica rica (o QToolTip só aceita arquivo)."""
+    d = os.path.join(FreeCAD.getUserAppDataDir(), "SeworkUI", "dicas")
+    key = str(icon.cacheKey())
+    if key in _TIP_CACHE:
+        return _TIP_CACHE[key]
+    try:
+        os.makedirs(d, exist_ok=True)
+        path = os.path.join(d, hashlib.md5(key.encode()).hexdigest()[:12] + ".png")
+        icon.pixmap(88, 88).save(path)
+        _TIP_CACHE[key] = path.replace("\\", "/")
+    except Exception:
+        _TIP_CACHE[key] = None
+    return _TIP_CACHE[key]
+
+
+def _tip_desc(raw, titles):
+    """Texto da dica do FreeCAD sem o título repetido e sem o nome interno do comando."""
+    if not raw:
+        return ""
+    doc = QtGui.QTextDocument()
+    doc.setHtml(raw) if "<" in raw else doc.setPlainText(raw)
+    out = []
+    low = {_clean(t).lower() for t in titles if t}
+    for line in doc.toPlainText().splitlines():
+        t = line.strip()
+        if not t or _clean(t).lower() in low:
+            continue
+        if " " not in t and "_" in t:      # PartDesign_Pad, Std_Open...
+            continue
+        out.append(t)
+    return " ".join(out)
+
+
+def _rich_tip(icon, title, desc, shortcut):
+    img = _tip_image(icon) if not icon.isNull() else None
+    body = "<div style='font-weight:600; color:#003A70; font-size:10pt'>{}</div>".format(title)
+    if desc:
+        body += "<div style='color:#4A5866; margin-top:3px'>{}</div>".format(desc)
+    if shortcut:
+        body += ("<div style='margin-top:6px'><span style='background:#EEF2F8; color:#003A70; "
+                 "font-weight:600'>&nbsp;{}&nbsp;</span></div>").format(shortcut)
+    if not img:
+        return "<div style='max-width:300px'>{}</div>".format(body)
+    return ("<table cellspacing='0' cellpadding='0'><tr>"
+            "<td valign='top' style='padding-right:10px'><img src='{}' width='44' height='44'></td>"
+            "<td valign='top' width='240'>{}</td></tr></table>").format(img, body)
 
 
 # --------------------------------------------------------------------------
@@ -392,16 +524,16 @@ class RibbonButton(QtWidgets.QToolButton):
                 if not x.icon().isNull():
                     icon = x.icon()
                     break
-        self.setIcon(icon)
+        self.setIcon(_with_disabled(icon, ICON_L if self._size == L else ICON_S))
         self.setText(self._label if self._label else _clean(a.text()))
-        tip = _clean(a.text())
-        extra = a.toolTip() or a.statusTip()
-        if extra and _clean(extra) != tip:
-            tip = "<b>{}</b><br>{}".format(tip, extra)
+        action_title = _clean(a.text())
+        title = self._label.replace("\n", " ") if (self._label and len(self._actions) == 1) else action_title
+        desc = _tip_desc(a.toolTip() or a.statusTip(), (title, action_title))
         sc = a.shortcut().toString(QtGui.QKeySequence.NativeText)
-        if sc:
-            tip += "<br><span style='color:#F7BE00'>{}</span>".format(sc)
-        self.setToolTip(tip)
+        key = (title, desc, sc, icon.cacheKey())
+        if getattr(self, "_tipkey", None) != key:
+            self._tipkey = key
+            self.setToolTip(_rich_tip(icon, title, desc, sc))
         enabled = any(x.isEnabled() for x in self._actions) if len(self._actions) > 1 else a.isEnabled()
         self.setEnabled(enabled)
         # Em grupos (menu), o botão não espelha o estado "marcado" da subopção
@@ -471,8 +603,16 @@ class SeworkRibbon(QtWidgets.QWidget):
         rl = QtWidgets.QHBoxLayout(row)
         rl.setContentsMargins(6, 0, 6, 0)
         rl.setSpacing(4)
-        brand = QtWidgets.QLabel("SEWORK")
+        brand = QtWidgets.QLabel()
         brand.setObjectName("SeworkBrand")
+        _ic = os.path.join(_HERE, "Resources", "icons", "sework.svg")
+        if os.path.isfile(_ic):
+            _pm = QtGui.QIcon(_ic).pixmap(40, 40)
+            _pm.setDevicePixelRatio(2.0)
+            brand.setText("<table cellspacing='0' cellpadding='0'><tr><td valign='middle'><img src='{}' width='20' height='20'></td>"
+                          "<td valign='middle' style='padding-left:6px'>Sework</td></tr></table>".format(_ic.replace("\\", "/")))
+        else:
+            brand.setText("Sework")
         brand.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         rl.addWidget(brand)
         self.tabbar = QtWidgets.QTabBar()
@@ -732,7 +872,14 @@ def _apply_global_qss():
     css = app.styleSheet() or ""
     if "/*SEWORK-BEGIN*/" in css:
         return
-    app.setStyleSheet(css + "\n" + GLOBAL_QSS)
+    extra = ""
+    try:
+        import SeworkEstilo
+        if SeworkEstilo.enabled():
+            extra = SeworkEstilo.qss()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: estilo das janelas não aplicado: {}\n".format(exc))
+    app.setStyleSheet(css + "\n" + GLOBAL_QSS.replace("/*SEWORK-END*/", extra + "\n/*SEWORK-END*/"))
 
 
 def _tick():

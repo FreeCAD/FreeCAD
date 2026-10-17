@@ -21,7 +21,8 @@ ADDON_DIR = os.path.dirname(os.path.abspath(__file__))
 RES_DIR = os.path.join(ADDON_DIR, "Resources")
 ICON_PATH = os.path.join(RES_DIR, "icons", "sework.png")
 SPLASH_SRC = os.path.join(RES_DIR, "splash_image.png")
-PACK_CFG = os.path.join(ADDON_DIR, "PreferencePacks", "Sework Claro", "Sework Claro.cfg")
+# O FreeCAD procura o pacote em <addon>/<nome do pacote>/<nome>.cfg
+PACK_CFG = os.path.join(ADDON_DIR, "Sework Claro", "Sework Claro.cfg")
 
 
 def _params():
@@ -34,6 +35,15 @@ def _version_text():
     if len(v) > 2 and v[2]:
         txt += "." + str(v[2])
     return txt
+
+
+def _addon_version():
+    try:
+        import re
+        txt = open(os.path.join(ADDON_DIR, "package.xml"), encoding="utf-8").read()
+        return re.search(r"<version>([^<]+)</version>", txt).group(1)
+    except Exception:
+        return "?"
 
 
 # --------------------------------------------------------------------- branding
@@ -56,6 +66,18 @@ def apply_window_branding():
         mw.setWindowTitle("[*] {} - {}".format(doc.Label, base) if doc else base)
 
 
+# Versões anteriores da splash Sework (podem ser substituídas sem perguntar)
+OLD_SPLASH_MD5 = {"abaffad5496ffefc6199d1d0254842e1"}
+
+
+def _is_old_sework_splash(path):
+    import hashlib
+    try:
+        return hashlib.md5(open(path, "rb").read()).hexdigest() in OLD_SPLASH_MD5
+    except OSError:
+        return False
+
+
 def install_splash():
     """Copia a splash para <dados do usuário>/Gui/images/splash_image.png.
 
@@ -69,7 +91,7 @@ def install_splash():
     try:
         if os.path.isfile(dest) and filecmp.cmp(SPLASH_SRC, dest, shallow=False):
             return
-        if os.path.isfile(dest) and not _params().GetBool("SplashIsOurs", False):
+        if os.path.isfile(dest) and not _params().GetBool("SplashIsOurs", False) and not _is_old_sework_splash(dest):
             # Já existe uma splash personalizada que não é nossa: não sobrescrever.
             FreeCAD.Console.PrintWarning(
                 "Sework: já existe {} — splash Sework não instalada.\n".format(dest)
@@ -243,20 +265,44 @@ class CmdSobre:
         }
 
     def Activated(self):
-        box = QtWidgets.QMessageBox(FreeCADGui.getMainWindow())
-        box.setWindowTitle("Sobre o " + APP_NAME)
-        box.setIconPixmap(QtGui.QPixmap(ICON_PATH).scaled(
-            96, 96, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
-        box.setTextFormat(QtCore.Qt.RichText)
-        box.setText(
-            "<h3 style='color:#003A70'>{} {}</h3>"
-            "<p><b>SEWORK ENGENHARIA</b><br>"
-            "Engenharia Mecânica e Segurança do Trabalho<br>Patos de Minas/MG</p>"
-            "<p>sework@sework.com.br</p>"
-            "<p style='color:#878787'>Baseado no FreeCAD (freecad.org), "
-            "software livre sob licença LGPL-2.1-or-later.</p>".format(APP_NAME, _version_text())
-        )
-        box.exec_() if hasattr(box, "exec_") else box.exec()
+        import SeworkSobre
+        SeworkSobre.mostrar("{} · FreeCAD {}".format(_addon_version(), _version_text()),
+                            "FreeCAD {} (freecad.org)".format(_version_text()),
+                            FreeCADGui.getMainWindow())
+
+    def IsActive(self):
+        return True
+
+
+# ------------------------------------------------------------- modo distribuição
+DEV_DOCKS = ("Python console", "Report view")
+
+
+def apply_modo_distribuicao(on=None):
+    """Esconde (ou mostra) console Python e Relatório, que o usuário final não usa."""
+    if on is None:
+        on = _params().GetBool("ModoDistribuicao", False)
+    mw = FreeCADGui.getMainWindow()
+    if mw is None:
+        return
+    for dock in mw.findChildren(QtWidgets.QDockWidget):
+        if dock.objectName() in DEV_DOCKS:
+            dock.setVisible(not on)
+
+
+class CmdModoDistribuicao:
+    def GetResources(self):
+        return {
+            "Pixmap": ICON_PATH,
+            "MenuText": "Modo distribuição",
+            "ToolTip": "Liga/desliga o modo para usuário final: esconde o console Python e o Relatório",
+            "Checkable": _params().GetBool("ModoDistribuicao", False),
+        }
+
+    def Activated(self, checked=None):
+        on = bool(checked) if checked is not None else not _params().GetBool("ModoDistribuicao", False)
+        _params().SetBool("ModoDistribuicao", on)
+        apply_modo_distribuicao(on)
 
     def IsActive(self):
         return True
@@ -265,6 +311,7 @@ class CmdSobre:
 class CmdRemoverSplash:
     def GetResources(self):
         return {
+            "Pixmap": ICON_PATH,
             "MenuText": "Voltar à splash original",
             "ToolTip": "Remove a splash Sework e restaura a do FreeCAD",
         }
@@ -280,6 +327,7 @@ class CmdRemoverSplash:
 class CmdBarrasClassicas:
     def GetResources(self):
         return {
+            "Pixmap": ICON_PATH,
             "MenuText": "Alternar faixa Sework / barras clássicas",
             "ToolTip": "Liga ou desliga a faixa de ferramentas Sework",
         }
@@ -308,6 +356,12 @@ def register_commands():
     FreeCADGui.addCommand("Sework_RemoverSplash", CmdRemoverSplash())
     FreeCADGui.addCommand("Sework_BarrasClassicas", CmdBarrasClassicas())
     FreeCADGui.addCommand("Sework_TemaIcones", CmdTemaIcones())
+    FreeCADGui.addCommand("Sework_ModoDistribuicao", CmdModoDistribuicao())
+    try:
+        import SeworkInicio
+        FreeCADGui.addCommand("Sework_Inicio", SeworkInicio.CmdInicio())
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: tela inicial indisponível: {}\n".format(exc))
 
 
 def install_translations():
@@ -334,12 +388,42 @@ def _start_ribbon():
         FreeCAD.Console.PrintError("Sework: falha ao montar a faixa: {}\n".format(exc))
 
 
+def _start_guia():
+    try:
+        import SeworkGuia
+
+        SeworkGuia.install()
+    except Exception as exc:
+        FreeCAD.Console.PrintError("Sework: falha no guia ilustrado: {}\n".format(exc))
+
+
+def _start_inicio():
+    try:
+        import SeworkInicio
+        SeworkInicio.startup()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: tela inicial não aberta: {}\n".format(exc))
+
+
 def startup():
+    try:
+        import SeworkInicio
+        SeworkInicio.prepare()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: tela inicial: {}\n".format(exc))
     register_commands()
     install_splash()
     install_translations()
     install_icon_theme()
+    try:
+        import SeworkEstilo
+        SeworkEstilo.install()
+    except Exception as exc:
+        FreeCAD.Console.PrintWarning("Sework: estilo não instalado: {}\n".format(exc))
     QtCore.QTimer.singleShot(600, _start_ribbon)
+    QtCore.QTimer.singleShot(900, _start_guia)
+    QtCore.QTimer.singleShot(1300, _start_inicio)
+    QtCore.QTimer.singleShot(1500, apply_modo_distribuicao)
     # Executa depois que a janela principal termina de montar.
     QtCore.QTimer.singleShot(0, apply_window_branding)
     if not _params().GetBool("QualityApplied", False):
