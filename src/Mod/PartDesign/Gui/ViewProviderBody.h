@@ -61,6 +61,7 @@ public:
     App::PropertyEnumeration DisplayModeBody;
 
     void attach(App::DocumentObject*) override;
+    std::vector<Gui::ViewProvider::TreeGroup> getTreeGroups() const override;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
