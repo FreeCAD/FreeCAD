@@ -71,6 +71,7 @@ private:
     int m_zoomLevel {0};
 
 protected:
+    void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
