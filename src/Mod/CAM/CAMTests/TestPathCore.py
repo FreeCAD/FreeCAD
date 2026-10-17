@@ -211,6 +211,25 @@ G0 Z0.500000
         )
         self.assertAlmostEqual(absolute_center_path.Length, expected_length, places=12)
 
+    def test_collinear_radial_mismatch_bound_box(self):
+        """A rounded arc endpoint still produces full-circle bounds."""
+        for direction in ("G2", "G3"):
+            with self.subTest(direction=direction):
+                path = Path.Path(
+                    [
+                        Path.Command("G17"),
+                        Path.Command("G90"),
+                        Path.Command("G91.1"),
+                        Path.Command("G0 X25 Y0 Z0"),
+                        Path.Command(f"{direction} X25.001 Y0 I-5 J0"),
+                    ]
+                )
+                bounds = path.BoundBox
+                self.assertAlmostEqual(bounds.XMin, 0.0, places=6)
+                self.assertAlmostEqual(bounds.XMax, 25.001, places=6)
+                self.assertLess(bounds.YMin, -4.9)
+                self.assertGreater(bounds.YMax, 4.9)
+
     # Command (App/Command.cpp) does not try to correctly parse modal g-code.
     # (strings with just the axis, missing the "command" part).
     # As implemented, Command (setFromGCode()) skips non-alpha leading chars (unless comment).
