@@ -88,23 +88,6 @@ class AssetPreferencesPage:
         self.machines_group = QtGui.QGroupBox(translate("CAM_PreferencesAssets", "Machines"))
         self.machines_layout = QtGui.QVBoxLayout(self.machines_group)
 
-        self.warning_label = QtGui.QLabel(
-            translate(
-                "CAM_PreferencesAssets",
-                "Warning: Machine definition is an experimental feature. Changes "
-                "made here will not affect any CAM functionality",
-            )
-        )
-        self.warning_label.setWordWrap(True)
-        warning_font = self.warning_label.font()
-        warning_font.setItalic(True)
-        self.warning_label.setFont(warning_font)
-        self.warning_label.setContentsMargins(0, 0, 0, 10)
-        self.machines_layout.addWidget(self.warning_label)
-
-        self.machines_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Machines"))
-        self.machines_layout.addWidget(self.machines_label)
-
         self.machines_list = QtGui.QListWidget()
         self.machines_layout.addWidget(self.machines_list)
 
