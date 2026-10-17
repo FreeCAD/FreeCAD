@@ -40,6 +40,7 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <filesystem>
 #include <format>
 # include <optional>
 # include <memory>
@@ -3082,11 +3083,28 @@ std::list<std::string> Application::getCmdLineFiles()
     return files;
 }
 
+namespace {
+// In console mode a command line argument may be Python code instead of a file name.
+// The OS can reject such a string as a path (e.g. ENAMETOOLONG), which makes the
+// throwing std::filesystem queries used by Base::FileInfo fail.
+bool isPathName(const std::string& str)
+{
+    std::error_code ec;
+    auto status = std::filesystem::status(Base::FileInfo::stringToPath(str), ec);
+    return !ec || status.type() == std::filesystem::file_type::not_found;
+}
+}
+
 std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
     std::list<std::string> processed;
     Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
+        if (!isPathName(it)) {
+            Base::Console().log("Init:     Skipping argument that is not a file name\n");
+            continue;
+        }
+
         Base::FileInfo file(it);
         // Can we safely remove the isSymlink check and directly query the canonical
         // path for every string? The reason for avoiding it currently is that
@@ -3168,9 +3186,9 @@ void Application::processCmdLineFiles()
     else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
         // In case we are in console mode and the argument is not a file but Python code
         // then execute it. This is to behave like the standard Python executable.
-        const Base::FileInfo file(files.front());
-        if (!file.exists()) {
-            Base::Interpreter().runString(files.front().c_str());
+        const auto& arg = files.front();
+        if (!isPathName(arg) || !Base::FileInfo(arg).exists()) {
+            Base::Interpreter().runString(arg.c_str());
             mConfig["RunMode"] = "Exit";
         }
     }
