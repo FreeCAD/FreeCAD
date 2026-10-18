@@ -76,16 +76,12 @@ def _make_tapered_part(doc, length=40.0, r0=8.0, r1=12.0, axis="X"):
 def _setup_cyl_stock_along_axis(job, radius, length, axis):
     """Replace the Job's stock with a CreateCylinder oriented along axis."""
     if axis == "X":
-        placement = FreeCAD.Placement(
-            FreeCAD.Vector(-length / 2.0, 0, 0),
-            FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 90.0),
-        )
+        placement = FreeCAD.Placement(FreeCAD.Vector(-length / 2.0, 0, 0), FreeCAD.Rotation())
     else:
-        placement = FreeCAD.Placement(
-            FreeCAD.Vector(0, -length / 2.0, 0),
-            FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), -90.0),
-        )
-    new_stock = PathStock.CreateCylinder(job, radius=radius, height=length, placement=placement)
+        placement = FreeCAD.Placement(FreeCAD.Vector(0, -length / 2.0, 0), FreeCAD.Rotation())
+    new_stock = PathStock.CreateCylinder(
+        job, radius=radius, height=length, placement=placement, axis=axis
+    )
     # Drop the auto-created stock; install ours.
     if job.Stock and job.Stock is not new_stock:
         try:
