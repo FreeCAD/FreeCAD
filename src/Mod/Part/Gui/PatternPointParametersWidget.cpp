@@ -7,6 +7,7 @@
 #include <App/DocumentObject.h>
 
 #include "ui_PatternPointParametersWidget.h"
+#include "Base/Tools.h"
 
 using namespace PartGui;
 
@@ -19,11 +20,17 @@ PatternPointParametersWidget::PatternPointParametersWidget(QWidget* parent)
         Q_EMIT requestReferenceSelection();
     });
     connect(ui->originPointIndex, &QSpinBox::valueChanged, this, [this](int newValue) {
-        originPointIndexProperty->setValue(newValue);
+        if (!blockUpdate && originPointIndexProperty) {
+            originPointIndexProperty->setValue(newValue);
+            Q_EMIT parametersChanged();
+        }
     });
     connect(ui->relativeToFirst, &QCheckBox::toggled, this, [this](bool newValue) {
-        relativeToFirstProperty->setValue(newValue);
-        ui->originPointIndex->setEnabled(!ui->relativeToFirst->isChecked());
+        if (!blockUpdate && relativeToFirstProperty) {
+            relativeToFirstProperty->setValue(newValue);
+            ui->originPointIndex->setEnabled(!ui->relativeToFirst->isChecked());
+            Q_EMIT parametersChanged();
+        }
     });
 }
 
@@ -43,6 +50,10 @@ void PatternPointParametersWidget::bindProperty(
 
 void PatternPointParametersWidget::updateUI()
 {
+    if (blockUpdate) {
+        return;
+    }
+    Base::StateLocker locker(blockUpdate, true);
     updatePointObjectButton();
     ui->originPointIndex->setValue(static_cast<int>(originPointIndexProperty->getValue()));
     ui->relativeToFirst->setChecked(relativeToFirstProperty->getValue());

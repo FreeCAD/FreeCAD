@@ -40,6 +40,7 @@ private:
     App::PropertyLinkSub* pointObjectProperty = nullptr;
     App::PropertyBool* relativeToFirstProperty = nullptr;
     App::PropertyInteger* originPointIndexProperty = nullptr;
+    bool blockUpdate = false;
 };
 
 }  // namespace PartGui
