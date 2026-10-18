@@ -400,6 +400,57 @@ class T06Pendencias(unittest.TestCase):
 
 
 # ======================================================================= validação numérica
+class T06bSentidoDaCarga(unittest.TestCase):
+    """Força perpendicular empurra a face por padrão e o sentido pode ser invertido depois."""
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("SeworkTesteSentido")
+        self.caixa = self.doc.addObject("Part::Box", "Caixa")
+        self.doc.recompute()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def _forca(self, face, puxar):
+        import ObjectsFem
+        import SeworkFEM as F
+        c = ObjectsFem.makeConstraintForce(self.doc, "Forca")
+        c.References = [(self.caixa, (face,))]
+        c.Force = "100 N"
+        self.doc.recompute()
+        n = F._normal_externa(self.caixa, face)
+        F._orientar_forca(c, n, puxar=puxar)
+        return c, n
+
+    def test_empurra_por_padrao_em_qualquer_face(self):
+        for face in ("Face1", "Face2", "Face3", "Face4", "Face5", "Face6"):
+            c, n = self._forca(face, puxar=False)
+            self.assertLess(c.DirectionVector.dot(n), -0.999, face)
+
+    def test_puxar_e_inverter_depois(self):
+        c, n = self._forca("Face1", puxar=True)
+        self.assertGreater(c.DirectionVector.dot(n), 0.999)
+        c.Reversed = not c.Reversed  # o que o botão "Inverter sentido da selecionada" faz
+        self.doc.recompute()
+        self.assertLess(c.DirectionVector.dot(n), -0.999)
+
+    def test_faces_opostas_viram_cargas_separadas(self):
+        import SeworkFEM as F
+        grupos, _msg = F._grupos_por_normal(self.caixa, ["Face1", "Face2", "Face6"])
+        self.assertEqual(len(grupos), 3)
+        grupos, _msg = F._grupos_por_normal(self.caixa, ["Face6"])
+        self.assertEqual(len(grupos), 1)
+        self.assertAlmostEqual(grupos[0]["area"], 100.0, places=6)
+
+    def test_face_curva_pede_pressao(self):
+        import SeworkFEM as F
+        cil = self.doc.addObject("Part::Cylinder", "Cil")
+        self.doc.recompute()
+        grupos, msg = F._grupos_por_normal(cil, ["Face1"])
+        self.assertIsNone(grupos)
+        self.assertIn("Pressão", msg)
+
+
 class T07Validacao(unittest.TestCase):
     """Compara o CalculiX com soluções analíticas clássicas da resistência dos materiais."""
 
@@ -771,7 +822,7 @@ class T10Tutorial(unittest.TestCase):
 
 
 # ======================================================================= execução
-RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T03bTrocaDeTema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias,
+RAPIDOS = [T01Modulos, T02Formatacao, T03Tema, T03bTrocaDeTema, T04Glossario, T05Materiais, T05bMateriaisSework, T06Pendencias, T06bSentidoDaCarga,
            T09Interface, T10Tutorial]
 COMPLETOS = RAPIDOS + [T07Validacao, T08Relatorio]
 

@@ -306,6 +306,69 @@ def fmt(v, casas=2, unidade=""):
 
 
 # =========================================================================== verificação
+def _normal_externa(peca, nome_face):
+    """Normal para fora do sólido, ou None se a face não for plana."""
+    try:
+        f = peca.Shape.getElement(nome_face)
+        if "Plane" not in type(f.Surface).__name__:
+            return None
+        u0, u1, v0, v1 = f.ParameterRange
+        n = f.normalAt((u0 + u1) / 2.0, (v0 + v1) / 2.0)
+        return n.normalize() if n.Length > 1e-12 else None
+    except Exception:
+        return None
+
+
+def _grupos_por_normal(peca, faces):
+    """Agrupa as faces pela normal externa. O FreeCAD usa uma única direção por carga (a da
+    primeira face); faces opostas ou inclinadas viram cargas separadas, cada uma perpendicular
+    à sua face, com a força total dividida pela área."""
+    grupos = []
+    for nome in faces:
+        n = _normal_externa(peca, nome)
+        if n is None:
+            return None, ("“{}” não é plana: força perpendicular só vale para faces planas. Para faces curvas "
+                          "use Pressão, que já age perpendicular à superfície em cada ponto.".format(nome))
+        area = peca.Shape.getElement(nome).Area
+        for g in grupos:
+            if g["normal"].dot(n) > 0.9999:
+                g["faces"].append(nome)
+                g["area"] += area
+                break
+        else:
+            grupos.append({"normal": n, "faces": [nome], "area": area})
+    return grupos, ""
+
+
+def _orientar_forca(c, normal_externa, puxar=False):
+    """Força perpendicular: por padrão empurra a face (para dentro da peça), como a pressão;
+    puxar=True inverte. Sem direção escolhida, o FreeCAD usa a normal externa da face (puxa)."""
+    alvo = normal_externa if puxar else -normal_externa
+    c.Reversed = False
+    c.recompute()
+    if c.DirectionVector.dot(alvo) < 0:
+        c.Reversed = True
+        c.recompute()
+
+
+def _rotulo_carga(c):
+    if _eh(c, "Fem::ConstraintPressure"):
+        txt = "Pressão {} MPa".format(fmt(_valor_carga(c) or 0.0, 2))
+        return txt + (" (puxando)" if c.Reversed else "")
+    if _eh(c, "Fem::ConstraintForce"):
+        txt = "Força {} N".format(fmt(_valor_carga(c) or 0.0, 0))
+        try:
+            refs = c.References
+            peca, nome = refs[0][0], refs[0][1][0]
+            n = _normal_externa(peca, nome)
+            if n is not None and abs(c.DirectionVector.dot(n)) > 0.999:
+                return txt + (" (empurra)" if c.DirectionVector.dot(n) < 0 else " (puxa)")
+        except Exception:
+            pass
+        return txt + (" (invertida)" if c.Reversed else "")
+    return c.Label
+
+
 def avaliar(est):
     """Estado de cada etapa: {chave: (nivel, resumo, [(nivel, mensagem)])}."""
     r = {}
@@ -1237,7 +1300,8 @@ class Assistente(QtWidgets.QWidget):
     # ------------------------------------------------------------ 4 cargas
     def _montar_carga(self, lay):
         lay.addWidget(_dica("Selecione as faces onde a carga atua e escolha o tipo. A força é dividida entre "
-                            "as faces selecionadas. Confira o sentido das setas na vista 3D."))
+                            "as faces selecionadas. Perpendicular à face, ela empurra a face (como a pressão); "
+                            "confira o sentido das setas na vista 3D e use “Inverter” se precisar."))
         self.cb_carga = QtWidgets.QComboBox()
         self.cb_carga.addItem("Força total (N)", "forca")
         self.cb_carga.addItem("Pressão (MPa)", "pressao")
@@ -1252,7 +1316,9 @@ class Assistente(QtWidgets.QWidget):
         self.cb_dir = QtWidgets.QComboBox()
         self.cb_dir.addItem("Perpendicular à face", "normal")
         self.cb_dir.addItem("Na direção de uma aresta (selecione também a aresta)", "aresta")
-        self.ck_inv = QtWidgets.QCheckBox("Inverter sentido")
+        self.ck_inv = QtWidgets.QCheckBox("Inverter sentido (puxar a face em vez de empurrar)")
+        self.ck_inv.setToolTip("Vale para a próxima carga aplicada. Para uma carga já aplicada, use "
+                               "“Inverter sentido da selecionada”.")
         lay.addWidget(self.sp_carga)
         lay.addWidget(self.cb_dir)
         lay.addWidget(self.ck_inv)
@@ -1264,7 +1330,27 @@ class Assistente(QtWidgets.QWidget):
         lay.addWidget(self.lista_carga)
         br = QtWidgets.QPushButton("Remover selecionada")
         br.clicked.connect(lambda: self._remover(self.lista_carga))
-        lay.addWidget(_linha(br, "stretch"))
+        bi = QtWidgets.QPushButton("Inverter sentido da selecionada")
+        bi.setToolTip("Troca o sentido da força ou da pressão escolhida na lista")
+        bi.clicked.connect(self._inverter_carga)
+        lay.addWidget(_linha(bi, br, "stretch"))
+
+    def _inverter_carga(self):
+        it = self.lista_carga.currentItem()
+        if it is None:
+            self._erro("Escolha na lista a carga que quer inverter.")
+            return
+        nome = it.data(QtCore.Qt.UserRole)
+
+        def fn():
+            est = self.est()
+            c = est.doc.getObject(nome)
+            if c is None or not hasattr(c, "Reversed"):
+                raise RuntimeError("Esta carga não tem sentido para inverter (peso próprio é sempre −Z).")
+            c.Reversed = not c.Reversed
+            c.Label = _rotulo_carga(c)
+            est.put("SeworkResultadoVelho", True, "App::PropertyBool")
+        self._transacao("Inverter carga", fn)
 
     def _tipo_carga(self):
         k = self.cb_carga.currentData()
@@ -1303,22 +1389,39 @@ class Assistente(QtWidgets.QWidget):
         val = self.sp_carga.value()
         inv = self.ck_inv.isChecked()
 
+        grupos = None
+        if k == "forca" and aresta is None:
+            grupos, msg = _grupos_por_normal(est.peca, faces)
+            if grupos is None:
+                self._erro(msg)
+                return
+
         def fn():
             import ObjectsFem
+            if k == "forca" and grupos is not None:
+                area_total = sum(g["area"] for g in grupos)
+                for g in grupos:
+                    c = ObjectsFem.makeConstraintForce(est.doc, "Forca")
+                    c.References = [(est.peca, tuple(g["faces"]))]
+                    c.Force = "{} N".format(val * g["area"] / area_total)
+                    est.analise.addObject(c)
+                    _orientar_forca(c, g["normal"], puxar=inv)
+                    c.Label = _rotulo_carga(c)
+                est.put("SeworkResultadoVelho", True, "App::PropertyBool")
+                return
             if k == "forca":
                 c = ObjectsFem.makeConstraintForce(est.doc, "Forca")
                 c.References = [(est.peca, tuple(faces))]
                 c.Force = "{} N".format(val)
-                if aresta is not None:
-                    c.Direction = aresta
+                c.Direction = aresta
                 c.Reversed = inv
-                c.Label = "Força {} N".format(fmt(val, 0))
+                c.Label = _rotulo_carga(c)
             elif k == "pressao":
                 c = ObjectsFem.makeConstraintPressure(est.doc, "Pressao")
                 c.References = [(est.peca, tuple(faces))]
                 c.Pressure = "{} MPa".format(val)
                 c.Reversed = inv
-                c.Label = "Pressão {} MPa".format(fmt(val, 2))
+                c.Label = _rotulo_carga(c)
             else:
                 if any(_eh(o, "Fem::ConstraintSelfWeight") for o in est.cargas):
                     raise RuntimeError("O peso próprio já está aplicado.")
