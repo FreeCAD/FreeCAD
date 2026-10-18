@@ -134,6 +134,13 @@ jobs:
           remove-android: 'true'      # (frees ~9 GB)
           remove-cached-tools: 'true' # (frees ~8.3 GB)
 
+      - name: Install Linux packaging dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gettext
+          msgfmt --version
+
       - name: Set platform environment variables
         shell: bash -l {0}
         env:
