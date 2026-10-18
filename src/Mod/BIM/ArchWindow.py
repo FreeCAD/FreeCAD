@@ -977,8 +977,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             for child in getattr(obj.Base, "Group", []):
                 if child.Visibility and getattr(child, "Shape", None) and child.Shape.Solids:
                     base_children.append(child)
-            # Handle Linkgroup seperately to work around issue #32218.
-            # https://github.com/FreeCAD/FreeCAD/issues/32218
+            # Handle Linkgroup separately as the visibility of its children does not depend on
+            # their individual Visibility properties, but on the LinkGroup's VisibilityList.
             for child, vis in zip(
                 getattr(obj.Base, "ElementList", []), getattr(obj.Base, "VisibilityList", [])
             ):
