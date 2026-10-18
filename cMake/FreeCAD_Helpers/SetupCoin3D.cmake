@@ -140,13 +140,11 @@ macro(SetupBundledCoinPivy)
     set(PIVY_USE_SOQT OFF CACHE BOOL "Build bundled Pivy SoQt bindings" FORCE)
     set(PIVY_PACKAGE_INSTALL_DIR "Mod/pivy"
         CACHE STRING "Install directory for bundled Pivy inside FreeCAD packages" FORCE)
-    if (APPLE)
-        set(PIVY_MODULE_INSTALL_RPATH "@loader_path/../../${CMAKE_INSTALL_LIBDIR}"
-            CACHE STRING "RUNPATH for bundled Pivy extension modules in FreeCAD packages" FORCE)
-    elseif (UNIX)
-        set(PIVY_MODULE_INSTALL_RPATH "$ORIGIN/../../${CMAKE_INSTALL_LIBDIR}"
-            CACHE STRING "RUNPATH for bundled Pivy extension modules in FreeCAD packages" FORCE)
-    endif ()
+    cmake_path(APPEND CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_LIBDIR}" OUTPUT_VARIABLE LIBPATH)
+    cmake_path(APPEND CMAKE_INSTALL_PREFIX "${PIVY_PACKAGE_INSTALL_DIR}" OUTPUT_VARIABLE PIVYPATH)
+    cmake_path(RELATIVE_PATH LIBPATH BASE_DIRECTORY "${PIVYPATH}" OUTPUT_VARIABLE RPATH)
+    set(PIVY_MODULE_INSTALL_RPATH "$<IF:$<PLATFORM_ID:Darwin>,@loader_path,$ORIGIN>/${RPATH}"
+        CACHE STRING "RUNPATH for bundled Pivy extension modules in FreeCAD packages" FORCE)
     set(PIVY_PACKAGE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/Mod/pivy"
         CACHE PATH "Build-tree output directory for bundled Pivy" FORCE)
     add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/pivy" "${CMAKE_BINARY_DIR}/src/3rdParty/pivy")

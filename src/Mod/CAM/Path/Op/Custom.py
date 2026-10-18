@@ -205,7 +205,8 @@ class ObjectCustom(PathOp.ObjectOp):
                 line = line.strip()
                 line = self.parseExpressions(obj, line, i)
                 try:
-                    newcommand = Path.Command(line, {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
+                    # Custom is strict: supported+non-conforming, or mark "as-is"
+                    newcommand = Path.Command(line, {})
                     self.commandlist.append(newcommand)
                 except ValueError:
                     if len(self.errors) < 7:

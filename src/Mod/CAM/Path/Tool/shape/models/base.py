@@ -671,6 +671,10 @@ class ToolBitShape(Asset):
         """
         prop_type = self.get_parameter_property_type(name)
         if prop_type in ("App::PropertyDistance", "App::PropertyLength", "App::PropertyAngle"):
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                # Quantity() leaves a bare number dimensionless.
+                unit = "deg" if prop_type == "App::PropertyAngle" else "mm"
+                return FreeCAD.Units.Quantity(float(value), unit)
             return FreeCAD.Units.Quantity(value)
         elif prop_type == "App::PropertyInteger":
             return int(value)

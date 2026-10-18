@@ -44,7 +44,7 @@ PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Revolved)
 
 Revolution::Revolution()
 {
-    addSubType = FeatureAddSub::Additive;
+    defineAdditive();
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
@@ -67,6 +67,13 @@ Revolution::Revolution()
         "Revolution",
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
+    );
+    ADD_PROPERTY_TYPE(
+        ProjectAxis,
+        (false),
+        "Revolution",
+        App::Prop_None,
+        "Projects the reference axis onto the profile plane"
     );
     ADD_PROPERTY_TYPE(Angle, (fullAngle), "Side1", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(Angle2, (emptyAngle), "Side2", App::Prop_None, "Revolution angle in 2nd direction");

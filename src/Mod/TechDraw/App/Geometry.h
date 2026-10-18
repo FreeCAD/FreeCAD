@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -357,17 +359,33 @@ class TechDrawExport Wire
 };
 using WirePtr = std::shared_ptr<Wire>;
 
+enum class FaceRepresentation {
+    Failed = -1,
+    Hollow =  0,
+    Common = +1,
+    Opaque = +2,
+    Sliced = +3
+};
+
 /// Simple Collection of geometric features based on BaseGeom inherited classes in order
 class TechDrawExport Face
 {
     public:
-        Face() = default;
+        Face() : representation(FaceRepresentation::Common) { };
+        explicit Face(const TopoDS_Face &f);
         ~Face();
+
+        FaceRepresentation getRepresentation() { return representation; }
+        void setRepresentation(FaceRepresentation representation) { this->representation = representation; }
+
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
         double getArea() const;
         Base::Vector3d getCenter() const;
+
+    protected:
+        FaceRepresentation representation;
 };
 using FacePtr = std::shared_ptr<Face>;
 

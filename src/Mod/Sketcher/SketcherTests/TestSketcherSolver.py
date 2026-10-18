@@ -394,6 +394,28 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertTrue(len(values) == 0)
         FreeCAD.closeDocument("Issue3245")
 
+    def testPointGeometryExtension(self):
+        """Reading point geometry must preserve extensions and return a copy (#15545)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.Point(vec(1, 2)))
+        geometry = sketch.Geometry
+        geometry[0].setExtension(Part.GeometryStringExtension("point-uuid", "uuid"))
+        tag = geometry[0].Tag
+        sketch.Geometry = geometry
+        self.Doc.recompute()
+
+        point = sketch.Geometry[0]
+        self.assertTrue(point.hasExtensionOfName("uuid"))
+        self.assertEqual(point.getExtensionOfName("uuid").Value, "point-uuid")
+        self.assertEqual(point.Tag, tag)
+        self.assertEqual((point.X, point.Y, point.Z), (1, 2, 0))
+
+        point.X = 10
+        point.deleteExtensionOfName("uuid")
+        unchanged = sketch.Geometry[0]
+        self.assertEqual(unchanged.X, 1)
+        self.assertEqual(unchanged.getExtensionOfName("uuid").Value, "point-uuid")
+
     def testBlockConstraintEllipse(self):
         self.Doc3 = FreeCAD.newDocument("BlockConstraintTests")
         ActiveSketch = self.Doc3.addObject("Sketcher::SketchObject", "Sketch")
@@ -453,6 +475,41 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.solve()
         self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         FreeCAD.closeDocument(self.Doc3.Name)
+
+    def testMissingVerticalHorizontalConstraints(self):
+        """Validation must not duplicate existing constraints (issue #21396)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(
+            [
+                Part.LineSegment(vec(0, 0), vec(10, 0)),
+                Part.LineSegment(vec(20, 0), vec(20, 10)),
+            ]
+        )
+        sketch.addConstraint(
+            [
+                Sketcher.Constraint("Horizontal", 0),
+                Sketcher.Constraint("Vertical", 1),
+            ]
+        )
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+
+        sketch.delConstraint(1)
+        sketch.delConstraint(0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 2)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+
+        sketch.setActive(0, False)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 1)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 3)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
 
     def testThreeLinesWithCoincidences_1(self):
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
@@ -910,7 +967,7 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertVectorAlmostEqual(sketch.Geometry[circle].Center, expected)
 
     def testRemovedExternalGeometryReference(self):
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")
             sketch = body.newObject("Sketcher::SketchObject", "Sketch")
             CreateRectangleSketch(sketch, (0, 0), (30, 30))
@@ -955,7 +1012,12 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(hole.Shape.Edges), 77)
 
             # Edges in the thread should disappear when we stop modeling thread
-            sketch2.addExternal("Hole", "Edge29")
+            thread_edge = next(
+                i
+                for i, edge in enumerate(hole.Shape.Edges, 1)
+                if isinstance(edge.Curve, Part.BSplineCurve)
+            )
+            sketch2.addExternal("Hole", f"Edge{thread_edge}")
             hole.ModelThread = 0
             hole.Refine = 1
             self.Doc.recompute()
@@ -963,7 +1025,7 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(sketch2.ExternalGeometry), 0)
 
     def testSaveLoadWithExternalGeometryReference(self):
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             # Arrange
             body = self.Doc.addObject("PartDesign::Body", "Body")
             sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
@@ -1010,7 +1072,7 @@ class TestSketcherSolver(unittest.TestCase):
 
     def testTNPExternalGeometryStored(self):
         # Arrange
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             import xml.etree.ElementTree as ET
 
             sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
@@ -1072,7 +1134,7 @@ class TestSketcherSolver(unittest.TestCase):
 
     def testConstructionToggleTNP(self):
         """Bug 15484"""
-        if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
+        if "BUILD_PART_DESIGN" in FreeCAD.__cmake__:
             # Arrange
             import xml.etree.ElementTree as ET
 

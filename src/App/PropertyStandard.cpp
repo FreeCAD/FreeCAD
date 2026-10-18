@@ -444,7 +444,7 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
         // If the enum is empty at this stage do not print a warning
         if (_enum.hasEnums()) {
             Base::Console().developerWarning(std::string("PropertyEnumeration"),
-                                             "Enumeration index %d is out of range, ignore it\n",
+                                             "Enumeration index {} is out of range, ignore it\n",
                                              val);
         }
         val = getValue();
@@ -474,7 +474,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
         return;
     }
-    else if (PyUnicode_Check(value)) {
+    if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
         if (_enum.contains(str.c_str())) {
             aboutToSetValue();
@@ -487,7 +487,7 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
         return;
     }
-    else if (PySequence_Check(value)) {
+    if (PySequence_Check(value)) {
 
         try {
             std::vector<std::string> values;
@@ -588,13 +588,11 @@ const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier& path)
         getPyPathValue(path, res);
         return pyObjectToAny(res, false);
     }
-    else if (p == ".String") {
+    if (p == ".String") {
         auto v = getValueAsString();
         return std::string(v ? v : "");
     }
-    else {
-        return getValue();
-    }
+    return getValue();
 }
 
 bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Object& r) const
@@ -926,6 +924,95 @@ unsigned int PropertyIntegerList::getMemSize() const
 
 
 //**************************************************************************
+//**************************************************************************
+// PropertyIntPairList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyIntPairList, App::PropertyLists)
+
+PyObject* PropertyIntPairList::getPyObject()
+{
+    Py::List result(getSize());
+    for (int i = 0; i < getSize(); ++i) {
+        Py::Tuple pair(2);
+        pair.setItem(0, Py::Long(_lValueList[i].first));
+        pair.setItem(1, Py::Long(_lValueList[i].second));
+        result.setItem(i, pair);
+    }
+    return Py::new_reference_to(result);
+}
+
+void PropertyIntPairList::setPyObject(PyObject* value)
+{
+    // The outer sequence always represents the list, even when it has two entries.
+    PropertyLists::setPyObject(value);
+}
+
+PropertyIntPairList::IntPair PropertyIntPairList::getPyValue(PyObject* item) const
+{
+    if ((!PyTuple_Check(item) && !PyList_Check(item)) || PySequence_Size(item) != 2) {
+        throw Base::TypeError("Expected a pair of integers");
+    }
+    Py::Sequence pair(item);
+    if (!PyLong_Check(pair[0].ptr()) || !PyLong_Check(pair[1].ptr())) {
+        throw Base::TypeError("Pair components must be integers");
+    }
+    int firstOverflow = 0;
+    int secondOverflow = 0;
+    const long first = PyLong_AsLongAndOverflow(pair[0].ptr(), &firstOverflow);
+    const long second = PyLong_AsLongAndOverflow(pair[1].ptr(), &secondOverflow);
+    if (firstOverflow || secondOverflow) {
+        throw Py::OverflowError("Pair component is outside the range of a C++ long");
+    }
+    return {first, second};
+}
+
+void PropertyIntPairList::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind() << "<IntPairList count=\"" << getSize() << "\">" << endl;
+    writer.incInd();
+    for (const auto& [first, second] : _lValueList) {
+        writer.Stream() << writer.ind() << "<Pair first=\"" << first << "\" second=\"" << second
+                        << "\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</IntPairList>" << endl;
+}
+
+void PropertyIntPairList::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("IntPairList");
+    const int count = reader.getAttribute<int>("count");
+    if (count < 0) {
+        throw Base::ValueError("Integer pair list size must not be negative");
+    }
+    std::vector<IntPair> values;
+    values.reserve(count);
+    for (int i = 0; i < count; ++i) {
+        reader.readElement("Pair");
+        values.emplace_back(reader.getAttribute<long>("first"), reader.getAttribute<long>("second"));
+    }
+    reader.readEndElement("IntPairList");
+    setValues(values);
+}
+
+Property* PropertyIntPairList::Copy() const
+{
+    auto* copy = new PropertyIntPairList();
+    copy->_lValueList = _lValueList;
+    return copy;
+}
+
+void PropertyIntPairList::Paste(const Property& from)
+{
+    setValues(dynamic_cast<const PropertyIntPairList&>(from)._lValueList);
+}
+
+unsigned int PropertyIntPairList::getMemSize() const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(IntPair));
+}
+
 //**************************************************************************
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1421,14 +1508,12 @@ double PropertyFloatList::getPyValue(PyObject* item) const
     if (PyFloat_Check(item)) {
         return PyFloat_AsDouble(item);
     }
-    else if (PyLong_Check(item)) {
+    if (PyLong_Check(item)) {
         return static_cast<double>(PyLong_AsLong(item));
     }
-    else {
-        std::string error = std::string("type in list must be float, not ");
-        error += item->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type in list must be float, not ");
+    error += item->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyFloatList::Save(Base::Writer& writer) const
@@ -1609,7 +1694,7 @@ void PropertyString::Save(Base::Writer& writer) const
     auto verifyXMLString = [this](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
-            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
+            Base::Console().warning("XML output: Validate invalid string:\n'{}'\n'{}'\n",
                                     input, output);
         }
         return output;
@@ -2386,14 +2471,12 @@ bool PropertyBoolList::getPyValue(PyObject* item) const
     if (PyBool_Check(item)) {
         return Base::asBoolean(item);
     }
-    else if (PyLong_Check(item)) {
+    if (PyLong_Check(item)) {
         return (PyLong_AsLong(item) ? true : false);
     }
-    else {
-        std::string error = std::string("type in list must be bool or int, not ");
-        error += item->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type in list must be bool or int, not ");
+    error += item->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyBoolList::Save(Base::Writer& writer) const
@@ -3466,11 +3549,9 @@ Material PropertyMaterialList::getPyValue(PyObject* value) const
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         return *static_cast<MaterialPy*>(value)->getMaterialPtr();
     }
-    else {
-        std::string error = std::string("type must be 'Material', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    std::string error = std::string("type must be 'Material', not ");
+    error += value->ob_type->tp_name;
+    throw Base::TypeError(error);
 }
 
 void PropertyMaterialList::Save(Base::Writer& writer) const

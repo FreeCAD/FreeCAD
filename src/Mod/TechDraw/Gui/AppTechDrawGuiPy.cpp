@@ -1,3 +1,6 @@
+
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -91,7 +94,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().error("%s\n", str.c_str());
+            Base::Console().error("{}\n", str);
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -107,7 +110,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().error("%s\n", str.c_str());
+            Base::Console().error("{}\n", str);
             throw Py::RuntimeError(str);
         }
         return Py::None(); //only here to prevent warning re no return value

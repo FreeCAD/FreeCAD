@@ -66,6 +66,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->comboOrbitStyle->setItemData(4, int(NavigationStyle::Turntable));
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
+    ui->checkBoxTouchpadScrollPans->setChecked(NavigationStyle::touchpadScrollPansByDefault());
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
@@ -102,6 +103,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
+    ui->checkBoxTouchpadScrollPans->onSave();
     ui->rotationCenterSize->onSave();
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
@@ -153,6 +155,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
+    ui->checkBoxTouchpadScrollPans->onRestore();
     ui->rotationCenterSize->onRestore();
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
@@ -183,7 +186,7 @@ void DlgSettingsNavigation::loadSettings()
     }
 
     int orbitStyle = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
-    orbitStyle = Base::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
+    orbitStyle = std::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
     ui->comboOrbitStyle->setCurrentIndex(ui->comboOrbitStyle->findData(orbitStyle));
 
     index = hGrp->GetInt("RotationMode", 0);
@@ -205,11 +208,7 @@ void DlgSettingsNavigation::loadSettings()
     // fill up font styles
 
     // we purposely allow all available fonts on the system
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     ui->naviCubeFontName->addItems(familyNames);
 
     // mark this combobox to be excluded from preference search

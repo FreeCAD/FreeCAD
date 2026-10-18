@@ -32,8 +32,7 @@
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
-#include <fmt/format.h>
-
+#include <format>
 #include "MeasureBase.h"
 // Generated from MeasureBasePy.xml
 #include "MeasureBasePy.h"
@@ -187,7 +186,7 @@ std::string MeasureBase::formatQuantity(const Base::Quantity& qty) const
     );
 
     displayQty.setValue(convertedValue);
-    return fmt::format("{} {}", displayQty.toNumber(format), displayUnitstr);
+    return std::format("{} {}", displayQty.toNumber(format), displayUnitstr);
 }
 
 
@@ -244,18 +243,6 @@ PROPERTY_SOURCE_TEMPLATE(Measure::MeasurePython, Measure::MeasureBase)
 template<>
 const char* Measure::MeasurePython::getViewProviderName(void) const
 {
-    std::string objName = this->getNameInDocument();
-
-    // check object's name, this is brute-forceish way to determine
-    // VP name for COM, but at this point python assignments haven't
-    // been run, so we have no way to determine that easily
-    if (objName.starts_with("Center_of_mass")
-
-        || objName.find("CenterOfMass") != std::string::npos
-        || objName.find("centerofmass") != std::string::npos) {
-        return "MeasureGui::ViewProviderMeasureCOM";
-    }
-
     return "MeasureGui::ViewProviderMeasure";
 }
 template<>

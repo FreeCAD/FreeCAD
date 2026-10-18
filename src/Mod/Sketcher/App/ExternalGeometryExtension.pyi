@@ -20,13 +20,13 @@ class ExternalGeometryExtension(GeometryExtension):
     """
 
     @constmethod
-    def testFlag(self) -> bool:
+    def testFlag(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         """
         ...
 
-    def setFlag(self) -> None:
+    def setFlag(self, flag: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """

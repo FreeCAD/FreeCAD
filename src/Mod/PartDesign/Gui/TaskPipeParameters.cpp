@@ -64,7 +64,7 @@ namespace
 bool isSubtractivePipe(ViewProviderPipe* view)
 {
     auto* pipe = view->getObject<PartDesign::Pipe>();
-    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 std::string pipeTaskIconName(ViewProviderPipe* view)
@@ -105,6 +105,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     // Enable multi-selection in edges list
     ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -159,9 +160,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
         profileShow = profileVP->isShow();
         profileVP->setVisible(true);
-        ui->profileBaseEdit->setText(
-            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues())
-        );
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
     }
     // the auxiliary spine
     if (pipe->AuxiliarySpine.getValue()) {
@@ -209,6 +208,14 @@ TaskPipeParameters::~TaskPipeParameters()
     catch (const Py::Exception&) {
         Base::PyException e;  // extract the Python error text
         e.reportException();
+    }
+}
+
+void TaskPipeParameters::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
     }
 }
 
@@ -591,6 +598,7 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        TaskSketchBasedParameters::apply();
         setVisibilityOfSpineAndProfile();
 
         App::DocumentObject* spine = pipe->Spine.getValue();

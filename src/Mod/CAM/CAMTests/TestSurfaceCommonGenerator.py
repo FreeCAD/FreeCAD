@@ -366,8 +366,8 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         EXPECTED OUTPUT:
         - Returns a valid, non-None boundary shape.
         - The boundary's footprint is a circle matching the cylinder's
-          own diameter (~20mm across), not empty or distorted the way a
-          naive top-down projection of a vertical wall would produce.
+          own diameter (Mask~25mm, STL~20mm), not empty or distorted the
+          way a naive top-down projection of a vertical wall would produce.
         - The boundary sits at the wall's topmost Z (0), not its bottom
           (-20) -- confirming the true top rim was isolated and used,
           not an arbitrary wire.
@@ -386,14 +386,49 @@ class TestSurfaceCommon(PathTestUtils.PathTestBase):
         wall_faces = [f for f in cylinder.Faces if isinstance(f.Surface, Part.Cylinder)]
         self.assertEqual(len(wall_faces), 1, "Expected exactly one cylindrical wall face")
 
-        avoid_boundary = build_avoid_boundary(wall_faces, avoid_overlap=0.0, tolerance=0.01)
+        avoid_boundary, avoid_boundary_stl = build_avoid_boundary(
+            wall_faces, avoid_overlap=0.0, tool_radius=2.5, tolerance=0.01, needs_safe_stl=True
+        )
 
         self.assertIsNotNone(avoid_boundary)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 20.0, delta=0.5)
-        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 20.0, delta=0.5)
+        self.assertIsNotNone(avoid_boundary_stl)
+
+        # Mask: 20 mm footprint + tool_radius + epsilon on each side
+        self.assertAlmostEqual(avoid_boundary.BoundBox.XLength, 25.02, delta=0.1)
+        self.assertAlmostEqual(avoid_boundary.BoundBox.YLength, 25.02, delta=0.1)
+        # STL pillar: 20 mm footprint + epsilon only (no tool_radius)
+        self.assertAlmostEqual(avoid_boundary_stl.BoundBox.XLength, 20.02, delta=0.1)
+        self.assertAlmostEqual(avoid_boundary_stl.BoundBox.YLength, 20.02, delta=0.1)
+        # The two differ by exactly the tool diameter
         self.assertAlmostEqual(
-            avoid_boundary.BoundBox.ZMax,
-            0.0,
-            delta=0.5,
-            msg="Boundary should be capped at the wall's TOP rim (Z=0), not its bottom",
+            avoid_boundary.BoundBox.XLength - avoid_boundary_stl.BoundBox.XLength,
+            5.0,
+            delta=0.05,
         )
+
+    def test14_pattern_mask_preserves_inner_holes(self):
+        """
+        The pattern mask keeps unselected areas inside the selection as holes.
+
+        EXPECTED OUTPUT:
+        - The mask has two wires (outer boundary and the island hole).
+        - The hole is the 10 mm island grown by tool_radius + epsilon (~14.02 mm).
+        """
+        from Path.Base.Generator.surface_common import generate_pattern_mask
+
+        plate = Part.makeBox(60, 60, 5)
+        island = Part.makeBox(10, 10, 10, FreeCAD.Vector(25, 25, 5))
+        model = plate.fuse(island).removeSplitter()
+        base_faces = [
+            f
+            for f in model.Faces
+            if abs(f.normalAt(0, 0).z - 1) < 1e-6 and abs(f.CenterOfMass.z - 5) < 1e-6
+        ]
+
+        mask = generate_pattern_mask(False, None, base_faces, None, 2.0, 0.0, 0.01)
+
+        self.assertIsNotNone(mask)
+        wires = [w for f in mask.Faces for w in f.Wires]
+        self.assertEqual(len(wires), 2)
+        hole = min(wires, key=lambda w: w.BoundBox.XLength)
+        self.assertAlmostEqual(hole.BoundBox.XLength, 14.02, delta=0.1)

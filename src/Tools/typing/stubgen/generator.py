@@ -66,6 +66,7 @@ from .property_contracts import (
 from .property_hierarchy import property_hierarchy_from
 from .render import type_stub_lines, write_stub_file
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
+from .project import Project
 
 
 @dataclass(frozen=True)
@@ -281,6 +282,13 @@ def append_document_add_object_overloads(
         target.write_text(merged, encoding="utf-8")
 
 
+def write_pep561_markers(out_dir: Path, module_names: set[str]) -> None:
+    top_level = {name.split(".", 1)[0] for name in module_names}
+    for pkg in sorted(top_level):
+        (out_dir / pkg).mkdir(parents=True, exist_ok=True)
+        (out_dir / pkg / "py.typed").touch()
+
+
 def write_outputs(
     out_dir: Path,
     root: Path,
@@ -290,6 +298,9 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
+    version_override: str | None = None,
+    patch_number: int = 0,
+    dev_build: int | None = None,
 ) -> GenerationResult:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -338,4 +349,15 @@ def write_outputs(
         module_names,
         root,
     )
+
+    write_pep561_markers(out_dir / "stubs", module_names)
+    project = Project(
+        root,
+        version_override=version_override,
+        patch_number=patch_number,
+        dev_build=dev_build,
+    )
+    project.write_pyproject(out_dir)
+    project.write_readme(out_dir)
+
     return GenerationResult(overlay_count, cpp_property_report)

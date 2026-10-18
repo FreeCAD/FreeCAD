@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for the constraint electric charge density object
 
+from os import path
+
 from femtaskpanels import task_constraint_electricchargedensity
 from . import view_base_femconstraint
 
@@ -48,4 +50,4 @@ class VPConstraintElectricChargeDensity(view_base_femconstraint.VPBaseFemConstra
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectricChargeDensity.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintElectricChargeDensity.iv"))

@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:cc="http://creativecommons.org/ns#"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  width="64px"
+  height="64px"
+  version="1.1">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license rdf:resource="" />
+        <dc:date>Dec 24 18:30:00 2019 CST</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>vocx</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>PolarLinkArray</dc:title>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>agryson, yorikvanhavre</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>Four rectangles in a polar pattern spanning 90 degrees, and a green arrow denoting that it uses the Link component</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>rectangle</rdf:li>
+            <rdf:li>array</rdf:li>
+            <rdf:li>link</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs>
+    <linearGradient
+      id="linearGradient3791-6-9">
+      <stop
+        style="stop-color:#204a87"
+        offset="0" />
+      <stop
+        style="stop-color:#729fcf"
+        offset="1" />
+    </linearGradient>
+    <linearGradient
+      y2="989.8"
+      x2="893.3"
+      y1="1097.5"
+      x1="940"
+      gradientUnits="userSpaceOnUse"
+      id="linearGradient3834-6"
+      xlink:href="#linearGradient3791-6-9"
+      gradientTransform="matrix(0.17119448,0,0,0.16707656,-104.92071,-127.36856)" />
+    <linearGradient
+      xlink:href="#linearGradient3791-6-9"
+      id="linearGradient911"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="matrix(0.17119448,0,0,0.16707656,-104.92071,-125.36856)"
+      x1="940"
+      y1="1097.5"
+      x2="893.3"
+      y2="1049.6" />
+    <linearGradient
+      xlink:href="#linearGradient3791-6-9"
+      id="linearGradient926"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="matrix(0.17119448,0,0,0.16707656,-146.92074,-149.36856)"
+      x1="940"
+      y1="989.8"
+      x2="893.3"
+      y2="941.9" />
+    <linearGradient
+      y2="7.5"
+      x2="372.5"
+      y1="358.2"
+      x1="288.1"
+      gradientTransform="matrix(-0.0710797,0,0,0.06845086,64.636885,1.3235388)"
+      gradientUnits="userSpaceOnUse"
+      id="linearGradient5137"
+      xlink:href="#linearGradient3774" />
+    <linearGradient
+      id="linearGradient3774">
+      <stop
+        offset="0"
+        style="stop-color:#4e9a06" />
+      <stop
+        offset="1"
+        style="stop-color:#8ae234" />
+    </linearGradient>
+    <linearGradient
+      xlink:href="#linearGradient3791-6-9"
+      id="linearGradient19"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="matrix(0.17119448,0,0,0.16707656,-108.92071,-127.36856)"
+      x1="940"
+      y1="989.8"
+      x2="893.3"
+      y2="941.9" />
+    <linearGradient
+      xlink:href="#linearGradient3791-6-9"
+      id="linearGradient20"
+      gradientUnits="userSpaceOnUse"
+      gradientTransform="matrix(0.17119448,0,0,0.16707656,-125.92071,-143.36856)"
+      x1="940"
+      y1="989.8"
+      x2="893.3"
+      y2="941.9" />
+    <style>
+      .guide {
+        fill:none;
+        stroke:#0c1622;
+        stroke-width:2;
+        stroke-linecap:butt;
+        stroke-linejoin:miter;
+        stroke-miterlimit:4;
+        stroke-dasharray:6, 2;
+        stroke-opacity:0.5;
+      }
+      .arc {
+        opacity:0.5;
+        fill:none;
+        stroke:#0b1521;
+        stroke-width:2;
+        stroke-linecap:butt;
+        stroke-linejoin:miter;
+        stroke-miterlimit:4;
+      }
+      .rect-outline {
+        fill:#3465a4;
+        stroke:#0b1521;
+        stroke-width:2;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        stroke-miterlimit:4;
+      }
+      .rect-fill {
+        stroke:#729fcf;
+        stroke-width:2;
+        stroke-linecap:square;
+        stroke-linejoin:miter;
+        stroke-miterlimit:4;
+      }
+      .arrow-outline {
+        fill:#8ae234;
+        stroke:#172a04;
+        stroke-width:2;
+        stroke-miterlimit:4;
+      }
+      .arrow-fill {
+        fill:url(#linearGradient5137);
+        stroke:none;
+      }
+    </style>
+  </defs>
+  <path
+    d="M 18,54 H 50"
+    class="guide" />
+  <path
+    d="M 10,46 V 14"
+    class="guide" />
+  <path
+    d="M 14,47 30.8,18"
+    class="guide" />
+  <path
+    d="M 18,50 48,34"
+    class="guide" />
+  <path
+    d="M 10,15.5 A 39,38.5 0 0 1 49,54"
+    class="arc" />
+  <rect
+    y="47"
+    x="47"
+    height="10"
+    width="10"
+    class="rect-fill"
+    fill="url(#linearGradient3834-6)" />
+  <rect
+    y="47"
+    x="45"
+    height="14"
+    width="14"
+    class="rect-outline" />
+  <rect
+    width="10"
+    height="10"
+    x="47"
+    y="49"
+    class="rect-fill"
+    fill="url(#linearGradient911)" />
+  <rect
+    width="14"
+    height="14"
+    x="41"
+    y="27"
+    class="rect-outline" />
+  <rect
+    y="29"
+    x="43"
+    height="10"
+    width="10"
+    class="rect-fill"
+    fill="url(#linearGradient19)" />
+  <rect
+    y="11"
+    x="24"
+    height="14"
+    width="14"
+    class="rect-outline" />
+  <rect
+    width="10"
+    height="10"
+    x="26"
+    y="13"
+    class="rect-fill"
+    fill="url(#linearGradient20)" />
+  <rect
+    width="14"
+    height="14"
+    x="3"
+    y="5"
+    class="rect-outline" />
+  <rect
+    y="7"
+    x="5"
+    height="10"
+    width="10"
+    class="rect-fill"
+    fill="url(#linearGradient926)" />
+  <path
+    d="m 31.7,13.9 c 2.5,-2.5 6.6,-4 12.2,-4.3 V 4.5 c 0,-0.5 0.3,-0.9 0.8,-1.1 0.6,-0.2 1,-0.1 1.4,0.3 L 56.5,13.6 c 0.3,0.2 0.4,0.5 0.4,0.9 0,0.3 -0.1,0.6 -0.4,0.9 L 46.1,25.4 c -0.2,0.2 -0.5,0.4 -0.9,0.4 -0.2,0 -0.3,0 -0.5,-0.1 -0.5,-0.2 -0.8,-0.6 -0.8,-1.1 v -4.9 c -2.2,0.2 -4,0.5 -5.4,1 -1.4,0.5 -2.6,1.2 -3.5,2.2 -2,2.1 -2.7,5.8 -2.1,11 0,0.3 -0.1,0.6 -0.5,0.7 0,0 -0.1,0 -0.2,0 -0.3,0 -0.5,-0.1 -0.6,-0.3 l -0.4,-0.8 c -0.2,-0.4 -0.5,-1 -0.8,-1.8 -0.4,-0.8 -0.7,-1.6 -1,-2.4 -0.3,-0.8 -0.5,-1.7 -0.8,-2.7 -0.2,-1 -0.3,-1.9 -0.3,-2.6 0,-4.4 1.1,-7.7 3.4,-9.9 z"
+    class="arrow-outline" />
+  <path
+    d="m 46.3,7.2 c 2.5,2.4 5.1,4.8 7.6,7.3 -2.6,2.5 -5.1,5 -7.8,7.5 0,-1.7 0,-3.4 0,-5 -3.6,0.2 -7.4,0.5 -10.6,2.4 -2.3,1.3 -3.9,3.8 -4.7,6.4 -0.5,-3 -0.2,-6.2 1.4,-8.7 1.5,-2.3 4,-3.5 6.5,-4.1 2,-0.6 4.1,-0.5 6.2,-1.1 1.1,-0.6 1.4,-2 1.3,-3.3 0,-0.5 0,-1 -0.1,-1.6 0.1,0.1 0.2,0.2 0.2,0.2 z"
+    class="arrow-fill" />
+</svg>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -21,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawTile.h"
 #include "DrawTilePy.h"  // generated from DrawTilePy.xml
 
@@ -86,7 +89,7 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 
 DrawView* DrawTile::getParent() const
 {
-//    Base::Console().message("DT::getParent() - %s\n", getNameInDocument());
+//    Base::Console().message("DT::getParent() - {}\n", getNameInDocument());
     return freecad_cast<DrawView*>(TileParent.getValue());
 }
 
@@ -106,6 +109,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTilePython, TechDraw::DrawTile)
 template<> const char* TechDraw::DrawTilePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
+}
+template<>
+PyObject* TechDraw::DrawTilePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawTilePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

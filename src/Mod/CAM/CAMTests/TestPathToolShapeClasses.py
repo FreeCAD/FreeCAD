@@ -2,6 +2,7 @@
 
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
+import math
 from pathlib import Path
 from typing import Mapping, Tuple
 import FreeCAD
@@ -101,6 +102,40 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
         with self.assertRaisesRegex(KeyError, "Shape 'dummy' has no parameter 'InvalidParam'"):
             shape.get_parameter("InvalidParam")
+
+    def test_base_set_parameter_from_bare_number(self):
+        """A bare number has to pick up the unit its schema declares."""
+        shape = DummyShape(id="dummy_shape_units", filepath=Path("/fake/dummy.fcstd"))
+        shape.set_parameter("Param1", 15.0)
+        shape.set_parameter("Param2", 30)
+        self.assertEqual(shape.get_parameter("Param1"), FreeCAD.Units.Quantity("15 mm"))
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.get_parameter("Param2"), FreeCAD.Units.Quantity("30 deg"))
+        self.assertEqual(shape.get_parameter("Param2").Unit, FreeCAD.Units.Unit("deg"))
+
+    def test_chamfer_derived_diameter(self):
+        """The chamfer's Diameter is derived, and has to come back as a length."""
+        uri = ToolBitShape.resolve_name("chamfer")
+        shape = self.assets.get(uri)
+        shape.set_parameters(
+            TipDiameter=FreeCAD.Units.Quantity("1 mm"),
+            CuttingEdgeHeight=FreeCAD.Units.Quantity("5 mm"),
+            CuttingEdgeAngle=FreeCAD.Units.Quantity("60 deg"),
+            Diameter=FreeCAD.Units.Quantity("0 mm"),
+        )
+
+        changed = shape.apply_derived_parameters()
+        self.assertIn("Diameter", changed)
+
+        diameter = shape.get_parameter("Diameter")
+        expected = 1.0 + 2 * 5.0 * math.tan(math.radians(30.0))
+        self.assertAlmostEqual(diameter.Value, expected)
+        # A unitless Quantity reports .Value too, so the unit is the assertion.
+        self.assertEqual(diameter.Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(diameter.getValueAs("in").Value, expected / 25.4)
+
+        # Dimensioned, it compares equal to the stored value: no second write.
+        self.assertEqual(shape.apply_derived_parameters(), {})
 
     def test_base_get_parameters(self):
         """Test getting the full parameter dictionary."""

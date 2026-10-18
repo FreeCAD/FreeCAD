@@ -36,6 +36,7 @@ from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessorFactory
+from Path.Post.CAMErrors import CAMValueError
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -365,7 +366,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
                 # exception
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"Arcs require a previous " + required,
                     self.post._convert_arc_move,
                     command,
@@ -384,7 +385,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
                 self.post.machine_state.addCommand(command)
 
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"missing \['" + missing + r"'\]",
                     self.post._convert_arc_move,
                     command,
@@ -712,7 +713,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             (
                 "G0X1Y2Z3F110 G1X4Y5Z6F50 "  # with F
                 "G2X7Y8I9J10 G3X11Y12I13J14 G2X7Y8I9J10Z11 G3X11Y12I13J14Z12 G4P2 "
-                "G20 G21 G38.2Z3F9 G54 G92X4Y5Z6 "
+                "G17 G20 G21 G38.2Z3F9 G54 G92X4Y5Z6 "
                 # The drill params don't necessarily make sense in these, we just need certain params:
                 "G98 G99 "
                 "G73X1Y2Z7F100R91Q1 G80 G81X1Y2Z9F100R10 G82X1Y2Z10F100R11P12 G83X1Y2Z11F100R12Q2 "
@@ -1147,16 +1148,3 @@ IF &hit = 0 THEN GOTO FailedToTouch
         # minimal check
         gcode = self.post._convert_probe_close(close)
         self.assertIn("CLOSE #1", gcode)
-
-    @unittest.expectedFailure
-    def test_todo(self):
-        self.assertTrue(False, "diff precision for mm|in")
-        self.assertTrue(False, "test on machine G20/G21")
-        self.assertTrue(False, "precision conversion should round +1 digit, then precision")
-        self.assertTrue(
-            False,
-            "test_rapid_z should fail, should have 3 digits of precision? or test_rapid_xy should fail should have .0",
-        )
-        self.assertTrue(False, "do not like _convert_generic")
-        self.assertTrue(False, "block-delete isn't spb compatible")
-        # comments stripped, no-headers, etc.

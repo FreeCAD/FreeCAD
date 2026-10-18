@@ -56,6 +56,10 @@ def _resolve_post_processor_name(job):
         valid_name = Path.Preferences.defaultPostProcessor()
     elif FreeCAD.GuiUp:
         valid_name = DlgSelectPostProcessor().exec_()  # Ensure DlgSelectPostProcessor is defined
+        if valid_name is None:
+            # The user dismissed the selection dialog. That is not an error,
+            # it just means there is nothing to post process.
+            return None
     else:
         valid_name = None
 
@@ -349,9 +353,11 @@ class CommandPathPostSelected(CommandPathPost):
     def GetResources(self):
         return {
             "Pixmap": "CAM_PostSelected",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process Selected"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PostSelected", "Post Process Selected"),
             "Accel": "P, O",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected operations"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_PostSelected", "Post Processes the selected operations"
+            ),
         }
 
     def IsActive(self):

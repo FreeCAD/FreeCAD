@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from Metadata import export
-from typing import overload, Tuple
+from typing import Any, overload, Tuple
 from Part.Geom2d import Conic2d
 
 @export(
@@ -75,7 +75,7 @@ class Circle2d(Conic2d):
         ...
 
     @staticmethod
-    def getCircleCenter() -> Tuple[float, float]:
+    def getCircleCenter(p1: Any, p2: Any, p3: Any, /) -> Any:
         """
         Get the circle center defined by three points
         """

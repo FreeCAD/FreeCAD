@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """
 Spiral facing toolpath generator.
 
@@ -30,7 +28,7 @@ including support for angled rectangles and proper tool engagement.
 
 import FreeCAD
 import Path
-from . import facing_common
+import math
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -187,8 +185,6 @@ def spiral(
     in the limiting direction. This eliminates any uncleared areas in the center regardless of stepover% value.
     First engagement is preserved exactly at the requested percentage.
     """
-    import Path
-    import FreeCAD
     from . import facing_common
 
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
@@ -219,7 +215,7 @@ def spiral(
     if total_radial_distance <= 0:
         actual_stepover = stepover_dist
     else:
-        number_of_intervals = Path.Geom.ceil(total_radial_distance / stepover_dist)
+        number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
         actual_stepover = total_radial_distance / number_of_intervals
 
     Path.Log.debug(
@@ -233,11 +229,31 @@ def spiral(
 
     clockwise = milling_direction == "conventional"
 
+    commands = []
+    if Path.Geom.isGreaterEqual(initial_offset, limiting_half):
+        # not enough area for spiral, create only one line instead
+        if primary_length > step_length:
+            min_s, min_t = min_t, min_s
+            max_s, max_t = max_t, max_s
+        p1 = (min_s + limiting_half, min_t + limiting_half)
+        p2 = (max_s - limiting_half, max_t - limiting_half)
+        if not clockwise:
+            p1, p2 = p2, p1
+        if reverse:
+            p1, p2 = p2, p1
+        commands.append(Path.Command("G0", {"X": p1[0], "Y": p1[1], "Z": z}))
+        commands.append(Path.Command("G1", {"X": p2[0], "Y": p2[1], "Z": z}))
+        return commands
+
     start_corner_index = 0 if clockwise else 2
     if reverse:
         start_corner_index = (start_corner_index + 2) % 4
 
-    commands = []
+    if clockwise:
+        order = [(start_corner_index + i) % 4 for i in range(4)]
+    else:
+        order = [(start_corner_index - i) % 4 for i in range(4)]
+
     k = 0
     first_move_done = False
 
@@ -249,15 +265,10 @@ def spiral(
         t0 = min_t + current_offset
         t1 = max_t - current_offset
 
-        if s0 >= s1 or t0 >= t1:
+        if Path.Geom.isGreaterEqual(s0, s1) or Path.Geom.isGreaterEqual(t0, t1):
             break
 
         corners_st = [(s0, t0), (s1, t0), (s1, t1), (s0, t1)]
-
-        if clockwise:
-            order = [(start_corner_index + i) % 4 for i in range(4)]
-        else:
-            order = [(start_corner_index - i) % 4 for i in range(4)]
 
         def st_to_xy(s, t):
             return origin + primary_vec * s + step_vec * t

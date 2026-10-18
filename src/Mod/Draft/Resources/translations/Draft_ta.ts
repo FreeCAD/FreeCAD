@@ -1453,9 +1453,9 @@ This setting modifies the Translate property.</source>
       <translation>இயல்புநிலை வேலை செய்யும் வானூர்தி</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <location filename="../ui/preferences-draft.ui" line="14"/>
       <location filename="../ui/preferences-draft.ui" line="20"/>
-      <location filename="../ui/preferences-dxf.ui" line="20"/>
       <source>General</source>
       <translation>பொது</translation>
     </message>
@@ -1739,6 +1739,7 @@ pattern definitions to be added to the standard patterns</source>
       <translation>எழுத்துரு அளவு</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <location filename="../ui/preferences-drafttexts.ui" line="130"/>
       <location filename="../ui/preferences-drafttexts.ui" line="335"/>
       <location filename="../ui/preferences-drafttexts.ui" line="423"/>
@@ -1746,7 +1747,6 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>மிமீ</translation>
     </message>
@@ -1904,8 +1904,8 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>இயல்புநிலை வரி அகலம்</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <location filename="../ui/preferences-draft.ui" line="338"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <source> px</source>
       <translation>px</translation>
     </message>
@@ -2474,8 +2474,8 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</source
       <translation>ஓவியங்களை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-svg.ui" line="242"/>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
+      <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>Export Options</source>
       <translation>ஏற்றுமதி விருப்பங்கள்</translation>
     </message>
@@ -3092,9 +3092,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Copy</source>
       <translation>நகலெடு</translation>
     </message>
@@ -3225,7 +3225,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="709"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="282"/>
       <source>Angle</source>
       <translation>கோணம்</translation>
     </message>
@@ -3441,7 +3441,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1031"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="291"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>சுழற்று</translation>
     </message>
@@ -3466,19 +3466,20 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     <message>
       <location filename="../../DraftGui.py" line="1098"/>
       <location filename="../../DraftGui.py" line="1118"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="224"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="278"/>
       <source>Distance</source>
       <translation>தூரம்</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1099"/>
       <location filename="../../DraftGui.py" line="1119"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="225"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="279"/>
       <source>Offset distance</source>
       <translation>ஆஃப்செட் தூரம்</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1115"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="63"/>
       <source>Trimex</source>
       <translation>டிரிமெக்ச்</translation>
     </message>
@@ -3634,23 +3635,23 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>தனிப்பயன் சிறுகுறிப்பு அளவை x:x, x=x வடிவத்தில் அமைக்கவும்</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_pointarray.py" line="92"/>
+      <location filename="../../draftmake/make_layer.py" line="56"/>
+      <location filename="../../draftmake/make_layer.py" line="146"/>
+      <location filename="../../draftmake/make_text.py" line="95"/>
+      <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftmake/make_dimension.py" line="266"/>
       <location filename="../../draftmake/make_dimension.py" line="355"/>
       <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="604"/>
-      <location filename="../../draftmake/make_label.py" line="201"/>
-      <location filename="../../draftmake/make_text.py" line="95"/>
-      <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_label.py" line="201"/>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
       <location filename="../../draftmake/make_patharray.py" line="328"/>
-      <location filename="../../draftmake/make_layer.py" line="56"/>
-      <location filename="../../draftmake/make_layer.py" line="146"/>
-      <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
-      <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftutils/utils.py" line="1135"/>
+      <location filename="../../draftutils/groups.py" line="101"/>
       <source>No active document. Aborting.</source>
       <translation>செயலில் உள்ள ஆவணம் இல்லை. கருக்கலைப்பு.</translation>
     </message>
@@ -3691,83 +3692,83 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>'ViewObject.RootNode' இல்லை.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="637"/>
+      <location filename="../../draftutils/utils.py" line="629"/>
       <source>Solids:</source>
       <translation>திடப்பொருட்கள்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="638"/>
+      <location filename="../../draftutils/utils.py" line="630"/>
       <source>Faces:</source>
       <translation>முகங்கள்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="639"/>
+      <location filename="../../draftutils/utils.py" line="631"/>
       <source>Wires:</source>
       <translation>கம்பிகள்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="640"/>
+      <location filename="../../draftutils/utils.py" line="632"/>
       <source>Edges:</source>
       <translation>விளிம்புகள்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="641"/>
+      <location filename="../../draftutils/utils.py" line="633"/>
       <source>Vertices:</source>
       <translation>செங்குத்துகள்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="645"/>
+      <location filename="../../draftutils/utils.py" line="637"/>
       <source>Face</source>
       <translation>முகம்</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="642"/>
       <source>Wire</source>
       <translation>கம்பி</translation>
     </message>
     <message>
+      <location filename="../../draftutils/utils.py" line="675"/>
       <location filename="../../draftutils/utils.py" line="683"/>
-      <location filename="../../draftutils/utils.py" line="691"/>
       <source>different types</source>
       <translation>பல்வேறு வகையான</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="705"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
       <source>Objects have different placements. Distance between the two base points:</source>
       <translation>பொருள்களுக்கு வெவ்வேறு இடங்கள் உள்ளன. இரண்டு அடிப்படை புள்ளிகளுக்கு இடையே உள்ள தூரம்:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="967"/>
+      <location filename="../../draftutils/utils.py" line="961"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%sஐ மாற்ற முடியாது, ஏனெனில் அதன் இடம் படிக்க மட்டுமே</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1182"/>
+      <location filename="../../draftutils/utils.py" line="1176"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>இந்தச் செயல்பாடு {} இல் நிறுத்தப்படும். தயவுசெய்து '{}' ஐப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1188"/>
+      <location filename="../../draftutils/utils.py" line="1182"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>இந்த செயல்பாடு நிராகரிக்கப்படும். தயவுசெய்து '{}' ஐப் பயன்படுத்தவும்.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="708"/>
+      <location filename="../../draftutils/utils.py" line="700"/>
       <source>has a different value</source>
       <translation>வேறு மதிப்பு உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="710"/>
+      <location filename="../../draftutils/utils.py" line="702"/>
       <source>doesn't exist in one of the objects</source>
       <translation>ஒரு பொருளில் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="958"/>
+      <location filename="../../draftutils/utils.py" line="952"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s மற்ற %d பொருள்களுடன் ஒரு தளத்தைப் பகிர்ந்து கொள்கிறது. இதை மாற்ற வேண்டுமா என்று பார்க்கவும்.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1104"/>
+      <location filename="../../draftutils/utils.py" line="1098"/>
       <source>Wrong input: unknown document {}</source>
       <translation>தவறான உள்ளீடு: தெரியாத ஆவணம் {}</translation>
     </message>
@@ -3809,10 +3810,10 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation type="unfinished">%1 pick text point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="95"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="77"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="95"/>
       <source>Pick first point</source>
       <translation>முதல் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -3830,6 +3831,13 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>கம்பியை உருவாக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <source>Point identical to previous point</source>
+      <translation type="unfinished">Point identical to previous point</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="327"/>
@@ -3857,10 +3865,10 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <location filename="../../draftguitools/gui_lines.py" line="266"/>
       <location filename="../../draftguitools/gui_lines.py" line="274"/>
       <location filename="../../draftguitools/gui_lines.py" line="285"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="158"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="161"/>
       <location filename="../../draftguitools/gui_splines.py" line="153"/>
       <location filename="../../draftguitools/gui_splines.py" line="158"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="158"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="161"/>
       <source>Pick next point</source>
       <translation>அடுத்த புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -3932,45 +3940,45 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="171"/>
-      <location filename="../../draftguitools/gui_move.py" line="241"/>
+      <location filename="../../draftguitools/gui_move.py" line="244"/>
       <source>Pick end point</source>
       <translation>இறுதிப் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="195"/>
+      <location filename="../../draftguitools/gui_move.py" line="255"/>
+      <source>%1 pick start point</source>
+      <translation type="unfinished">%1 pick start point</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="259"/>
+      <source>%1 pick end point</source>
+      <translation>% 1 தேர்வு முடிவுப் புள்ளி</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_scale.py" line="126"/>
+      <location filename="../../draftguitools/gui_move.py" line="195"/>
       <location filename="../../draftguitools/gui_rotate.py" line="245"/>
       <source>No valid subelements selected</source>
       <translation>சரியான துணை உறுப்புகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
       <source>Move</source>
       <translation>நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="252"/>
-      <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="256"/>
-      <source>%1 pick end point</source>
-      <translation>% 1 தேர்வு முடிவுப் புள்ளி</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="94"/>
       <location filename="../../draftguitools/gui_polygons.py" line="90"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="94"/>
       <source>Pick center point</source>
       <translation>மையப் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="269"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="430"/>
       <location filename="../../draftguitools/gui_polygons.py" line="208"/>
       <location filename="../../draftguitools/gui_polygons.py" line="219"/>
       <location filename="../../draftguitools/gui_polygons.py" line="282"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="269"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="430"/>
       <source>Pick radius</source>
       <translation>ஆரம் தேர்ந்தெடு</translation>
     </message>
@@ -4067,14 +4075,14 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation type="unfinished">Hold %1 select edge</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="490"/>
       <location filename="../../draftguitools/gui_polygons.py" line="312"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="490"/>
       <source>%1 pick center</source>
       <translation>% 1 தேர்வு நடுவண்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="492"/>
       <location filename="../../draftguitools/gui_polygons.py" line="314"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="492"/>
       <source>%1 pick radius</source>
       <translation>% 1 தேர்வு ஆரம்</translation>
     </message>
@@ -4125,16 +4133,16 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>3 புள்ளிகளிலிருந்து ஆர்க்கை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="222"/>
-      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="658"/>
+      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <source>%1 pick first point</source>
       <translation>% 1 முதல் புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
       <translation>% 1 இரண்டாவது புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -4288,14 +4296,19 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>சாதொபொகு கோப்பு (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="77"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="80"/>
       <source>Select an object to project</source>
       <translation>திட்டத்திற்கு ஒரு பொருளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="123"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="126"/>
       <source>Create 2D View</source>
       <translation>2D காட்சியை உருவாக்கவும்</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="156"/>
+      <source>Update</source>
+      <translation>புதுப்பிப்பு</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="140"/>
@@ -4304,9 +4317,9 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
       <translation>புள்ளியை உருவாக்கவும்</translation>
     </message>
     <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <location filename="../../draftguitools/gui_points.py" line="189"/>
       <location filename="../../draftguitools/gui_texts.py" line="180"/>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="216"/>
       <source>%1 pick point</source>
       <translation>% 1 தேர்வு புள்ளி</translation>
     </message>
@@ -4322,54 +4335,54 @@ DWG கோப்பை இடைவெளிகள் மற்றும் ஆ�
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="314"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
       <source>Base angle</source>
       <translation>அடிப்படை கோணம்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="196"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
       <source>The base angle to start the rotation from</source>
       <translation>சுழற்சியைத் தொடங்குவதற்கான அடிப்படை கோணம்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="336"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="339"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>செய்ய வேண்டிய சுழற்சியின் அளவு. 
 இறுதிக் கோணம் அடிப்படைக் கோணமும் இந்தத் தொகையும் இருக்கும்.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="354"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
       <translation type="unfinished">%1 pick rotation center</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
       <translation type="unfinished">%1 pick base angle</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="358"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
       <translation type="unfinished">%1 pick rotation angle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="323"/>
       <source>Pick base angle</source>
       <translation>அடிப்படை கோணத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="209"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="330"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="333"/>
       <source>Rotation</source>
       <translation>சுழற்சி</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="221"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="344"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="347"/>
       <source>Pick rotation angle</source>
       <translation>சுழற்சி கோணத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -4491,7 +4504,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>பலகோணத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="96"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="65"/>
       <source>Select objects to trim or extend</source>
       <translation>ஒழுங்கமைக்க அல்லது நீட்டிக்க பொருட்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -4501,55 +4514,71 @@ The final angle will be the base angle plus this amount.</source>
       <translation>இந்த பொருள் ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="137"/>
-      <location filename="../../draftutils/utils.py" line="393"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
       <source>Only a single face can be extruded</source>
       <translation>ஒரே ஒரு முகத்தை மட்டுமே வெளியேற்ற முடியும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="156"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="138"/>
+      <location filename="../../draftutils/utils.py" line="385"/>
+      <location filename="../../draftutils/utils.py" line="388"/>
+      <location filename="../../draftutils/utils.py" line="391"/>
       <location filename="../../draftutils/utils.py" line="396"/>
-      <location filename="../../draftutils/utils.py" line="399"/>
-      <location filename="../../draftutils/utils.py" line="404"/>
-      <location filename="../../draftutils/utils.py" line="410"/>
-      <location filename="../../draftutils/utils.py" line="425"/>
+      <location filename="../../draftutils/utils.py" line="402"/>
+      <location filename="../../draftutils/utils.py" line="417"/>
       <source>Trimex does not support this object type</source>
       <translation>Trimex இந்த ஆப்செக்ட் வகையை ஆதரிக்கவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="178"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
+      <source>Select a single face to extrude</source>
+      <translation type="unfinished">Select a single face to extrude</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="568"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>இந்த பொருட்களை ஒழுங்கமைக்க முடியவில்லை, வரைவு கம்பிகள் மற்றும் வளைவுகள் மட்டுமே ஆதரிக்கப்படுகின்றன</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="525"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="588"/>
       <source>These objects do not intersect</source>
       <translation>இந்த பொருள்கள் வெட்டுவதில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="528"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="591"/>
       <source>Too many intersection points</source>
       <translation>பல சந்திப்பு புள்ளிகள்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="604"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="667"/>
       <source>%1 pick target</source>
       <translation type="unfinished">%1 pick target</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="606"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="669"/>
       <source>Hold %1 free direction</source>
       <translation type="unfinished">Hold %1 free direction</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="609"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="672"/>
       <source>Hold %1 keep active endpoint</source>
       <translation type="unfinished">Hold %1 keep active endpoint</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="612"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="675"/>
       <source>Hold %1 invert trim direction</source>
       <translation type="unfinished">Hold %1 invert trim direction</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="684"/>
+      <source>Extrude Face</source>
+      <translation type="unfinished">Extrude Face</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="685"/>
+      <source>Select a face to extrude</source>
+      <translation type="unfinished">Select a face to extrude</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4562,23 +4591,23 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Bézier வளைவுகளின் ஆஃப்செட் தற்போது ஆதரிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="152"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="183"/>
-      <source>Pick distance</source>
-      <translation>தூரத்தை தேர்வு செய்யவும்</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
       <translation type="unfinished">%1 pick distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="229"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="168"/>
+      <location filename="../../draftguitools/gui_offset.py" line="152"/>
+      <source>Pick distance</source>
+      <translation>தூரத்தை தேர்வு செய்யவும்</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="283"/>
       <source>Offset angle</source>
       <translation>ஆஃப்செட் கோணம்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="571"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>இந்த பொருட்களை ஒழுங்கமைக்க முடியவில்லை, பல கம்பிகள்</translation>
     </message>
@@ -4796,37 +4825,37 @@ The final angle will be the base angle plus this amount.</source>
       <translation>அடிப்படை புள்ளியைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="167"/>
+      <location filename="../../draftguitools/gui_scale.py" line="170"/>
       <source>Pick reference distance from base point</source>
       <translation>அடிப்படை புள்ளியிலிருந்து குறிப்பு தூரத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="215"/>
+      <location filename="../../draftguitools/gui_scale.py" line="218"/>
       <source>Zero scale factor not allowed</source>
       <translation>சுழிய அளவிலான காரணி அனுமதிக்கப்படவில்லை</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="228"/>
+      <location filename="../../draftguitools/gui_scale.py" line="231"/>
       <source>Scale</source>
       <translation>அளவுகோல்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="268"/>
+      <location filename="../../draftguitools/gui_scale.py" line="271"/>
       <source>Pick new distance from base point</source>
       <translation>அடிப்படை புள்ளியிலிருந்து புதிய தூரத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="293"/>
+      <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
       <translation type="unfinished">%1 pick base point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="295"/>
+      <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
       <translation type="unfinished">%1 pick reference distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="297"/>
+      <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
       <translation type="unfinished">%1 pick new distance</translation>
     </message>
@@ -4990,8 +5019,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>வடிவம் இல்லாமல் பொருட்களை நகலி செய்ய முடியாது, அவற்றைத் தவிர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="76"/>
       <location filename="../../draftguitools/gui_downgrade.py" line="76"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="76"/>
       <source>Select an object to upgrade</source>
       <translation>மேம்படுத்த ஒரு பொருளைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -5031,12 +5060,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>தரமிறக்கு</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="232"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="403"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="197"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="361"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="182"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="338"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="232"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="403"/>
       <source>Object:</source>
       <translation>பொருள்:</translation>
     </message>
@@ -5066,9 +5095,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>போலார் அரேயை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="374"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="332"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="309"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="374"/>
       <source>Fuse:</source>
       <translation>உருகி:</translation>
     </message>
@@ -5114,8 +5143,8 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ஆர்த்தோகனல் வரிசையை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="322"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
       <source>Create link array:</source>
       <translation>இணைப்பு வரிசையை உருவாக்கவும்:</translation>
     </message>
@@ -5213,9 +5242,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>வட்ட வரிசை</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="220"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="185"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="174"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="220"/>
       <source>At least 1 element must be selected</source>
       <translation>குறைந்தபட்சம் 1 உறுப்பு தேர்ந்தெடுக்கப்பட வேண்டும்</translation>
     </message>
@@ -5225,9 +5254,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>அடுக்குகளின் எண்ணிக்கை குறைந்தது 2 ஆக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="231"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="196"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="181"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="231"/>
       <source>Selection is not suitable for array</source>
       <translation>வரிசைக்கு தேர்வு பொருத்தமானது அல்ல</translation>
     </message>
@@ -5395,12 +5424,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>வடிவத்தை உருவாக்க முடியாது:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_patharray.py" line="184"/>
-      <location filename="../../draftmake/make_patharray.py" line="333"/>
+      <location filename="../../draftmake/make_circulararray.py" line="135"/>
       <location filename="../../draftmake/make_pointarray.py" line="97"/>
       <location filename="../../draftmake/make_orthoarray.py" line="149"/>
       <location filename="../../draftmake/make_polararray.py" line="111"/>
-      <location filename="../../draftmake/make_circulararray.py" line="135"/>
+      <location filename="../../draftmake/make_patharray.py" line="184"/>
+      <location filename="../../draftmake/make_patharray.py" line="333"/>
       <source>Wrong input: base_object not in document.</source>
       <translation>தவறான உள்ளீடு: base_object ஆவணத்தில் இல்லை.</translation>
     </message>
@@ -5411,18 +5440,19 @@ The final angle will be the base angle plus this amount.</source>
       <translation>தவறான உள்ளீடு: path_object ஆவணத்தில் இல்லை.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
+      <location filename="../../draftmake/make_layer.py" line="185"/>
+      <location filename="../../draftmake/make_polararray.py" line="123"/>
       <location filename="../../draftmake/make_label.py" line="317"/>
       <location filename="../../draftmake/make_patharray.py" line="195"/>
       <location filename="../../draftmake/make_patharray.py" line="266"/>
       <location filename="../../draftmake/make_patharray.py" line="273"/>
       <location filename="../../draftmake/make_patharray.py" line="343"/>
-      <location filename="../../draftmake/make_layer.py" line="185"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="139"/>
-      <location filename="../../draftmake/make_polararray.py" line="123"/>
       <source>Wrong input: must be a number.</source>
       <translation>தவறான உள்ளீடு: எண்ணாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_circulararray.py" line="165"/>
       <location filename="../../draftmake/make_dimension.py" line="272"/>
       <location filename="../../draftmake/make_dimension.py" line="278"/>
       <location filename="../../draftmake/make_dimension.py" line="285"/>
@@ -5432,12 +5462,11 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="610"/>
       <location filename="../../draftmake/make_dimension.py" line="635"/>
       <location filename="../../draftmake/make_dimension.py" line="642"/>
+      <location filename="../../draftmake/make_polararray.py" line="135"/>
       <location filename="../../draftmake/make_label.py" line="209"/>
       <location filename="../../draftmake/make_patharray.py" line="202"/>
       <location filename="../../draftmake/make_patharray.py" line="253"/>
       <location filename="../../draftmake/make_patharray.py" line="260"/>
-      <location filename="../../draftmake/make_polararray.py" line="135"/>
-      <location filename="../../draftmake/make_circulararray.py" line="165"/>
       <source>Wrong input: must be a vector.</source>
       <translation>தவறான உள்ளீடு: வெக்டராக இருக்க வேண்டும்.</translation>
     </message>
@@ -5464,9 +5493,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>உள்ளீடு: ஒற்றை மதிப்பு வெக்டருக்கு விரிவாக்கப்பட்டது.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <location filename="../../draftmake/make_orthoarray.py" line="113"/>
       <location filename="../../draftmake/make_polararray.py" line="117"/>
-      <location filename="../../draftmake/make_circulararray.py" line="153"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>தவறான உள்ளீடு: முழு எண்ணாக இருக்க வேண்டும்.</translation>
     </message>
@@ -5478,9 +5507,9 @@ The final angle will be the base angle plus this amount.</source>
       <translation>உள்ளீடு: உறுப்புகளின் எண்ணிக்கை குறைந்தது 1 ஆக இருக்க வேண்டும். இது 1 ஆக அமைக்கப்பட்டுள்ளது.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="217"/>
-      <location filename="../../draftmake/make_text.py" line="113"/>
       <location filename="../../draftmake/make_pointarray.py" line="119"/>
+      <location filename="../../draftmake/make_text.py" line="113"/>
+      <location filename="../../draftmake/make_label.py" line="217"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>தவறான உள்ளீடு: இடம், திசையன் அல்லது சுழற்சியாக இருக்க வேண்டும்.</translation>
     </message>
@@ -5515,10 +5544,10 @@ The final angle will be the base angle plus this amount.</source>
       <translation>தவறான உள்ளீடு: label_type பின்வருவனவற்றில் ஒன்றாக இருக்க வேண்டும்:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="285"/>
-      <location filename="../../draftmake/make_label.py" line="289"/>
       <location filename="../../draftmake/make_text.py" line="101"/>
       <location filename="../../draftmake/make_text.py" line="105"/>
+      <location filename="../../draftmake/make_label.py" line="285"/>
+      <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
       <translation>தவறான உள்ளீடு: சரங்களின் பட்டியல் அல்லது ஒற்றை சரமாக இருக்க வேண்டும்.</translation>
     </message>
@@ -5674,10 +5703,10 @@ The final angle will be the base angle plus this amount.</source>
       <translation>தவறான உள்ளீடு: 0 மற்றும் 100க்கு இடைப்பட்ட எண்ணாக இருக்க வேண்டும்.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
+      <location filename="../../draftviewproviders/view_clone.py" line="71"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <source>Edit</source>
       <translation>திருத்து</translation>
     </message>
@@ -5967,8 +5996,8 @@ of existing objects in all opened documents?</source>
       <translation>சாய்வை மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="92"/>
       <location filename="../../draftguitools/gui_patharray.py" line="114"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="92"/>
       <source>Select exactly 2 objects, the base object and the path object, before calling this command</source>
       <translation>இந்த கட்டளையை அழைப்பதற்கு முன், அடிப்படை பொருள் மற்றும் பாதை பொருள் ஆகிய 2 பொருள்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
@@ -6128,14 +6157,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">No valid faces for hatch</translation>
     </message>
     <message>
-      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
-      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
-      <location filename="../../draftguitools/gui_lines.py" line="246"/>
-      <source>Point identical to previous point</source>
-      <translation type="unfinished">Point identical to previous point</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation type="unfinished">Save Camera View</translation>
     </message>
@@ -6248,16 +6270,16 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>சாய்வு</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="154"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="134"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="130"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="154"/>
       <source>True</source>
       <translation>உண்மை</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="138"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="134"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
       <source>False</source>
       <translation>பொய்</translation>
     </message>
@@ -6317,12 +6339,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>_BSpline.createGeometry: அதே முதல்/கடைசி புள்ளியுடன் மூடப்பட்டது. வடிவியல் புதுப்பிக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="111"/>
       <source>Writing camera position</source>
       <translation>கேமரா நிலையை எழுதுதல்</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="129"/>
       <source>Writing objects shown/hidden state</source>
       <translation>காட்டப்படும்/மறைக்கப்பட்ட நிலையில் உள்ள பொருட்களை எழுதுதல்</translation>
     </message>
@@ -6332,8 +6354,8 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>அன்று</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="326"/>
       <location filename="../../draftguitools/gui_layers.py" line="401"/>
+      <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>பெயர்</translation>
     </message>
@@ -6486,12 +6508,12 @@ DXF லைப்ரரி addon ஐ கைமுறையாக நிறுவ�
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1328"/>
+      <location filename="../../importSVG.py" line="1331"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>அறியப்படாத SVG ஏற்றுமதி நடை, மொழிபெயர்க்கப்பட்டது</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1369"/>
+      <location filename="../../importSVG.py" line="1372"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>ஏற்றுமதி பட்டியலில் செல்லுபடியாகும் எல்லைப் பெட்டியுடன் எந்த பொருளும் இல்லை</translation>
     </message>
@@ -6687,14 +6709,14 @@ If the "Copy" option is active, it will create rotated copies.</source>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="78"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="71"/>
       <source>Trimex</source>
       <translation type="unfinished">Trimex</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="81"/>
-      <source>Trims or extends the selected object, or extrudes single faces</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளை ட்ரிம்ச் அல்லது நீட்டித்தல் அல்லது ஒற்றை முகங்களை வெளியேற்றும்</translation>
+      <location filename="../../draftguitools/gui_trimex.py" line="72"/>
+      <source>Trims or extends the selected object</source>
+      <translation type="unfinished">Trims or extends the selected object</translation>
     </message>
   </context>
   <context>
@@ -7049,20 +7071,20 @@ set True for fusion or False for compound</source>
       <translation>வட்டத்தின் ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="67"/>
-      <location filename="../../draftobjects/ellipse.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="61"/>
       <location filename="../../draftobjects/circle.py" line="61"/>
+      <location filename="../../draftobjects/ellipse.py" line="64"/>
+      <location filename="../../draftobjects/polygon.py" line="67"/>
       <source>Create a face</source>
       <translation>ஒரு முகத்தை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="70"/>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
       <location filename="../../draftobjects/bspline.py" line="57"/>
       <location filename="../../draftobjects/rectangle.py" line="70"/>
       <location filename="../../draftobjects/circle.py" line="64"/>
       <location filename="../../draftobjects/wire.py" line="90"/>
-      <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <location filename="../../draftobjects/polygon.py" line="70"/>
       <source>The area of this object</source>
       <translation>இந்த பொருளின் பரப்பளவு</translation>
     </message>
@@ -7087,16 +7109,16 @@ set True for fusion or False for compound</source>
       <translation>கட்டுப்பாட்டு வட்டத்திலிருந்து பலகோணம் எப்படி வரையப்பட வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="61"/>
       <location filename="../../draftobjects/rectangle.py" line="55"/>
       <location filename="../../draftobjects/wire.py" line="78"/>
+      <location filename="../../draftobjects/polygon.py" line="61"/>
       <source>Radius to use to fillet the corners</source>
       <translation>மூலைகளை நிரப்புவதற்கு பயன்படுத்த வேண்டிய ஆரம்</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="64"/>
       <location filename="../../draftobjects/rectangle.py" line="58"/>
       <location filename="../../draftobjects/wire.py" line="81"/>
+      <location filename="../../draftobjects/polygon.py" line="64"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation>மூலைகளுக்கு கொடுக்க அறையின் அளவு</translation>
     </message>
@@ -7106,8 +7128,8 @@ set True for fusion or False for compound</source>
       <translation>நகலெடுக்கப்படும் அடிப்படை பொருள்.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <location filename="../../draftobjects/patharray.py" line="228"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="108"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
       <translation>பிரதிகள் விநியோகிக்கப்படும் பொருள். அதில் 'Edges' இருக்க வேண்டும்.</translation>
     </message>
@@ -7122,18 +7144,18 @@ set True for fusion or False for compound</source>
       <translation>முறுக்கப்பட்ட வரிசையின் சுழற்சி காரணி.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="112"/>
-      <location filename="../../draftobjects/array.py" line="325"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
       <location filename="../../draftobjects/patharray.py" line="262"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="150"/>
+      <location filename="../../draftobjects/array.py" line="325"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation>தனிப்பட்ட வரிசை உறுப்புகளைக் காட்டு (இணைப்பு வரிசைகளுக்கு மட்டும்)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="118"/>
-      <location filename="../../draftobjects/array.py" line="148"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
       <location filename="../../draftobjects/patharray.py" line="269"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="159"/>
+      <location filename="../../draftobjects/array.py" line="148"/>
+      <location filename="../../draftobjects/pointarray.py" line="118"/>
       <source>The placement for each array element</source>
       <translation>ஒவ்வொரு வரிசை உறுப்புக்கான இடம்</translation>
     </message>
@@ -7261,8 +7283,8 @@ they will only be editable by changing the style through the 'Annotation style e
 'விரிவுரை நடை எடிட்டர்' கருவி மூலம் நடையை மாற்றுவதன் மூலம் மட்டுமே அவற்றைத் திருத்த முடியும்.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/array.py" line="101"/>
       <location filename="../../draftobjects/patharray.py" line="220"/>
+      <location filename="../../draftobjects/array.py" line="101"/>
       <source>The base object that will be duplicated</source>
       <translation>நகலெடுக்கப்படும் அடிப்படை பொருள்</translation>
     </message>
@@ -7377,10 +7399,10 @@ Otherwise the copies will have the same orientation as the original Base object.
 - சுற்றறிக்கை: அடிப்படைப் பொருளைச் சுற்றி மைய வட்டங்களில் பிரதிகளை வைக்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="86"/>
-      <location filename="../../draftobjects/array.py" line="129"/>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
       <location filename="../../draftobjects/patharray.py" line="255"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
+      <location filename="../../draftobjects/array.py" line="129"/>
+      <location filename="../../draftobjects/pointarray.py" line="86"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation>பிரதிகள் ஒன்றையொன்று தொட்டால் (மெதுவாக) ஒன்றாக இணைக்கப்பட வேண்டுமா என்பதைக் குறிப்பிடுகிறது</translation>
     </message>
@@ -8099,18 +8121,18 @@ Use 'arch' to force US arch notation</source>
 US arch குறியீட்டை கட்டாயப்படுத்த 'arch' ஐப் பயன்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <location filename="../../draftviewproviders/view_wire.py" line="67"/>
       <location filename="../../draftviewproviders/view_wire.py" line="80"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="144"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="159"/>
       <source>Arrow size</source>
       <translation>அம்பு நடைகள்</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <location filename="../../draftviewproviders/view_wire.py" line="72"/>
       <location filename="../../draftviewproviders/view_wire.py" line="85"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="149"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="166"/>
       <source>Arrow type</source>
       <translation>அம்பு வகை</translation>
     </message>
@@ -8171,10 +8193,10 @@ beyond the dimension line</source>
       <translation>வரைவு</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="253"/>
-      <location filename="../../InitGui.py" line="256"/>
-      <location filename="../../InitGui.py" line="259"/>
       <location filename="../../InitGui.py" line="262"/>
+      <location filename="../../InitGui.py" line="265"/>
+      <location filename="../../InitGui.py" line="268"/>
+      <location filename="../../InitGui.py" line="271"/>
       <source>Import-Export</source>
       <translation>இறக்குமதி-ஏற்றுமதி</translation>
     </message>
@@ -8592,12 +8614,12 @@ XY-விமானத்தில் வரையப்பட்ட நேரா
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="63"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="66"/>
       <source>Shape 2D View</source>
       <translation>வடிவம் 2D காட்சி</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="67"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="70"/>
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
       <translation>XY- விமானத்தில் தேர்ந்தெடுக்கப்பட்ட பொருட்களின் 2D ப்ரொசெக்சனை உருவாக்குகிறது. 
@@ -8997,6 +9019,21 @@ shape. Best for viewing very large files with maximum performance.</source>
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
       <translation type="unfinished">Flattened SVG</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_UpdateShape2DView</name>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="140"/>
+      <source>Force 2D View Update</source>
+      <translation type="unfinished">Force 2D View Update</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="144"/>
+      <source>Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</source>
+      <translation type="unfinished">Forces an update of the selected 2D Views or all 2D Views in the document.
+The 'Auto Update' property of the views is ignored.</translation>
     </message>
   </context>
 </TS>

@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include <boost/core/ignore_unused.hpp>
+#include <algorithm>
 #include <cmath>
 #include <algorithm>
 #include <vector>
@@ -311,6 +312,9 @@ void AssemblyObject::onChanged(const App::Property* prop)
 
 int AssemblyObject::solve(bool enableRedo)
 {
+    // updateSolveStatus() solves on demand; suppress that while a solve is running.
+    Base::StateLocker lock(solveInProgress);
+
     ensureIdentityPlacements();
 
     syncGroundedJoints();
@@ -385,7 +389,9 @@ void AssemblyObject::updateSolveStatus()
     // +1 because the assembly origin is also represented by a solver body.
     lastDoF = (1 + numberOfSolverBodies) * 6;
 
-    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+    // Solve on demand when queried before the system is solved, but not from within
+    // a solve: solve() calls this, so a failed solve would recurse indefinitely.
+    if (!solveInProgress && (!mbdAssembly || !mbdAssembly->mbdSystem)) {
         solve();
     }
 
@@ -410,7 +416,7 @@ void AssemblyObject::updateSolveStatus()
         if (!jm) {
             return;
         }
-        // Base::Console().warning("jm->name %s\n", jm->name);
+        // Base::Console().warning("jm->name {}\n", jm->name);
         bool isJointRedundant = false;
 
         jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
@@ -423,7 +429,7 @@ void AssemblyObject::updateSolveStatus()
             if (spec.rfind("Redundant", 0) == 0) {
                 isJointRedundant = true;
             }
-            // Base::Console().warning("    - %s\n", spec);
+            // Base::Console().warning("    - {}\n", spec);
             --lastDoF;
         });
 
@@ -538,10 +544,20 @@ bool AssemblyObject::requiresRigidSolveForMove(const std::vector<App::DocumentOb
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
     bundleFixed = true;
-    solve();
+    bool hasUnconnectedDragPart = std::ranges::any_of(dragParts, [this](App::DocumentObject* part) {
+        return part && !isPartConnected(part);
+    });
+
+    if (hasUnconnectedDragPart) {
+        prepareMbdForIslandDrag(dragParts);
+    }
+    else {
+        solve();
+    }
     bundleFixed = false;
 
     draggedParts.clear();
+
     for (auto part : dragParts) {
         const bool isRigidClustered = getRigidRepresentative(part) != nullptr;
 
@@ -550,15 +566,17 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
             continue;
         }
 
-        // Active rigid-cluster members are solver-connected through the shared MbD part.
-        if (!isRigidClustered && !isPartConnected(part)) {
+        // - Free-floating parts should not be added since they are ignored by the solver.
+        // During ungrounded island dragging, prepareMbdForIslandDrag seeds the MBD system from
+        // the dragged parts, so objectPartMap is the source of truth instead.
+        // - Active rigid-cluster members are solver-connected through the shared MbD part.
+        if (!isPartConnected(part) && (!objectPartMap.contains(part) || !isRigidClustered)) {
             continue;
         }
 
         // Rigid-cluster members stay draggable because they share one MbD part.
         if (isRigidClustered) {
             draggedParts.push_back(part);
-            continue;
         }
 
         Base::Placement plc;
@@ -580,8 +598,55 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     }
 }
 
+void AssemblyObject::prepareMbdForIslandDrag(std::vector<App::DocumentObject*> dragParts)
+{
+    ensureIdentityPlacements();
+    syncGroundedJoints();
+
+    mbdAssembly = makeMbdAssembly();
+    objectPartMap.clear();
+    motions.clear();
+
+    auto seededParts = fixGroundedParts();
+    for (auto* part : dragParts) {
+        if (part) {
+            seededParts.insert(part);
+        }
+    }
+
+    std::vector<App::DocumentObject*> joints = getJoints();
+    removeUnconnectedJoints(joints, seededParts);
+    if (joints.empty()) {
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+
+    jointParts(joints);
+
+    try {
+        mbdAssembly->runPreDrag();
+    }
+    catch (const std::exception& e) {
+        FC_ERR("Drag setup failed: " << e.what());
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+    catch (...) {
+        FC_ERR("Drag setup failed: unhandled exception");
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+}
+
 void AssemblyObject::doDragStep()
 {
+    if (!mbdAssembly || draggedParts.empty()) {
+        return;
+    }
+
     try {
         std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
         std::unordered_set<ASMTPart*> seenMbdParts;
@@ -680,7 +745,7 @@ bool AssemblyObject::validateNewPlacements()
 
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
-                        "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
+                        "Assembly : Ignoring bad solve, a grounded object ({}) moved.\n",
                         obj->getFullLabel()
                     );
                     return false;
@@ -696,6 +761,10 @@ bool AssemblyObject::validateNewPlacements()
 
 void AssemblyObject::postDrag()
 {
+    if (!mbdAssembly) {
+        return;
+    }
+
     mbdAssembly->runPostDrag();  // Do this after last drag
     purgeTouched();
 }
@@ -971,6 +1040,24 @@ void AssemblyObject::updateRigidPlacementCache()
     });
 }
 
+namespace
+{
+// A singular solve can return NaN or infinite placements. NaN coordinates defeat
+// the bounding-box rejection in SoRayPickAction, so writing one into the document
+// makes every ray pick hit everything; reject them at the solver/document boundary.
+bool isFinitePlacement(const Base::Placement& plc)
+{
+    const Base::Vector3d& pos = plc.getPosition();
+    double q0 {};
+    double q1 {};
+    double q2 {};
+    double q3 {};
+    plc.getRotation().getValue(q0, q1, q2, q3);
+    return std::isfinite(pos.x) && std::isfinite(pos.y) && std::isfinite(pos.z) && std::isfinite(q0)
+        && std::isfinite(q1) && std::isfinite(q2) && std::isfinite(q3);
+}
+}  // namespace
+
 void AssemblyObject::setNewPlacements()
 {
     for (auto& pair : objectPartMap) {
@@ -991,6 +1078,14 @@ void AssemblyObject::setNewPlacements()
         Base::Placement newPlacement = getMbdPlacement(mbdPart);
         if (!pair.second.offsetPlc.isIdentity()) {
             newPlacement = newPlacement * pair.second.offsetPlc;
+        }
+        if (!isFinitePlacement(newPlacement)) {
+            Base::Console().warning(
+                "Assembly: solver returned a non-finite placement for '{}'; keeping its "
+                "previous position.\n",
+                obj->getFullName()
+            );
+            continue;
         }
         if (!propPlacement->getValue().isSame(newPlacement)) {
             propPlacement->setValue(newPlacement);
@@ -1018,25 +1113,32 @@ void AssemblyObject::redrawJointPlacement(App::DocumentObject* joint)
 
     Base::PyGILStateLocker lock;
 
-    App::PropertyPythonObject* proxy = joint
-        ? dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"))
-        : nullptr;
+    try {
+        auto* proxy = dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"));
 
-    if (!proxy) {
-        return;
+        if (!proxy) {
+            return;
+        }
+
+        Py::Object jointPy = proxy->getValue();
+
+        if (!jointPy.hasAttr("redrawJointPlacements")) {
+            return;
+        }
+
+        Py::Object attr = jointPy.getAttr("redrawJointPlacements");
+        if (attr.ptr() && attr.isCallable()) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::asObject(joint->getPyObject()));
+            Py::Callable(attr).apply(args);
+        }
     }
-
-    Py::Object jointPy = proxy->getValue();
-
-    if (!jointPy.hasAttr("redrawJointPlacements")) {
-        return;
-    }
-
-    Py::Object attr = jointPy.getAttr("redrawJointPlacements");
-    if (attr.ptr() && attr.isCallable()) {
-        Py::Tuple args(1);
-        args.setItem(0, Py::asObject(joint->getPyObject()));
-        Py::Callable(attr).apply(args);
+    catch (Py::Exception&) {
+        // Callers run inside Qt event handlers, which cannot propagate C++ exceptions
+        // out of the joint's Python callback. Report the error and keep redrawing the
+        // remaining joints.
+        Base::PyException e;
+        e.reportException();
     }
 }
 
@@ -1090,6 +1192,48 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(
             return joint;
         }
     }
+    return nullptr;
+}
+
+App::DocumentObject* AssemblyObject::getJointOfPartForUngroundedDrag(
+    App::DocumentObject* part,
+    std::string& name
+)
+{
+    if (!part) {
+        return nullptr;
+    }
+
+    std::vector<App::DocumentObject*> joints = getJointsOfPart(part);
+    for (auto* joint : joints) {
+        if (!joint || !isJointTypeConnecting(joint)) {
+            continue;
+        }
+        if (getJointType(joint) == JointType::Fixed) {
+            continue;
+        }
+
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+        if (!part1 || !part2) {
+            continue;
+        }
+
+        std::string refName;
+        if (part == part1) {
+            refName = "Reference1";
+        }
+        else if (part == part2) {
+            refName = "Reference2";
+        }
+        else {
+            continue;
+        }
+
+        name = refName;
+        return joint;
+    }
+
     return nullptr;
 }
 
@@ -2166,7 +2310,7 @@ std::string AssemblyObject::handleOneSideOfJoint(
 
     if (!part || !obj) {
         Base::Console()
-            .warning("The property %s of Joint %s is bad.\n", propRefName, joint->getFullName());
+            .warning("The property {} of Joint {} is bad.\n", propRefName, joint->getFullName());
         return "";
     }
 
@@ -2230,7 +2374,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().warning("Reference1 of Joint %s is bad.\n", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint {} is bad.\n", joint->getFullName());
         return;
     }
 
@@ -2270,7 +2414,7 @@ void AssemblyObject::getRackPinionMarkers(
     Base::Rotation yawRotation(currentZAxis, yawAdjustment);
 
     // Combine the initial rotation with the yaw adjustment
-    Base::Rotation adjustedRotation = rot * yawRotation;
+    Base::Rotation adjustedRotation = yawRotation * rot;
     plc1.setRotation(adjustedRotation);
 
     // Then end of processing similar to handleOneSideOfJoint :
@@ -2297,14 +2441,12 @@ void AssemblyObject::getRackPinionMarkers(
 int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
     App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
-    App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
-    boost::ignore_unused(obj1);
-    Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
-
     App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
-    App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
-    boost::ignore_unused(obj2);
-    Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
+
+    // Compare the JCS in global coordinates: the slider and this joint may reference
+    // different sub-objects of the same part.
+    Base::Placement plc1 = getJointSideGlobalPlacement(joint, "Reference1", "Placement1");
+    Base::Placement plc2 = getJointSideGlobalPlacement(joint, "Reference2", "Placement2");
 
     int slidingFound = 0;
     for (auto* jt : getJoints()) {
@@ -2316,21 +2458,22 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
             if (jpart1 == part1 || jpart1 == part2) {
                 found = (jpart1 == part1) ? 1 : 2;
                 plci = (jpart1 == part1) ? plc1 : plc2;
-                plcjt = getPlacementFromProp(jt, "Placement1");
+                plcjt = getJointSideGlobalPlacement(jt, "Reference1", "Placement1");
             }
             else if (jpart2 == part1 || jpart2 == part2) {
                 found = (jpart2 == part1) ? 1 : 2;
                 plci = (jpart2 == part1) ? plc1 : plc2;
-                plcjt = getPlacementFromProp(jt, "Placement2");
+                plcjt = getJointSideGlobalPlacement(jt, "Reference2", "Placement2");
             }
 
             if (found != 0) {
-                // check the placements plcjt and (jcs1 or jcs2 depending on found value) Z axis are
-                // colinear ie if their pitch and roll are the same.
-                double y1, p1, r1, y2, p2, r2;
-                plcjt.getRotation().getYawPitchRoll(y1, p1, r1);
-                plci.getRotation().getYawPitchRoll(y2, p2, r2);
-                if (fabs(p1 - p2) < Precision::Confusion() && fabs(r1 - r2) < Precision::Confusion()) {
+                // Check that the Z axes of plcjt and plci are parallel. Do not compare
+                // pitch/roll: a yaw offset on the slider JCS (e.g. to align the rack) rotates
+                // about its local Z axis, which keeps the axis but changes pitch and roll
+                // whenever that axis is not the global Z.
+                Base::Vector3d axisjt = plcjt.getRotation().multVec(Base::Vector3d(0, 0, 1));
+                Base::Vector3d axisi = plci.getRotation().multVec(Base::Vector3d(0, 0, 1));
+                if (axisjt.Cross(axisi).Length() < Precision::Confusion()) {
                     slidingFound = found;
                 }
             }
@@ -2353,7 +2496,7 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     // If this joint is self-referential it must be ignored.
     if (getMbDPart(part1) == getMbDPart(part2)) {
         Base::Console().warning(
-            "Assembly: Ignoring joint (%s) because its parts are connected by a fixed "
+            "Assembly: Ignoring joint ({}) because its parts are connected by a fixed "
             "joint bundle. This joint is a conflicting or redundant constraint.\n",
             joint->getFullLabel()
         );

@@ -232,11 +232,7 @@ void OverlayProxyWidget::onTimer()
     hitTest(QCursor::pos(), false);
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-void OverlayProxyWidget::enterEvent(QEvent*)
-#else
 void OverlayProxyWidget::enterEvent(QEnterEvent*)
-#endif
 {
     if (!owner->count()) {
         return;
@@ -463,6 +459,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     connect(tabBar(), &QTabBar::tabBarClicked, this, &OverlayTabWidget::onCurrentChanged);
     connect(tabBar(), &QTabBar::tabMoved, this, &OverlayTabWidget::onTabMoved);
     tabBar()->installEventFilter(this);
+    autoModeMenu.installEventFilter(this);
 
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, this, &OverlayTabWidget::setupLayout);
@@ -476,15 +473,54 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     connect(_animator, &QAbstractAnimation::stateChanged, this, &OverlayTabWidget::onAnimationStateChanged);
 }
 
+OverlayTabWidget::~OverlayTabWidget()
+{
+    tabBar()->removeEventFilter(this);
+
+    timer.stop();
+    repaintTimer.stop();
+
+    if (_animator) {
+        disconnect(_animator, nullptr, this, nullptr);
+        _animator->stop();
+        _animator->setTargetObject(nullptr);
+    }
+
+    switch (dockArea) {
+        case Qt::LeftDockWidgetArea:
+            if (_LeftOverlay == this) {
+                _LeftOverlay = nullptr;
+            }
+            break;
+        case Qt::RightDockWidgetArea:
+            if (_RightOverlay == this) {
+                _RightOverlay = nullptr;
+            }
+            break;
+        case Qt::TopDockWidgetArea:
+            if (_TopOverlay == this) {
+                _TopOverlay = nullptr;
+            }
+            break;
+        case Qt::BottomDockWidgetArea:
+            if (_BottomOverlay == this) {
+                _BottomOverlay = nullptr;
+            }
+            break;
+        default:
+            break;
+    }
+
+    if (_Dragging == this || (_Dragging && isAncestorOf(_Dragging))) {
+        _Dragging = nullptr;
+    }
+}
+
 void OverlayTabWidget::refreshIcons()
 {
-    auto curStyleSheet = App::GetApplication()
-                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                             ->GetASCII("StyleSheet", "None");
-
     QPixmap pxAutoHide;
 
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isDarkTheme()) {
         actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay_light.svg"));
         actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
         actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
@@ -787,6 +823,9 @@ bool OverlayTabWidget::eventFilter(QObject* o, QEvent* ev)
             timer.start(10);
         }
     }
+    else if (ev->type() == QEvent::StyleChange && o == &autoModeMenu) {
+        refreshIcons();
+    }
     return QTabWidget::eventFilter(o, ev);
 }
 
@@ -968,15 +1007,11 @@ void OverlayTabWidget::retranslate()
 
 void OverlayTabWidget::syncAutoMode()
 {
-    auto curStyleSheet = App::GetApplication()
-                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-                             ->GetASCII("StyleSheet", "None");
-
     QAction* action = nullptr;
     switch (autoMode) {
         case AutoMode::AutoHide:
             action = &actAutoHide;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isDarkTheme()) {
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap(
                     "qss:overlay/icons/autohide_lighter.svg"
                 );
@@ -999,7 +1034,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::EditShow:
             action = &actEditShow;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isDarkTheme()) {
                 QPixmap pxEditShowMode = BitmapFactory().pixmap(
                     "qss:overlay/icons/editshow_lighter.svg"
                 );
@@ -1026,7 +1061,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::TaskShow:
             action = &actTaskShow;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isDarkTheme()) {
                 QPixmap pxTaskShowMode = BitmapFactory().pixmap(
                     "qss:overlay/icons/taskshow_lighter.svg"
                 );
@@ -1053,7 +1088,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::EditHide:
             action = &actEditHide;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isDarkTheme()) {
                 QPixmap pxEditHideMode = BitmapFactory().pixmap(
                     "qss:overlay/icons/edithide_lighter.svg"
                 );
@@ -1080,7 +1115,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         default:
             action = &actNoAutoMode;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isDarkTheme()) {
                 QPixmap pxNoAutoMode = BitmapFactory().pixmap("qss:overlay/icons/mode_lighter.svg");
                 action->setIcon(pxNoAutoMode);
                 QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
@@ -1271,11 +1306,7 @@ void OverlayTabWidget::leaveEvent(QEvent*)
     OverlayManager::instance()->refresh();
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-void OverlayTabWidget::enterEvent(QEvent*)
-#else
 void OverlayTabWidget::enterEvent(QEnterEvent*)
-#endif
 {
     revealTime = QTime();
     OverlayManager::instance()->refresh();
@@ -1608,7 +1639,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
     switch (dockArea) {
         case Qt::LeftDockWidgetArea:
         case Qt::RightDockWidgetArea:
-            if (_TopOverlay->isVisible() && _TopOverlay->_state <= State::Normal) {
+            if (_TopOverlay && _TopOverlay->isVisible() && _TopOverlay->_state <= State::Normal) {
                 rect.setTop(std::max(rect.top(), _TopOverlay->rectOverlay.bottom()));
             }
             if (dockArea == Qt::RightDockWidgetArea) {
@@ -1620,7 +1651,7 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
             break;
         case Qt::TopDockWidgetArea:
         case Qt::BottomDockWidgetArea:
-            if (_LeftOverlay->isVisible() && _LeftOverlay->_state <= State::Normal) {
+            if (_LeftOverlay && _LeftOverlay->isVisible() && _LeftOverlay->_state <= State::Normal) {
                 rect.setLeft(std::max(rect.left(), _LeftOverlay->rectOverlay.right()));
             }
             if (dockArea == Qt::TopDockWidgetArea) {
@@ -1628,7 +1659,8 @@ bool OverlayTabWidget::getAutoHideRect(QRect& rect) const
             }
             else {
                 rect.setTop(rect.top() + std::max(rect.height() - hintWidth, 0));
-                if (_RightOverlay->isVisible() && _RightOverlay->_state <= State::Normal) {
+                if (_RightOverlay && _RightOverlay->isVisible()
+                    && _RightOverlay->_state <= State::Normal) {
                     QPoint offset = getMainWindow()->getMdiArea()->pos();
                     rect.setRight(std::min(rect.right(), _RightOverlay->x() - offset.x()));
                 }
@@ -2113,13 +2145,11 @@ QLayoutItem* OverlayTabWidget::prepareTitleWidget(QWidget* widget, const QList<Q
     return spacer;
 }
 
-bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
+bool OverlayTabWidget::isDarkTheme() const
 {
-    if (curStyleSheet.find("dark") != std::string::npos
-        || curStyleSheet.find("Dark") != std::string::npos) {
-        return true;
-    }
-    return false;
+    constexpr int midLightness = 128;
+    autoModeMenu.ensurePolished();
+    return autoModeMenu.palette().color(QPalette::Window).lightness() < midLightness;
 }
 
 QPixmap OverlayTabWidget::rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea)
@@ -2281,11 +2311,7 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent* me)
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint point = me->globalPos();
-#else
     QPoint point = me->globalPosition().toPoint();
-#endif
 
     OverlayManager::instance()->dragDockWidget(point, parentWidget(), dragOffset, dragSize);
 }
@@ -2360,11 +2386,7 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent* me)
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint point = me->globalPos();
-#else
     QPoint point = me->globalPosition().toPoint();
-#endif
 
     OverlayTabWidget::_Dragging = nullptr;
     OverlayManager::instance()->dragDockWidget(point, parentWidget(), dragOffset, dragSize, true);
@@ -2440,11 +2462,7 @@ void OverlaySizeGrip::paintEvent(QPaintEvent*)
 
 void OverlaySizeGrip::mouseMoveEvent(QMouseEvent* me)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint point = me->globalPos();
-#else
     QPoint point = me->globalPosition().toPoint();
-#endif
 
     if ((me->buttons() & Qt::LeftButton)) {
         Q_EMIT dragMove(point);
@@ -2508,11 +2526,7 @@ void OverlaySplitterHandle::showEvent(QShowEvent* ev)
     QSplitterHandle::showEvent(ev);
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-void OverlaySplitterHandle::enterEvent(QEvent* ev)
-#else
 void OverlaySplitterHandle::enterEvent(QEnterEvent* ev)
-#endif
 {
     timer.stop();
     QSplitterHandle::enterEvent(ev);
@@ -2693,12 +2707,7 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent* me)
         endDrag();
         return;
     }
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint point = me->globalPos();
-#else
     QPoint point = me->globalPosition().toPoint();
-#endif
 
     if (dragging == 1) {
         OverlayTabWidget* overlay = qobject_cast<OverlayTabWidget*>(splitter()->parentWidget());
@@ -2777,11 +2786,7 @@ void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent* me)
     }
     endDrag();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint point = me->globalPos();
-#else
     QPoint point = me->globalPosition().toPoint();
-#endif
 
     OverlayManager::instance()->dragDockWidget(point, dockWidget(), dragOffset, dragSize, true);
     // Warning! the handle itself maybe deleted after return from

@@ -25,9 +25,10 @@ from pivy import coin
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Base.Util as PathUtil
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import Path.Dressup.Utils as PathDressup
 
 if False:
@@ -115,7 +116,7 @@ class PathDressupTagTaskPanel:
     def getTags(self, includeCurrent):
         tags = []
         index = self.form.lwTags.currentRow()
-        for i in range(0, self.form.lwTags.count()):
+        for i in range(self.form.lwTags.count()):
             item = self.form.lwTags.item(i)
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
@@ -171,11 +172,9 @@ class PathDressupTagTaskPanel:
         self.form.lwTags.blockSignals(True)
         self.form.lwTags.clear()
         for i, pos in enumerate(self.Positions):
-            lbl = "%d: (%s, %s)" % (
-                i,
-                FreeCAD.Units.Quantity(pos.x, FreeCAD.Units.Length).UserString,
-                FreeCAD.Units.Quantity(pos.y, FreeCAD.Units.Length).UserString,
-            )
+            posX = FreeCAD.Units.Quantity(pos.x, FreeCAD.Units.Length).UserString
+            posY = FreeCAD.Units.Quantity(pos.y, FreeCAD.Units.Length).UserString
+            lbl = f"{i}: ({posX}, {posY})"
             item = QtGui.QListWidgetItem(lbl)
             item.setData(self.DataX, pos.x)
             item.setData(self.DataY, pos.y)
@@ -265,12 +264,16 @@ class PathDressupTagTaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
+        # The pick is a world point; the path and the tag positions are in
+        # the base operation's frame.
+        if point:
+            point = PathUtil.workplaneForOp(self.obj).inverse().multVec(point)
         if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
-            Path.Log.info("addNewTagAt(%.2f, %.2f)" % (point.x, point.y))
+            Path.Log.info(f"addNewTagAt({point.x:.2f}, {point.y:.2f})")
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            Path.Log.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            Path.Log.notice(f"ignore new tag at {point} (obj={obj}, on-path=0")
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -541,9 +544,7 @@ class PathDressupTagViewProvider:
         return -1
 
     def allow(self, doc, obj, sub):
-        if obj == self.obj:
-            return True
-        return False
+        return obj == self.obj
 
     def addSelection(self, doc, obj, sub, point):
         Path.Log.track(doc, obj, sub, point)

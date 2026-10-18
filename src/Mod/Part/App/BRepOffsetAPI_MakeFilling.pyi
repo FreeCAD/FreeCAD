@@ -47,9 +47,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         """
         ...
 
-    def setApproxParam(self, *, MaxDeg: int = 8, MaxSegments: int = 9) -> None:
+    def setApproxParam(self, *, MaxDegree: int = 8, MaxSegments: int = 9) -> None:
         """
-        setApproxParam(MaxDeg=8, MaxSegments=9)
+        setApproxParam(MaxDegree=8, MaxSegments=9)
         Sets the parameters used to approximate the filling the surface
         """
         ...
@@ -62,10 +62,10 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def add(self, Edge: TopoShapeEdge, Order: int, *, IsBound: bool = True) -> None: ...
+    def add(self, Constraint: TopoShapeEdge, Order: int, IsBound: bool = True) -> None: ...
     @overload
     def add(
-        self, Edge: TopoShapeEdge, Support: TopoShapeFace, Order: int, *, IsBound: bool = True
+        self, Constraint: TopoShapeEdge, Support: TopoShapeFace, Order: int, IsBound: bool = True
     ) -> None: ...
     @overload
     def add(self, Support: TopoShapeFace, Order: int) -> None: ...
@@ -75,8 +75,8 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
     def add(self, U: float, V: float, Support: TopoShapeFace, Order: int) -> None: ...
     def add(self, **kwargs) -> None:
         """
-        add(Edge, Order, IsBound=True)
-        add(Edge, Support, Order, IsBound=True)
+        add(Constraint, Order, IsBound=True)
+        add(Constraint, Support, Order, IsBound=True)
         add(Support, Order)
         add(Point)
         add(U, V, Support, Order)

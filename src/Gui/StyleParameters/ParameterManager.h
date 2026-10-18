@@ -432,13 +432,7 @@ public:
     template<typename T>
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
-        auto value = resolve(definition.name, std::move(context));
-
-        if (!value || !std::holds_alternative<T>(*value)) {
-            return definition.defaultValue;
-        }
-
-        return std::get<T>(*value);
+        return valueAs<T>(resolve(definition.name, std::move(context))).value_or(definition.defaultValue);
     }
 
     /**

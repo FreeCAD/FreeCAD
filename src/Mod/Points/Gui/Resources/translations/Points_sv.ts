@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Converts to points</source>
-      <translation>Omvandlas till punkter</translation>
+      <translation>Konverterar till punkter</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Cut Point Cloud</source>
-      <translation>Moln för skärningspunkt</translation>
+      <translation>Klipp punktmoln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
@@ -126,7 +126,7 @@
       <location filename="../../ViewProvider.cpp" line="487"/>
       <location filename="../../ViewProvider.cpp" line="655"/>
       <source>Cut points</source>
-      <translation>Nedskärningspunkter</translation>
+      <translation>Klipp punkter</translation>
     </message>
   </context>
   <context>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation>Särskilda linjer</translation>
+      <translation>Särskilda rader</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation>Kluster av linjer som börjar med</translation>
+      <translation>Gruppera efter rader som börjar med</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
@@ -199,12 +199,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation>Nummerseparator</translation>
+      <translation>Talavgränsare</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation>Punkterformat</translation>
+      <translation>Punktformat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
@@ -246,7 +246,7 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation>I (grått värde)</translation>
+      <translation>I (gråvärde)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>

@@ -32,6 +32,7 @@
 #include <string>
 #include <string_view>
 #include <sstream>
+#include <type_traits>
 #include <unordered_map>
 
 namespace Base
@@ -46,8 +47,9 @@ protected:
 
     public:
         template<typename T>
+            requires(!std::is_same_v<std::decay_t<T>, Object>)
         Object(T&& obj)  // NOLINT
-            : object(std::make_shared<Model<T>>(std::forward<T>(obj)))
+            : object(std::make_shared<Model<std::decay_t<T>>>(std::forward<T>(obj)))
         {}
 
         void fetch(const ParameterGrp::handle& handle, const char* key)
@@ -88,8 +90,8 @@ protected:
         template<typename T>
         struct Model: Concept
         {
-            explicit Model(const T& t)
-                : object(t)
+            explicit Model(T t)
+                : object(std::move(t))
             {}
             void fetch(const ParameterGrp::handle& handle, const char* key) override
             {

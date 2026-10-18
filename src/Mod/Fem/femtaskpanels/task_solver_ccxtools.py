@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -187,7 +189,7 @@ class _TaskPanel:
 
         out = self.Calculix.readAllStandardOutput()
         # print(type(out))
-        # <class 'PySide2.QtCore.QByteArray'>
+        # <class 'PySide6.QtCore.QByteArray'>
 
         if out.isEmpty():
             self.femConsoleMessage("CalculiX stdout is empty", "Error")

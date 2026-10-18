@@ -1202,10 +1202,22 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Calc")
         try:
             sheet.setAlias("A1", "mA")
-        except Exception:
+        except Exception as err:
+            self.assertIn("reserved unit token", str(err))
             self.assertEqual(sheet.getAlias("A1"), None)
         else:
             self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
+
+    def testSetInvalidAliasConstant(self):
+        """Try to use a constant (reserved word) as alias name"""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Calc")
+        try:
+            sheet.setAlias("A1", "pi")
+        except Exception as err:
+            self.assertIn("reserved constant token", str(err))
+            self.assertEqual(sheet.getAlias("A1"), None)
+        else:
+            self.fail("A constant (reserved word) was used as alias which shouldn't be allowed")
 
     def testPlacementName(self):
         """Object name is equal to property name (bug #2389)"""
@@ -2065,3 +2077,52 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.get("G8"), 10)
         self.assertEqual(sheet.get("G9"), 20)
         self.assertEqual(sheet.get("G10"), 10)
+
+    def testFineGrainedRecompute(self):
+        """Regression test for issue #32088.
+
+        With fine-grained recompute enabled, on reopening a file, the InList of
+        properties are defined before the spreadsheet has actually created the
+        properties that contain the values.  This causes the alias to be
+        registered as the property name of the dependency instead of the actual
+        property name.
+
+        This test case tests whether the dependency is correctly registered
+        after a document is reopened."""
+
+        NAME_DOC = "cube.FCStd"
+
+        # Turn on fine-grained recompute
+        ParamGroup = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        fineGrainedPref = ParamGroup.GetBool("FineGrainedRecompute")
+        ParamGroup.SetBool("FineGrainedRecompute", True)
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        sheet.set("A1", "=20")
+        sheet.setAlias("A1", "Length")
+        self.doc.recompute()
+
+        box = self.doc.addObject("Part::Box", "Box")
+        box.setExpression("Length", "Spreadsheet.Length")
+        self.doc.recompute()
+        self.assertEqual(box.Length, 20)
+
+        sheet.set("A1", "=30")
+        self.doc.recompute()
+        self.assertEqual(box.Length, 30)
+
+        self.doc.saveAs(self.TempPath + os.sep + NAME_DOC)
+        FreeCAD.closeDocument(self.doc.Name)
+
+        self.doc = FreeCAD.openDocument(self.TempPath + os.sep + NAME_DOC)
+        sheet = self.doc.Spreadsheet
+        box = self.doc.Box
+        self.assertEqual(box.Length, 30)
+
+        sheet.set("A1", "=40")
+        self.doc.recompute()
+        # this assert would fail before the fix of the above issue.
+        self.assertEqual(box.Length, 40)
+
+        # Restore the original fine-grained recompute preference
+        ParamGroup.SetBool("FineGrainedRecompute", fineGrainedPref)

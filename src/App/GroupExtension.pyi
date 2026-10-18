@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from Base.Metadata import export
+from DocumentObject import DocumentObject
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, List
 
@@ -15,7 +16,7 @@ class GroupExtension(DocumentObjectExtension):
     Licence: LGPL
     """
 
-    def newObject(self, type: str, name: str, /) -> Any:
+    def newObject(self, type: str, name: str = ..., /) -> Any:
         """
         Create and add an object with given type and name to the group
         """
@@ -57,7 +58,7 @@ class GroupExtension(DocumentObjectExtension):
         """
         ...
 
-    def getObject(self, name: str, /) -> Any:
+    def getObject(self, name: str, /) -> DocumentObject | None:
         """
         Return the object with the given name
         """

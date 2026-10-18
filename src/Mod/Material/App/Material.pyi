@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export, no_args, sequence_protocol, deprecated_attributes
 from Base.BaseClass import BaseClass
+from Base.Quantity import Quantity
+from Array2D import Array2D
+from Array3D import Array3D
 from typing import Final
 
 
@@ -116,43 +119,43 @@ class Material(BaseClass):
     PropertyObjects: Final[dict] = ...
     """Dictionary of MaterialProperty objects."""
 
-    def addPhysicalModel(self) -> None:
+    def addPhysicalModel(self, uuid: str, /) -> None:
         """Add the physical model with the given UUID"""
         ...
 
-    def removePhysicalModel(self) -> None:
+    def removePhysicalModel(self, uuid: str, /) -> None:
         """Remove the physical model with the given UUID"""
         ...
 
-    def hasPhysicalModel(self) -> bool:
+    def hasPhysicalModel(self, uuid: str, /) -> bool:
         """Check if the material implements the physical model with the given UUID"""
         ...
 
-    def addAppearanceModel(self) -> None:
+    def addAppearanceModel(self, uuid: str, /) -> None:
         """Add the appearance model with the given UUID"""
         ...
 
-    def removeAppearanceModel(self) -> None:
+    def removeAppearanceModel(self, uuid: str, /) -> None:
         """Remove the appearance model with the given UUID"""
         ...
 
-    def hasAppearanceModel(self) -> bool:
+    def hasAppearanceModel(self, uuid: str, /) -> bool:
         """Check if the material implements the appearance model with the given UUID"""
         ...
 
-    def isPhysicalModelComplete(self) -> bool:
+    def isPhysicalModelComplete(self, uuid: str, /) -> bool:
         """Check if the material implements the physical model with the given UUID, and has values defined for each property"""
         ...
 
-    def isAppearanceModelComplete(self) -> bool:
+    def isAppearanceModelComplete(self, uuid: str, /) -> bool:
         """Check if the material implements the appearance model with the given UUID, and has values defined for each property"""
         ...
 
-    def hasPhysicalProperty(self) -> bool:
+    def hasPhysicalProperty(self, name: str, /) -> bool:
         """Check if the material implements the physical property with the given name"""
         ...
 
-    def hasAppearanceProperty(self) -> bool:
+    def hasAppearanceProperty(self, name: str, /) -> bool:
         """Check if the material implements the appearance property with the given name"""
         ...
 
@@ -160,24 +163,28 @@ class Material(BaseClass):
         """Returns true of there are legacy properties"""
         ...
 
-    def getPhysicalValue(self) -> str:
-        """Get the value associated with the property"""
+    def getPhysicalValue(
+        self, name: str, /
+    ) -> Quantity | float | int | bool | str | list | Array2D | Array3D | None:
+        """Get the value of the named physical property, or None if the material does not have it"""
         ...
 
-    def setPhysicalValue(self) -> None:
-        """Set the value associated with the property"""
+    def setPhysicalValue(self, name: str, value: str, /) -> None:
+        """Set the value of the named physical property"""
         ...
 
-    def getAppearanceValue(self) -> str:
-        """Get the value associated with the property"""
+    def getAppearanceValue(
+        self, name: str, /
+    ) -> Quantity | float | int | bool | str | list | Array2D | Array3D | None:
+        """Get the value of the named appearance property, or None if the material does not have it"""
         ...
 
-    def setAppearanceValue(self) -> None:
-        """Set the value associated with the property"""
+    def setAppearanceValue(self, name: str, value: str, /) -> None:
+        """Set the value of the named appearance property"""
         ...
 
-    def setValue(self) -> None:
-        """Set the value associated with the property"""
+    def setValue(self, name: str, value: str | list[str] | Array2D | Array3D, /) -> None:
+        """Set the value of the named property"""
         ...
 
     @no_args

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -313,7 +315,7 @@ double QGIArrow::getOverlapAdjust(ArrowType style, double size)
     // ex for fork and tick, adjustment sb zero. 0.25 is good for filled triangle, 0.1 for open arrow.
     // open circle sb = radius
     // NOTE: this may need to be adjusted to account for line thickness too.
-//    Base::Console().message("QGIA::getOverlapAdjust(%d, %.3f) \n", style, size);
+//    Base::Console().message("QGIA::getOverlapAdjust({}, {:.3f}) \n", style, size);
     switch(style) {
         case ArrowType::FILLED_ARROW:
             return 0.50 * size;

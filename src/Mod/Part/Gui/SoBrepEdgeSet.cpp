@@ -94,13 +94,7 @@ static void applyOverlayDepthState(SoState* state, OverlayDepthMode depthMode)
             );
             return;
         case OverlayDepthMode::RespectDepth:
-            SoDepthBufferElement::set(
-                state,
-                TRUE,
-                FALSE,
-                SoDepthBufferElement::LEQUAL,
-                SbVec2f(0.0f, 1.0f)
-            );
+            SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
             return;
     }
 }
@@ -398,7 +392,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
     else if (
         Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
+        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
     ) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
@@ -797,6 +791,57 @@ SoDetail* SoBrepEdgeSet::createLineSegmentDetail(
     SoDetail* detail = inherited::createLineSegmentDetail(action, v1, v2, pp);
     SoLineDetail* line_detail = static_cast<SoLineDetail*>(detail);
     int index = line_detail->getLineIndex();
-    line_detail->setPartIndex(index);
+    // lineIndex stays the Coin/render index; partIndex carries the topological edge.
+    line_detail->setPartIndex(edgeIndexFromLine(index));
     return detail;
+}
+
+void SoBrepEdgeSet::setEdgeMapping(std::vector<int> lineToEdgeIn)
+{
+    lineToEdge = std::move(lineToEdgeIn);
+    hasEdgeMapping = true;
+
+    int maxEdge = 0;
+    for (int edge : lineToEdge) {
+        maxEdge = std::max(maxEdge, edge);
+    }
+
+    edgeToLine.assign(static_cast<size_t>(maxEdge) + 1, InvalidLine);
+    for (size_t line = 0; line < lineToEdge.size(); ++line) {
+        const int edge = lineToEdge[line];
+        if (edge > 0) {
+            edgeToLine[static_cast<size_t>(edge)] = static_cast<int>(line);
+        }
+    }
+}
+
+int SoBrepEdgeSet::edgeIndexFromLine(int line) const
+{
+    if (line < 0) {
+        return 0;
+    }
+    if (!hasEdgeMapping) {
+        // No mapping built yet; fall back to the historical one-line-per-edge rule.
+        return line + 1;
+    }
+    if (line < static_cast<int>(lineToEdge.size())) {
+        return lineToEdge[static_cast<size_t>(line)];
+    }
+    return 0;
+}
+
+int SoBrepEdgeSet::lineIndexFromEdge(int edge) const
+{
+    if (edge < 1) {
+        return InvalidLine;
+    }
+    if (!hasEdgeMapping) {
+        // No mapping built yet; fall back to the historical one-line-per-edge rule.
+        return edge - 1;
+    }
+    if (edge < static_cast<int>(edgeToLine.size())) {
+        return edgeToLine[static_cast<size_t>(edge)];
+    }
+    // The mapping exists and does not contain this edge: it has no rendered line.
+    return InvalidLine;
 }

@@ -799,9 +799,10 @@ class Joint:
 
             presolved = joint.JointType in JointUsingPreSolve and self.preSolve(joint, False)
 
-            isAssembly = self.getAssembly(joint).Type == "Assembly"
+            assembly = self.getAssembly(joint)
+            isAssembly = assembly is not None and assembly.Type == "Assembly"
             if isAssembly and not presolved:
-                solveIfAllowed(self.getAssembly(joint))
+                solveIfAllowed(assembly)
             else:
                 self.updateJCSPlacements(joint)
 
@@ -838,7 +839,7 @@ class Joint:
     def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
         assembly = self.getAssembly(joint)
-        isAssembly = assembly.Type == "Assembly"
+        isAssembly = assembly is not None and assembly.Type == "Assembly"
 
         if len(refs) >= 1:
             joint.Reference1 = refs[0]
@@ -928,7 +929,7 @@ class Joint:
         if not part1 or not part2:
             return False
 
-        isAssembly = assembly.Type == "Assembly"
+        isAssembly = assembly is not None and assembly.Type == "Assembly"
         if isAssembly:
             joint.Suppressed = True
             part1Connected = assembly.isPartConnected(part1)
@@ -1001,7 +1002,7 @@ class Joint:
         part1 = UtilsAssembly.getMovingPart(joint.Reference1)
         part2 = UtilsAssembly.getMovingPart(joint.Reference2)
 
-        isAssembly = assembly.Type == "Assembly"
+        isAssembly = assembly is not None and assembly.Type == "Assembly"
         if isAssembly:
             part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference1")
             part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
@@ -1114,6 +1115,11 @@ class ViewProviderJoint:
 
     def updateData(self, joint, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
+        # The JCS switches are created in attach(); updateData() can fire on a
+        # property change before attach() has run (e.g. during document restore).
+        if not hasattr(self, "switch_JCS1"):
+            return
+
         if prop == "Placement1" and hasattr(joint, "Reference1"):
             self.redrawJointPlacement(self.switch_JCS1, joint.Placement1, joint.Reference1)
 
@@ -1121,6 +1127,11 @@ class ViewProviderJoint:
             self.redrawJointPlacement(self.switch_JCS2, joint.Placement2, joint.Reference2)
 
     def redrawJointPlacements(self, joint):
+        # Called from AssemblyObject::solve(), which can run before attach() has
+        # created the JCS switches (e.g. right after a document restore).
+        if not hasattr(self, "switch_JCS1"):
+            return
+
         if not hasattr(joint, "Reference1") or not hasattr(joint, "Reference2"):
             return
 
@@ -1218,7 +1229,7 @@ class ViewProviderJoint:
         # Assuming Reference1 corresponds to the first part link
         if hasattr(self.app_obj, "Reference1"):
             part = UtilsAssembly.getMovingPart(self.app_obj.Reference1)
-            if part is not None and not assembly.isPartConnected(part):
+            if part is not None and assembly is not None and not assembly.isPartConnected(part):
                 overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
 
         return overlays
@@ -1676,6 +1687,12 @@ class MakeJointSelGate:
 
         ref = [obj, [sub]]
         sel_obj = UtilsAssembly.getObject(ref)
+
+        if not sel_obj:
+            return False
+
+        if UtilsAssembly.isLinkArray(sel_obj):
+            return True
 
         if UtilsAssembly.isLink(sel_obj):
             linked = sel_obj.getLinkedObject()

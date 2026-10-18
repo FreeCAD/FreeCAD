@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -30,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawPage.h"
 #include "DrawPagePy.h" // generated from DrawPagePy.xml
 #include "DrawProjGroup.h"
@@ -96,7 +99,7 @@ void DrawPage::onChanged(const App::Property* prop)
     if (prop == &KeepUpdated && KeepUpdated.getValue()) {
         if (!isRestoring() && !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
-            Base::Console().message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
+            Base::Console().message("Rebuilding Views for: {}/{}\n", getNameInDocument(),
                                     Label.getValue());
             updateAllViews();
             purgeTouched();
@@ -267,7 +270,7 @@ int DrawPage::addView(App::DocumentObject* docObj, bool setPosition)
 
     //check if View fits on Page
     if (!view->checkFit(this)) {
-        Base::Console().warning("%s is larger than page. Will be scaled.\n",
+        Base::Console().warning("{} is larger than page. Will be scaled.\n",
                                 view->getNameInDocument());
         view->ScaleType.setValue("Automatic");
     }
@@ -442,7 +445,7 @@ void DrawPage::unsetupObject()
         Views.setValues(emptyViews);
     }
     catch (...) {
-        Base::Console().warning("DP::unsetupObject - %s - error while deleting children\n",
+        Base::Console().warning("DP::unsetupObject - {} - error while deleting children\n",
                                 getNameInDocument());
     }
 
@@ -535,6 +538,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
 template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const
 {
     return "TechDrawGui::ViewProviderPage";
+}
+template<>
+PyObject* TechDraw::DrawPagePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawPagePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

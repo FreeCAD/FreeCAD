@@ -92,6 +92,12 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderMirrored.h
     ViewProviderLinearPattern.cpp
     ViewProviderLinearPattern.h
+    ViewProviderCircularPattern.cpp
+    ViewProviderCircularPattern.h
+    ViewProviderPathPattern.cpp
+    ViewProviderPathPattern.h
+    ViewProviderPointPattern.cpp
+    ViewProviderPointPattern.h
     ViewProviderPolarPattern.cpp
     ViewProviderPolarPattern.h
     ViewProviderScaled.cpp
@@ -133,6 +139,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     ReferenceSelection.h
     TaskFeatureParameters.cpp
     TaskFeatureParameters.h
+    TaskFeatureAddSubParameters.cpp
+    TaskFeatureAddSubParameters.h
     TaskSketchBasedParameters.cpp
     TaskSketchBasedParameters.h
     TaskExtrudeParameters.cpp
@@ -267,7 +275,7 @@ target_include_directories(
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
 target_compile_warn_error(PartDesignGui)
 
-SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
+SET_BIN_DIR(PartDesignGui)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})

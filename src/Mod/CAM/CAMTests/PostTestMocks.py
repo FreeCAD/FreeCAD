@@ -67,6 +67,11 @@ class MockToolController:
         return []
 
 
+class MockDocument:
+    def __init__(self, label):
+        self.Label = label
+
+
 class MockOperation:
     """Mock Operation object for testing postprocessors."""
 
@@ -75,6 +80,7 @@ class MockOperation:
         self.Label = label or name
         self.Active = active
         self.ToolController = tool_controller
+        self.Document = MockDocument(label="mocklabel")
 
         # Create an empty path by default
         self.Path = Path.Path()
@@ -142,6 +148,7 @@ class MockMachine:
             "xy_before_z_after_tool_change": False,
             "spindle": False,  # Disable spindle commands to avoid M3 S1000
             "coolant": False,  # Disable coolant commands
+            "ignored_commands": "",
         }
         # Make processing properties accessible as attributes
         self.processing = type("Processing", (), processing_config)()

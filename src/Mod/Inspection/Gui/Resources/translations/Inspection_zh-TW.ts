@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>檢查...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>檢查距離資訊</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>目視檢查物件</translation>
     </message>
   </context>
   <context>
@@ -93,38 +93,28 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="510"/>
-      <source>Remove annotations</source>
-      <translation>刪除註解</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="511"/>
-      <source>Do you want to remove all annotations?</source>
-      <translation>您想刪除所有注釋嗎?</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="569"/>
+      <location filename="../../ViewProviderInspection.cpp" line="505"/>
       <source>Annotation</source>
       <translation>注釋</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="572"/>
+      <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>離開資訊模式</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="709"/>
+      <location filename="../../ViewProviderInspection.cpp" line="649"/>
       <source>Distance: &gt; %1</source>
       <translation>距離: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="712"/>
+      <location filename="../../ViewProviderInspection.cpp" line="652"/>
       <source>Distance: &lt; %1</source>
       <translation>距離: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="731"/>
-      <location filename="../../ViewProviderInspection.cpp" line="749"/>
+      <location filename="../../ViewProviderInspection.cpp" line="671"/>
+      <location filename="../../ViewProviderInspection.cpp" line="689"/>
       <source>Distance: %1</source>
       <translation>距離: %1</translation>
     </message>

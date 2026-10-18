@@ -202,7 +202,7 @@ endif()
 target_compile_warn_error(Mesh)
 
 
-SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
+SET_BIN_DIR(Mesh)
 SET_PYTHON_PREFIX_SUFFIX(Mesh)
 
 INSTALL(TARGETS Mesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

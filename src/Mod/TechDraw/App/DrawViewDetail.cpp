@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -51,10 +53,14 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawComplexSection.h"
+#include "DrawPage.h"
 #include "DrawUtil.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewDetail.h"
+#include "DrawViewPartPy.h"
 #include "DrawViewSection.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
@@ -102,7 +108,7 @@ DrawViewDetail::~DrawViewDetail()
 {
     //don't delete this object while it still has dependent tasks running
     if (m_detailFuture.isRunning()) {
-        Base::Console().message("%s is waiting for detail cut to finish\n", Label.getValue());
+        Base::Console().message("{} is waiting for detail cut to finish\n", Label.getValue());
         m_detailFuture.waitForFinished();
     }
 }
@@ -128,12 +134,48 @@ void DrawViewDetail::onChanged(const App::Property* prop)
     }
 
     if (prop == &Reference) {
-        std::string lblText = "Detail " + std::string(Reference.getValue());
-        Label.setValue(lblText);
+        std::string captionText = makeCaption();
+        Caption.setValue(captionText);
     }
 
     DrawViewPart::onChanged(prop);
 }
+
+std::string DrawViewDetail::makeCaption() {
+
+    std::string caption = Caption.getValue();
+
+    if (caption.find("<REF>") == std::string::npos && !m_refAdded) {
+        caption = "DETAIL <REF>";
+        m_refAdded = true;
+    }
+
+    if (caption.find("<SCALE>") != std::string::npos || m_scaleAdded) {
+        return caption;
+    }
+
+    App::DocumentObject* baseObj = BaseView.getValue();
+    auto* baseView = dynamic_cast<TechDraw::DrawView*>(baseObj);
+    if (!baseView) {
+        return caption;
+    }
+
+    auto page = baseView->findParentPage();
+    if (!page) {
+        return caption;
+    }
+    double pageScale = page->Scale.getValue();
+
+    double relativeScale = Scale.getValue() / pageScale;
+
+    if (relativeScale == 1.0) {
+        return caption;
+    }
+
+    m_scaleAdded = true;
+    return caption + "\nSCALE <SCALE>";
+}
+
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {
@@ -265,13 +307,13 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if (extrusionFace.IsNull()) {
-            Base::Console().warning("DVD::makeDetailShape - %s - failed to create tool base face\n",
+            Base::Console().warning("DVD::makeDetailShape - {} - failed to create tool base face\n",
                                     getNameInDocument());
             return;
         }
         tool = BRepPrimAPI_MakePrism(extrusionFace, extrudeDir, false, true).Shape();
         if (tool.IsNull()) {
-            Base::Console().warning("DVD::makeDetailShape - %s - failed to create tool (prism)\n",
+            Base::Console().warning("DVD::makeDetailShape - {} - failed to create tool (prism)\n",
                                     getNameInDocument());
             return;
         }
@@ -282,7 +324,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepPrimAPI_MakeCylinder mkTool(cs, radius, extrudeLength);
         tool = mkTool.Shape();
         if (tool.IsNull()) {
-            Base::Console().warning("DVD::detailExec - %s - failed to create tool (cylinder)\n",
+            Base::Console().warning("DVD::detailExec - {} - failed to create tool (cylinder)\n",
                                     getNameInDocument());
             return;
         }
@@ -406,13 +448,18 @@ void DrawViewDetail::postHlrTasks(void)
     overrideKeepUpdated(false);
 }
 
+TopoDS_Shape DrawViewDetail::getShapeForGeometryBuild() const
+{
+    return m_scaledShape;
+}
+
 //continue processing after makeDetailShape thread is finished
 void DrawViewDetail::onMakeDetailFinished(void)
 {
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), m_viewAxis);
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }
@@ -523,6 +570,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDetailPython, TechDraw::DrawViewDetai
 template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawViewDetailPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

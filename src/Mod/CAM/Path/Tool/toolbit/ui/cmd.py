@@ -75,14 +75,18 @@ class CommandToolBitSave:
     def GetResources(self):
         if self.saveAs:
             menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSaveAs", "Save Tool As…")
+            toolTip = QT_TRANSLATE_NOOP(
+                "CAM_ToolBitSaveAs", "Saves an existing toolbit object to a file"
+            )
         else:
             menuTxt = QT_TRANSLATE_NOOP("CAM_ToolBitSave", "Save Tool")
+            toolTip = QT_TRANSLATE_NOOP(
+                "CAM_ToolBitSave", "Saves an existing toolbit object to a file"
+            )
         return {
             "Pixmap": "CAM_ToolBit",
             "MenuText": menuTxt,
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitSave", "Saves an existing toolbit object to a file"
-            ),
+            "ToolTip": toolTip,
         }
 
     def selectedTool(self):

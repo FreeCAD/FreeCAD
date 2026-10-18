@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShape import TopoShape
 
 @export(
     PythonName="Part.ShapeFix.FixSmallSolid",
@@ -28,25 +29,25 @@ class ShapeFix_FixSmallSolid(ShapeFix_Root):
         """
         ...
 
-    def setVolumeThreshold(self) -> None:
+    def setVolumeThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear volume threshold for small solids
         """
         ...
 
-    def setWidthFactorThreshold(self) -> None:
+    def setWidthFactorThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear width factor threshold for small solids
         """
         ...
 
-    def remove(self) -> None:
+    def remove(self, shape: TopoShape, /) -> TopoShape:
         """
         Remove small solids from the given shape
         """
         ...
 
-    def merge(self) -> None:
+    def merge(self, shape: TopoShape, /) -> TopoShape:
         """
         Merge small solids in the given shape to adjacent non-small ones
         """

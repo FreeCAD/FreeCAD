@@ -681,6 +681,10 @@ void EditModeGeometryCoinManager::createEditModePointInventorNodes()
         sep->addChild(MtlBind);
 
         auto coords = new SoCoordinate3;
+        // A freshly constructed SoCoordinate3 carries a default (0,0,0) vertex,
+        // so point.getNum() is 1 even though the CoinMapping tables are still empty.
+        // Start explicitly empty to not index a mapping that has not been populated yet.
+        coords->point.setNum(0);
         editModeScenegraphNodes.PointsCoordinate.push_back(coords);
         editModeScenegraphNodes.PointsCoordinate[i]->setName(concat("PointsCoordinate", i).c_str());
         sep->addChild(editModeScenegraphNodes.PointsCoordinate[i]);
@@ -764,6 +768,7 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             sep->addChild(MtlBind);
 
             auto coords = new SoCoordinate3;
+            coords->point.setNum(0);
             coords->setName(concat("CurvesCoordinate", i * 10 + t).c_str());
             editModeScenegraphNodes.CurvesCoordinate[i].push_back(coords);
             sep->addChild(editModeScenegraphNodes.CurvesCoordinate[i][t]);
@@ -785,6 +790,7 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             }
 
             auto solineset = new SoLineSet;
+            solineset->numVertices.setNum(0);
             solineset->setName(concat("CurvesLineSet", i * 10 + t).c_str());
             editModeScenegraphNodes.CurveSet[i].push_back(solineset);
             sep->addChild(editModeScenegraphNodes.CurveSet[i][t]);

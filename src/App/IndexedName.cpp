@@ -96,6 +96,7 @@ void IndexedName::set(const char* name,
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
     if (std::any_of(name, name + suffixPosition, isInvalidChar)) {
         this->type = "";
+        this->index = 0;
         return;
     }
 

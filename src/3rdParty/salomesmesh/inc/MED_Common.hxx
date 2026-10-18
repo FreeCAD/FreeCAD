@@ -29,8 +29,6 @@
 #include <set>
 #include <map>
 
-#include <hdf5.h>
-
 #include <boost/tuple/tuple.hpp>
 
 #include "MED_Vector.hxx"
@@ -51,9 +49,9 @@ namespace MED{
   typedef long TInt;
 #else
   typedef int TInt;
-#endif 
-  typedef hid_t TIdt;
-  typedef herr_t TErr;
+#endif
+  typedef int64_t TIdt;
+  typedef int TErr;
 
   typedef enum {eFULL_INTERLACE, eNO_INTERLACE} EModeSwitch;
 

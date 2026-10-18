@@ -126,23 +126,22 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
         }
     }
 
+    // Resolve from the root with the accumulated transform: replacing the placement
+    // on an extracted sub-shape would drop its internal location.
     TopoShape ts = Part::Feature::getTopoShape(
-        obj,
+        subject.getObject(),
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
             | Part::ShapeOption::Transform,
-        subject.getElementName()
+        subject.getSubName().c_str()
     );
     if (ts.isNull()) {
         Base::Console().log(
-            "Part::MeasureClient::getLocatedShape: Did not retrieve shape for %s, %s\n",
+            "Part::MeasureClient::getLocatedShape: Did not retrieve shape for {}, {}\n",
             obj->getNameInDocument(),
             subject.getElementName()
         );
         return {};
     }
-    ts.setPlacement(
-        App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName())
-    );
     return ts.getShape();
 }
 
@@ -166,7 +165,7 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "Part::PartMeasureTypeCb did not retrieve shape for %s, %s\n",
+            "Part::PartMeasureTypeCb did not retrieve shape for {}, {}\n",
             ob->getNameInDocument(),
             subName
         );
@@ -220,6 +219,9 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                 case GeomAbs_Cylinder: {
                     return App::MeasureElementType::CYLINDER;
                 }
+                case GeomAbs_Cone: {
+                    return App::MeasureElementType::CONE;
+                }
                 case GeomAbs_Torus: {
                     return App::MeasureElementType::TORUS;
                 }
@@ -272,7 +274,7 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureLengthHandler did not retrieve shape for %s, %s\n",
+            "MeasureLengthHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -404,7 +406,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureAreaHandler did not retrieve shape for %s, %s\n",
+            "MeasureAreaHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -447,7 +449,7 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
 
     if (shape.IsNull()) {
         Base::Console().message(
-            "MeasurePositionHandler did not retrieve shape for %s, %s\n",
+            "MeasurePositionHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -471,7 +473,7 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureAngleHandler did not retrieve shape for %s, %s\n",
+            "MeasureAngleHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );
@@ -526,7 +528,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
     if (shape.IsNull()) {
         // failure here on loading document with existing measurement.
         Base::Console().message(
-            "MeasureDistanceHandler did not retrieve shape for %s, %s\n",
+            "MeasureDistanceHandler did not retrieve shape for {}, {}\n",
             subject.getObjectName(),
             subject.getElementName()
         );

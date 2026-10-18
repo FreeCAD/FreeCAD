@@ -37,7 +37,7 @@ class FemMesh(ComplexGeoData):
         """Update the internal mesh structure"""
         ...
 
-    def addHypothesis(self, hypothesis: object, shape: TopoShape, /) -> None:
+    def addHypothesis(self, hypothesis: object, shape: TopoShape = ..., /) -> None:
         """Add hypothesis"""
         ...
 
@@ -89,7 +89,7 @@ class FemMesh(ComplexGeoData):
         """Add list of volumes by list of node indices and list of nodes per volume."""
         ...
 
-    def read(self, file_name: str, vtk_cell_group_array: str) -> None:
+    def read(self, file_name: str, vtk_cell_group_array: str = ...) -> None:
         """
         Read in a various FEM mesh file formats.
 
@@ -101,7 +101,11 @@ class FemMesh(ComplexGeoData):
 
     @constmethod
     def write(
-        self, file_name: str, highest: bool, vtk_cell_group_array: str, vtk_group_id_map: dict
+        self,
+        file_name: str,
+        highest: bool = ...,
+        vtk_cell_group_array: str = ...,
+        vtk_group_id_map: dict = ...,
     ) -> None:
         """
         Write out various FEM mesh file formats.
@@ -257,7 +261,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> None:
+    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> int:
         """
         Add a group to mesh with specific name and type
 
@@ -290,7 +294,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def renameGroup(self) -> Any:
+    def renameGroup(self, group_id: int, name: str, /) -> None:
         """Rename a group with a given group ID
         renameGroup(id, name)
         groupid: int

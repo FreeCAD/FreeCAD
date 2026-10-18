@@ -190,6 +190,15 @@ public:
 
     std::string getAddressFromAlias(const std::string& alias) const;
 
+    enum class ReservedAliasToken
+    {
+        None,
+        Unit,
+        Constant
+    };
+
+    static ReservedAliasToken classifyReservedAliasName(const std::string& candidate);
+
     bool isValidAlias(const std::string& candidate);
 
     void setSpans(App::CellAddress address, int rows, int columns);
@@ -273,6 +282,8 @@ protected:
     App::Property* getProperty(App::CellAddress key) const;
 
     App::Property* getProperty(const char* addr) const;
+
+    std::string getCanonicalPropertyName(const char* name) const override;
 
     void updateProperty(App::CellAddress key);
 

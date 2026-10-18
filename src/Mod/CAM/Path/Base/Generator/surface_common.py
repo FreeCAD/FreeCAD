@@ -216,57 +216,64 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def create_boundary_face(
-    model_faces, offset=0.0, tolerance=0.005, avoids=False, model_boundary=False
-):
+def create_boundary_face(faces, offset=0.0, outline=True, compound=None, is_triangulated=False):
     """
-    Creates a flat 2D boundary face from a list of 3D faces using
-    Path.Area's built-in HLR projection (Outline mode) as primary method,
-    falling back to TechDraw.findShapeOutline() if projection fails.
+    Creates a flat 2D boundary face from 3D faces using Path.Area's HLR
+    projection (Outline mode) as primary method, falling back to
+    TechDraw.findShapeOutline() if projection fails.
 
     Path.Area with Outline=True uses OCC's HLRBRep_Algo to project the
     3D shape silhouette onto the XY plane — more robust than TechDraw
     for complex curved and spiral faces where findShapeOutline() struggles.
 
     Args:
-        model_faces (list): List of Part.Face objects to build boundary from.
+        faces (list): Part.Face objects to build the boundary from. Also
+            used for mesh detection; pass the real list even when
+            `compound` is given too, so mesh detection isn't skipped.
         offset (float): Offset to apply to the resulting boundary.
-        tolerance (float): Tolerance for wire joining.
-        avoids (bool): 'True' only from _preprocess_avoid_faces.
+        outline (bool): Default 'True'. Keep only the outer envelope. 'False'
+            preserves inner wires (holes), on a best-effort basis: the TechDraw
+            fallback and mesh models always return the outline only.
+        compound (Part.Shape, optional): A pre-built shape to use directly
+            instead of rebuilding one from `faces` — pass this when the
+            caller already has a cohesive shape (e.g. a fused multi-body
+            model) to avoid reconstructing it from scratch.
+        is_triangulated (bool): Pre-computed result of the mesh detection
+            for `faces`.
 
     Returns:
         Part.Shape: The 2D boundary face, or None on failure.
     """
-    if not model_faces:
-        Path.Log.warning(
-            "No faces provided. Check that the Base Geometry selection contains valid faces."
-        )
+    if not faces and not compound:
+        Path.Log.warning("No faces provided for boundary generation.")
         return None
 
-    outline = not avoids
-    is_triangulated = _is_triangulated_mesh(model_faces)
+    if faces and not compound:
+        compound = faces[0] if len(faces) == 1 else Part.makeCompound(faces)
 
     if not is_triangulated:
-        if model_boundary:
-            model_faces = _filter_vertical(model_faces)
-        result = _boundary_via_area(model_faces, offset, outline)
+        result = _boundary_via_area(compound, offset, outline)
         if result is not None:
             return result
 
-    return _boundary_via_techdraw(model_faces, offset, outline)
+    return _boundary_via_techdraw(compound, offset, outline)
 
 
-def _boundary_via_area(model_faces, offset, outline):
+def _boundary_via_area(compound, offset, outline):
     """
     Primary boundary engine: Path.Area projection/offset.
+
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
 
     Returns:
         Part.Shape: The resulting boundary, or None if Path.Area
         produced an empty/null shape or raised an exception.
     """
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         wpc = Part.makeCircle(2)
         area = Path.Area()
         area.setPlane(wpc)
@@ -280,21 +287,18 @@ def _boundary_via_area(model_faces, offset, outline):
         result = area.getShape()
 
         if not result or result.isNull():
-            Path.Log.warning(
-                "Offsetting the Model faces resulted in an empty shape. "
-                "Extend the boundary if the selected faces are too small."
+            Path.Log.debug(
+                f"Path.Area returned an empty shape (offset={offset}, outline={outline})."
             )
             return None
         return result
 
     except Exception as e:
-        Path.Log.warning(
-            f"Path.Area projection failed: {e} — falling back to TechDraw outline extraction."
-        )
+        Path.Log.debug(f"Path.Area projection failed: {e}")
         return None
 
 
-def _boundary_via_techdraw(model_faces, offset, outline):
+def _boundary_via_techdraw(compound, offset, outline):
     """
     Secondary (fallback) boundary engine: TechDraw.findShapeOutline(),
     followed by a second Path.Area pass purely to apply `offset`.
@@ -304,35 +308,28 @@ def _boundary_via_techdraw(model_faces, offset, outline):
     `outline` is False. If a caller needed holes preserved and lands
     here, that guarantee is lost, and a warning is logged.
 
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
+
     Returns:
         Part.Shape: The resulting boundary, or None on failure.
     """
-    if not outline:
-        Path.Log.warning(
-            "Falling back to TechDraw outline extraction, which cannot preserve "
-            "inner wires (holes). Any holes in this selection will be lost."
-        )
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         import TechDraw
 
         direction = FreeCAD.Vector(0, 0, 1)
         outline_shape = TechDraw.findShapeOutline(compound, 1.0, direction)
 
         if not outline_shape or outline_shape.isNull() or not outline_shape.Wires:
-            Path.Log.warning(
-                "Offsetting the Model faces resulted in an empty shape. "
-                "Extend the boundary if the selected faces are too small."
-            )
+            Path.Log.debug("TechDraw returned an empty outline.")
             return None
 
         boundary = Part.makeFace(outline_shape.Wires, "Part::FaceMakerBullseye")
         if not boundary or boundary.isNull():
-            Path.Log.error(
-                "Failed to calculate the boundary offset. "
-                "Try adjusting the Boundary Adjustment value or checking the selected faces for geometric errors."
-            )
+            Path.Log.debug("Failed to create a face from the TechDraw outline wires.")
             return None
 
         boundary.translate(FreeCAD.Vector(0, 0, -boundary.BoundBox.ZMin))
@@ -340,10 +337,21 @@ def _boundary_via_techdraw(model_faces, offset, outline):
         offset_engine = Path.Area()
         offset_engine.add(boundary)
         offset_engine.setParams(Offset=offset)
-        return offset_engine.getShape()
+        result = offset_engine.getShape()
+
+        if not result or result.isNull():
+            Path.Log.debug(f"TechDraw offset produced an empty shape (offset={offset}).")
+            return None
+
+        if not outline:
+            Path.Log.warning(
+                "Inner holes cannot be preserved for this geometry; only the outer outline is used."
+            )
+
+        return result
 
     except Exception as e:
-        Path.Log.error(f"TechDraw fallback failed offsetting the Model faces: {e}")
+        Path.Log.debug(f"TechDraw fallback failed: {e}")
         return None
 
 
@@ -356,13 +364,20 @@ def generate_pattern_mask(
 
     The process follows three main steps:
     1.  It generates the main outer boundary from the 'cutting_faces', shrinking it
-        inwards by the tool radius to ensure the tool stays contained.
-    2.  It generates "keep-out" zones from the 'avoid_faces', expanding them outwards
-        by the tool radius to create a safety buffer.
+        inwards by the tool radius to ensure the tool stays contained. Inner holes
+        of the selected faces are preserved and expanded outward by the tool
+        radius, so they don't need separate Avoid Faces.
+    2.  It takes the pre-built 'avoid_boundary' keep-out zones, which already
+        include the tool radius offset.
     3.  It performs a boolean cut, subtracting the keep-out zones from the main
         boundary to create the final, correctly-holed mask.
 
     Args:
+        is_whole_model_job (bool): True if the job covers the whole model. The
+            main boundary is then taken from 'bb_face'.
+        bb_face (Part.Face): The whole-model boundary, already offset inward by
+            the tool radius and boundary adjustment. Used only when
+            is_whole_model_job is True.
         cutting_faces (list): A list of Part.Face objects to derive the main boundary from.
         avoid_boundary (Part.Shape, optional): Pre-built Avoid Faces "keep-out" boundary.
         tool_radius (float): The radius of the active cutter.
@@ -373,7 +388,7 @@ def generate_pattern_mask(
         Part.Face: The final 2D clipping boundary. Returns None on failure.
     """
     if not cutting_faces:
-        Path.Log.warning("Could not determine geometry for main boundary mask.")
+        Path.Log.warning("No faces available to build the boundary mask.")
         return None
 
     # Create the Main Outer Boundary
@@ -384,13 +399,19 @@ def generate_pattern_mask(
     epsilon = max(0.01, tolerance + 0.001)
 
     if is_whole_model_job:
-        # Use TechDraw.findShapeOutline for whole model silhouette
+        # Use the pre-built whole-model boundary (bb_face), already offset
+        # by boundary_adj - tool_radius when it was created
         main_boundary = bb_face
     else:
-        main_boundary = build_optimized_boundary([cutting_faces], outer_offset - epsilon, tolerance)
+        main_boundary = build_optimized_boundary(
+            [cutting_faces], outer_offset - epsilon, outline=False
+        )
 
     if not main_boundary:
-        Path.Log.warning("Could not determine geometry for main boundary mask.")
+        Path.Log.warning(
+            "Could not generate the boundary mask. The selected faces may be smaller than "
+            "the tool diameter or contain invalid geometry; check the Boundary Adjustment."
+        )
         return None
 
     # Punch the holes for the pre-built Avoid Faces keep-out zone, if any
@@ -400,15 +421,19 @@ def generate_pattern_mask(
     try:
         final_mask = main_boundary.cut(avoid_boundary)
         if final_mask.isNull():
-            Path.Log.warning("Boolean cut for avoid_faces failed.")
+            Path.Log.warning(
+                "Cutting the Avoid Faces from the boundary mask failed; they will be ignored."
+            )
             return main_boundary
         return final_mask
     except Exception as e:
-        Path.Log.error(f"Failed to cut avoid_faces from boundary mask: {e}")
+        Path.Log.error(
+            f"Failed to cut the Avoid Faces from the boundary mask: {e}; they will be ignored."
+        )
         return main_boundary
 
 
-def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
+def build_optimized_boundary(faces, offset, outline=True):
     """
     Acts as a middleman to optimize boundary creation.
 
@@ -420,8 +445,9 @@ def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
     Args:
         faces (list): List of Part.Face objects or nested list of faces.
         offset (float): Offset to apply to each boundary.
-        tolerance (float): Maximum distance to be considered touching.
-        avoids (bool): Default 'False'. 'True' only from _preprocess_avoid_faces.
+        outline (bool): Default 'True'. Keep only the outer envelope of each
+            boundary. 'False' preserves inner wires (holes), on a best-effort
+            basis (see create_boundary_face).
 
     Returns:
         Part.Shape: The combined boundary shape, or None on failure.
@@ -440,13 +466,13 @@ def build_optimized_boundary(faces, offset, tolerance=0.005, avoids=False):
 
     # Process each connected group as a single batch
     for group in touching_groups:
-        bnd = create_boundary_face(group, offset, tolerance, avoids)
+        bnd = create_boundary_face(group, offset, outline)
         if bnd and not bnd.isNull():
             generated_boundaries.append(bnd)
 
     # Process isolated faces one by one
     for face in isolated_faces:
-        bnd = create_boundary_face([face], offset, tolerance, avoids)
+        bnd = create_boundary_face([face], offset, outline)
         if bnd and not bnd.isNull():
             generated_boundaries.append(bnd)
 
@@ -567,7 +593,8 @@ def _separate_touching_faces(faces, tolerance=0.01):
                     union(i, j)
             except Exception as e:
                 Path.Log.debug(
-                    f"_separate_touching_faces: centroid check failed for " f"faces {i},{j}: {e}"
+                    f"_separatecreate_boundary_face_touching_faces: centroid check failed for "
+                    f"faces {i},{j}: {e}"
                 )
 
     # Collect groups by root
@@ -674,74 +701,104 @@ def _filter_vertical(model_faces, tolerance=0.0005):
 # ---------------------------------------------------------------------------
 
 
-def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
+def build_avoid_boundary(avoid_faces, avoid_overlap, tool_radius, tolerance, needs_safe_stl=False):
     """
-    Builds the 2D "keep-out" boundary for user-selected Avoid Faces.
+    Builds the 2D "keep-out" geometry for user-selected Avoid Faces.
 
     Each raw face is first classified and, if needed, capped to a flat
     shape suitable for boundary generation:
 
-      - Planar faces (flat or tilted, including ones with a genuine hole
-        such as an annular/donut selection) are used as-is.
-      - Non-planar faces (the cylindrical, conical, or otherwise curved
-        wall of a hole or pocket) are reduced to a flat cap at their
-        topmost rim, since a standard top-down projection would otherwise
-        distort a tilted or cylindrical wall into an ellipse.
-      - Any face that can't be resolved this way is grouped with the
-        others like it and processed together as a fallback, rather than
-        being left as raw, unprocessed geometry.
+        - Planar faces (flat or tilted, including ones with a genuine hole
+          such as an annular/donut selection) are used as-is.
+        - Non-planar faces (the cylindrical, conical, or otherwise curved
+          wall of a hole or pocket) are reduced to a flat cap at their
+          topmost rim, since a standard top-down projection would otherwise
+          distort a tilted or cylindrical wall into an ellipse.
+        - Any face that can't be resolved this way is grouped with the
+          others like it and processed together as a fallback, rather than
+          being left as raw, unprocessed geometry.
 
-    The resulting faces are then combined and offset by avoid_overlap
-    (expanded outward, with a small extra buffer to avoid path spikes on
-    vertical walls) to produce the final avoid-zone boundary. This
-    boundary is used both to build a collision-safety pillar around each
-    Avoid Face and to cut a matching hole out of the machining area.
+    Two shapes are then built from those prepared faces, because the two
+    consumers need different geometry:
+        - avoid_boundary: Cuts a matching hole out of the machining area.
+          Offset by tool_radius - avoid_overlap plus a small buffer (epsilon)
+          to avoid path spikes on vertical walls.
+        - avoid_boundary_stl: Builds a collision-safety pillar around each
+          Avoid Face. The same footprint without tool_radius (the OCL cutter
+          already accounts for it): -avoid_overlap plus epsilon.
 
     Args:
         avoid_faces (list): Raw Part.Face objects selected by the user as
             Avoid Faces.
-        avoid_overlap (float): A negative offset value if Avoid Faces
-            Overlap is enabled, or the tool radius otherwise.
+        avoid_overlap (float): How far the tool may cut into the Avoid
+            Faces (0.0 when Avoid Faces Overlap is disabled).
+        tool_radius (float): The tool radius. Only the machining-area
+            boundary is expanded by it.
         tolerance (float): The deflection tolerance for discretizing
             curves smoothly.
+        needs_safe_stl (bool): Build the extra boundary for the Safe STL
+            pillar.
 
     Returns:
-        Part.Shape: The offset avoid-zone boundary, or None if
-        avoid_faces is empty or boundary generation fails.
+        tuple: (avoid_boundary, avoid_boundary_stl)
+            avoid_boundary (Part.Shape | None): Boundary used to cut the
+                hole in the machining area, or None if avoid_faces is
+                empty or generation fails.
+            avoid_boundary_stl (Part.Shape | None): The same footprint
+                without the tool_radius offset, used for the Safe STL
+                pillar. None if needs_safe_stl is False or the boundary
+                collapsed.
     """
     if not avoid_faces:
-        return None
+        return None, None
+
+    avoid_boundary_stl = None
 
     prepared_faces, fallback_faces = _classify_and_cap_faces(avoid_faces)
 
     if fallback_faces:
-        secondary = build_optimized_boundary(fallback_faces, 0.0, 0.001)
+        # Hole walls that couldn't be capped: keep the default outline=True so the
+        # hole interior is filled. Preserving inner wires would leave the hole open.
+        secondary = build_optimized_boundary(fallback_faces, 0.0)
         if secondary is not None:
             prepared_faces.append(secondary)
         else:
             Path.Log.warning(
-                f"Failed to build a fallback boundary for {len(fallback_faces)} unresolved avoid face(s); they will be dropped."
+                f"Failed to build a fallback boundary for {len(fallback_faces)} unresolved "
+                "avoid face(s); they will not be avoided."
             )
 
     if not prepared_faces:
         Path.Log.debug("build_avoid_boundary: Nothing left to build a boundary from.")
-        return None
+        return None, None
 
     # Small buffer to avoid "path spikes" on vertical walls
     epsilon = max(0.01, tolerance + 0.001)
+    avoid_offset = tool_radius - avoid_overlap
 
     avoid_boundary = build_optimized_boundary(
         prepared_faces,
-        avoid_overlap + epsilon,
-        tolerance,
-        avoids=True,
+        avoid_offset + epsilon,
+        outline=False,
     )
 
-    if not avoid_boundary:
-        Path.Log.warning("Failed to generate boundary for avoid_faces.")
-        return None
+    if not avoid_boundary or avoid_boundary.isNull():
+        Path.Log.error(
+            "Could not build the boundary for the Avoid Faces; they will not be avoided. "
+            "Check the selected faces and the Avoid Faces Overlap value."
+        )
+        return None, None
 
-    return avoid_boundary
+    if needs_safe_stl:
+        avoid_boundary_stl = build_optimized_boundary(
+            prepared_faces,
+            -avoid_overlap + epsilon,
+            outline=False,
+        )
+        if avoid_boundary_stl is not None and avoid_boundary_stl.isNull():
+            avoid_boundary_stl = None
+
+    return avoid_boundary, avoid_boundary_stl
 
 
 def _classify_and_cap_faces(raw_faces):
@@ -786,54 +843,114 @@ def _classify_and_cap_faces(raw_faces):
 
         # Non-Planar 3D Walls (Sloped, Tapered, Curved)
         face_zmax = round(raw_face.BoundBox.ZMax, 4)
-        face_zmin = round(raw_face.BoundBox.ZMin, 4)
 
-        top_edges = []
-        for edge in raw_face.Edges:
-            # 1. Identify and skip "seam" edges that run vertically down the walls
-            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and (
-                round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3
-            )
-            if is_seam:
-                continue
-
-            # 2. Keep only the edges that form the upper rim
-            if round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3:
-                top_edges.append(edge)
-
-        if not top_edges:
+        top_wire = _extract_top_rim_wire(raw_face)
+        if top_wire is None:
             fallback_faces.append(raw_face)
             continue
 
-        try:
-            # Reconstruct just the top boundary into a new wire
-            sorted_edges = Part.__sortEdges__(top_edges)
-            top_wire = Part.Wire(sorted_edges)
-
-            # 3. Discretize and crush the 3D rim to a flat 2D polygon at Z-Max.
-            # This safely handles curved 3D splines and perfectly preserves the
-            # "egged" ellipse of angled holes without crashing OpenCASCADE.
-            flat_edges = []
-            for edge in top_wire.Edges:
-                points = edge.discretize(Distance=0.1)
-                flat_pts = [FreeCAD.Vector(p.x, p.y, face_zmax) for p in points]
-                flat_polygon = Part.makePolygon(flat_pts)
-                flat_edges.extend(flat_polygon.Edges)
-
-            sorted_flat = Part.__sortEdges__(flat_edges)
-            flat_wire = Part.Wire(sorted_flat)
-            cap_face = Part.Face(flat_wire)
-
-            if cap_face.isValid() and not cap_face.isNull():
-                prepared_faces.append(cap_face)
-            else:
-                fallback_faces.append(raw_face)
-
-        except Exception as e:
-            Path.Log.debug(
-                "_preprocess_avoid_faces: Failed to pre-process Avoid Face. "
-                f"Fall back to the original Avoid Faces process: {e}"
-            )
+        cap_face = flatten_wire_to_cap(top_wire, face_zmax, translate_to_zero=False)
+        if cap_face is not None:
+            prepared_faces.append(cap_face)
+        else:
             fallback_faces.append(raw_face)
 
     return prepared_faces, fallback_faces
+
+
+def _extract_top_rim_wire(face, tolerance=1e-3):
+    """
+    Extracts just the top rim of a non-planar 3D wall face (sloped,
+    tapered, or curved) as a single Part.Wire, skipping vertical seam
+    edges that run the full height of the wall.
+
+    Shared by _classify_and_cap_faces() here and surface_zlevel's
+    _cap_3d_wall() — both need to find "the top edge loop of an
+    arbitrary 3D wall" and previously duplicated this logic separately.
+
+    Returns:
+        Part.Wire or None: the top rim wire, or None if no top edges
+        were found or the wire couldn't be assembled.
+    """
+    face_zmax = round(face.BoundBox.ZMax, 4)
+    face_zmin = round(face.BoundBox.ZMin, 4)
+
+    top_edges = []
+    for edge in face.Edges:
+        # Skip "seam" edges that run vertically down the full wall height
+        is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + tolerance) and (
+            round(edge.BoundBox.ZMax, 4) >= face_zmax - tolerance
+        )
+        if is_seam:
+            continue
+        # Keep only the edges that form the upper rim
+        if round(edge.BoundBox.ZMax, 4) >= face_zmax - tolerance:
+            top_edges.append(edge)
+
+    if not top_edges:
+        return None
+
+    try:
+        sorted_edges = Part.__sortEdges__(top_edges)
+        return Part.Wire(sorted_edges)
+    except Exception as e:
+        Path.Log.debug(f"_extract_top_rim_wire: Failed to assemble top rim wire: {e}")
+        return None
+
+
+def flatten_wire_to_cap(wire, cap_z, discretize_distance=0.1, translate_to_zero=False):
+    """
+    Discretizes a wire, flattens all edges onto cap_z, and returns a
+    closed Part.Face. Safely handles curved 3D edges (e.g. the rim of
+    an angled hole) by crushing them to a flat 2D polygon rather than
+    attempting an exact projection, which can crash OpenCASCADE for
+    some inputs.
+
+    Shared by _classify_and_cap_faces() here and surface_zlevel's
+    _cap_3d_wall()/_cap_flat_face_holes() — all three previously
+    duplicated this flatten-and-rebuild logic separately, with subtly
+    different edge-case handling between copies.
+
+    Args:
+        wire (Part.Wire): the (possibly 3D/curved) wire to flatten.
+        cap_z (float): the Z height to flatten edges onto.
+        discretize_distance (float): point spacing used to discretize
+            curved edges before flattening.
+        translate_to_zero (bool): if True, translates the resulting
+            face so its ZMin is 0 (for use as a Z=0 mask); if False,
+            leaves it at cap_z.
+
+    Returns:
+        Part.Face or None: the flattened cap face, or None on failure.
+    """
+    flat_edges = []
+    for edge in wire.Edges:
+        try:
+            points = edge.discretize(Distance=discretize_distance)
+            flat_pts = [FreeCAD.Vector(p.x, p.y, cap_z) for p in points]
+            flat_edge = Part.makePolygon(flat_pts)
+            flat_edges.extend(flat_edge.Edges)
+        except Exception as e:
+            # A single bad edge shouldn't sink the whole cap — skip it
+            # and keep going with the rest.
+            Path.Log.debug(f"flatten_wire_to_cap: Edge flatten failed, skipping: {e}")
+            continue
+
+    if not flat_edges:
+        return None
+
+    try:
+        sorted_edges = Part.__sortEdges__(flat_edges)
+        flat_wire = Part.Wire(sorted_edges)
+        cap_face = Part.Face(flat_wire)
+
+        if not cap_face.isValid() or cap_face.isNull():
+            return None
+
+        if translate_to_zero:
+            cap_face.translate(FreeCAD.Vector(0, 0, -cap_face.BoundBox.ZMin))
+
+        return cap_face
+    except Exception as e:
+        Path.Log.debug(f"flatten_wire_to_cap: Failed to build cap face: {e}")
+        return None

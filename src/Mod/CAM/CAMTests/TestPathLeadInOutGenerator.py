@@ -19,8 +19,8 @@
 ################################################################################
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-import Path.Base.Generator.leadinout as leadinout
+from CAMTests import PathTestUtils
+from Path.Base.Generator import leadinout
 
 
 def _resetArgs(close=True):
@@ -94,7 +94,43 @@ G0 Z10.000000
 """
         args = _resetArgs()
         pp = leadinout.LeadInOut(**args).generate()
-        self.assertTrue(pp.toGCode() == expected_gcode, "Incorrect g-code generated: basic")
+        self.assertTrue(
+            pp.toGCode() == expected_gcode,
+            "Incorrect g-code generated: basic"
+            f"\nResult: {pp.toGCode()}\nExpected: {expected_gcode}",
+        )
+
+    def test01(self):
+        """Test with move command zero length"""
+        expected_gcode = """G0 Z10.000000
+G0 X-10.000000 Y-10.000000
+G0 Z5.000000
+G1 F10.000000 Z0.000000
+G2 F15.000000 I10.000000 J0.000000 X0.000000 Y0.000000 Z0.000000
+G1 F10.000000 X50.000000
+G2 F10.000000 I10.000000 J0.000000 X50.000000 Y0.000000
+G0 Z10.000000
+"""
+        commands = [
+            Path.Command("G0", {"Z": 10}),
+            Path.Command("G0", {"X": 0, "Y": 0}),
+            Path.Command("G0", {"Z": 0}),
+            Path.Command("G1", {"Z": 0, "F": 10}),  # zero length move
+            Path.Command("G1", {"X": 50, "F": 10}),
+            Path.Command("G2", {"X": 50, "Y": 0, "I": 10, "J": 0, "F": 10}),
+            Path.Command("G0", {"Z": 10}),
+        ]
+        args = _resetArgs()
+        args["path"] = Path.Path(commands)
+        args["styleOut"] = "Vertical"
+        args["extendIn"] = 0
+        args["extendOut"] = 0
+        pp = leadinout.LeadInOut(**args).generate()
+        self.assertTrue(
+            pp.toGCode() == expected_gcode,
+            "Incorrect g-code generated with zero length moves:"
+            f"\nResult: {pp.toGCode()}\nExpected: {expected_gcode}",
+        )
 
     def test10(self):
         """Test offset"""
@@ -173,4 +209,72 @@ G0 Z10.000000
         args["styleOut"] = "Vertical"
         args["retractThreshold"] = 10
         pp = leadinout.LeadInOut(**args).generate()
-        self.assertTrue(pp.toGCode() == expected_gcode, "Incorrect g-code generated: threshold")
+        self.assertTrue(
+            pp.toGCode() == expected_gcode,
+            "Incorrect g-code generated: threshold"
+            f"\nResult: {pp.toGCode()}\nExpected: {expected_gcode}",
+        )
+
+    def _linkedProfiles(self):
+        """Two passes joined by a linking hop, as operations with linking generate them"""
+        hop = []
+        for param in ({"Z": 1}, {"X": 50, "Y": 5, "Z": 1}, {"Z": 0}):
+            cmd = Path.Command("G1", dict(param, F=10))
+            cmd.Annotations = {"type": "linking"}
+            hop.append(cmd)
+        commands = [
+            Path.Command("G0", {"Z": 10}),
+            Path.Command("G0", {"X": 0, "Y": 0}),
+            Path.Command("G0", {"Z": 5}),
+            Path.Command("G1", {"Z": 0, "F": 10}),
+            Path.Command("G1", {"X": 50, "F": 20}),
+            *hop,
+            Path.Command("G1", {"X": 0, "F": 20}),
+            Path.Command("G0", {"Z": 10}),
+        ]
+        args = _resetArgs()
+        args["path"] = Path.Path(commands)
+        args["styleIn"] = "Vertical"
+        args["styleOut"] = "Vertical"
+        return args
+
+    def test50(self):
+        """Test linking moves are not dressed as cuts"""
+        args = self._linkedProfiles()
+        pp = leadinout.LeadInOut(**args).generate()
+        # the hop at Z1 is replaced by travel, no lead-in/out is added to it
+        self.assertFalse([c for c in pp.Commands if c.z is not None and c.z == 1])
+        cuts = [c for c in pp.Commands if c.Name == "G1" and c.x is not None and c.z is None]
+        self.assertEqual([c.x for c in cuts], [50, 0])
+
+    def test51(self):
+        """Test travel between profiles without linking arguments goes to clearance height"""
+        args = self._linkedProfiles()
+        pp = leadinout.LeadInOut(**args).generate()
+        rapidZ = [c.z for c in pp.Commands if c.Name == "G0" and c.z is not None]
+        self.assertEqual(rapidZ, [10, 5, 10, 5, 10])
+
+    def test52(self):
+        """Test travel between profiles uses the linking arguments of the operation"""
+        args = self._linkedProfiles()
+        args["linkingArgs"] = {
+            "start_position": None,
+            "target_position": None,
+            "heights_clearance": (5, 10),
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": 1,
+            "retract_height_offset": 1,
+            "split_plunge_height": 5,
+        }
+        args["startDepth"] = 2
+        pp = leadinout.LeadInOut(**args).generate()
+        links = [c for c in pp.Commands if c.Annotations.get("type") == "linking"]
+        self.assertTrue(links)
+        # no obstacles: the link hops just over the stock (start depth + clearance),
+        # not up to safe height, and is fed below safe height
+        self.assertEqual(max(c.z for c in links), 3)
+        self.assertTrue(all(c.Name == "G1" for c in links))
+        rapidZ = [c.z for c in pp.Commands if c.Name == "G0" and c.z is not None]
+        self.assertEqual(rapidZ, [10, 5, 10])

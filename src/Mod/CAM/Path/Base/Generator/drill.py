@@ -37,6 +37,12 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
+def isclose(val1, val2):
+    """isclose(val1, val2)
+    Returns true if the two values are the same within a small error."""
+    return numpy.isclose(val1, val2, rtol=1e-05, atol=1e-06)
+
+
 def generate(
     edge,
     dwelltime=0.0,
@@ -77,8 +83,8 @@ def generate(
     Path.Log.debug(startPoint)
     Path.Log.debug(endPoint)
 
-    Path.Log.debug(numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06))
-    Path.Log.debug(numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
+    Path.Log.debug(isclose(startPoint.sub(endPoint).x, 0))
+    Path.Log.debug(isclose(startPoint.sub(endPoint).y, 0))
     Path.Log.debug(endPoint)
 
     if dwelltime > 0.0 and peckdepth > 0.0:
@@ -102,17 +108,17 @@ def generate(
     if not type(dwelltime) is float:
         raise ValueError("dwelltime must be a float")
 
-    if retractheight is not None and not type(retractheight) is float:
-        raise ValueError("retractheight must be a float")
-
-    if not (
-        numpy.isclose(startPoint.sub(endPoint).x, 0, rtol=1e-05, atol=1e-06)
-        and (numpy.isclose(startPoint.sub(endPoint).y, 0, rtol=1e-05, atol=1e-06))
-    ):
+    if not (isclose(startPoint.sub(endPoint).x, 0) and (isclose(startPoint.sub(endPoint).y, 0))):
         raise ValueError("edge is not aligned with Z axis")
 
     if startPoint.z < endPoint.z:
         raise ValueError("start point is below end point")
+
+    if retractheight is not None:
+        if not type(retractheight) is float:
+            raise ValueError("retractheight must be a float")
+        if retractheight < endPoint.z or isclose(retractheight, endPoint.z):
+            raise ValueError("retractheight must be higher than end point")
 
     cmdParams = {}
     cmdParams["X"] = startPoint.x

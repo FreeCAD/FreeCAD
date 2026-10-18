@@ -90,6 +90,8 @@ void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElem
     }
 
     updateCursor();
+    // Restore the previous cursor, keeping the initialized pixmap for auto-constraint hints.
+    unsetCursor();
     startPos = toVector2d(obj->getPoint(dragged.front().GeoId, dragged.front().Pos));
 }
 
@@ -242,11 +244,11 @@ void DrawSketchHandlerDragAutoConstraint::onDwellTimerTimeout()
     }
     catch (const Base::Exception& e) {
         clear();
-        Base::Console().error("Failed to update drag auto-constraints: %s\n", e.what());
+        Base::Console().error("Failed to update drag auto-constraints: {}\n", e.what());
     }
     catch (const std::exception& e) {
         clear();
-        Base::Console().error("C++ exception while updating drag auto-constraints: %s\n", e.what());
+        Base::Console().error("C++ exception while updating drag auto-constraints: {}\n", e.what());
     }
     catch (...) {
         clear();

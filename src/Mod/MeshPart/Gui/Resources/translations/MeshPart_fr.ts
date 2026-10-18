@@ -264,7 +264,7 @@ Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Position initiale</translation>
     </message>
   </context>
   <context>

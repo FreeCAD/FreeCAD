@@ -251,6 +251,9 @@ public:
     /// Get the name of the object in the document.
     const char* getNameInDocument() const;
 
+    /// Return the display label, falling back to the internal name if it is empty.
+    const char* getLabelOrName() const;
+
     /// Get the object ID that is unique within its owner document.
     long getID() const
     {

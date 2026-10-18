@@ -300,7 +300,8 @@ class Renderer:
                             faces.append([f] + sh[1:])
                             # print("iscoplanar:",f.Vertexes[0].Point,f.normalAt(0,0),cutface.Vertexes[0].Point,cutface.normalAt(0,0))
                             if DraftGeomUtils.isCoplanar([f, cutface]):
-                                print("COPLANAR")
+                                if DEBUG:
+                                    print("COPLANAR")
                                 sections.append([f, fill])
                         if hidden:
                             c = sol.cut(invcutvolume)
@@ -496,7 +497,8 @@ class Renderer:
                 objs.append(o)
         for g in [walls, structs]:
             if g:
-                print("group:", g)
+                if DEBUG:
+                    print("group:", g)
                 col = g[0].ViewObject.DiffuseColor[0]
                 s = g[0].Shape
                 for o in g[1:]:
@@ -592,7 +594,8 @@ class Renderer:
                             str(self.faces.index(f2)),
                         )
                     r = self.compare(f1, f2)
-                    print("comparison result:", r)
+                    if DEBUG:
+                        print("comparison result:", r)
                     if r == 1:
                         faces.remove(f2)
                         sfaces.append(f2)

@@ -93,38 +93,28 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="510"/>
-      <source>Remove annotations</source>
-      <translation>ລຶບຄຳບັນຍາຍອອກ</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="511"/>
-      <source>Do you want to remove all annotations?</source>
-      <translation>ເຈົ້າຕ້ອງການລຶບຄຳບັນຍາຍທັງໝົດອອກບໍ່?</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderInspection.cpp" line="569"/>
+      <location filename="../../ViewProviderInspection.cpp" line="505"/>
       <source>Annotation</source>
       <translation>ຄຳບັນຍາຍ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="572"/>
+      <location filename="../../ViewProviderInspection.cpp" line="508"/>
       <source>Leave Info Mode</source>
       <translation>ອອກຈາກໂໝດຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="709"/>
+      <location filename="../../ViewProviderInspection.cpp" line="649"/>
       <source>Distance: &gt; %1</source>
       <translation>ໄລຍະຫ່າງ: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="712"/>
+      <location filename="../../ViewProviderInspection.cpp" line="652"/>
       <source>Distance: &lt; %1</source>
       <translation>ໄລຍະຫ່າງ: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="731"/>
-      <location filename="../../ViewProviderInspection.cpp" line="749"/>
+      <location filename="../../ViewProviderInspection.cpp" line="671"/>
+      <location filename="../../ViewProviderInspection.cpp" line="689"/>
       <source>Distance: %1</source>
       <translation>ໄລຍະຫ່າງ: %1</translation>
     </message>

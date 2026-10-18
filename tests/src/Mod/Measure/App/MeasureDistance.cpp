@@ -4,6 +4,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/Link.h>
 #include <App/MeasureManager.h>
 #include <Mod/Measure/App/MeasureDistance.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -11,10 +12,15 @@
 #include <Base/Rotation.h>
 #include <Base/Vector3D.h>
 #include <gtest/gtest.h>
+#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include <gp_Circ.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Vec.hxx>
+#include <TopLoc_Location.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 
@@ -169,5 +175,39 @@ TEST_F(MeasureDistance, testTwoBoxesMovedByContainers)
     EXPECT_DOUBLE_EQ(md->DistanceX.getValue(), 50.0);
     EXPECT_DOUBLE_EQ(md->DistanceY.getValue(), 0.0);
     EXPECT_DOUBLE_EQ(md->DistanceZ.getValue(), 0.0);
+}
+
+TEST_F(MeasureDistance, testLinkedCompoundKeepsInternalLocation)
+{
+    // Centre = link (100,0,0) + the edge's own (0,0,20); the other circle sits at (100,0,0).
+    App::Document* doc = getDocument();
+
+    TopoDS_Edge edge = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
+    gp_Trsf trsf;
+    trsf.SetTranslation(gp_Vec(0.0, 0.0, 20.0));
+    edge.Move(TopLoc_Location(trsf));
+    BRep_Builder builder;
+    TopoDS_Compound compound;
+    builder.MakeCompound(compound);
+    builder.Add(compound, edge);
+
+    auto feature = doc->addObject<Part::Feature>("Shape");
+    feature->Shape.setValue(compound);
+    auto link = doc->addObject<App::Link>("Link");
+    link->setLink(-1, feature);
+    link->LinkPlacement.setValue(Base::Placement(Base::Vector3d(100.0, 0.0, 0.0), Base::Rotation()));
+
+    auto circle = doc->addObject<Part::Feature>("Circle");
+    circle->Shape.setValue(makeCircle(gp_Pnt(100.0, 0.0, 0.0)));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(link, {"Edge1"});
+    md->Element2.setValue(circle, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_DOUBLE_EQ(md->Distance.getValue(), 20.0);
+    EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(100.0, 0.0, 20.0));
+    EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(100.0, 0.0, 0.0));
 }
 // NOLINTEND

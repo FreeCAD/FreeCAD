@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -148,7 +150,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
         }
     }
     catch (...) {
-        Base::Console().message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
+        Base::Console().message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **{}**\n", gType);
     }
 
     return {};

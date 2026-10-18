@@ -6030,6 +6030,42 @@ bool TopoShape::fixSolidOrientation()
     return false;
 }
 
+#if OCC_VERSION_HEX < 0x070903
+namespace
+{
+
+/**
+ * @brief Test whether a shape carries a degenerate edge that has no parametric curve.
+ *
+ * Before OCCT 7.9.3, BOPAlgo_PaveFiller::ProcessDE() loads the parametric curve of every
+ * degenerate edge without testing the handle. Boom. Newer kernels skip the edge themselves,
+ * so this test is not necessary for later versions.
+ *
+ * @param[in] shape The shape about to be passed to a boolean operation.
+ * @return @c true if a degenerate edge without a parametric curve was found.
+ */
+bool hasDegenerateEdgeWithoutParametricCurve(const TopoDS_Shape& shape)
+{
+    for (TopExp_Explorer faces(shape, TopAbs_FACE); faces.More(); faces.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(faces.Current());
+        for (TopExp_Explorer edges(face, TopAbs_EDGE); edges.More(); edges.Next()) {
+            const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+            if (!BRep_Tool::Degenerated(edge)) {
+                continue;
+            }
+            Standard_Real first {};
+            Standard_Real last {};
+            if (BRep_Tool::CurveOnSurface(edge, face, first, last).IsNull()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+}  // namespace
+#endif
+
 TopoShape& TopoShape::makeElementBoolean(
     const char* maker,
     const TopoShape& shape,
@@ -6180,7 +6216,7 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
     }
-    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0 || strcmp(maker, Part::OpCodes::Common) == 0) {
         for (unsigned i = 1; i < shapes.size(); ++i) {
             auto& s = shapes[i];
             if (s.isNull()) {
@@ -6190,7 +6226,12 @@ TopoShape& TopoShape::makeElementBoolean(
                 if (_shapes.empty()) {
                     _shapes.insert(_shapes.end(), shapes.begin(), shapes.begin() + i);
                 }
+                const auto sizeBeforeExpansion = _shapes.size();
                 expandCompound(s, _shapes);
+                if (strcmp(maker, Part::OpCodes::Common) == 0
+                    && _shapes.size() == sizeBeforeExpansion) {
+                    _shapes.push_back(s);
+                }
             }
             else if (_shapes.size()) {
                 _shapes.push_back(s);
@@ -6245,19 +6286,15 @@ TopoShape& TopoShape::makeElementBoolean(
             FC_THROWM(NullShapeException, "Null input shape");
         }
 
-        if (!shape.isValid()) {
-            std::ostringstream details;
-            shape.analyze(false, details);
-
-            std::string message = "Invalid input shape for boolean ";
-            message += maker;
-            if (!details.str().empty()) {
-                message += ":\n";
-                message += details.str();
-            }
-
-            FC_THROWM(Base::CADKernelError, message.c_str());
+#if OCC_VERSION_HEX < 0x070903
+        if (hasDegenerateEdgeWithoutParametricCurve(shape.getShape())) {
+            FC_THROWM(
+                Base::CADKernelError,
+                "Invalid input shape for boolean " << maker
+                                                   << ": a degenerate edge has no parametric curve"
+            );
         }
+#endif
 
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());

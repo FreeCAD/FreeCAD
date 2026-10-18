@@ -96,7 +96,7 @@ const char* ScriptFactorySingleton::ProduceScript(const char* sScriptName) const
 
     if (!script) {
 #ifdef FC_DEBUG
-        Console().warning("\"%s\" is not registered\n", sScriptName);
+        Console().warning("\"{}\" is not registered\n", sScriptName);
 #endif
         return "";  // no data
     }

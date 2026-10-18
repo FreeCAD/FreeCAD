@@ -732,6 +732,20 @@ protected:
                 return ViewProviderT::doubleClicked();
         }
     }
+    std::optional<bool> doubleClickedOccurrence(const App::SubObjectT& reference) override
+    {
+        switch (imp->doubleClicked()) {
+            case ViewProviderFeaturePythonImp::Accepted:
+                return true;
+            case ViewProviderFeaturePythonImp::Rejected:
+                return false;
+            default:
+                if (const auto result = ViewProviderT::doubleClickedOccurrence(reference)) {
+                    return result;
+                }
+                return ViewProviderT::doubleClicked();
+        }
+    }
     void setOverrideMode(const std::string& mode) override
     {
         ViewProviderT::setOverrideMode(mode);

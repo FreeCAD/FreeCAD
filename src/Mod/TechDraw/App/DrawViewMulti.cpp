@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -33,7 +35,9 @@
 
 #include "GeometryObject.h"
 #include "DrawUtil.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewMulti.h"
+#include "DrawViewPartPy.h"
 
 
 using namespace TechDraw;
@@ -74,7 +78,7 @@ short DrawViewMulti::mustExecute() const
 void DrawViewMulti::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().message("TRACE - DVM::onChanged(%s) - %s\n", prop->getName(), Label.getValue());
+        //Base::Console().message("TRACE - DVM::onChanged({}) - {}\n", prop->getName(), Label.getValue());
         if (prop == &Sources) {
             const std::vector<App::DocumentObject*>& links = Sources.getValues();
             if (!links.empty()) {
@@ -138,7 +142,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewMultiPython, TechDraw::DrawViewMulti)
 template<> const char* TechDraw::DrawViewMultiPython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderViewProviderViewPart";
+    return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawViewMultiPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from Base.Metadata import export
 
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
@@ -20,10 +18,10 @@ class ViewProviderFemPostPipeline(ViewProviderDocumentObject):
     License: LGPL-2.1-or-later
     """
 
-    def transformField(self) -> Any:
+    def transformField(self, field_name: str, field_factor: float, /) -> None:
         """Scales values of given result mesh field by given factor"""
         ...
 
-    def updateColorBars(self) -> Any:
+    def updateColorBars(self) -> None:
         """Update coloring of pipeline and its childs"""
         ...

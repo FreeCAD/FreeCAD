@@ -7,6 +7,7 @@ from Base.Metadata import (
     constmethod,
 )
 from GeometrySurface import GeometrySurface
+from Base.Vector import Vector
 from typing import Final, Tuple, Any
 
 @export(
@@ -115,7 +116,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleColAfter(self, index: int, /) -> None:
+    def insertPoleColAfter(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, after the column
         of poles of index.
@@ -126,7 +127,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleRowAfter(self, index: int, /) -> None:
+    def insertPoleRowAfter(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, after the row
         of poles of index.
@@ -137,7 +138,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleColBefore(self, index: int, /) -> None:
+    def insertPoleColBefore(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, before the column
         of poles of index.
@@ -148,7 +149,7 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def insertPoleRowBefore(self, index: int, /) -> None:
+    def insertPoleRowBefore(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Inserts into the table of poles of this surface, before the row
         of poles of index.
@@ -201,19 +202,19 @@ class BezierSurface(GeometrySurface):
         """
         ...
 
-    def setPole(self, pole: Any, /) -> None:
+    def setPole(self, u_index: int, v_index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier surface.
         """
         ...
 
-    def setPoleCol(self, poles: Any, /) -> None:
+    def setPoleCol(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Set the column of poles of the Bezier surface.
         """
         ...
 
-    def setPoleRow(self, poles: Any, /) -> None:
+    def setPoleRow(self, index: int, poles: Any, weights: Any = ..., /) -> None:
         """
         Set the row of poles of the Bezier surface.
         """

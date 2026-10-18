@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
@@ -21,15 +19,15 @@ class DrawSVGTemplate(DrawTemplate):
     License: LGPL-2.1-or-later
     """
 
-    def getEditFieldContent(self) -> Any:
+    def getEditFieldContent(self, edit_field_name: str, /) -> str | None:
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
         ...
 
-    def setEditFieldContent(self) -> Any:
+    def setEditFieldContent(self, edit_field_name: str, new_content: str, /) -> None:
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
         ...
 
-    def translateLabel(self) -> Any:
+    def translateLabel(self, context: str, base_name: str, unique_name: str, /) -> None:
         """
         translateLabel(translationContext, objectBaseName, objectUniqueName).
         No return value.  Replace the current label with a translated version where possible.

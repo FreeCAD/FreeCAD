@@ -122,7 +122,7 @@ void Type::importModule(std::string_view typeName)
     // lets load the module
     Interpreter().loadModule(mod.c_str());
 #ifdef FC_LOGLOADMODULE
-    Console().log("Act: Module %s loaded through class %s \n", mod.c_str(), typeName);
+    Console().log("Act: Module {} loaded through class {} \n", mod, typeName);
 #endif
     loadModuleSet.insert(mod);
 }

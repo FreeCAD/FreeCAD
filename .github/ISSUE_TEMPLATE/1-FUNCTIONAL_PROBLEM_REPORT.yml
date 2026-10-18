@@ -8,8 +8,10 @@ body:
         
         > [!TIP]
         > If this is your first time, read [how to report an issue to FreeCAD][Guide].
+        > If you use AI, read [our AI policy][AIPolicy] prior to reporting. Using LLMs to communicate is not allowed.
         
         [Guide]: https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues
+        [AIPolicy]: https://github.com/FreeCAD/FreeCAD/blob/main/AI_POLICY.md
 
   - type: textarea
     id: description

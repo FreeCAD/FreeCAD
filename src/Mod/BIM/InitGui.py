@@ -140,7 +140,7 @@ class BIMWorkbench(Workbench):
         ]
         self.modify_2d = [
             "BIM_OffsetTools",
-            "Draft_Trimex",
+            "BIM_Trimex",
             "Draft_Join",
             "Draft_Split",
             "Draft_Stretch",
@@ -156,7 +156,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "BIM_ArrayTools",
             "Arch_CutPlane",
-            "BIM_Extrude",
+            "BIM_ExtrudeTools",
             "BIM_BooleanTools",
         ]
 
@@ -284,9 +284,9 @@ class BIMWorkbench(Workbench):
                 # default: Draft_ArrayTools (the main Array UI)
                 return (
                     "Draft_OrthoArray",
-                    "Draft_PathArray",
+                    "Draft_PathLinkArray",
                     "Draft_PolarArray",
-                    "Draft_PointArray",
+                    "Draft_PointLinkArray",
                 )
 
             def GetResources(self):
@@ -306,6 +306,19 @@ class BIMWorkbench(Workbench):
                 label = QT_TRANSLATE_NOOP("BIM_BooleanTools", "Boolean Tools")
                 tooltip = label
                 return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Fuse"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
+        class BIM_ExtrudeTools:
+            def GetCommands(self):
+                # default: face extrusion (BIM_ExtrudeFace)
+                return ("BIM_ExtrudeFace", "BIM_Extrude")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ExtrudeTools", "Extrude Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_ExtrudeFace"}
 
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -375,7 +388,12 @@ class BIMWorkbench(Workbench):
         # create 2D views command
         class BIM_Create2DViews:
             def GetCommands(self):
-                return ("BIM_DrawingView", "BIM_Shape2DView", "BIM_Shape2DCut")
+                return (
+                    "BIM_DrawingView",
+                    "BIM_Shape2DView",
+                    "BIM_Shape2DCut",
+                    "Draft_UpdateShape2DView",
+                )
 
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
@@ -392,6 +410,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
         FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
         FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
+        FreeCADGui.addCommand("BIM_ExtrudeTools", BIM_ExtrudeTools())
         FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
         FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools())
@@ -570,6 +589,7 @@ class BIMWorkbench(Workbench):
             ("BIM_BooleanTools", BIM_BooleanTools),
             ("BIM_CloneTools", BIM_CloneTools),
             ("BIM_Create2DViews", BIM_Create2DViews),
+            ("BIM_ExtrudeTools", BIM_ExtrudeTools),
             ("BIM_GenericTools", BIM_GenericTools),
             ("BIM_IfcManageTools", BIM_IfcManageTools),
             ("BIM_OffsetTools", BIM_OffsetTools),
@@ -626,6 +646,8 @@ class BIMWorkbench(Workbench):
         from nativeifc import ifc_observer
         from draftutils import grid_observer
 
+        translate = FreeCAD.Qt.translate
+
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -670,9 +692,11 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
-                BimWatcher(self.bimtools, "3D/BIM Geometry"),
-                BimWatcher(self.modify, "Modify", invert=True),
+                BimWatcher(
+                    self.draftingtools + self.annotationtools, translate("BIM", "2D Drafting")
+                ),
+                BimWatcher(self.bimtools, translate("BIM", "3D/BIM Geometry")),
+                BimWatcher(self.modify, translate("BIM", "Modify"), invert=True),
             ]
         )
 
@@ -770,8 +794,19 @@ class BIMWorkbench(Workbench):
     def ContextMenu(self, recipient):
 
         import DraftTools
+        from draftutils import utils
 
         translate = FreeCAD.Qt.translate
+
+        if recipient == "View":
+            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
+        if FreeCADGui.Selection.getSelection():
+            for obj in FreeCADGui.Selection.getSelection():
+                if utils.get_type(obj) != "Shape2DView":
+                    break
+            else:
+                self.appendContextMenu("", ["Draft_UpdateShape2DView"])
 
         if recipient == "Tree":
             groups = False
@@ -802,8 +837,7 @@ class BIMWorkbench(Workbench):
                 FreeCADGui.Selection.getSelection()[0].Name == "Trash"
             ):
                 self.appendContextMenu("", ["BIM_EmptyTrash"])
-        elif recipient == "View":
-            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
         if FreeCADGui.Selection.getSelection():
             if FreeCADGui.Selection.getSelection()[0].Name != "Trash":
                 self.appendContextMenu("", ["BIM_Trash"])

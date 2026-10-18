@@ -54,6 +54,7 @@ PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 PostProcessorShowEditor = "PostProcessorShowEditor"
+SanityReportOutputFile = "PathSanityReportOutputFile"
 
 ToolBitDimensionColorLight = "ToolBitDimensionColorLight"
 ToolBitDimensionColorDark = "ToolBitDimensionColorDark"
@@ -76,6 +77,16 @@ WarningSuppressSelectionMode = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib = "WarningSuppressOpenCamLib"
 EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
+
+
+def setSanityReportOutputFile(fileName):
+    pref = preferences()
+    pref.SetString(SanityReportOutputFile, fileName)
+
+
+def defaultSanityReportOutputFile():
+    pref = preferences()
+    return pref.GetString(SanityReportOutputFile, "")
 
 
 _observers = defaultdict(list)  # maps group name to callback functions

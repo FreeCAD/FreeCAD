@@ -216,6 +216,50 @@ class TestViewProviderLink(unittest.TestCase):
         if self.FreeCAD.getDocument(self.doc.Name):
             self.FreeCAD.closeDocument(self.doc.Name)
 
+    def test_double_click_context_preserves_python_handlers(self):
+        class ClickHandler:
+            def __init__(self, result):
+                self.result = result
+                self.calls = 0
+
+            def doubleClicked(self, view):
+                self.calls += 1
+                if self.result is None:
+                    raise NotImplementedError
+                return self.result
+
+        target = self.doc.addObject("App::FeaturePython", "Target")
+        target_handler = ClickHandler(True)
+        target.ViewObject.Proxy = target_handler
+        link = self.doc.addObject("App::LinkPython", "Link")
+        link.LinkedObject = target
+        self.doc.recompute()
+
+        for explicit_context in (False, True):
+            for result in (True, False, None):
+                with self.subTest(explicit_context=explicit_context, result=result):
+                    handler = ClickHandler(result)
+                    link.ViewObject.Proxy = handler
+                    target_handler.calls = 0
+                    args = (link, "") if explicit_context else ()
+                    self.assertEqual(link.ViewObject.doubleClicked(*args), result is not False)
+                    self.assertEqual(handler.calls, 1)
+                    self.assertEqual(target_handler.calls, 1 if result is None else 0)
+
+    def test_double_click_context_falls_back_once_for_python_feature(self):
+        class ClickHandler:
+            calls = 0
+
+            def doubleClicked(self, view):
+                self.calls += 1
+                raise NotImplementedError
+
+        target = self.doc.addObject("App::FeaturePython", "Target")
+        handler = ClickHandler()
+        target.ViewObject.Proxy = handler
+        self.assertFalse(target.ViewObject.doubleClicked(target, ""))
+        self.assertEqual(handler.calls, 1)
+
     def test_apply_element_color_override_api(self):
         root = self.coin.SoSeparator()
         sel_root = _instantiate(self.coin, "SoFCSelectionRoot")

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -135,11 +137,7 @@ public Q_SLOTS:
 protected:
     void wheelEvent(QWheelEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    void enterEvent(QEvent* event) override;
-#else
     void enterEvent(QEnterEvent* event) override;
-#endif
     void leaveEvent(QEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
