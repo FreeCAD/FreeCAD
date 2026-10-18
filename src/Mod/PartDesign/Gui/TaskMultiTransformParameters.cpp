@@ -279,6 +279,8 @@ void TaskMultiTransformParameters::onTransformEdit()
     }
 
     ui->buttonOK->show();
+    updateTabOrder(ui->subFeatureWidget, ui->buttonOK);
+    updateTabOrder();
 
     subTask->setEnabledTransaction(isEnabledTransaction());
 }

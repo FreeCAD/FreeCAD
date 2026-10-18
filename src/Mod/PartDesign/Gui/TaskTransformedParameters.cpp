@@ -152,7 +152,26 @@ void TaskTransformedParameters::setupUI()
     }
 
     setupParameterUI(ui->featureUI);  // create parameter UI widgets
+    updateTabOrder();
     this->groupLayout()->addWidget(proxy);
+}
+
+void TaskTransformedParameters::updateTabOrder()
+{
+    updateTabOrder(ui->featureUI, ui->checkBoxUpdateView);
+}
+
+void TaskTransformedParameters::updateTabOrder(QWidget* parameterWidget, QWidget* nextWidget)
+{
+    // Child controls are appended to the focus chain when the parameter panel is populated.
+    QWidget* lastWidget = parameterWidget;
+    for (auto* widget = parameterWidget->nextInFocusChain(); widget != parameterWidget;
+         widget = widget->nextInFocusChain()) {
+        if (parameterWidget->isAncestorOf(widget) && (widget->focusPolicy() & Qt::TabFocus)) {
+            lastWidget = widget;
+        }
+    }
+    QWidget::setTabOrder(lastWidget, nextWidget);
 }
 
 void TaskTransformedParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
