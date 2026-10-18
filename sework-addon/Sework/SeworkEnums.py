@@ -14,6 +14,7 @@ ENUMS = {
     "Angle": "Ângulo", "TwoAngles": "Dois ângulos",
     "One side": "Um lado", "Two sides": "Dois lados", "Symmetric": "Simétrico",
     "Reversed": "Invertido", "Forward": "Para frente",
+    "?TwoLengths": "Duas dimensões (antigo)", "Profile plane": "Plano do perfil", "Reference": "Referência",
     # Furo
     "Hole Depth": "Profundidade do furo", "Tapped (DIN76)": "Roscado (DIN 76)",
     "None": "Nenhum", "Counterbore": "Rebaixo", "Countersink": "Escareado",

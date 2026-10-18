@@ -338,6 +338,28 @@ def _rgba(hexcolor, alpha=0xFF):
     return (c.red() << 24) | (c.green() << 16) | (c.blue() << 8) | alpha
 
 
+EDITOR_TEXTO_CLARO = "#1F2A36"
+
+
+def texto_console():
+    """Cor do texto comum no Console Python e no editor de macros.
+
+    Sem esse valor o FreeCAD copia a cor do texto da janela no momento em que o console
+    nasce. Com o Windows em modo escuro, o Qt 6 começa com texto branco e só depois o
+    tema claro da Sework entra: o texto digitado ficava branco sobre branco. Roda a cada
+    abertura e só corrige quando a cor gravada não combina com o tema atual.
+    """
+    ed = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
+    alvo = EDITOR_COLORS_ESC["Text"] if escuro() else EDITOR_TEXTO_CLARO
+    atual = ed.GetUnsigned("Text", 0)
+    if atual:
+        c = QtGui.QColor((atual >> 24) & 0xFF, (atual >> 16) & 0xFF, (atual >> 8) & 0xFF)
+        claro_demais = c.lightnessF() > 0.6
+        if claro_demais == escuro():
+            return  # já combina com o tema (claro no escuro, escuro no claro)
+    ed.SetUnsigned("Text", _rgba(alvo, 0))
+
+
 def apply_view_colors(force=False):
     """Cubo de navegação, seleção, eixos e esboço nas cores Sework (uma vez por versão)."""
     p = _params()
@@ -365,6 +387,7 @@ def apply_view_colors(force=False):
             ed.SetUnsigned(k, _rgba(c, 0))
         else:
             ed.RemUnsigned(k)      # volta ao padrão do FreeCAD
+    texto_console()
     t = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
     for k, c in junta(TREE_COLORS, TREE_COLORS_ESC).items():
         t.SetUnsigned(k, _rgba(c))
@@ -690,6 +713,7 @@ def install():
     apply_base_theme_params()
     apply_background()
     apply_view_colors()
+    texto_console()
     start_icon_fixer()
 
 

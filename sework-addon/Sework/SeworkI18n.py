@@ -222,9 +222,33 @@ def _app():
     return QtCore.QCoreApplication.instance()
 
 
+IDIOMA_PTBR = "Portuguese (Brazilian)"
+
+
 def _language_is_ptbr():
     lang = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("Language", "")
     return "Brazil" in lang or lang in ("pt-BR",)
+
+
+def idioma_padrao_ptbr():
+    """Perfil novo (idioma nunca escolhido) em Windows em português: usa pt-BR.
+
+    Sem isso o FreeCAD segue o sistema e cai no português de Portugal ("Ficheiro"),
+    e a tradução Sework não é instalada. Não mexe se o usuário já escolheu um idioma.
+    Retorna True se definiu o idioma agora.
+    """
+    grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+    if grp.GetString("Language", ""):
+        return False
+    if not QtCore.QLocale.system().name().lower().startswith("pt"):
+        return False
+    grp.SetString("Language", IDIOMA_PTBR)
+    try:
+        import FreeCADGui
+        FreeCADGui.setLocale(IDIOMA_PTBR)
+    except Exception:
+        pass
+    return True
 
 
 def raise_priority():
@@ -240,6 +264,7 @@ def raise_priority():
 def install():
     if not FreeCAD.ParamGet(PARAM_PATH).GetBool("SeworkTranslations", True):
         return
+    idioma_padrao_ptbr()
     if not _language_is_ptbr():
         return
     if _state["tr"] is None:

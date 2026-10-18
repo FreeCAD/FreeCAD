@@ -307,6 +307,27 @@ def _apply_group(node, path):
             _SETTERS[child.tag](grp, name, child.get("Value"))
 
 
+OVERLAY_QSS = "Freecad Overlay.qss"
+
+
+def garantir_overlay_qss():
+    """Painel de tarefas sobreposto à vista 3D precisa da folha de estilo do overlay.
+
+    No FreeCAD 27 o painel Tasks fica sobreposto à vista 3D em perfis novos. Sem
+    OverlayActiveStyleSheet, o FreeCAD procura "Dark Theme + Dark Background.qss", que
+    não existe mais; o painel fica opaco e branco e cobre a peça. Só grava se o valor
+    estiver vazio e o arquivo existir na instalação (no 1.1.4 não muda nada visível).
+    """
+    mw = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
+    if mw.GetString("OverlayActiveStyleSheet", ""):
+        return False
+    caminho = os.path.join(FreeCAD.getResourceDir(), "Gui", "Stylesheets", "overlay", OVERLAY_QSS)
+    if not os.path.isfile(caminho):
+        return False
+    mw.SetString("OverlayActiveStyleSheet", OVERLAY_QSS)
+    return True
+
+
 def _set_light_stylesheet():
     """Escolhe o stylesheet claro que existe na versão instalada."""
     sheets = os.path.join(FreeCAD.getResourceDir(), "Gui", "Stylesheets")
@@ -316,6 +337,7 @@ def _set_light_stylesheet():
             mw.SetString("StyleSheet", sheet)
             mw.SetString("Theme", "FreeCAD Light")
             mw.SetString("QtStyle", "FreeCAD")
+            garantir_overlay_qss()
             return True
     return False
 
@@ -443,8 +465,91 @@ class _FolhaObserver:
         try:
             if obj.TypeId == "TechDraw::DrawSVGTemplate":
                 QtCore.QTimer.singleShot(700, lambda o=obj: _fix_folha_date(o))
+            elif obj.TypeId in ("App::Plane", "App::Line"):
+                ref = (obj.Document.Name, obj.Name)
+                # a vista do plano pode ainda não existir no instante da criação: tenta de novo
+                for atraso in (0, 250, 1000):
+                    QtCore.QTimer.singleShot(atraso, lambda r=ref: pintar_origem(*r))
         except Exception:
             pass
+
+    def slotFinishRestoreDocument(self, doc):
+        try:
+            nome = doc.Name
+            for atraso in (0, 500):
+                QtCore.QTimer.singleShot(atraso, lambda n=nome: pintar_origens(FreeCAD.getDocument(n)))
+        except Exception:
+            pass
+
+
+# Planos e eixos da origem no azul Sework; ao passar o mouse ficam no amarelo de destaque
+# (HighlightColor, definido no tema). O padrão do FreeCAD é vermelho/verde/azul por eixo.
+ORIGEM_PAPEIS = ("XY_Plane", "XZ_Plane", "YZ_Plane", "X_Axis", "Y_Axis", "Z_Axis")
+
+
+def cor_origem():
+    import SeworkEstilo
+    return "#8CBCEB" if SeworkEstilo.escuro() else SeworkEstilo.NAVY
+
+
+def pintar_origem(doc_name, obj_name):
+    """Pinta um plano/eixo da origem no azul Sework.
+
+    O FreeCAD 1.1 fixa a cor dos planos da origem ao criar a vista, a partir das cores
+    dos eixos X/Y/Z (vermelho, verde, azul), e ignora mudanças em ShapeColor. Trocar as
+    cores dos eixos mudaria também o indicador de eixos do canto. Por isso a Sework pinta
+    o material do próprio plano na cena 3D (nada é gravado no arquivo). O destaque ao
+    passar o mouse continua no amarelo de HighlightColor.
+    """
+    if not _params().GetBool("CoresOrigemSework", True):
+        return False
+    try:
+        from pivy import coin
+        doc = FreeCAD.getDocument(doc_name)
+        obj = doc.getObject(obj_name) if doc else None
+        if obj is None or getattr(obj, "Role", "") not in ORIGEM_PAPEIS:
+            return False
+        vo = obj.ViewObject
+        if vo is None:
+            return False
+        c = QtGui.QColor(cor_origem())
+        rgb = (c.redF(), c.greenF(), c.blueF())
+        materiais = _materiais_coin(vo.RootNode, coin, [])
+        n = 0
+        for mat in materiais:
+            mat.diffuseColor.setValue(*rgb)
+            mat.ambientColor.setValue(*rgb)
+            if mat.transparency.getNum() and mat.transparency[0] > 0.8:
+                mat.transparency.setValue(0.72)  # 0,85 do FreeCAD some no fundo claro
+            n += 1
+        return n > 0
+    except Exception as exc:
+        FreeCAD.Console.PrintLog("Sework: cor da origem: {}\n".format(exc))
+        return False
+
+
+IGNORAR_NOS = ("PlacementIndicator", "3DAnnotation")
+
+
+def _materiais_coin(no, coin, acc):
+    """Materiais da cena do plano, entrando nos nodekits (SoShapeScale) e pulando o
+    indicador de posicionamento, que tem cores próprias."""
+    nome = no.getTypeId().getName().getString()
+    if any(k in nome for k in IGNORAR_NOS):
+        return acc
+    if no.isOfType(coin.SoMaterial.getClassTypeId()):
+        acc.append(no)
+    filhos = no.getChildren()
+    if filhos is not None:
+        for i in range(filhos.getLength()):
+            _materiais_coin(filhos[i], coin, acc)
+    return acc
+
+
+def pintar_origens(doc):
+    for o in doc.Objects:
+        if getattr(o, "Role", "") in ORIGEM_PAPEIS:
+            pintar_origem(doc.Name, o.Name)
 
 
 def _fix_folha_date(obj):
@@ -712,7 +817,8 @@ def startup():
     except Exception as exc:
         FreeCAD.Console.PrintWarning("Sework: tela inicial: {}\n".format(exc))
     register_commands()
-    for fn in (install_materials, apply_document_prefs, apply_template_prefs, install_folha_observer):
+    for fn in (install_materials, apply_document_prefs, apply_template_prefs, install_folha_observer,
+               garantir_overlay_qss):
         try:
             fn()
         except Exception as exc:

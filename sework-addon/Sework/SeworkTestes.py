@@ -126,6 +126,40 @@ class T03Tema(unittest.TestCase):
         self.assertLess(fundo.lightnessF(), 0.25, "fundo deve ficar escuro")
         self.assertIn("#0A4D8C", out, "faixa de marca em gradiente não pode mudar")
 
+    def test_texto_do_console_contrasta_com_o_fundo(self):
+        """Texto branco gravado com o tema claro (Windows em modo escuro) deve ser corrigido."""
+        from PySide import QtGui
+        ed = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
+        antes = ed.GetUnsigned("Text", 0)
+        try:
+            for esc, branco_gravado in ((False, True), (True, False)):
+                self.p.SetBool("TemaEscuro", esc)
+                ed.SetUnsigned("Text", 0xFFFFFF00 if branco_gravado else 0x1F2A3600)
+                self.E.texto_console()
+                v = ed.GetUnsigned("Text", 0)
+                cor = QtGui.QColor((v >> 24) & 0xFF, (v >> 16) & 0xFF, (v >> 8) & 0xFF)
+                if esc:
+                    self.assertGreater(cor.lightnessF(), 0.6, "no escuro o texto deve ser claro")
+                else:
+                    self.assertLess(cor.lightnessF(), 0.4, "no claro o texto deve ser escuro")
+        finally:
+            if antes:
+                ed.SetUnsigned("Text", antes)
+            else:
+                ed.RemUnsigned("Text")
+            self.p.SetBool("TemaEscuro", self.antes)
+            self.E.texto_console()
+
+    def test_painel_sobreposto_tem_folha_de_estilo(self):
+        """Sem ela, o painel Tasks sobreposto fica branco e cobre a peça na vista 3D (FreeCAD 27)."""
+        import SeworkGui
+        qss = os.path.join(FreeCAD.getResourceDir(), "Gui", "Stylesheets", "overlay", SeworkGui.OVERLAY_QSS)
+        if not os.path.isfile(qss):
+            return  # versão sem painel sobreposto: nada a garantir
+        SeworkGui.garantir_overlay_qss()
+        mw = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
+        self.assertTrue(mw.GetString("OverlayActiveStyleSheet", ""))
+
     def test_qss_completa_gera_sem_erro(self):
         for esc in (False, True):
             self.p.SetBool("TemaEscuro", esc)
@@ -191,6 +225,23 @@ class T04Glossario(unittest.TestCase):
         import SeworkEnums as E
         tr = I.SeworkTranslator(I.EXTRA, "")
         self.assertEqual(tr.translate("PartDesignGui::TaskPadPocketParameters", "Through all"), E.ENUMS["ThroughAll"])
+
+    def test_tradutor_sework_ativo(self):
+        """Pega perfil novo sem idioma definido (a tradução Sework não carregava)."""
+        from PySide import QtCore
+        got = QtCore.QCoreApplication.translate("App::PropertyEnumeration", "ThroughAll")
+        self.assertEqual(got, "Através de tudo", "tradução Sework não está instalada (idioma do FreeCAD?)")
+
+    def test_idioma_escolhido_nao_e_sobrescrito(self):
+        import SeworkI18n as I
+        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        antes = grp.GetString("Language", "")
+        try:
+            grp.SetString("Language", "English")
+            self.assertFalse(I.idioma_padrao_ptbr())
+            self.assertEqual(grp.GetString("Language"), "English")
+        finally:
+            grp.SetString("Language", antes)
 
     def test_glossario_nao_vaza_para_outros_contextos(self):
         import SeworkI18n as I
@@ -504,6 +555,97 @@ class T09Interface(unittest.TestCase):
         if rb is None:
             self.skipTest("faixa Sework não instalada nesta sessão")
         return rb
+
+    def test_novo_documento_da_tela_inicial_mostra_os_planos(self):
+        """A tela inicial deve abrir a vista como o Arquivo → Novo (planos da origem à vista)."""
+        import re
+        import SeworkInicio
+        antes = set(FreeCAD.listDocuments())
+        SeworkInicio.novo_documento()
+        novos = [n for n in FreeCAD.listDocuments() if n not in antes]
+        self.assertEqual(len(novos), 1)
+        try:
+            cam = FreeCADGui.getDocument(novos[0]).ActiveView.getCamera()
+            if "PerspectiveCamera" in cam:
+                return  # usuário escolheu câmera em perspectiva: escala não se aplica
+            m = re.search(r"\bheight\s+([0-9.eE+-]+)", cam)
+            self.assertIsNotNone(m, "câmera ortográfica esperada")
+            self.assertGreater(float(m.group(1)), 50, "vista deve mostrar a região dos planos (8 a 62 mm)")
+        finally:
+            FreeCAD.closeDocument(novos[0])
+
+    def test_data_da_folha_em_dd_mm_aaaa(self):
+        """A folha Sework criada no Desenho técnico recebe a data no formato brasileiro."""
+        import SeworkGui
+
+        class Folha:
+            Template = "C:/x/Sework_A3_Paisagem.svg"
+            EditableTexts = {"data": "18 Oct 2026", "titulo": "Peça"}
+
+        f = Folha()
+        SeworkGui._fix_folha_date(f)
+        self.assertRegex(f.EditableTexts["data"], r"^\d{2}/\d{2}/\d{4}$")
+        self.assertEqual(f.EditableTexts["titulo"], "Peça")
+
+        class Outra:
+            Template = "C:/x/A4_Landscape.svg"
+            EditableTexts = {"data": "18 Oct 2026"}
+
+        o = Outra()
+        SeworkGui._fix_folha_date(o)
+        self.assertEqual(o.EditableTexts["data"], "18 Oct 2026", "folha que não é Sework não deve mudar")
+
+    def test_modulos_sem_nomes_indefinidos(self):
+        """Pega função apagada que ainda é chamada (o NameError só apareceria na hora do uso)."""
+        import ast
+        import builtins
+        pasta = os.path.dirname(os.path.abspath(__file__))
+        for nome in sorted(os.listdir(pasta)):
+            if not (nome.startswith("Sework") and nome.endswith(".py")):
+                continue
+            with open(os.path.join(pasta, nome), encoding="utf-8") as fh:
+                arv = ast.parse(fh.read())
+            definidos = {"__file__", "__name__"}
+            for n in ast.walk(arv):
+                if isinstance(n, (ast.FunctionDef, ast.ClassDef)):
+                    definidos.add(n.name)
+                elif isinstance(n, ast.Name) and isinstance(n.ctx, ast.Store):
+                    definidos.add(n.id)
+                elif isinstance(n, (ast.Import, ast.ImportFrom)):
+                    definidos.update((a.asname or a.name).split(".")[0] for a in n.names)
+                elif isinstance(n, ast.arg):
+                    definidos.add(n.arg)
+                elif isinstance(n, ast.ExceptHandler) and n.name:
+                    definidos.add(n.name)
+            usados = {n.id for n in ast.walk(arv) if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)}
+            faltam = sorted(u for u in usados if u not in definidos and not hasattr(builtins, u))
+            self.assertEqual(faltam, [], nome)
+
+    def test_planos_da_origem_no_azul_sework(self):
+        from PySide import QtGui, QtWidgets
+        import SeworkGui
+        doc = FreeCAD.newDocument("SeworkTesteOrigem")
+        try:
+            body = doc.addObject("PartDesign::Body", "Body")
+            t0 = time.time()
+            while time.time() - t0 < 1.5:
+                QtWidgets.QApplication.processEvents()
+                time.sleep(0.05)
+            esperado = QtGui.QColor(SeworkGui.cor_origem())
+            planos = [f for f in body.Origin.OriginFeatures if f.Role.endswith("_Plane")]
+            self.assertEqual(len(planos), 3)
+            from pivy import coin
+            for p in planos:
+                mats = SeworkGui._materiais_coin(p.ViewObject.RootNode, coin, [])
+                self.assertTrue(mats, p.Role)
+                r, g, b = mats[0].diffuseColor[0].getValue()
+                self.assertAlmostEqual(r, esperado.redF(), delta=0.02, msg=p.Role)
+                self.assertAlmostEqual(g, esperado.greenF(), delta=0.02, msg=p.Role)
+                self.assertAlmostEqual(b, esperado.blueF(), delta=0.02, msg=p.Role)
+            hl = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("HighlightColor", 0)
+            self.assertEqual(hl >> 8, 0xF7BE00, "destaque ao passar o mouse deve ser o amarelo Sework")
+        finally:
+            FreeCAD.closeDocument(doc.Name)
 
     def test_seletor_de_bancadas_apos_a_marca(self):
         from PySide import QtWidgets

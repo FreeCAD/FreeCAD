@@ -86,6 +86,20 @@ def _abrir_tutorial():
         FreeCAD.Console.PrintWarning("Sework: tutorial indisponível: {}\n".format(exc))
 
 
+def novo_documento():
+    """Documento novo como o Arquivo → Novo do FreeCAD.
+
+    O comando Std_New, além de criar o documento, põe a vista na orientação e na escala
+    padrão (isométrica, ~100 mm). Criar só com FreeCAD.newDocument() deixava a câmera de
+    fábrica (vista de topo mostrando ~4 mm em volta da origem): ao pedir um esboço, os
+    planos da origem (de 8 a 62 mm) ficavam fora da tela.
+    """
+    try:
+        FreeCADGui.runCommand("Std_New")
+    except Exception:
+        FreeCAD.newDocument()
+
+
 def _new(kind):
     if kind == "abrir":
         FreeCADGui.runCommand("Std_Open")
@@ -97,7 +111,7 @@ def _new(kind):
         "esboco": ("SketcherWorkbench", "Sketcher_NewSketch"),
         "planilha": ("SpreadsheetWorkbench", "Spreadsheet_CreateSheet"),
     }[kind]
-    FreeCAD.newDocument()
+    novo_documento()
     try:
         FreeCADGui.activateWorkbench(wb)
     except Exception:
