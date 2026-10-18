@@ -383,7 +383,7 @@ class TestPathRotarySurface(PathTestBase):
 
     def test10_centerline_feed_clamp_logs(self):
         """rotary_spiral.generate logs when the rotary feed is clamped."""
-        import Path.Base.Generator.rotary_spiral as rotary_spiral
+        from Path.Base.Generator import rotary_spiral
 
         # 12-step grid, all radii ~0.5 mm — small enough that the
         # effective rotary feed F * 360/(2π·r) blows past max_feed.
