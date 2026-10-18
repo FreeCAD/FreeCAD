@@ -713,6 +713,9 @@ public:
     void acceptGeometry() override;
     /// Check if constraint has invalid indexes
     bool evaluateConstraint(const Constraint* constraint) const;
+    /// Check if the constraint refers to a point that the geometry does not have,
+    /// e.g. PointPos::mid on a B-spline edge (an internal pole)
+    bool hasInvalidPointPos(const Constraint* constraint) const;
     /// Check for constraints with invalid indexes
     bool evaluateConstraints() const;
     /// Remove constraints with invalid indexes

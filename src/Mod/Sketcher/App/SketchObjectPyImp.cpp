@@ -380,6 +380,15 @@ PyObject* SketchObjectPy::addConstraint(PyObject* args)
             PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
             return nullptr;
         }
+        if (this->getSketchObjectPtr()->hasInvalidPointPos(constr)) {
+            PyErr_SetString(
+                PyExc_ValueError,
+                "PointPos 'mid' does not exist on a B-spline edge. To constrain an "
+                "internal pole, expose the control point circles first "
+                "(exposeInternalGeometry) and place the constraint on the pole's circle."
+            );
+            return nullptr;
+        }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
         // this solve is necessary because:
         // 1. The addition of constraint is part of a command addition

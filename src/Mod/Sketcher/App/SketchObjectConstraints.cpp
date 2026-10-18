@@ -2232,6 +2232,25 @@ bool SketchObject::evaluateConstraint(const Constraint* constraint) const
     return ret;
 }
 
+bool SketchObject::hasInvalidPointPos(const Constraint* constraint) const
+{
+    // A B-spline edge only has solver points at its first and last pole (see
+    // Sketch::addBSpline), so PointPos::mid refers to a point that does not exist on
+    // it and the constraint would end up malformed in the solver. An internal pole is
+    // only addressable through its control point circle, which exposeInternalGeometry()
+    // creates for every pole.
+    auto invalidMid = [this](int geoId, PointPos pos) {
+        if (pos != PointPos::mid || geoId == GeoEnum::GeoUndef)
+            return false;
+        const Part::Geometry* geo = _getGeometry(geoId);
+        return geo && geo->is<Part::GeomBSplineCurve>();
+    };
+
+    return invalidMid(constraint->First, constraint->FirstPos)
+        || invalidMid(constraint->Second, constraint->SecondPos)
+        || invalidMid(constraint->Third, constraint->ThirdPos);
+}
+
 bool SketchObject::evaluateConstraints() const
 {
     int intGeoCount = getHighestCurveIndex() + 1;
