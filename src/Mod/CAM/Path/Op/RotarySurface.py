@@ -29,27 +29,29 @@ import math
 
 import FreeCAD
 import Part
+from PathScripts import PathUtils
 from PySide import QtCore
 
 import Path
 import Path.Op.Base as PathOp
-import Path.Op.SurfaceSupport as SurfaceSupport
-import Path.Base.Generator.rotary_dropcutter as rotary_dropcutter
-import Path.Base.Generator.rotary_parallel as rotary_parallel
-import Path.Base.Generator.rotary_rings as rotary_rings
-import Path.Base.Generator.rotary_spiral as rotary_spiral
-import Path.Base.Generator.rotary_wrap as rotary_wrap
-import PathScripts.PathUtils as PathUtils
+from Path.Base.Generator import (
+    rotary_dropcutter,
+    rotary_parallel,
+    rotary_rings,
+    rotary_spiral,
+    rotary_wrap,
+)
+from Path.Op import SurfaceSupport
 
 # OCL is loaded lazily in opExecute so the module can be imported in
 # environments without OCL (for non-execute access like loading saved
 # documents).
 try:
-    import ocl  # noqa: F401  (preferred name on some packagings)
-except ImportError:  # pragma: no cover
+    import ocl
+except ImportError:
     try:
-        import opencamlib as ocl  # noqa: F401
-    except ImportError:  # pragma: no cover
+        import opencamlib as ocl
+    except ImportError:
         ocl = None
 
 
@@ -96,7 +98,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
     def initOpProperties(self, obj, warn=False):
         Path.Log.track()
-        self.addNewProps = list()
+        self.addNewProps = []
         for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
@@ -255,10 +257,10 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         }
         if dataType == "raw":
             return enums
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
-        for k in enums:
-            data.append((k, [tup[idx] for tup in enums[k]]))
+        for k, v in enums.items():
+            data.append((k, [tup[idx] for tup in v]))
         return data
 
     def opPropertyDefaults(self, obj, job):
@@ -399,14 +401,10 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                         th = math.degrees(math.atan2(v.x, v.z))
                     if th < 0:
                         th += 360.0
-                    if ax < ax_min:
-                        ax_min = ax
-                    if ax > ax_max:
-                        ax_max = ax
-                    if th < th_min:
-                        th_min = th
-                    if th > th_max:
-                        th_max = th
+                    ax_min = min(ax, ax_min)
+                    ax_max = max(ax, ax_max)
+                    th_min = min(th, th_min)
+                    th_max = max(th, th_max)
         if not found:
             return None
         return ax_min, ax_max, th_min, th_max
@@ -640,7 +638,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
             r
             for row in (radii.tolist() if hasattr(radii, "tolist") else radii)
             for r in row
-            if not (r is None or (r != r))  # NaN check
+            if not (r is None or math.isnan(r))
         ]
         min_surface_r = min(valid_radii) if valid_radii else 0.0
         gap = max(0.0, stock_radius - (min_surface_r + stock_to_leave))
@@ -659,30 +657,30 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 cutter_z_floor = None
 
             pattern = str(obj.CutPattern)
-            generator_kwargs = dict(
-                radii=radii,
-                xs=xs,
-                thetas=thetas,
-                rotary_letter=rotary_letter,
-                rotary_axis=axis_label,
-                x_min=x_min,
-                x_max=x_max,
-                theta_start=math.radians(start_deg),
-                theta_end=math.radians(stop_deg),
-                axial_stepover=step_over,
-                angular_resolution=ang_res_rad,
-                radial_stock_to_leave=stock_to_leave,
-                cut_mode=str(obj.CutMode),
-                safe_height=float(obj.SafeHeight.Value),
-                clearance_height=float(obj.ClearanceHeight.Value),
-                horiz_feed=self.horizFeed,
-                vert_feed=self.vertFeed,
-                horiz_rapid=self.horizRapid,
-                vert_rapid=self.vertRapid,
-                max_feed=max_feed,
-                cutter_z_floor=cutter_z_floor,
-                feed_mode=str(obj.FeedMode),
-            )
+            generator_kwargs = {
+                "radii": radii,
+                "xs": xs,
+                "thetas": thetas,
+                "rotary_letter": rotary_letter,
+                "rotary_axis": axis_label,
+                "x_min": x_min,
+                "x_max": x_max,
+                "theta_start": math.radians(start_deg),
+                "theta_end": math.radians(stop_deg),
+                "axial_stepover": step_over,
+                "angular_resolution": ang_res_rad,
+                "radial_stock_to_leave": stock_to_leave,
+                "cut_mode": str(obj.CutMode),
+                "safe_height": float(obj.SafeHeight.Value),
+                "clearance_height": float(obj.ClearanceHeight.Value),
+                "horiz_feed": self.horizFeed,
+                "vert_feed": self.vertFeed,
+                "horiz_rapid": self.horizRapid,
+                "vert_rapid": self.vertRapid,
+                "max_feed": max_feed,
+                "cutter_z_floor": cutter_z_floor,
+                "feed_mode": str(obj.FeedMode),
+            }
             if pattern == "Rings":
                 raw_commands = rotary_rings.generate(**generator_kwargs)
             elif pattern == "Parallel":
