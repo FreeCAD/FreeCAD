@@ -103,6 +103,11 @@ QString tr(const char* text)
     return QCoreApplication::translate("TourStops", text);
 }
 
+QString icon(const char* path)
+{
+    return QStringLiteral("<img src=\":/icons/%1\" width=\"16\" height=\"16\">").arg(path);
+}
+
 }  // namespace
 
 QList<TourStop> buildStops(const QMainWindow* mainWindow)
@@ -149,18 +154,19 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          tr("Tree"),
          tr("Read the tree"),
          tr("The tree shows what is currently open in a project: documents, bodies, and the other "
-            "containers and objects they contain. A <img src=\":/icons/Document.svg\" "
-            "width=\"16\" height=\"16\"> document contains your design, while a <img "
-            "src=\":/icons/Part_3D_object.svg\" width=\"16\" height=\"16\"> Part container groups "
-            "objects together for organization, and a <img src=\":/icons/PartDesign_Body.svg\" "
-            "width=\"16\" height=\"16\"> Body groups the ordered feature history that Part Design "
-            "builds up. Either way, a shape object stores actual geometry, while a Part container "
-            "or Body only organizes what's inside it. The <img "
-            "src=\":/icons/PartDesign_Overlay_Tip.svg\" width=\"16\" height=\"16\"> Tip marks a "
-            "Body's current, up-to-date result, and the <img "
-            "src=\":/icons/Std_ToggleVisibility.svg\" width=\"16\" height=\"16\"> eye icon shows "
-            "whether an object is visible right now -- that's independent of where it sits in the "
-            "tree."),
+            "containers and objects they contain. A %1 document contains your design, while a %2 "
+            "Part container groups objects together for organization, and a %3 Body groups the "
+            "ordered feature history that Part Design builds up. Either way, a shape object stores "
+            "actual geometry, while a Part container or Body only organizes what's inside it. The "
+            "%4 Tip marks a Body's current, up-to-date result, and the %5 eye icon shows whether "
+            "an object is visible right now -- that's independent of where it sits in the tree.")
+             .arg(
+                 icon("Document.svg"),
+                 icon("Part_3D_object.svg"),
+                 icon("PartDesign_Body.svg"),
+                 icon("PartDesign_Overlay_Tip.svg"),
+                 icon("Std_ToggleVisibility.svg")
+             ),
          false},
 
         {findDock(
@@ -174,14 +180,13 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("Origin Folder"),
          tr("Origin Folder"),
          tr("Hidden by default"),
-         tr("Every Body (and Part) quietly comes with an Origin folder, marked by the <img "
-            "src=\":/icons/Std_CoordinateSystem.svg\" width=\"16\" height=\"16\"> icon, holding "
-            "the standard <img src=\":/icons/Std_Plane.svg\" width=\"16\" height=\"16\"> XY, XZ, "
-            "and YZ planes and the <img src=\":/icons/Std_Axis.svg\" width=\"16\" height=\"16\"> "
-            "X, Y, and Z axes -- handy references for attaching sketches or aligning features, "
-            "hidden from the tree by default because most day-to-day work doesn't need them. "
-            "Right-click in the tree and enable \"Show hidden items\" (or select the Origin and "
-            "press the spacebar) to reveal it, then toggle any single plane or axis the same way."),
+         tr("Every Body (and Part) quietly comes with an Origin folder, marked by the %1 icon, "
+            "holding the standard %2 XY, XZ, and YZ planes and the %3 X, Y, and Z axes -- handy "
+            "references for attaching sketches or aligning features, hidden from the tree by "
+            "default because most day-to-day work doesn't need them. Right-click in the tree and "
+            "enable \"Show hidden items\" (or select the Origin and press the spacebar) to reveal "
+            "it, then toggle any single plane or axis the same way.")
+             .arg(icon("Std_CoordinateSystem.svg"), icon("Std_Plane.svg"), icon("Std_Axis.svg")),
          true},
 
         {findDock(
@@ -208,17 +213,20 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("Sketcher Workbench"),
          tr("Sketcher Workbench"),
          tr("Sketcher Workbench"),
-         tr("<img src=\":/icons/SketcherWorkbench.svg\" width=\"16\" height=\"16\"> Sketcher uses "
-            "lines, arcs, and dimensional constraints; stores a flat 2D profile; is not itself a "
-            "solid. <img src=\":/icons/PartDesignWorkbench.svg\" width=\"16\" height=\"16\"> Part "
-            "Design uses a sketch as the profile for features such as <img "
-            "src=\":/icons/PartDesign_Pad.svg\" width=\"16\" height=\"16\"> Pad or <img "
-            "src=\":/icons/PartDesign_Pocket.svg\" width=\"16\" height=\"16\"> Pocket, and can "
-            "turn it around an axis with <img src=\":/icons/PartDesign_Revolution.svg\" "
-            "width=\"16\" height=\"16\"> Revolution. <img src=\":/icons/PartWorkbench.svg\" "
-            "width=\"16\" height=\"16\"> Part can use one as a profile for equivalent tools such "
-            "as <img src=\":/icons/tools/Part_Extrude.svg\" width=\"16\" height=\"16\"> Extrude "
-            "or <img src=\":/icons/tools/Part_Revolve.svg\" width=\"16\" height=\"16\"> Revolve."),
+         tr("%1 Sketcher uses lines, arcs, and dimensional constraints; stores a flat 2D profile; "
+            "is not itself a solid. %2 Part Design uses a sketch as the profile for features such "
+            "as %3 Pad or %4 Pocket, and can turn it around an axis with %5 Revolution. %6 Part "
+            "can use one as a profile for equivalent tools such as %7 Extrude or %8 Revolve.")
+             .arg(
+                 icon("SketcherWorkbench.svg"),
+                 icon("PartDesignWorkbench.svg"),
+                 icon("PartDesign_Pad.svg"),
+                 icon("PartDesign_Pocket.svg"),
+                 icon("PartDesign_Revolution.svg"),
+                 icon("PartWorkbench.svg"),
+                 icon("tools/Part_Extrude.svg"),
+                 icon("tools/Part_Revolve.svg")
+             ),
          false,
          sketcherWorkbenchStages},
 
@@ -241,9 +249,9 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          kNewSketchId,
          tr("New Sketch"),
          tr("Start a sketch"),
-         tr("<img src=\":/icons/general/Sketcher_NewSketch.svg\" width=\"16\" height=\"16\"> "
-            "Every Part Design feature starts from a sketch. The New Sketch button is "
-            "highlighted. Click Next and this tour will create a sketch on the XY plane for you."),
+         tr("%1 Every Part Design feature starts from a sketch. The New Sketch button is "
+            "highlighted. Click Next and this tour will create a sketch on the XY plane for you.")
+             .arg(icon("general/Sketcher_NewSketch.svg")),
          true,
          sketcherWorkbenchStages},
 
@@ -252,9 +260,9 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("Select Plane"),
          tr("Select a Plane"),
          tr("Pick a plane"),
-         tr("A sketch needs a flat plane to sit on. The tour attaches this one to the <img "
-            "src=\":/icons/Std_Plane.svg\" width=\"16\" height=\"16\"> XY plane, whose normal "
-            "points along Z, and starts editing it."),
+         tr("A sketch needs a flat plane to sit on. The tour attaches this one to the %1 XY plane, "
+            "whose normal points along Z, and starts editing it.")
+             .arg(icon("Std_Plane.svg")),
          true,
          sketchEditStages},
 
@@ -264,10 +272,10 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          tr("External Projection"),
          tr("External geometry"),
          tr("External geometry copies the outline of selected edges into the active sketch as a "
-            "read-only reference, so you can constrain new geometry to it. Look for its <img "
-            "src=\":/icons/geometry/Sketcher_Projection.svg\" width=\"16\" height=\"16\"> icon, "
+            "read-only reference, so you can constrain new geometry to it. Look for its %1 icon, "
             "highlighted here in the Sketcher toolbar. It helps line up a sketch with existing "
-            "geometry, but it is not a solid and does not create a second document."),
+            "geometry, but it is not a solid and does not create a second document.")
+             .arg(icon("geometry/Sketcher_Projection.svg")),
          true,
          sketchEditStages},
 
@@ -276,12 +284,10 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("Part Design Workbench"),
          tr("Part Design Workbench"),
          tr("Part Design Workbench"),
-         tr("<img src=\":/icons/PartDesign_Body.svg\" width=\"16\" height=\"16\"> Part Design: "
-            "uses a Body; stores an ordered, editable history of features, for example a sketch, "
-            "then a <img src=\":/icons/PartDesign_Pad.svg\" width=\"16\" height=\"16\"> Pad, then "
-            "a <img src=\":/icons/PartDesign_Chamfer.svg\" width=\"16\" height=\"16\"> Chamfer; "
-            "is processed as a single solid built up step by step, which can be edited or rolled "
-            "back at any point."),
+         tr("%1 Part Design: uses a Body; stores an ordered, editable history of features, for "
+            "example a sketch, then a %2 Pad, then a %3 Chamfer; is processed as a single solid "
+            "built up step by step, which can be edited or rolled back at any point.")
+             .arg(icon("PartDesign_Body.svg"), icon("PartDesign_Pad.svg"), icon("PartDesign_Chamfer.svg")),
          false,
          partDesignWorkbenchStages},
 
@@ -291,13 +297,15 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          tr("Additive / Subtractive"),
          tr("Additive and subtractive"),
          tr("Additive and subtractive features belong to the Part Design workbench -- highlighted "
-            "here is the strip of feature commands where each one either adds material (like <img "
-            "src=\":/icons/PartDesign_Pad.svg\" width=\"16\" height=\"16\"> Pad) or removes it "
-            "(like <img src=\":/icons/PartDesign_Pocket.svg\" width=\"16\" height=\"16\"> "
-            "Pocket). The strip also includes operations such as <img "
-            "src=\":/icons/PartDesign_Revolution.svg\" width=\"16\" height=\"16\"> Revolution. "
-            "Don't rely on color alone: read the command name or its tooltip. Pick a sketch, "
-            "choose the operation, then set its length or depth in the Tasks panel."),
+            "here is the strip of feature commands where each one either adds material (like %1 "
+            "Pad) or removes it (like %2 Pocket). The strip also includes operations such as %3 "
+            "Revolution. Don't rely on color alone: read the command name or its tooltip. Pick a "
+            "sketch, choose the operation, then set its length or depth in the Tasks panel.")
+             .arg(
+                 icon("PartDesign_Pad.svg"),
+                 icon("PartDesign_Pocket.svg"),
+                 icon("PartDesign_Revolution.svg")
+             ),
          true,
          partDesignWorkbenchStages},
 
@@ -306,13 +314,12 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("SubShape Binder"),
          tr("SubShape Binder"),
          tr("Referencing without duplicating"),
-         tr("The green <img src=\":/icons/PartDesign_SubShapeBinder.svg\" width=\"16\" "
-            "height=\"16\"> icon is the Sub-Shape Binder: a live, updating reference to selected "
+         tr("The green %1 icon is the Sub-Shape Binder: a live, updating reference to selected "
             "geometry from another object, such as a solid, face, edge, or vertex. The Sub-Shape "
             "Binder appears inside the current Body, so you can build against that geometry "
             "without duplicating it -- a reference, not a copy, and not a separate document. The "
-            "old, blue <img src=\":/icons/PartDesign_ShapeBinder.svg\" width=\"16\" "
-            "height=\"16\"> Shape Binder references an object's whole shape."),
+            "old, blue %2 Shape Binder references an object's whole shape.")
+             .arg(icon("PartDesign_SubShapeBinder.svg"), icon("PartDesign_ShapeBinder.svg")),
          true,
          partDesignWorkbenchStages},
 
@@ -321,16 +328,19 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("Part Workbench"),
          tr("Part Workbench"),
          tr("Part Workbench"),
-         tr("<img src=\":/icons/Part_3D_object.svg\" width=\"16\" height=\"16\"> Part: works with "
-            "solids you've already created -- primitives like a cube or cylinder, or shapes "
-            "brought in from other workbenches -- optionally grouped in a Part container for "
-            "organization; stores shape objects directly, not a feature history; is processed "
+         tr("%1 Part: works with solids you've already created -- primitives like a cube or "
+            "cylinder, "
+            "or shapes brought in from other workbenches -- optionally grouped in a Part container "
+            "for organization; stores shape objects directly, not a feature history; is processed "
             "immediately, so a boolean tool fuses, cuts, or intersects the geometry you select, "
-            "such as a cube and a sphere. A <img src=\":/icons/booleans/Part_Booleans.svg\" "
-            "width=\"16\" height=\"16\"> boolean operation combines selected shapes. <img "
-            "src=\":/icons/tools/Part_Extrude.svg\" width=\"16\" height=\"16\"> Extrude and <img "
-            "src=\":/icons/tools/Part_Revolve.svg\" width=\"16\" height=\"16\"> Revolve turn "
-            "profiles into solids."),
+            "such as a cube and a sphere. A %2 boolean operation combines selected shapes. %3 "
+            "Extrude and %4 Revolve turn profiles into solids.")
+             .arg(
+                 icon("Part_3D_object.svg"),
+                 icon("booleans/Part_Booleans.svg"),
+                 icon("tools/Part_Extrude.svg"),
+                 icon("tools/Part_Revolve.svg")
+             ),
          false,
          partWorkbenchStages},
 
