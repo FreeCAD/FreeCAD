@@ -290,6 +290,14 @@ void TaskPatternParameters::setupPointPatternParameterUI(
             onReferenceSelectionRequested();
         }
     );
+    QObject::connect(
+        pointParametersWidget,
+        &PatternPointParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
+
+    setupUpdateViewTimer(signalContext);
 }
 
 void TaskPatternParameters::bindPatternProperties()
