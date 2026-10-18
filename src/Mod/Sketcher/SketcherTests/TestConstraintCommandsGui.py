@@ -345,3 +345,18 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                 self.assertEqual(self.sketch.ConstraintCount, 0)
                 self.assertIsNotNone(Gui.activeDocument().getInEdit())
                 self.assertEqual(self.viewport.cursor().shape(), QtCore.Qt.BitmapCursor)
+
+    def test_view_section_with_unicode_document_name(self):
+        Gui.activeDocument().resetEdit()
+        App.closeDocument(self.doc.Name)
+
+        self.doc = App.newDocument("L\u00fcftungskanal")
+        self.assertIn("\u00fc", self.doc.Name)
+        self.sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.doc.recompute()
+        Gui.activeDocument().setEdit(self.sketch.Name)
+        self.flush_gui(50)
+
+        self.assertFalse(self.sketch.ViewObject.SectionView)
+        Gui.runCommand("Sketcher_ViewSection")
+        self.assertTrue(self.sketch.ViewObject.SectionView)
