@@ -241,13 +241,7 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
                 // when the popup closes in a loop, effectively blocking the user :(
                 comboBox->setProperty("popupAutoOpened", true);
 
-                QPointer<QComboBox> guardedCombo(comboBox);
-
-                QTimer::singleShot(0, this, [guardedCombo]() {
-                    if (guardedCombo) {
-                        guardedCombo->showPopup();
-                    }
-                });
+                QTimer::singleShot(0, comboBox, &QComboBox::showPopup);
             }
         }
         auto* checkBox = qobject_cast<QCheckBox*>(o);

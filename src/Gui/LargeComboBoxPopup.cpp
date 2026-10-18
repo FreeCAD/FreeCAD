@@ -532,7 +532,7 @@ void LargeComboBoxPopup::updatePopupSize()
 
     const int itemAreaHeight = rows * itemHeight;
     const int viewFrameHeight = m_grid ? m_gridView->frameWidth() * 2 : m_view->frameWidth() * 2;
-    const int wantedHeight = searchHeight + (m_searchable ? spacing : 0) + itemAreaHeight
+    const int wantedHeight = searchHeight + ((m_searchable ? 2 : 1) * spacing) + itemAreaHeight
         + viewFrameHeight + verticalMargins;
     const int screenHeight = availablePopupHeight();
     const bool needsScrollBar = wantedHeight > screenHeight;

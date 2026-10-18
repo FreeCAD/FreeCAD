@@ -21,7 +21,6 @@ class GuiExport LargeComboBox: public QComboBox
 
 public:
     explicit LargeComboBox(QWidget* parent = nullptr);
-    ~LargeComboBox() override;
 
     bool isSearchable() const;
     void setSearchable(bool searchable);

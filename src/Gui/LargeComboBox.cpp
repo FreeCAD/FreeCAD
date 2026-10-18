@@ -6,7 +6,7 @@ using namespace Gui;
 LargeComboBox::LargeComboBox(QWidget* parent)
     : QComboBox(parent)
 {
-    m_popup = new LargeComboBoxPopup(nullptr);
+    m_popup = new LargeComboBoxPopup(this);
 
     connect(m_popup, &LargeComboBoxPopup::itemSelected, this, [this](int sourceRow) {
         if (sourceRow < 0 || sourceRow >= count()) {
@@ -17,11 +17,6 @@ LargeComboBox::LargeComboBox(QWidget* parent)
         hidePopup();
         Q_EMIT activated(sourceRow);
     });
-}
-
-LargeComboBox::~LargeComboBox()
-{
-    delete m_popup;
 }
 
 int LargeComboBox::gridRowCount() const
