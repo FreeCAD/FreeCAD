@@ -1543,8 +1543,7 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         pointsOnCurve.push_back(Base::convertTo<Base::Vector3d>(newpoint));
     }
 
-    double tolerance = EWTOLERANCE;     // not as demanding as Precision::Confusion() but more
-                                        // demanding than using the edge length
+    double tolerance = Precision::Confusion();
 
     isArc = false;
     if (!firstPoint.IsEqual(lastPoint, tolerance)) {
