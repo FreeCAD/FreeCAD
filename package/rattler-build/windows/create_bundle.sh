@@ -32,6 +32,8 @@ cp -a ${conda_env}/Library/data ${copy_dir}/data
 cp -a ${conda_env}/Library/Ext ${copy_dir}/Ext
 cp -a ${conda_env}/Library/lib ${copy_dir}/lib
 cp -a ${conda_env}/Library/Mod ${copy_dir}/Mod
+# FreeCAD Sework: complemento Sework embutido (a cópia em %APPDATA%\FreeCAD\...\Mod tem prioridade)
+cp -a ../../../sework-addon/Sework ${copy_dir}/Mod/Sework
 mkdir -p ${copy_dir}/doc
 cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
 

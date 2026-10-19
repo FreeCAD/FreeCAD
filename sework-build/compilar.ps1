@@ -139,12 +139,37 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Addon Sework na pasta de configurações da versão compilada (ex.: v27-1)
+# Addon Sework na pasta de configurações da versão compilada
+# - com FREECAD_USER_HOME definido (perfil de teste), instala lá;
+# - senão, na pasta da versão (ex.: v27-1), sem sobrescrever um complemento já instalado
+#   (a versão 1.1.x usa a mesma pasta v1-1 do FreeCAD instalado, que é o perfil de uso).
 try {
-    $vj = Get-Content (Join-Path $repo "version.json") -Raw | ConvertFrom-Json
-    $vdir = Join-Path $env:APPDATA ("FreeCAD\v{0}-{1}\Mod\Sework" -f $vj.version_major, $vj.version_minor)
     $src = Join-Path $repo "sework-addon\Sework"
-    if (Test-Path $src) {
+    $vdir = $null
+    if ($env:FREECAD_USER_HOME) {
+        $vdir = Join-Path $env:FREECAD_USER_HOME "Mod\Sework"
+    } else {
+        $maj = $null; $min = $null
+        $vjf = Join-Path $repo "version.json"
+        if (Test-Path $vjf) {
+            $vj = Get-Content $vjf -Raw | ConvertFrom-Json
+            $maj = $vj.version_major; $min = $vj.version_minor
+        } else {
+            $cm = Get-Content (Join-Path $repo "CMakeLists.txt") -Raw
+            if ($cm -match 'PACKAGE_VERSION_MAJOR\s+"(\d+)"') { $maj = $Matches[1] }
+            if ($cm -match 'PACKAGE_VERSION_MINOR\s+"(\d+)"') { $min = $Matches[1] }
+        }
+        if ($maj -and $min) {
+            $vdir = Join-Path $env:APPDATA ("FreeCAD\v{0}-{1}\Mod\Sework" -f $maj, $min)
+            if (Test-Path (Join-Path $vdir "InitGui.py")) {
+                Aviso "Já existe um complemento Sework em $vdir (perfil em uso): não foi sobrescrito."
+                $vdir = $null
+            }
+        } else {
+            Aviso "Versão não identificada: complemento Sework não instalado."
+        }
+    }
+    if ($vdir -and (Test-Path $src)) {
         New-Item -ItemType Directory -Force -Path $vdir | Out-Null
         Copy-Item -Path (Join-Path $src "*") -Destination $vdir -Recurse -Force
         Ok "Addon Sework instalado em $vdir"
