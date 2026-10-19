@@ -361,9 +361,9 @@ class CommandCAMSimulate:
         """Command info"""
         return {
             "Pixmap": "CAM_SimulatorGL",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_SimulatorGL", "CAM Simulator"),
             "Accel": "P, N",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulates G-code on stock"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_SimulatorGL", "Simulates G-code on stock"),
         }
 
     def IsActive(self):

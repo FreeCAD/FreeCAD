@@ -180,6 +180,7 @@ class Trimex(gui_base_original.Modifier):
         for g in self.ghost:
             g.on()
         self.activePoint = 0
+        self.reverse = False
         self.nodes = []
         self.shift = False
         self.alt = False
@@ -377,6 +378,7 @@ class Trimex(gui_base_original.Modifier):
         if alt and self.lockedActivePoint is None:
             reverse = not reverse
         self.activePoint = npoint
+        self.reverse = reverse
 
         # sorting out directions
         if reverse and (npoint > 0):
@@ -527,6 +529,9 @@ class Trimex(gui_base_original.Modifier):
                     if self.placement:
                         np = invpl.multVec(np)
                     p.append(np)
+                if self.reverse:
+                    # points come out backwards when the end was moved (#19189)
+                    p.reverse()
                 self.obj.Points = p
             elif utils.getType(self.obj) == "Part::Line":
                 p = []
@@ -565,6 +570,18 @@ class Trimex(gui_base_original.Modifier):
                 # print("new", angles)
                 if angles[0] > angles[1]:
                     angles = (angles[1], angles[0])
+                if self.placement:
+                    # the ghost angles are global, FirstAngle and LastAngle
+                    # are relative to the placement of the arc (#22913)
+                    rot = self.placement.Rotation.inverted()
+                    local = []
+                    for a in angles:
+                        a = math.radians(a)
+                        vec = rot.multVec(App.Vector(math.cos(a), math.sin(a), 0))
+                        local.append(math.degrees(math.atan2(vec.y, vec.x)))
+                    if rot.multVec(App.Vector(0, 0, 1)).z < 0:
+                        local.reverse()
+                    angles = local
                 self.obj.FirstAngle = angles[0]
                 self.obj.LastAngle = angles[1]
             else:

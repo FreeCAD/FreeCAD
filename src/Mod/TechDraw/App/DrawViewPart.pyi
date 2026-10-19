@@ -213,8 +213,21 @@ class DrawViewPart(DrawView):
     def formatGeometricEdge(
         self, index: int, style: int, weight: float, color: tuple, visible: int, /
     ) -> None:
-        """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
+        """
+        Applies appearance attributes to a geometric edge.
+        Style parameter is from Qt::PenStyle and is converted to closest standard line number style.
+        """
         ...
+
+    def decorateLine(
+        self, edgeName: str, lineNumber: int, weight: float, color: tuple, visible: int, /
+    ) -> None:
+        """
+        Applies appearance attributes to geometric edge edgeName ("Edge1").  Handles standard line
+        numbers (0-15 (ISO) or 1-17 (ASME)).
+        """
+        ...
+
 
     def getEdgeByIndex(self, index: int, /) -> TopoShapeEdge:
         """getEdgeByIndex(edgeIndex). Returns Part.TopoShape."""

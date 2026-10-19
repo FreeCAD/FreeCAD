@@ -11,11 +11,13 @@ python = ">=3.11,<3.12"
 ## Linux (x86-64)
 [target.linux-64.dependencies]
 coreutils = "*"
+gettext = "*"
 xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
 
 ## Linux (aarch64)
 [target.linux-aarch64.dependencies]
 coreutils = "*"
+gettext = "*"
 xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
 
 ## macOS (Intel)

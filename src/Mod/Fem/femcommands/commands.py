@@ -964,7 +964,7 @@ class _MeshShape(CommandManager):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshShape", "Shape-Based Refinement")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshSphere",
+            "FEM_MeshShape",
             "Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)",
         )
         self.is_active = "with_gmsh_femmesh"

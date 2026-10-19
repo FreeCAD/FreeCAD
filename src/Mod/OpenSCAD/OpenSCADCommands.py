@@ -136,7 +136,7 @@ class Edgestofaces:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Edgestofaces',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Edgestofaces', 'Convert Edges to Faces'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD', 'Converts edges to faces')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Edgestofaces', 'Converts edges to faces')}
 
 class RefineShapeFeature:
     def IsActive(self):

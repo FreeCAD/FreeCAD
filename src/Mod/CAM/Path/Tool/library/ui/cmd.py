@@ -48,10 +48,8 @@ class CommandToolBitLibraryDockOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitSelection", "Add Toolbit…"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitSelection", "Opens the toolbit selection dialog"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Add Toolbit…"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Opens the toolbit selection dialog"),
             "Accel": "P, T",
             "CmdType": "ForEdit",
         }

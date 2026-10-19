@@ -353,9 +353,11 @@ class CommandPathPostSelected(CommandPathPost):
     def GetResources(self):
         return {
             "Pixmap": "CAM_PostSelected",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process Selected"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PostSelected", "Post Process Selected"),
             "Accel": "P, O",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected operations"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_PostSelected", "Post Processes the selected operations"
+            ),
         }
 
     def IsActive(self):

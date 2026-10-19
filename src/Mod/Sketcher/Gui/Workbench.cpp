@@ -28,7 +28,6 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/WorkbenchManager.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 using namespace SketcherGui;
@@ -176,19 +175,19 @@ inline const QStringList nonEditModeToolbarNames()
 
 void Workbench::activated()
 {
-    /* When the workbench is activated, it may happen that we are in edit mode or not.
-     * If we are not in edit mode, the function enterEditMode (called by the ViewProvider) takes
-     * care to save the state of toolbars outside of edit mode. We cannot do it here, as we are
-     * coming from another WB.
+    /* The workbench may be activated with or without a sketch in edit mode, for
+     * example when switching documents or returning from another workbench.
      *
-     * If we moved to another WB from edit mode, the new WB was activated before deactivating this.
-     * Therefore we had no chance to tidy up the save state. We assume a loss of any CHANGE to
-     * toolbar configuration since last entering edit mode in this case (for any change in
-     * configuration to be stored, the edit mode must be left while the selected Workbench is the
-     * sketcher WB).
+     * ToolBarManager::setup() saves the outgoing workbench's available toolbar
+     * visibility, then sets up this workbench using its default availability and
+     * saved user preferences. Sketcher edit toolbars are unavailable by default,
+     * so they must be made available again here if a sketch is still being edited.
+     * The normal toolbars are hidden without changing their saved visibility.
      *
-     * However, now that we are back (from another WB), we need to make the toolbars available.
-     * These correspond to the last saved state.
+     * Do not save visibility here, as setup has already replaced the previous toolbar
+     * context. enterEditMode() and leaveEditMode() save the appropriate available
+     * toolbars when changing edit mode without switching workbenches. If no sketch
+     * is being edited, setup has already restored the normal toolbars.
      */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (isSketchInEdit(doc)) {
@@ -226,22 +225,10 @@ void Workbench::enterEditMode()
 
 void Workbench::leaveEditMode()
 {
-    /* Ensure the state left by the edit mode toolbars is saved (in case of changing to edit mode)
-     * without changing workbench.
-     *
-     * However, do not save state if the current workbench is not the Sketcher WB, because otherwise
-     * we would be saving the state of the currently activated workbench, and the toolbars would
-     * disappear (as the toolbars of that other WB are only visible).
-     */
-    auto* workbench = Gui::WorkbenchManager::instance()->active();
-
-    if (workbench->name() == "SketcherWorkbench"
-        && Gui::ToolBarManager::getInstance()->isAnyVisible(nonEditModeToolbarNames())) {
-        Gui::ToolBarManager::getInstance()->setState(
-            editModeToolbarNames(),
-            Gui::ToolBarManager::State::SaveState
-        );
-    }
+    Gui::ToolBarManager::getInstance()->setState(
+        editModeToolbarNames(),
+        Gui::ToolBarManager::State::SaveState
+    );
 
     Gui::ToolBarManager::getInstance()->setState(
         editModeToolbarNames(),

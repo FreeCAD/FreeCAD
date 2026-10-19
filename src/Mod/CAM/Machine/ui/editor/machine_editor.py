@@ -60,6 +60,28 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
+class _VerticalScrollArea(QtGui.QScrollArea):
+    """Scroll area that scrolls only vertically.
+
+    It is never narrower than its contents, so the vertical scrollbar does
+    not also bring up a horizontal one.
+    """
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        if self.widget() is not None:
+            width = self.widget().minimumSizeHint().width()
+            width += self.verticalScrollBar().sizeHint().width() + 2 * self.frameWidth()
+            hint.setWidth(max(hint.width(), width))
+        return hint
+
+    def eventFilter(self, obj, event):
+        # Contents changed size, e.g. new axis pages: ask the dialog for room again
+        if obj is self.widget() and event.type() == QtCore.QEvent.LayoutRequest:
+            self.updateGeometry()
+        return super().eventFilter(obj, event)
+
+
 class DataclassGUIGenerator:
     """Generates Qt widgets dynamically from dataclass definitions.
 
@@ -329,18 +351,20 @@ class DataclassGUIGenerator:
         return group, widgets
 
 
-class _TemplateComboBox(QtGui.QComboBox):
-    """QComboBox that keeps the popup open when a folder item is clicked."""
+# The community machine collection, by its Addon Manager catalog name.  The addon
+# installs into a Mod directory of the same name, which is the namespace in the template tree.
+MACHINES_ADDON = "Machines"
+MACHINES_ADDON_URL = "https://github.com/FreeCAD/Machines"
+MACHINES_ADDON_HINT_PARAM = "ShowMachinesAddonHint"
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._skip_next_hide = False
 
-    def hidePopup(self):
-        if self._skip_next_hide:
-            self._skip_next_hide = False
-            return
-        super().hidePopup()
+def machines_addon_hint_wanted(addon_tree, enabled) -> bool:
+    """True if the hint for the Machines addon should show.
+
+    addon_tree is the result of MachineFactory.get_addon_machine_tree().
+    enabled is False after the user dismissed the hint.
+    """
+    return enabled and not any(namespace == MACHINES_ADDON for namespace, _ in addon_tree)
 
 
 class MachineEditorDialog(QtGui.QDialog):
@@ -396,8 +420,12 @@ class MachineEditorDialog(QtGui.QDialog):
 
     def __init__(self, machine_filename: Optional[str] = None, parent=None, machine=None):
         super().__init__(parent)
-        self.setMinimumSize(700, 900)
-        self.resize(700, 900)
+        # Only the height is fixed: the layout sets the minimum width from the tabs
+        self.setMinimumHeight(400)
+        # Start no taller than the screen, so the bottom buttons stay reachable
+        # at high display scaling. Tabs that do not fit scroll.
+        screen_height = self.screen().availableGeometry().height()
+        self.resize(700, min(800, int(screen_height * 0.9)))
 
         self.current_units = "metric"
         self.is_new_machine = machine_filename is None  # Track if creating new machine
@@ -848,21 +876,145 @@ class MachineEditorDialog(QtGui.QDialog):
                 parent_item.appendRow(item)
                 self._populate_template_tree(item, data, doc_icon, folder_icon)
 
+    def _populate_template_model(self):
+        """Fill the template model: Custom, user machines, built-ins, then addon folders.
+
+        Returns the addon machine tree, so the caller can check which addons are present.
+        """
+        self.template_model.clear()
+
+        style = QtGui.QApplication.style()
+        doc_icon = style.standardIcon(QtGui.QStyle.SP_FileIcon)
+        folder_icon = style.standardIcon(QtGui.QStyle.SP_DirIcon)
+
+        # "Custom" entry (no icon, no path)
+        custom_item = QtGui.QStandardItem(translate("CAM_MachineEditor", "Custom"))
+        custom_item.setData(None, QtCore.Qt.UserRole)
+        self.template_model.appendRow(custom_item)
+
+        # User's saved machines — document icon
+        for name, filename in MachineFactory.list_configuration_files():
+            user_path = MachineFactory.get_config_directory() / filename
+            item = QtGui.QStandardItem(doc_icon, name)
+            item.setData(str(user_path), QtCore.Qt.UserRole)
+            self.template_model.appendRow(item)
+
+        # Built-in templates — document icon
+        for name, filepath in MachineFactory.list_builtin_templates():
+            item = QtGui.QStandardItem(doc_icon, name)
+            item.setData(filepath, QtCore.Qt.UserRole)
+            self.template_model.appendRow(item)
+
+        # Addon templates — folder per addon, recursive tree
+        addon_tree = MachineFactory.get_addon_machine_tree()
+        for namespace, subtree in addon_tree:
+            ns_item = QtGui.QStandardItem(folder_icon, namespace)
+            ns_item.setFlags(QtCore.Qt.ItemIsEnabled)  # visible but not selectable
+            ns_item.setData(None, QtCore.Qt.UserRole)
+            self.template_model.appendRow(ns_item)
+            self._populate_template_tree(ns_item, subtree, doc_icon, folder_icon)
+
+        self._template_tree_view.expandAll()
+        return addon_tree
+
+    @staticmethod
+    def _machines_addon_hint_enabled():
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        return param.GetBool(MACHINES_ADDON_HINT_PARAM, True)
+
+    def _make_machines_addon_hint(self):
+        """An information banner that points to the Machines addon."""
+        label = QtGui.QLabel()
+        label.setObjectName("machinesAddonHint")
+        label.setStyleSheet(
+            "QLabel { background-color: #d9ecff; color: #000000; padding: 6px; "
+            "border: 1px solid #7fb2e5; border-radius: 4px; }"
+        )
+        label.setWordWrap(True)
+        label.setTextFormat(QtCore.Qt.RichText)
+        message = translate(
+            "CAM_MachineEditor",
+            "Community-maintained machine definitions are available in the Machines addon.",
+        )
+        open_text = translate("CAM_MachineEditor", "Open Addon Manager")
+        dismiss_text = translate("CAM_MachineEditor", "Do not show again")
+        label.setText(
+            f'{message} <a href="open">{open_text}</a> · <a href="dismiss">{dismiss_text}</a>'
+        )
+        label.linkActivated.connect(self._on_machines_addon_hint_link)
+        return label
+
+    def _on_machines_addon_hint_link(self, link):
+        if link == "dismiss":
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+            param.SetBool(MACHINES_ADDON_HINT_PARAM, False)
+            self.machines_addon_hint.hide()
+        elif link == "open":
+            self._open_machines_addon()
+
+    def _open_machines_addon(self):
+        """Open the Addon Manager with the Machines addon selected.
+
+        SelectedAddon is an Addon Manager preference that it reads, and clears, at launch.
+        If the Addon Manager is not available, open the addon repository in a browser.
+        """
+        import FreeCADGui
+
+        if FreeCADGui.Command.get("Std_AddonMgr") is None:
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(MACHINES_ADDON_URL))
+            return
+        try:
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").SetString(
+                "SelectedAddon", MACHINES_ADDON
+            )
+            FreeCADGui.runCommand("Std_AddonMgr")
+        except Exception as e:
+            Path.Log.warning(f"Could not open the Addon Manager: {e}")
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(MACHINES_ADDON_URL))
+
+    def _refresh_after_addon_install(self):
+        """Scan for addon machines again; if the Machines addon is now present,
+        reload the template list and hide the hint."""
+        MachineFactory.rescan_addon_dirs()
+        addon_tree = MachineFactory.get_addon_machine_tree()
+        if machines_addon_hint_wanted(addon_tree, True):
+            return
+        text = self.template_combo.currentText()
+        self._populate_template_model()
+        self.template_combo.setEditText(text)
+        self.machines_addon_hint.hide()
+
+    def changeEvent(self, event):
+        # The Addon Manager gives no signal when it closes. When this dialog becomes
+        # active again, look for a new install of the Machines addon.
+        super().changeEvent(event)
+        if (
+            event.type() == QtCore.QEvent.ActivationChange
+            and self.isActiveWindow()
+            and getattr(self, "machines_addon_hint", None) is not None
+            and not self.machines_addon_hint.isHidden()
+        ):
+            self._refresh_after_addon_install()
+
     def _on_template_tree_clicked(self, model_index):
         """Handle a click in the template tree popup.
 
-        Folder items (non-selectable) are toggled expand/collapse; the popup
-        stays open via _TemplateComboBox._skip_next_hide.
+        Folder items (non-selectable) are toggled expand/collapse;
         Leaf items (selectable) load the template and close the popup.
         """
         if not (model_index.flags() & QtCore.Qt.ItemIsSelectable):
             # Folder node: toggle expansion, keep popup open
-            self.template_combo._skip_next_hide = True
             if self._template_tree_view.isExpanded(model_index):
                 self._template_tree_view.collapse(model_index)
             else:
                 self._template_tree_view.expand(model_index)
-            return
+
+    def _on_template_activated(self, _row):
+        model_index = self._template_tree_view.currentIndex()
+        if model_index.flags() & QtCore.Qt.ItemIsSelectable:
+            self._load_template(model_index)
+
+    def _load_template(self, model_index):
 
         template_path = model_index.data(QtCore.Qt.UserRole)
         display_text = model_index.data(QtCore.Qt.DisplayRole) or ""
@@ -924,7 +1076,15 @@ class MachineEditorDialog(QtGui.QDialog):
         units, type, kinematics, and axes configuration. Connects change
         handlers for dynamic updates.
         """
-        layout = QtGui.QFormLayout(self.machine_tab)
+        # Use scroll area so the tab does not set the dialog's height
+        self.machine_scroll = _VerticalScrollArea()
+        self.machine_scroll.setWidgetResizable(True)
+        scroll_widget = QtGui.QWidget()
+        layout = QtGui.QFormLayout(scroll_widget)
+        self.machine_scroll.setWidget(scroll_widget)
+
+        tab_layout = QtGui.QVBoxLayout(self.machine_tab)
+        tab_layout.addWidget(self.machine_scroll)
 
         self.name_edit = QtGui.QLineEdit()
         self.name_edit.textChanged.connect(self._on_name_changed)
@@ -937,51 +1097,28 @@ class MachineEditorDialog(QtGui.QDialog):
             self._template_tree_view = QtGui.QTreeView()
             self._template_tree_view.setHeaderHidden(True)
 
-            self.template_combo = _TemplateComboBox()
+            self.template_combo = QtGui.QComboBox()
             self.template_combo.setEditable(True)
             self.template_combo.lineEdit().setReadOnly(True)
             self.template_combo.setView(self._template_tree_view)
             self.template_combo.setModel(self.template_model)
 
-            style = QtGui.QApplication.style()
-            doc_icon = style.standardIcon(QtGui.QStyle.SP_FileIcon)
-            folder_icon = style.standardIcon(QtGui.QStyle.SP_DirIcon)
-
-            # "Custom" entry (no icon, no path)
-            custom_item = QtGui.QStandardItem(translate("CAM_MachineEditor", "Custom"))
-            custom_item.setData(None, QtCore.Qt.UserRole)
-            self.template_model.appendRow(custom_item)
-
-            # User's saved machines — document icon
-            for name, filename in MachineFactory.list_configuration_files():
-                user_path = MachineFactory.get_config_directory() / filename
-                item = QtGui.QStandardItem(doc_icon, name)
-                item.setData(str(user_path), QtCore.Qt.UserRole)
-                self.template_model.appendRow(item)
-
-            # Built-in templates — document icon
-            for name, filepath in MachineFactory.list_builtin_templates():
-                item = QtGui.QStandardItem(doc_icon, name)
-                item.setData(filepath, QtCore.Qt.UserRole)
-                self.template_model.appendRow(item)
-
-            # Addon templates — folder per addon, recursive tree
-            for namespace, subtree in MachineFactory.get_addon_machine_tree():
-                ns_item = QtGui.QStandardItem(folder_icon, namespace)
-                ns_item.setFlags(QtCore.Qt.ItemIsEnabled)  # visible but not selectable
-                ns_item.setData(None, QtCore.Qt.UserRole)
-                self.template_model.appendRow(ns_item)
-                self._populate_template_tree(ns_item, subtree, doc_icon, folder_icon)
-
-            self._template_tree_view.expandAll()
+            addon_tree = self._populate_template_model()
             self.template_combo.setCurrentIndex(0)
             self.template_combo.setEditText(translate("CAM_MachineEditor", "Custom"))
 
             self._template_tree_view.clicked.connect(self._on_template_tree_clicked)
+            self.template_combo.activated.connect(self._on_template_activated)
             self.template_combo.setToolTip(
                 translate("CAM_MachineEditor", "Load settings from an existing machine template")
             )
             layout.addRow(translate("CAM_MachineEditor", "Template"), self.template_combo)
+
+            self.machines_addon_hint = self._make_machines_addon_hint()
+            layout.addRow(self.machines_addon_hint)
+            self.machines_addon_hint.setVisible(
+                machines_addon_hint_wanted(addon_tree, self._machines_addon_hint_enabled())
+            )
 
         self.manufacturer_edit = QtGui.QLineEdit()
         self.manufacturer_edit.textChanged.connect(self._on_manufacturer_changed)
@@ -1746,8 +1883,11 @@ class MachineEditorDialog(QtGui.QDialog):
 
             layout.addWidget(type_specific_group)
 
-            # Add tab to toolheads tabs
-            self.toolheads_tabs.addTab(tab, toolhead.name if toolhead else f"Toolhead {i+1}")
+            # Add tab to toolheads tabs, in a scroll area so it does not set the dialog's height
+            scroll = QtGui.QScrollArea()
+            scroll.setWidgetResizable(True)
+            scroll.setWidget(tab)
+            self.toolheads_tabs.addTab(scroll, toolhead.name if toolhead else f"Toolhead {i+1}")
 
             # Store widget references for updates
             self.toolhead_edits.append(
