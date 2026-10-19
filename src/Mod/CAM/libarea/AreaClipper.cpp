@@ -447,11 +447,11 @@ void CArea::NaiveOffset(double offset)
             const CVertex& v = *it;
 
             // Compute segment start and end normal and tangent directions. Normalize length to offset
-            double sTanX, sTanY;
-            double sNormX, sNormY;
-            double eTanX, eTanY;
-            double eNormX, eNormY;
-            double radius = 0;  // initialized below
+            double sTanX, sTanY;    // tangent vector at the start point
+            double sNormX, sNormY;  // normal vector at the start point
+            double eTanX, eTanY;    // tangent vector at the end point
+            double eNormX, eNormY;  // normal vector at the end point
+            double sRadius = 0;
             if (v.m_type == 0) {
                 const double dx = v.m_p.x - pPrev.x;
                 const double dy = v.m_p.y - pPrev.y;
@@ -467,20 +467,31 @@ void CArea::NaiveOffset(double offset)
             else {
                 assert(v.m_type == 1 || v.m_type == -1);
 
-                const double sx = v.m_type * (pPrev.x - v.m_c.x);
-                const double sy = v.m_type * (pPrev.y - v.m_c.y);
-                const double ex = v.m_type * (v.m_p.x - v.m_c.x);
-                const double ey = v.m_type * (v.m_p.y - v.m_c.y);
-                radius = std::hypot(sx, sy);
-                if (radius == 0) {
+                // Compute dx and dy at start and end points, p - center
+                const double sdx = v.m_type * (pPrev.x - v.m_c.x);
+                const double sdy = v.m_type * (pPrev.y - v.m_c.y);
+                const double edx = v.m_type * (v.m_p.x - v.m_c.x);
+                const double edy = v.m_type * (v.m_p.y - v.m_c.y);
+
+                // Compute the radius at the start and end points.
+                // These are nominally equal, but they can differ a little due to precision issues,
+                // and it is important to normalize each vector by the appropriate length
+                sRadius = std::hypot(sdx, sdy);
+                const double eRadius = std::hypot(edx, edy);
+                if (sRadius == 0 || eRadius == 0) {
                     continue;
                 }
 
-                std::tie(sNormX, sNormY) = std::make_pair(sx / radius * offset, sy / radius * offset);
-                std::tie(eNormX, eNormY) = std::make_pair(ex / radius * offset, ey / radius * offset);
+                // Rescale the start and end normal vectors to length = offset
+                sNormX = sdx / sRadius * offset;
+                sNormY = sdy / sRadius * offset;
+                eNormX = edx / eRadius * offset;
+                eNormY = edy / eRadius * offset;
 
-                std::tie(sTanX, sTanY) = std::make_pair(-sNormY, sNormX);
-                std::tie(eTanX, eTanY) = std::make_pair(-eNormY, eNormX);
+                sTanX = -sNormY;
+                sTanY = sNormX;
+                eTanX = -eNormY;
+                eTanY = eNormX;
             }
 
             // Compute the start and end points of the offset segment
@@ -491,7 +502,7 @@ void CArea::NaiveOffset(double offset)
 
             // If the output curves are empty, intialize the start point and direction
             const bool hasPrev = !cPos.m_vertices.empty();
-            double exitQ = v.m_type == 0 ? 0 : v.m_type / radius;
+            double exitQ = v.m_type == 0 ? 0 : v.m_type / sRadius;
             if (!hasPrev) {
                 cPos.m_vertices.emplace_back(0, pPosS, Point(0, 0));
                 cNeg.m_vertices.emplace_back(0, pNegS, Point(0, 0));
@@ -503,7 +514,7 @@ void CArea::NaiveOffset(double offset)
             if (hasPrev) {
                 addJoin(pPosS, pNegS, pPrev, prevDirX, prevDirY, sTanX, sTanY, enterQ, exitQ);
             }
-            enterQ = v.m_type == 0 ? 0 : v.m_type / radius;
+            enterQ = v.m_type == 0 ? 0 : v.m_type / sRadius;
 
             // Generate the positive and negative offset segments connecting pPosS to pPosE and
             // pNegS to pNegE
@@ -518,7 +529,7 @@ void CArea::NaiveOffset(double offset)
                 // segments back to the point).
                 assert(v.m_type == 1 || v.m_type == -1);
 
-                const bool posCollapse = radius + (offset * v.m_type) <= 0;
+                const bool posCollapse = sRadius + (offset * v.m_type) <= 0;
                 if (posCollapse) {
                     cPos.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
                     cPos.m_vertices.emplace_back(0, pPosE, heeks::Point {0, 0});
@@ -527,7 +538,7 @@ void CArea::NaiveOffset(double offset)
                     cPos.m_vertices.emplace_back(v.m_type, pPosE, v.m_c);
                 }
 
-                const bool negCollapse = radius - (offset * v.m_type) <= 0;
+                const bool negCollapse = sRadius - (offset * v.m_type) <= 0;
                 if (negCollapse) {
                     cNeg.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
                     cNeg.m_vertices.emplace_back(0, pNegE, heeks::Point {0, 0});
@@ -691,11 +702,15 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
                 phi1 += 2 * M_PI;
             }
 
-            // Compute the maximum angular step to achieve the required accuracy
-            const double dx = ptPrev.x - vertex.m_c.x;
-            const double dy = ptPrev.y - vertex.m_c.y;
-            const double radius = sqrt(dx * dx + dy * dy);
-            const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
+            // The start and end points needn't be exactly the same distance from the center, so
+            // interpolate the radius from the start radius to the end radius along the arc
+            const double rStart = ptPrev.dist(vertex.m_c);
+            const double rEnd = vertex.m_p.dist(vertex.m_c);
+
+            // Compute the maximum angular step to achieve the required accuracy (using the larger
+            // radius, which needs the smaller step)
+            const double rMax = std::max(rStart, rEnd);
+            const double max_dphi = 2 * acos((rMax - CArea::m_accuracy) / rMax);
 
             // Determine the number of segments
             const int num_segments
@@ -717,9 +732,11 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
                     }
                 }
                 else {
-                    // Compute the interpoalted point
-                    const double px = vertex.m_c.x + radius * cos(phi0 + dphi * i);
-                    const double py = vertex.m_c.y + radius * sin(phi0 + dphi * i);
+                    // Compute the interpolated point
+                    const double interp = (double)i / num_segments;
+                    const double r = rStart * (1 - interp) + rEnd * interp;
+                    const double px = vertex.m_c.x + r * cos(phi0 + dphi * i);
+                    const double py = vertex.m_c.y + r * sin(phi0 + dphi * i);
                     newPt = getPoint64(px, py);
                     if (newPt == pPrev) {
                         continue;
@@ -1093,22 +1110,35 @@ void CArea::Offset(double offset)
         }
     }
 
+    // Proactively remove curves that have the wrong tag, and fix orientation.
+    //
+    // In principle this will be done by the subsequent union operation, and since the positive-side
+    // and negative-side offsets of a closed shape do not intersect, it should be equivalent to
+    // filter out the unwanted side before or after the union. However, I found a test case where
+    // the positive and negative offsets of a 2-3 clipper unit thick pair of arcs do intersect
+    // because of the error in approximating arcs to segments. Doing the filtering ahead of time
+    // works around this problem. Note that this situation can still be an issue for open offsets.
+    for (auto it = m_curves.begin(); it != m_curves.end();) {
+        if (std::ranges::find(it->m_edgeTags, 1) == it->m_edgeTags.end()) {
+            it = m_curves.erase(it);
+            continue;
+        }
+
+        if (offset < 0) {
+            it->Reverse();
+        }
+        ++it;
+    }
+
     // Union, keeping positive edges and dropping negative edges
     _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::nullopt, true);
 
-    // Test code (to be vetted in a future PR) for replacing the expensive call to Reorder().
-    // To preserve full functionality probably we need to use the clipper PolyTree to determine
-    // nesting, but tbh nesting information may not be needed here at all.
-    //
-    // // If negative offset, reverse the curves to put them in the forward direction
-    // if (offset < 0) {
-    //     for (CCurve& c : m_curves) {
-    //         c.Reverse();
-    //     }
-    // }
-
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
+    // Update: also now that I'm reversing the negative offset curves above, this reorder command
+    // should never update curve orientation (just perhaps reorder them). But I don't want to rock
+    // the boat by removing it until all these clipper changes are stable and bugs are no longer
+    // materializing.
     this->Reorder();
 
     // Sanity check outputs -- should be closed

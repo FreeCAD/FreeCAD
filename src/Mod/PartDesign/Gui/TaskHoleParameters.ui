@@ -1263,6 +1263,41 @@ Note that the calculation can take some time</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>BaseProfileType</tabstop>
+  <tabstop>StartType</tabstop>
+  <tabstop>lineStartReference</tabstop>
+  <tabstop>buttonStartReference</tabstop>
+  <tabstop>StartOffset</tabstop>
+  <tabstop>ThreadType</tabstop>
+  <tabstop>ThreadSize</tabstop>
+  <tabstop>HoleCutType</tabstop>
+  <tabstop>DepthType</tabstop>
+  <tabstop>HoleCutCustomValues</tabstop>
+  <tabstop>HoleCutDiameter</tabstop>
+  <tabstop>HoleCutCountersinkAngle</tabstop>
+  <tabstop>HoleCutDepth</tabstop>
+  <tabstop>Depth</tabstop>
+  <tabstop>DrillPointAngled</tabstop>
+  <tabstop>DrillPointAngle</tabstop>
+  <tabstop>DrillForDepth</tabstop>
+  <tabstop>Diameter</tabstop>
+  <tabstop>Reversed</tabstop>
+  <tabstop>Tapered</tabstop>
+  <tabstop>TaperedAngle</tabstop>
+  <tabstop>HoleType</tabstop>
+  <tabstop>ThreadFit</tabstop>
+  <tabstop>ModelThread</tabstop>
+  <tabstop>UpdateView</tabstop>
+  <tabstop>ThreadClass</tabstop>
+  <tabstop>directionRightHand</tabstop>
+  <tabstop>directionLeftHand</tabstop>
+  <tabstop>ThreadDepthType</tabstop>
+  <tabstop>ThreadDepth</tabstop>
+  <tabstop>UseCustomThreadClearance</tabstop>
+  <tabstop>CustomThreadClearance</tabstop>
+  <tabstop>comboOperation</tabstop>
+ </tabstops>
  <resources>
   <include location="Resources/PartDesign.qrc"/>
  </resources>

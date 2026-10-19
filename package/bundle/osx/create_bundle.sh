@@ -161,12 +161,9 @@ else
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
 fi
 
-# create hash
-sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
-
 if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
     for attempt in 1 2 3 4 5; do
-        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"; then
+        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg"; then
             break
         fi
         if [[ $attempt -eq 5 ]]; then

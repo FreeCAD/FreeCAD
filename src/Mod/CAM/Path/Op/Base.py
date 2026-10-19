@@ -45,6 +45,49 @@ else:
 translate = FreeCAD.Qt.translate
 
 
+class DeprecationStage:
+    """The stages a deprecated operation passes through, one release each.
+
+    Warning ... still in the menus and fully working; it is hidden in the next release.
+    Hidden  ... command removed from the menus, existing operations still work; it is
+                deleted in the next release.
+    Deleted ... the implementation is gone. A RemovedOp stands in for it so a document
+                that still contains one loads with a notice instead of an import error."""
+
+    Warning = "Warning"
+    Hidden = "Hidden"
+    Deleted = "Deleted"
+
+
+def deprecationNotice(subject, replacement, stage=DeprecationStage.Warning):
+    """deprecationNotice(subject, replacement, stage=DeprecationStage.Warning) ... standard
+    wording for a deprecated operation or configuration.
+
+    subject is what is deprecated ("The Tapping operation", "The Rotational scan type"),
+    replacement is what supersedes it ("the Mill Facing operation"). stage is the
+    DeprecationStage the subject is in for this release, and decides what the notice
+    announces for the next one. Ops return this from opDeprecationNotice()."""
+    if stage == DeprecationStage.Deleted:
+        msg = translate(
+            "PathOp",
+            "{} has been deleted and no longer generates a toolpath. It is replaced by {}.",
+        )
+    elif stage == DeprecationStage.Hidden:
+        msg = translate(
+            "PathOp",
+            "{} is deprecated and will be deleted in the next release. It is replaced by {}. "
+            "Existing operations still work, but new ones cannot be created.",
+        )
+    elif stage == DeprecationStage.Warning:
+        msg = translate(
+            "PathOp",
+            "{} is deprecated and will be hidden in the next release. It is replaced by {}.",
+        )
+    else:
+        raise ValueError(f"Unknown deprecation stage: {stage}")
+    return msg.format(subject, replacement)
+
+
 FeatureTool = 0x0001  # ToolController
 FeatureDepths = 0x0002  # FinalDepth, StartDepth
 FeatureHeights = 0x0004  # ClearanceHeight, SafeHeight
@@ -660,6 +703,10 @@ class ObjectOp:
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
+        notice = self.opDeprecationNotice(obj)
+        if notice:
+            Path.Log.warning(f"{obj.Label}: {notice}")
+
     def dumps(self):
         """__getstat__(self) ... called when receiver is saved.
         Can safely be overwritten by subclasses."""
@@ -696,6 +743,16 @@ class ObjectOp:
     def opOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses."""
+
+    def opDeprecationNotice(self, obj):
+        """opDeprecationNotice(obj) ... return a message if the operation, or its current
+        configuration, is deprecated; None otherwise.
+        The base class logs the message when a document is restored and the task panel
+        shows it as a banner, refreshed whenever a property changes, so a notice may
+        depend on property values. Build the text with deprecationNotice(), passing the
+        DeprecationStage the op is in for this release.
+        Can safely be overwritten by subclasses."""
+        return None
 
     def opOnChanged(self, obj, prop):
         """opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -1487,6 +1544,42 @@ class ObjectOp:
         This function can safely be overwritten by subclasses."""
 
         return True
+
+
+class RemovedOp:
+    """Proxy for an operation in DeprecationStage.Deleted.
+
+    When an op's implementation is deleted, its module stays and keeps the proxy class
+    name as a subclass of RemovedOp whose opDeprecationNotice() names the replacement.
+    A document that still contains the op then restores onto this class: the object
+    keeps its properties, so its settings can be read when it is recreated, but it
+    generates no toolpath. The notice is logged as an error on restore, the Sanity
+    Check reports it as a CAUTION and the op cannot be edited."""
+
+    def onDocumentRestored(self, obj):
+        obj.Path = Path.Path()
+        Path.Log.error(f"{obj.Label}: {self.opDeprecationNotice(obj)}")
+
+    def execute(self, obj):
+        obj.Path = Path.Path()
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def getJob(self, obj):
+        """getJob(obj) ... return the job this operation is part of."""
+        return PathUtils.findParentJob(obj)
+
+    def opDeprecationNotice(self, obj):
+        """opDeprecationNotice(obj) ... the notice for the deleted operation.
+        Should be overwritten by subclasses with deprecationNotice() and
+        DeprecationStage.Deleted so the notice names the replacement."""
+        return translate(
+            "PathOp", "This operation has been deleted and no longer generates a toolpath."
+        )
 
 
 class Compass:

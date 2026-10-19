@@ -26,7 +26,9 @@
 
 #include <QDialog>
 #include <string>
+#include <vector>
 
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
@@ -93,6 +95,7 @@ private:
     void onCheckSymmetricToggled(bool on);
     void onTextLinkTextChanged(QString);
     void onTreeSelectionChanged();
+    void onDeletedObject(const App::DocumentObject& obj);
 
     bool applyInternal();
     bool ensureTransaction();
@@ -119,8 +122,10 @@ private:
     class EdgeSelection;
     EdgeSelection* filter;
     bool filterSelection;
-    std::vector<Part::Extrusion*> extrusions;
-    Part::Extrusion* boundFeature {nullptr};
+    std::vector<App::DocumentObjectWeakPtrT> extrusions;
+    App::DocumentObjectWeakPtrT boundFeature {nullptr};
+    fastsignals::scoped_connection deletedObjectConnection;
+    int transactionId {0};
     bool transactionOpen {false};
     bool ownsTransaction {false};
 };

@@ -13,5 +13,15 @@ PathPattern::PathPattern()
 
 const std::list<gp_Trsf> PathPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
-    return calculateTransformations(true);
+    return calculateTransformations();
+}
+
+bool PathPattern::deleteOriginalTransformation() const
+{
+    return identityTransformSuppressed();
+}
+
+bool PathPattern::hasOriginalTransformation() const
+{
+    return deleteOriginalTransformation() ? false : Transformed::hasOriginalTransformation();
 }

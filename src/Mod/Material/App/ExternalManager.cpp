@@ -246,13 +246,11 @@ ExternalManager::libraries()
             }
         }
         else {
-            Base::Console().log("\tlibraries() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager libraries() not found");
         }
     }
     catch (Py::Exception& e) {
         Base::PyException e1;  // extract the Python error text
-        Base::Console().log("Library error {}", e1.what());
         throw LibraryNotFound(e1.what());
     }
 
@@ -276,8 +274,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::modelLib
             }
         }
         else {
-            Base::Console().log("\tmodelLibraries() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager modelLibraries() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -305,8 +302,7 @@ std::shared_ptr<std::vector<std::shared_ptr<Library>>> ExternalManager::material
             }
         }
         else {
-            Base::Console().log("\tmaterialLibraries() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager materialLibraries() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -334,8 +330,7 @@ std::shared_ptr<Library> ExternalManager::getLibrary(const QString& name)
             return std::make_shared<Library>(*lib);
         }
         else {
-            Base::Console().log("\tgetLibrary() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager getLibrary() not found");
         }
     }
     catch (const InvalidLibrary&) {
@@ -362,8 +357,7 @@ void ExternalManager::createLibrary(const QString& libraryName, const QByteArray
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tcreateLibrary() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager createLibrary() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -386,8 +380,7 @@ void ExternalManager::renameLibrary(const QString& libraryName, const QString& n
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\trenameLibrary() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager renameLibrary() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -410,8 +403,7 @@ void ExternalManager::changeIcon(const QString& libraryName, const QByteArray& i
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tchangeIcon() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager changeIcon() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -433,8 +425,7 @@ void ExternalManager::removeLibrary(const QString& libraryName)
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tremoveLibrary() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager removeLibrary() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -467,8 +458,7 @@ ExternalManager::libraryModels(const QString& libraryName)
             }
         }
         else {
-            Base::Console().log("\tlibraryModels() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager libraryModels() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -503,8 +493,7 @@ ExternalManager::libraryMaterials(const QString& libraryName)
             }
         }
         else {
-            Base::Console().log("\tlibraryMaterials() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager libraryMaterials() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -545,8 +534,7 @@ ExternalManager::libraryMaterials(const QString& libraryName,
             }
         }
         else {
-            Base::Console().log("\tlibraryMaterials() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager libraryMaterials() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -583,8 +571,7 @@ std::shared_ptr<std::vector<QString>> ExternalManager::libraryFolders(const QStr
             }
         }
         else {
-            Base::Console().log("\tlibraryFolders() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager libraryFolders() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -615,8 +602,7 @@ void ExternalManager::createFolder(const QString& libraryName, const QString& pa
             Py::Object result(libraries.apply(args));
         }
         else {
-            Base::Console().log("\tcreateFolder() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager createFolder() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -642,8 +628,7 @@ void ExternalManager::renameFolder(const QString& libraryName,
             Py::Object result(libraries.apply(args));
         }
         else {
-            Base::Console().log("\trenameFolder() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager renameFolder() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -666,8 +651,7 @@ void ExternalManager::deleteRecursive(const QString& libraryName, const QString&
             Py::Object result(libraries.apply(args));
         }
         else {
-            Base::Console().log("\tdeleteRecursive() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager deleteRecursive() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -730,8 +714,7 @@ std::shared_ptr<Model> ExternalManager::getModel(const QString& uuid)
             return shared;
         }
         else {
-            Base::Console().log("\tgetModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager getModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -757,8 +740,7 @@ void ExternalManager::addModel(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\taddModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager addModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -784,8 +766,7 @@ void ExternalManager::migrateModel(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tmigrateModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager migrateModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -811,8 +792,7 @@ void ExternalManager::updateModel(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tupdateModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager updateModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -838,8 +818,7 @@ void ExternalManager::setModelPath(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tsetModelPath() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager setModelPath() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -865,8 +844,7 @@ void ExternalManager::renameModel(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\trenameModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager renameModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -892,8 +870,7 @@ void ExternalManager::moveModel(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tmoveModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager moveModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -915,8 +892,7 @@ void ExternalManager::removeModel(const QString& uuid)
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tremoveModel() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager removeModel() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -979,8 +955,7 @@ std::shared_ptr<Material> ExternalManager::getMaterial(const QString& uuid)
             return shared;
         }
         else {
-            Base::Console().log("\tgetMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager getMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1006,8 +981,7 @@ void ExternalManager::addMaterial(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\taddMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager addMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1034,8 +1008,7 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tmigrateMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager migrateMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1061,8 +1034,7 @@ void ExternalManager::updateMaterial(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tupdateMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager updateMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1088,8 +1060,7 @@ void ExternalManager::setMaterialPath(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tsetMaterialPath() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager setMaterialPath() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1115,8 +1086,7 @@ void ExternalManager::renameMaterial(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\trenameMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager renameMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1142,8 +1112,7 @@ void ExternalManager::moveMaterial(const QString& libraryName,
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tmoveMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager moveMaterial() not found");
         }
     }
     catch (Py::Exception& e) {
@@ -1165,8 +1134,7 @@ void ExternalManager::removeMaterial(const QString& uuid)
             libraries.apply(args);  // No return expected
         }
         else {
-            Base::Console().log("\tremoveMaterial() not found\n");
-            throw ConnectionError();
+            throw ConnectionError("External manager removeMaterial() not found");
         }
     }
     catch (Py::Exception& e) {

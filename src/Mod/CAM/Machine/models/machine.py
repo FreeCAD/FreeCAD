@@ -2056,6 +2056,14 @@ class MachineFactory:
                 pass
 
     @classmethod
+    def rescan_addon_dirs(cls) -> None:
+        """Scan the Mod directories again on the next get_addon_machine_tree() call.
+
+        Use after an addon install, so that its machines are available without a restart.
+        """
+        cls._addon_dirs_scanned = False
+
+    @classmethod
     def get_addon_machine_tree(cls) -> list:
         """Get a recursive tree of machines from all registered addon directories.
 
