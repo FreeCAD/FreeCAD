@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OPCIONAL - branding completo desde o primeiro instante da abertura.
+  Copie este arquivo para a pasta "bin" da instalação do FreeCAD
+  (ex.: C:\Program Files\FreeCAD 1.1\bin\branding.xml) - exige administrador.
+  Sem ele o addon já troca título, ícone e splash; este arquivo só
+  ajusta as cores dos textos da splash e o nome antes de o addon carregar.
+-->
+<Branding version="1.0">
+  <Application>FreeCAD Sework</Application>
+  <SplashTextColor>#003A70</SplashTextColor>
+  <!-- versão desenhada pelo FreeCAD sobre a splash: transparente (a splash Sework já traz o texto) -->
+  <SplashInfoColor>#00FFFFFF</SplashInfoColor>
+  <SplashWarningColor>#C0392B</SplashWarningColor>
+</Branding>

@@ -3017,6 +3017,20 @@ QStringList PropertyEnumItem::getEnum() const
     return res;
 }
 
+QString PropertyEnumItem::translateEnum(const QString& value)
+{
+    if (value.isEmpty()) {
+        return value;
+    }
+    const QByteArray src = value.toUtf8();
+    return QCoreApplication::translate("App::PropertyEnumeration", src.constData());
+}
+
+QString PropertyEnumItem::toString(const QVariant& prop) const
+{
+    return translateEnum(PropertyItem::toString(prop));
+}
+
 QVariant PropertyEnumItem::value(const App::Property* prop) const
 {
     assert(prop && prop->isDerivedFrom<App::PropertyEnumeration>());
@@ -3195,7 +3209,9 @@ QWidget* PropertyEnumItem::createEditor(
     if (!enumItems) {
         auto cb = new QComboBox(parent);
         cb->setFrame(static_cast<bool>(frameOption));
-        cb->addItems(commonModes);
+        for (const auto& mode : commonModes) {
+            cb->addItem(translateEnum(mode), mode);  // texto traduzido, dado original
+        }
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
         return cb;
     }
@@ -3222,7 +3238,11 @@ void PropertyEnumItem::setEditorData(QWidget* editor, const QVariant& data) cons
 {
     if (auto cb = qobject_cast<QComboBox*>(editor)) {
         cb->setEditable(false);
-        cb->setCurrentIndex(cb->findText(data.toString()));
+        int index = cb->findData(data.toString());
+        if (index < 0) {
+            index = cb->findText(data.toString());
+        }
+        cb->setCurrentIndex(index);
     }
     else if (auto btn = qobject_cast<QPushButton*>(editor)) {
         btn->setText(data.toString());
@@ -3232,7 +3252,8 @@ void PropertyEnumItem::setEditorData(QWidget* editor, const QVariant& data) cons
 QVariant PropertyEnumItem::editorData(QWidget* editor) const
 {
     if (auto cb = qobject_cast<QComboBox*>(editor)) {
-        return {cb->currentText()};
+        const QVariant original = cb->currentData();
+        return {original.isValid() ? original.toString() : cb->currentText()};
     }
     if (auto btn = qobject_cast<QPushButton*>(editor)) {
         return btn->text();

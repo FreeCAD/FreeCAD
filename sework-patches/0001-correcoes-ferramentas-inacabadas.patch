@@ -1,0 +1,134 @@
+diff --git a/src/Mod/Part/App/Attacher.cpp b/src/Mod/Part/App/Attacher.cpp
+index 5f02369..34bc99a 100644
+--- a/src/Mod/Part/App/Attacher.cpp
++++ b/src/Mod/Part/App/Attacher.cpp
+@@ -2942,6 +2942,10 @@ AttachEnginePoint::AttachEnginePoint()
+     modeRefTypes[mm0ProximityPoint1].push_back(s);
+     modeRefTypes[mm0ProximityPoint2].push_back(s);
+ 
++    modeRefTypes[mm0Intersection].push_back(cat(rtEdge, rtEdge));
++    modeRefTypes[mm0Intersection].push_back(cat(rtEdge, rtFace));
++    modeRefTypes[mm0Intersection].push_back(cat(rtFace, rtEdge));
++
+     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything));
+     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything, rtAnything));
+     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything, rtAnything, rtAnything));
+@@ -3103,6 +3107,35 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
+ 
+                 BasePoint = getProximityPoint(mmode, shapes[0]->getShape(), shapes[1]->getShape());
+             } break;
++            case mm0Intersection: {
++                if (shapes.size() < 2) {
++                    throw Base::ValueError(
++                        "AttachEnginePoint::calculateAttachedPlacement: Intersection mode requires "
++                        "two shapes; only one is supplied"
++                    );
++                }
++                if (shapes[0]->isNull() || shapes[1]->isNull()) {
++                    throw Base::ValueError(
++                        "Null shape in AttachEnginePoint::calculateAttachedPlacement()!"
++                    );
++                }
++                const TopoDS_Shape& sh1 = shapes[0]->getShape();
++                const TopoDS_Shape& sh2 = shapes[1]->getShape();
++                // The closest point between two shapes is their intersection point when they
++                // touch. Reuse the proximity calculation and reject references that don't meet.
++                BasePoint = getProximityPoint(mm0ProximityPoint1, sh1, sh2);
++                const double tolerance = Precision::Confusion() * 1000.0;
++                TopoDS_Vertex probe = BRepBuilderAPI_MakeVertex(BasePoint);
++                for (const TopoDS_Shape* sh : {&sh1, &sh2}) {
++                    BRepExtrema_DistShapeShape check(probe, *sh);
++                    if (!check.IsDone() || check.Value() > tolerance) {
++                        throw Base::ValueError(
++                            "AttachEnginePoint::calculateAttachedPlacement: Intersection mode: "
++                            "the references do not intersect"
++                        );
++                    }
++                }
++            } break;
+             case mm0CenterOfMass: {
+                 GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
+                 BasePoint = gpr.CentreOfMass();
+diff --git a/src/Mod/Part/App/LinearPatternExtension.cpp b/src/Mod/Part/App/LinearPatternExtension.cpp
+index 848261b..b7e5f44 100644
+--- a/src/Mod/Part/App/LinearPatternExtension.cpp
++++ b/src/Mod/Part/App/LinearPatternExtension.cpp
+@@ -107,7 +107,7 @@ LinearPatternExtension::LinearPatternExtension()
+         "Direction 1",
+         App::Prop_None,
+         "(Experimental and subject to change. To enable "
+-        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
++        "this in the UI you can add a boolean parameter 'ExperimentalFeatures' in "
+         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+         "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+     );
+@@ -175,7 +175,7 @@ LinearPatternExtension::LinearPatternExtension()
+         "Direction 2",
+         App::Prop_None,
+         "(Experimental and subject to change. To enable "
+-        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
++        "this in the UI you can add a boolean parameter 'ExperimentalFeatures' in "
+         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+         "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+     );
+diff --git a/src/Mod/Part/App/PolarPatternExtension.cpp b/src/Mod/Part/App/PolarPatternExtension.cpp
+index bb7b65d..cb89b11 100644
+--- a/src/Mod/Part/App/PolarPatternExtension.cpp
++++ b/src/Mod/Part/App/PolarPatternExtension.cpp
+@@ -108,7 +108,7 @@ PolarPatternExtension::PolarPatternExtension()
+         "PolarPattern",
+         App::Prop_None,
+         "(Experimental and subject to change. To enable "
+-        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
++        "this in the UI you can add a boolean parameter 'ExperimentalFeatures' in "
+         "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+         "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm."
+     );
+diff --git a/src/Mod/Part/Gui/AttacherTexts.cpp b/src/Mod/Part/Gui/AttacherTexts.cpp
+index 9f420bc..aa80c69 100644
+--- a/src/Mod/Part/Gui/AttacherTexts.cpp
++++ b/src/Mod/Part/Gui/AttacherTexts.cpp
+@@ -813,7 +813,12 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
+             case mm0Intersection:
+                 return TwoStrings(
+                     qApp->translate("Attacher0D", "Intersection", "AttachmentPoint mode caption"),
+-                    qApp->translate("Attacher0D", "Not implemented", "AttachmentPoint mode tooltip")
++                    qApp->translate(
++                        "Attacher0D",
++                        "Put Datum point at the intersection of two edges, or of an edge and a "
++                        "face.",
++                        "AttachmentPoint mode tooltip"
++                    )
+                 );
+             case mm0Vertex:
+                 return TwoStrings(
+diff --git a/src/Mod/TechDraw/Gui/Command.cpp b/src/Mod/TechDraw/Gui/Command.cpp
+index 5c73d93..83444ae 100644
+--- a/src/Mod/TechDraw/Gui/Command.cpp
++++ b/src/Mod/TechDraw/Gui/Command.cpp
+@@ -1239,8 +1239,7 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>&
+     // As of now we support:
+     //     Single selected vertex: place the balloon tip end here
+     //     Single selected edge:   place the balloon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+-    //
+-    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
++    //     Single selected face:   place the balloon tip at its center of mass
+ 
+     if (subNames.size() != 1) {
+         // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
+@@ -1273,6 +1272,15 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>&
+             return true;
+         }
+     }
++    else if (geoType == "Face") {
++        TechDraw::FacePtr face =
++            static_cast<DrawViewPart*>(viewPart->getViewObject())->getFace(subNames[0]);
++        if (face) {
++            Base::Vector3d center(Rez::guiX(face->getCenter()));
++            placement = viewPart->mapToScene(center.x, center.y);
++            return true;
++        }
++    }
+ 
+     return false;
+ }

@@ -1001,10 +1001,15 @@ class GuiExport PropertyEnumItem: public PropertyItem
     QStringList getEnum() const;
     void setEnum(const QStringList&);
 
+    // Sework: valores de enumeração exibidos traduzidos (contexto "App::PropertyEnumeration");
+    // o valor gravado na propriedade continua o original em inglês.
+    static QString translateEnum(const QString& value);
+
 private:
     QStringList getCommonModes() const;
 
 protected:
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
     void propertyBound() override;

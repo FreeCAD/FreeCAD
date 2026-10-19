@@ -2842,6 +2842,10 @@ AttachEnginePoint::AttachEnginePoint()
     modeRefTypes[mm0ProximityPoint1].push_back(s);
     modeRefTypes[mm0ProximityPoint2].push_back(s);
 
+    modeRefTypes[mm0Intersection].push_back(cat(rtEdge, rtEdge));
+    modeRefTypes[mm0Intersection].push_back(cat(rtEdge, rtFace));
+    modeRefTypes[mm0Intersection].push_back(cat(rtFace, rtEdge));
+
     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything));
     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything, rtAnything));
     modeRefTypes[mm0CenterOfMass].push_back(cat(rtAnything, rtAnything, rtAnything));
@@ -3002,6 +3006,35 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                 }
 
                 BasePoint = getProximityPoint(mmode, shapes[0]->getShape(), shapes[1]->getShape());
+            } break;
+            case mm0Intersection: {
+                if (shapes.size() < 2) {
+                    throw Base::ValueError(
+                        "AttachEnginePoint::calculateAttachedPlacement: Intersection mode requires "
+                        "two shapes; only one is supplied"
+                    );
+                }
+                if (shapes[0]->isNull() || shapes[1]->isNull()) {
+                    throw Base::ValueError(
+                        "Null shape in AttachEnginePoint::calculateAttachedPlacement()!"
+                    );
+                }
+                const TopoDS_Shape& sh1 = shapes[0]->getShape();
+                const TopoDS_Shape& sh2 = shapes[1]->getShape();
+                // The closest point between two shapes is their intersection point when they
+                // touch. Reuse the proximity calculation and reject references that don't meet.
+                BasePoint = getProximityPoint(mm0ProximityPoint1, sh1, sh2);
+                const double tolerance = Precision::Confusion() * 1000.0;
+                TopoDS_Vertex probe = BRepBuilderAPI_MakeVertex(BasePoint);
+                for (const TopoDS_Shape* sh : {&sh1, &sh2}) {
+                    BRepExtrema_DistShapeShape check(probe, *sh);
+                    if (!check.IsDone() || check.Value() > tolerance) {
+                        throw Base::ValueError(
+                            "AttachEnginePoint::calculateAttachedPlacement: Intersection mode: "
+                            "the references do not intersect"
+                        );
+                    }
+                }
             } break;
             case mm0CenterOfMass: {
                 GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1">
+  <name>Sework</name>
+  <description>Identidade visual Sework Engenharia para o FreeCAD: splash, ícone, título da janela, tema de cores e bancada Sework.</description>
+  <version>0.3.0</version>
+  <date>2026-10-16</date>
+  <maintainer email="sework@sework.com.br">Sework Engenharia</maintainer>
+  <license file="LICENSE">LGPL-2.1-or-later</license>
+  <icon>Resources/icons/sework.png</icon>
+  <freecadmin>1.0.0</freecadmin>
+  <content>
+    <workbench>
+      <name>Sework</name>
+      <classname>SeworkWorkbench</classname>
+      <subdirectory>./</subdirectory>
+      <icon>Resources/icons/sework.png</icon>
+    </workbench>
+    <preferencepack>
+      <name>Sework Claro</name>
+      <type>Theme</type>
+      <description>Tema claro com as cores da Sework (azul #003A70, amarelo #F7BE00, fundo #F5F8FC).</description>
+      <version>0.1.0</version>
+      <tag>sework</tag>
+      <tag>light</tag>
+    </preferencepack>
+  </content>
+</package>
