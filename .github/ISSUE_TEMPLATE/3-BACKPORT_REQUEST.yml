@@ -1,0 +1,19 @@
+name: Pedir correção na versão estável
+description: Sugira que uma mudança do ramo de desenvolvimento (sework-main) seja levada para a versão estável (sework-1.1)
+title: "[Versão estável] "
+labels: ["needs triage", "backport"]
+body:
+  - type: input
+    id: pull_request
+    attributes:
+      label: PR original
+      description: Link do PR com os commits que devem ir para a versão estável
+      placeholder: https://github.com/sework-engenharia/FreeCAD-Sework/pull/12
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição e justificativa
+      description: Por que este PR (ou commit) deve ir para a versão estável?
+      placeholder: Explique por que esta mudança deve entrar na próxima versão estável.

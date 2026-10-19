@@ -1,46 +1,66 @@
-<!-- Include a brief summary of the changes. -->
+<!-- Resuma as mudanças em poucas linhas. -->
 
 <!--
-The FreeCAD community thanks you for your contribution!
-By creating a Pull Request you agree to the contributing policy. The complete policy can be found in the root of the source tree (CONTRIBUTING.md) or at https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md
+Obrigado pela contribuição!
+Ao abrir um Pull Request você concorda com o processo de contribuição, que está na raiz do código-fonte
+(CONTRIBUTING.md) ou em https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/CONTRIBUTING.md
 
-This template provides guidance on creating a PR that can be reviewed and approved as quickly as possible. Comments may be safely deleted.
+Este modelo orienta como preparar um PR que possa ser revisado e aprovado rapidamente. Os comentários podem
+ser apagados.
 
-Unless you know exactly what you're doing, please leave the checkbox 'Allow edits by maintainers' enabled.  This will allow maintainers to help you.
+A menos que tenha um motivo, deixe marcada a opção "Allow edits by maintainers", para que os mantenedores
+possam ajudar.
 -->
 
+<!--
+O FreeCAD Sework não aceita saída de IA sem verificação em PRs, nem textos escritos por IA em issues, PRs e
+comentários. Marque a caixa abaixo:
+-->
+
+- [ ] Este PR não é saída de IA sem verificação, assumo a responsabilidade por ele e toda a comunicação da minha parte neste PR é feita por mim.
+
+<!--
+Se o trabalho teve ajuda de IA, informe a ferramenta na descrição do PR (em linguagem natural) e nos commits,
+com a linha final do Git:
+
+Assisted-by: [Família do modelo] ([Versão/ID])
+
+A política completa está na raiz do código-fonte (AI_POLICY.md).
+-->
+
+
 ## Issues
-<!-- link to individual issues this PR closes by referencing the issue number (e.g., fixes #1234, closes #4321). -->
+<!-- Indique as issues que este PR resolve pelo número (ex.: fixes #12, closes #34). -->
 
-## Before and After Images
-<!-- If your proposed changes affect the FreeCAD GUI, add before and after screenshots -->
+## Imagens de antes e depois
+<!-- Se o PR muda a interface, inclua capturas de tela de antes e depois. -->
+
+## Testes
+<!-- Diga como testou. No complemento Sework, rode os Testes automáticos (aba Sework) e informe o resultado. -->
 
 
 
-<!--  Notes on the PR Review Process
+<!--  O que os mantenedores avaliam na revisão
 
-The following section describes what the maintainers consider when reviewing your Pull Request.  These items may not require you to take any action.  This information is provided for context. Understanding what we consider will help you prepare your request for speedy approval.
+Estes itens não exigem ação sua; servem para você saber o que será considerado e preparar um PR que seja
+aprovado mais rápido.
 
-You can find additional documentation about these guidelines in the [Developers handbook](https://freecad.github.io/DevelopersHandbook).
+Alinhamento
+  - O PR tem pelo menos uma issue associada, que ele resolve?
+  - A discussão no PR e nas issues chegou a um consenso?
+  - Se muda a interface, há imagens de antes e depois?
+  - A correção serviria a todos os usuários do FreeCAD? Nesse caso, ela também deveria ir para o projeto
+    original.
 
-Alignment (Does the PR align with the goals and interests of the project?)
-  - Does the PR have at least one issue linked, which this PR closes?
-  - Has the conversation on the PR and related issue(s) reached consensus?
-  - If the PR affects the GUI, is the Design Working Group (DWG) aware and have they had time to review and comment?
-  - If the PR affects the GUI, did the contributor include before/after images?
-  - If the PR affects standards and workflow, is the CAD Working Group (CWG) aware and have they had time to review/comment?
+Impacto
+  - O efeito na documentação foi considerado?
+  - Os textos novos estão em português do Brasil e consistentes com os termos já usados?
+  - O PR afeta arquivos já existentes dos usuários?
 
-Impact (Does the change affect other parts of the project?)
-  - Has the impact on documentation been considered and appropriate action taken?
-  - Has the impact on translation been considered appropriate action taken?
-  - Will the PR affect existing user documents?
+Qualidade do código
+  - A mudança inclui testes?
+  - O PR está atualizado com o ramo de destino, com commits desnecessários unidos?
 
-Code Quality (Is code well-written and maintainable?)
-  - Does the PR warrant a review by the Code Quality Working Group (CQWG)?
-  - Does the change include tests?
-  - Is the PR rebased on the current main branch with unnecessary commits squashed?
-
-Release (Are there considerations related to release timing?)
-  - Has the PR been considered for backporting to the latest release branch?
-  - Have the release notes been considered/updated?
-  -->
+Versão
+  - A correção deve ir também para o ramo estável (sework-1.1)?
+-->

@@ -1,32 +1,28 @@
-# Security Policy
+# Política de Segurança
 
-The FreeCAD project is a FOSS (Free and Open-Source Software) project that has a community of thousands of users and
-hundreds of developers worldwide. We encourage responsible reporting of security vulnerabilities that may affect users
-of this software, and will endeavor to address these vulnerabilities when they are discovered.
+O FreeCAD Sework é software livre e de código aberto, baseado no FreeCAD. Incentivamos o relato responsável de
+vulnerabilidades de segurança que possam afetar quem usa o programa e vamos nos empenhar para corrigi-las
+quando forem descobertas.
 
-## Bounties
+## Recompensas
 
-FreeCAD does not have a program to pay bounties for security bugs. If you discover a vulnerability that affects a part
-of the FreeCAD project (either directly in FreeCAD, in a library it depends on, or in any of the various other
-subprojects such as our website, forums, etc.) we ask you to join the large community of volunteer contributors and
-file a report about the issue.
+O FreeCAD Sework não tem programa de recompensa em dinheiro por falhas de segurança. Vulnerabilidades usadas
+como moeda de troca para exigir recompensas não serão atendidas.
 
-Note that funds may be available from the [FreeCAD Project Association (FPA)](https://fpa.freecad.org) to pursue
-security research and/or the development of fixes to any vulnerabilities discovered. However, vulnerabilities held as
-hostage in demands for "bounties" will not be entertained. Contact the FPA at fpa@freecad.org for more information.
+## Versões com suporte
 
-## Supported Versions
+As correções de segurança são aplicadas na versão estável atual e no ramo de desenvolvimento.
 
-FreeCAD implements security fixes to the current release series, and to the current development on the main branch.
+| Ramo | Base | Suporte |
+|---|---|---|
+| `sework-1.1` | FreeCAD 1.1.4 | :white_check_mark: |
+| `sework-main` | Desenvolvimento | :white_check_mark: |
 
-| Version | Supported          |
-|---------| ------------------ |
-| 1.1dev  | :white_check_mark: |
-| 1.0     | :white_check_mark: |
-| < 1.0   | :x:                |
+## Como relatar uma vulnerabilidade
 
-## Reporting a Vulnerability
+Use a ferramenta de relato de segurança do GitHub, que mantém o relato privado até a correção:
+https://github.com/sework-engenharia/FreeCAD-Sework/security/advisories/new
 
-To report a vulnerability use GitHub's security reporting tool:
+Se a vulnerabilidade estiver no código do FreeCAD original (e não nas partes da Sework), relate também ao
+projeto FreeCAD pelo canal deles:
 https://github.com/FreeCAD/FreeCAD/security/advisories/new
-

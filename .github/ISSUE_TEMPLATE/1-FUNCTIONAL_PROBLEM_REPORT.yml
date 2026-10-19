@@ -1,0 +1,101 @@
+name: Relatar um problema
+description: Encontrou algo que não funciona bem, é difícil de fazer ou está faltando? Crie um relato de problema.
+labels: ["Status: Needs triage","Status: Needs confirmation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+
+        > [!TIP]
+        > Se é a primeira vez, leia [como relatar um problema][Guia].
+        > Se usar IA, leia [nossa política de IA][PoliticaIA] antes. Não é permitido usar IA para escrever o relato.
+        > Se o problema também acontece no FreeCAD original, ele deve ser relatado no [repositório do FreeCAD][FreeCAD].
+
+        [Guia]: https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/README.md#como-relatar-problemas
+        [PoliticaIA]: https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/AI_POLICY.md
+        [FreeCAD]: https://github.com/FreeCAD/FreeCAD/issues
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do problema
+      description: Descreva o problema e como ele afeta o uso, o fluxo de trabalho ou o desempenho. Para anexar imagens ou registros, clique nesta área e arraste os arquivos. Para anexar um arquivo FCStd, compacte-o em ZIP antes.
+      placeholder: Descreva o problema em poucas linhas.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Área afetada
+      options:
+        - Complemento Sework (faixa, tela inicial, tradução, tema)
+        - Assistente de simulação Sework
+        - Tutorial da primeira peça
+        - Instalador
+        - Assembly (Montagem)
+        - BIM
+        - CAM
+        - Núcleo (App, Gui,...)
+        - Draft
+        - FEM (Simulação)
+        - Material
+        - Medição
+        - Mesh (Malha)
+        - Part (Sólidos)
+        - Part Design (Peça)
+        - Sketcher (Esboço)
+        - Spreadsheet (Planilha)
+        - TechDraw (Desenho)
+        - Outra (especifique na descrição)
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Passos para reproduzir
+      description: Se parece ser um defeito, descreva um roteiro que reproduza o problema sempre. O ideal é [gravar uma macro](https://wiki.freecad.org/Std_DlgMacroRecord) e anexá-la, junto com um arquivo de exemplo em ZIP.
+      placeholder: |
+        Arraste um arquivo de exemplo em ZIP para esta caixa para anexá-lo.
+
+        Passos para reproduzir:
+        1. Abra o arquivo de exemplo
+        2. Vá até '...'
+        3. Clique em '...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Comportamento esperado
+      description: Descreva de forma clara e objetiva o que você esperava que acontecesse seguindo os passos acima.
+      placeholder: O que deveria acontecer?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Comportamento atual
+      description: Descreva de forma clara e objetiva o que acontece de fato. Se ajudar, inclua capturas de tela.
+      placeholder: O que está acontecendo? Você pode arrastar imagens ou vídeos para esta caixa.
+    validations:
+      required: true
+
+  - type: textarea
+    id: dev_version
+    attributes:
+      label: Informações da versão
+      description: Abra Ajuda → Sobre o FreeCAD, clique em "Copiar para a área de transferência" e cole aqui. Se possível, confira se o problema continua no modo de segurança (Ajuda → Reiniciar no modo de segurança).
+      placeholder: Cole aqui as informações copiadas de "Sobre o FreeCAD".
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: good_version
+    attributes:
+      label: Última versão que funcionava (opcional)
+      description: Se o problema não existia em uma versão anterior, cole aqui as informações de "Sobre o FreeCAD" daquela versão.
+      placeholder: Informações de "Sobre o FreeCAD" da última versão sem o problema.
+      render: shell

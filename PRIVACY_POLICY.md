@@ -1,28 +1,42 @@
-# FreeCAD Privacy Policy
+# Política de Privacidade do FreeCAD Sework
 
-The FreeCAD application does not collect, transmit, share or use any Personal Data.
+O FreeCAD Sework não coleta, transmite, compartilha nem usa dados pessoais.
 
-FreeCAD is community-developed Free Software. The community does not condone the unauthorized usage of private data, so our software does not gather or send personal data.
+O programa não contém propagandas nem rastreadores.
 
-The FreeCAD website is mostly static, it does not contain any trackers, neither ours nor third-party. The website uses cookies to remember logged in status, timezone and other data related to navigating the site. The website does not contain advertisements.
+## Ressalvas
 
-The software does not contain advertisements or trackers either.
+O FreeCAD Sework consegue abrir e salvar arquivos em servidores remotos (em alguns protocolos e plataformas).
+Se você abrir ou salvar um arquivo remoto, seu endereço IP ou outros dados podem ser compartilhados como parte
+normal da conexão daquele protocolo. Isso foge do nosso controle, e cabe a você decidir se confia no servidor
+remoto.
 
-## Caveats
+O ecossistema do FreeCAD inclui bancadas de trabalho (complementos) desenvolvidas por usuários, que podem ser
+instaladas e atualizadas pelo Gerenciador de Complementos. Ele baixa os complementos de servidores na internet.
+Os complementos não passam por verificação de conteúdo malicioso; cabe a você decidir se confia em cada um.
 
-FreeCAD is able to load or save files to/from remote servers (for some protocols and platforms). If you choose to load or save a remote file, your IP or other private data might be shared as part of the normal connection flow for the given protocol. This is out of our control and it is up to you to decide whether you trust a remote host.
+O FreeCAD Sework trabalha com arquivos CAD, que podem conter metadados. É sua responsabilidade conferir os
+metadados dos seus arquivos antes de compartilhá-los. Eles podem conter caminhos de pastas do seu computador
+que revelam seu nome de usuário quando ele faz parte do caminho, como em
+"C:\Users\Maria\Documentos\meuArquivo.FCStd".
 
-The FreeCAD eco system includes user developed workbenches. These workbenches can be installed/updated using the Add-on Manager. The Add-on Manager retrieves workbenches from remote servers across the internet. Add-on workbenches are not checked for malicious content. It is your responsibility to decide whether you trust an add-on workbench.
+O FreeCAD Sework também permite criar e executar macros. Macros são programas em Python que podem fazer
+qualquer coisa que o usuário pode fazer no computador. Ao executar uma macro de outra origem, é sua
+responsabilidade garantir que confia em quem a escreveu.
 
-FreeCAD is meant to manipulate CAD files which may contain metadata. It is your responsibility to verify the metadata contained in your files before you share them with others. These files may contain local directory paths which could reveal user names if the user name forms part of the path - as in “C:\MrsCAD\Documents\myFreeCADFile.FCstd”.
+Durante o uso e nas execuções seguintes, o programa guarda no seu computador registros, arquivos de
+configuração, cache, miniaturas, arquivos recentes e outras informações que podem conter dados pessoais. Esses
+dados ficam apenas no armazenamento local.
 
-FreeCAD can also be used to create and run macros. These are Python scripts that can perform any action that the user can perform on a system. When running a macro from an outside source, it is your responsibility to ensure you trust the author.
+Ao consultar a versão on-line do manual do usuário de dentro do programa, o conteúdo é obtido por conexões
+HTTPS.
 
-While running and for subsequent runs, FreeCAD uses local persistent storage for logs, configuration files, cache, thumbnails, recently accessed files and other information which may contain private data. This stays on local storage.
+O FreeCAD Sework é software livre e, por isso, pode ser empacotado por outras pessoas, que podem incluir outros
+programas ou modificar o código-fonte. Não respondemos por esses pacotes de terceiros e não temos como informar
+o que eles contêm nem o que fazem com a sua privacidade. Os pacotes oficiais são apenas os publicados na
+[página de versões](https://github.com/sework-engenharia/FreeCAD-Sework/releases) deste repositório.
 
-When reading the online version of the User Manual within FreeCAD, manual contents is requested through HTTPS connections.
 
-FreeCAD is Free Software and therefore may be packaged by other people, who may include additional software or modify the source code. We do not vouch for these third-party packages and cannot tell you what they contain and what they do regarding your privacy. The official packages are explicitly listed in our download page.
-
-
-*The above privacy policy is based on the [GIMP privacy policy](https://www.gimp.org/about/privacy.html).*
+*Esta política é uma tradução adaptada da
+[política de privacidade do FreeCAD](https://github.com/FreeCAD/FreeCAD/blob/main/PRIVACY_POLICY.md), que por sua
+vez se baseia na [política de privacidade do GIMP](https://www.gimp.org/about/privacy.html).*

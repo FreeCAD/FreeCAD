@@ -1,0 +1,102 @@
+name: Relatar um problema de qualidade de código
+description: Problemas de estrutura, manutenção, desempenho, correção ou dívida técnica que não afetam diretamente o uso.
+labels: ["Status: Needs triage", "Status: Needs confirmation", "Type: Code Quality"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a melhorar a qualidade do código do FreeCAD Sework!
+
+        > [!NOTE]
+        > Este formulário é **somente para problemas de qualidade de código**, como:
+        > - Problemas de arquitetura ou de projeto
+        > - Dificuldade de manutenção ou de leitura
+        > - Desempenho ou escalabilidade
+        > - Abstrações inadequadas, violação de camadas ou dívida técnica
+        >
+        > Se o problema afeta o comportamento visível, o fluxo de trabalho ou a interface, use o formulário **Relatar um problema**.
+
+        [Procure nas issues existentes](https://github.com/sework-engenharia/FreeCAD-Sework/issues) antes de enviar.
+        Ao enviar, você concorda em seguir nosso [Código de Conduta](https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/CODE_OF_CONDUCT.md).
+
+  - type: dropdown
+    id: wb
+    attributes:
+      label: Área afetada
+      description: Escolha a área principal afetada.
+      options:
+        - Complemento Sework
+        - Roteiros de compilação e instalador
+        - Assembly (Montagem)
+        - BIM
+        - CAM
+        - Núcleo (App, Gui, Base, ...)
+        - Draft
+        - FEM (Simulação)
+        - Material
+        - Medição
+        - Mesh (Malha)
+        - Part (Sólidos)
+        - Part Design (Peça)
+        - Sketcher (Esboço)
+        - Spreadsheet (Planilha)
+        - TechDraw (Desenho)
+        - Documentação
+        - Outra (especifique abaixo)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do problema
+      description: |
+        Descreva o problema com clareza.
+        Explique *por que* a implementação atual é problemática (manutenção, desempenho, correção, extensibilidade).
+        Cite arquivos, classes, funções ou módulos quando for o caso.
+      placeholder: |
+        Exemplos:
+        - A classe X depende de Y, violando as regras de dependência
+        - A função Z mistura responsabilidades e é difícil de entender
+        - O algoritmo tem complexidade desnecessária ou desempenho ruim
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impacto
+      description: |
+        Explique o efeito prático do problema.
+        Por exemplo: custo de manutenção maior, mais risco de defeitos, perda de desempenho, dificuldade de evoluir ou problemas na compilação.
+      placeholder: Descreva como isso afeta o código a longo prazo.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Sugestão de melhoria (opcional)
+      description: |
+        Se tiver ideias de como resolver, descreva aqui.
+        Pode incluir sugestões de reorganização, alternativas de projeto ou referências a boas práticas.
+      placeholder: Opcional; deixe em branco se não tiver certeza.
+
+  - type: textarea
+    id: references
+    attributes:
+      label: Referências e evidências
+      description: |
+        Inclua referências relevantes, como:
+        - Caminhos de arquivos ou trechos de código
+        - Issues ou pull requests relacionados
+        - Medições, registros ou resultados de análise estática
+      placeholder: Links, trechos ou issues relacionadas.
+
+  - type: textarea
+    id: dev_version
+    attributes:
+      label: Versão (se for relevante)
+      description: |
+        Se o problema é de uma versão específica ou surgiu recentemente, cole as informações de
+        **Sobre o FreeCAD**. Caso contrário, deixe em branco.
+      placeholder: Cole aqui as informações de "Sobre o FreeCAD".
+      render: shell
