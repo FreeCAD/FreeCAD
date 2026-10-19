@@ -225,7 +225,7 @@ private:
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
         TPaths& progressPaths,
-        const Clipper2Lib::Paths64 paths,
+        const Clipper2Lib::Paths64& paths,
         MotionType mt = MotionType::mtCutting
     );
     void ApplyStockToLeave(Clipper2Lib::Paths64& inputPaths);

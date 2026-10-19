@@ -999,7 +999,7 @@ public:
     }
 
     // get cleared area/poly bounded to toolbox
-    Paths64 GetBoundedClearedAreaClipped(const Point64& toolPos, int delta)
+    const Paths64& GetBoundedClearedAreaClipped(const Point64& toolPos, int delta)
     {
         // first, attempt to serve this query from cache
         BoundBox toolBB(toolPos, delta);
@@ -1037,7 +1037,7 @@ public:
     }
 
     // get full cleared area
-    Paths64 GetCleared()
+    const Paths64& GetCleared()
     {
         return clearedPaths;
     }
@@ -1241,7 +1241,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1, Point64 c2, Cleare
     const BoundBox c2BB(c2, toolRadiusScaled);
     // get curves from slightly enlarged region that will cover all points tested in this iteration
     const bool useC2 = dist > 2 * toolRadiusScaled;
-    const Paths64 clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
+    const Paths64& clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
         useC2 ? c2 : c1,
         toolRadiusScaled + (useC2 ? 0 : (int)dist) + 4
     );
@@ -3135,7 +3135,7 @@ void Adaptive2d::CheckReportProgress(TPaths& progressPaths, bool force)
     progressPaths.front().second.push_back(next);
 }
 
-void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths, MotionType mt)
+void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, const Paths64& paths, MotionType mt)
 {
     for (const auto& pth : paths) {
         if (!pth.empty()) {
