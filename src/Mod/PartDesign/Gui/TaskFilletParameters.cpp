@@ -167,6 +167,9 @@ void TaskFilletParameters::onLengthChanged(double len)
         fillet->recomputeFeature();
         // hide the fillet if there was a computation error
         hideOnError();
+        if (gizmoContainer && !gizmoContainer->visible.getValue() && !fillet->isError()) {
+            setGizmoPositions();
+        }
     }
 }
 
