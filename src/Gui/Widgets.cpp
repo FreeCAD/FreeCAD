@@ -1744,8 +1744,8 @@ void ExpLineEdit::keyPressEvent(QKeyEvent* event)
     }
 
     if (isBound() && event->text() == QStringLiteral("=")) {
-        const int selLen = selectionLength();
-        if (selLen == text().size() || (selLen == 0 && cursorPosition() == 0)) {
+        // Empty or fully selected field
+        if (selectionLength() == text().size()) {
             event->accept();
             openFormulaDialog();
             return;
