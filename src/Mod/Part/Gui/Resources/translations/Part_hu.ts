@@ -582,7 +582,7 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>A lapok közötti középső réteg</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
@@ -895,7 +895,7 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>A lapok közötti középső réteg</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
@@ -7876,17 +7876,17 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
       <source>Start at selected shape</source>
-      <translation type="unfinished">Start at selected shape</translation>
+      <translation>Kezdés a kiválasztott alakzatnál</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
       <source>Binormal axis</source>
-      <translation type="unfinished">Binormal axis</translation>
+      <translation>Binormális tengelyek</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
       <source>Flip binormal direction</source>
-      <translation type="unfinished">Flip binormal direction</translation>
+      <translation>Binormális irány felcserélése</translation>
     </message>
   </context>
   <context>
@@ -7974,12 +7974,12 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="36"/>
       <source>Relative to first</source>
-      <translation type="unfinished">Relative to first</translation>
+      <translation>Az elsőhöz viszonyítva</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="46"/>
       <source>Origin point index</source>
-      <translation type="unfinished">Origin point index</translation>
+      <translation>Eredési pont index</translation>
     </message>
   </context>
   <context>

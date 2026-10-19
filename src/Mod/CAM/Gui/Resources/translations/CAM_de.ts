@@ -2974,7 +2974,7 @@ Ein ! am Anfang der Zeile einsetzen, um die Nachbereitung in einer angegebenen Z
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="107"/>
       <source>2D Fluting (flat wire selected)</source>
-      <translation type="unfinished">2D Fluting (flat wire selected)</translation>
+      <translation>2D-Nuten (flachen Kantenzug ausgewählt)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="110"/>
@@ -7129,16 +7129,17 @@ If the found plane does not align to any GCode plane, XY plane is used.
 
 &apos;Variable&apos; means the arc plane can be changed during operation
 to align to the arc encountered.</source>
-      <translation type="unfinished">Arc drawing plane, corresponding to G17, G18 and G19.
+      <translation>Bogenzeichnungsebene, entsprechend G17, G18 und G19.
 
-If not &apos;None&apos;, the output wires will be transformed to align with the selected plane,
-and the corresponding GCode will be inserted.
+Sofern nicht „None“ angegeben ist, werden die Ausgabedrähte so transformiert,
+dass sie mit der ausgewählten Ebene ausgerichtet sind,
+und der entsprechende G-Code wird eingefügt.
 
-&apos;Auto&apos; means the plane is determined by the first encountered arc plane.
-If the found plane does not align to any GCode plane, XY plane is used.
+„Auto“ bedeutet, dass die Ebene durch die erste angetroffene Bogenebene bestimmt wird.
+Wenn die gefundene Ebene mit keiner G-Code-Ebene übereinstimmt, wird die XY-Ebene verwendet.
 
-&apos;Variable&apos; means the arc plane can be changed during operation
-to align to the arc encountered.</translation>
+„Variable“ bedeutet, dass die Bogenebene während des Betriebs geändert werden kann,
+um sie an den jeweiligen Bogen anzupassen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="159"/>
@@ -7181,12 +7182,12 @@ von Kantenzügen zu deaktivieren.</translation>
 the positive axis direction and CW for inner wires.
 
 &apos;Reversed&apos; means the other way round.</source>
-      <translation type="unfinished">Enforce loop orientation.
+      <translation>Schleifenausrichtung erzwingen.
 
-&apos;Normal&apos; means CCW for outer wires when looking against
-the positive axis direction and CW for inner wires.
+„Normal“ bedeutet, dass die äußeren Kantenzüge gegen den Uhrzeigersinn verlaufen, wenn man entgegen
+der Richtung der positiven Achse blickt, und die inneren Kantenzüge im Uhrzeigersinn.
 
-&apos;Reversed&apos; means the other way round.</translation>
+„Umgekehrt“ bedeutet das Gegenteil.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="201"/>
@@ -14683,14 +14684,14 @@ Die Funktion Offenen Pfad schließen kann aktiviert werden.</translation>
       <location filename="../../../Path/Op/Flute.py" line="601"/>
       <source>CAM_Flute: tool diameter ({}) exceeds groove width ({}) - path may overcut.
 </source>
-      <translation type="unfinished">CAM_Flute: tool diameter ({}) exceeds groove width ({}) - path may overcut.
+      <translation>CAM_Flute: Der Werkzeugdurchmesser ({}) überschreitet die Nutbreite ({}) – es kann zu einem Überfräsen kommen.
 </translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Flute.py" line="630"/>
       <source>CAM_Flute: V-bit half-angle ({:.1f}°) exceeds groove half-angle ({:.1f}°) - flanks may contact walls before reaching depth.
 </source>
-      <translation type="unfinished">CAM_Flute: V-bit half-angle ({:.1f}°) exceeds groove half-angle ({:.1f}°) - flanks may contact walls before reaching depth.
+      <translation>CAM_Flute: Der Halbwinkel des V-Meißels ({:.1f}°) überschreitet den Halbwinkel der Nut ({:.1f}°) – die Flanken könnten die Wände berühren, bevor die gewünschte Tiefe erreicht ist.
 </translation>
     </message>
     <message>

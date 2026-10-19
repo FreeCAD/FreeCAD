@@ -2158,7 +2158,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1774"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Направи поглед од табеле</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1930"/>
@@ -4068,7 +4068,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="119"/>
       <source>Prefix Text</source>
-      <translation type="unfinished">Prefix Text</translation>
+      <translation>Префиксни текст</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1985"/>
@@ -4722,27 +4722,27 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
       <source>Face finder algorithm</source>
-      <translation type="unfinished">Face finder algorithm</translation>
+      <translation>Алгоритам за проналажење страница</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="286"/>
       <source>Use newest or one of the legacy of face finder algorithms</source>
-      <translation type="unfinished">Use newest or one of the legacy of face finder algorithms</translation>
+      <translation>Користи најновије или неки од застарелих алгоритама за проналажење страница</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>FreeCAD v0.17</source>
-      <translation type="unfinished">FreeCAD v0.17</translation>
+      <translation>FreeCAD v0.17</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="304"/>
       <source>FreeCAD v0.21</source>
-      <translation type="unfinished">FreeCAD v0.21</translation>
+      <translation>FreeCAD v0.21</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="309"/>
       <source>FreeCAD v26.3</source>
-      <translation type="unfinished">FreeCAD v26.3</translation>
+      <translation>FreeCAD v26.3</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="322"/>
@@ -4869,14 +4869,12 @@ Each unit is approx. 0.1 mm wide</source>
       <source>If checked and the face finder algorithm supports it, FreeCAD will attempt
 to decide, whether each drawing face represents either the material, or a hole.
 For large amount of faces the detection can become slow.</source>
-      <translation type="unfinished">If checked and the face finder algorithm supports it, FreeCAD will attempt
-to decide, whether each drawing face represents either the material, or a hole.
-For large amount of faces the detection can become slow.</translation>
+      <translation>Ако је означена ова опција, а алгоритам за проналажење страница то подржава, FreeCAD ће покушати да одреди да ли свака страница на цртежу представља материјал или отвор. У случају великог броја страница, процес препознавања може постати спор.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="92"/>
       <source>Identify faces representing voids</source>
-      <translation type="unfinished">Identify faces representing voids</translation>
+      <translation>Идентификуј странице које представљају празнине</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="341"/>
@@ -5447,12 +5445,12 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="684"/>
       <source>Break line</source>
-      <translation type="unfinished">Break line</translation>
+      <translation>Линија прекида</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="691"/>
       <source>Break line color for broken views</source>
-      <translation type="unfinished">Break line color for broken views</translation>
+      <translation>Боја линије прекида скраћеног погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="722"/>
@@ -6335,7 +6333,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
       <source>Screen Mode</source>
-      <translation type="unfinished">Screen Mode</translation>
+      <translation>Режим екрана</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
@@ -6345,7 +6343,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
       <source>Screen mode</source>
-      <translation type="unfinished">Screen mode</translation>
+      <translation>Режим екрана</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
@@ -6355,7 +6353,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
       <source>Size of vertex dots on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Size of vertex dots on screen. Only used in screen mode.</translation>
+      <translation>Величина темених тачака на екрану. Користи се само у приказу Режим екрана.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
@@ -6366,12 +6364,12 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
       <source>Edge width</source>
-      <translation type="unfinished">Edge width</translation>
+      <translation>Ширина ивице</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
       <source>Width of edges on screen. Only used in screen mode.</source>
-      <translation type="unfinished">Width of edges on screen. Only used in screen mode.</translation>
+      <translation>Ширина ивица на екрану. Користи се само у приказу Режим екрана.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
@@ -6384,22 +6382,22 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
-      <translation type="unfinished">&amp;Keep Updated</translation>
+      <translation>&amp;Одржавај ажурираним</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
-      <translation type="unfinished">Show &amp;Frames</translation>
+      <translation>Прикажи оквире</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
-      <translation type="unfinished">Show &amp;Grid</translation>
+      <translation>Прикажи координатну мрежу</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="111"/>
       <source>Screen &amp;Mode</source>
-      <translation type="unfinished">Screen &amp;Mode</translation>
+      <translation>Режим екрана</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="114"/>
@@ -6705,27 +6703,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="150"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Положај</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="174"/>
       <source>Shifts the line up (+) or down (-)</source>
-      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+      <translation>Помера линију нагоре (+) или надоле (-)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="190"/>
       <source>Shifts the line left (-) or right (+)</source>
-      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+      <translation>Помера линију налево (-) или надесно (+)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="220"/>
       <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
-      <translation type="unfinished">Rotates the line counterclockwise (+) or clockwise (-)</translation>
+      <translation>Окреће линију супротно од смера казаљке на сату (+) или у смеру казаљке на сату (-)</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="246"/>
       <source>Extends the line by the specified amount beyond its natural endpoints</source>
-      <translation type="unfinished">Extends the line by the specified amount beyond its natural endpoints</translation>
+      <translation>Продужава линију за наведену вредност преко њених крајњих тачака</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="264"/>
@@ -6942,7 +6940,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="158"/>
       <location filename="../../TaskCosVertex.cpp" line="250"/>
       <source>Pick Point</source>
-      <translation type="unfinished">Pick Point</translation>
+      <translation>Изабери тачку</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="114"/>
@@ -7180,7 +7178,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="337"/>
       <source>Reciprocity condition</source>
-      <translation type="unfinished">Reciprocity condition</translation>
+      <translation>Услов реципроцитета</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="352"/>
@@ -7389,7 +7387,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="91"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Положај</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="194"/>
@@ -8045,7 +8043,7 @@ You can pick further points to get line segments.</source>
       <location filename="../../TaskLineDecor.cpp" line="81"/>
       <source>%n line(s)</source>
       <translation type="unfinished">
-        <numerusform>%n line(s)</numerusform>
+        <numerusform>%n линија</numerusform>
         <numerusform>%n line(s)</numerusform>
         <numerusform>%n line(s)</numerusform>
       </translation>
@@ -9123,22 +9121,22 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="91"/>
       <source>Replace References With Selection</source>
-      <translation type="unfinished">Replace References With Selection</translation>
+      <translation>Замени референце тренутним избором</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="107"/>
       <source>2D References</source>
-      <translation type="unfinished">2D References</translation>
+      <translation>2Д референце</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="202"/>
       <source>3D References</source>
-      <translation type="unfinished">3D References</translation>
+      <translation>3Д референце</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="246"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Под-елемент</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="31"/>
@@ -9624,7 +9622,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
       <source>The selected vertex this offset vertex is based on</source>
-      <translation type="unfinished">The selected vertex this offset vertex is based on</translation>
+      <translation>Изабрана изворна тачка од које се рачуна одмак</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
@@ -9639,7 +9637,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
       <source>The X offset distance from the source vertex</source>
-      <translation type="unfinished">The X offset distance from the source vertex</translation>
+      <translation>X растојање одмака од изворне тачке</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
@@ -10367,7 +10365,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="81"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Под-елемент</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="247"/>
@@ -10396,17 +10394,17 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="14"/>
       <source>Spreadsheet View Parameters</source>
-      <translation type="unfinished">Spreadsheet View Parameters</translation>
+      <translation>Параметри Погледа од табеле</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="20"/>
       <source>Range:</source>
-      <translation type="unfinished">Range:</translation>
+      <translation>Опсег:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="27"/>
       <source>Enter the top-left cell of the range (e.g., A1)</source>
-      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+      <translation>Унеси ћелију у горњем левом углу опсега (нпр. A1)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="30"/>
@@ -10416,52 +10414,52 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="37"/>
       <source> to </source>
-      <translation type="unfinished"> to </translation>
+      <translation> до </translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="44"/>
       <source>Enter the bottom-right cell of the range (e.g., B2)</source>
-      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+      <translation>Унеси ћелију у доњем десном углу опсега (нпр. B2)</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="47"/>
       <source>B2</source>
-      <translation type="unfinished">B2</translation>
+      <translation>B2</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="54"/>
       <source>View Appearance</source>
-      <translation type="unfinished">View Appearance</translation>
+      <translation>Приказ погледа</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="60"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Размера:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="67"/>
       <source>Scale of the view. Let you adjust the overall size of the table.</source>
-      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+      <translation>Размера погледа. Омогуц́ава подешавање укупне величине табеле.</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="83"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>Фонт:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="93"/>
       <source>Text Size:</source>
-      <translation type="unfinished">Text Size:</translation>
+      <translation>Величина текста:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="100"/>
       <source>Font size in points</source>
-      <translation type="unfinished">Font size in points</translation>
+      <translation>Величина фонта у тачкама</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="119"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Боја Текста:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="126"/>
@@ -10471,22 +10469,22 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="140"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Ширина линије:</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="147"/>
       <source>Width of the cell border lines</source>
-      <translation type="unfinished">Width of the cell border lines</translation>
+      <translation>Ширина линија оквира ћелије</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="172"/>
       <source>Claim spreadsheet as child</source>
-      <translation type="unfinished">Claim spreadsheet as child</translation>
+      <translation>Означи табелу као подређени објекат</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.ui" line="175"/>
       <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
-      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
+      <translation>Ако је означено, у стаблу документа ће табела бити приказана као подређена погледу.</translation>
     </message>
   </context>
   <context>
@@ -10510,12 +10508,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
+      <translation>Неважећи опсег</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="187"/>
       <source>The specified cell range is invalid. Please correct it.</source>
-      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+      <translation>Наведени опсег ћелија није исправан. Исправите га.</translation>
     </message>
   </context>
   <context>
@@ -10523,12 +10521,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="727"/>
       <source>Create Spreadsheet View</source>
-      <translation type="unfinished">Create Spreadsheet View</translation>
+      <translation>Направи поглед од табеле</translation>
     </message>
     <message>
       <location filename="../../TaskSpreadsheetView.cpp" line="728"/>
       <source>Edit Spreadsheet View</source>
-      <translation type="unfinished">Edit Spreadsheet View</translation>
+      <translation>Уреди Поглед од табеле</translation>
     </message>
   </context>
   <context>
@@ -10546,7 +10544,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="1951"/>
       <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
+      <translation>Извези тренутни цртеж као PDF</translation>
     </message>
   </context>
   <context>
@@ -10611,7 +10609,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="430"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>Додај ред</translation>
     </message>
     <message>
       <location filename="../../QGIViewSpreadsheet.cpp" line="431"/>

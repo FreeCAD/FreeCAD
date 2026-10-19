@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation type="unfinished">Edit Shape</translation>
+      <translation>シェイプを編集</translation>
     </message>
   </context>
   <context>
@@ -886,12 +886,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
       <source>Overwrite CCX defaults</source>
-      <translation type="unfinished">Overwrite CCX defaults</translation>
+      <translation>CCXのデフォルトを上書き</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
       <source>3D output, unchecked for 2D output</source>
-      <translation type="unfinished">3D output, unchecked for 2D output</translation>
+      <translation>3D出力。2Dの場合はチェックを外してください。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
@@ -911,7 +911,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
       <source>Advanced solver controls</source>
-      <translation type="unfinished">Advanced solver controls</translation>
+      <translation>高度なソルバー制御</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
@@ -931,7 +931,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
       <source>1D and 2D element output format</source>
-      <translation type="unfinished">1D and 2D element output format</translation>
+      <translation>1Dおよび2D要素の出力フォーマット</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
@@ -956,17 +956,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
       <source>Upper frequency bound</source>
-      <translation type="unfinished">Upper frequency bound</translation>
+      <translation>上限周波数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
       <source>Number of eigenmodes</source>
-      <translation type="unfinished">Number of eigenmodes</translation>
+      <translation>固有モードの数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
       <source>Lower frequency bound</source>
-      <translation type="unfinished">Lower frequency bound</translation>
+      <translation>下限周波数</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
@@ -1099,7 +1099,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="209"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>最大出力レベル</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
@@ -1159,12 +1159,12 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
       <source>MPI path</source>
-      <translation type="unfinished">MPI path</translation>
+      <translation>MPIのパス</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Leave blank to use default MPI binary file</source>
-      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+      <translation>デフォルトの MPI バイナリファイルを使用する場合は入力なし</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
@@ -1275,41 +1275,40 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working Directory for Solving Analysis and Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
+      <translation>解析とメッシュ生成のための作業ディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>ドキュメントの FCStd ファイルが置かれているフォルダにディレクトリを作成します。オブジェクトごとにサブフォルダを使用します（例えば、ファイル ./mydoc.FCStd でラベルの Elmer002 を持つソルバーでは、./mydoc/Elmer002 を使用します）。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>カスタムディレクトリ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>オブジェクトごとに独自のサブディレクトリを作成します。ソルバーラベルの名を冠したディレクトリにドキュメント名が接頭辞として付加されます。
+ユーザーのホームディレクトリを使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>入力ファイルエディター</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>エディターのパス</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>デフォルトのFreeCAD内部エディターを使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
@@ -1384,7 +1383,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="141"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>ディレクトリ「%1」が見つかりません</translation>
     </message>
   </context>
   <context>
@@ -1627,12 +1626,12 @@ FreeCAD 結果オブジェクト: インポートされたデータは FreeCAD F
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
       <source>Stiffness matrix entries</source>
-      <translation type="unfinished">Stiffness matrix entries</translation>
+      <translation>剛性マトリックス入力</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
       <source>Coincidence vector entries</source>
-      <translation type="unfinished">Coincidence vector entries</translation>
+      <translation>一致ベクトル入力</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
@@ -1642,12 +1641,10 @@ FreeCAD 結果オブジェクト: インポートされたデータは FreeCAD F
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+      <translation>一致ベクトルの最大の場所。
+(要素あたりのノット数 × 有限要素の数)
+
+反復ソルバーを使用し、「MAXKOI」を増やす必要があるというエラーメッセージが表示される場合、この値を増やす必要があるかもしれません。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
@@ -1662,17 +1659,17 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>逐次加速緩和法（SOR）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="89"/>
       <source>Shifted incomplete Cholesky (SIC)</source>
-      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
+      <translation>シフト付き不完全コレスキー分解法（SIC）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="90"/>
       <source>Simple Cholesky</source>
-      <translation type="unfinished">Simple Cholesky</translation>
+      <translation>単純コレスキー分解法</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
@@ -1759,7 +1756,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="226"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
@@ -1803,12 +1800,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="138"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation>オブジェクト内に1つの面しかありません! - マスター面に移動しました。</translation>
+      <translation>オブジェクト内に1つの面しかありません! - 主面に移動しました。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
       <source>Select slave geometry of type: </source>
-      <translation>以下の種類の従ジオメトリーを選択: </translation>
+      <translation>以下の種類の従属ジオメトリーを選択: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="137"/>
@@ -1831,7 +1828,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintContact.cpp" line="442"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="451"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
@@ -1854,7 +1851,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="350"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
-      <translation>接触拘束に使用できるのは1つのマスター面と1つのスレーブ面だけです!</translation>
+      <translation>接触拘束に使用できるのは1つの主面と1つの従属面だけです!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
@@ -1868,7 +1865,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintContact.cpp" line="217"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation>接触拘束に使用できるのは1つのスレーブ面だけです!</translation>
+      <translation>接触拘束に使用できるのは1つの従属面だけです!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="228"/>
@@ -1893,12 +1890,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
       <source>Only one master for a contact constraint!</source>
-      <translation>接触拘束に使用できるのは1つのマスターだけです!</translation>
+      <translation>接触拘束に使用できるのは1つの主側だけです!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="392"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation>接触拘束に使用できるのは1つのマスター面だけです!</translation>
+      <translation>接触拘束に使用できるのは1つの主面だけです!</translation>
     </message>
   </context>
   <context>
@@ -1927,7 +1924,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="324"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="334"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="249"/>
@@ -1972,7 +1969,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="124"/>
@@ -2062,7 +2059,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>選択されていません</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
@@ -2117,7 +2114,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="931"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="941"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="858"/>
@@ -2162,7 +2159,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
@@ -2199,7 +2196,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="176"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
@@ -2244,7 +2241,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="371"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="382"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
@@ -2287,7 +2284,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="229"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="239"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
@@ -2349,7 +2346,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPressure.cpp" line="196"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="139"/>
@@ -2407,7 +2404,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="206"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="144"/>
@@ -2451,7 +2448,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="258"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="267"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
@@ -2490,33 +2487,33 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTransform.cpp" line="472"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="481"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>ローカル直角座標系では1面（2Dモデルではエッジ）のみです！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>ローカル座標系では1面（2Dモデルではエッジ）のみです！</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="377"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>選択できるのは面（2Dモデルではエッジ）のみです</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>選択できるのは円筒面（2Dモデルではエッジ）のみです</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="439"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>変換可能な面（2Dモデルではエッジ）のみを選択できます！　まず表面に変位境界条件または荷重負荷を適用し、その後、ローカル座標系を適用します。</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -2873,12 +2870,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="70"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>主側を反転</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>従属側を反転</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -3024,12 +3021,12 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="348"/>
       <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+      <translation>球対称性を仮定した遠方場近似</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="351"/>
       <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
+      <translation>遠方場</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
@@ -3054,37 +3051,37 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>磁束密度</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
       <source>Real part of magnetic flux density x-component</source>
-      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
+      <translation>磁束密度 x 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="481"/>
       <source>Imaginary part of magnetic flux density x-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
+      <translation>磁束密度 x 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="510"/>
       <source>Real part of magnetic flux density y-component</source>
-      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
+      <translation>磁束密度 y 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="532"/>
       <source>Imaginary part of magnetic flux density y-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
+      <translation>磁束密度 y 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="561"/>
       <source>Real part of magnetic flux density z-component</source>
-      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
+      <translation>磁束密度 z 成分の実部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
+      <translation>磁束密度 z 成分の虚部</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="608"/>
@@ -3237,35 +3234,35 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>シェイプの内側と外側のメッシュサイズを可能な遷移層の厚みと共に定義</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>シェイプ内のメッシュサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>内側のサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>シェイプ外のメッシュサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>外側のサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <translation>内外メッシュサイズの間の遷移層の厚み（シェイプの外側に追加）</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="109"/>
@@ -3612,33 +3609,33 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+      <translation>再分割での最小メッシュサイズ。メッシュプレビューでは緑色で表示。</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>最小</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
       <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
+      <translation>1.00e+02</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="138"/>
       <location filename="../ui/MeshPreview.ui" line="151"/>
       <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+      <translation>再分割での最大メッシュサイズ。メッシュプレビューでは赤色で表示。</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>最大</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
       <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
+      <translation>1.00e+03</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
@@ -3648,7 +3645,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>可視化</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -3732,17 +3729,17 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
+      <translation>開いた時に自動で有効化</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
       <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+      <translation>プレビューメッシュの細かさを決定します。数字が大きくなるほど、より細かいメッシュ（より小さいメッシュ要素）を意味します。</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
+      <translation>メッシュの細かさをプレビュー</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3813,7 +3810,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshDistance.ui" line="68"/>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <translation>「距離 = 距離最大値」の時のメッシュサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
@@ -3826,7 +3823,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshDistance.ui" line="178"/>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <translation>「距離 &lt; 距離最小値」の時のメッシュサイズ </translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
@@ -3838,7 +3835,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>サイズ標準</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
@@ -3880,7 +3877,7 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
+      <translation>メッシュサイズ式</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
@@ -3895,7 +3892,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3918,27 +3915,27 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
@@ -3963,17 +3960,17 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <translation>補間</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
       <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
+      <translation>サンプリングサイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
       <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
+      <translation>曲線やサーフェスの離散化に使用されるサンプリング点の数。サーフェスの場合は各方向あたりのサンプリングサイズ。</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="326"/>
@@ -3984,7 +3981,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>線形</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -4027,7 +4024,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>三角形の向き</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4087,7 +4084,7 @@ Notes:
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <translation>混合メッシュ要素</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
@@ -4122,23 +4119,23 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>制限</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>しきい値</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>平均</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>勾配</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -4148,7 +4145,7 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>ラプラシアン</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
@@ -4164,32 +4161,32 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
+      <translation>境界を含める</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>子の再分割値にしきい値を適用</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>出力サイズ</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
+      <translation>入力値</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>線形補間</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>最大入力で停止</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -4197,7 +4194,7 @@ Notes:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>子の再分割 G の平均値を計算:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -4216,7 +4213,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="708"/>
       <location filename="../ui/MeshManipulate.ui" line="780"/>
       <source>Delta in the aforementioned equation</source>
-      <translation type="unfinished">Delta in the aforementioned equation</translation>
+      <translation>前述の式のデルタ</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -4224,7 +4221,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>子の再分割 G の有限差分勾配を計算:
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </translation>
@@ -4260,7 +4257,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshGmsh.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>作業ディレクトリのパス。ユーザー設定を使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="80"/>
@@ -4506,7 +4503,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>フォンミーゼス応力</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
@@ -5006,12 +5003,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>以下の種類の主ジオメトリーを選択: エッジ、面; 追加または削除をクリック</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>以下の種類の従属ジオメトリーを選択: エッジ、面; 追加または削除をクリック</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5046,12 +5043,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="255"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>主側を反転</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>従属側を反転</translation>
     </message>
   </context>
   <context>
@@ -6476,7 +6473,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="364"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>フォンミーゼス応力</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
@@ -7338,7 +7335,7 @@ No matching module was found in the current Python path.</source>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="386"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="396"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>選択エラー</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="313"/>
@@ -7500,7 +7497,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>作業ディレクトリのパス。ユーザー設定を使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="80"/>
@@ -7787,7 +7784,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>作業ディレクトリのパス。ユーザー設定を使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="129"/>
@@ -8686,42 +8683,42 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../Init.py" line="64"/>
       <source>FEM mesh Python</source>
-      <translation type="unfinished">FEM mesh Python</translation>
+      <translation>FEMメッシュPython</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="68"/>
       <source>FEM mesh TetGen</source>
-      <translation type="unfinished">FEM mesh TetGen</translation>
+      <translation>FEMメッシュTetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="77"/>
       <source>FEM mesh formats</source>
-      <translation type="unfinished">FEM mesh formats</translation>
+      <translation>FEMメッシュのフォーマット</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="83"/>
       <source>FEM mesh Nastran</source>
-      <translation type="unfinished">FEM mesh Nastran</translation>
+      <translation>FEMメッシュNastran</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="90"/>
       <source>FEM mesh Fenics</source>
-      <translation type="unfinished">FEM mesh Fenics</translation>
+      <translation>FEMメッシュFenics</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="98"/>
       <source>FEM mesh YAML/JSON</source>
-      <translation type="unfinished">FEM mesh YAML/JSON</translation>
+      <translation>FEMメッシュYAML/JSON</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="105"/>
       <source>FEM mesh Z88</source>
-      <translation type="unfinished">FEM mesh Z88</translation>
+      <translation>FEMメッシュZ88</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="116"/>
       <source>FEM result VTK</source>
-      <translation type="unfinished">FEM result VTK</translation>
+      <translation>FEM結果VTK</translation>
     </message>
   </context>
   <context>
@@ -8729,12 +8726,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="270"/>
       <source>Electromagnetic Boundary Condition</source>
-      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
+      <translation>電磁気境界条件</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+      <translation>電磁気境界条件を作成</translation>
     </message>
   </context>
   <context>
@@ -8742,12 +8739,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="703"/>
       <source>2D Boundary Layer</source>
-      <translation type="unfinished">2D Boundary Layer</translation>
+      <translation>2D境界レイヤー</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="707"/>
       <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
+      <translation>2Dモデルの境界にメッシュ要素の構造層を追加</translation>
     </message>
   </context>
   <context>
@@ -8755,12 +8752,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Clear Mesh Groups</source>
-      <translation type="unfinished">Clear Mesh Groups</translation>
+      <translation>メッシュグループを削除</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="738"/>
       <source>Remove groups from FEM mesh</source>
-      <translation type="unfinished">Remove groups from FEM mesh</translation>
+      <translation>FEMメッシュからグループを削除</translation>
     </message>
   </context>
   <context>
@@ -8768,7 +8765,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Distance-Based Refinement</source>
-      <translation type="unfinished">Distance-Based Refinement</translation>
+      <translation>距離ベースの再分割</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
@@ -8781,12 +8778,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="923"/>
       <source>Manipulate Refinement</source>
-      <translation type="unfinished">Manipulate Refinement</translation>
+      <translation>手動での再分割</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+      <translation>様々な方法で再分割の出力を操作できます</translation>
     </message>
   </context>
   <context>
@@ -8794,7 +8791,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="936"/>
       <source>Advanced Refinement Types</source>
-      <translation type="unfinished">Advanced Refinement Types</translation>
+      <translation>高度な再分割タイプ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
@@ -8807,7 +8804,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="949"/>
       <source>Shape-Based Refinement</source>
-      <translation type="unfinished">Shape-Based Refinement</translation>
+      <translation>シェイプベースの再分割</translation>
     </message>
   </context>
   <context>
@@ -8862,12 +8859,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1360"/>
       <source>Solvers</source>
-      <translation type="unfinished">Solvers</translation>
+      <translation>ソルバー</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1361"/>
       <source>Creates a FEM solver</source>
-      <translation type="unfinished">Creates a FEM solver</translation>
+      <translation>FEMソルバーを作成</translation>
     </message>
   </context>
   <context>
@@ -8895,7 +8892,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>作業ディレクトリのパス。ユーザー設定を使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
@@ -8923,7 +8920,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="14"/>
       <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
+      <translation>ソルバー Z88 制御</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="20"/>
@@ -8943,7 +8940,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>作業ディレクトリのパス。ユーザー設定を使用する場合は空白のままにします。</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="74"/>
@@ -8953,7 +8950,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="82"/>
       <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
+      <translation>ソルバーのタイプ</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="122"/>
@@ -8971,7 +8968,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
       <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
+      <translation>主ジオメトリー参照セレクター</translation>
     </message>
   </context>
   <context>
@@ -8979,7 +8976,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+      <translation>従属ジオメトリー参照セレクター</translation>
     </message>
   </context>
   <context>
