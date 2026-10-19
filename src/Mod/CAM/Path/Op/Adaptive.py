@@ -520,9 +520,14 @@ def get_cleared_area(op, obj, pathArray, zOverride=None):
             for wire in shape.Wires:
                 outputWire = []
                 for edge in wire.Edges:
-                    assert edge.Curve.TypeId == "Part::GeomLine"
-                    v = edge.Vertexes[0].Point
-                    outputWire.append([v.x, v.y])
+                    typeId = edge.Curve.TypeId
+                    assert typeId in ("Part::GeomLine", "Part::GeomCircle"), typeId
+                    if typeId == "Part::GeomLine":
+                        points = [edge.Vertexes[0].Point]
+                    else:
+                        points = discretize(edge)[:-1]
+                    for v in points:
+                        outputWire.append([v.x, v.y])
                 clearedArea.append(outputWire)
 
     return clearedArea
