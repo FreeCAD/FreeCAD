@@ -29,7 +29,6 @@ from .geometry_stringer_path import automatic_stringer_width
 from .geometry_tangent import tangent_flight_sections
 from .geometry_winders import balanced_winder_sections
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -49,6 +48,7 @@ from .object_utils import (
     _uses_native_container_placement,
     get_flights,
 )
+
 
 class StairBaseMixin:
     """Implementation methods grouped by responsibility."""
@@ -268,8 +268,7 @@ class StairBaseMixin:
             "Steps",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Adds separate finish treads and optional risers to a "
-                "concrete stair",
+                "Adds separate finish treads and optional risers to a " "concrete stair",
             ),
             False,
         )
@@ -351,9 +350,7 @@ class StairBaseMixin:
             "App::PropertyBool",
             "StringerCustomWidth",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Uses a manually specified stringer width"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Uses a manually specified stringer width"),
             False,
         )
         _add_property(
@@ -361,9 +358,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "StringerWidth",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default stringer board width"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default stringer board width"),
             300.0,
         )
         _add_property(
@@ -382,9 +377,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "StringerStartExtension",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Length beyond the first step of the stair"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Length beyond the first step of the stair"),
             0.0,
         )
         _add_property(
@@ -392,9 +385,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "StringerEndExtension",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Length beyond the last step of the stair"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Length beyond the last step of the stair"),
             0.0,
         )
         added = _add_property(
@@ -407,31 +398,21 @@ class StairBaseMixin:
                 "How the stringer offset above nosings is measured",
             ),
         )
-        current_direction = (
-            "Perpendicular"
-            if added
-            else str(obj.StringerNosingOffsetDirection)
-        )
+        current_direction = "Perpendicular" if added else str(obj.StringerNosingOffsetDirection)
         directions = ["Perpendicular", "Vertical"]
         obj.StringerNosingOffsetDirection = directions
         obj.StringerNosingOffsetDirection = (
-            current_direction
-            if current_direction in directions
-            else "Perpendicular"
+            current_direction if current_direction in directions else "Perpendicular"
         )
         _add_property(
             obj,
             "App::PropertyLength",
             "StringerNosingOffset",
             "Stringers",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Default board position above the nosings"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Default board position above the nosings"),
             50.0,
         )
-        obj.setEditorMode(
-            "StringerWidth", 0 if obj.StringerCustomWidth else 1
-        )
+        obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
 
         _add_property(
             obj,
@@ -460,9 +441,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailPicketMaximumSpacing",
             "Handrails",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Maximum clear spacing between pickets"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Maximum clear spacing between pickets"),
             100.0,
         )
         self._set_shape_property(
@@ -492,9 +471,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailPicketStringerPenetration",
             "Pickets",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Picket penetration into the stringer"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Picket penetration into the stringer"),
             20.0,
         )
         _add_property(
@@ -502,9 +479,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailPicketTopRailPenetration",
             "Pickets",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Picket penetration into the top rail"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Picket penetration into the top rail"),
             10.0,
         )
         self._set_shape_property(
@@ -534,9 +509,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailPostAboveTopRail",
             "Posts",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Post length above the top rail"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Post length above the top rail"),
             70.0,
         )
         _add_property(
@@ -544,9 +517,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailPostBelowStringer",
             "Posts",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Post length below a wooden stringer"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Post length below a wooden stringer"),
             100.0,
         )
         self._set_shape_property(
@@ -576,9 +547,7 @@ class StairBaseMixin:
             "App::PropertyLength",
             "HandrailTopRailPostPenetration",
             "Top rail",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Top-rail penetration into end posts"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Top-rail penetration into end posts"),
             35.0,
         )
 
@@ -623,11 +592,7 @@ class StairBaseMixin:
         self._updating = False
 
     def onChanged(self, obj, prop):
-        if (
-            getattr(self, "_updating", False)
-            or FreeCAD.isRestoring()
-            or obj.Document.Transacting
-        ):
+        if getattr(self, "_updating", False) or FreeCAD.isRestoring() or obj.Document.Transacting:
             return
         if prop == "Placement" and _uses_native_container_placement(obj):
             return
@@ -668,9 +633,7 @@ class StairBaseMixin:
             "StringerNosingOffset",
         } or prop.startswith("Handrail"):
             if prop == "StringerCustomWidth":
-                obj.setEditorMode(
-                    "StringerWidth", 0 if obj.StringerCustomWidth else 1
-                )
+                obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
             self.rebuild(obj, allow_structure_changes=True)
 
     def execute(self, obj):
@@ -696,8 +659,7 @@ class StairBaseMixin:
                     "RightHandrailEnabled",
                 )
             ) or any(
-                str(getattr(flight, f"{side}StringerType", ""))
-                == "Cut stringer"
+                str(getattr(flight, f"{side}StringerType", "")) == "Cut stringer"
                 for side in ("Left", "Right")
             ):
                 flight_proxy = flight.Proxy
@@ -735,16 +697,11 @@ class StairBaseMixin:
                 extra_heights,
             )
             effective_riser_heights = [
-                rear - front
-                for front, rear in zip(
-                    height_stations, height_stations[1:]
-                )
+                rear - front for front, rear in zip(height_stations, height_stations[1:])
             ]
             flight_lengths = [_flight_length(flight) for flight in flights]
             stair_indices = [
-                index
-                for index, flight in enumerate(flights)
-                if not _is_landing_flight(flight)
+                index for index, flight in enumerate(flights) if not _is_landing_flight(flight)
             ]
             if not stair_indices:
                 # A collection of landings has no ascent. Placement controls
@@ -771,12 +728,8 @@ class StairBaseMixin:
             balanced_footprint = None
             balanced_plan_shapes = None
             winding_geometry_valid = True
-            has_circular = any(
-                _is_circular_flight(flight) for flight in flights
-            )
-            has_landing_flight = any(
-                _is_landing_flight(flight) for flight in flights
-            )
+            has_circular = any(_is_circular_flight(flight) for flight in flights)
+            has_landing_flight = any(_is_landing_flight(flight) for flight in flights)
             has_tangent_geometry = has_circular or has_landing_flight
             first_flight = flights[0]
             last_flight = flights[-1]
@@ -827,37 +780,30 @@ class StairBaseMixin:
                     for flight in flights
                 ]
                 turn_types = [str(flight.TurnType) for flight in flights[1:]]
-                balanced_sections, average_going = (
-                    tangent_flight_sections(
-                        flight_specs,
-                        total_treads,
-                        1.0,
-                        turn_types,
-                        start_angle,
-                        end_angle,
-                        entry_direction,
-                        exit_direction,
-                        obj.StairType != "Concrete",
-                        winding_parameters=winding_parameters,
-                        extra_widths=extra_widths,
-                    )
+                balanced_sections, average_going = tangent_flight_sections(
+                    flight_specs,
+                    total_treads,
+                    1.0,
+                    turn_types,
+                    start_angle,
+                    end_angle,
+                    entry_direction,
+                    exit_direction,
+                    obj.StairType != "Concrete",
+                    winding_parameters=winding_parameters,
+                    extra_widths=extra_widths,
                 )
                 balanced_footprint = make_tangent_stair_footprint(
                     flight_specs, turn_types, start_angle, end_angle
                 )
-                balanced_sections = (
-                    fit_tangent_sections_to_footprint(
-                        balanced_sections, balanced_footprint
-                    )
+                balanced_sections = fit_tangent_sections_to_footprint(
+                    balanced_sections, balanced_footprint
                 )
                 if has_landing_flight:
-                    partition_faces = tangent_tread_faces(
-                        balanced_sections, flight_specs
-                    )
-                    winding_geometry_valid = (
-                        len(partition_faces) == len(balanced_sections) - 1
-                        and all(face.isValid() for face in partition_faces)
-                    )
+                    partition_faces = tangent_tread_faces(balanced_sections, flight_specs)
+                    winding_geometry_valid = len(partition_faces) == len(
+                        balanced_sections
+                    ) - 1 and all(face.isValid() for face in partition_faces)
                 else:
                     partition_faces = balanced_tread_faces(balanced_sections, balanced_footprint)
                     winding_geometry_valid = balanced_partition_is_valid(
@@ -933,14 +879,8 @@ class StairBaseMixin:
             obj.RiserHeight = riser_height
             obj.TreadWidth = average_going
             obj.BlondelValue = blondel_value
-            obj.BlondelCompliant = (
-                BLONDEL_MINIMUM
-                <= blondel_value
-                <= BLONDEL_MAXIMUM
-            )
-            obj.setEditorMode(
-                "StringerWidth", 0 if obj.StringerCustomWidth else 1
-            )
+            obj.BlondelCompliant = BLONDEL_MINIMUM <= blondel_value <= BLONDEL_MAXIMUM
+            obj.setEditorMode("StringerWidth", 0 if obj.StringerCustomWidth else 1)
             if not obj.StringerCustomWidth:
                 obj.StringerWidth = automatic_stringer_width(
                     riser_height,
@@ -970,21 +910,13 @@ class StairBaseMixin:
                 )
             else:
                 if len(flights) == 1:
-                    obj.GeometryStatus = translate(
-                        "BIM", "Balanced entry/exit stair"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Balanced entry/exit stair")
                 elif any(section.landing_to_next for section in balanced_sections):
-                    obj.GeometryStatus = translate(
-                        "BIM", "Multi-flight stair with landing"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Multi-flight stair with landing")
                 else:
-                    obj.GeometryStatus = translate(
-                        "BIM", "Balanced multi-flight stair"
-                    )
+                    obj.GeometryStatus = translate("BIM", "Balanced multi-flight stair")
 
-            self._update_plan(
-                obj, layouts, balanced_sections, balanced_footprint
-            )
+            self._update_plan(obj, layouts, balanced_sections, balanced_footprint)
             if obj.StairType == "Concrete":
                 obj.setEditorMode("StepsEnabled", 0)
                 obj.setEditorMode("StepRiserOverlap", 2)
@@ -1063,9 +995,7 @@ class StairBaseMixin:
         heights = list(riser_heights or [])
         required_heights = sum(tread_counts) + 1
         if len(heights) < required_heights:
-            heights.extend(
-                [riser_height] * (required_heights - len(heights))
-            )
+            heights.extend([riser_height] * (required_heights - len(heights)))
         height_cursor = 0
         first_width = max(_quantity_value(flights[0].Width), 0.01)
         center = FreeCAD.Vector(0.0, first_width / 2.0, 0.0)
@@ -1079,16 +1009,10 @@ class StairBaseMixin:
                 heading += turn
             width = max(_quantity_value(flight.Width), 0.01)
             length = _flight_length(flight)
-            flight_extras = extras[
-                extra_cursor : extra_cursor + tread_count
-            ]
+            flight_extras = extras[extra_cursor : extra_cursor + tread_count]
             extra_cursor += tread_count
-            flight_heights = heights[
-                height_cursor : height_cursor + tread_count
-            ]
-            section_heights = heights[
-                height_cursor : height_cursor + tread_count + 1
-            ]
+            flight_heights = heights[height_cursor : height_cursor + tread_count]
+            section_heights = heights[height_cursor : height_cursor + tread_count + 1]
             section_top_elevations = []
             elevation = 0.0
             for height in section_heights:

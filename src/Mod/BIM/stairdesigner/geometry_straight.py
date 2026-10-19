@@ -7,6 +7,7 @@ import math
 import FreeCAD
 import Part
 
+
 def make_tread_shape(
     index,
     metrics,
@@ -53,22 +54,10 @@ def make_riser_shape(
     if len(goings) != metrics.tread_count:
         goings = [metrics.tread_width] * metrics.tread_count
     if concrete_dressing:
-        lower_edge_cover = (
-            step_thickness if priority_to_riser and index > 0 else 0.0
-        )
-        upper_tread_space = (
-            step_thickness if index < metrics.tread_count else 0.0
-        )
-        base = (
-            sum(heights[:index])
-            - lower_edge_cover
-            + lower_offset
-        )
-        top = (
-            sum(heights[: index + 1])
-            - upper_tread_space
-            - upper_offset
-        )
+        lower_edge_cover = step_thickness if priority_to_riser and index > 0 else 0.0
+        upper_tread_space = step_thickness if index < metrics.tread_count else 0.0
+        base = sum(heights[:index]) - lower_edge_cover + lower_offset
+        top = sum(heights[: index + 1]) - upper_tread_space - upper_offset
         x = sum(goings[:index]) - thickness
         return Part.makeBox(
             thickness,
@@ -78,15 +67,9 @@ def make_riser_shape(
         )
 
     bottom_extension = step_thickness if priority_to_riser and index > 0 else 0.0
-    upper_step_thickness = (
-        0.0 if index >= metrics.tread_count else step_thickness
-    )
+    upper_step_thickness = 0.0 if index >= metrics.tread_count else step_thickness
     height = max(
-        heights[index]
-        - upper_step_thickness
-        + bottom_extension
-        - upper_offset
-        - lower_offset,
+        heights[index] - upper_step_thickness + bottom_extension - upper_offset - lower_offset,
         0.01,
     )
     x = sum(goings[:index])
@@ -124,9 +107,7 @@ def make_concrete_shape(
         return first_tread_height + pitch * x
 
     bottom_cut_level = -max(float(bottom_cut_distance), 0.0)
-    natural_start = (
-        bottom_cut_level + vertical_waist - first_tread_height
-    ) / pitch
+    natural_start = (bottom_cut_level + vertical_waist - first_tread_height) / pitch
     underside_start_x = min(
         max(0.0, natural_start),
         metrics.flight_length,
@@ -185,9 +166,7 @@ def make_concrete_shape(
     )
     profile.translate(FreeCAD.Vector(0.0, side_offset, 0.0))
     structure_width = max(float(width) - 2.0 * side_offset, 0.01)
-    return profile.extrude(
-        FreeCAD.Vector(0.0, structure_width, 0.0)
-    )
+    return profile.extrude(FreeCAD.Vector(0.0, structure_width, 0.0))
 
 
 def default_concrete_thickness(metrics):

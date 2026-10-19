@@ -98,12 +98,8 @@ def make_tangent_stair_footprint(
         return Part.Shape()
     specs, primitives = _tangent_path_primitives(flight_specs)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
-    modes = _tangent_junction_modes(
-        primitives, corner_types[: len(specs) - 1]
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
+    modes = _tangent_junction_modes(primitives, corner_types[: len(specs) - 1])
     start_extensions = [0.0] * len(primitives)
     end_extensions = [0.0] * len(primitives)
     for index, mode in enumerate(modes):
@@ -122,9 +118,7 @@ def make_tangent_stair_footprint(
         else:
             direction = primitive["tangent"]
             normal = (-direction[1], direction[0])
-            primitive_start = primitive.get(
-                "face_start", primitive["start"]
-            )
+            primitive_start = primitive.get("face_start", primitive["start"])
             primitive_end = primitive.get("face_end", primitive["end"])
             start = (
                 primitive_start[0] - direction[0] * start_extensions[index],
@@ -145,36 +139,20 @@ def make_tangent_stair_footprint(
                 _horizontal_face(
                     (
                         (
-                            start[0]
-                            + normal[0] * half_width
-                            + direction[0] * start_offset,
-                            start[1]
-                            + normal[1] * half_width
-                            + direction[1] * start_offset,
+                            start[0] + normal[0] * half_width + direction[0] * start_offset,
+                            start[1] + normal[1] * half_width + direction[1] * start_offset,
                         ),
                         (
-                            end[0]
-                            + normal[0] * half_width
-                            + direction[0] * end_offset,
-                            end[1]
-                            + normal[1] * half_width
-                            + direction[1] * end_offset,
+                            end[0] + normal[0] * half_width + direction[0] * end_offset,
+                            end[1] + normal[1] * half_width + direction[1] * end_offset,
                         ),
                         (
-                            end[0]
-                            - normal[0] * half_width
-                            - direction[0] * end_offset,
-                            end[1]
-                            - normal[1] * half_width
-                            - direction[1] * end_offset,
+                            end[0] - normal[0] * half_width - direction[0] * end_offset,
+                            end[1] - normal[1] * half_width - direction[1] * end_offset,
                         ),
                         (
-                            start[0]
-                            - normal[0] * half_width
-                            - direction[0] * start_offset,
-                            start[1]
-                            - normal[1] * half_width
-                            - direction[1] * start_offset,
+                            start[0] - normal[0] * half_width - direction[0] * start_offset,
+                            start[1] - normal[1] * half_width - direction[1] * start_offset,
                         ),
                     ),
                     0.0,
@@ -192,9 +170,11 @@ def tangent_tread_faces(sections, flight_specs):
 
     _specs, primitives = _tangent_path_primitives(flight_specs)
     primitive_faces = [
-        _circular_primitive_face(primitive)
-        if primitive["type"] == "Circular"
-        else _straight_primitive_face(primitive)
+        (
+            _circular_primitive_face(primitive)
+            if primitive["type"] == "Circular"
+            else _straight_primitive_face(primitive)
+        )
         for primitive in primitives
     ]
     result = []
@@ -204,17 +184,14 @@ def tangent_tread_faces(sections, flight_specs):
             continue
         primitive_index = (
             rear.flight_index
-            if rear.flight_index != front.flight_index
-            and not rear.level_to_next
+            if rear.flight_index != front.flight_index and not rear.level_to_next
             else front.flight_index
         )
         primitive_face = primitive_faces[primitive_index]
         faces = _balanced_step_faces(front, rear, primitive_face)
         if not faces:
             return []
-        result.append(
-            faces[0] if len(faces) == 1 else _fuse_plan_faces(faces)
-        )
+        result.append(faces[0] if len(faces) == 1 else _fuse_plan_faces(faces))
     return result
 
 
@@ -266,13 +243,9 @@ def _circular_primitive_face(primitive):
     right_middle = side_point(half, -1.0)
     right_end = side_point(primitive["length"], -1.0)
     edges = (
-        Part.Arc(
-            vector(left_start), vector(left_middle), vector(left_end)
-        ).toShape(),
+        Part.Arc(vector(left_start), vector(left_middle), vector(left_end)).toShape(),
         Part.makeLine(vector(left_end), vector(right_end)),
-        Part.Arc(
-            vector(right_end), vector(right_middle), vector(right_start)
-        ).toShape(),
+        Part.Arc(vector(right_end), vector(right_middle), vector(right_start)).toShape(),
         Part.makeLine(vector(right_start), vector(left_start)),
     )
     return Part.Face(Part.Wire(edges))
@@ -306,9 +279,7 @@ def fit_tangent_sections_to_footprint(sections, footprint):
     extent = max(footprint.BoundBox.DiagonalLength * 2.0, 1000.0)
     fitted = []
     for section_index, section in enumerate(sections):
-        center_vertex = Part.Vertex(
-            FreeCAD.Vector(section.center[0], section.center[1], 0.0)
-        )
+        center_vertex = Part.Vertex(FreeCAD.Vector(section.center[0], section.center[1], 0.0))
         if (
             section_index in {0, len(sections) - 1}
             and footprint.OuterWire.distToShape(center_vertex)[0] < 1e-7
@@ -341,14 +312,10 @@ def fit_tangent_sections_to_footprint(sections, footprint):
             if parameters:
                 intervals.append((min(parameters), max(parameters)))
         containing = [
-            interval
-            for interval in intervals
-            if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
+            interval for interval in intervals if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
         ]
         if containing:
-            lower, upper = max(
-                containing, key=lambda interval: interval[1] - interval[0]
-            )
+            lower, upper = max(containing, key=lambda interval: interval[1] - interval[0])
             left = (
                 section.center[0] + normal[0] * upper,
                 section.center[1] + normal[1] * upper,
@@ -410,18 +377,10 @@ def make_stair_footprint(flight_specs, start_angle=0.0, end_angle=0.0):
         half_width = width / 2.0
         start = vertices[index]
         end = vertices[index + 1]
-        left_starts.append(
-            (start[0] + normal[0] * half_width, start[1] + normal[1] * half_width)
-        )
-        right_starts.append(
-            (start[0] - normal[0] * half_width, start[1] - normal[1] * half_width)
-        )
-        left_ends.append(
-            (end[0] + normal[0] * half_width, end[1] + normal[1] * half_width)
-        )
-        right_ends.append(
-            (end[0] - normal[0] * half_width, end[1] - normal[1] * half_width)
-        )
+        left_starts.append((start[0] + normal[0] * half_width, start[1] + normal[1] * half_width))
+        right_starts.append((start[0] - normal[0] * half_width, start[1] - normal[1] * half_width))
+        left_ends.append((end[0] + normal[0] * half_width, end[1] + normal[1] * half_width))
+        right_ends.append((end[0] - normal[0] * half_width, end[1] - normal[1] * half_width))
 
     for index in range(len(specs) - 1):
         incoming = directions[index]
@@ -489,17 +448,12 @@ def make_stair_footprint(flight_specs, start_angle=0.0, end_angle=0.0):
     # Coplanar fusion sometimes leaves a shell with internal seams (notably
     # on a U footprint).  Fusing a thin extrusion is more reliable in OCCT;
     # its lower face is the same two-dimensional outline with one clean wire.
-    solids = [
-        face.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))
-        for face in planar_result.Faces
-    ]
+    solids = [face.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for face in planar_result.Faces]
     result = solids[0]
     for solid in solids[1:]:
         result = result.fuse(solid)
     result = result.removeSplitter()
-    horizontal_faces = [
-        face for face in result.Faces if face.BoundBox.ZLength < 1e-7
-    ]
+    horizontal_faces = [face for face in result.Faces if face.BoundBox.ZLength < 1e-7]
     if horizontal_faces:
         return min(horizontal_faces, key=lambda face: face.BoundBox.ZMin)
     return planar_result
@@ -545,11 +499,12 @@ def fit_balanced_sections_to_footprint(sections, footprint):
     for index, (section, left_parameter, right_parameter) in enumerate(
         zip(sections, left_parameters, right_parameters)
     ):
-        center_on_boundary = footprint.OuterWire.distToShape(
-            Part.Vertex(
-                FreeCAD.Vector(section.center[0], section.center[1], 0.0)
-            )
-        )[0] < 1e-7
+        center_on_boundary = (
+            footprint.OuterWire.distToShape(
+                Part.Vertex(FreeCAD.Vector(section.center[0], section.center[1], 0.0))
+            )[0]
+            < 1e-7
+        )
         if (
             section.locked_to_flight
             or center_on_boundary
@@ -565,11 +520,7 @@ def fit_balanced_sections_to_footprint(sections, footprint):
         chord_length = math.hypot(chord[0], chord[1])
         if chord_length > 1e-9:
             tangent = (chord[1] / chord_length, -chord[0] / chord_length)
-            if (
-                tangent[0] * section.tangent[0]
-                + tangent[1] * section.tangent[1]
-                < 0.0
-            ):
+            if tangent[0] * section.tangent[0] + tangent[1] * section.tangent[1] < 0.0:
                 tangent = (-tangent[0], -tangent[1])
         else:
             tangent = section.tangent
@@ -620,13 +571,9 @@ def _clip_chord_to_boundary(left, right, boundary):
                     )
                 )
             continue
-        edge_ratio = (
-            relative[0] * direction[1] - relative[1] * direction[0]
-        ) / denominator
+        edge_ratio = (relative[0] * direction[1] - relative[1] * direction[0]) / denominator
         if -1e-9 <= edge_ratio <= 1.0 + 1e-9:
-            parameters.append(
-                (relative[0] * edge[1] - relative[1] * edge[0]) / denominator
-            )
+            parameters.append((relative[0] * edge[1] - relative[1] * edge[0]) / denominator)
     parameters.sort()
     unique = []
     for parameter in parameters:
@@ -646,9 +593,11 @@ def _clip_chord_to_boundary(left, right, boundary):
     lower, upper = min(
         intervals,
         key=lambda interval: (
-            0.0
-            if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
-            else min(abs(interval[0]), abs(interval[1])),
+            (
+                0.0
+                if interval[0] - 1e-7 <= 0.0 <= interval[1] + 1e-7
+                else min(abs(interval[0]), abs(interval[1]))
+            ),
             -(interval[1] - interval[0]),
         ),
     )
@@ -663,12 +612,9 @@ def _point_in_boundary(point, boundary):
     previous = boundary["vertices"][-1]
     for current in boundary["vertices"]:
         if (current[1] > point[1]) != (previous[1] > point[1]):
-            crossing = (
-                (previous[0] - current[0])
-                * (point[1] - current[1])
-                / (previous[1] - current[1])
-                + current[0]
-            )
+            crossing = (previous[0] - current[0]) * (point[1] - current[1]) / (
+                previous[1] - current[1]
+            ) + current[0]
             if point[0] < crossing:
                 inside = not inside
         previous = current
@@ -681,20 +627,13 @@ def balanced_tread_faces(sections, footprint):
     if len(sections) < 2 or footprint.isNull():
         return []
     if any(
-        abs(
-            edge.curvatureAt(
-                (edge.FirstParameter + edge.LastParameter) / 2.0
-            )
-        )
-        > 1e-9
+        abs(edge.curvatureAt((edge.FirstParameter + edge.LastParameter) / 2.0)) > 1e-9
         for edge in footprint.Edges
     ):
         return _tangent_tread_faces(sections, footprint)
     boundary = _boundary_data(footprint)
     orientation = 1.0 if boundary["signed_area"] > 0.0 else -1.0
-    left_parameters = _unwrap_boundary_parameters(
-        [section.left for section in sections], boundary
-    )
+    left_parameters = _unwrap_boundary_parameters([section.left for section in sections], boundary)
     right_parameters = _unwrap_boundary_parameters(
         [section.right for section in sections], boundary
     )
@@ -754,16 +693,10 @@ def balanced_partition_is_valid(faces, footprint, expected_count):
 
 def _boundary_data(footprint):
     face = max(footprint.Faces, key=lambda item: item.Area)
-    vertices = [
-        (vertex.Point.x, vertex.Point.y)
-        for vertex in face.OuterWire.OrderedVertexes
-    ]
+    vertices = [(vertex.Point.x, vertex.Point.y) for vertex in face.OuterWire.OrderedVertexes]
     cumulative = [0.0]
     for first, second in zip(vertices, vertices[1:] + vertices[:1]):
-        cumulative.append(
-            cumulative[-1]
-            + math.hypot(second[0] - first[0], second[1] - first[1])
-        )
+        cumulative.append(cumulative[-1] + math.hypot(second[0] - first[0], second[1] - first[1]))
     signed_area = 0.5 * sum(
         first[0] * second[1] - second[0] * first[1]
         for first, second in zip(vertices, vertices[1:] + vertices[:1])
@@ -782,16 +715,13 @@ def _boundary_candidates(point, boundary):
     cumulative = boundary["cumulative"]
     scale = max(boundary["perimeter"], 1.0)
     tolerance = scale * 1e-7
-    for index, (first, second) in enumerate(
-        zip(vertices, vertices[1:] + vertices[:1])
-    ):
+    for index, (first, second) in enumerate(zip(vertices, vertices[1:] + vertices[:1])):
         delta = (second[0] - first[0], second[1] - first[1])
         squared_length = delta[0] * delta[0] + delta[1] * delta[1]
         if squared_length < 1e-18:
             continue
         ratio = (
-            (point[0] - first[0]) * delta[0]
-            + (point[1] - first[1]) * delta[1]
+            (point[0] - first[0]) * delta[0] + (point[1] - first[1]) * delta[1]
         ) / squared_length
         ratio = min(max(ratio, 0.0), 1.0)
         projected = (
@@ -799,9 +729,7 @@ def _boundary_candidates(point, boundary):
             first[1] + delta[1] * ratio,
         )
         if math.hypot(projected[0] - point[0], projected[1] - point[1]) <= tolerance:
-            candidates.append(
-                cumulative[index] + math.sqrt(squared_length) * ratio
-            )
+            candidates.append(cumulative[index] + math.sqrt(squared_length) * ratio)
     if not candidates:
         raise ValueError("Balanced section does not meet the stair footprint boundary")
     return candidates
@@ -819,10 +747,7 @@ def _unwrap_boundary_parameters(points, boundary):
         expanded = []
         for candidate in candidates:
             cycle = round((previous - candidate) / perimeter)
-            expanded.extend(
-                candidate + (cycle + offset) * perimeter
-                for offset in (-1, 0, 1)
-            )
+            expanded.extend(candidate + (cycle + offset) * perimeter for offset in (-1, 0, 1))
         result.append(min(expanded, key=lambda value: abs(value - previous)))
     return result
 
@@ -833,10 +758,7 @@ def _monotone_boundary_parameters(points, sections, boundary, direction):
     total = direction * (raw[-1] - start)
     if total <= 1e-7:
         total += boundary["perimeter"]
-    progress = [
-        min(max(direction * (parameter - start), 0.0), total)
-        for parameter in raw
-    ]
+    progress = [min(max(direction * (parameter - start), 0.0), total) for parameter in raw]
     progress[0] = 0.0
     progress[-1] = total
     monotone = _isotonic_increasing(progress)
@@ -911,9 +833,7 @@ def _boundary_vertices_between(start, end, direction, boundary):
     first_cycle = math.floor(lower / perimeter) - 1
     last_cycle = math.ceil(upper / perimeter) + 1
     for cycle in range(first_cycle, last_cycle + 1):
-        for parameter, point in zip(
-            boundary["cumulative"][:-1], boundary["vertices"]
-        ):
+        for parameter, point in zip(boundary["cumulative"][:-1], boundary["vertices"]):
             unwrapped = parameter + cycle * perimeter
             if lower + 1e-7 < unwrapped < upper - 1e-7:
                 candidates.append((unwrapped, point))
@@ -924,13 +844,12 @@ def _boundary_vertices_between(start, end, direction, boundary):
 def _without_duplicate_points(points):
     result = []
     for point in points:
-        if not result or math.hypot(
-            point[0] - result[-1][0], point[1] - result[-1][1]
-        ) > 1e-7:
+        if not result or math.hypot(point[0] - result[-1][0], point[1] - result[-1][1]) > 1e-7:
             result.append(point)
-    if len(result) > 1 and math.hypot(
-        result[0][0] - result[-1][0], result[0][1] - result[-1][1]
-    ) < 1e-7:
+    if (
+        len(result) > 1
+        and math.hypot(result[0][0] - result[-1][0], result[0][1] - result[-1][1]) < 1e-7
+    ):
         result.pop()
     return result
 

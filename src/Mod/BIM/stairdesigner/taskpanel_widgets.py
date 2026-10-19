@@ -85,11 +85,7 @@ class _CurrentPageTabWidget(QtGui.QTabWidget):
         self.currentChanged.connect(self._current_page_changed)
 
     def _hint_for_current_page(self, minimum=False):
-        base_hint = (
-            super().minimumSizeHint()
-            if minimum
-            else super().sizeHint()
-        )
+        base_hint = super().minimumSizeHint() if minimum else super().sizeHint()
         current = self.currentWidget()
         if current is None:
             return base_hint
@@ -97,15 +93,11 @@ class _CurrentPageTabWidget(QtGui.QTabWidget):
         page_hints = []
         for index in range(self.count()):
             page = self.widget(index)
-            page_hints.append(
-                page.minimumSizeHint() if minimum else page.sizeHint()
-            )
+            page_hints.append(page.minimumSizeHint() if minimum else page.sizeHint())
         if not page_hints:
             return base_hint
 
-        current_hint = (
-            current.minimumSizeHint() if minimum else current.sizeHint()
-        )
+        current_hint = current.minimumSizeHint() if minimum else current.sizeHint()
         tallest_page = max(hint.height() for hint in page_hints)
         chrome_height = max(0, base_hint.height() - tallest_page)
         return QtCore.QSize(

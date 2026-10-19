@@ -48,6 +48,7 @@ from .object_utils import (
     get_flights,
 )
 
+
 def _sync_handrail_parts(
     group,
     stair,
@@ -60,9 +61,7 @@ def _sync_handrail_parts(
         child
         for child in group.Group
         if getattr(child, "GeneratedBy", "") == stair.Name
-        and str(getattr(child, "StairDesignerRole", "")).startswith(
-            "Handrail"
-        )
+        and str(getattr(child, "StairDesignerRole", "")).startswith("Handrail")
     ]
     unused = list(existing)
     role_order = {
@@ -75,20 +74,15 @@ def _sync_handrail_parts(
             (
                 candidate
                 for candidate in unused
-                if str(getattr(candidate, "StairDesignerRole", ""))
-                == item["role"]
-                and getattr(candidate, "SourceFlight", None)
-                == item["flight"]
+                if str(getattr(candidate, "StairDesignerRole", "")) == item["role"]
+                and getattr(candidate, "SourceFlight", None) == item["flight"]
                 and str(getattr(candidate, "Side", "")) == item["side"]
-                and int(getattr(candidate, "ElementIndex", -1))
-                == item["element_index"]
+                and int(getattr(candidate, "ElementIndex", -1)) == item["element_index"]
             ),
             None,
         )
         if part is None and allow_structure_changes:
-            part = stair.Document.addObject(
-                "Part::Feature", f"{stair.Name}_{item['role']}"
-            )
+            part = stair.Document.addObject("Part::Feature", f"{stair.Name}_{item['role']}")
             _set_generated_properties(part, stair, item["role"])
             group.addObject(part)
         if part is None:
@@ -139,15 +133,11 @@ def _sync_handrail_parts(
         if FreeCAD.GuiUp:
             if str(stair.StairType) == "Concrete":
                 part.ViewObject.ShapeColor = (
-                    (0.68, 0.70, 0.72)
-                    if item["role"] == "HandrailTopRail"
-                    else (0.56, 0.58, 0.61)
+                    (0.68, 0.70, 0.72) if item["role"] == "HandrailTopRail" else (0.56, 0.58, 0.61)
                 )
             else:
                 part.ViewObject.ShapeColor = (
-                    (0.35, 0.20, 0.08)
-                    if item["role"] == "HandrailTopRail"
-                    else (0.42, 0.25, 0.10)
+                    (0.35, 0.20, 0.08) if item["role"] == "HandrailTopRail" else (0.42, 0.25, 0.10)
                 )
 
     if allow_structure_changes:
@@ -181,9 +171,7 @@ class StairHandrailMixin:
                 self._remove_handrails_group(stair)
             return
         if not group and allow_structure_changes:
-            group = _make_component_group(
-                stair, "HandrailsGroup", "Handrails", "handrails"
-            )
+            group = _make_component_group(stair, "HandrailsGroup", "Handrails", "handrails")
         if not group:
             return
         group.PanelSection = "handrails"
@@ -211,51 +199,32 @@ class StairHandrailMixin:
         if not flight_runs:
             return
 
-        stringers = (
-            list(stair.StringersGroup.Group)
-            if stair.StringersGroup
-            else []
-        )
+        stringers = list(stair.StringersGroup.Group) if stair.StringersGroup else []
         rail_shape = str(stair.HandrailTopRailShape)
         rail_width = _quantity_value(stair.HandrailTopRailWidth)
         rail_thickness = _quantity_value(stair.HandrailTopRailThickness)
         picket_shape = str(stair.HandrailPicketShape)
         picket_width = _quantity_value(stair.HandrailPicketWidth)
-        picket_thickness = _quantity_value(
-            stair.HandrailPicketThickness
-        )
-        picket_path_size = (
-            picket_width
-            if picket_shape == "Circular"
-            else picket_thickness
-        )
+        picket_thickness = _quantity_value(stair.HandrailPicketThickness)
+        picket_path_size = picket_width if picket_shape == "Circular" else picket_thickness
         post_shape = str(stair.HandrailPostShape)
         post_width = _quantity_value(stair.HandrailPostWidth)
         post_thickness = _quantity_value(stair.HandrailPostThickness)
-        post_path_size = (
-            post_width if post_shape == "Circular" else post_thickness
-        )
+        post_path_size = post_width if post_shape == "Circular" else post_thickness
         global_offset = _quantity_value(stair.HandrailOffset)
         desired = []
         post_positions = set()
         first_flight_index = flight_runs[0][0]
         last_flight_index = flight_runs[-1][0]
         concrete_support_faces = []
-        if (
-            str(stair.StairType) == "Concrete"
-            and balanced_sections
-            and balanced_plan_shapes
-        ):
+        if str(stair.StairType) == "Concrete" and balanced_sections and balanced_plan_shapes:
             for index, plan_shape in enumerate(balanced_plan_shapes):
                 elevation = balanced_section_top(
                     balanced_sections[index],
                     index,
                     riser_height,
                 )
-                concrete_support_faces.extend(
-                    (face, elevation)
-                    for face in plan_shape.Faces
-                )
+                concrete_support_faces.extend((face, elevation) for face in plan_shape.Faces)
             if stair.EndWithRiser:
                 terminal_elevation = balanced_section_top(
                     balanced_sections[-1],
@@ -283,8 +252,7 @@ class StairHandrailMixin:
                         -min(
                             0.1,
                             max(
-                                balanced_footprint.BoundBox.DiagonalLength
-                                * 1e-6,
+                                balanced_footprint.BoundBox.DiagonalLength * 1e-6,
                                 0.01,
                             ),
                         ),
@@ -320,31 +288,23 @@ class StairHandrailMixin:
             }
             if side_profiles:
                 center_lines = {}
-                for run_index, (flight_index, sections) in enumerate(
-                    flight_runs
-                ):
-                    if (
-                        flight_index not in side_profiles
-                        or not str(
-                            flights[flight_index].FlightType
-                        ).startswith("Straight")
-                    ):
+                for run_index, (flight_index, sections) in enumerate(flight_runs):
+                    if flight_index not in side_profiles or not str(
+                        flights[flight_index].FlightType
+                    ).startswith("Straight"):
                         continue
                     plane = (
                         _layout_stringer_run_plane(
                             layouts[flight_index],
                             prepared_side,
                         )
-                        if str(flights[flight_index].FlightType)
-                        == "Straight"
+                        if str(flights[flight_index].FlightType) == "Straight"
                         and _has_endpoint_angle(flights[flight_index])
                         else _stringer_run_plane(
                             sections,
                             prepared_side,
                             max(
-                                _quantity_value(
-                                    flights[flight_index].Width
-                                ),
+                                _quantity_value(flights[flight_index].Width),
                                 0.01,
                             ),
                         )
@@ -368,10 +328,7 @@ class StairHandrailMixin:
                         direction,
                     )
                 for run_index in range(len(flight_runs) - 1):
-                    if (
-                        run_index not in center_lines
-                        or run_index + 1 not in center_lines
-                    ):
+                    if run_index not in center_lines or run_index + 1 not in center_lines:
                         continue
                     incoming_index = flight_runs[run_index][0]
                     outgoing_index = flight_runs[run_index + 1][0]
@@ -383,12 +340,8 @@ class StairHandrailMixin:
                     )
                     if junction is None:
                         continue
-                    corner_post_points[
-                        (prepared_side, incoming_index, 1)
-                    ] = junction
-                    corner_post_points[
-                        (prepared_side, outgoing_index, 0)
-                    ] = junction
+                    corner_post_points[(prepared_side, incoming_index, 1)] = junction
+                    corner_post_points[(prepared_side, outgoing_index, 0)] = junction
 
         rail_runs = []
         for flight_index, sections in flight_runs:
