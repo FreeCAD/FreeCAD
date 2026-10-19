@@ -247,13 +247,11 @@ App::DocumentObjectExecReturn* Loft::execute()
         // returns an open (invalid) shape without raising an error. Report it so the
         // Loft object is flagged with the error overlay instead of silently producing
         // an unusable result that only fails in downstream operations.
-        if (isSolid == IsSolid::solid && !result.isClosed())
-        {
+        if (isSolid == IsSolid::solid && !result.isClosed()) {
             return new App::DocumentObjectExecReturn(
                 "Cannot create a solid loft from open sections. "
                 "Use closed profiles, or turn off the 'Solid' option."
             );
-            
         }
         // General safety net: flag any topologically invalid result.
 
@@ -261,10 +259,10 @@ App::DocumentObjectExecReturn* Loft::execute()
 
         if (!result.analyze(/*runBopCheck*/ false, err)) {
 
-        return new App::DocumentObjectExecReturn(
+            return new App::DocumentObjectExecReturn(
 
-        std::string("Loft produced an invalid shape. ") + err.str());
-
+                std::string("Loft produced an invalid shape. ") + err.str()
+            );
         }
 
 
