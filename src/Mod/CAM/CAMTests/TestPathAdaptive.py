@@ -24,6 +24,7 @@ import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
 from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
@@ -515,6 +516,69 @@ class TestPathAdaptive(PathTestBase):
         # self.assertTrue(expected_moves_test01 == operationMoves,
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+
+    def testRestMachining(self):
+        """testRestMachining() Verify a rest machining Adaptive op recomputes
+        cleanly using the cleared area of a previous Adaptive op in the same job."""
+
+        # Block with a rectangular pocket whose floor is below Z=0. Non-model-aware Adaptive
+        # flattens its input to Z=0 and only sees cleared area from cuts at or below Z=0, so
+        # the pocket must be there for the roughing op's cleared area to be used.
+        floorZ = -1.0
+        block = Part.makeBox(60.0, 40.0, 20.0, FreeCAD.Vector(0, 0, floorZ - 19.0))
+        pocket = Part.makeBox(50.0, 30.0, 1.0, FreeCAD.Vector(5.0, 5.0, floorZ))
+        part = self.doc.addObject("Part::Feature", "RestMachiningPart")
+        part.Shape = block.cut(pocket)
+
+        # Dedicated job, so only the two ops below contribute cleared area
+        job = PathJob.Create("JobRestMachining", [part])
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        model = job.Model.Group[0]
+        floorFaces = [
+            f"Face{i + 1}"
+            for i, face in enumerate(model.Shape.Faces)
+            if abs(face.BoundBox.ZMax - floorZ) < 1e-6
+            and abs(face.BoundBox.ZMin - floorZ) < 1e-6
+            and face.BoundBox.XLength < 55.0
+        ]
+        self.assertEqual(len(floorFaces), 1, f"expected one pocket floor face, got {floorFaces}")
+
+        def createOp(label, toolDiameter, useRestMachining):
+            # Create the op before adding its tool controller. On creation an op picks the
+            # previous op's TC, or the job's only TC; if the job has several TCs and no previous
+            # op, the GUI prompts the user to choose one.
+            adaptive = PathAdaptive.Create(label, parentJob=job)
+
+            tc = PathToolController.Create(name=f"TC: {toolDiameter}mm Endmill")
+            job.Proxy.addToolController(tc)
+            tc.Tool.Diameter = toolDiameter
+
+            adaptive.Base = [(model, floorFaces)]
+            adaptive.Label = label
+            adaptive.ToolController = tc
+            adaptive.FinishingProfile = False
+            adaptive.StepOverPercent = 50
+            adaptive.UseOutline = False
+            adaptive.UseRestMachining = useRestMachining
+            # Have to clear expression before numerical value assignment
+            adaptive.clearExpression("StepDown")
+            adaptive.StepDown.Value = 20.0
+            _addViewProvider(adaptive)
+            return adaptive
+
+        # Rough with a large tool, then rest machine with a small tool
+        roughing = createOp("RestMachiningRoughing", 5.0, False)
+        rest = createOp("RestMachiningRest", 4.0, True)
+        self.doc.recompute()
+
+        self.assertTrue(len(roughing.Path.Commands) > 0, "Roughing op produced no commands")
+        self.assertTrue(len(rest.Path.Commands) > 0, "Rest machining op produced no commands")
+        for op in (roughing, rest):
+            self.assertTrue(op.isValid(), f"{op.Label} is not valid: {op.State}")
+            self.assertNotIn("Invalid", op.State, f"{op.Label} state: {op.State}")
+            self.assertNotIn("Touched", op.State, f"{op.Label} still needs recompute: {op.State}")
 
     def testFacesMergedDifferentZ(self):
         """testFacesMergedDifferentZ() Verify path generated on adjacent, combined
