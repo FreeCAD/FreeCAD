@@ -743,6 +743,12 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
             remove->ActiveDialog->closed();
             remove->ActiveDialog->emitDestructionSignal();
         }
+        // The stretch was added when the dialog content went in; drop it before
+        // the watchers are re-added below, or they land below the expanding
+        // spacer and end up out of view.
+        if (remove->taskPanel) {
+            remove->taskPanel->actionPanel->removeStretch();
+        }
         // Defer the deletion: a dialog may still be on the stack here (e.g. its own
         // accept()/reject() invocation, or a pending focus event referencing the
         // widgets), so deleting synchronously would leave dangling users behind.
@@ -1066,16 +1072,30 @@ void TaskView::acceptOrReject(App::Document* doc, bool accept)
             accept ? "accept" : "reject"
         );
         removeDialog(doc);
+        // The panel is a persistent per-document page of the stacked widget:
+        // the hide() above must not leak, or the page stays invisible — and
+        // re-showing it later is not automatic, because setCurrentIndex()
+        // skips the show() when the index does not change.
+        if (panel) {
+            panel->show();
+        }
         return;
     }
     dialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || dialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
+        if (panel) {
+            panel->show();
+        }
     }
-    else if (panel && ctrl) {
+    else {
         // The dialog stays open, restore it
-        panel->show();
-        ctrl->show();
+        if (panel) {
+            panel->show();
+        }
+        if (ctrl) {
+            ctrl->show();
+        }
     }
 }
 
