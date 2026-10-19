@@ -409,7 +409,7 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
-        clearedArea = get_cleared_area(op, obj, pathArray)
+        clearedArea = get_cleared_area(op, obj, pathArray, obj.FinalDepth.Value)
 
         # put here all properties that influence calculation of adaptive base paths,
 
