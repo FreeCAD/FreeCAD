@@ -36,6 +36,7 @@
 #include "PropertyEditor.h"
 #include "PropertyItem.h"
 #include "Tree.h"
+#include "Gui/LargeComboBox.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
@@ -226,8 +227,21 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
         auto* comboBox = qobject_cast<QComboBox*>(o);
         if (comboBox) {
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-            if (parentEditor && parentEditor->activeEditor == comboBox) {
-                comboBox->showPopup();
+            FC_LOG(
+                "FocusIn: " << o->metaObject()->className() << " activeEditor="
+                            << (parentEditor && parentEditor->activeEditor
+                                    ? parentEditor->activeEditor->metaObject()->className()
+                                    : "nullptr")
+            );
+
+            if (parentEditor && parentEditor->activeEditor == comboBox
+                && !comboBox->property("popupAutoOpened").toBool()) {
+
+                // the focus goes to the QComboBox when closing the popup, this avoids re-opening it
+                // when the popup closes in a loop, effectively blocking the user :(
+                comboBox->setProperty("popupAutoOpened", true);
+
+                QTimer::singleShot(0, comboBox, &QComboBox::showPopup);
             }
         }
         auto* checkBox = qobject_cast<QCheckBox*>(o);
@@ -253,6 +267,18 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
         if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
             if (parentEditor && parentEditor->activeEditor == comboBox) {
+                FC_LOG(
+                    "FocusOut: " << o->metaObject()->className() << " activeEditor="
+                                 << (parentEditor && parentEditor->activeEditor
+                                         ? parentEditor->activeEditor->metaObject()->className()
+                                         : "nullptr")
+                );
+                if (auto* largeComboBox = qobject_cast<LargeComboBox*>(comboBox)) {
+                    if (largeComboBox->isPopupShown()) {
+                        return false;
+                    }
+                }
+
                 parentEditor->activeEditor = nullptr;
             }
         }
@@ -333,13 +359,6 @@ QWidget* PropertyItemDelegate::createEditor(
     if (editor && childItem->isReadOnly()) {
         editor->setDisabled(true);
     }
-    else if (editor /*&& this->pressed*/) {
-        // We changed the way editor is activated in PropertyEditor (in response
-        // of signal activated and clicked), so now we should grab focus
-        // regardless of "pressed" or not (e.g. when activated by keyboard
-        // enter)
-        editor->setFocus();
-    }
 
     if (editor) {
         const auto widgets = editor->findChildren<QWidget*>();
@@ -350,6 +369,14 @@ QWidget* PropertyItemDelegate::createEditor(
         }
         parentEditor->activeEditor = editor;
         parentEditor->editingIndex = index;
+
+        // focus this after init. the event filters
+
+        // We changed the way editor is activated in PropertyEditor (in response
+        // of signal activated and clicked), so now we should grab focus
+        // regardless of "pressed" or not (e.g. when activated by keyboard
+        // enter)
+        editor->setFocus();
     }
 
     return editor;
