@@ -276,6 +276,192 @@ class PartDesignGuiTestCases(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("SketchGuiTest")
 
+    def dressUpGizmoSwitches(self):
+        from pivy import coin
+
+        root = Gui.activeDocument().activeView().getViewer().getSoRenderManager().getSceneGraph()
+        search = coin.SoSearchAction()
+        search.setType(coin.SoType.fromName("SoToggleSwitch"))
+        search.setInterest(coin.SoSearchAction.ALL)
+        search.setSearchingAll(True)
+        search.apply(root)
+        found = []
+        for path in search.getPaths():
+            node = path.getTail()
+            children = coin.SoSearchAction()
+            children.setType(coin.SoType.fromName("SoLinearDraggerContainer"))
+            children.setSearchingAll(True)
+            children.apply(node)
+            if children.getPath() is not None:
+                found.append(node)
+        return found
+
+    def dressUpGizmoPositions(self, switch):
+        from pivy import coin
+
+        search = coin.SoSearchAction()
+        search.setType(coin.SoType.fromName("SoLinearDraggerContainer"))
+        search.setInterest(coin.SoSearchAction.ALL)
+        search.setSearchingAll(True)
+        search.apply(switch)
+        return [tuple(path.getTail().getField("translation").getValue().getValue())
+                for path in search.getPaths()]
+
+    def checkDressUpGizmoRecovery(self, initially_valid, enabled):
+        Gui.activateWorkbench("PartDesignWorkbench")
+        preferences = App.ParamGet("User parameter:BaseApp/Preferences/Gui/Gizmos")
+        had_enabled = "EnableGizmos" in preferences.GetBools()
+        old_enabled = preferences.GetBool("EnableGizmos", True)
+        preferences.SetBool("EnableGizmos", enabled)
+        try:
+            for feature_type, size_property, editor_name in (
+                ("Fillet", "Radius", "filletRadius"),
+                ("Chamfer", "Size", "chamferSize"),
+            ):
+                with self.subTest(feature=feature_type, enabled=enabled,
+                                  initially_valid=initially_valid):
+                    body = self.Doc.addObject("PartDesign::Body", "Body")
+                    box = body.newObject("PartDesign::AdditiveBox", "Box")
+                    box.Length = box.Width = box.Height = 1
+                    self.Doc.recompute()
+                    feature = body.newObject("PartDesign::" + feature_type, feature_type)
+                    feature.Base = (box, ["Edge1"])
+                    setattr(feature, size_property, 0.2 if initially_valid else 1)
+                    self.Doc.recompute()
+                    self.assertEqual(feature.isValid(), initially_valid)
+                    try:
+                        self.assertTrue(Gui.getDocument(self.Doc.Name).setEdit(feature.Name))
+                        Gui.updateGui()
+                        switches = self.dressUpGizmoSwitches()
+                        self.assertEqual(len(switches), 1 if enabled else 0)
+                        switch = switches[0] if enabled else None
+                        if switch is not None:
+                            self.assertEqual(bool(switch.getField("on").getValue()), initially_valid)
+                        editors = [widget for widget in Gui.getMainWindow().findChildren(
+                            QtGui.QAbstractSpinBox, editor_name) if widget.isVisible()]
+                        self.assertEqual(len(editors), 1)
+                        editor = editors[0]
+
+                        def change_size(size):
+                            self.assertTrue(editor.setProperty("rawValue", size))
+                            Gui.updateGui()
+                            self.assertAlmostEqual(getattr(feature, size_property).Value, size)
+
+                        if initially_valid:
+                            positions = self.dressUpGizmoPositions(switch)
+                            self.assertTrue(positions)
+                            change_size(0.3)
+                            self.assertTrue(feature.isValid(), feature.State)
+                            self.assertTrue(switch.getField("on").getValue())
+                            self.assertEqual(self.dressUpGizmoPositions(switch), positions)
+                            # Existing visible draggers remain available when a size is invalid.
+                            change_size(1)
+                            self.assertFalse(feature.isValid())
+                            self.assertTrue(switch.getField("on").getValue())
+                        else:
+                            change_size(1.1)
+                            self.assertFalse(feature.isValid())
+                            if switch is not None:
+                                self.assertFalse(switch.getField("on").getValue())
+
+                        change_size(0.2)
+                        self.assertTrue(feature.isValid(), feature.State)
+                        self.assertFalse(feature.Shape.isNull())
+                        self.assertTrue(feature.Shape.isValid())
+                        if enabled:
+                            self.assertTrue(switch.getField("on").getValue(),
+                                            "Recovered valid feature retains hidden gizmos")
+                            self.assertTrue(self.dressUpGizmoPositions(switch))
+                            change_size(0.25)
+                            self.assertTrue(feature.isValid(), feature.State)
+                            self.assertTrue(switch.getField("on").getValue())
+                        else:
+                            self.assertEqual(self.dressUpGizmoSwitches(), [])
+                    finally:
+                        Gui.getDocument(self.Doc.Name).resetEdit()
+                        if Gui.Control.activeDialog():
+                            Gui.Control.closeDialog()
+        finally:
+            if had_enabled:
+                preferences.SetBool("EnableGizmos", old_enabled)
+            else:
+                preferences.RemBool("EnableGizmos")
+
+    def testDressUpGizmosRecoverFromInitiallyInvalidSize(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/33588
+        self.checkDressUpGizmoRecovery(initially_valid=False, enabled=True)
+
+    def testDressUpInitiallyVisibleGizmosRemainAvailable(self):
+        self.checkDressUpGizmoRecovery(initially_valid=True, enabled=True)
+
+    def testDressUpGizmoRecoveryRespectsDisabledPreference(self):
+        self.checkDressUpGizmoRecovery(initially_valid=False, enabled=False)
+
+    def testChamferGizmosRecoverWhenOtherParametersBecomeValid(self):
+        Gui.activateWorkbench("PartDesignWorkbench")
+        preferences = App.ParamGet("User parameter:BaseApp/Preferences/Gui/Gizmos")
+        had_enabled = "EnableGizmos" in preferences.GetBools()
+        old_enabled = preferences.GetBool("EnableGizmos", True)
+        preferences.SetBool("EnableGizmos", True)
+        try:
+            for changed in ("second distance", "angle", "type"):
+                with self.subTest(changed=changed):
+                    body = self.Doc.addObject("PartDesign::Body", "Body")
+                    box = body.newObject("PartDesign::AdditiveBox", "Box")
+                    box.Length = box.Width = box.Height = 1
+                    self.Doc.recompute()
+                    feature = body.newObject("PartDesign::Chamfer", "Chamfer")
+                    feature.Base = (box, ["Edge1"])
+                    feature.Size = 0.2
+                    feature.ChamferType = 2 if changed == "angle" else 1
+                    feature.Size2 = 1
+                    if changed == "angle":
+                        # At either extreme one leg exceeds the unit cube. Pick
+                        # a verified invalid input before opening the dialog.
+                        for angle in (1, 89):
+                            feature.Angle = angle
+                            self.Doc.recompute()
+                            if not feature.isValid():
+                                break
+                    self.Doc.recompute()
+                    self.assertFalse(feature.isValid(), "Test requires initially invalid chamfer")
+                    try:
+                        self.assertTrue(Gui.getDocument(self.Doc.Name).setEdit(feature.Name))
+                        Gui.updateGui()
+                        switches = self.dressUpGizmoSwitches()
+                        self.assertEqual(len(switches), 1)
+                        switch = switches[0]
+                        self.assertFalse(switch.getField("on").getValue())
+                        if changed == "type":
+                            combos = [widget for widget in Gui.getMainWindow().findChildren(
+                                QtGui.QComboBox, "chamferType") if widget.isVisible()]
+                            self.assertEqual(len(combos), 1)
+                            combos[0].setCurrentIndex(0)  # Equal distance: Size2 is not used.
+                        else:
+                            name = "chamferAngle" if changed == "angle" else "chamferSize2"
+                            editors = [widget for widget in Gui.getMainWindow().findChildren(
+                                QtGui.QAbstractSpinBox, name) if widget.isVisible()]
+                            self.assertEqual(len(editors), 1)
+                            value = 45 if changed == "angle" else 0.2
+                            self.assertTrue(editors[0].setProperty("rawValue", value))
+                        Gui.updateGui()
+                        self.assertTrue(feature.isValid(), feature.State)
+                        self.assertTrue(feature.Shape.isValid())
+                        self.assertTrue(switch.getField("on").getValue(),
+                                        "Recovered valid chamfer retains hidden gizmos")
+                        self.assertTrue(self.dressUpGizmoPositions(switch))
+                    finally:
+                        Gui.getDocument(self.Doc.Name).resetEdit()
+                        if Gui.Control.activeDialog():
+                            Gui.Control.closeDialog()
+        finally:
+            if had_enabled:
+                preferences.SetBool("EnableGizmos", old_enabled)
+            else:
+                preferences.RemBool("EnableGizmos")
+
+
+
 
 class PartDesignTransformed(unittest.TestCase):
     def setUp(self):
