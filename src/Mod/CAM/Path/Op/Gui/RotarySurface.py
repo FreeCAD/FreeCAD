@@ -61,6 +61,24 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         )
         self.maxFeedSpinBox = PathGuiUtil.QuantitySpinBox(self.form.maxFeed, obj, "MaxFeed")
 
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("cutMode", "CutMode"))
+        tuples.append(("cutPattern", "CutPattern"))
+        tuples.append(("feedMode", "FeedMode"))
+        tuples.append(("startX", "StartX"))
+        tuples.append(("stopX", "StopX"))
+        tuples.append(("startAngle", "StartAngle"))
+        tuples.append(("stopAngle", "StopAngle"))
+        tuples.append(("stepOver", "StepOver"))
+        tuples.append(("angularResolution", "AngularResolution"))
+        tuples.append(("radialStockToLeave", "RadialStockToLeave"))
+        tuples.append(("maxFeed", "MaxFeed"))
+        tuples.append(("boundaryFromFaces", "BoundaryFromFaces"))
+
+        return tuples
+
     def getForm(self):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpRotarySurfaceEdit.ui")
         comboToPropertyMap = [

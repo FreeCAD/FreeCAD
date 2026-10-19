@@ -152,7 +152,10 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 "Rotary",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Axial advance per full revolution of the rotary axis " "(spiral pitch).",
+                    "Axial advance per full revolution (mm)."
+                    "\nSpiral: pitch."
+                    "\nRings: distance between rings."
+                    "\nParallel: also drives the angular stepover, derived as StepOver / max_radius.",
                 ),
             ),
             (
@@ -201,9 +204,11 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 "Rotary",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Effective feed clamp (mm/min); used to handle the "
-                    "centerline singularity as r approaches zero. 0 means "
-                    "fall back to the tool controller rapid rate.",
+                    "Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min)."
+                    "\nPrevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline."
+                    "\n0 = unset; falls back to max(HorizRapid, VertRapid, 1000)."
+                    "\nWhen Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap."
+                    "\nClamp events are summarized in the log at end of path.",
                 ),
             ),
             (
