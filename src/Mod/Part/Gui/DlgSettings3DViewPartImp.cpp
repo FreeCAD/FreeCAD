@@ -22,10 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <algorithm>
-#include <cmath>
-#include <limits>
-
 #include <QMessageBox>
 
 
@@ -62,6 +58,12 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
         &QDoubleSpinBox::editingFinished,
         this,
         &DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished
+    );
+    connect(
+        ui->buttonApplyToExisting,
+        &QPushButton::clicked,
+        this,
+        &DlgSettings3DViewPart::onApplyToExistingClicked
     );
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
@@ -123,47 +125,26 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 
 void DlgSettings3DViewPart::saveSettings()
 {
-    // Snapshot the stored prefs before saving so we only push to existing
-    // documents when the user actually changed a value (see #33020). Opening
-    // Preferences and pressing OK without changes must not wipe per-object
-    // Deviation/AngularDeflection. Deliberate changes still propagate to open
-    // documents, preserving the previous bulk-apply behavior until an
-    // explicit per-document apply action exists (see #33440).
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part"
-    );
-    // Keep these fallbacks aligned with ViewProviderPartExt::loadParameter().
-    const double oldDeviation = hPart->GetFloat("MeshDeviation", 0.2);
-    const double oldAngular = hPart->GetFloat("MeshAngularDeflection", 28.65);
-
+    // Save defaults for newly created objects. Existing objects are only updated
+    // when the user explicitly clicks "Apply to open documents".
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+}
 
-    const double newDeviation = hPart->GetFloat("MeshDeviation", 0.2);
-    const double newAngular = hPart->GetFloat("MeshAngularDeflection", 28.65);
+void DlgSettings3DViewPart::onApplyToExistingClicked()
+{
+    saveSettings();
 
-    // ParameterGrp stores these preferences as floats. Account for float
-    // rounding so saving an unchanged value does not trigger a reload.
-    const auto hasChanged = [](double before, double after) {
-        const double scale = std::max({1.0, std::abs(before), std::abs(after)});
-        const double tolerance = std::numeric_limits<float>::epsilon() * scale;
-        return std::abs(before - after) > tolerance;
-    };
-    if (!hasChanged(oldDeviation, newDeviation) && !hasChanged(oldAngular, newAngular)) {
-        return;
-    }
-
-    // search for Part view providers and apply the new settings
-    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (auto it : docs) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
+    // Explicitly apply the saved tessellation preferences to open documents.
+    const auto docs = App::GetApplication().getDocuments();
+    for (App::Document* appDoc : docs) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(appDoc);
         if (!doc) {
             continue;
         }
-        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
-            ViewProviderPart::getClassTypeId()
-        );
-        for (auto view : views) {
+
+        const auto views = doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
+        for (Gui::ViewProvider* view : views) {
             static_cast<ViewProviderPart*>(view)->reload();
         }
     }
