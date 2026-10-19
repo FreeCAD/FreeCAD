@@ -327,15 +327,6 @@ def compare_images(
 ) -> tuple[bool, str]:
     from PySide.QtGui import QColor, QImage  # type: ignore
 
-    # Structural Similarity Index (SSIM) provides a more robust signal than raw per-pixel diffs
-    # when tiny rasterization differences occur across platforms/drivers.
-    #
-    # This is a lightweight block-SSIM implementation to avoid non-stdlib deps (e.g. numpy).
-    _SSIM_MIN = 0.97
-    _SSIM_BLOCK = 8
-    _SSIM_C1 = (0.01 * 255.0) ** 2
-    _SSIM_C2 = (0.03 * 255.0) ** 2
-
     expected = QImage(str(expected_path))
     actual = QImage(str(actual_path))
 
@@ -364,20 +355,6 @@ def compare_images(
     diff = QImage(actual.size(), QImage.Format_ARGB32)
     mismatched = 0
 
-    blocks_w = (actual.width() + _SSIM_BLOCK - 1) // _SSIM_BLOCK
-    blocks_h = (actual.height() + _SSIM_BLOCK - 1) // _SSIM_BLOCK
-    blocks_n = blocks_w * blocks_h
-    sum_e = [0.0] * blocks_n
-    sum_a = [0.0] * blocks_n
-    sumsq_e = [0.0] * blocks_n
-    sumsq_a = [0.0] * blocks_n
-    sum_cross = [0.0] * blocks_n
-    count = [0] * blocks_n
-
-    def _luma(r: int, g: int, b: int) -> float:
-        # Integer-ish Rec.709 luma approximation (coeffs sum to 256).
-        return float((54 * r + 183 * g + 19 * b) >> 8)
-
     for y in range(actual.height()):
         for x in range(actual.width()):
             ep = expected.pixel(x, y)
@@ -392,18 +369,6 @@ def compare_images(
             ag = (ap >> 8) & 0xFF
             ab = ap & 0xFF
             aa = (ap >> 24) & 0xFF
-
-            by = y // _SSIM_BLOCK
-            bx = x // _SSIM_BLOCK
-            bi = by * blocks_w + bx
-            ye = _luma(er, eg, eb)
-            ya = _luma(ar, ag, ab)
-            sum_e[bi] += ye
-            sum_a[bi] += ya
-            sumsq_e[bi] += ye * ye
-            sumsq_a[bi] += ya * ya
-            sum_cross[bi] += ye * ya
-            count[bi] += 1
 
             dr = abs(er - ar)
             dg = abs(eg - ag)
@@ -422,46 +387,11 @@ def compare_images(
         diff_path.parent.mkdir(parents=True, exist_ok=True)
         diff.save(str(diff_path))
 
-    ssim_total = 0.0
-    ssim_blocks = 0
-    for i in range(blocks_n):
-        n = count[i]
-        if n <= 0:
-            continue
-        mu_e = sum_e[i] / float(n)
-        mu_a = sum_a[i] / float(n)
-        var_e = (sumsq_e[i] / float(n)) - (mu_e * mu_e)
-        var_a = (sumsq_a[i] / float(n)) - (mu_a * mu_a)
-        cov = (sum_cross[i] / float(n)) - (mu_e * mu_a)
-        if var_e < 0.0:
-            var_e = 0.0
-        if var_a < 0.0:
-            var_a = 0.0
-
-        num = (2.0 * mu_e * mu_a + _SSIM_C1) * (2.0 * cov + _SSIM_C2)
-        den = (mu_e * mu_e + mu_a * mu_a + _SSIM_C1) * (var_e + var_a + _SSIM_C2)
-        if den == 0.0:
-            # Identical constant blocks.
-            ssim = 1.0 if num == 0.0 else 0.0
-        else:
-            ssim = num / den
-        ssim_total += ssim
-        ssim_blocks += 1
-
-    ssim_avg = ssim_total / float(ssim_blocks or 1)
-
     if mismatched > max_mismatched_pixels:
-        if ssim_avg >= _SSIM_MIN:
-            return (
-                True,
-                f"mismatched pixels {mismatched} > {max_mismatched_pixels}, "
-                f"but SSIM={ssim_avg:.4f} >= {_SSIM_MIN:.2f}",
-            )
-
         return (
             False,
             f"mismatched pixels {mismatched} > {max_mismatched_pixels} "
-            f"(tolerance={tolerance}, ignore_alpha={ignore_alpha}, SSIM={ssim_avg:.4f} < {_SSIM_MIN:.2f})",
+            f"(tolerance={tolerance}, ignore_alpha={ignore_alpha})",
         )
 
-    return True, f"mismatched pixels {mismatched} <= {max_mismatched_pixels} (SSIM={ssim_avg:.4f})"
+    return True, f"mismatched pixels {mismatched} <= {max_mismatched_pixels}"
