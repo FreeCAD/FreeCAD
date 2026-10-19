@@ -364,7 +364,7 @@ void GridExtensionP::createGridPart(
 
     isTooManySegmentsNotified = false;
     int vlines = static_cast<int>(verticalLineCount);  // total number of vertical lines
-    int nlines = 2 * vlines;                          // total number of lines
+    int nlines = 2 * vlines;                           // total number of lines
 
     // set the grid indices
     grid->numVertices.setNum(nlines);
