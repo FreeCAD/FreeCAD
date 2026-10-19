@@ -22,6 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
+
 #include <QMessageBox>
 
 
@@ -128,15 +132,24 @@ void DlgSettings3DViewPart::saveSettings()
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
-    const double oldDeviation = hPart->GetFloat("MeshDeviation", 0.5);
-    const double oldAngular = hPart->GetFloat("MeshAngularDeflection", 28.5);
+    // Keep these fallbacks aligned with ViewProviderPartExt::loadParameter().
+    const double oldDeviation = hPart->GetFloat("MeshDeviation", 0.2);
+    const double oldAngular = hPart->GetFloat("MeshAngularDeflection", 28.65);
 
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
 
-    const double newDeviation = hPart->GetFloat("MeshDeviation", 0.5);
-    const double newAngular = hPart->GetFloat("MeshAngularDeflection", 28.5);
-    if (oldDeviation == newDeviation && oldAngular == newAngular) {
+    const double newDeviation = hPart->GetFloat("MeshDeviation", 0.2);
+    const double newAngular = hPart->GetFloat("MeshAngularDeflection", 28.65);
+
+    // ParameterGrp stores these preferences as floats. Account for float
+    // rounding so saving an unchanged value does not trigger a reload.
+    const auto hasChanged = [](double before, double after) {
+        const double scale = std::max({1.0, std::abs(before), std::abs(after)});
+        const double tolerance = std::numeric_limits<float>::epsilon() * scale;
+        return std::abs(before - after) > tolerance;
+    };
+    if (!hasChanged(oldDeviation, newDeviation) && !hasChanged(oldAngular, newAngular)) {
         return;
     }
 
