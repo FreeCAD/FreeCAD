@@ -110,6 +110,19 @@ class CallableCheckExemptionDialogWasClosed:
         self.test.assertIsNone(dialog, "Dialog box was not closed by accept()")
 
 
+class CallableRecordDialog:
+    def __init__(self):
+        self.dialogs = []
+
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        if dialog is not None:
+            self.dialogs.append(
+                dialog.text() if isinstance(dialog, QtGui.QMessageBox) else dialog.windowTitle()
+            )
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
+
+
 App = FreeCAD
 Gui = FreeCADGui
 
@@ -324,6 +337,48 @@ class CreateSketch(unittest.TestCase):
             FreeCADGui.Control.closeDialog()
         App.closeDocument(App.ActiveDocument.Name)
         param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
+
+
+class CreateBody(unittest.TestCase):
+    def runCreateBody(self):
+        recorder = CallableRecordDialog()
+        timer = QtCore.QTimer()
+        timer.setSingleShot(True)
+        timer.timeout.connect(recorder)
+        timer.start(500)
+        Gui.runCommand("PartDesign_Body")
+        timer.stop()
+        return recorder.dialogs
+
+    def testCreateBodyIgnoresSelectionInOtherDocument(self):
+        docA = App.newDocument("CreateBodyDocA")
+        box = docA.addObject("Part::Box", "Box")
+        docA.recompute()
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(box)
+        docB = App.newDocument("CreateBodyDocB")
+        try:
+            self.assertEqual(self.runCreateBody(), [])
+            bodies = [obj for obj in docB.Objects if obj.isDerivedFrom("PartDesign::Body")]
+            self.assertEqual(len(bodies), 1)
+            self.assertIsNone(bodies[0].BaseFeature)
+        finally:
+            App.closeDocument(docB.Name)
+            App.closeDocument(docA.Name)
+
+    def testCreateBodyUsesSelectionInActiveDocument(self):
+        doc = App.newDocument("CreateBodyDoc")
+        box = doc.addObject("Part::Box", "Box")
+        doc.recompute()
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(box)
+        try:
+            self.assertEqual(self.runCreateBody(), [])
+            bodies = [obj for obj in doc.Objects if obj.isDerivedFrom("PartDesign::Body")]
+            self.assertEqual(len(bodies), 1)
+            self.assertEqual(bodies[0].BaseFeature, box)
+        finally:
+            App.closeDocument(doc.Name)
 
 
 # class PartDesignGuiTestCases(unittest.TestCase):
