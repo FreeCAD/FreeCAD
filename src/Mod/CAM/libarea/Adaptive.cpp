@@ -1791,7 +1791,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
         Path64 cpth2;
-        cpth2 = SimplifyPath(cpth, FINISHING_CLEAN_PATH_TOLERANCE);
+        cpth2 = SimplifyPath(cpth, FINISHING_CLEAN_PATH_TOLERANCE, false);
         converted.push_back(cpth2);
     }
     Paths64 inputPaths;
