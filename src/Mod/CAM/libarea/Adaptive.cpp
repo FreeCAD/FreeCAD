@@ -3157,18 +3157,23 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths, Motion
 
 // performs the intersection of the path (subject) and the area (obj), preserving
 // orientation and (closed-path) connectivity
-Paths64 PathIntersectArea(Path64& subject, Paths64& obj, bool isClosed = true)
+Paths64 PathIntersectArea(const Path64& subject, const Paths64& obj, bool isClosed = true)
 {
+    // local copies, since the z-data below must be overwritten
+    Path64 indexedSubject = subject;
+    Paths64 clipObj = obj;
+
     if (isClosed) {
-        subject.push_back(subject[0]);  // close path explicitly before treating it as open
+        // close path explicitly before treating it as open
+        indexedSubject.push_back(indexedSubject[0]);
     }
 
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
-    for (size_t i = 0; i < subject.size(); i++) {
-        subject[i].z = i * 2 + 1;
+    for (size_t i = 0; i < indexedSubject.size(); i++) {
+        indexedSubject[i].z = i * 2 + 1;
     }
-    for (Path64& path : obj) {
+    for (Path64& path : clipObj) {
         for (Point64& p : path) {
             p.z = 0;
         }
@@ -3199,8 +3204,8 @@ Paths64 PathIntersectArea(Path64& subject, Paths64& obj, bool isClosed = true)
     Clipper64 clip;
     clip.PreserveCollinear(true);  // TODO: consider PreserveCollinear on the other Clipper64+SetZCallback near line 1750
     clip.SetZCallback(zfill);
-    clip.AddOpenSubject(Paths64{subject});
-    clip.AddClip(obj);
+    clip.AddOpenSubject(Paths64 {indexedSubject});
+    clip.AddClip(clipObj);
     Paths64 closed, diff;
     clip.Execute(ClipType::Intersection, FillRule::EvenOdd, closed, diff);
 
@@ -3219,7 +3224,7 @@ Paths64 PathIntersectArea(Path64& subject, Paths64& obj, bool isClosed = true)
 
     // collect result, joining any path that goes through the end point
     const int zstart = 1;
-    const int zend = subject.size() * 2 - 1;
+    const int zend = indexedSubject.size() * 2 - 1;
     std::optional<Path64> start, end;
     Paths64 result;
     for (Path64& p : diff) {
@@ -3725,8 +3730,7 @@ void Adaptive2d::ProcessPolyNode(
             // clip with tbpMinus instead of toolBoundPaths to ensure that all
             // resulting points are inside toolBoundPaths, and not rounded to an
             // integer coordinate outside of it
-            Paths64 tbpMinusCopy = tbpMinus;
-            Paths64 openPaths = PathIntersectArea(rotated, tbpMinusCopy);
+            Paths64 openPaths = PathIntersectArea(rotated, tbpMinus);
 
             for (Path64& open : openPaths) {
                 bool added = false;
