@@ -171,7 +171,11 @@ private:
         long& helixRadiusScaled,
         AdaptiveOutput& adaptiveOutput
     );
-    std::pair<double, double> CalcCutArea(Clipper2Lib::Point64 c1, Clipper2Lib::Point64 c2, ClearedArea& clearedArea);
+    std::pair<double, double> CalcCutArea(
+        Clipper2Lib::Point64 c1,
+        Clipper2Lib::Point64 c2,
+        ClearedArea& clearedArea
+    );
     std::optional<TPaths> FindLinkPath(
         const std::optional<Clipper2Lib::Point64>& prevPoint,
         const Clipper2Lib::Point64& pathStart,
@@ -187,7 +191,11 @@ private:
         ClearedArea& cleared,
         const Clipper2Lib::Paths64& toolBoundPaths
     );
-    bool IsClearPath(const Clipper2Lib::Path64& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
+    bool IsClearPath(
+        const Clipper2Lib::Path64& path,
+        ClearedArea& clearedArea,
+        double safetyDistanceScaled = 0
+    );
     bool IsAllowedToCutTrough(
         const Clipper2Lib::Point64& p1,
         const Clipper2Lib::Point64& p2,

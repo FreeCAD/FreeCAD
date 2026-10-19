@@ -278,7 +278,8 @@ void appendDirectChildPaths(Paths64& outPaths, const Path64& path, const Paths64
 {
     int nesting = getPathNestingLevel(path, paths);
     for (const auto& other : paths) {
-        if (!path.empty() && !other.empty() && PointInPolygon(other.front(), path) != PointInPolygonResult::IsOutside) {
+        if (!path.empty() && !other.empty()
+            && PointInPolygon(other.front(), path) != PointInPolygonResult::IsOutside) {
             if (getPathNestingLevel(other, paths) == nesting + 1) {
                 outPaths.push_back(other);
             }
@@ -1017,7 +1018,7 @@ public:
             bbPath.push_back(Point64(toolPos.x + deltaWindow, toolPos.y - deltaWindow));
             bbPath.push_back(Point64(toolPos.x + deltaWindow, toolPos.y + deltaWindow));
             bbPath.push_back(Point64(toolPos.x - deltaWindow, toolPos.y + deltaWindow));
-            clearedBoundedWindow = Intersect(Paths64{bbPath}, clearedPaths, FillRule::EvenOdd);
+            clearedBoundedWindow = Intersect(Paths64 {bbPath}, clearedPaths, FillRule::EvenOdd);
         }
 
         // finally, perform the query using data from the window
@@ -1029,7 +1030,7 @@ public:
         bbPath.push_back(Point64(toolPos.x + delta, toolPos.y - delta));
         bbPath.push_back(Point64(toolPos.x + delta, toolPos.y + delta));
         bbPath.push_back(Point64(toolPos.x - delta, toolPos.y + delta));
-        clearedBoundedClipped = Intersect(Paths64{bbPath}, clearedBoundedWindow, FillRule::EvenOdd);
+        clearedBoundedClipped = Intersect(Paths64 {bbPath}, clearedBoundedWindow, FillRule::EvenOdd);
 
         bboxClippedInvalid = false;
         return clearedBoundedClipped;
@@ -2391,7 +2392,8 @@ bool Adaptive2d::FindEntryPoint(
         // we need to break simetry and try again
         for (size_t j = 0; j < checkPaths.size(); j++) {
             PointInPolygonResult pip = PointInPolygon(entryPoint, checkPaths[j]);
-            if ((j == 0 && pip == PointInPolygonResult::IsOutside) || (j > 0 && pip != PointInPolygonResult::IsOutside)) {
+            if ((j == 0 && pip == PointInPolygonResult::IsOutside)
+                || (j > 0 && pip != PointInPolygonResult::IsOutside)) {
                 found = false;
                 break;
             }
@@ -2400,7 +2402,8 @@ bool Adaptive2d::FindEntryPoint(
         const auto checkHelixFit = [&](long testHelixRadiusScaled) {
             Path64 p1;
             p1.push_back(entryPoint);
-            clearedPaths = OffsetPath(p1, (double)(testHelixRadiusScaled + toolRadiusScaled), EndType::Round);
+            clearedPaths
+                = OffsetPath(p1, (double)(testHelixRadiusScaled + toolRadiusScaled), EndType::Round);
             clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
             // we got first cleared area - check if it is crossing boundary
             Paths64 crossing = Difference(clearedPaths, boundPaths, FillRule::EvenOdd);
@@ -2441,7 +2444,7 @@ bool Adaptive2d::FindEntryPoint(
             rect.push_back(Point64(bounds.left, (bounds.top + bounds.bottom) / 2));
             rect.push_back(Point64((bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2));
             rect.push_back(Point64((bounds.left + bounds.right) / 2, bounds.bottom));
-            checkPaths = Intersect(Paths64{rect}, checkPaths, FillRule::EvenOdd);
+            checkPaths = Intersect(Paths64 {rect}, checkPaths, FillRule::EvenOdd);
         }
         if (found) {
             break;
@@ -2518,10 +2521,7 @@ bool Adaptive2d::IsAllowedToCutTrough(
         stepSize = distance / steps;
         for (long i = 1; i <= steps; i++) {
             double p = double(i) / steps;
-            Point64 toolPos2(
-                long(p1.x + double(p2.x - p1.x) * p),
-                long(p1.y + double(p2.y - p1.y) * p)
-            );
+            Point64 toolPos2(long(p1.x + double(p2.x - p1.x) * p), long(p1.y + double(p2.y - p1.y) * p));
             double area = CalcCutArea(toolPos1, toolPos2, cleared).first;
             // if we are cutting above optimal -> not clear to cut
             if (area > areaFactor * stepSize * optimalCutAreaPD) {
@@ -2747,7 +2747,7 @@ bool Adaptive2d::MakeLeadPath(
         return false;
     }
 
-    if (getPathNestingLevel(Path64{beaconPoint}, cleared) % 2 == 0) {
+    if (getPathNestingLevel(Path64 {beaconPoint}, cleared) % 2 == 0) {
         Point64 clp;  // to store closest point
         size_t clpPathIndex;
         size_t clpSegmentIndex;
@@ -2794,7 +2794,7 @@ bool Adaptive2d::MakeLeadPath(
             NormalizeV(nextDir);
 
             // check if cleared
-            if (getPathNestingLevel(Path64{currentPoint}, cleared) % 2 == 1) {
+            if (getPathNestingLevel(Path64 {currentPoint}, cleared) % 2 == 1) {
                 if (!clearedStartLen) {
                     clearedStartLen = {pathLen};
                 }
@@ -2810,7 +2810,7 @@ bool Adaptive2d::MakeLeadPath(
 
             // if traveled too far without getting to a clear area, exit with failure
             if (pathLen > maxLength) {
-                if (getPathNestingLevel(Path64{currentPoint}, clearedArea.GetCleared()) % 2 == 1) {
+                if (getPathNestingLevel(Path64 {currentPoint}, clearedArea.GetCleared()) % 2 == 1) {
                     return true;
                 }
                 else {
@@ -3092,7 +3092,7 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
 
                 Point64 p2 = leadOutPath.back();
                 Point64 p1 = leadOutPath.size() >= 2 ? leadOutPath[leadOutPath.size() - 2]
-                                                      : prevPoint;
+                                                     : prevPoint;
                 PointD dir = DirectionV(p1, p2);
 
                 result = {{p2, dir}};
@@ -3178,31 +3178,33 @@ Paths64 PathIntersectArea(const Path64& subject, const Paths64& obj, bool isClos
             p.z = 0;
         }
     }
-    auto zfill = [](const Point64& e1b, const Point64& e1t, const Point64& e2b, const Point64& e2t, Point64& p) {
-        // If the x/y value is an exact match preserve z
-        if (e1b.z != 0 && e1b.x == p.x && e1b.y == p.y) {
-            p.z = e1b.z;
-        }
-        else if (e1t.z != 0 && e1t.x == p.x && e1t.y == p.y) {
-            p.z = e1t.z;
-        }
-        else if (e2b.z != 0 && e2b.x == p.x && e2b.y == p.y) {
-            p.z = e2b.z;
-        }
-        else if (e2t.z != 0 && e2t.x == p.x && e2t.y == p.y) {
-            p.z = e2t.z;
-        }
-        // Otherwise, set the z to the even number in between
-        else if (e1b.z != 0 && e1t.z != 0) {
-            p.z = (e1b.z + e1t.z) / 2;
-        }
-        else if (e2b.z != 0 && e2t.z != 0) {
-            p.z = (e2b.z + e2t.z) / 2;
-        }
-    };
+    auto zfill =
+        [](const Point64& e1b, const Point64& e1t, const Point64& e2b, const Point64& e2t, Point64& p) {
+            // If the x/y value is an exact match preserve z
+            if (e1b.z != 0 && e1b.x == p.x && e1b.y == p.y) {
+                p.z = e1b.z;
+            }
+            else if (e1t.z != 0 && e1t.x == p.x && e1t.y == p.y) {
+                p.z = e1t.z;
+            }
+            else if (e2b.z != 0 && e2b.x == p.x && e2b.y == p.y) {
+                p.z = e2b.z;
+            }
+            else if (e2t.z != 0 && e2t.x == p.x && e2t.y == p.y) {
+                p.z = e2t.z;
+            }
+            // Otherwise, set the z to the even number in between
+            else if (e1b.z != 0 && e1t.z != 0) {
+                p.z = (e1b.z + e1t.z) / 2;
+            }
+            else if (e2b.z != 0 && e2t.z != 0) {
+                p.z = (e2b.z + e2t.z) / 2;
+            }
+        };
 
     Clipper64 clip;
-    clip.PreserveCollinear(true);  // TODO: consider PreserveCollinear on the other Clipper64+SetZCallback near line 1750
+    clip.PreserveCollinear(true);  // TODO: consider PreserveCollinear on the other
+                                   // Clipper64+SetZCallback near line 1750
     clip.SetZCallback(zfill);
     clip.AddOpenSubject(Paths64 {indexedSubject});
     clip.AddClip(clipObj);
