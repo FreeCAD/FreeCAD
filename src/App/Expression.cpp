@@ -1609,6 +1609,8 @@ Expression *OperatorExpression::_copy() const
 
 int OperatorExpression::priority() const
 {
+    // Keep these priorities in sync with the precedence declarations
+    // in Expression.y.
     switch (op) {
     case EQ:
     case NEQ:
@@ -1624,12 +1626,14 @@ int OperatorExpression::priority() const
     case DIV:
     case MOD:
         return 4;
-    case POW:
-        return 5;
     case UNIT:
-    case NEG:
-    case POS:
+        return 5;
+    case POW:
         return 6;
+    case NEG:
+        return 7;
+    case POS:
+        return 8;
     default:
         assert(false);
         return 0;
