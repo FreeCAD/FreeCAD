@@ -79,6 +79,28 @@ using namespace Gui;
 namespace
 {
 
+std::optional<Base::Matrix4D> standaloneLinearPatternEditingTransform(
+    ViewProviderTransformed* view,
+    PartDesign::Transformed* pattern
+)
+{
+    if (!freecad_cast<PartDesign::LinearPattern*>(pattern) || !view
+        || view->getObject() != pattern) {
+        return std::nullopt;
+    }
+    auto* document = Gui::Application::Instance->editDocument([view](Gui::Document* doc) {
+        return doc->getEditViewProvider() == view;
+    });
+    if (!document) {
+        return std::nullopt;
+    }
+    const auto& transform = document->getEditingTransform();
+    if (transform.hasScale() != Base::ScaleType::NoScaling) {
+        return std::nullopt;
+    }
+    return transform;
+}
+
 std::optional<Base::Vector3d> shapeCenter(const TopoDS_Shape& shape)
 {
     if (shape.IsNull()) {
@@ -243,7 +265,16 @@ void TaskPatternParameters::recomputePatternFeature()
 
 Base::Vector3d TaskPatternParameters::getPatternStartPoint() const
 {
-    return getStartPoint();
+    const auto point = getStartPoint();
+    auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
+    if (const auto transform = standaloneLinearPatternEditingTransform(getTopTransformedView(), pattern)) {
+        // getStartPoint is already in Body coordinates; return to the pattern's
+        // local frame before applying its complete selected-occurrence transform.
+        Base::Vector3d localPoint;
+        pattern->Placement.getValue().inverse().multVec(point, localPoint);
+        return *transform * localPoint;
+    }
+    return point;
 }
 
 Base::Vector3d TaskPatternParameters::getLinearPatternFallbackDirection(
@@ -266,6 +297,10 @@ Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
         return direction;
     }
 
+    if (const auto transform = standaloneLinearPatternEditingTransform(getTopTransformedView(), transformed)) {
+        return transform->getCol(0) * direction.x + transform->getCol(1) * direction.y
+            + transform->getCol(2) * direction.z;
+    }
     return transformedVector(direction, transformed->getLocation().Transformation());
 }
 
