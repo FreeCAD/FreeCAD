@@ -43,6 +43,7 @@ from parttests.TestLinkArrayPoint import TestLinkArrayPoint
 from parttests.TestPartMirror import TestPartMirroringRegression
 from parttests.TestFaceMakerUnifiedPlanar import *
 from parttests.TestFaceMakerUnifiedNonPlanar import *
+from parttests.TestLoftValidation import LoftValidationTest
 
 
 # ---------------------------------------------------------------------------
