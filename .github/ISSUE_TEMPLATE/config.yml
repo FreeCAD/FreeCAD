@@ -1,20 +1,15 @@
-
 blank_issues_enabled : false
 
 contact_links:
 
--   about : Join the community on our Discord.
-    name : 💬 𝗗𝗶𝘀𝗰𝗼𝗿𝗱
-    url : https://discord.gg/w2cTKGzccC
-
--   about : Join the community on our Forum.
-    name : 💬 𝗙𝗼𝗿𝘂𝗺
-    url : https://forum.freecad.org
-
--   about : Read on how FreeCAD is developed.
-    name : 📕 𝗛𝗮𝗻𝗱𝗯𝗼𝗼𝗸
-    url : https://freecad.github.io/DevelopersHandbook
-
--   about : Look up information about FreeCAD.
-    name : 🌐 𝗪𝗶𝗸𝗶
+-   about : Documentação do FreeCAD, que vale também para o FreeCAD Sework.
+    name : 🌐 Wiki do FreeCAD
     url : https://wiki.freecad.org
+
+-   about : Problemas que também acontecem no FreeCAD original.
+    name : 🐞 Issues do FreeCAD original
+    url : https://github.com/FreeCAD/FreeCAD/issues
+
+-   about : Fórum da comunidade do FreeCAD (em inglês e outros idiomas).
+    name : 💬 Fórum do FreeCAD
+    url : https://forum.freecad.org

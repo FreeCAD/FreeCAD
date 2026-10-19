@@ -1,90 +1,93 @@
-name: Report a Problem
-description: Have you found something that does not work well, is too hard to do or is missing altogether? Please create a Problem Report.
+name: Relatar um problema
+description: Encontrou algo que não funciona bem, é difícil de fazer ou está faltando? Crie um relato de problema.
 labels: ["Status: Needs triage","Status: Needs confirmation"]
 body:
   - type: markdown
     attributes:
       value: |
-        
+
         > [!TIP]
-        > If this is your first time, read [how to report an issue to FreeCAD][Guide].
-        > If you use AI, read [our AI policy][AIPolicy] prior to reporting. Using LLMs to communicate is not allowed.
-        
-        [Guide]: https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues
-        [AIPolicy]: https://github.com/FreeCAD/FreeCAD/blob/main/AI_POLICY.md
+        > Se é a primeira vez, leia [como relatar um problema][Guia].
+        > Se usar IA, leia [nossa política de IA][PoliticaIA] antes. Não é permitido usar IA para escrever o relato.
+        > Se o problema também acontece no FreeCAD original, ele deve ser relatado no [repositório do FreeCAD][FreeCAD].
+
+        [Guia]: https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/README.md#como-relatar-problemas
+        [PoliticaIA]: https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/AI_POLICY.md
+        [FreeCAD]: https://github.com/FreeCAD/FreeCAD/issues
 
   - type: textarea
     id: description
     attributes:
-      label: Problem description
-      description: Describe the problem and how it impacts user experience, workflow, maintainability or performance. You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first.
-      placeholder: Describe your problem briefly.
+      label: Descrição do problema
+      description: Descreva o problema e como ele afeta o uso, o fluxo de trabalho ou o desempenho. Para anexar imagens ou registros, clique nesta área e arraste os arquivos. Para anexar um arquivo FCStd, compacte-o em ZIP antes.
+      placeholder: Descreva o problema em poucas linhas.
     validations:
       required: true
 
   - type: dropdown
     id: wb
     attributes:
-      label: Workbench affected?
+      label: Área afetada
       options:
-        - Assembly
+        - Complemento Sework (faixa, tela inicial, tradução, tema)
+        - Assistente de simulação Sework
+        - Tutorial da primeira peça
+        - Instalador
+        - Assembly (Montagem)
         - BIM
         - CAM
-        - Core (App, Gui,...)
+        - Núcleo (App, Gui,...)
         - Draft
-        - FEM
+        - FEM (Simulação)
         - Material
-        - Measurement
-        - Mesh
-        - Part
-        - Part Design
-        - Sketcher
-        - Spreadsheet
-        - TechDraw
-        - Other (specify in description)
+        - Medição
+        - Mesh (Malha)
+        - Part (Sólidos)
+        - Part Design (Peça)
+        - Sketcher (Esboço)
+        - Spreadsheet (Planilha)
+        - TechDraw (Desenho)
+        - Outra (especifique na descrição)
 
   - type: textarea
     id: steps_to_reproduce
     attributes:
-      label: Steps to reproduce
-      description: If the problem appears to be a bug with the current functionality, provide a test case or recipe that reliably reproduces the issue. Ideally [record a macro](https://wiki.freecad.org/Std_DlgMacroRecord) and attach it. Please also add an example file as ZIP.
+      label: Passos para reproduzir
+      description: Se parece ser um defeito, descreva um roteiro que reproduza o problema sempre. O ideal é [gravar uma macro](https://wiki.freecad.org/Std_DlgMacroRecord) e anexá-la, junto com um arquivo de exemplo em ZIP.
       placeholder: |
-        Drag an example file as ZIP into this textbox to attach it.
+        Arraste um arquivo de exemplo em ZIP para esta caixa para anexá-lo.
 
-        Steps to reproduce the behavior:
-        1. Open my example file
-        2. Go to '...'
-        3. Click on '...'
+        Passos para reproduzir:
+        1. Abra o arquivo de exemplo
+        2. Vá até '...'
+        3. Clique em '...'
     validations:
       required: true
 
   - type: textarea
     id: expected_behavior
     attributes:
-      label: Expected behavior
-      description: A clear and concise description of what you expected to happen when following the provided steps above.
-      placeholder: What is the expected behavior?
+      label: Comportamento esperado
+      description: Descreva de forma clara e objetiva o que você esperava que acontecesse seguindo os passos acima.
+      placeholder: O que deveria acontecer?
     validations:
       required: true
 
   - type: textarea
     id: actual_behavior
     attributes:
-      label: Actual behavior
-      description: A clear and concise description of what actually happens. If applicable, add screenshots to help explain the problem.
-      placeholder: What is actually happening? You can add screenshorts or videos by dragging them into this textbox.
+      label: Comportamento atual
+      description: Descreva de forma clara e objetiva o que acontece de fato. Se ajudar, inclua capturas de tela.
+      placeholder: O que está acontecendo? Você pode arrastar imagens ou vídeos para esta caixa.
     validations:
       required: true
 
   - type: textarea
     id: dev_version
     attributes:
-      label: Development version About Info (in Safe Mode)
-      description: Download the latest weekly [development release](https://github.com/FreeCAD/FreeCAD/releases) and try reproducing the issue in safe mode (Help → Restart in Safe Mode). Use the [About FreeCAD](https://wiki.freecad.org/About) dialog to copy your full version information and paste it here.
-      placeholder: |
-        1. Download the latest weekly development version (link above).
-        2. Make sure to run in Safe Mode (Help -> Restart in Safe Mode) to exclude interference from 3rd party addons.
-        3. If the issue is still reproducible, open the About FreeCAD dialog and copy the full version info here.
+      label: Informações da versão
+      description: Abra Ajuda → Sobre o FreeCAD, clique em "Copiar para a área de transferência" e cole aqui. Se possível, confira se o problema continua no modo de segurança (Ajuda → Reiniciar no modo de segurança).
+      placeholder: Cole aqui as informações copiadas de "Sobre o FreeCAD".
       render: shell
     validations:
       required: true
@@ -92,7 +95,7 @@ body:
   - type: textarea
     id: good_version
     attributes:
-      label: Last known good version (optional)
-      description: If this is a regression, paste the [About FreeCAD](https://wiki.freecad.org/About) info from the last known working version.
-      placeholder: If the problem did not exist in a previous version, paste the About FreeCAD info from that version here.
+      label: Última versão que funcionava (opcional)
+      description: Se o problema não existia em uma versão anterior, cole aqui as informações de "Sobre o FreeCAD" daquela versão.
+      placeholder: Informações de "Sobre o FreeCAD" da última versão sem o problema.
       render: shell

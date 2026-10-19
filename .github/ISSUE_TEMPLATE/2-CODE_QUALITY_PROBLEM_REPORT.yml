@@ -1,103 +1,102 @@
-name: Report a Code Quality Issue
-description: Report problems related to code structure, maintainability, performance, correctness, or technical debt that do not directly affect end-user behavior.
+name: Relatar um problema de qualidade de código
+description: Problemas de estrutura, manutenção, desempenho, correção ou dívida técnica que não afetam diretamente o uso.
 labels: ["Status: Needs triage", "Status: Needs confirmation", "Type: Code Quality"]
-type: "Code Quality"
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to help improve FreeCAD's code quality!
+        Obrigado por ajudar a melhorar a qualidade do código do FreeCAD Sework!
 
         > [!NOTE]
-        > This form is intended **only for code quality issues**, such as:
-        > - Architectural or design problems
-        > - Maintainability or readability issues
-        > - Performance or scalability concerns
-        > - Incorrect abstractions, layering violations, or technical debt
+        > Este formulário é **somente para problemas de qualidade de código**, como:
+        > - Problemas de arquitetura ou de projeto
+        > - Dificuldade de manutenção ou de leitura
+        > - Desempenho ou escalabilidade
+        > - Abstrações inadequadas, violação de camadas ou dívida técnica
         >
-        > If the issue affects user-visible behavior, workflows, or UI, please use the regular **Report Problem** form instead.
+        > Se o problema afeta o comportamento visível, o fluxo de trabalho ou a interface, use o formulário **Relatar um problema**.
 
-        Please [search existing issues](https://github.com/FreeCAD/FreeCAD/issues) before submitting.
-        By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md).
+        [Procure nas issues existentes](https://github.com/sework-engenharia/FreeCAD-Sework/issues) antes de enviar.
+        Ao enviar, você concorda em seguir nosso [Código de Conduta](https://github.com/sework-engenharia/FreeCAD-Sework/blob/sework-main/CODE_OF_CONDUCT.md).
 
   - type: dropdown
     id: wb
     attributes:
-      label: Area / Workbench affected
-      description: Select the primary area affected by the code quality issue.
+      label: Área afetada
+      description: Escolha a área principal afetada.
       options:
-        - Assembly
+        - Complemento Sework
+        - Roteiros de compilação e instalador
+        - Assembly (Montagem)
         - BIM
         - CAM
-        - Core (App, Gui, Base, ...)
+        - Núcleo (App, Gui, Base, ...)
         - Draft
-        - FEM
+        - FEM (Simulação)
         - Material
-        - Measurement
-        - Mesh
-        - Part
-        - Part Design
-        - Sketcher
-        - Spreadsheet
-        - TechDraw
-        - Build system / CI
-        - Documentation
-        - Other (specify below)
+        - Medição
+        - Mesh (Malha)
+        - Part (Sólidos)
+        - Part Design (Peça)
+        - Sketcher (Esboço)
+        - Spreadsheet (Planilha)
+        - TechDraw (Desenho)
+        - Documentação
+        - Outra (especifique abaixo)
 
   - type: textarea
     id: description
     attributes:
-      label: Problem description
+      label: Descrição do problema
       description: |
-        Describe the code quality issue clearly.
-        Focus on *why* the current implementation is problematic (e.g. maintainability, performance, correctness, extensibility).
-        Reference files, classes, functions, or modules where applicable.
+        Descreva o problema com clareza.
+        Explique *por que* a implementação atual é problemática (manutenção, desempenho, correção, extensibilidade).
+        Cite arquivos, classes, funções ou módulos quando for o caso.
       placeholder: |
-        Example:
-        - Class X violates dependency rules by including Y
-        - Function Z mixes responsibilities and is hard to reason about
-        - Algorithm has unnecessary complexity or poor performance characteristics
+        Exemplos:
+        - A classe X depende de Y, violando as regras de dependência
+        - A função Z mistura responsabilidades e é difícil de entender
+        - O algoritmo tem complexidade desnecessária ou desempenho ruim
     validations:
       required: true
 
   - type: textarea
     id: impact
     attributes:
-      label: Impact
+      label: Impacto
       description: |
-        Explain the practical impact of this issue.
-        For example: increased maintenance cost, higher bug risk, performance degradation, difficulty extending functionality, or CI/build issues.
-      placeholder: Describe how this affects the codebase long-term.
+        Explique o efeito prático do problema.
+        Por exemplo: custo de manutenção maior, mais risco de defeitos, perda de desempenho, dificuldade de evoluir ou problemas na compilação.
+      placeholder: Descreva como isso afeta o código a longo prazo.
     validations:
       required: true
 
   - type: textarea
     id: proposed_solution
     attributes:
-      label: Suggested improvement (optional)
+      label: Sugestão de melhoria (opcional)
       description: |
-        If you have ideas on how to address the issue, outline them here.
-        This can include refactoring suggestions, alternative designs, or references to best practices.
-      placeholder: Optional — leave empty if unsure.
+        Se tiver ideias de como resolver, descreva aqui.
+        Pode incluir sugestões de reorganização, alternativas de projeto ou referências a boas práticas.
+      placeholder: Opcional; deixe em branco se não tiver certeza.
 
   - type: textarea
     id: references
     attributes:
-      label: References / evidence
+      label: Referências e evidências
       description: |
-        Add relevant references such as:
-        - File paths or code snippets
-        - Related issues or pull requests
-        - Benchmarks, logs, or static analysis results
-      placeholder: Links, snippets, or related issues.
+        Inclua referências relevantes, como:
+        - Caminhos de arquivos ou trechos de código
+        - Issues ou pull requests relacionados
+        - Medições, registros ou resultados de análise estática
+      placeholder: Links, trechos ou issues relacionadas.
 
   - type: textarea
     id: dev_version
     attributes:
-      label: Development version (if relevant)
+      label: Versão (se for relevante)
       description: |
-        If the issue is version-specific or recently introduced, paste the output from the
-        **About FreeCAD** dialog of a development build.
-        Otherwise, this can be left empty.
-      placeholder: Paste About FreeCAD information here.
+        Se o problema é de uma versão específica ou surgiu recentemente, cole as informações de
+        **Sobre o FreeCAD**. Caso contrário, deixe em branco.
+      placeholder: Cole aqui as informações de "Sobre o FreeCAD".
       render: shell

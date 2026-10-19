@@ -1,110 +1,135 @@
-<a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
+<img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px" alt="FreeCAD Sework">
 
-### Your own 3D Parametric Modeler
+# FreeCAD Sework
 
-[Website](https://www.freecad.org) •
-[Documentation](https://wiki.freecad.org) •
-[Forum](https://forum.freecad.org/) •
-[Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
-[Git repository](https://github.com/FreeCAD/FreeCAD) •
-[Blog](https://blog.freecad.org)
+### Modelagem 3D paramétrica em português, com a cara e as ferramentas da Sework Engenharia
 
+[Problemas e sugestões](https://github.com/sework-engenharia/FreeCAD-Sework/issues) •
+[Como contribuir](CONTRIBUTING.md) •
+[FreeCAD original](https://github.com/FreeCAD/FreeCAD) •
+[Documentação do FreeCAD](https://wiki.freecad.org)
 
-[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
+<img src="/.github/images/sework/02-peca.png" width="800" alt="Peça modelada no FreeCAD Sework">
 
-<img src="/.github/images/partdesign.jpg" width="800"/>
-
-Overview
---------
-
-* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D
-modeler for designing real-life objects of any size. Parametric modeling lets
-you modify a design by changing parameters in its model history.
-
-* **Create 3D from 2D and back** FreeCAD lets you sketch geometry-constrained
-2D shapes and use them as a base to build other objects. It also provides tools
-to adjust dimensions and create high-quality production drawings from 3D models.
-
-* **Designed for your needs** FreeCAD is designed to fit a wide range of uses
-including product design, mechanical engineering and architecture,
-whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
-
-* **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
-
-* **Underlying technology**
-    * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
-    * **Coin3D library** Open Inventor-compliant 3D scene representation model
-    * **Python** FreeCAD offers a broad Python API
-    * **Qt** Graphical user interface built with Qt
-
-
-Installing
-----------
-
-Precompiled packages for stable releases are available for Windows, macOS and Linux on the
-[latest releases page](https://github.com/FreeCAD/FreeCAD/releases/latest).
-
-On most Linux distributions, FreeCAD is also directly installable from the 
-software center application.
-
-For weekly development releases visit the [releases page](https://github.com/FreeCAD/FreeCAD/releases/).
-
-Other options are described on the [wiki Download page](https://wiki.freecad.org/Download).
-
-Compiling
----------
-
-See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
-for build instructions.
-
-
-Reporting Issues
----------
-
-To report an issue please:
-
-- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/w2cTKGzccC) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
-- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
-- Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD/releases/) of FreeCAD; 
-- Post version info from `Help > About FreeCAD > Copy to clipboard`; 
-- Restart FreeCAD in safe mode `Help > Restart in safe mode` and try to reproduce the issue again. If the issue is resolved it can be fixed by deleting the FreeCAD config files.
-- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
-- Post a Step-By-Step explanation on how to recreate the issue; 
-- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
-
-For more details see:
-
-- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
-- [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
-- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
-- [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
+O FreeCAD Sework é uma distribuição do [FreeCAD](https://www.freecad.org), o modelador 3D paramétrico de
+código aberto, preparada pela [Sework Engenharia](https://github.com/sework-engenharia) para quem trabalha com
+projeto mecânico no Brasil. Ele mantém todo o FreeCAD e acrescenta interface em português, identidade visual
+própria e ferramentas que encurtam o caminho entre a ideia e o desenho ou a simulação.
 
 > [!NOTE]
-The [FPA](https://fpa.freecad.org) offers developers the opportunity
-to apply for a grant to work on projects of their choosing. Check
-[jobs and funding](https://blog.freecad.org/jobs/) to know more.
+> Projeto em desenvolvimento. O instalador para Windows está em testes e a versão para Linux está planejada.
+> O FreeCAD Sework não é um projeto oficial do FreeCAD nem é mantido pela comunidade do FreeCAD.
 
+Visão geral
+-----------
 
-Usage & Getting Help
---------------------
+* **Tudo em português** Menus, painéis, nomes de propriedades e opções de listas traduzidos, inclusive termos
+  que a tradução oficial ainda não cobre.
 
-The FreeCAD wiki contains documentation on general usage and Python scripting.
-View these pages for more information:
+* **Faixa de ferramentas** Os comandos principais organizados em abas (Início, Esboço, Peça, Sólidos, Montagem,
+  Desenho, Planilha, Simulação e Sework), com ícones grandes e rótulos claros. A aba Esboço aparece sozinha ao editar
+  um esboço.
 
-- [Getting started](https://wiki.freecad.org/Getting_started)
-- [Features list](https://wiki.freecad.org/Feature_list)
-- [Frequent questions](https://wiki.freecad.org/FAQ/en)
-- [Workbenches](https://wiki.freecad.org/Workbenches)
-- [Scripting](https://wiki.freecad.org/Power_users_hub)
-- [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
+* **Tela inicial** Começa uma peça, montagem, desenho técnico, esboço ou planilha com um clique e mostra os
+  arquivos recentes.
 
-The [FreeCAD forum](https://forum.freecad.org) is a great place
-to find help and solve specific problems when learning to use FreeCAD.
+* **Assistente de simulação** Análise por elementos finitos em etapas guiadas: peça, material, fixações,
+  cargas, malha, verificação de pendências, resultados e relatório em PDF.
 
----
+* **Tutorial da primeira peça** Passo a passo interativo (esboço, cotas, extrusão, furo, arredondamento e
+  salvar) que acompanha o que você faz na tela.
 
-<p>This project receives generous infrastructure support from
-  <a href="https://www.digitalocean.com/">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="91px">
-  </a> and <a href="https://www.kipro-pcb.com/">KiCad Services Corp.</a>
-</p>
+* **Guia ilustrado** Ao editar extrusão, cavidade, furo, arredondamento, chanfro, padrões e outras operações,
+  o painel de tarefas mostra um desenho do que a operação faz no modo escolhido.
+
+* **Identidade visual Sework** Tema claro nas cores da empresa, ícones redesenhados, tela de abertura e
+  modelos de folha A1 a A4 para desenho técnico.
+
+* **Testes automatizados** Um conjunto de testes confere tradução, aparência, assistente de simulação e
+  comportamento da interface a cada versão.
+
+* **Base sólida** Tudo o que o FreeCAD oferece continua disponível: núcleo geométrico OpenCASCADE, cena 3D
+  Coin3D, interface Qt e programação em Python.
+
+Imagens
+-------
+
+| | |
+|:---:|:---:|
+| <img src="/.github/images/sework/01-inicio.png" width="400" alt="Tela inicial"><br>Tela inicial | <img src="/.github/images/sework/03-esboco.png" width="400" alt="Edição de esboço"><br>Esboço com restrições |
+| <img src="/.github/images/sework/04-desenho.png" width="400" alt="Desenho técnico"><br>Desenho técnico no modelo A3 Sework | <img src="/.github/images/sework/05-simulacao.png" width="400" alt="Simulação"><br>Assistente de simulação com resultado de tensões |
+
+Instalação
+----------
+
+O instalador para Windows está em fase de testes e será publicado na
+[página de versões](https://github.com/sework-engenharia/FreeCAD-Sework/releases) assim que estiver aprovado.
+Ele instala o FreeCAD Sework ao lado de um FreeCAD original já existente, sem substituí-lo.
+
+A versão para Linux está planejada para depois da aprovação da versão Windows.
+
+Versões do código
+-----------------
+
+| Ramo | Base | Uso |
+|---|---|---|
+| `sework-1.1` | FreeCAD 1.1.4 (estável) | Versão usada para gerar os instaladores |
+| `sework-main` | Ramo de desenvolvimento do FreeCAD | Onde as novidades são feitas e testadas primeiro |
+
+O complemento Sework (interface, tradução, assistentes e tema) fica em [`sework-addon/`](sework-addon/), os
+roteiros de compilação em [`sework-build/`](sework-build/) e as correções no código do FreeCAD em
+[`sework-patches/`](sework-patches/).
+
+Compilação
+----------
+
+No Windows, o roteiro [`sework-build/compilar.ps1`](sework-build/compilar.ps1) confere os pré-requisitos e
+compila. É preciso:
+
+- Visual Studio 2022 com a carga de trabalho *Desenvolvimento para desktop com C++*;
+- Git for Windows;
+- [pixi](https://pixi.sh);
+- pelo menos 40 GB livres em disco.
+
+Rode `sework-build\compilar.ps1 -SomenteVerificar` para conferir o ambiente e depois sem o parâmetro para
+compilar. Para detalhes gerais sobre a compilação do FreeCAD, veja o
+[Manual do Desenvolvedor do FreeCAD](https://freecad.github.io/DevelopersHandbook/gettingstarted/) (em inglês).
+
+Como relatar problemas
+----------------------
+
+Para relatar um problema:
+
+- Procure nos [problemas já abertos](https://github.com/sework-engenharia/FreeCAD-Sework/issues) para não
+  repetir um relato;
+- Informe a versão em `Ajuda > Sobre o FreeCAD > Copiar para a área de transferência`;
+- Descreva passo a passo como reproduzir o problema;
+- Se puder, anexe um arquivo de exemplo (o `.FCStd` compactado em ZIP);
+- Se o problema também acontece no FreeCAD original, ele provavelmente deve ser relatado no
+  [repositório do FreeCAD](https://github.com/FreeCAD/FreeCAD/issues).
+
+Uso e ajuda
+-----------
+
+Por ser baseado no FreeCAD, toda a documentação dele vale para o FreeCAD Sework (wiki em inglês; muitas
+páginas têm versão em português pelo seletor de idioma):
+
+- [Primeiros passos](https://wiki.freecad.org/Getting_started)
+- [Lista de recursos](https://wiki.freecad.org/Feature_list)
+- [Perguntas frequentes](https://wiki.freecad.org/FAQ)
+- [Bancadas de trabalho](https://wiki.freecad.org/Workbenches)
+- [Programação em Python](https://wiki.freecad.org/Power_users_hub)
+
+Licença
+-------
+
+O FreeCAD Sework é distribuído sob a mesma licença do FreeCAD, a
+[GNU LGPL versão 2.1 ou posterior](LICENSE). O texto da licença é mantido no original em inglês, que é a
+versão com validade jurídica.
+
+Créditos
+--------
+
+O FreeCAD Sework existe graças ao trabalho de milhares de pessoas da comunidade do
+[FreeCAD](https://www.freecad.org), que desenvolvem e mantêm o programa. Se o FreeCAD é útil para
+você, considere [apoiar o projeto original](https://wiki.freecad.org/Donate).
