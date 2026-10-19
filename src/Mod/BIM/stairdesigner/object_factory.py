@@ -7,7 +7,6 @@ import FreeCAD
 from .geometry_core import straight_stair_metrics
 from .geometry_straight import default_concrete_thickness
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -30,6 +29,7 @@ from .object_utils import (
     get_flights,
     sync_all_flight_side_lengths,
 )
+
 
 def _make_flight(
     stair,
@@ -62,11 +62,11 @@ def resize_flights(stair, count, length=None, width=None, rotations=None):
     count = max(int(count), 1)
     flights = get_flights(stair)
     template = flights[-1] if flights else None
-    default_length = length if length is not None else (
-        _flight_length(template) if template else 3500.0
+    default_length = (
+        length if length is not None else (_flight_length(template) if template else 3500.0)
     )
-    default_width = width if width is not None else (
-        _quantity_value(template.Width) if template else 1000.0
+    default_width = (
+        width if width is not None else (_quantity_value(template.Width) if template else 1000.0)
     )
     while len(flights) < count:
         index = len(flights)

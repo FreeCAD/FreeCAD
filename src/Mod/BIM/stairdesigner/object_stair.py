@@ -4,7 +4,6 @@
 
 import FreeCAD
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
@@ -15,6 +14,7 @@ from .object_steps import StairStepsMixin
 from .object_stringers import StairStringerMixin
 
 from .object_handrails import StairHandrailMixin
+
 
 class StairProxy(
     StairStepsMixin,

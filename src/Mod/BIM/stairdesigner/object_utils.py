@@ -6,9 +6,9 @@ import math
 
 import FreeCAD
 
-
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 
 def _add_property(obj, type_id, name, group, description, default=None, editor_mode=None):
     added = False
@@ -33,10 +33,7 @@ def _add_link_property(
     """Add a link with explicit scope, migrating an older link if needed."""
 
     previous = None
-    if (
-        name in obj.PropertiesList
-        and obj.getTypeIdOfProperty(name) != type_id
-    ):
+    if name in obj.PropertiesList and obj.getTypeIdOfProperty(name) != type_id:
         previous = getattr(obj, name)
         obj.setPropertyStatus(name, "-LockDynamic")
         obj.removeProperty(name)
@@ -69,9 +66,7 @@ def get_flights(stair):
     if not group:
         return []
     return [
-        obj
-        for obj in group.Group
-        if getattr(getattr(obj, "Proxy", None), "Type", "") == "Flight"
+        obj for obj in group.Group if getattr(getattr(obj, "Proxy", None), "Type", "") == "Flight"
     ]
 
 
@@ -95,14 +90,11 @@ def _flight_length(flight):
         name in flight.PropertiesList for name in ("InnerRadius", "OuterRadius")
     ):
         center_radius = (
-            _quantity_value(flight.InnerRadius)
-            + _quantity_value(flight.OuterRadius)
+            _quantity_value(flight.InnerRadius) + _quantity_value(flight.OuterRadius)
         ) / 2.0
         sweep = math.radians(min(abs(_quantity_value(flight.Angle)), 359.999))
         return max(center_radius * sweep, 0.01)
-    return (
-        _quantity_value(flight.LeftLength) + _quantity_value(flight.RightLength)
-    ) / 2.0
+    return (_quantity_value(flight.LeftLength) + _quantity_value(flight.RightLength)) / 2.0
 
 
 def _flight_path_dimension(flight):
@@ -121,9 +113,7 @@ def linked_flight_side_lengths(
     """Return linked rail lengths while preserving the requested input."""
 
     difference = max(float(next_width), 0.0) if next_rotation else 0.0
-    signed_difference = (
-        -difference if str(next_rotation) == "Right" else difference
-    )
+    signed_difference = -difference if str(next_rotation) == "Right" else difference
     return linked_flight_side_lengths_for_difference(
         left_length,
         right_length,
@@ -169,10 +159,7 @@ def straight_turn_side_difference(current_width, next_width, angle):
     sine = abs(math.sin(radians))
     if sine < 1e-7:
         return 0.0
-    return (
-        max(float(next_width), 0.0)
-        - max(float(current_width), 0.0) * math.cos(radians)
-    ) / sine
+    return (max(float(next_width), 0.0) - max(float(current_width), 0.0) * math.cos(radians)) / sine
 
 
 def flight_side_length_difference(stair, flight):
@@ -214,20 +201,14 @@ def flight_side_length_difference(stair, flight):
         if str(next_flight.Rotation) == "Right":
             turn_difference = -turn_difference
         difference += turn_difference
-    all_straight = all(
-        str(item.FlightType) == "Straight" for item in flights
-    )
+    all_straight = all(str(item.FlightType) == "Straight" for item in flights)
     if all_straight and index == 0:
         difference += _quantity_value(flight.Width) * math.tan(
-            math.radians(
-                min(max(_quantity_value(flight.StartAngle), -89.0), 89.0)
-            )
+            math.radians(min(max(_quantity_value(flight.StartAngle), -89.0), 89.0))
         )
     if all_straight and index == len(flights) - 1:
         difference -= _quantity_value(flight.Width) * math.tan(
-            math.radians(
-                min(max(_quantity_value(flight.EndAngle), -89.0), 89.0)
-            )
+            math.radians(min(max(_quantity_value(flight.EndAngle), -89.0), 89.0))
         )
     return difference
 
@@ -310,11 +291,7 @@ def _uses_native_container_placement(stair):
 def _child_placement(stair):
     """Return the placement for geometry already expressed in stair space."""
 
-    return (
-        FreeCAD.Placement()
-        if _uses_native_container_placement(stair)
-        else stair.Placement
-    )
+    return FreeCAD.Placement() if _uses_native_container_placement(stair) else stair.Placement
 
 
 def _combined_placement(stair, local_placement):

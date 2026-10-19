@@ -9,13 +9,13 @@ from PySide import QtCore, QtGui
 
 from .object_utils import get_flights
 
-
 translate = FreeCAD.Qt.translate
 
 from .taskpanel_widgets import (
     _load_task_form,
     _value,
 )
+
 
 class HandrailPanelMixin:
     """Task-panel methods grouped by responsibility."""
@@ -53,23 +53,13 @@ class HandrailPanelMixin:
                 "Enables a handrail independently on the left or right side of each flight",
             )
         )
-        self.handrail_tree.header().setSectionResizeMode(
-            0, QtGui.QHeaderView.ResizeToContents
-        )
-        self.handrail_tree.header().setSectionResizeMode(
-            1, QtGui.QHeaderView.Stretch
-        )
+        self.handrail_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        self.handrail_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         self._populate_handrail_tree()
 
-        self.handrail_height.setValue(
-            _value(self.stair.HandrailHeightAboveNosing)
-        )
-        self.handrail_offset.setValue(
-            _value(self.stair.HandrailOffset)
-        )
-        self.handrail_picket_spacing.setValue(
-            _value(self.stair.HandrailPicketMaximumSpacing)
-        )
+        self.handrail_height.setValue(_value(self.stair.HandrailHeightAboveNosing))
+        self.handrail_offset.setValue(_value(self.stair.HandrailOffset))
+        self.handrail_picket_spacing.setValue(_value(self.stair.HandrailPicketMaximumSpacing))
         general_help = {
             self.handrail_height: translate(
                 "BIM",
@@ -101,12 +91,8 @@ class HandrailPanelMixin:
             editor.addItem(translate("BIM", "Square"), "Square")
             editor.addItem(translate("BIM", "Circular"), "Circular")
             self._select_data(editor, value)
-        self.handrail_picket_width.setValue(
-            _value(self.stair.HandrailPicketWidth)
-        )
-        self.handrail_picket_thickness.setValue(
-            _value(self.stair.HandrailPicketThickness)
-        )
+        self.handrail_picket_width.setValue(_value(self.stair.HandrailPicketWidth))
+        self.handrail_picket_thickness.setValue(_value(self.stair.HandrailPicketThickness))
         self.handrail_picket_stringer_penetration.setValue(
             _value(self.stair.HandrailPicketStringerPenetration)
         )
@@ -114,9 +100,7 @@ class HandrailPanelMixin:
             _value(self.stair.HandrailPicketTopRailPenetration)
         )
         picket_help = {
-            self.handrail_picket_shape: translate(
-                "BIM", "Square or circular picket cross-section"
-            ),
+            self.handrail_picket_shape: translate("BIM", "Square or circular picket cross-section"),
             self.handrail_picket_width: translate(
                 "BIM",
                 "Picket width; for a circular picket this is its diameter",
@@ -144,22 +128,12 @@ class HandrailPanelMixin:
                 "Pickets are distributed evenly using the fewest members that respect the maximum clear spacing",
             )
         )
-        self.handrail_post_width.setValue(
-            _value(self.stair.HandrailPostWidth)
-        )
-        self.handrail_post_thickness.setValue(
-            _value(self.stair.HandrailPostThickness)
-        )
-        self.handrail_post_above.setValue(
-            _value(self.stair.HandrailPostAboveTopRail)
-        )
-        self.handrail_post_below.setValue(
-            _value(self.stair.HandrailPostBelowStringer)
-        )
+        self.handrail_post_width.setValue(_value(self.stair.HandrailPostWidth))
+        self.handrail_post_thickness.setValue(_value(self.stair.HandrailPostThickness))
+        self.handrail_post_above.setValue(_value(self.stair.HandrailPostAboveTopRail))
+        self.handrail_post_below.setValue(_value(self.stair.HandrailPostBelowStringer))
         post_help = {
-            self.handrail_post_shape: translate(
-                "BIM", "Square or circular post cross-section."
-            ),
+            self.handrail_post_shape: translate("BIM", "Square or circular post cross-section."),
             self.handrail_post_width: translate(
                 "BIM", "Post width; for a circular post this is its diameter"
             ),
@@ -180,12 +154,8 @@ class HandrailPanelMixin:
             label = widget.ui.postForm.labelForField(editor)
             if label is not None:
                 label.setToolTip(help_text)
-        self.handrail_top_rail_width.setValue(
-            _value(self.stair.HandrailTopRailWidth)
-        )
-        self.handrail_top_rail_thickness.setValue(
-            _value(self.stair.HandrailTopRailThickness)
-        )
+        self.handrail_top_rail_width.setValue(_value(self.stair.HandrailTopRailWidth))
+        self.handrail_top_rail_thickness.setValue(_value(self.stair.HandrailTopRailThickness))
         self.handrail_top_rail_penetration.setValue(
             _value(self.stair.HandrailTopRailPostPenetration)
         )
@@ -234,9 +204,7 @@ class HandrailPanelMixin:
             self.handrail_post_shape,
             self.handrail_top_rail_shape,
         ):
-            editor.currentIndexChanged.connect(
-                self._handrail_shape_changed
-            )
+            editor.currentIndexChanged.connect(self._handrail_shape_changed)
         self._update_handrail_shape_editors()
         return widget
 
@@ -253,28 +221,19 @@ class HandrailPanelMixin:
                 ("Left", translate("BIM", "Left side")),
                 ("Right", translate("BIM", "Right side")),
             ):
-                states = {
-                    bool(getattr(flight, f"{side}HandrailEnabled"))
-                    for flight in flights
-                }
+                states = {bool(getattr(flight, f"{side}HandrailEnabled")) for flight in flights}
                 editor = QtGui.QCheckBox()
                 editor.setTristate(True)
                 editor.setCheckState(
                     QtCore.Qt.PartiallyChecked
                     if len(states) > 1
-                    else (
-                        QtCore.Qt.Checked
-                        if states.pop()
-                        else QtCore.Qt.Unchecked
-                    )
+                    else (QtCore.Qt.Checked if states.pop() else QtCore.Qt.Unchecked)
                 )
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.handrail_tree.setItemWidget(child, 1, editor)
                 self.handrail_all_editors[side] = editor
-                editor.stateChanged.connect(
-                    partial(self._all_handrail_changed, side, editor)
-                )
+                editor.stateChanged.connect(partial(self._all_handrail_changed, side, editor))
             root.setExpanded(True)
 
         for flight in flights:
@@ -287,9 +246,7 @@ class HandrailPanelMixin:
                 ("Right", translate("BIM", "Right side")),
             ):
                 editor = QtGui.QCheckBox()
-                editor.setChecked(
-                    bool(getattr(flight, f"{side}HandrailEnabled"))
-                )
+                editor.setChecked(bool(getattr(flight, f"{side}HandrailEnabled")))
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.handrail_tree.setItemWidget(child, 1, editor)
@@ -332,11 +289,7 @@ class HandrailPanelMixin:
             editor.setCheckState(
                 QtCore.Qt.PartiallyChecked
                 if len(states) > 1
-                else (
-                    QtCore.Qt.Checked
-                    if states.pop()
-                    else QtCore.Qt.Unchecked
-                )
+                else (QtCore.Qt.Checked if states.pop() else QtCore.Qt.Unchecked)
             )
             editor.blockSignals(blocked)
 
@@ -359,10 +312,5 @@ class HandrailPanelMixin:
                 self.handrail_top_rail_thickness,
             ),
         ):
-            circular = (
-                str(
-                    shape_editor.itemData(shape_editor.currentIndex())
-                )
-                == "Circular"
-            )
+            circular = str(shape_editor.itemData(shape_editor.currentIndex())) == "Circular"
             thickness_editor.setEnabled(not circular)

@@ -22,6 +22,7 @@ from .geometry_winders import (
     _winding_controls,
 )
 
+
 def tangent_flight_sections(
     flight_specs,
     tread_count,
@@ -41,14 +42,10 @@ def tangent_flight_sections(
         return [], 0.0
     specs, primitives = _tangent_path_primitives(flight_specs)
     corner_types = list(turn_types or [])
-    corner_types.extend(
-        ["Herse balancing"] * (len(specs) - 1 - len(corner_types))
-    )
+    corner_types.extend(["Herse balancing"] * (len(specs) - 1 - len(corner_types)))
     corner_types = corner_types[: len(specs) - 1]
     modes = _tangent_junction_modes(primitives, corner_types)
-    corner_controls = _winding_controls(
-        len(modes), winding_coefficient, winding_parameters
-    )
+    corner_controls = _winding_controls(len(modes), winding_coefficient, winding_parameters)
     start_trims = [0.0] * len(primitives)
     end_trims = [0.0] * len(primitives)
     for index, mode in enumerate(modes):
@@ -103,9 +100,7 @@ def tangent_flight_sections(
     landing_count = 0
     if start_trims[0] and primitives[0]["type"] == "Straight":
         _append_endpoint_transition(
-            lambda point, width, owner: _append_dense_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: _append_dense_point(chunks[-1], point, width, owner),
             primitives[0]["start"],
             primitives[0]["tangent"],
             primitives[0]["width"],
@@ -135,13 +130,9 @@ def tangent_flight_sections(
         elif mode == "Herse balancing":
             incoming = primitive
             outgoing = primitives[index + 1]
-            curve_start = _primitive_point(
-                incoming, incoming["length"] - end_trims[index]
-            )
+            curve_start = _primitive_point(incoming, incoming["length"] - end_trims[index])
             corner = incoming["end"]
-            curve_end = _primitive_point(
-                outgoing, start_trims[index + 1]
-            )
+            curve_end = _primitive_point(outgoing, start_trims[index + 1])
             for sample in range(1, 65):
                 ratio = sample / 64.0
                 point = _herse_curve_point(
@@ -151,17 +142,13 @@ def tangent_flight_sections(
                     ratio,
                     corner_controls[index][0],
                 )
-                width = incoming["width"] + (
-                    outgoing["width"] - incoming["width"]
-                ) * ratio
+                width = incoming["width"] + (outgoing["width"] - incoming["width"]) * ratio
                 owner = index if ratio < 0.5 else index + 1
                 _append_dense_point(chunks[-1], point, width, owner)
 
     if end_trims[-1] and primitives[-1]["type"] == "Straight":
         _append_endpoint_transition(
-            lambda point, width, owner: _append_dense_point(
-                chunks[-1], point, width, owner
-            ),
+            lambda point, width, owner: _append_dense_point(chunks[-1], point, width, owner),
             primitives[-1]["end"],
             primitives[-1]["end_tangent"],
             primitives[-1]["width"],
@@ -173,31 +160,21 @@ def tangent_flight_sections(
         )
 
     chunk_lengths = [_dense_path_length(chunk) for chunk in chunks]
-    chunk_is_landing = [
-        bool(chunk) and primitives[chunk[0][3]]["is_landing"]
-        for chunk in chunks
-    ]
+    chunk_is_landing = [bool(chunk) and primitives[chunk[0][3]]["is_landing"] for chunk in chunks]
     explicit_landing_count = sum(chunk_is_landing)
     free_tread_count = (
-        tread_count
-        - landing_count
-        - (explicit_landing_count if landing_replaces_tread else 0)
+        tread_count - landing_count - (explicit_landing_count if landing_replaces_tread else 0)
     )
     stair_chunk_indices = [
-        index
-        for index, is_landing in enumerate(chunk_is_landing)
-        if not is_landing
+        index for index, is_landing in enumerate(chunk_is_landing) if not is_landing
     ]
-    required_free_treads = sum(
-        chunk_lengths[index] > 1e-7 for index in stair_chunk_indices
-    )
+    required_free_treads = sum(chunk_lengths[index] > 1e-7 for index in stair_chunk_indices)
     distributed_tread_count = free_tread_count
     if not landing_replaces_tread:
         distributed_tread_count -= explicit_landing_count
     if distributed_tread_count < required_free_treads:
         without_landings = [
-            "Herse balancing" if mode == "Landing" else mode
-            for mode in corner_types
+            "Herse balancing" if mode == "Landing" else mode for mode in corner_types
         ]
         if without_landings == corner_types:
             return [], 0.0
@@ -221,8 +198,7 @@ def tangent_flight_sections(
     )
     if not landing_replaces_tread:
         stair_count_positions = {
-            chunk_index: position
-            for position, chunk_index in enumerate(stair_chunk_indices)
+            chunk_index: position for position, chunk_index in enumerate(stair_chunk_indices)
         }
         for landing_index, is_landing in enumerate(chunk_is_landing):
             if not is_landing:
@@ -245,9 +221,7 @@ def tangent_flight_sections(
                     None,
                 )
             if receiving_index is not None:
-                stair_chunk_counts[
-                    stair_count_positions[receiving_index]
-                ] += 1
+                stair_chunk_counts[stair_count_positions[receiving_index]] += 1
     chunk_tread_counts = [1 if is_landing else 0 for is_landing in chunk_is_landing]
     for index, count in zip(stair_chunk_indices, stair_chunk_counts):
         chunk_tread_counts[index] = count
@@ -256,11 +230,7 @@ def tangent_flight_sections(
     sampled = []
     extra_cursor = 0
     for index, (chunk, count) in enumerate(zip(chunks, chunk_tread_counts)):
-        if (
-            index
-            and separators[index - 1] == "Landing"
-            and not chunk_is_landing[index - 1]
-        ):
+        if index and separators[index - 1] == "Landing" and not chunk_is_landing[index - 1]:
             # A junction landing is the unsampled interval between chunks.
             extra_cursor += 1
         chunk_extras = extras[extra_cursor : extra_cursor + count]
@@ -268,9 +238,7 @@ def tangent_flight_sections(
         extra_cursor += count
         if chunk_is_landing[index]:
             if sampled:
-                sampled[-1]["flight_index"] = chunk_sections[0][
-                    "flight_index"
-                ]
+                sampled[-1]["flight_index"] = chunk_sections[0]["flight_index"]
                 sampled[-1]["landing_to_next"] = True
                 sampled[-1]["level_to_next"] = True
                 sampled.extend(chunk_sections[1:])
@@ -289,9 +257,7 @@ def tangent_flight_sections(
         else:
             sampled.extend(chunk_sections)
 
-    free_length = sum(
-        chunk_lengths[index] for index in stair_chunk_indices
-    )
+    free_length = sum(chunk_lengths[index] for index in stair_chunk_indices)
     nominal_going = free_length / max(free_tread_count, 1)
     sampled_tread_count = max(len(sampled) - 1, 0)
     going, sampled_stations = tread_stations(
@@ -301,12 +267,8 @@ def tangent_flight_sections(
     )
     riser_index = 0
     for index, sample in enumerate(sampled):
-        if (
-            index < len(sampled) - 1
-            and not (
-                not landing_replaces_tread
-                and sample.get("level_to_next", False)
-            )
+        if index < len(sampled) - 1 and not (
+            not landing_replaces_tread and sample.get("level_to_next", False)
         ):
             riser_index += 1
         sample["riser_index"] = riser_index
@@ -326,10 +288,8 @@ def tangent_flight_sections(
                 radial[1] / radial_length,
             )
             center = (
-                primitive["circle_center"][0]
-                + unit_radial[0] * primitive["radius"],
-                primitive["circle_center"][1]
-                + unit_radial[1] * primitive["radius"],
+                primitive["circle_center"][0] + unit_radial[0] * primitive["radius"],
+                primitive["circle_center"][1] + unit_radial[1] * primitive["radius"],
             )
             tangent = (
                 -primitive["sign"] * unit_radial[1],
@@ -358,16 +318,9 @@ def tangent_flight_sections(
                 riser_index=sample["riser_index"],
             )
         )
-    endpoint_specs = [
-        (primitive["length"], primitive["width"], 0.0)
-        for primitive in primitives
-    ]
-    endpoint_vertices = [
-        primitive["start"] for primitive in primitives
-    ] + [primitives[-1]["end"]]
-    endpoint_directions = [
-        primitive["tangent"] for primitive in primitives
-    ]
+    endpoint_specs = [(primitive["length"], primitive["width"], 0.0) for primitive in primitives]
+    endpoint_vertices = [primitive["start"] for primitive in primitives] + [primitives[-1]["end"]]
+    endpoint_directions = [primitive["tangent"] for primitive in primitives]
     sections = _apply_endpoint_boundary_sections(
         sections,
         endpoint_vertices,
@@ -386,20 +339,14 @@ def _tangent_path_primitives(flight_specs):
     specs = []
     for flight_spec in flight_specs:
         flight_type, dimension, width, angle, rotation = flight_spec[:5]
-        entry_direction = (
-            str(flight_spec[5]) if len(flight_spec) > 5 else "Straight"
-        )
-        exit_direction = (
-            str(flight_spec[6]) if len(flight_spec) > 6 else "Straight"
-        )
+        entry_direction = str(flight_spec[5]) if len(flight_spec) > 5 else "Straight"
+        exit_direction = str(flight_spec[6]) if len(flight_spec) > 6 else "Straight"
         requested_type = str(flight_type)
         is_landing = requested_type in {
             "Straight landing",
             "Circular landing",
         }
-        flight_type = (
-            "Circular" if requested_type.startswith("Circular") else "Straight"
-        )
+        flight_type = "Circular" if requested_type.startswith("Circular") else "Straight"
         width = max(float(width), 0.01)
         sweep = min(max(abs(math.radians(float(angle))), 1e-6), 2.0 * math.pi - 1e-6)
         if flight_type == "Circular":
@@ -433,11 +380,7 @@ def _tangent_path_primitives(flight_specs):
         if index:
             previous = specs[index - 1]
             landing_entry = _endpoint_side(spec["entry_direction"])
-            if (
-                spec["is_landing"]
-                and spec["type"] == "Straight"
-                and landing_entry
-            ):
+            if spec["is_landing"] and spec["type"] == "Straight" and landing_entry:
                 heading += landing_entry * math.radians(abs(spec["angle"]))
             elif (
                 not spec["is_landing"]
@@ -472,9 +415,7 @@ def _tangent_path_primitives(flight_specs):
             half_width = spec["width"] / 2.0
             entry_side = _endpoint_side(spec["entry_direction"])
             exit_side = _endpoint_side(spec["exit_direction"])
-            side_port_offset = min(
-                half_width, max((spec["length"] - 0.01) / 2.0, 0.0)
-            )
+            side_port_offset = min(half_width, max((spec["length"] - 0.01) / 2.0, 0.0))
             entry_port = center
             face_start = (
                 entry_port[0]
@@ -537,21 +478,15 @@ def _primitive_point(primitive, distance):
     cosine = math.cos(angle)
     sine = math.sin(angle)
     return (
-        primitive["circle_center"][0]
-        + relative[0] * cosine
-        - relative[1] * sine,
-        primitive["circle_center"][1]
-        + relative[0] * sine
-        + relative[1] * cosine,
+        primitive["circle_center"][0] + relative[0] * cosine - relative[1] * sine,
+        primitive["circle_center"][1] + relative[0] * sine + relative[1] * cosine,
     )
 
 
 def _primitive_tangent(primitive, distance):
     if primitive["type"] == "Straight":
         return primitive["tangent"]
-    heading = primitive["heading"] + (
-        primitive["sign"] * distance / primitive["radius"]
-    )
+    heading = primitive["heading"] + (primitive["sign"] * distance / primitive["radius"])
     return math.cos(heading), math.sin(heading)
 
 
@@ -576,9 +511,7 @@ def _append_primitive_range(chunk, primitive, start, end):
 
 
 def _append_dense_point(chunk, point, width, flight_index):
-    if chunk and math.hypot(
-        point[0] - chunk[-1][0], point[1] - chunk[-1][1]
-    ) < 1e-9:
+    if chunk and math.hypot(point[0] - chunk[-1][0], point[1] - chunk[-1][1]) < 1e-9:
         chunk[-1] = (point[0], point[1], width, flight_index)
     else:
         chunk.append((point[0], point[1], width, flight_index))
@@ -592,15 +525,12 @@ def _tangent_junction_modes(primitives, corner_types):
         tangent = (
             incoming["is_landing"]
             or outgoing["is_landing"]
-            or
-            incoming["type"] == "Circular"
+            or incoming["type"] == "Circular"
             or outgoing["type"] == "Circular"
             or abs(_cross(incoming["end_tangent"], outgoing["tangent"])) < 1e-7
         )
         if tangent:
             modes.append("Tangent")
         else:
-            modes.append(
-                "Landing" if str(requested) == "Landing" else "Herse balancing"
-            )
+            modes.append("Landing" if str(requested) == "Landing" else "Herse balancing")
     return modes

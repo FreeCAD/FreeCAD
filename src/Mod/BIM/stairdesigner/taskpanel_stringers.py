@@ -10,7 +10,6 @@ from PySide import QtGui
 
 from .object_utils import get_flights
 
-
 translate = FreeCAD.Qt.translate
 
 from .taskpanel_widgets import (
@@ -18,6 +17,7 @@ from .taskpanel_widgets import (
     _load_task_form,
     _value,
 )
+
 
 class StringerPanelMixin:
     """Task-panel methods grouped by responsibility."""
@@ -47,48 +47,26 @@ class StringerPanelMixin:
                 "Sets the stringer type independently for each flight side",
             )
         )
-        self.stringer_tree.header().setSectionResizeMode(
-            0, QtGui.QHeaderView.ResizeToContents
-        )
-        self.stringer_tree.header().setSectionResizeMode(
-            1, QtGui.QHeaderView.Stretch
-        )
+        self.stringer_tree.header().setSectionResizeMode(0, QtGui.QHeaderView.ResizeToContents)
+        self.stringer_tree.header().setSectionResizeMode(1, QtGui.QHeaderView.Stretch)
         self._populate_stringer_tree()
 
         self.stringer_thickness.setValue(_value(self.stair.StringerThickness))
-        self.stringer_custom_width.setChecked(
-            self.stair.StringerCustomWidth
-        )
+        self.stringer_custom_width.setChecked(self.stair.StringerCustomWidth)
         self.stringer_width.setValue(_value(self.stair.StringerWidth))
-        self.stringer_width.setReadOnly(
-            not self.stringer_custom_width.isChecked()
-        )
-        self.stringer_step_overlap.setValue(
-            _value(self.stair.StringerStepOverlap)
-        )
-        self.stringer_start_extension.setValue(
-            _value(self.stair.StringerStartExtension)
-        )
-        self.stringer_end_extension.setValue(
-            _value(self.stair.StringerEndExtension)
-        )
-        self.stringer_nosing_direction.addItem(
-            translate("BIM", "Perpendicular"), "Perpendicular"
-        )
-        self.stringer_nosing_direction.addItem(
-            translate("BIM", "Vertical"), "Vertical"
-        )
+        self.stringer_width.setReadOnly(not self.stringer_custom_width.isChecked())
+        self.stringer_step_overlap.setValue(_value(self.stair.StringerStepOverlap))
+        self.stringer_start_extension.setValue(_value(self.stair.StringerStartExtension))
+        self.stringer_end_extension.setValue(_value(self.stair.StringerEndExtension))
+        self.stringer_nosing_direction.addItem(translate("BIM", "Perpendicular"), "Perpendicular")
+        self.stringer_nosing_direction.addItem(translate("BIM", "Vertical"), "Vertical")
         self._select_data(
             self.stringer_nosing_direction,
             str(self.stair.StringerNosingOffsetDirection),
         )
-        self.stringer_nosing_offset.setValue(
-            _value(self.stair.StringerNosingOffset)
-        )
+        self.stringer_nosing_offset.setValue(_value(self.stair.StringerNosingOffset))
         stringer_help = {
-            self.stringer_thickness: translate(
-                "BIM", "Board thickness across the stair side"
-            ),
+            self.stringer_thickness: translate("BIM", "Board thickness across the stair side"),
             self.stringer_width: translate(
                 "BIM",
                 "Board width, calculated automatically from the stair geometry unless Custom width is enabled",
@@ -120,15 +98,9 @@ class StringerPanelMixin:
                 "Uses a fixed board width instead of the automatic width",
             )
         )
-        self.stringer_nosing_direction.setToolTip(
-            self.stringer_position_editor.toolTip()
-        )
-        self.stringer_nosing_offset.setToolTip(
-            self.stringer_position_editor.toolTip()
-        )
-        widget.ui.stringer_override_layout.addWidget(
-            self._make_stringer_override_widget()
-        )
+        self.stringer_nosing_direction.setToolTip(self.stringer_position_editor.toolTip())
+        self.stringer_nosing_offset.setToolTip(self.stringer_position_editor.toolTip())
+        widget.ui.stringer_override_layout.addWidget(self._make_stringer_override_widget())
 
         for editor in (
             self.stringer_thickness,
@@ -139,43 +111,27 @@ class StringerPanelMixin:
         ):
             editor.valueChanged.connect(self._apply)
         self.stringer_width.valueChanged.connect(self._apply)
-        self.stringer_custom_width.toggled.connect(
-            self._stringer_custom_width_changed
-        )
-        self.stringer_nosing_direction.currentIndexChanged.connect(
-            self._apply
-        )
+        self.stringer_custom_width.toggled.connect(self._stringer_custom_width_changed)
+        self.stringer_nosing_direction.currentIndexChanged.connect(self._apply)
         return widget
 
     def _make_stringer_override_widget(self):
-        group = QtGui.QGroupBox(
-            translate("BIM", "Selected Stringer Overrides")
-        )
+        group = QtGui.QGroupBox(translate("BIM", "Selected Stringer Overrides"))
         layout = QtGui.QVBoxLayout(group)
         self.stringer_override_name = QtGui.QLabel()
         layout.addWidget(self.stringer_override_name)
         form = QtGui.QFormLayout()
 
-        self.override_thickness = QtGui.QCheckBox(
-            translate("BIM", "Override thickness")
-        )
+        self.override_thickness = QtGui.QCheckBox(translate("BIM", "Override thickness"))
         self.override_thickness_value = _length_spin(0.0, 0.01)
-        form.addRow(
-            self.override_thickness, self.override_thickness_value
-        )
+        form.addRow(self.override_thickness, self.override_thickness_value)
 
-        self.override_width = QtGui.QCheckBox(
-            translate("BIM", "Override width")
-        )
+        self.override_width = QtGui.QCheckBox(translate("BIM", "Override width"))
         self.override_width_value = _length_spin(0.0, 0.01)
         form.addRow(self.override_width, self.override_width_value)
 
-        self.override_step_overlap = QtGui.QCheckBox(
-            translate("BIM", "Override step overlap")
-        )
-        self.override_step_overlap_value = _length_spin(
-            0.0, -1000000.0
-        )
+        self.override_step_overlap = QtGui.QCheckBox(translate("BIM", "Override step overlap"))
+        self.override_step_overlap_value = _length_spin(0.0, -1000000.0)
         form.addRow(
             self.override_step_overlap,
             self.override_step_overlap_value,
@@ -188,12 +144,8 @@ class StringerPanelMixin:
         position_layout = QtGui.QHBoxLayout(position)
         position_layout.setContentsMargins(0, 0, 0, 0)
         self.override_nosing_direction = QtGui.QComboBox()
-        self.override_nosing_direction.addItem(
-            translate("BIM", "Perpendicular"), "Perpendicular"
-        )
-        self.override_nosing_direction.addItem(
-            translate("BIM", "Vertical"), "Vertical"
-        )
+        self.override_nosing_direction.addItem(translate("BIM", "Perpendicular"), "Perpendicular")
+        self.override_nosing_direction.addItem(translate("BIM", "Vertical"), "Vertical")
         self.override_nosing_offset = _length_spin(0.0)
         position_layout.addWidget(self.override_nosing_direction)
         position_layout.addWidget(self.override_nosing_offset)
@@ -215,9 +167,7 @@ class StringerPanelMixin:
             self.override_nosing_offset,
         ):
             editor.valueChanged.connect(self._apply_stringer_override)
-        self.override_nosing_direction.currentIndexChanged.connect(
-            self._apply_stringer_override
-        )
+        self.override_nosing_direction.currentIndexChanged.connect(self._apply_stringer_override)
         self.stringer_override_widget = group
         group.hide()
         return group
@@ -235,13 +185,8 @@ class StringerPanelMixin:
                 ("Left", translate("BIM", "Left side")),
                 ("Right", translate("BIM", "Right side")),
             ):
-                values = {
-                    str(getattr(flight, f"{side}StringerType"))
-                    for flight in flights
-                }
-                editor = self._make_stringer_type_editor(
-                    values.pop() if len(values) == 1 else None
-                )
+                values = {str(getattr(flight, f"{side}StringerType")) for flight in flights}
+                editor = self._make_stringer_type_editor(values.pop() if len(values) == 1 else None)
                 child = QtGui.QTreeWidgetItem(root)
                 child.setText(0, label)
                 self.stringer_tree.setItemWidget(child, 1, editor)
@@ -267,9 +212,7 @@ class StringerPanelMixin:
                 child.setText(0, label)
                 self.stringer_tree.setItemWidget(child, 1, editor)
                 record[f"{side.lower()}_type"] = editor
-                editor.currentIndexChanged.connect(
-                    self._stringer_type_changed
-                )
+                editor.currentIndexChanged.connect(self._stringer_type_changed)
             root.setExpanded(True)
             self.stringer_flight_editors.append(record)
 
@@ -331,9 +274,7 @@ class StringerPanelMixin:
                 self._select_data(editor, values.pop())
             else:
                 if mixed_index < 0:
-                    editor.insertItem(
-                        0, translate("BIM", "Mixed"), "__mixed__"
-                    )
+                    editor.insertItem(0, translate("BIM", "Mixed"), "__mixed__")
                     mixed_item = editor.model().item(0)
                     if mixed_item is not None:
                         mixed_item.setEnabled(False)
@@ -364,11 +305,7 @@ class StringerPanelMixin:
         self._apply()
 
     def _apply_stringer_override(self, *args):
-        if (
-            self._loading
-            or self._loading_override
-            or self.selected_stringer is None
-        ):
+        if self._loading or self._loading_override or self.selected_stringer is None:
             return
         part = self.selected_stringer
         try:
@@ -376,13 +313,9 @@ class StringerPanelMixin:
             part.Thickness = self.override_thickness_value.value()
             part.OverrideWidth = self.override_width.isChecked()
             part.Width = self.override_width_value.value()
-            part.OverrideStepOverlap = (
-                self.override_step_overlap.isChecked()
-            )
+            part.OverrideStepOverlap = self.override_step_overlap.isChecked()
             part.StepOverlap = self.override_step_overlap_value.value()
-            part.OverrideNosingPosition = (
-                self.override_nosing_position.isChecked()
-            )
+            part.OverrideNosingPosition = self.override_nosing_position.isChecked()
             part.NosingOffsetDirection = str(
                 self.override_nosing_direction.itemData(
                     self.override_nosing_direction.currentIndex()
@@ -392,9 +325,7 @@ class StringerPanelMixin:
         except ReferenceError:
             self._update_stringer_selection()
             return
-        self.stair.Proxy.rebuild(
-            self.stair, allow_structure_changes=True
-        )
+        self.stair.Proxy.rebuild(self.stair, allow_structure_changes=True)
         self.stair.Document.recompute()
         self._update_stringer_selection()
 
@@ -404,14 +335,11 @@ class StringerPanelMixin:
         candidates = []
         for candidate in FreeCADGui.Selection.getSelection():
             try:
-                role = str(
-                    getattr(candidate, "StairDesignerRole", "")
-                )
-                if (
-                    getattr(candidate, "GeneratedBy", "")
-                    == self.stair.Name
-                    and role in {"LeftStringer", "RightStringer"}
-                ):
+                role = str(getattr(candidate, "StairDesignerRole", ""))
+                if getattr(candidate, "GeneratedBy", "") == self.stair.Name and role in {
+                    "LeftStringer",
+                    "RightStringer",
+                }:
                     candidates.append(candidate)
             except ReferenceError:
                 continue
@@ -424,30 +352,18 @@ class StringerPanelMixin:
         self._loading_override = True
         try:
             self.stringer_override_name.setText(selected.Label)
-            self.override_thickness.setChecked(
-                selected.OverrideThickness
-            )
-            self.override_thickness_value.setValue(
-                _value(selected.Thickness)
-            )
+            self.override_thickness.setChecked(selected.OverrideThickness)
+            self.override_thickness_value.setValue(_value(selected.Thickness))
             self.override_width.setChecked(selected.OverrideWidth)
             self.override_width_value.setValue(_value(selected.Width))
-            self.override_step_overlap.setChecked(
-                selected.OverrideStepOverlap
-            )
-            self.override_step_overlap_value.setValue(
-                _value(selected.StepOverlap)
-            )
-            self.override_nosing_position.setChecked(
-                selected.OverrideNosingPosition
-            )
+            self.override_step_overlap.setChecked(selected.OverrideStepOverlap)
+            self.override_step_overlap_value.setValue(_value(selected.StepOverlap))
+            self.override_nosing_position.setChecked(selected.OverrideNosingPosition)
             self._select_data(
                 self.override_nosing_direction,
                 str(selected.NosingOffsetDirection),
             )
-            self.override_nosing_offset.setValue(
-                _value(selected.NosingOffset)
-            )
+            self.override_nosing_offset.setValue(_value(selected.NosingOffset))
             housed = str(selected.StringerType) == "Housed stringer"
             self.override_nosing_position.setVisible(housed)
             self.override_nosing_position_editor.setVisible(housed)
@@ -459,15 +375,9 @@ class StringerPanelMixin:
             self._loading_override = False
 
     def _update_override_editor_states(self):
-        self.override_thickness_value.setEnabled(
-            self.override_thickness.isChecked()
-        )
-        self.override_width_value.setEnabled(
-            self.override_width.isChecked()
-        )
-        self.override_step_overlap_value.setEnabled(
-            self.override_step_overlap.isChecked()
-        )
+        self.override_thickness_value.setEnabled(self.override_thickness.isChecked())
+        self.override_width_value.setEnabled(self.override_width.isChecked())
+        self.override_step_overlap_value.setEnabled(self.override_step_overlap.isChecked())
         enabled = self.override_nosing_position.isChecked()
         self.override_nosing_direction.setEnabled(enabled)
         self.override_nosing_offset.setEnabled(enabled)
