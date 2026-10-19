@@ -59,6 +59,12 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
         this,
         &DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished
     );
+    connect(
+        ui->buttonApplyToExisting,
+        &QPushButton::clicked,
+        this,
+        &DlgSettings3DViewPart::onApplyToExistingClicked
+    );
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
@@ -121,6 +127,26 @@ void DlgSettings3DViewPart::saveSettings()
 {
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+}
+
+void DlgSettings3DViewPart::onApplyToExistingClicked()
+{
+    saveSettings();
+
+    // Search for Part view providers across all open documents and apply the settings
+    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+    for (auto it : docs) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
+        if (!doc) {
+            continue;
+        }
+        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
+            ViewProviderPart::getClassTypeId()
+        );
+        for (auto view : views) {
+            static_cast<ViewProviderPart*>(view)->reload();
+        }
+    }
 }
 void DlgSettings3DViewPart::loadSettings()
 {
