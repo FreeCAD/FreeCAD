@@ -1,0 +1,30 @@
+digraph G {
+    overlap=false;
+    splines=ortho;
+    edge [
+        arrowsize = 0.6
+    ];
+    node [
+        shape = box,
+        style = rounded
+    ];
+
+    IdleState -> AwaitingReleaseState;
+    IdleState -> GestureState;
+    IdleState -> AwaitingMoveState [xlabel="RMB, LMB", color=gray50, fontcolor=gray50];
+    AwaitingReleaseState -> IdleState;
+    AwaitingMoveState -> AwaitingReleaseState [xlabel="MB", color=gray50, fontcolor=gray50];
+    AwaitingMoveState -> IdleState;
+    AwaitingMoveState -> GestureState;
+    AwaitingMoveState -> RotateState;
+    AwaitingMoveState -> PanState;
+    AwaitingMoveState -> StickyPanState [xlabel="click-and-hold", color=gray50, fontcolor=gray50];
+    AwaitingMoveState -> TiltState [xlabel="movement", color=gray50, fontcolor=gray50];
+    RotateState -> TiltState [dir=both];
+    PanState -> TiltState [dir=both];
+    TiltState -> IdleState;
+    StickyPanState -> IdleState;
+    GestureState -> IdleState;
+    RotateState -> IdleState;
+    PanState -> IdleState;
+}
