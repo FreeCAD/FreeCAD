@@ -3,7 +3,8 @@
 set -e
 set -x
 
-conda_env="$(pwd)/../.pixi/envs/default/"
+# FreeCAD Sework: SEWORK_CONDA_ENV aponta para um ambiente já compilado e instalado (pixi da raiz)
+conda_env="${SEWORK_CONDA_ENV:-$(pwd)/../.pixi/envs/default/}"
 
 copy_dir="FreeCAD_Windows"
 mkdir -p ${copy_dir}/bin
@@ -16,11 +17,11 @@ cp -a ${conda_env}/python*.* ${copy_dir}/bin
 cp -a ${conda_env}/msvc*.* ${copy_dir}/bin
 cp -a ${conda_env}/ucrt*.* ${copy_dir}/bin
 # Copy meaningful executables
-cp -a ${conda_env}/Library/bin/ccx.exe ${copy_dir}/bin
-cp -a ${conda_env}/Library/bin/gmsh.exe ${copy_dir}/bin
-cp -a ${conda_env}/Library/bin/dot.exe ${copy_dir}/bin
-cp -a ${conda_env}/Library/bin/unflatten.exe ${copy_dir}/bin
-cp -a ${conda_env}/Library/mingw-w64/bin/* ${copy_dir}/bin
+cp -a ${conda_env}/Library/bin/ccx.exe ${copy_dir}/bin || echo "aviso: ccx.exe ausente"
+cp -a ${conda_env}/Library/bin/gmsh.exe ${copy_dir}/bin || echo "aviso: gmsh.exe ausente"
+cp -a ${conda_env}/Library/bin/dot.exe ${copy_dir}/bin || echo "aviso: dot.exe ausente"
+cp -a ${conda_env}/Library/bin/unflatten.exe ${copy_dir}/bin || echo "aviso: unflatten.exe ausente"
+cp -a ${conda_env}/Library/mingw-w64/bin/* ${copy_dir}/bin || echo "aviso: mingw-w64 ausente"
 # copy resources -- perhaps needs reduction
 cp -a ${conda_env}/Library/share ${copy_dir}/share
 # get all the dependency .dlls
@@ -38,6 +39,9 @@ mkdir -p ${copy_dir}/doc
 cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
 
 # delete unnecessary stuff
+# FreeCAD Sework: restos de compilação de depuração (arquivo *_d.* com par sem _d) e .pdb
+find ${copy_dir} -name '*_d.*' | while read -r f; do b="${f%_d.*}.${f##*.}"; if [ -e "$b" ]; then rm -f "$f"; fi; done
+find ${copy_dir} -name \*.pdb -delete
 find ${copy_dir} -name \*.a -delete
 find ${copy_dir} -name \*.lib -delete
 find ${copy_dir} -name \*arm\*.exe -delete # arm binaries that fail to extract unless using latest 7zip
