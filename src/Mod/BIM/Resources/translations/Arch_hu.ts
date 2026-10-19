@@ -13711,7 +13711,7 @@ Ha több oldal áll rendelkezésre, válaszd ki a nézetet és az oldalt a paran
     <message>
       <location filename="../../InitGui.py" line="320"/>
       <source>Extrude Tools</source>
-      <translation type="unfinished">Extrude Tools</translation>
+      <translation>Kihúzási eszköz</translation>
     </message>
   </context>
   <context>

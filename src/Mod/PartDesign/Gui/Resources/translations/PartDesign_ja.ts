@@ -4716,7 +4716,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Dress-Up Features</source>
-      <translation>フォーチャーを装飾</translation>
+      <translation>装飾フィーチャー</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>

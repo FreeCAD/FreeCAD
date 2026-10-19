@@ -3904,7 +3904,7 @@ Set to zero to disable G-code highlighter.</translation>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="312"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>最小</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="325"/>
@@ -3914,7 +3914,7 @@ Set to zero to disable G-code highlighter.</translation>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="335"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>最大</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="348"/>

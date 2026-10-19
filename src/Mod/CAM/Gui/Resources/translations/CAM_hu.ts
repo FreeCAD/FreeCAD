@@ -5608,7 +5608,7 @@ Above this depth ramps are not generated, but motion commands are passed through
     <message>
       <location filename="../../../Path/Main/Job.py" line="653"/>
       <source>The links to models taken out of the Job, for when they are added back</source>
-      <translation type="unfinished">The links to models taken out of the Job, for when they are added back</translation>
+      <translation>A megrendelésből eltávolított modellekhez vezető hivatkozások arra az esetre, ha azokat újra hozzáadnák</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="313"/>
@@ -8402,7 +8402,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
       <source>Operation Deleted</source>
-      <translation type="unfinished">Operation Deleted</translation>
+      <translation>Művelet törölt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
@@ -8427,7 +8427,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="402"/>
       <source>u26a0 Deprecated: {}</source>
-      <translation type="unfinished">u26a0 Deprecated: {}</translation>
+      <translation>u26a0 elavult: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
@@ -8479,22 +8479,22 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="75"/>
       <source>{} has been deleted and no longer generates a toolpath. It is replaced by {}.</source>
-      <translation type="unfinished">{} has been deleted and no longer generates a toolpath. It is replaced by {}.</translation>
+      <translation>A {} elem törlésre került, és már nem generál eszközpályát. Helyébe a {} lépett.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="81"/>
       <source>{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</source>
-      <translation type="unfinished">{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</translation>
+      <translation>A {} elavult, és a következő kiadásban törlésre kerül. Helyette a {} kerül bevezetésre. A meglévő műveletek továbbra is működnek, de újakat már nem lehet létrehozni.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="86"/>
       <source>{} is deprecated and will be hidden in the next release. It is replaced by {}.</source>
-      <translation type="unfinished">{} is deprecated and will be hidden in the next release. It is replaced by {}.</translation>
+      <translation>A {} használata elavult, és a következő kiadásban el lesz rejtve. Helyette a {} kerül bevezetésre.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1585"/>
       <source>This operation has been deleted and no longer generates a toolpath.</source>
-      <translation type="unfinished">This operation has been deleted and no longer generates a toolpath.</translation>
+      <translation>Ezt a műveletet törölték, és már nem generál szerszámpályát.</translation>
     </message>
   </context>
   <context>
@@ -9184,7 +9184,7 @@ Without sub selection:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</source>
-      <translation type="unfinished">The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</translation>
+      <translation>A modellek nem mozdultak el együtt, ezért a műveleti pontok és magasságok a helyükön maradtak. Ellenőrizze őket.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="2121"/>
@@ -9211,14 +9211,14 @@ Without sub selection:
       <source>Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
 
 Take it out?</source>
-      <translation type="unfinished">Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
+      <translation>A {model} eltávolítása a feladatból feloldja az abból létrehozott elemek kapcsolódását: az {ops} műveletek alapgeometriáját, a {planes} munkasíkok és az {others} egyéb kötések hozzárendeléseit. Ezek újra összekapcsolódnak, ha a {model}-t visszakerül ebbe a feladatba.
 
-Take it out?</translation>
+Eltávolítani?</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1912"/>
       <source>Take the model out</source>
-      <translation type="unfinished">Take the model out</translation>
+      <translation>Vedd ki a modellt</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="2120"/>
@@ -9662,12 +9662,12 @@ G-code under the cursor defines tool shape placement</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="310"/>
       <source>Operation &apos;{}&apos; is missing from the output: {}</source>
-      <translation type="unfinished">Operation &apos;{}&apos; is missing from the output: {}</translation>
+      <translation>A kimenetből hiányzik az &apos;{}&apos; művelet: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="318"/>
       <source>Operation &apos;{}&apos; is deprecated: {}</source>
-      <translation type="unfinished">Operation &apos;{}&apos; is deprecated: {}</translation>
+      <translation>Az &apos;{}&apos; művelet elavult: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="456"/>
@@ -9719,7 +9719,7 @@ G-code under the cursor defines tool shape placement</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="204"/>
       <source>Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</source>
-      <translation type="unfinished">Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</translation>
+      <translation>A &apos;{}&apos; mértékegység-séma a másodpercenkénti sebességet fejezi ki. Az előtolási sebességek nem fognak egyezni a G-kódban megadott értékekkel. Használjon olyan sémát, amely percenkénti sebességet ad meg.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="260"/>
@@ -10919,12 +10919,12 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="108"/>
       <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
-      <translation type="unfinished">G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</translation>
+      <translation>G-kód a forgó tengelyek mozgatása előtt és a dőlt munkadarab-sík G53.1-gyel történő igazítása előtt beszúrva. Helyezze ide azokat a mozgatásokat, amelyek az szerszámot eltávolítják a munkadarabtól, gépkoordináta-rendszerben: G53 G0 Z0 emeli a szerszámcsúcsot a gépkoordináta Z nullapontjához; a LinuxCNC meghívás #4374 kinematikájában a G53.5 G0 Z0 parkolja a Z csúszkát, függetlenül attól, hogy a fej mit csinál. Ha üresen hagyja, semmi sem távolítja el a munkadarabot, mielőtt az asztal megfordulna, és az megbízhatósági ellenőrzés ezt jelzi.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="117"/>
       <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</source>
-      <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</translation>
+      <translation>Az a sor, amely a szerszámot egy deklarált sík aktuális vektor mentén irányítja. Üres érték esetén G53.1, amely csak a forgó tengelyeket mozgatja és engedi a szerszámcsúcsot libegni: G53.1 P1 vagy P2 megadja, hogy melyik a két pozíció közül, Q1 lehetővé teszi az asztal használatát. A G53.6 parancs a szerszám középpontját a jelenlegi helyén tartja.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="127"/>
@@ -10949,12 +10949,12 @@ Spindle_Control: Any M3/M5 commands are output as-is.</translation>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="155"/>
       <source>Tilted work plane: kinematics select</source>
-      <translation type="unfinished">Tilted work plane: kinematics select</translation>
+      <translation>Megdöntött munkasík: kinematika kiválasztása</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="163"/>
       <source>A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</source>
-      <translation type="unfinished">A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</translation>
+      <translation>A preambulum után megjelenő sor, ha a feladat egy ferde munkasíkon végzett műveletet tartalmaz. A G53.1 parancshoz olyan kinematikai típusra van szükség, amelynek koordinátarendszerei a gépet írják le; egy olyan kapcsolható modulon, amely identitáskinematikával indul, ide kerül a G12.1 P1 parancs.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="170"/>
@@ -11718,12 +11718,12 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="591"/>
       <source>The Rotational scan type</source>
-      <translation type="unfinished">The Rotational scan type</translation>
+      <translation>Forgófelületi szkennelési típus</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="592"/>
       <source>the Rotary Surface operation</source>
-      <translation type="unfinished">the Rotary Surface operation</translation>
+      <translation>a forgófelületi megmunkálás</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
@@ -11962,12 +11962,12 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="96"/>
       <source>The Face operation</source>
-      <translation type="unfinished">The Face operation</translation>
+      <translation>A lap művelet</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="97"/>
       <source>the Mill Facing operation</source>
-      <translation type="unfinished">the Mill Facing operation</translation>
+      <translation>a marógépes lapoló megmunkálás</translation>
     </message>
   </context>
   <context>
@@ -12039,12 +12039,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="582"/>
       <source>The Waterline operation</source>
-      <translation type="unfinished">The Waterline operation</translation>
+      <translation>Rétegmunkálat</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="585"/>
       <source>the Planar Surface operation with Strategy set to &apos;Waterline&apos;</source>
-      <translation type="unfinished">the Planar Surface operation with Strategy set to &apos;Waterline&apos;</translation>
+      <translation>síkfelület megmunkálása a &apos;vízvonal&apos; stratégiával</translation>
     </message>
   </context>
   <context>
@@ -12410,12 +12410,12 @@ Tool number for {}:</translation>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="297"/>
       <source>The Tapping operation</source>
-      <translation type="unfinished">The Tapping operation</translation>
+      <translation>Gépi menetvágás</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="298"/>
       <source>the Drilling operation with Strategy set to &apos;Tapping&apos;</source>
-      <translation type="unfinished">the Drilling operation with Strategy set to &apos;Tapping&apos;</translation>
+      <translation>fúrási művelet, amelynek stratégiája &apos;Menetfúrás&apos;-ra van beállítva</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Tapping.py" line="172"/>

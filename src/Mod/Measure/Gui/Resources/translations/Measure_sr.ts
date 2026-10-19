@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+      <translation>Номинално растојање: %1, Осно растојање: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -552,7 +552,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <translation>Геометријски центар (Центроид)</translation>
     </message>
   </context>
 </TS>
