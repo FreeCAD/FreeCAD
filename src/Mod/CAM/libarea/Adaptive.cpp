@@ -3203,8 +3203,6 @@ Paths64 PathIntersectArea(const Path64& subject, const Paths64& obj, bool isClos
         };
 
     Clipper64 clip;
-    clip.PreserveCollinear(true);  // TODO: consider PreserveCollinear on the other
-                                   // Clipper64+SetZCallback near line 1750
     clip.SetZCallback(zfill);
     clip.AddOpenSubject(Paths64 {indexedSubject});
     clip.AddClip(clipObj);
