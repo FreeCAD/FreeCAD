@@ -35,7 +35,6 @@
 #include <numbers>
 #include <string>
 
-
 namespace AdaptivePath
 {
 using namespace std;
@@ -78,7 +77,6 @@ inline double DistanceSqrd(const Point64& pt1, const Point64& pt2)
     return (Dx * Dx + dy * dy);
 }
 
-
 inline double averageDV(const vector<double>& vec)
 {
     double s = 0;
@@ -112,7 +110,6 @@ inline double PathLength(const Path64& path)
     return len;
 }
 
-
 inline PointD DirectionV(const Point64& pt1, const Point64& pt2)
 {
     double DX = double(pt2.x - pt1.x);
@@ -133,13 +130,13 @@ inline void NormalizeV(PointD& pt)
     }
 }
 
-inline PointD GetPathDirectionV(const Path64& pth_p64, size_t pointIndex)
+inline PointD GetPathDirectionV(const Path64& pth, size_t pointIndex)
 {
-    if (pth_p64.size() < 2) {
+    if (pth.size() < 2) {
         return PointD(0, 0);
     }
-    const Point64& p1 = pth_p64.at(pointIndex > 0 ? pointIndex - 1 : pth_p64.size() - 1);
-    const Point64& p2 = pth_p64.at(pointIndex);
+    const Point64& p1 = pth.at(pointIndex > 0 ? pointIndex - 1 : pth.size() - 1);
+    const Point64& p2 = pth.at(pointIndex);
     return DirectionV(p1, p2);
 }
 
@@ -150,9 +147,9 @@ bool isClose(const Point64& a, const Point64& b)
 }
 
 // Remove coincident and almost-coincident points from paths.
-void filterCloseValues(Paths64& ppg_p64)
+void filterCloseValues(Paths64& ppg)
 {
-    for (auto& pth : ppg_p64) {
+    for (auto& pth : ppg) {
         while (true) {
             auto i = std::adjacent_find(pth.begin(), pth.end(), isClose);
             if (i == pth.end()) {
@@ -455,7 +452,7 @@ bool Line2CircleIntersect(
 }
 
 // calculate center point of polygon
-Point64 Compute2DPolygonCentroid(const Path64& vertices_p64)
+Point64 Compute2DPolygonCentroid(const Path64& vertices)
 {
     PointD centroid(0, 0);
     double signedArea = 0.0;
@@ -467,12 +464,12 @@ Point64 Compute2DPolygonCentroid(const Path64& vertices_p64)
 
     // For all vertices
     size_t i = 0;
-    Path64::size_type size = vertices_p64.size();
+    Path64::size_type size = vertices.size();
     for (i = 0; i < size; ++i) {
-        x0 = double(vertices_p64[i].x);
-        y0 = double(vertices_p64[i].y);
-        x1 = double(vertices_p64[(i + 1) % size].x);
-        y1 = double(vertices_p64[(i + 1) % size].y);
+        x0 = double(vertices[i].x);
+        y0 = double(vertices[i].y);
+        x1 = double(vertices[(i + 1) % size].x);
+        y1 = double(vertices[(i + 1) % size].y);
         a = x0 * y1 - x1 * y0;
         signedArea += a;
         centroid.x += (x0 + x1) * a;
@@ -1506,6 +1503,7 @@ void Adaptive2d::ApplyStockToLeave(Paths64& inputPaths)
     }
 }
 
+//*****************************************
 // SVG Debug Info
 //*****************************************
 // Write combined SVG with all accumulated paths from all regions
@@ -1785,14 +1783,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     //******************************
     Paths64 converted;
     for (size_t i = 0; i < paths.size(); i++) {
-        Path64 cpth;
+        Path64 path;
         for (size_t j = 0; j < paths[i].size(); j++) {
             std::pair<double, double> pt = paths[i][j];
-            cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
+            path.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
-        Path64 cpth2;
-        cpth2 = SimplifyPath(cpth, FINISHING_CLEAN_PATH_TOLERANCE, false);
-        converted.push_back(cpth2);
+        converted.push_back(SimplifyPath(path, FINISHING_CLEAN_PATH_TOLERANCE, false));
     }
     Paths64 inputPaths;
     DeduplicatePaths(converted, inputPaths);
@@ -1804,12 +1800,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // convert stock paths
     //*************************
     for (size_t i = 0; i < stockPaths.size(); i++) {
-        Path64 cpth;
+        Path64 path;
         for (size_t j = 0; j < stockPaths[i].size(); j++) {
             std::pair<double, double> pt = stockPaths[i][j];
-            cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
+            path.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
-        stockInputPaths.push_back(cpth);
+        stockInputPaths.push_back(path);
     }
 
     // Convert cleared area
@@ -2832,7 +2828,6 @@ bool Adaptive2d::MakeLeadPath(
 
 std::optional<TPaths> Adaptive2d::FindLinkPath(
     const std::optional<Point64>& prevPoint,
-
     const Point64& pathStart,
     const PointD& pathDir,
     ClearedArea& cleared,
@@ -3417,8 +3412,7 @@ void Adaptive2d::ProcessPolyNode(
                 }
             }
             else if (iteration == 3 && !foundArea) {
-                // TODO FIXME David, review before PR merge -- is this expansion really needed? Can
-                // it at least only be run rarely? Expand cleared area
+                // Expand cleared area
                 cleared.ExpandCleared(toClearPath);
                 toClearPath.clear();
                 lastExpandToolDir = toolDir;
