@@ -35,7 +35,7 @@ if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Adaptive as PathAdaptiveGui
 
-DEBUG_SVGS = True
+DEBUG_SVGS = False
 
 _MT_CUTTING = 0
 _MT_LINK_CLEAR = 1
