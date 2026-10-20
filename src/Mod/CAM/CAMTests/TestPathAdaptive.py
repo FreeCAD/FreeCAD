@@ -527,7 +527,12 @@ class TestPathAdaptive(PathTestBase):
         floorZ = -1.0
         block = Part.makeBox(60.0, 40.0, 20.0, FreeCAD.Vector(0, 0, floorZ - 19.0))
         pocket = Part.makeBox(50.0, 30.0, 1.0, FreeCAD.Vector(5.0, 5.0, floorZ))
-        part = self.doc.addObject("Part::Feature", "RestMachiningPart")
+        # Separate document: a second Job in self.doc would make later tests' PathAdaptive.Create()
+        # calls ambiguous about which job to join
+        doc = FreeCAD.newDocument("TestRestMachining")
+        self.addCleanup(FreeCAD.setActiveDocument, self.doc.Name)
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
+        part = doc.addObject("Part::Feature", "RestMachiningPart")
         part.Shape = block.cut(pocket)
 
         # Dedicated job, so only the two ops below contribute cleared area
@@ -571,7 +576,7 @@ class TestPathAdaptive(PathTestBase):
         # Rough with a large tool, then rest machine with a small tool
         roughing = createOp("RestMachiningRoughing", 5.0, False)
         rest = createOp("RestMachiningRest", 4.0, True)
-        self.doc.recompute()
+        doc.recompute()
 
         self.assertTrue(len(roughing.Path.Commands) > 0, "Roughing op produced no commands")
         self.assertTrue(len(rest.Path.Commands) > 0, "Rest machining op produced no commands")
