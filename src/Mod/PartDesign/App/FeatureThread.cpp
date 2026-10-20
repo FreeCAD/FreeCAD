@@ -234,7 +234,9 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
     double length = 0.0;
 
     if (method == "Dimension") {
-        length = Depth.getValue();
+        const double projStart = gp_Vec(nearPoint, origin).Dot(gp_Vec(direction));
+        const double availableLength = cylinderHeight - projStart;
+        length = std::min(Depth.getValue(), availableLength);
     }
     else if (method == "UpToFirst") {
         length = threadUtils.getUpToFirstLength(
@@ -389,12 +391,6 @@ try {
                 "Exception",
                 "Thread error: Start point is above the top of the cylinder face"
             ));
-        }
-
-        if (length > cylinderHeight) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Thread error: Thread depth greater than cylinder height")
-            );
         }
 
 
