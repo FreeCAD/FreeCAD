@@ -263,7 +263,7 @@ class DraftToolBar:
     def slotDeletedDocument(self, doc):
         """Document observer callback."""
         active = FreeCAD.ActiveDocument
-        # This notification precedes removal from the application document map.
+        # slotDeletedDocument is called before ActiveDocument is cleared.
         if self.tray is not None and (active is None or active.Name == doc.Name):
             self.setAutoGroup(None)
             self.tray.setEnabled(False)
@@ -273,8 +273,8 @@ class DraftToolBar:
         """Document observer callback."""
         if self.tray is None:
             return
-        self.tray.setEnabled(doc is not None)
-        self.setAutoGroup(self._autogroups.get(doc.Name) if doc else None)
+        self.tray.setEnabled(True)
+        self.setAutoGroup(self._autogroups.get(doc.Name))
 
     # ---------------------------------------------------------------------------
     # General UI setup
@@ -1932,8 +1932,6 @@ class DraftToolBar:
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
                 self.autoGroupButton.setDown(False)
 
-        # AutoGroup names are local to a document, even when two documents use
-        # the same internal object name. Keep the selection with its document.
         if FreeCAD.ActiveDocument:
             self._autogroups[FreeCAD.ActiveDocument.Name] = self.autogroup
 
