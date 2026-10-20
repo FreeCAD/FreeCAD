@@ -229,6 +229,12 @@ public:
         View3DInventorViewer* viewer = nullptr
     );
 
+    /// True while the on-top (pre)selection group is being rendered.
+    static bool isRenderingOnTop()
+    {
+        return renderingOnTop;
+    }
+
     void setPath(SoPath*);
     SoPath* getPath()
     {
@@ -256,6 +262,9 @@ protected:
     SoPath* path;
     SoTempPath* tmpPath;
     SoDetail* det;
+
+private:
+    static bool renderingOnTop;
 };
 
 class GuiExport SoFCSeparator: public SoSeparator
