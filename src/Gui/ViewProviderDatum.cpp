@@ -20,7 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -36,6 +39,7 @@
 #include "ViewProviderDatum.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "SoFCSelection.h"
+#include "Selection/SoFCUnifiedSelection.h"
 #include "ViewProviderCoordinateSystem.h"
 
 #include <Inventor/So3DAnnotation.h>
@@ -77,6 +81,26 @@ void ViewProviderDatum::attach(App::DocumentObject* pcObject)
 
     // Create an external separator
     auto sep = new SoSeparator();
+
+    // Datums manage their own transparency. While drawn in the on-top
+    // (pre)selection group, lift that group's transparency override so
+    // planes stay translucent and labels keep their transparent background.
+    // See #33717.
+    auto clearTransparencyOverride = new SoCallback();
+    clearTransparencyOverride->setCallback(
+        [](void* userData, SoAction* action) {
+            if (action->isOfType(SoGLRenderAction::getClassTypeId())
+                && SoFCPathAnnotation::isRenderingOnTop()) {
+                SoOverrideElement::setTransparencyOverride(
+                    action->getState(),
+                    static_cast<SoNode*>(userData),
+                    FALSE
+                );
+            }
+        },
+        clearTransparencyOverride
+    );
+    sep->addChild(clearTransparencyOverride);
 
     // Add material from the base class
     sep->addChild(pcShapeMaterial);
