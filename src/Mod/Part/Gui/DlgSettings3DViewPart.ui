@@ -136,10 +136,10 @@
         <item>
          <widget class="QPushButton" name="buttonApplyToExisting">
           <property name="toolTip">
-           <string>Apply these tessellation settings to all objects in currently open documents</string>
+           <string>Applies these tessellation settings to all objects in currently open documents</string>
           </property>
           <property name="text">
-           <string>Apply to open documents</string>
+           <string>Apply to Open Documents</string>
           </property>
          </widget>
         </item>
