@@ -58,6 +58,7 @@ private:
     SoGroup* pcGroupOnTop;
     SoGroup* pcGroupOnTopSel;
     SoGroup* pcGroupOnTopPreSel;
+    SoGroup* pcGroupOnTopPreSelNoOverride;
     SoFCUnifiedSelection* selectionRoot;
     std::map<std::string, SoNode*> objectsOnTop;
     std::map<std::string, SoNode*> objectsOnTopPreSel;
