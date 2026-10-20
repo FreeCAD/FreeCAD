@@ -2156,6 +2156,10 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
+                // If we open a new transaction from a double click action, the currently running
+                // transaction should not be commited such transactions would be long running (e.g.
+                // steered by dialogs)
+                appdoc->abortTransaction();
                 appdoc->openTransaction(commandText);
 
                 if (!vp->doubleClickedObject(reference)) {
