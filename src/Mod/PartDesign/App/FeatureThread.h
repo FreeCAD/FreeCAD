@@ -73,8 +73,6 @@ public:
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
     App::PropertyBool IsInternal;
-    App::PropertyBool Tapered;
-    App::PropertyAngle TaperedAngle;
 
 
     /** @name methods override feature */

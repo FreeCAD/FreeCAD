@@ -199,23 +199,6 @@ Thread::Thread()
     );
 
     ADD_PROPERTY_TYPE(
-        Tapered,
-        (false),
-        "Thread",
-        App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "Tapered")
-    );
-
-    ADD_PROPERTY_TYPE(
-        TaperedAngle,
-        (90.0),
-        "Thread",
-        App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "Tapered angle")
-    );
-    TaperedAngle.setReadOnly(true);
-
-    ADD_PROPERTY_TYPE(
         Diameter,
         (0.0),
         "Thread",
@@ -263,9 +246,7 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
             IsInternal.getValue(),
             UseCustomThreadClearance.getValue(),
             CustomThreadClearance.getValue(),
-            ThreadClass,
-            Tapered.getValue(),
-            TaperedAngle.getValue()
+            ThreadClass
         );
     }
     else if (method == "ThroughAll") {
@@ -440,9 +421,6 @@ try {
             std::optional<double> externalMinorDiameter;
             const bool conicalSupport = threadUtils.isConicalFace(LateralFace);
             const double faceSlope = conicalSupport ? std::tan(conicalAngle) : 0.0;
-            const double reductionSlope = conicalSupport && Tapered.getValue()
-                ? -std::tan(Base::toRadians(90.0 - TaperedAngle.getValue()))
-                : 0.0;
             const double supportEndRadius = diameter / 2.0 + length * faceSlope;
             if (!std::isfinite(supportEndRadius) || supportEndRadius <= Precision::Confusion()) {
                 throw Base::ValueError(
@@ -465,13 +443,12 @@ try {
                 IsInternal.getValue(),
                 supportDiameter,
                 usefulThreadLength,
-                Tapered.getValue(),
-                TaperedAngle.getValue(),
+                -faceSlope,
                 UseCustomThreadClearance.getValue(),
                 CustomThreadClearance.getValue(),
                 ThreadClass,
                 true,
-                IsInternal.getValue() ? faceSlope : reductionSlope
+                faceSlope
             );
             const std::string depthType(DepthType.getValueAsString());
             const bool limitInternalToolToFace = IsInternal.getValue()
@@ -499,7 +476,7 @@ try {
 
                 const double majorDiameter = diameter + 2.0 * trimmingStart * faceSlope;
                 const double minorDiameter = *externalMinorDiameter
-                    + 2.0 * trimmingStart * reductionSlope;
+                    + 2.0 * trimmingStart * faceSlope;
 
                 base = threadUtils.reduceExternalThreadBase(
                     base,
@@ -507,9 +484,7 @@ try {
                     majorDiameter,
                     minorDiameter,
                     trimmingEnd - trimmingStart,
-                    startPoint.Translated(zDir * trimmingStart),
-                    Tapered.getValue(),
-                    TaperedAngle.getValue()
+                    startPoint.Translated(zDir * trimmingStart)
                 );
             }
 
@@ -524,8 +499,7 @@ try {
                 ThreadDirection.getValue(),
                 ThreadClass,
                 IsInternal.getValue(),
-                Tapered.getValue(),
-                TaperedAngle.getValue(),
+                -faceSlope,
                 UseCustomThreadClearance.getValue(),
                 CustomThreadClearance.getValue(),
                 endTrims.farEnd,
@@ -807,11 +781,6 @@ try {
             if (res != App::DocumentObject::StdReturn) {
                 return;
             }
-            if (prop == &LateralFace && threadUtils.isConicalFace(LateralFace)) {
-                const double angle = 90.0 + Base::toDegrees(threadUtils.getConicalAngle(LateralFace));
-                TaperedAngle.setValue(angle);
-                Tapered.setValue(true);
-            }
             diameter = threadUtils.getLateralFaceDiameter(LateralFace, StartPlane);
         }
         catch (const Standard_Failure& e) {
@@ -878,21 +847,6 @@ try {
             if (static_cast<size_t>(nearestPitch) < pitches.size()
                 && nearestPitch != ThreadSizePitch.getValue()) {
                 ThreadSizePitch.setValue(nearestPitch);
-            }
-        }
-    }
-    else if (prop == &Tapered) {
-        TaperedAngle.setReadOnly(!Tapered.getValue());
-        if (!this->testStatus(App::ObjectStatus::Restore)
-            && !this->testStatus(App::ObjectStatus::Remove) && !this->isRestoring()) {
-            if (Tapered.getValue()) {
-                const bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
-                if (isConical && TaperedAngle.getValue() == 90) {
-                    TaperedAngle.setValue(threadUtils.getThreadProfileAngle());
-                }
-            }
-            else {
-                TaperedAngle.setValue(90);
             }
         }
     }

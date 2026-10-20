@@ -110,10 +110,6 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* threadView, QWid
     ui->classCombo->setEnabled(!ui->customClearanceCheck->isChecked());
     ui->customClearanceField->setValue(thread->CustomThreadClearance.getValue());
 
-    ui->taperedCheck->setChecked(thread->Tapered.getValue());
-    ui->taperedAngleField->setEnabled(thread->Tapered.getValue() && !thread->TaperedAngle.isReadOnly());
-    ui->taperedAngleField->setValue(thread->TaperedAngle.getValue());
-
     const bool isModeled = thread->ModelThread.getValue();
     ui->modelledThreadRadio->setChecked(isModeled);
 
@@ -207,20 +203,11 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* threadView, QWid
         &TaskThreadParameters::useCustomThreadClearanceChanged
     );
 
-    connect(ui->taperedCheck, &QCheckBox::toggled, this, &TaskThreadParameters::taperedCheckChanged);
-
     connect(
         ui->customClearanceField,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
         &TaskThreadParameters::customThreadClearanceChanged
-    );
-
-    connect(
-        ui->taperedAngleField,
-        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        this,
-        &TaskThreadParameters::taperedAngleChanged
     );
 
     connect(
@@ -495,16 +482,6 @@ void TaskThreadParameters::useCustomThreadClearanceChanged()
     }
 }
 
-void TaskThreadParameters::taperedCheckChanged()
-{
-    if (auto thread = getObject<PartDesign::Thread>()) {
-        setupTransaction();
-        thread->Tapered.setValue(ui->taperedCheck->isChecked());
-        ui->taperedAngleField->setEnabled(ui->taperedCheck->isChecked());
-        recomputeFeature();
-    }
-}
-
 void TaskThreadParameters::threadModelChanged()
 {
     if (auto thread = getObject<PartDesign::Thread>()) {
@@ -530,15 +507,6 @@ void TaskThreadParameters::customThreadClearanceChanged(double value)
     }
 }
 
-void TaskThreadParameters::taperedAngleChanged(double value)
-{
-    if (auto thread = getObject<PartDesign::Thread>()) {
-        setupTransaction();
-        thread->TaperedAngle.setValue(value);
-        recomputeFeature();
-    }
-}
-
 
 void TaskThreadParameters::changedObject(const App::Document&, const App::Property& property)
 {
@@ -547,12 +515,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         return;
     }
     const bool readOnly = property.isReadOnly();
-
-    const auto updateCheckable = [&](QCheckBox* widget, bool value) {
-        [[maybe_unused]] QSignalBlocker blocker(widget);
-        widget->setChecked(value);
-        widget->setDisabled(readOnly);
-    };
 
     const auto updateRadio = [&](QRadioButton* widget, bool value) {
         [[maybe_unused]] QSignalBlocker blocker(widget);
@@ -648,16 +610,6 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->upToGeometryWidget->setHidden(
             std::string(thread->DepthType.getValueAsString()) != "UpToGeometry"
         );
-    }
-    else if (&property == &thread->Tapered) {
-        updateCheckable(ui->taperedCheck, thread->Tapered.getValue());
-        ui->taperedAngleField->setEnabled(
-            thread->Tapered.getValue() && !thread->TaperedAngle.isReadOnly()
-        );
-    }
-    else if (&property == &thread->TaperedAngle) {
-        updateSpinBox(ui->taperedAngleField, thread->TaperedAngle.getValue());
-        ui->taperedAngleField->setEnabled(thread->Tapered.getValue() && !readOnly);
     }
 }
 

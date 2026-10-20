@@ -837,12 +837,6 @@ TEST_F(ThreadTest, ExternalThreadModeledOnCone)
     }
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(base, {*lateralFace});
-    EXPECT_TRUE(thread->Tapered.getValue());
-    EXPECT_NEAR(
-        thread->TaperedAngle.getValue(),
-        90.0 + std::atan((12.375 - 12.0) / length) * 180.0 / std::numbers::pi,
-        1e-9
-    );
 
     const int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
     ASSERT_GE(typeIdx, 0);

@@ -806,11 +806,6 @@ std::vector<std::string> ThreadUtils::getThreadClasses(const int threadType, con
     return clearances;
 }
 
-bool ThreadUtils::isThreadConical(const int threadType) const
-{
-    return checkedThreadDefinition(getThreadDefinitions(), threadType).isConical;
-}
-
 std::string ThreadUtils::getThreadDesignations(
     const int threadType,
     const int threadDiameter,
@@ -829,11 +824,6 @@ std::string ThreadUtils::getThreadDesignations(
     }
 
     return "---";
-}
-
-double ThreadUtils::getThreadProfileAngle()
-{
-    return 90 - 1.79;
 }
 
 enum class FaceType
@@ -1216,20 +1206,6 @@ ThreadUtils::ThreadEndTrims ThreadUtils::calculateThreadEndTrims(
     return {*nearIt * pitch, (1.0 - *farIt) * pitch};
 }
 
-static double getThreadTaperSlope(bool tapered, double taperedAngle)
-{
-    if (!tapered) {
-        return 0.0;
-    }
-    if (!std::isfinite(taperedAngle) || taperedAngle <= 0.0 || taperedAngle >= 180.0) {
-        throw Base::ValueError(QT_TRANSLATE_NOOP(
-            "Exception",
-            "Thread error: Tapered angle must be between 0 and 180 degrees"
-        ));
-    }
-    return std::tan(Base::toRadians(90.0 - taperedAngle));
-}
-
 static void validateThreadRadii(double firstRadius, double lastRadius)
 {
     if (!std::isfinite(firstRadius) || !std::isfinite(lastRadius)
@@ -1248,8 +1224,7 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     bool isInternalThread,
     double supportDiameter,
     double usefulThreadLength,
-    bool tapered,
-    double taperedAngle,
+    double profileTaperSlope,
     bool useCustomThreadClearance,
     double customThreadClearance,
     App::PropertyEnumeration& threadClass,
@@ -1318,7 +1293,7 @@ ThreadUtils::ThreadEndTrims ThreadUtils::getThreadEndTrims(
     const double correctedMajorRadius = selection.majorDiameter / 2.0
         + (isInternalThread ? clearance : -clearance);
     const double supportRadius = supportDiameter / 2.0;
-    const double taperSlope = getThreadTaperSlope(tapered, taperedAngle);
+    const double taperSlope = profileTaperSlope;
     const double farMajorRadius = correctedMajorRadius
         - (referenceAtStart ? usefulThreadLength * taperSlope : 0.0);
     const double nearMajorRadius = farMajorRadius + usefulThreadLength * taperSlope;
@@ -1349,8 +1324,7 @@ TopoDS_Shape ThreadUtils::makeThread(
     const int leftHanded,
     App::PropertyEnumeration& threadClass,
     const bool isInternalThread,
-    const bool tapered,
-    const double taperedAngle,
+    const double taperSlope,
     const bool useCustomThreadClearance,
     const double customThreadClearance,
     const double farEndTrim,
@@ -1422,7 +1396,6 @@ TopoDS_Shape ThreadUtils::makeThread(
             QT_TRANSLATE_NOOP("Exception", "Thread error: Invalid generated or useful thread length")
         );
     }
-    const double taperSlope = getThreadTaperSlope(tapered, taperedAngle);
     if (usefulThreadLength > 0.0) {
         const double nominalDepth = usefulThreadLength + pitch;
         validateThreadRadii(majorRadius, majorRadius - nominalDepth * taperSlope);
@@ -1480,7 +1453,7 @@ TopoDS_Shape ThreadUtils::makeThread(
 
     const double threadDepth = length;
     const double helixLength = threadDepth;
-    const double helixAngle = tapered ? 90 - taperedAngle : 0.0;
+    const double helixAngle = Base::toDegrees(std::atan(taperSlope));
 
     TopoDS_Shape helix
         = TopoShape().makeLongHelix(pitch, helixLength, majorRadius, helixAngle, leftHanded);
@@ -2516,9 +2489,7 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     double majorDiameter,
     double minorDiameter,
     double length,
-    const gp_Pnt& startPoint,
-    bool tapered,
-    double taperedAngle
+    const gp_Pnt& startPoint
 )
 {
     if (!std::isfinite(majorDiameter) || !std::isfinite(minorDiameter) || !std::isfinite(length)
@@ -2539,7 +2510,7 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
 
     const bool conicalSupport = isConicalFace(lateralFace);
     const double outerSlope = conicalSupport ? std::tan(getConicalAngle(lateralFace)) : 0.0;
-    const double innerSlope = conicalSupport ? -getThreadTaperSlope(tapered, taperedAngle) : 0.0;
+    const double innerSlope = outerSlope;
     const double outerEndRadius = majorRadius + length * outerSlope;
     const double innerEndRadius = minorRadius + length * innerSlope;
     validateThreadRadii(majorRadius, outerEndRadius);
@@ -3018,9 +2989,7 @@ double ThreadUtils::getUpToFirstLength(
     const bool isInternalThread,
     const bool useCustomThreadClearance,
     const double customThreadClearance,
-    App::PropertyEnumeration& threadClass,
-    const bool tapered,
-    const double taperedAngle
+    App::PropertyEnumeration& threadClass
 )
 {
     const auto diameters = getThreadDiameters(threadType);
@@ -3054,7 +3023,7 @@ double ThreadUtils::getUpToFirstLength(
     const gp_Ax2 axis(startPoint, zDir);
 
     validateThreadRadii(correctedMajorRadius, correctedMajorRadius);
-    const double radialSlope = -getThreadTaperSlope(tapered, taperedAngle);
+    const double radialSlope = isConicalFace(lateralFace) ? std::tan(getConicalAngle(lateralFace)) : 0.0;
     if (radialSlope < 0.0) {
         guideLength = std::min(guideLength, correctedMajorRadius / -radialSlope);
     }
