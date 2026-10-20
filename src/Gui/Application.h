@@ -350,7 +350,7 @@ private:
     struct ApplicationP* d;
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
-    NavlibInterface* pNavlibInterface;
+    NavlibInterface* pNavlibInterface {nullptr};
     void shutdown();
     static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
