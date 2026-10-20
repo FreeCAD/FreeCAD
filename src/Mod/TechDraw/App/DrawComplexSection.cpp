@@ -129,6 +129,7 @@
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "ShapeUtils.h"
+#include "ShapeExtractor.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -589,7 +590,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
         return {};
     }
 
-    TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape toolShape = ShapeExtractor::getLocatedShape(toolObj);
     if (toolShape.IsNull()) {
         return {};
     }
@@ -715,7 +716,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     auto* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
-        TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        TopoDS_Shape toolShape = ShapeExtractor::getLocatedShape(toolObj);
         if (toolShape.IsNull()) {
             // CuttingToolWireObject is likely still restoring and has no shape yet
             return {};
