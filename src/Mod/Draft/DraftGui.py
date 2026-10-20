@@ -256,10 +256,6 @@ class DraftToolBar:
         self._angle_lock_axis = None
         FreeCAD.addDocumentObserver(self)
 
-    def slotCreatedDocument(self, doc):
-        """New documents become active without an activation notification."""
-        self.slotActivateDocument(doc)
-
     def slotDeletedDocument(self, doc):
         """Document observer callback."""
         active = FreeCAD.ActiveDocument
