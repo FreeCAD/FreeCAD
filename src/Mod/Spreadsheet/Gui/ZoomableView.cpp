@@ -56,7 +56,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     qpw = m_scene.addWidget(stv);
     setScene(&m_scene);
 
-    setBackgroundBrush(Qt::transparent);
+    setBackgroundBrush(QPalette().brush(QPalette::Normal, QPalette::Window));
     setFrameStyle(QFrame::NoFrame);
 
     setSizePolicy(QSizePolicy {QSizePolicy::Expanding, QSizePolicy::Expanding});
