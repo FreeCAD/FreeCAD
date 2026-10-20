@@ -265,7 +265,8 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
-        return DrawViewSection::makeSectionCut(baseShape);
+        DrawViewSection::makeSectionCut(baseShape);
+        return;
     }
 
     try {
@@ -286,7 +287,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         return;
     }
 
-    return DrawViewSection::makeSectionCut(baseShape);
+    DrawViewSection::makeSectionCut(baseShape);
 }
 
 
