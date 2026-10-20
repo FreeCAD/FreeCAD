@@ -880,10 +880,18 @@ class Joint:
         self.redrawJointPlacements(joint)
 
     def redrawJointPlacements(self, joint):
-        if joint.ViewObject:
-            proxy = joint.ViewObject.Proxy
-            if proxy:
-                proxy.redrawJointPlacements(joint)
+        view = joint.ViewObject
+        if not view:
+            return
+
+        proxy = view.Proxy
+        # Documents created headlessly can restore with an integer placeholder
+        # instead of the Python view provider. Attach it before drawing the JCS.
+        if proxy is None or isinstance(proxy, int):
+            proxy = ViewProviderJoint(view)
+            if not hasattr(proxy, "switch_JCS1"):
+                proxy.attach(view)
+        proxy.redrawJointPlacements(joint)
 
     """
     So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.

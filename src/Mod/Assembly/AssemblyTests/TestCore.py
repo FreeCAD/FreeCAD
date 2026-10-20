@@ -26,6 +26,7 @@ import Part
 import os
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 import UtilsAssembly
 import JointObject
@@ -89,6 +90,28 @@ class AssemblyTestBase(unittest.TestCase):
 
 
 class TestCore(AssemblyTestBase):
+    @unittest.skipUnless(App.GuiUp, "Joint view providers require GUI mode")
+    def test_redraw_joint_restores_missing_view_provider(self):
+        joint = self.jointgroup.newObject("App::FeaturePython", "RestoredJoint")
+        JointObject.Joint(joint, 0)
+
+        # A joint saved without a GUI has no serialized Python view provider.
+        for missing_proxy in (1, None):
+            with self.subTest(proxy=missing_proxy):
+                joint.ViewObject.Proxy = missing_proxy
+                joint.Proxy.redrawJointPlacements(joint)
+
+                provider = joint.ViewObject.Proxy
+                self.assertIsInstance(provider, JointObject.ViewProviderJoint)
+                self.assertTrue(hasattr(provider, "switch_JCS1"))
+                self.assertTrue(hasattr(provider, "switch_JCS2"))
+                joint.Proxy.redrawJointPlacements(joint)
+                self.assertIs(joint.ViewObject.Proxy, provider)
+
+    def test_redraw_joint_without_view_object(self):
+        # Headless recomputes must not try to construct any GUI objects.
+        JointObject.Joint.redrawJointPlacements(None, SimpleNamespace(ViewObject=None))
+
     def test_component_count_for_link_array(self):
         source = self.doc.addObject("Part::Box", "ArraySource")
         array = self.assembly.newObject("App::Link", "Array")
