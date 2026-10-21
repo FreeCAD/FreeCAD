@@ -936,7 +936,8 @@ def combineHorizontalFaces(faces, keepOrder=False, z=0, tol=0.01):
     # Make boundbox face with offset and cut incoming faces from it
     bboxFace = makeBoundBoxFace(allFaces.BoundBox, offset, z)
     cut = bboxFace.cut(faces, tol)
-    horizontal = Part.makeFace(cut.Wires[1:], "Part::FaceMakerBullseye").Faces
+    wires = [w for w in cut.Wires[1:] if w.isClosed()]  # exclude open wires from "bad" shape
+    horizontal = Part.makeFace(wires, "Part::FaceMakerBullseye").Faces
 
     # restore order
     if keepOrder and len(horizontal) > 1:
