@@ -21,7 +21,7 @@
 out_tooltip = """
 Generic Multi Axis Industrial Post, "machine" based.
 
-Covers common code between several industrial cnc machines to reduce duplication. 
+Covers common code between several industrial cnc machines to reduce duplication.
 It is not intended to be used standalone
 
 Features:
@@ -34,12 +34,12 @@ Features:
 - an optional empty-spindle park (``M6 T0``) before the postamble;
 - rigid tapping: ``S<rpm>`` immediately before a ``G84``/``G74`` block,
   whose F is pitch times spindle speed;
-  Note: set RIGID_TAP_MODE at the top of the file if there is a specific command 
+  Note: set RIGID_TAP_MODE at the top of the file if there is a specific command
   for it on your machine.
-  eg. RIGID_TAP_MODE ="M29" for Fanuc machines 
+  eg. RIGID_TAP_MODE ="M29" for Fanuc machines
 - upper-case output for older controls.
 
-The post leaves DWO vs TWP ambigous to be set by the child post processor. 
+The post leaves DWO vs TWP ambigous to be set by the child post processor.
 
 """
 import re
@@ -87,8 +87,9 @@ EXTRA_SUPPORTED = Constants.MCODE_END + Constants.MCODE_END_RESET
 
 
 class GenericMultiAxisIndustrial(PostProcessor):
-    """Post processor for Generic Multi Axis Industrial Machines. 
+    """Post processor for Generic Multi Axis Industrial Machines.
     Not intended to be used standalone"""
+
     # Canned cycles whose P word is a dwell.
     DwellCycles = ("G82", "G88", "G89", "G84", "G74", "G76")
 
@@ -411,7 +412,7 @@ class GenericMultiAxisIndustrial(PostProcessor):
             params = {k: v for k, v in command.Parameters.items() if k != "S"}
             command = Path.Command(command.Name, params, command.Annotations)
 
-        doubles = self.values["OUTPUT_DOUBLES"] #TODO why does this need to check doubles?
+        doubles = self.values["OUTPUT_DOUBLES"]  # TODO why does this need to check doubles?
         self.values["OUTPUT_DOUBLES"] = True
         try:
             return self._convert_move(command)

@@ -68,10 +68,8 @@ POST_TYPE = "machine"
 
 RIGID_TAP_MODE = "M29"
 
-EXTRA_SUPPORTED = (
-    ["G54.1"]
-    + GenericMultiAxisIndustrial.EXTRA_SUPPORTED
-)
+EXTRA_SUPPORTED = ["G54.1"] + GenericMultiAxisIndustrial.EXTRA_SUPPORTED
+
 
 class FanucPost(GenericMultiAxisIndustrial):
     """Post processor for Fanuc mill controls and Fanuc-compatible G-code."""
