@@ -138,7 +138,7 @@ class PropertyColor:
 class PropertyExpressionEngine:
     READ_ONLY = True
 
-    def get(self) -> list[tuple[str, str | None]]: ...
+    def get(self) -> list[tuple[str, str]]: ...
 
 
 class PropertyFile:
