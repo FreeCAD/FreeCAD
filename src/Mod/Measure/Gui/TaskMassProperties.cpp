@@ -1541,25 +1541,14 @@ void TaskMassProperties::saveResult()
 
     obj->Visibility.setValue(true);
 
-    auto setQuantity = [&](const char* name, const char* group, const Base::Quantity& quantity) {
+    auto setQuantity = [&](const char* type,
+                           const char* name,
+                           const char* group,
+                           const Base::Quantity& quantity) {
         Base::Quantity q(quantity);
-        if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
-            q.setValue(0.0);
-        }
-        auto* prop = freecad_cast<App::PropertyString*>(
-            obj->addDynamicProperty("App::PropertyString", name, group)
-        );
+        auto* prop = freecad_cast<App::PropertyQuantity*>(obj->addDynamicProperty(type, name, group));
         if (prop) {
-            std::string text;
-            auto schema = Base::UnitsApi::createSchema(static_cast<std::size_t>(unitsSchemaIndex));
-            if (schema) {
-                text = schema->translate(q);
-            }
-            else {
-                text = Base::UnitsApi::schemaTranslate(q);
-            }
-
-            prop->setValue(text.c_str());
+            prop->setValue(q.getValue());
             prop->setReadOnly(true);
         }
     };
@@ -1595,37 +1584,44 @@ void TaskMassProperties::saveResult()
         currentMode == MassPropertiesMode::Custom ? "Custom" : "Center of gravity"
     );
 
-    setQuantity("Volume", "Physical Properties", currentInfo.volume);
-    setQuantity("Mass", "Physical Properties", currentInfo.mass);
-    setQuantity("Density", "Physical Properties", currentInfo.density);
-    setQuantity("SurfaceArea", "Physical Properties", currentInfo.surfaceArea);
+    setQuantity("App::PropertyVolume", "Volume", "Physical Properties", currentInfo.volume);
+    setQuantity("App::PropertyMass", "Mass", "Physical Properties", currentInfo.mass);
+    setQuantity("App::PropertyDensity", "Density", "Physical Properties", currentInfo.density);
+    setQuantity("App::PropertyArea", "SurfaceArea", "Physical Properties", currentInfo.surfaceArea);
 
+    // PropertyDistance rather than PropertyLength, which clamps negative coordinates to zero
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfGravityX",
         "Center of Gravity",
         Base::Quantity(currentInfo.cog.x, Base::Unit::Length)
     );
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfGravityY",
         "Center of Gravity",
         Base::Quantity(currentInfo.cog.y, Base::Unit::Length)
     );
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfGravityZ",
         "Center of Gravity",
         Base::Quantity(currentInfo.cog.z, Base::Unit::Length)
     );
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfVolumeX",
         "Center of Volume",
         Base::Quantity(currentInfo.cov.x, Base::Unit::Length)
     );
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfVolumeY",
         "Center of Volume",
         Base::Quantity(currentInfo.cov.y, Base::Unit::Length)
     );
     setQuantity(
+        "App::PropertyDistance",
         "CenterOfVolumeZ",
         "Center of Volume",
         Base::Quantity(currentInfo.cov.z, Base::Unit::Length)
@@ -1637,6 +1633,7 @@ void TaskMassProperties::saveResult()
 
     if (hasAxisSelection) {
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "AxisInertia",
             "Inertia",
             Base::Quantity(currentInfo.axisInertia, Base::Unit::MassMomentOfInertia)
@@ -1644,46 +1641,55 @@ void TaskMassProperties::saveResult()
     }
     else {
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJox",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJo.x, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJoy",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJo.y, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJoz",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJo.z, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJxy",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJCross.x, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJzx",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJCross.y, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJzy",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJCross.z, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJx",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJ.x, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJy",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJ.y, Base::Unit::MassMomentOfInertia)
         );
         setQuantity(
+            "App::PropertyMassMomentOfInertia",
             "InertiaJz",
             "Inertia",
             Base::Quantity(currentInfo.inertiaJ.z, Base::Unit::MassMomentOfInertia)
