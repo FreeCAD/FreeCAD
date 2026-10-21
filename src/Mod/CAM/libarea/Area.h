@@ -169,6 +169,10 @@ public:
     static double m_clipper_scale;
     static constexpr double default_clipper_scale = 10000.0;
 
+    // Convert between PointD (double) and Point64 (int64, clipper units) with m_clipper_scale
+    static Clipper2Lib::Point64 ToPoint64(const Clipper2Lib::PointD& p);
+    static Clipper2Lib::PointD ToPointD(const Clipper2Lib::Point64& p);
+
     void append(const CCurve& curve);
     void move(CCurve&& curve);
     void Subtract(const CArea& a2);
@@ -186,6 +190,14 @@ public:
     void ClipperNoop();  // converts to clipper and back (i.e. arc fitting) without any clipping
                          // operations
     void Thicken(double value);
+    // Offset each curve by `offset` on both sides with round joins and round end caps, without
+    // unioning. Each output curve's m_edgeTags marks its edges: 1/-1 = positive/negative offset
+    // side, 0 = end cap.
+    void NaiveOffset(double offset);
+
+    // Convert `curve` to a clipper path (arcs interpolated, in clipper units scaled by
+    // m_clipper_scale), recording conversion metadata in `metadata`
+    Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
     unsigned int num_curves()
     {
         return static_cast<int>(m_curves.size());
@@ -257,10 +269,6 @@ private:
         const Clipper2Lib::Point64& p2,
         const ConversionMetadata& metadata
     );
-
-    void NaiveOffset(double offset);
-
-    Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
 
     void SetFromResult(
         Clipper2Lib::Paths64& paths,
