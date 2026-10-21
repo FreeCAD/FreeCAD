@@ -77,6 +77,7 @@ DlgExpressionInput::DlgExpressionInput(
     okBtn = ui->buttonBox->button(QDialogButtonBox::Ok);
     discardBtn = ui->buttonBox->button(QDialogButtonBox::Reset);
     discardBtn->setToolTip(tr("Revert to last calculated value (as constant)"));
+    discardBtn->setText(tr("Convert to fixed value"));
 
     initializeVarSets();
 
