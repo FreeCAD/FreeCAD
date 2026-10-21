@@ -108,6 +108,12 @@ bool isWhitworthThread(const std::string& threadType)
     return threadType == "BSP" || threadType == "BSW" || threadType == "BSF";
 }
 
+bool usesNominalSizeLabels(const std::string& threadType)
+{
+    return threadType == "UNC" || threadType == "UNF" || threadType == "UNEF" || threadType == "NPT"
+        || isWhitworthThread(threadType);
+}
+
 const ThreadUtils::ThreadDefinition& checkedThreadDefinition(
     const std::vector<ThreadUtils::ThreadDefinition>& definitions,
     int threadType
@@ -462,7 +468,7 @@ std::vector<std::string> ThreadUtils::getThreadTypeNameEnums() const
     return result;
 }
 
-std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType) const
+std::vector<double> ThreadUtils::getThreadDiameterValues(const int threadType) const
 {
     const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     std::set<double> uniqueDiameters;
@@ -475,19 +481,43 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType) c
         uniqueDiameters.insert(parseThreadValue(definition.sizes[row]));
     }
     if (uniqueDiameters.empty()) {
-        return {"6.0"};
+        return {6.0};
     }
 
-    std::vector<std::string> designations;
-    designations.reserve(uniqueDiameters.size());
+    return {uniqueDiameters.begin(), uniqueDiameters.end()};
+}
 
-    for (double diameter : uniqueDiameters) {
-        std::ostringstream oss;
+std::vector<std::string> ThreadUtils::getThreadDiameterLabels(const int threadType) const
+{
+    const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
+    const std::vector<double> diameters = getThreadDiameterValues(threadType);
+    const bool nominalLabels = usesNominalSizeLabels(definition.id);
+    const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
 
-        oss << std::noshowpoint << diameter << " mm";
-        designations.push_back(oss.str());
+    std::vector<std::string> labels;
+    labels.reserve(diameters.size());
+
+    for (double diameter : diameters) {
+        std::string label;
+        if (nominalLabels) {
+            for (size_t row = 0; row < rowCount && row < definition.designations.size(); ++row) {
+                if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
+                    continue;
+                }
+                if (parseThreadValue(definition.sizes[row]) == diameter) {
+                    label = definition.designations[row];
+                    break;
+                }
+            }
+        }
+        if (label.empty()) {
+            std::ostringstream oss;
+            oss << std::noshowpoint << diameter << " mm";
+            label = oss.str();
+        }
+        labels.push_back(std::move(label));
     }
-    return designations;
+    return labels;
 }
 
 
@@ -560,7 +590,7 @@ ThreadUtils::ResolvedThreadSelection ThreadUtils::resolveThreadSelection(
 {
     const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
 
-    const std::vector<std::string> diameters = getThreadDiameters(threadType);
+    const std::vector<double> diameters = getThreadDiameterValues(threadType);
     if (sizeIndex < 0 || static_cast<size_t>(sizeIndex) >= diameters.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
@@ -570,7 +600,7 @@ ThreadUtils::ResolvedThreadSelection ThreadUtils::resolveThreadSelection(
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread pitch out of range"));
     }
 
-    const double selectedDiameter = parseThreadValue(diameters[sizeIndex]);
+    const double selectedDiameter = diameters[sizeIndex];
     const double selectedPitch = parseThreadValue(pitches[pitchIndex]);
     const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
     for (size_t row = 0; row < rowCount; ++row) {
@@ -753,11 +783,11 @@ std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, con
 {
     const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     std::vector<std::string> pitches;
-    const auto diameters = getThreadDiameters(threadType);
+    const auto diameters = getThreadDiameterValues(threadType);
     if (threadDiameter < 0 || static_cast<size_t>(threadDiameter) >= diameters.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
-    const double targetDiameter = parseThreadValue(diameters[threadDiameter]);
+    const double targetDiameter = diameters[threadDiameter];
     const size_t rowCount = std::min(definition.sizes.size(), definition.pitches.size());
     for (size_t row = 0; row < rowCount; ++row) {
         if (definition.sizes[row].empty() || definition.pitches[row].empty()) {
@@ -809,16 +839,61 @@ std::vector<std::string> ThreadUtils::getThreadClasses(const int threadType, con
 std::string ThreadUtils::getThreadDesignations(
     const int threadType,
     const int threadDiameter,
-    const int threadPitch
+    const int threadPitch,
+    const bool isLeftHanded,
+    const std::string& threadClass
 )
 {
     try {
         const ResolvedThreadSelection selection
             = resolveThreadSelection(threadType, threadDiameter, threadPitch);
-        if (selection.row < selection.definition->designations.size()
-            && !selection.definition->designations[selection.row].empty()) {
-            return selection.definition->designations[selection.row];
+        const ThreadDefinition& definition = *selection.definition;
+        const std::string designation = selection.row < definition.designations.size()
+            ? definition.designations[selection.row]
+            : std::string();
+        const std::string& id = definition.id;
+        const bool hasClass = !threadClass.empty() && threadClass != "None";
+        const std::string handSuffix = isLeftHanded ? " LH" : "";
+
+        const auto formatNumber = [](double value) {
+            std::ostringstream oss;
+            oss << std::noshowpoint << value;
+            return oss.str();
+        };
+        const auto threadsPerInch = [&]() {
+            return std::to_string(static_cast<long>(std::lround(25.4 / selection.pitch)));
+        };
+
+        if (id == "ISOMetricProfile" || id == "ISOMetricFineProfile") {
+            std::string result = "M" + formatNumber(selection.majorDiameter) + "x"
+                + formatNumber(selection.pitch);
+            if (hasClass) {
+                result += "-" + threadClass;
+            }
+            return result + handSuffix;
         }
+
+        if (designation.empty()) {
+            return "---";
+        }
+
+        if (id == "UNC" || id == "UNF" || id == "UNEF") {
+            std::string result = designation + "-" + threadsPerInch() + " " + id;
+            if (hasClass) {
+                result += "-" + threadClass;
+            }
+            return result + handSuffix;
+        }
+
+        if (id == "NPT") {
+            return designation + "-" + threadsPerInch() + " NPT" + handSuffix;
+        }
+
+        if (id == "BSP") {
+            return "G " + designation + (hasClass ? " " + threadClass : std::string());
+        }
+
+        return designation + handSuffix;
     }
     catch (const Base::Exception&) {
     }
@@ -1348,7 +1423,7 @@ TopoDS_Shape ThreadUtils::makeThread(
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type out of range"));
     }
 
-    const std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
+    const std::vector<double> threadDiameters = getThreadDiameterValues(threadType);
     if (static_cast<size_t>(threadSize) >= threadDiameters.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
@@ -1360,7 +1435,7 @@ TopoDS_Shape ThreadUtils::makeThread(
 
     const std::string& currentThread = currentThreads[threadType];
     const int currentThreadTypeIndex = threadTypeFromString(currentThread);
-    double majorRadius = parseThreadValue(threadDiameters[threadSize]) / 2.0;
+    double majorRadius = threadDiameters[threadSize] / 2.0;
     const double pitch = getThreadPitch(threadType, threadSize, threadPitch);
     if (pitch <= Precision::Confusion()) {
         throw Base::ValueError(
@@ -1635,18 +1710,18 @@ bool ThreadUtils::isConicalFace(const App::PropertyLinkSub& lateralFace) const
 
 int ThreadUtils::findNearestThreadSize(const int threadType, const double diameter)
 {
-    const std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
+    const std::vector<double> threadDiameters = getThreadDiameterValues(threadType);
 
     if (threadDiameters.empty()) {
         return -1;
     }
 
     int bestIndex = 0;
-    double bestDistance = std::abs(parseThreadValue(threadDiameters[0]) - diameter);
+    double bestDistance = std::abs(threadDiameters[0] - diameter);
 
     for (size_t i = 1; i < threadDiameters.size(); ++i) {
 
-        const double currentDiameter = parseThreadValue(threadDiameters[i]);
+        const double currentDiameter = threadDiameters[i];
 
         const double distance = std::abs(currentDiameter - diameter);
 
@@ -1669,7 +1744,7 @@ std::optional<ThreadUtils::ThreadSizeSelection> ThreadUtils::findNearestMinorThr
     }
 
     const auto& definition = definitions[threadType];
-    const std::vector<std::string> diameters = getThreadDiameters(threadType);
+    const std::vector<double> diameters = getThreadDiameterValues(threadType);
     std::optional<ThreadSizeSelection> bestSelection;
     double bestDistance = std::numeric_limits<double>::max();
 
@@ -1684,7 +1759,7 @@ std::optional<ThreadUtils::ThreadSizeSelection> ThreadUtils::findNearestMinorThr
 
         int sizeIndex = -1;
         for (size_t i = 0; i < diameters.size(); ++i) {
-            if (std::abs(parseThreadValue(diameters[i]) - majorDiameter) < threadDefinitionTolerance) {
+            if (std::abs(diameters[i] - majorDiameter) < threadDefinitionTolerance) {
                 sizeIndex = static_cast<int>(i);
                 break;
             }
@@ -2992,11 +3067,11 @@ double ThreadUtils::getUpToFirstLength(
     App::PropertyEnumeration& threadClass
 )
 {
-    const auto diameters = getThreadDiameters(threadType);
+    const auto diameters = getThreadDiameterValues(threadType);
     if (threadSize < 0 || static_cast<size_t>(threadSize) >= diameters.size()) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
-    const double majorRadius = parseThreadValue(diameters[threadSize]) / 2.0;
+    const double majorRadius = diameters[threadSize] / 2.0;
 
     double clearance;
     if (useCustomThreadClearance) {

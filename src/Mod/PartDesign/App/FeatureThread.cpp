@@ -85,7 +85,7 @@ Thread::Thread()
         App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "Thread size")
     );
-    ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+    ThreadSize.setEnums(threadUtils.getThreadDiameterLabels(ThreadType.getValue()));
 
     ADD_PROPERTY_TYPE(
         ThreadSizePitch,
@@ -106,7 +106,6 @@ Thread::Thread()
         QT_TRANSLATE_NOOP("App::Property", "Thread direction")
     );
     ThreadDirection.setEnums(ThreadUtils::ThreadDirectionEnums);
-    ThreadDirection.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(
         DepthType,
@@ -320,7 +319,7 @@ try {
     int nearestPitch = -1;
     double definedDiameter = 0.0;
     if (!IsInternal.getValue()) {
-        const std::vector<std::string> diameters = threadUtils.getThreadDiameters(
+        const std::vector<double> diameters = threadUtils.getThreadDiameterValues(
             ThreadType.getValue()
         );
         nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
@@ -329,7 +328,7 @@ try {
                 QT_TRANSLATE_NOOP("Exception", "Thread error: Thread size index out of definition range.")
             );
         }
-        definedDiameter = std::stod(diameters[nearestSize]);
+        definedDiameter = diameters[nearestSize];
     }
     else {
         const auto selection = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
@@ -670,6 +669,47 @@ void Thread::updatePreviewShape()
     FeatureAddSub::updatePreviewShape();
 }
 
+void Thread::onDocumentRestored()
+{
+    if (ThreadType.isValid() && ThreadSize.isValid()) {
+        try {
+            const auto labels = threadUtils.getThreadDiameterLabels(ThreadType.getValue());
+            const auto saved = ThreadSize.getEnumVector();
+            if (labels != saved && labels.size() == saved.size()) {
+                const long index = ThreadSize.getValue();
+                ThreadSize.setEnums(labels);
+                ThreadSize.setValue(index);
+            }
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Thread::onDocumentRestored: %s\n", e.what());
+        }
+    }
+
+    updateThreadDesignation();
+    DressUp::onDocumentRestored();
+}
+
+void Thread::updateThreadDesignation()
+{
+    std::string designation = "---";
+    if (ThreadType.isValid() && ThreadSize.isValid() && ThreadSizePitch.isValid()) {
+        const std::string threadClass = ThreadClass.isValid() ? ThreadClass.getValueAsString()
+                                                              : "";
+        designation = threadUtils.getThreadDesignations(
+            ThreadType.getValue(),
+            ThreadSize.getValue(),
+            ThreadSizePitch.getValue(),
+            ThreadDirection.getValue() == 1,
+            threadClass
+        );
+    }
+
+    if (designation != ThreadDesignation.getValue()) {
+        ThreadDesignation.setValue(designation);
+    }
+}
+
 void Thread::onChanged(const App::Property* prop)
 try {
     if (prop == &ThreadType || prop == &IsInternal) {
@@ -678,7 +718,7 @@ try {
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             if (prop == &ThreadType) {
-                ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+                ThreadSize.setEnums(threadUtils.getThreadDiameterLabels(ThreadType.getValue()));
                 if (!ThreadSize.isValid() && ThreadSize.hasEnums()) {
                     ThreadSize.setValue(0L);
                 }
@@ -701,25 +741,16 @@ try {
             return;
         }
 
-        if (type == "None" || type == "BSP" || type == "NPT" || type == "ISOTyre") {
+        if (type == "None") {
             ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
         }
-        else if (
-            type == "ISOMetricProfile" || type == "ISOMetricFineProfile" || type == "UNC"
-            || type == "UNF" || type == "UNEF" || type == "BSW" || type == "BSF"
-        ) {
+        else {
             ThreadClass.setEnums(
                 threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue())
             );
         }
 
-        if (prop == &ThreadType) {
-            ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-                ThreadType.getValue(),
-                ThreadSize.getValue(),
-                ThreadSizePitch.getValue()
-            ));
-        }
+        updateThreadDesignation();
     }
     else if (prop == &ThreadSize) {
         if (!ThreadType.isValid() || !ThreadSize.isValid()) {
@@ -734,18 +765,10 @@ try {
         if (!ThreadSizePitch.isValid() && ThreadSizePitch.hasEnums()) {
             ThreadSizePitch.setValue(0L);
         }
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-            ThreadType.getValue(),
-            ThreadSize.getValue(),
-            ThreadSizePitch.getValue()
-        ));
+        updateThreadDesignation();
     }
-    else if (prop == &ThreadSizePitch) {
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-            ThreadType.getValue(),
-            ThreadSize.getValue(),
-            ThreadSizePitch.getValue()
-        ));
+    else if (prop == &ThreadSizePitch || prop == &ThreadDirection || prop == &ThreadClass) {
+        updateThreadDesignation();
     }
     else if (prop == &LateralFace || prop == &StartPlane) {
         if (this->testStatus(App::ObjectStatus::Restore)
@@ -832,7 +855,7 @@ try {
             }
         }
 
-        const auto sizes = threadUtils.getThreadDiameters(ThreadType.getValue());
+        const auto sizes = threadUtils.getThreadDiameterValues(ThreadType.getValue());
         if (nearestSize >= 0 && static_cast<size_t>(nearestSize) < sizes.size()
             && nearestSize != ThreadSize.getValue()) {
             ThreadSize.setValue(nearestSize);

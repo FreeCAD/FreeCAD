@@ -75,7 +75,8 @@ public:
     };
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
-    std::vector<std::string> getThreadDiameters(const int threadType) const;
+    std::vector<double> getThreadDiameterValues(const int threadType) const;
+    std::vector<std::string> getThreadDiameterLabels(const int threadType) const;
     std::vector<std::string> getThreadMinorDiameters(const int threadType);
     double getMinorDiameter(const int threadType, const int size, const int pitch) const;
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
@@ -127,7 +128,9 @@ public:
     std::string getThreadDesignations(
         const int threadType,
         const int threadDiameter,
-        const int threadPitch
+        const int threadPitch,
+        const bool isLeftHanded,
+        const std::string& threadClass
     );
 
     double getThroughAllLength(TopoShape base) const;
