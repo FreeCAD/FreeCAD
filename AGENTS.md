@@ -151,6 +151,38 @@ new code is the most common reason reviewers send a PR back.
 - Fold review fixes into the commit they belong to instead of adding "address review" commits,
   and push once per review round. Every push reruns CI.
 
+## Before pushing
+
+Catch locally what CI would otherwise report one push at a time:
+
+- Run the hooks on the changed files: `pixi run pre-commit run --files <files>`. Otherwise
+  pre-commit.ci pushes formatting fixups to the PR.
+- Build the affected targets with warnings visible and run the affected tests.
+- CI also runs clang-tidy (`.clang-tidy`), pylint (`.pylintrc`), codespell and an old-style Qt
+  connection check on changed lines. Do not introduce new warnings in lines you touch.
+- After changing a `.pyi` binding, run `src/Tools/typing/check-stubs.sh`; CI runs the same
+  stub smoke check.
+- Confirm each commit builds on its own and the diff contains nothing unrelated.
+
+## Review and delivery
+
+- Review the complete final diff, shared callers, registrations, and adjacent workflows.
+  Check for compatibility regressions, ownership errors, unnecessary dependencies, defensive
+  code without a real case, duplicated logic, and behavior beyond the agreed scope. For each
+  guard, ask whether it can be hit; for each new symbol, whether it is used; for each new
+  helper, whether one already exists. Code a reviewer cannot understand on first reading needs
+  restructuring, not a longer explanation. A working reproduction is only part of this review.
+- After a fix is validated, reassess whether an existing mechanism or simpler design can
+  achieve the same behavior with less code. Make necessary improvements within scope without
+  introducing unrelated refactoring. If review finds questionable code, fix it rather than
+  writing justifications for it.
+- For review tasks, prioritize actionable correctness and maintainability findings. Explain
+  the trigger and impact with precise code locations; separate uncertainty from confirmed bugs.
+  Follow established local style rather than treating every handbook preference as a blocker.
+- Follow CONTRIBUTING.md for cherry-picks and attribution.
+- Finish with the change, its reason, validation, and material limitations. Describe partial
+  fixes accurately and reserve closing-issue language for issues actually resolved.
+
 ## Architecture and integration
 
 - Evaluate CAD/CAM/CAE changes for engineering meaning as well as software correctness.
@@ -326,16 +358,10 @@ void TaskFoo::apply()
   the CI environments). Put platform-specific code behind the `FC_OS_*` macros.
 - Name tolerances and constants: `Precision::Confusion()` (OCC) or `Base::Precision` in code
   without OCC, `Base::toRadians()`, and named `constexpr` values instead of literals.
-- Duplicate logic or lambdas become one named function. Do not keep duplication with a
-  comment explaining why removing it would be risky; restructure it.
 
 ## C++ conventions
 
-- Follow `.clang-format`, `.pre-commit-config.yaml`, and the surrounding module's conventions.
-  C++ uses four spaces, no tabs, and a 100-column limit. Format new and substantially rewritten
-  code only. Preserve include order and grouping (`SortIncludes` is off); do not mass-sort
-  includes or reformat unrelated code. Headers use `#pragma once`. Preserve existing line
-  endings; some `.cpp` and `.ui` files use CRLF, so never rewrite files in text mode from scripts.
+- Format only new or rewritten code; `.clang-format` and pre-commit do the rest.
 - Use the C++ standard selected by CMake. Prefer initialized members, `const` correctness,
   `auto*` and `auto&`, `nullptr`, early returns with the main path least indented, and
   `std::ranges`/`<algorithm>` where they improve readability. Logic that belongs to a class goes
@@ -345,8 +371,6 @@ void TaskFoo::apply()
   a `std::set`. Use `emplace_back`, `const auto&` and moves to avoid copies.
 - Prefer the standard library over boost in new code (`std::format`, `starts_with`,
   `std::numbers::pi`, `std::filesystem`); the project is reducing its boost dependency.
-- Names state intent: no single-letter names outside loops and math, booleans read as
-  predicates (`hasDirection`), and a name for every non-obvious expression.
 - Include what you use, and remove includes and imports the change leaves unused.
 
 Use FreeCAD's typed helpers instead of manual casts and type checks:
@@ -373,9 +397,6 @@ if (auto* feature = freecad_cast<Part::Feature*>(obj)) {
 - Use the layer's exception and logging facilities (`Base::` exceptions, `FC_THROWM`,
   `Base::Console()`, `FC_ERR`/`FC_WARN`/`FC_LOG`) rather than adding a competing mechanism.
   Exception messages shown to users are translatable and consistent with their siblings.
-- Prefer typed Qt signal connections, never `SIGNAL`/`SLOT`. Use `Q_SIGNALS`, `Q_SLOTS`, and
-  `Q_EMIT` for the `QT_NO_KEYWORDS` build. Preserve public signatures and established callback
-  contracts.
 - Literal values are normal in tests. Wrap a C++ test file in
   `// NOLINTBEGIN(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)` and the
   matching `NOLINTEND`, as existing tests do, instead of naming every test value.
@@ -462,40 +483,3 @@ if (auto* feature = freecad_cast<Part::Feature*>(obj)) {
 - Report commands, outcomes, and remaining validation gaps accurately. Distinguish source
   analysis, compilation, automated tests, manual verification, and CI. Do not claim a test
   passed, a GUI was reproduced, or a PR is validated without supporting evidence.
-
-## Before pushing
-
-Catch locally what CI would otherwise report one push at a time:
-
-- Run the hooks on the changed files: `pixi run pre-commit run --files <files>`. Otherwise
-  pre-commit.ci pushes formatting fixups to the PR.
-- Build the affected targets with warnings visible and run the affected tests.
-- CI also runs clang-tidy (`.clang-tidy`), pylint (`.pylintrc`), codespell and an old-style Qt
-  connection check on changed lines. Do not introduce new warnings in lines you touch.
-- After changing a `.pyi` binding, run `src/Tools/typing/check-stubs.sh`; CI runs the same
-  stub smoke check.
-- Confirm each commit builds on its own and the diff contains nothing unrelated.
-
-## Review and delivery
-
-- Review the complete final diff, shared callers, registrations, and adjacent workflows.
-  Check for compatibility regressions, ownership errors, unnecessary dependencies, defensive
-  code without a real case, duplicated logic, and behavior beyond the agreed scope. For each
-  guard, ask whether it can be hit; for each new symbol, whether it is used; for each new
-  helper, whether one already exists. Code a reviewer cannot understand on first reading needs
-  restructuring, not a longer explanation. A working reproduction is only part of this review.
-- After a fix is validated, reassess whether an existing mechanism or simpler design can
-  achieve the same behavior with less code. Make necessary improvements within scope without
-  introducing unrelated refactoring. If review finds questionable code, fix it rather than
-  writing justifications for it.
-- For review tasks, prioritize actionable correctness and maintainability findings. Explain
-  the trigger and impact with precise code locations; separate uncertainty from confirmed bugs.
-  Follow established local style rather than treating every handbook preference as a blocker.
-- Inspect actual remotes and the intended target branch. For cherry-picks or rebases, check
-  prerequisites, patch equivalence, original authorship, and the resulting diff. Follow
-  CONTRIBUTING.md's attribution rules, including co-author trailers where required.
-- For CI changes, check affected events, branches, forks, PR/head identity, required checks,
-  and result propagation. Avoid duplicate builds, runner-blocking waits, and false success
-  when required checks failed, were canceled, or never ran.
-- Finish with the change, its reason, validation, and material limitations. Describe partial
-  fixes accurately and reserve closing-issue language for issues actually resolved.
