@@ -651,7 +651,7 @@ class ClearedAreaSegmentVisitor: public PathSegmentVisitor
 {
 private:
     CArea pathSegments;
-    CArea holes;
+    std::set<std::pair<double, double>> circleCenters;
     double maxZ;
     double radius;
     Base::BoundBox3d bbox;
@@ -660,11 +660,7 @@ private:
     {
         if (p.z <= maxZ) {
             if (bbox.MinX <= p.x && p.x <= bbox.MaxX && bbox.MinY <= p.y && p.y <= bbox.MaxY) {
-                CCurve curve;
-                curve.append(CVertex {{p.x + radius, p.y}});
-                curve.append(CVertex {1, {p.x - radius, p.y}, {p.x, p.y}});
-                curve.append(CVertex {1, {p.x + radius, p.y}, {p.x, p.y}});
-                holes.append(curve);
+                circleCenters.emplace(p.x, p.y);
             }
         }
     }
@@ -676,10 +672,14 @@ private:
             segBox.Add({last.x, last.y});
             segBox.Add({next.x, next.y});
             if (bbox.Intersect(segBox)) {
-                CCurve curve;
-                curve.append(CVertex {{last.x, last.y}});
-                curve.append(CVertex {{next.x, next.y}});
-                pathSegments.append(curve);
+                circleCenters.emplace(last.x, last.y);
+                circleCenters.emplace(next.x, next.y);
+                if (last.x != next.x || last.y != next.y) {
+                    CCurve curve;
+                    curve.append(CVertex {{last.x, last.y}});
+                    curve.append(CVertex {{next.x, next.y}});
+                    pathSegments.append(curve);
+                }
             }
         }
     }
@@ -693,11 +693,66 @@ public:
         bbox.Enlarge(radius);
     }
 
+    // Compute and return the cleared area.
+    //
+    // As an optimization to avoid feeding an excess of segments into clipper, we first construct
+    // swept areas ignoring endcaps and union those. Then, we determine which cleared circles
+    // are interior to that shape and only incorporate only those circles to produce the final area.
     CArea getClearedArea()
     {
+        // Use NaiveOffset to construct swept areas without endcaps.
         CArea result {pathSegments};
-        result.Thicken(radius);
-        result.Union(holes);
+        result.NaiveOffset(radius);
+        for (CCurve& c : result.m_curves) {
+            auto tag = c.m_edgeTags.begin();
+            for (auto v = std::next(c.m_vertices.begin()); v != c.m_vertices.end(); ++v, ++tag) {
+                assert(tag != c.m_edgeTags.end());
+                if (*tag == 0) {
+                    // replace endcap arcs with lines
+                    v->m_type = 0;
+                }
+            }
+            c.m_edgeTags.clear();
+        }
+        result.Clip(Clipper2Lib::ClipType::Union, CArea {}, Clipper2Lib::FillRule::Positive);
+
+        // Filter circle centers to eliminate interior circles
+        CArea interior {result};
+        interior.Offset(-(radius + 2 * CArea::get_accuracy()));
+        std::vector<std::pair<Clipper2Lib::Path64, int>> polygons;  // <path, orientation>
+        ConversionMetadata metadata;
+        for (const CCurve& c : interior.m_curves) {
+            Clipper2Lib::Path64 path = interior.MakePoly(c, metadata);
+            if (path.size() < 3) {
+                continue;
+            }
+            const int sign = Clipper2Lib::Area(path) > 0 ? 1 : -1;
+            polygons.emplace_back(std::move(path), sign);
+        }
+
+        CArea circles;
+        for (const auto& [x, y] : circleCenters) {
+            // Compute winding to see if the circle is interior
+            const Clipper2Lib::Point64 pt = CArea::ToPoint64({x, y});
+            int winding = 0;
+            for (const auto& [path, sign] : polygons) {
+                if (Clipper2Lib::PointInPolygon(pt, path)
+                    == Clipper2Lib::PointInPolygonResult::IsInside) {
+                    winding += sign;
+                }
+            }
+            if (winding <= 0) {
+                // It is not interior; add it to the area to union
+                CCurve curve;
+                curve.append(CVertex {{x + radius, y}});
+                curve.append(CVertex {1, {x - radius, y}, {x, y}});
+                curve.append(CVertex {1, {x + radius, y}, {x, y}});
+                circles.append(curve);
+            }
+        }
+
+        // Union the circles to produce the final result
+        result.Clip(Clipper2Lib::ClipType::Union, circles, Clipper2Lib::FillRule::Positive);
         return result;
     }
 
@@ -743,6 +798,8 @@ public:
             const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
 
             // Add an arc
+            circleCenters.emplace(last.x, last.y);
+            circleCenters.emplace(next.x, next.y);
             CCurve curve;
             curve.append(CVertex {{last.x, last.y}});
             curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});

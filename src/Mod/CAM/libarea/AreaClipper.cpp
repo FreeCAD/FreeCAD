@@ -30,8 +30,7 @@ double CArea::m_clipper_scale = CArea::default_clipper_scale;
 
 static const int min_arc_points = 4;
 
-// Convert between PointD (double) and Point64 (int64) with scaling
-static Point64 ToPoint64(const PointD& p)
+Point64 CArea::ToPoint64(const PointD& p)
 {
     return Point64(
         (int64_t)(floor(p.x * CArea::m_clipper_scale + 0.5)),
@@ -40,7 +39,7 @@ static Point64 ToPoint64(const PointD& p)
     );
 }
 
-static PointD ToPointD(const Point64& p)
+PointD CArea::ToPointD(const Point64& p)
 {
     return PointD((double)p.x / CArea::m_clipper_scale, (double)p.y / CArea::m_clipper_scale, p.z);
 }
