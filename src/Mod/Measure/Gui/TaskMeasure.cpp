@@ -396,7 +396,7 @@ void TaskMeasure::tryUpdate()
     // Update tool mode display
     setModeSilent(measureType);
 
-    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()
+    if (!_mMeasureObject.get() || measureType->measureObject != _mMeasureObject->getTypeId().getName()
         || _mMeasureObject->getDocument() != doc) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
@@ -407,7 +407,7 @@ void TaskMeasure::tryUpdate()
     // we have a valid measure object so we can enable the annotate button
     enableAnnotateButton(true);
 
-    if (_mMeasureObject) {
+    if (_mMeasureObject.get()) {
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
@@ -447,7 +447,7 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
 
 void TaskMeasure::syncDisplayUnit()
 {
-    if (!_mMeasureObject) {
+    if (!_mMeasureObject.get()) {
         return;
     }
 
@@ -460,7 +460,7 @@ void TaskMeasure::syncDisplayUnit()
 
 void TaskMeasure::refreshResult()
 {
-    if (!_mMeasureObject) {
+    if (!_mMeasureObject.get()) {
         return;
     }
     valueResult->setText(
@@ -479,12 +479,12 @@ void MeasureGui::TaskMeasure::updateAnnotation()
         return;
     }
 
-    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject.get());
     if (!viewObject) {
         return;
     }
 
-    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject);
+    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(_mMeasureObject.get());
 }
 
 void TaskMeasure::closeDialog()
@@ -546,7 +546,7 @@ bool TaskMeasure::apply()
 
 bool TaskMeasure::apply(bool reset)
 {
-    ensureGroup(_mMeasureObject);
+    ensureGroup(_mMeasureObject.get());
     _mMeasureObject = nullptr;
     if (reset) {
         this->reset();
@@ -602,7 +602,7 @@ void TaskMeasure::deactivate()
 
 void TaskMeasure::removeObject()
 {
-    if (_mMeasureObject == nullptr) {
+    if (_mMeasureObject.expired()) {
         return;
     }
     if (_mMeasureObject->isRemoving()) {
@@ -686,7 +686,7 @@ void TaskMeasure::quitMeasurement()
 
 void TaskMeasure::onObjectDeleted(const App::DocumentObject& obj)
 {
-    if (&obj == _mMeasureObject) {
+    if (&obj == _mMeasureObject.get()) {
         _mMeasureObject = nullptr;
     }
 }
@@ -765,7 +765,7 @@ void TaskMeasure::createTypeInfo(const std::string& type)
 {
     if (type == "DISTANCE" || type == "DISTANCEFREE") {
         typeInfo = std::make_unique<TaskMeasureDistanceInfo>(*formLayout, [this]() {
-            return _mMeasureObject;
+            return _mMeasureObject.get();
         });
     }
     else {
