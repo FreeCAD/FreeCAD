@@ -3342,9 +3342,9 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            const char* userParamPath = getUserParameterTemplatePath();
-            if (userParamPath) {
-                _pcUserParamMngr->LoadDocument(userParamPath);
+            const std::string userParamPath = getUserParameterTemplatePath();
+            if (!userParamPath.empty()) {
+                _pcUserParamMngr->LoadDocument(userParamPath.c_str());
             }
 
             // Configuration file optional when using as Python module
@@ -3365,7 +3365,7 @@ void Application::LoadParameters()
     }
 }
 
-const char* Application::getUserParameterTemplatePath()
+std::string Application::getUserParameterTemplatePath()
 {
     const auto it = mConfig.find("UserParameterTemplate");
     if (it != mConfig.end()) {
@@ -3376,11 +3376,10 @@ const char* Application::getUserParameterTemplatePath()
         }
         const QFileInfo fi(path);
         if (fi.exists()) {
-            const char* templatePath = path.toUtf8().constData();
-            return templatePath;
+            return path.toStdString();
         }
     }
-    return nullptr;
+    return {};
 }
 
 #if defined(_MSC_VER) && BOOST_VERSION < 108200
