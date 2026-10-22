@@ -28,9 +28,37 @@ PointPatternExtension::PointPatternExtension()
         App::Prop_None,
         "Sketch or shape object whose vertices define the pattern positions."
     );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        OriginPointIndex,
+        (0),
+        "PointPattern",
+        App::Prop_None,
+        "The origin point index, used for the identity transformation."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        RelativeToFirst,
+        (false),
+        "PointPattern",
+        App::Prop_None,
+        "Moves all transformations relative to the first one."
+    );
+    OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
 }
 
-std::list<gp_Trsf> PointPatternExtension::calculateTransformations(bool relativeToFirst) const
+void PointPatternExtension::extensionOnChanged(const App::Property* prop)
+{
+    if (prop == &RelativeToFirst) {
+        OriginPointIndex.setStatus(App::Property::Hidden, RelativeToFirst.getValue());
+    }
+    App::DocumentObjectExtension::extensionOnChanged(prop);
+}
+
+bool PointPatternExtension::identityTransformSuppressed() const
+{
+    return RelativeToFirst.getValue();
+}
+
+std::list<gp_Trsf> PointPatternExtension::calculateTransformations() const
 {
     if (!PointObject.getValue()) {
         return {};
@@ -65,17 +93,37 @@ std::list<gp_Trsf> PointPatternExtension::calculateTransformations(bool relative
         throw Base::ValueError("Point object does not contain vertices");
     }
 
-    const gp_Pnt origin = relativeToFirst ? points.front() : gp_Pnt();
+    const int originIndex = RelativeToFirst.getValue() ? 0 : OriginPointIndex.getValue();
+    if (originIndex < 0 || static_cast<std::size_t>(originIndex) >= points.size()) {
+        throw Base::ValueError("Origin point index is out of range");
+    }
+
+    const gp_Pnt origin = points[static_cast<std::size_t>(originIndex)];
     std::list<gp_Trsf> transformations;
-    for (const auto& point : points) {
+
+    for (std::size_t offset = 0; offset < points.size(); ++offset) {
+        const std::size_t pointIndex = (static_cast<std::size_t>(originIndex) + offset)
+            % points.size();
+
         gp_Trsf transform;
-        transform.SetTranslation(gp_Vec(origin, point));
+        transform.SetTranslation(gp_Vec(origin, points[pointIndex]));
         transformations.push_back(transform);
     }
+
+    if (RelativeToFirst.getValue() && !transformations.empty()) {
+        const gp_Vec originVector(origin.X(), origin.Y(), origin.Z());
+
+        for (gp_Trsf& transform : transformations) {
+            gp_Vec translation(transform.TranslationPart());
+            translation.Add(originVector);
+            transform.SetTranslationPart(translation);
+        }
+    }
+
     return transformations;
 }
 
 short PointPatternExtension::extensionMustExecute()
 {
-    return PointObject.isTouched() ? 1 : 0;
+    return PointObject.isTouched() || OriginPointIndex.isTouched() || RelativeToFirst.isTouched();
 }

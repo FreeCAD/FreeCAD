@@ -427,7 +427,18 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
         const TopoDS_Edge& edge = TopoDS::Edge(xp.Current());
         BRepAdaptor_Curve curve(edge);
         bool reversed = (xp.Current().Orientation() == TopAbs_REVERSED);
-        p = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
+
+        // An OCC wire's edges are only guaranteed to meet within the vertex tolerance, but each
+        // CVertex implicitly starts exactly where the previous CVertex ends. Silently adjusting the
+        // start points of edges is often ok, but it has the potential to turn short arcs into
+        // nearly full circles. To avoid this, we check if the vertex is not exactly correct and add
+        // a bridge segment if it is needed.
+        const gp_Pnt pStart = curve.Value(reversed ? curve.LastParameter() : curve.FirstParameter());
+        if (!(ccurve.m_vertices.back().m_p == Point(pStart.X(), pStart.Y()))) {
+            ccurve.append(CVertex(Point(pStart.X(), pStart.Y())));
+        }
+
+        const gp_Pnt pEnd = curve.Value(reversed ? curve.FirstParameter() : curve.LastParameter());
 
         // Helper code for appending a discretized curve
         auto appendDiscretized = [&](const Adaptor3d_Curve& c) {
@@ -468,7 +479,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
 
         switch (curve.GetType()) {
             case GeomAbs_Line: {
-                ccurve.append(CVertex(Point(p.X(), p.Y())));
+                ccurve.append(CVertex(Point(pEnd.X(), pEnd.Y())));
                 break;
             }
 
@@ -493,7 +504,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
 
                 // Convert very short curves to single segments
                 if (GCPnts_AbscissaPoint::Length(curve) < Precision::Confusion()) {
-                    ccurve.append(CVertex(Point(p.X(), p.Y())));
+                    ccurve.append(CVertex(Point(pEnd.X(), pEnd.Y())));
                     break;
                 }
 
@@ -545,6 +556,12 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 break;
             }
         }
+    }
+
+    // If the wire is closed, detect the potential (vertex tolerance) gap between the end point and
+    // the start point and close it.
+    if (BRep_Tool::IsClosed(wire) && !ccurve.IsExactlyClosed()) {
+        ccurve.append(ccurve.m_vertices.front());
     }
 
     if (to_edges) {

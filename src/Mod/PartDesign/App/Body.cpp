@@ -328,13 +328,27 @@ void Body::setBaseProperty(App::DocumentObject* feature)
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
         // NULL is ok here, it just means we made the current one fiature the base solid
-        static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+        auto* pdFeature = static_cast<PartDesign::Feature*>(feature);
+        App::DocumentObject* oldBase = pdFeature->BaseFeature.getValue();
+        pdFeature->BaseFeature.setValue(prevSolidFeature);
+        pdFeature->onBaseFeatureRerouted(
+            oldBase,
+            prevSolidFeature,
+            PartDesign::Feature::BaseFeatureChange::Insertion
+        );
 
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
         if (nextSolidFeature) {
             assert(nextSolidFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()));
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
+            auto* nextPD = static_cast<PartDesign::Feature*>(nextSolidFeature);
+            App::DocumentObject* nextBase = nextPD->BaseFeature.getValue();
+            nextPD->BaseFeature.setValue(feature);
+            nextPD->onBaseFeatureRerouted(
+                nextBase,
+                feature,
+                PartDesign::Feature::BaseFeatureChange::Insertion
+            );
         }
     }
 }
@@ -353,7 +367,11 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // Check if the next feature is pointing to the one being deleted
         if (nextPD->BaseFeature.getValue() == feature) {
             nextPD->BaseFeature.setValue(prevSolidFeature);
-            nextPD->onBaseFeatureRerouted(feature, prevSolidFeature);
+            nextPD->onBaseFeatureRerouted(
+                feature,
+                prevSolidFeature,
+                PartDesign::Feature::BaseFeatureChange::Removal
+            );
         }
     }
 

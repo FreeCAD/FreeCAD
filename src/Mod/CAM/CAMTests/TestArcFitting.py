@@ -1101,6 +1101,30 @@ class TestArcFittingOffsets(PathTestBase):
             "test_starts pass; restore `test_starts = all_starts` to allow the test to pass",
         )
 
+    def test_regression_33284_offset_pancake_arcs(self):
+        """Regression test: arc rounding to segments can cause the positive and negative side offset
+        curves of a 2-3 clipper unit thick pancake of arcs to intersect each other. Check that this
+        offset is computed correctly."""
+        a = make_area(
+            make_curve(
+                [
+                    (9.7580476, 16.984696),
+                    (9.4676428, 16.9740412, 1, 10.370065112958995, -3.6592438151763957),
+                    (9.7580476, 16.984696, -1, 10.370401897888284, -3.668446137290278),
+                ]
+            )
+        )
+
+        original_scale = area.get_clipper_scale()
+        area.set_clipper_scale_and_point_tolerance(1e7)
+        try:
+            # Positive offset: one curve, 3 CCW arcs and 1 CW arc
+            self.assert_offset_line_and_arc_count(a, 2.5, 1, 0, 3, 1)
+            # Negative offset: empty
+            self.assert_offset_line_and_arc_count(a, -2.5, 0, 0, 0, 0)
+        finally:
+            area.set_clipper_scale_and_point_tolerance(original_scale)
+
     def test_canonicalize(self):
         """Test canonicalization of area."""
         # Create a simple square starting at different positions

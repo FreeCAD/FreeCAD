@@ -159,28 +159,27 @@ std::vector<std::string> getBoxSelection(
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
     auto bbox3 = vp->getBoundingBox(nullptr, &mat, transform);
-    Base::BoundBox2d bbox;
-    const bool isBBox3Valid = bbox3.IsValid();
-    if (isBBox3Valid && selectionGate == nullptr) {
-        bbox = bbox3.ProjectBox(&proj);
+    if (!bbox3.IsValid()) {
+        return ret;
+    }
 
-        // check if both two boundary points are inside polygon, only
-        // valid since we know the given polygon is a box.
-        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
-            && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
-            ret.emplace_back("");
-            return ret;
-        }
+    const auto bbox = bbox3.ProjectBox(&proj);
+    if (!bbox.Intersect(polygon)) {
+        return ret;
+    }
 
-        if (!bbox.Intersect(polygon)) {
-            return ret;
-        }
+    // If there is no selection gate, check if both two boundary points are inside polygon.
+    // Only valid since we know the given polygon is a box.
+    if (selectionGate == nullptr && polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
+        && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
+        ret.emplace_back("");
+        return ret;
     }
 
     const auto& subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if (subs.empty()) {
         if (!selectElement) {
-            if (mode == INTERSECT || (isBBox3Valid && polygon.Contains(bbox.GetCenter()))) {
+            if (mode == INTERSECT || polygon.Contains(bbox.GetCenter())) {
                 ret.emplace_back("");
             }
             return ret;

@@ -836,8 +836,15 @@ class PathSet:
     def add(self, item: "Path | PathSet", priority: PathPriority = PathPriority.OverrideLast) -> None:
         """Add item into the corresponding priority slot."""
         if isinstance(item, Path):
-            item = item.resolve()
-            if not item.exists():
+            try:
+                item = item.resolve()
+                exists = item.exists()
+            except OSError as exc:
+                Log(f"Init: (System path) Skipping inaccessible path '{item}': {exc}")
+                return
+
+            if not exists:
+                Log(f"Init: (System path) Skipping non existent path '{item}'")
                 return
 
         if priority == PathPriority.FallbackLast:

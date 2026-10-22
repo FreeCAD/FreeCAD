@@ -46,6 +46,18 @@ class ModelTestCases(unittest.TestCase):
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 
+    def testModelLibraries(self):
+        """ Each library is described by its name, directory, icon and readonly flag """
+        libraries = self.ModelManager.ModelLibraries
+        self.assertGreater(len(libraries), 0)
+
+        for name, directory, icon, readOnly in libraries:
+            self.assertNotEqual(name, "")
+            self.assertNotEqual(directory, "")
+            self.assertIsInstance(readOnly, bool)
+
+        self.assertIn("System", [library[0] for library in libraries])
+
     def testUUIDs(self):
         """ Verify the common UUIDs are defined and correct """
         self.assertTrue(self.uuids.Father, "9cdda8b6-b606-4778-8f13-3934d8668e67")

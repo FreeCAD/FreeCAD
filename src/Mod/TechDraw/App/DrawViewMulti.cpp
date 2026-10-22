@@ -35,7 +35,9 @@
 
 #include "GeometryObject.h"
 #include "DrawUtil.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewMulti.h"
+#include "DrawViewPartPy.h"
 
 
 using namespace TechDraw;
@@ -140,7 +142,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewMultiPython, TechDraw::DrawViewMulti)
 template<> const char* TechDraw::DrawViewMultiPython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderViewProviderViewPart";
+    return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawViewMultiPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

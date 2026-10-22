@@ -184,9 +184,11 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
              */
             App::Material defaultMaterial;
             auto material = geometry->getMaterialAppearance();
+            App::Material strippedMaterial = material;
+            strippedMaterial.uuid.clear();  // Prevent equal UUID from always meaning equal material
             if ((ShapeAppearance.getSize() == 1)
                 && (ShapeAppearance[0] == defaultMaterial || ShapeAppearance[0] == materialAppearance)
-                && (material != defaultMaterial)) {
+                && (material != defaultMaterial) && (ShapeAppearance[0] != strippedMaterial)) {
                 ShapeAppearance.setValue(material);
                 materialAppearance = material;
             }

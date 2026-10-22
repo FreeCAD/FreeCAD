@@ -71,10 +71,12 @@ QVariant QGICaption::itemChange(GraphicsItemChange change, const QVariant &value
         return snapToView(value.toPointF());
     }
 
-    if (change == ItemPositionHasChanged && !viewObj->isRestoring()) {
+    if (change == ItemPositionHasChanged && m_persistOnMove && !viewObj->isRestoring()) {
         QPointF newPos = value.toPointF();
         Base::Vector3d newLocation(Rez::appX(newPos.x()), Rez::appX(-newPos.y()), 0.0);
-        viewObj->CaptionLocation.setValue(newLocation);
+        if (!viewObj->CaptionLocation.getValue().IsEqual(newLocation, 1e-7)) {
+            viewObj->CaptionLocation.setValue(newLocation);
+        }
     }
 
     return QGCustomText::itemChange(change, value);
@@ -99,7 +101,7 @@ QPointF QGICaption::snapToView(QPointF pos) {
 
     // Do not snap if control key is pressed
     if (QGuiApplication::keyboardModifiers() & Qt::ControlModifier) {
-        viewObj->CaptionSnap.setValue("NoSnap");
+        setCaptionSnapIfChanged(viewObj, "NoSnap");
         return pos;
     }
 
@@ -134,7 +136,7 @@ QPointF QGICaption::snapToView(QPointF pos) {
         qreal distance = QLineF(pos, snapPos).length();
         if (distance < snapDistance) {
 
-            viewObj->CaptionSnap.setValue(snapPos == topSnap ? "Top" :
+            setCaptionSnapIfChanged(viewObj, snapPos == topSnap ? "Top" :
                                         snapPos == bottomSnap ? "Bottom" :
                                         snapPos == leftSnap ? "Left" :
                                         snapPos == rightSnap ? "Right" : "NoSnap");
@@ -143,8 +145,18 @@ QPointF QGICaption::snapToView(QPointF pos) {
 
     }
 
-    viewObj->CaptionSnap.setValue("NoSnap");
+    setCaptionSnapIfChanged(viewObj, "NoSnap");
     return pos;
+}
+
+void QGICaption::setCaptionSnapIfChanged(TechDraw::DrawView* viewObj, const char* snapName)
+{
+    if (!m_persistOnMove || !viewObj) {
+        return;
+    }
+    if (!viewObj->CaptionSnap.isValue(snapName)) {
+        viewObj->CaptionSnap.setValue(snapName);
+    }
 }
 
 void QGICaption::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)

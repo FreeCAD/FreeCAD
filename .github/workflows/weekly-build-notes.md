@@ -9,7 +9,7 @@
 2. Unpack the bundle to any folder on your system
 3. Launch the application
     - **Windows**
-    Run `\FreeCAD.exe` in the extracted directory
+    Run `\bin\freecad.exe` in the extracted directory
     - **macOS**
     Launch `/FreeCAD.app` in the extracted directory
     - **Linux**

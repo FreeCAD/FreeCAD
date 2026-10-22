@@ -172,47 +172,71 @@ std::vector<double> calculateDistances(
     double endOffset
 )
 {
+    const double tolerance = Precision::Confusion();
+
+    if (!std::isfinite(pathLength) || pathLength < 0.0 || !std::isfinite(startOffset)
+        || !std::isfinite(endOffset)) {
+        throw Base::ValueError("Path length and offsets must be finite");
+    }
     if (startOffset < 0.0 || endOffset < 0.0) {
         throw Base::ValueError("Path offsets cannot be negative");
     }
-    if (startOffset + endOffset > pathLength + Precision::Confusion()) {
+    if (startOffset + endOffset > pathLength + tolerance) {
         throw Base::ValueError("Path offsets exceed the path length");
+    }
+    if (count < 1) {
+        throw Base::ValueError("Occurrence count must be at least one");
     }
 
     const double available = std::max(0.0, pathLength - startOffset - endOffset);
+
     std::vector<double> distances;
 
     if (mode == PathPatternSpacingMode::FixedCount) {
-        const int segments
-            = std::max(1, closed && startOffset == 0.0 && endOffset == 0.0 ? count : count - 1);
+        const bool fullClosedPath = closed && startOffset <= tolerance && endOffset <= tolerance;
+
+        const int segments = fullClosedPath ? count : std::max(1, count - 1);
         const double step = available / segments;
-        distances.reserve(count);
+
+        distances.reserve(static_cast<std::size_t>(count));
         for (int index = 0; index < count; ++index) {
             distances.push_back(startOffset + index * step);
         }
         return distances;
     }
 
-    if (spacing <= Precision::Confusion()) {
+    if (!std::isfinite(spacing) || spacing <= tolerance) {
         throw Base::ValueError("Path spacing must be greater than zero");
     }
 
     const int maximum = mode == PathPatternSpacingMode::FixedCountAndSpacing
         ? count
-        : std::numeric_limits<int>::max();
+        : PatternConstants::MaximumOccurrences + 1;
+
+    distances.reserve(
+        static_cast<std::size_t>(std::min(maximum, PatternConstants::MaximumOccurrences))
+    );
+
+    const double endDistance = pathLength - endOffset;
     for (int index = 0; index < maximum; ++index) {
         const double distance = startOffset + index * spacing;
-        if (distance > startOffset + available + Precision::Confusion()) {
+
+        if (distance > endDistance + tolerance) {
             break;
         }
+
         distances.push_back(distance);
         if (distances.size() > PatternConstants::MaximumOccurrences) {
-            const auto limit = std::to_string(PatternConstants::MaximumOccurrences);
-            throw Base::ValueError("Path pattern would create more than " + limit + " occurrences");
+            throw Base::ValueError(
+                "Path pattern would create more than "
+                + std::to_string(PatternConstants::MaximumOccurrences) + " occurrences"
+            );
         }
     }
+
     return distances;
 }
+
 
 /** Build an occurrence frame at an arc-length distance along the ordered path.
  * `ends` contains cumulative edge lengths. Evaluate from the edge's oriented start.
@@ -225,6 +249,7 @@ gp_Trsf frameAt(
     const std::vector<double>& ends,
     double distance,
     bool align,
+    bool reversed,
     const Base::Vector3d& vertical
 )
 {
@@ -232,14 +257,15 @@ gp_Trsf frameAt(
     const std::size_t index = end == ends.end() ? edges.size() - 1
                                                 : static_cast<std::size_t>(end - ends.begin());
     const double edgeStart = index == 0 ? 0.0 : ends[index - 1];
-    const double localDistance = std::clamp(distance - edgeStart, 0.0, edgeLength(edges[index]));
+    const double edgeEnd = index == 0 ? ends[0] : (ends[index] - ends[index - 1]);
+    const double localDistance = std::clamp(distance - edgeStart, 0.0, edgeEnd);
 
     BRepAdaptor_Curve curve(edges[index]);
-    const bool reversed = edges[index].Orientation() == TopAbs_REVERSED;
-    const double startParameter = reversed ? curve.LastParameter() : curve.FirstParameter();
+    //    const bool reversed = edges[index].Orientation() == TopAbs_REVERSED;
+    const double startParameter = curve.FirstParameter();
     double parameter = startParameter;
     if (localDistance > Precision::Confusion()) {
-        GCPnts_AbscissaPoint point(curve, reversed ? -localDistance : localDistance, startParameter);
+        GCPnts_AbscissaPoint point(curve, localDistance, startParameter);
         if (!point.IsDone()) {
             throw Base::CADKernelError("Failed to evaluate point on path");
         }
@@ -353,14 +379,23 @@ PathPatternExtension::PathPatternExtension()
     updatePropertyStatus();
 }
 
-std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeToFirst) const
+bool PathPatternExtension::identityTransformSuppressed() const
+{
+    return true; /*(ReversePath.getValue() ? EndOffset.getValue() : StartOffset.getValue())
+        > Precision::Confusion()
+        || Align.getValue();*/
+}
+
+std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
 {
     if (!Path.getValue()) {
         return {};
     }
 
+    const bool reversed = ReversePath.getValue();
+
     auto edges = getPathEdges(Path);
-    if (ReversePath.getValue()) {
+    if (reversed) {
         std::reverse(edges.begin(), edges.end());
         for (auto& edge : edges) {
             edge.Reverse();
@@ -385,8 +420,8 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeT
         Count.getValue(),
         mode,
         Spacing.getValue(),
-        StartOffset.getValue(),
-        EndOffset.getValue()
+        reversed ? EndOffset.getValue() : StartOffset.getValue(),
+        reversed ? StartOffset.getValue() : EndOffset.getValue()
     );
     if (distances.empty()) {
         throw Base::ValueError("Path pattern produced no occurrences");
@@ -395,32 +430,18 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeT
     std::list<gp_Trsf> transformations;
     for (double distance : distances) {
         transformations.push_back(
-            frameAt(edges, ends, distance, Align.getValue(), VerticalVector.getValue())
+            frameAt(edges, ends, distance, Align.getValue(), reversed, VerticalVector.getValue())
         );
     }
 
-    if (relativeToFirst) {
-        const gp_Trsf& first = transformations.front();
-        const gp_Quaternion inverseFirstRotation = first.GetRotation().Inverted();
-        const gp_XYZ firstTranslation = first.TranslationPart();
-        for (auto& transform : transformations) {
-            gp_Quaternion relativeRotation = transform.GetRotation().Multiplied(inverseFirstRotation);
-            const gp_XYZ relativeTranslation = transform.TranslationPart() - firstTranslation;
-            transform.SetRotation(relativeRotation);
-            transform.SetTranslationPart(gp_Vec(relativeTranslation));
-        }
-    }
     return transformations;
 }
 
 short PathPatternExtension::extensionMustExecute()
 {
-    if (Path.isTouched() || Count.isTouched() || SpacingMode.isTouched() || Spacing.isTouched()
+    return Path.isTouched() || Count.isTouched() || SpacingMode.isTouched() || Spacing.isTouched()
         || StartOffset.isTouched() || EndOffset.isTouched() || ReversePath.isTouched()
-        || Align.isTouched() || VerticalVector.isTouched()) {
-        return 1;
-    }
-    return 0;
+        || Align.isTouched() || VerticalVector.isTouched();
 }
 
 void PathPatternExtension::extensionOnChanged(const App::Property* prop)

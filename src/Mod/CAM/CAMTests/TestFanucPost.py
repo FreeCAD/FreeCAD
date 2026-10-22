@@ -145,7 +145,8 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         self.assertEqual("", schema["drill_cycles_to_translate"]["default"])
         self.assertTrue(schema["supports_tool_radius_compensation"]["default"])
         self.assertEqual(0, schema["spindle_decimals"]["default"])
-        self.assertNotIn("K", schema["parameter_order"]["default"])
+        # The K is dropped per plane by the shared post code, not by the order.
+        self.assertIn("K", schema["parameter_order"]["default"])
         self.assertEqual("G17 G54 G40 G49 G80 G90 G94", schema["preamble"]["default"])
         self.assertTrue(schema["postamble"]["default"].endswith("M30"))
 
@@ -231,6 +232,22 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         arc = next(l for l in lines if l.startswith("G2 "))
         self.assertNotIn("K", arc)
         self.assertIn("Z-1.000", arc)
+
+    def test_arcs_keep_the_center_words_of_their_plane(self):
+        """A G18 arc keeps K and drops J; back in G17 the K goes again."""
+        lines = self.lines(
+            [
+                "G0 X0 Y0 Z0",
+                "G18",
+                "G2 X10 Z-10 I5 J0 K-5 F10",
+                "G17",
+                "G2 X0 Y0 I-5 J0 K0 F10",
+            ]
+        )
+        self.assert_line("G18", lines)
+        self.assert_line("G2 X10.000 Z-10.000 F600.000 I5.000 K-5.000", lines)
+        self.assert_line("G17", lines)
+        self.assert_line("G2 X0.000 Y0.000 F600.000 I-5.000 J0.000", lines)
 
     def test_spindle_speed_is_an_integer(self):
         self.post._machine.processing.tool_change = True

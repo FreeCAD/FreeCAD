@@ -39,7 +39,9 @@
 #include "DrawUtil.h"
 #include "Preferences.h"
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewSpreadsheet.h"
+#include "DrawViewSymbolPy.h"
 
 using namespace TechDraw;
 
@@ -406,6 +408,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSpreadsheetPython, TechDraw::DrawViewSpreadsheet)
 template<> const char* TechDraw::DrawViewSpreadsheetPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderSpreadsheet";
+}
+template<>
+PyObject* TechDraw::DrawViewSpreadsheetPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewSymbolPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

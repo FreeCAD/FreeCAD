@@ -35,6 +35,7 @@
 
 #include "DrawViewPart.h"
 #include "DrawPage.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawLeaderLine.h"
 #include "DrawLeaderLinePy.h"  // generated from DrawLeaderLinePy.xml
 #include "ArrowPropEnum.h"
@@ -492,6 +493,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawLeaderLinePython, TechDraw::DrawLeaderLine)
 template<> const char* TechDraw::DrawLeaderLinePython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderLeader";
+}
+template<>
+PyObject* TechDraw::DrawLeaderLinePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawLeaderLinePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

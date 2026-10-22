@@ -24,7 +24,7 @@ jobs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
         with:
           egress-policy: audit
 
@@ -94,18 +94,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 package/scripts/write_version_info.py ../freecad_version.txt
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git config user.name 'github-actions[bot]'
-          git apply package/disable_git_info.patch
-          git commit -a -m "Disable git info write to Version.h"
           git archive HEAD -o freecad_source_${BUILD_TAG}.tar
           git submodule foreach --recursive \
             "git archive HEAD --prefix=\$path/ -o \$sha1.tar && \
              tar -A -f \$toplevel/freecad_source_${BUILD_TAG}.tar \$sha1.tar && \
              rm \$sha1.tar"
           gzip freecad_source_${BUILD_TAG}.tar
-          sha256sum freecad_source_${BUILD_TAG}.tar.gz > freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt
-          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz" "freecad_source_${BUILD_TAG}.tar.gz-SHA256.txt"
+          gh release upload --clobber ${BUILD_TAG} "freecad_source_${BUILD_TAG}.tar.gz"
 
   build:
     needs: upload_src
@@ -126,7 +121,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
         with:
           egress-policy: audit
 
@@ -157,9 +152,9 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
         with:
-          pixi-version: v0.81.0
+          pixi-version: v0.82.1
           cache: false
           locked: true
 

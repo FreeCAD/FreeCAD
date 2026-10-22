@@ -121,7 +121,7 @@ jobs:
 
     - name: Harden the runner (Audit all outbound calls)
       if: "!inputs.skipBuild"
-      uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+      uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
       with:
         egress-policy: audit
 
@@ -166,9 +166,9 @@ jobs:
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     - if: "!inputs.skipBuild"
-      uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
+      uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
       with:
-        pixi-version: v0.81.0
+        pixi-version: v0.82.1
         cache: false
         locked: true
 
@@ -243,7 +243,7 @@ jobs:
 
     - name: Upload Coin node snapshot artifacts (on failure)
       if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots && !inputs.skipBuild
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-CoinNodeSnapshots
         path: /tmp/FreeCADTesting/CoinNodeSnapshots
@@ -301,7 +301,7 @@ jobs:
 
     - name: Upload logs
       if: "!inputs.skipBuild"
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
         path: |
@@ -310,7 +310,7 @@ jobs:
 
     - name: Upload report
       if: "!inputs.skipBuild"
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: ${{ env.reportfilename }}
         path: |

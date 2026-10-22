@@ -1649,7 +1649,7 @@ class ObjectSurface(PathOp.ObjectOp):
         is_triangulated = surface_common._is_triangulated_mesh(model_shape.Faces)
 
         if is_three_plus_two:
-            # Already in the rotated frame: keep every face and disable STL optimization
+            # Already in the rotated frame: keep every face and skip shape optimization
             return model_shape, None, model_shape, False, is_triangulated
 
         if is_triangulated or not optimize_stl:
@@ -1676,7 +1676,7 @@ class ObjectSurface(PathOp.ObjectOp):
             strategy and tool information. This phase runs for all strategies.
         2.  Geometry Preparation: Resolves the model bodies into one working shape
             (see _prepare_geometry), detects triangulated models and 3+2 operations,
-            and decides whether STL optimization applies.
+            and decides whether shape and STL optimization applies.
         3.  Data Preparation: Intelligently prepares only the necessary geometric
             data (STL meshes, OCL cutters, boundary boxes) based on the specific
             requirements of the selected strategy.

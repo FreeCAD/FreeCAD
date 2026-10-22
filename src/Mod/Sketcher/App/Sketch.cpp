@@ -4724,7 +4724,7 @@ bool Sketch::updateGeometry()
         }
         catch (const Standard_Failure& e) {
             Base::Console()
-                .error("Updating geometry: Error build geometry(%d): %s\n", i, e.GetMessageString());
+                .error("Updating geometry: Error build geometry({}): {}\n", i, e.GetMessageString());
             return false;
         }
     }
