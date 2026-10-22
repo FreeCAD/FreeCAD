@@ -241,8 +241,15 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(
             &path->Spacing,
             &path->StartOffset,
             &path->EndOffset,
+            &path->CyclicOffset,
             &path->ReversePath,
-            &path->Align
+            &path->Align,
+            &path->TangentAxis,
+            &path->FlipTangentAxis,
+            &path->VerticalAxis,
+            &path->FlipVerticalAxis,
+            &path->OriginPointIndex,
+            &path->RelativeToFirst
         );
         setupInstanceControls(viewer);
         return;
@@ -826,8 +833,18 @@ void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& ms
         }
     }
     else if (auto* path = freecad_cast<Part::LinkArrayPath*>(array)) {
-        reference = &path->Path;
-        referenceKind = "path pattern edges";
+        if (getActiveDirectionWidget()->getAxisIndex() == -1) {
+            reference = &path->Path;
+            referenceKind = "path pattern edges";
+        }
+        else if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+            reference = &path->Path;
+            referenceKind = "path pattern tangent axis";
+        }
+        else {
+            reference = &path->Path;
+            referenceKind = "path pattern vertical axis";
+        }
     }
     else if (auto* point = freecad_cast<Part::LinkArrayPoint*>(array)) {
         reference = &point->PointObject;

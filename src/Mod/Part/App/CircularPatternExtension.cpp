@@ -30,6 +30,102 @@
 
 using namespace Part;
 
+std::optional<gp_Ax2> Part::getAxis(
+    const App::PropertyLinkSub& property,
+    const App::DocumentObject* extendedObject
+)
+{
+    App::DocumentObject* reference = property.getValue();
+    const auto subnames = property.getSubValues();
+    const std::string subname = subnames.empty() ? std::string() : subnames.front();
+
+    if (!reference) {
+        if (subname == "X_Axis") {
+            return gp_Ax2(gp_Pnt(), gp_Dir(1.0, 0.0, 0.0));
+        }
+        if (subname == "Y_Axis") {
+            return gp_Ax2(gp_Pnt(), gp_Dir(0.0, 1.0, 0.0));
+        }
+        if (subname == "Z_Axis") {
+            return gp_Ax2(gp_Pnt(), gp_Dir(0.0, 0.0, 1.0));
+        }
+        return std::nullopt;
+    }
+
+    gp_Pnt base;
+    gp_Dir direction;
+
+    if (auto* sketch = freecad_cast<Part::Part2DObject*>(reference); sketch
+        && (subname.empty() || subname == "H_Axis" || subname == "V_Axis" || subname == "N_Axis")) {
+        Base::Axis axis;
+
+        if (subname == "H_Axis") {
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
+        }
+        else if (subname == "V_Axis") {
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
+        }
+        else {
+            axis = sketch->getAxis(Part::Part2DObject::N_Axis);
+        }
+
+        axis *= sketch->Placement.getValue();
+
+        base = Base::convertTo<gp_Pnt>(axis.getBase());
+        direction = Base::convertTo<gp_Dir>(axis.getDirection());
+    }
+    else if (auto* line = freecad_cast<App::Line*>(reference)) {
+        base = Base::convertTo<gp_Pnt>(line->getBasePoint());
+        direction = Base::convertTo<gp_Dir>(line->getDirection());
+    }
+    else if (auto* feature = freecad_cast<Part::Feature*>(reference)) {
+        TopoDS_Edge edge = TopoDS::Edge(feature->Shape.getShape().getSubShape(subname.c_str()));
+
+        BRepAdaptor_Curve curve(edge);
+
+        if (curve.GetType() == GeomAbs_Line) {
+            base = curve.Line().Location();
+            direction = curve.Line().Direction();
+        }
+        else if (curve.GetType() == GeomAbs_Circle) {
+            base = curve.Circle().Location();
+            direction = curve.Circle().Axis().Direction();
+        }
+        else {
+            throw Base::TypeError(
+                "Rotation edge must be a straight line, circle "
+                "or arc of circle"
+            );
+        }
+    }
+    else {
+        throw Base::TypeError("Axis reference must be edge of a feature or datum line");
+    }
+
+    Base::Placement placement;
+
+    if (auto* object = extendedObject) {
+        if (auto* property = object->getPropertyByName<App::PropertyPlacement>("Placement")) {
+            placement = property->getValue();
+        }
+    }
+
+    const Base::Placement inversePlacement = placement.inverse();
+
+    Base::Vector3d rotationAxis;
+    double angle;
+    inversePlacement.getRotation().getValue(rotationAxis, angle);
+
+    gp_Trsf inverse;
+    inverse.SetRotation(gp_Ax1(gp_Pnt(), Base::convertTo<gp_Dir>(rotationAxis)), angle);
+    inverse.SetTranslationPart(Base::convertTo<gp_Vec>(inversePlacement.getPosition()));
+
+    base.Transform(inverse);
+    direction.Transform(inverse);
+
+    return gp_Ax2(base, direction);
+}
+
 EXTENSION_PROPERTY_SOURCE(Part::CircularPatternExtension, App::DocumentObjectExtension)
 
 const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intNumberCircles
@@ -124,8 +220,14 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
         );
     }
 
-    const gp_Ax2 axis = getRotation(Axis);
-    const gp_Ax2 binormalAxis = getRotation(BinormalAxis);
+    const gp_Ax2 axis = getAxis();
+    gp_Ax2 binormalAxis;
+    if (const auto val = getAxis(BinormalAxis)) {
+        binormalAxis = *val;
+    }
+    else {
+        binormalAxis = gp_Ax2(gp_Pnt(), gp_Dir(1, 0, 0));
+    }
 
     const gp_Pnt center = axis.Location();
     const gp_Vec axisDirection(axis.Direction());
@@ -220,99 +322,17 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     return transformations;
 }
 
-gp_Ax2 CircularPatternExtension::getRotation() const
+gp_Ax2 CircularPatternExtension::getAxis() const
 {
-    return getRotation(Axis);
+    if (const auto axis = getAxis(Axis)) {
+        return *axis;
+    }
+    return gp_Ax2(gp_Pnt(), gp_Dir(0, 0, 1));
 }
 
-gp_Ax2 CircularPatternExtension::getRotation(const App::PropertyLinkSub& property) const
+std::optional<gp_Ax2> CircularPatternExtension::getAxis(const App::PropertyLinkSub& property) const
 {
-    App::DocumentObject* reference = property.getValue();
-    const auto subnames = property.getSubValues();
-    const std::string subname = subnames.empty() ? std::string() : subnames.front();
-
-    if (!reference) {
-        if (subname == "X_Axis") {
-            return gp_Ax2(gp_Pnt(), gp_Dir(1.0, 0.0, 0.0));
-        }
-        if (subname == "Y_Axis") {
-            return gp_Ax2(gp_Pnt(), gp_Dir(0.0, 1.0, 0.0));
-        }
-        return gp_Ax2();
-    }
-
-    gp_Pnt base;
-    gp_Dir direction;
-
-    if (auto* sketch = freecad_cast<Part::Part2DObject*>(reference); sketch
-        && (subname.empty() || subname == "H_Axis" || subname == "V_Axis" || subname == "N_Axis")) {
-        Base::Axis axis;
-
-        if (subname == "H_Axis") {
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subname == "V_Axis") {
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else {
-            axis = sketch->getAxis(Part::Part2DObject::N_Axis);
-        }
-
-        axis *= sketch->Placement.getValue();
-
-        base = Base::convertTo<gp_Pnt>(axis.getBase());
-        direction = Base::convertTo<gp_Dir>(axis.getDirection());
-    }
-    else if (auto* line = freecad_cast<App::Line*>(reference)) {
-        base = Base::convertTo<gp_Pnt>(line->getBasePoint());
-        direction = Base::convertTo<gp_Dir>(line->getDirection());
-    }
-    else if (auto* feature = freecad_cast<Part::Feature*>(reference)) {
-        TopoDS_Edge edge = TopoDS::Edge(feature->Shape.getShape().getSubShape(subname.c_str()));
-
-        BRepAdaptor_Curve curve(edge);
-
-        if (curve.GetType() == GeomAbs_Line) {
-            base = curve.Line().Location();
-            direction = curve.Line().Direction();
-        }
-        else if (curve.GetType() == GeomAbs_Circle) {
-            base = curve.Circle().Location();
-            direction = curve.Circle().Axis().Direction();
-        }
-        else {
-            throw Base::TypeError(
-                "Rotation edge must be a straight line, circle "
-                "or arc of circle"
-            );
-        }
-    }
-    else {
-        throw Base::TypeError("Axis reference must be edge of a feature or datum line");
-    }
-
-    Base::Placement placement;
-
-    if (auto* object = getExtendedObject()) {
-        if (auto* property = object->getPropertyByName<App::PropertyPlacement>("Placement")) {
-            placement = property->getValue();
-        }
-    }
-
-    const Base::Placement inversePlacement = placement.inverse();
-
-    Base::Vector3d rotationAxis;
-    double angle;
-    inversePlacement.getRotation().getValue(rotationAxis, angle);
-
-    gp_Trsf inverse;
-    inverse.SetRotation(gp_Ax1(gp_Pnt(), Base::convertTo<gp_Dir>(rotationAxis)), angle);
-    inverse.SetTranslationPart(Base::convertTo<gp_Vec>(inversePlacement.getPosition()));
-
-    base.Transform(inverse);
-    direction.Transform(inverse);
-
-    return gp_Ax2(base, direction);
+    return Part::getAxis(property, getExtendedObject());
 }
 
 short CircularPatternExtension::extensionMustExecute()

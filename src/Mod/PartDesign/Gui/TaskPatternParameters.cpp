@@ -167,8 +167,15 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
             &path->Spacing,
             &path->StartOffset,
             &path->EndOffset,
+            &path->CyclicOffset,
             &path->ReversePath,
-            &path->Align
+            &path->Align,
+            &path->TangentAxis,
+            &path->FlipTangentAxis,
+            &path->VerticalAxis,
+            &path->FlipVerticalAxis,
+            &path->OriginPointIndex,
+            &path->RelativeToFirst
         );
     }
     else if (auto* circular = freecad_cast<PartDesign::CircularPattern*>(getObject())) {
@@ -533,7 +540,15 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* pathPattern = freecad_cast<PartDesign::PathPattern*>(patternObj)) {
-            pathPattern->Path.setValue(selObj, directions);
+            if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+                pathPattern->TangentAxis.setValue(selObj, directions);
+            }
+            else if (getActiveDirectionWidget()->getAxisIndex() == 2) {
+                pathPattern->VerticalAxis.setValue(selObj, directions);
+            }
+            else {
+                pathPattern->Path.setValue(selObj, directions);
+            }
         }
         else if (auto* pointPattern = freecad_cast<PartDesign::PointPattern*>(patternObj)) {
             pointPattern->PointObject.setValue(selObj);

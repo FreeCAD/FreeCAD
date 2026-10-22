@@ -16,7 +16,7 @@ namespace PartGui
 
 class Ui_PatternPathParametersWidget;
 
-class PartGuiExport PatternPathParametersWidget: public PatternReferenceWidget
+class PartGuiExport PatternPathParametersWidget: public QWidget
 {
     Q_OBJECT
 
@@ -31,12 +31,36 @@ public:
         App::PropertyLength* spacing,
         App::PropertyLength* startOffset,
         App::PropertyLength* endOffset,
+        App::PropertyDistance* cyclicOffset,
         App::PropertyBool* reversePath,
-        App::PropertyBool* align
+        App::PropertyBool* align,
+        App::PropertyLinkSub* tangentAxis,
+        App::PropertyBool* flipTangentAxis,
+        App::PropertyLinkSub* verticalAxis,
+        App::PropertyBool* flipVerticalAxis,
+        App::PropertyInteger* originPointIndex,
+        App::PropertyBool* relativeToFirst
     );
     void updateUI();
     void applyQuantitySpinboxes() const;
     void getPath(App::DocumentObject*& object, std::vector<std::string>& subnames) const;
+    bool getFlipVerticalAxis() const;
+    bool getFlipTangentAxis() const;
+    int getOriginPointIndex() const;
+    bool getRelativeToFirst() const;
+
+    inline PatternReferenceWidget* getPathWidget() const
+    {
+        return pathWidget;
+    }
+    inline PatternReferenceWidget* getTangentAxisWidget() const
+    {
+        return tangentAxisWidget;
+    }
+    inline PatternReferenceWidget* getVerticalAxisWidget() const
+    {
+        return verticalAxisWidget;
+    }
 
 private:
     void updateVisibility();
@@ -49,9 +73,20 @@ private:
     App::PropertyLength* spacingProperty = nullptr;
     App::PropertyLength* startOffsetProperty = nullptr;
     App::PropertyLength* endOffsetProperty = nullptr;
+    App::PropertyDistance* cyclicOffsetProperty = nullptr;
     App::PropertyBool* reversePathProperty = nullptr;
     App::PropertyBool* alignProperty = nullptr;
+    App::PropertyLinkSub* tangentAxisProperty = nullptr;
+    App::PropertyBool* flipTangentAxisProperty = nullptr;
+    App::PropertyLinkSub* verticalAxisProperty = nullptr;
+    App::PropertyBool* flipVerticalAxisProperty = nullptr;
+    App::PropertyInteger* originPointIndexProperty = nullptr;
+    App::PropertyBool* relativeToFirstProperty = nullptr;
     bool blockUpdate = false;
+
+    PatternReferenceWidget* pathWidget = nullptr;
+    PatternReferenceWidget* tangentAxisWidget = nullptr;
+    PatternReferenceWidget* verticalAxisWidget = nullptr;
 };
 
 }  // namespace PartGui
