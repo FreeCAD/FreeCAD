@@ -545,7 +545,11 @@ void Command::_invoke(int id, bool disablelog)
     catch (Base::Exception& e) {
         e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("Exception"),
+            QString::fromUtf8(e.what())
+        );
     }
     catch (const XERCES_CPP_NAMESPACE::XMLException& e) {
         char* message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());

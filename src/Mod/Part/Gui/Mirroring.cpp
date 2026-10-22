@@ -314,9 +314,7 @@ bool Mirroring::accept()
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument(
-        (const char*)this->document.toUtf8()
-    );
+    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toUtf8());
     if (!activeDoc) {
         QMessageBox::critical(this, windowTitle(), tr("No such document '%1'.").arg(this->document));
         return false;
