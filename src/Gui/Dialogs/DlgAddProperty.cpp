@@ -25,8 +25,6 @@
 #include <QMessageBox>
 #include <QString>
 #include <QCompleter>
-#include <QLineEdit>
-
 #include <algorithm>
 #include <memory>
 #include <array>
@@ -391,17 +389,6 @@ void DlgAddProperty::addNormalEditor(PropertyItem* propertyItem)
     editor.reset(
         propertyItem->createEditor(this, [this]() { this->valueChanged(); }, FrameOption::WithFrame)
     );
-
-    // Items that defer their commit until the editor closes (see #29900) don't
-    // connect `method` themselves, and this dialog has no delegate to commit on
-    // close, so wire the live update here.
-    // see: https://github.com/FreeCAD/FreeCAD/issues/33394
-    if (propertyItem->commitOnEditorClose()) {
-        if (auto* lineEdit = qobject_cast<QLineEdit*>(editor.get())) {
-            // NOLINTNEXTLINE(bugprone-unused-return-value)
-            connect(lineEdit, &QLineEdit::textChanged, this, &DlgAddProperty::valueChanged);
-        }
-    }
 }
 
 void DlgAddProperty::addEditor(PropertyItem* propertyItem)
