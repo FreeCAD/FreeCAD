@@ -829,11 +829,9 @@ std::vector<std::string> ThreadUtils::getThreadClasses(const int threadType, con
     const auto& definition = checkedThreadDefinition(getThreadDefinitions(), threadType);
     const auto& clearances = isInternal ? definition.internalClearances
                                         : definition.externalClearances;
-    if (clearances.empty()) {
-        return {"None"};
-    }
-
-    return clearances;
+    std::vector<std::string> classes {"None"};
+    classes.insert(classes.end(), clearances.begin(), clearances.end());
+    return classes;
 }
 
 std::string ThreadUtils::getThreadDesignations(
@@ -890,7 +888,7 @@ std::string ThreadUtils::getThreadDesignations(
         }
 
         if (id == "BSP") {
-            return "G " + designation + (hasClass ? " " + threadClass : std::string());
+            return "G " + designation + (hasClass ? " " + threadClass : std::string()) + handSuffix;
         }
 
         return designation + handSuffix;

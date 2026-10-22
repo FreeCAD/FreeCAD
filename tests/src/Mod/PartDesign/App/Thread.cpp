@@ -947,7 +947,7 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
 
     EXPECT_NEAR(thread->Diameter.getValue(), 24.0, 1e-9);
     EXPECT_FALSE(thread->IsInternal.getValue());
-    EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x3-4g");
+    EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x3");
 }
 
 TEST_F(ThreadTest, ExternalThreadModeledBSPHalfInchSignature)

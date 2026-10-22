@@ -561,6 +561,10 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
 
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
+    else if (&property == &thread->ThreadDirection) {
+        QSignalBlocker blocker(ui->directionCombo);
+        ui->directionCombo->setCurrentIndex(thread->ThreadDirection.getValue());
+    }
     else if (&property == &thread->ThreadClass) {
         QSignalBlocker blocker(ui->classCombo);
         ui->classCombo->clear();

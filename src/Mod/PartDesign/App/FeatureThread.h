@@ -112,6 +112,7 @@ protected:
 
 private:
     void updateThreadDesignation();
+    void updateThreadClasses();
     ThreadExtent resolveThreadExtent(const Part::TopoShape& base);
     ThreadUtils threadUtils;
     Part::TopoShape reducedBasePreviewShape;

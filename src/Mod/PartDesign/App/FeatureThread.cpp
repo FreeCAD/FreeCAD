@@ -212,6 +212,13 @@ Thread::Thread()
         App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "Thread is internal")
     );
+
+    try {
+        updateThreadClasses();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Thread: %s\n", e.what());
+    }
 }
 
 Thread::ThreadExtent Thread::resolveThreadExtent()
@@ -686,8 +693,30 @@ void Thread::onDocumentRestored()
         }
     }
 
+    try {
+        updateThreadClasses();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Thread::onDocumentRestored: %s\n", e.what());
+    }
     updateThreadDesignation();
     DressUp::onDocumentRestored();
+}
+
+void Thread::updateThreadClasses()
+{
+    std::vector<std::string> classes {"None"};
+    const bool isNone = !ThreadType.isValid()
+        || std::string(ThreadType.getValueAsString()) == "None";
+
+    if (!isNone) {
+        classes = threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue());
+    }
+
+    if (classes != ThreadClass.getEnumVector()) {
+        ThreadClass.setEnums(classes);
+    }
+    ThreadClass.setReadOnly(isNone);
 }
 
 void Thread::updateThreadDesignation()
@@ -741,15 +770,7 @@ try {
             return;
         }
 
-        if (type == "None") {
-            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
-        }
-        else {
-            ThreadClass.setEnums(
-                threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue())
-            );
-        }
-
+        updateThreadClasses();
         updateThreadDesignation();
     }
     else if (prop == &ThreadSize) {
