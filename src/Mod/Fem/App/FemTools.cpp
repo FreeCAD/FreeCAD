@@ -304,9 +304,7 @@ std::string Fem::Tools::checkIfBinaryExists(
     if (knownDirectories) {
         // first check the environment paths, normally determined by the PATH environment variable
         // On Windows, the executable extensions(".exe" etc.) should be automatically appended
-        QString executablePath = QStandardPaths::findExecutable(
-            QString::fromStdString(binaryName)
-        );
+        QString executablePath = QStandardPaths::findExecutable(QString::fromStdString(binaryName));
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();
         }
@@ -314,10 +312,8 @@ std::string Fem::Tools::checkIfBinaryExists(
         else {
             auto appBinaryPath = App::Application::getHomePath() + "bin/";
             QStringList pathCandidates = {QString::fromStdString(appBinaryPath)};
-            QString executablePath = QStandardPaths::findExecutable(
-                QString::fromStdString(binaryName),
-                pathCandidates
-            );
+            QString executablePath
+                = QStandardPaths::findExecutable(QString::fromStdString(binaryName), pathCandidates);
             if (!executablePath.isEmpty()) {
                 return executablePath.toStdString();
             }
@@ -327,9 +323,7 @@ std::string Fem::Tools::checkIfBinaryExists(
         auto binaryPathString = prefBinaryName + "BinaryPath";
         // use binary path from settings, fall back to system path if not defined
         auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), binaryName.c_str());
-        QString executablePath = QStandardPaths::findExecutable(
-            QString::fromStdString(binaryPath)
-        );
+        QString executablePath = QStandardPaths::findExecutable(QString::fromStdString(binaryPath));
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();
         }
