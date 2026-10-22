@@ -1695,6 +1695,12 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
         // either not a line or a zero length line?
         return false;
     }
+    if (adapt.Degree() == 1) {
+        // Skip the calculation.  This is a line masquerading as a bspline.
+        return true;
+    }
+
+    // still might be a line disguised as a curve with a really big curvature.
 
     // in a line the sum of the lengths of the segments should equal the distance
     // from start to end
