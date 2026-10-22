@@ -1268,7 +1268,7 @@ void CmdPartMakeSolid::activated(int iMsg)
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
-            QString name = QString::fromLatin1(it->getNameInDocument());
+            QString name = QString::fromUtf8(it->getNameInDocument());
             std::string label = it->Label.getValue();
             label = Base::Tools::escapeEncodeString(label);
             if (type == TopAbs_SOLID) {
@@ -1369,8 +1369,8 @@ void CmdPartReverseShape::activated(int iMsg)
                               "del __o__"
             )
                               .arg(
-                                  QString::fromLatin1(name.c_str()),
-                                  QString::fromLatin1(it->getNameInDocument()),
+                                  QString::fromUtf8(name.c_str()),
+                                  QString::fromUtf8(it->getNameInDocument()),
                                   QString::fromUtf8(label.c_str())
                               );
 
@@ -2512,7 +2512,7 @@ QString getAutoGroupCommandStr()
     }
 
     if (activeObj) {
-        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+        QString activeName = QString::fromUtf8(activeObj->getNameInDocument());
         return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
     }
 

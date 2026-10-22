@@ -97,8 +97,8 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
     ui->lineEditToEnd->setDocumentObject(sheet, false);
     ui->lineEditToEnd->setPrefix('=');
 
-    ui->lineEditToStart->setText(QLatin1String(toStart.c_str()));
-    ui->lineEditToEnd->setText(QLatin1String(toEnd.c_str()));
+    ui->lineEditToStart->setText(QString::fromStdString(toStart));
+    ui->lineEditToEnd->setText(QString::fromStdString(toEnd));
 
     ui->comboBox->addItem(
         QStringLiteral(". (%1)").arg(QString::fromUtf8(sheet->Label.getValue())),
@@ -113,12 +113,12 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
         QString label;
         if (obj->Label.getStrValue() != obj->getNameInDocument()) {
             label = QStringLiteral("%1 (%2)").arg(
-                QString::fromLatin1(obj->getNameInDocument()),
+                QString::fromUtf8(obj->getNameInDocument()),
                 QString::fromUtf8(obj->Label.getValue())
             );
         }
         else {
-            label = QLatin1String(obj->getNameInDocument());
+            label = QString::fromUtf8(obj->getNameInDocument());
         }
         ui->comboBox->addItem(label, QByteArray(obj->getNameInDocument()));
         if (obj == target) {
@@ -137,12 +137,12 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
             QString label;
             if (obj->Label.getStrValue() != obj->getNameInDocument()) {
                 label = QStringLiteral("%1 (%2)").arg(
-                    QString::fromLatin1(fullname.c_str()),
+                    QString::fromStdString(fullname),
                     QString::fromUtf8(obj->Label.getValue())
                 );
             }
             else {
-                label = QLatin1String(fullname.c_str());
+                label = QString::fromStdString(fullname);
             }
             ui->comboBox->addItem(label, QByteArray(fullname.c_str()));
             if (obj == target) {
