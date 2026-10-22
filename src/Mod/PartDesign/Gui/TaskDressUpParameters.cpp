@@ -698,7 +698,7 @@ const std::vector<std::string> TaskDressUpParameters::getReferences() const
 // TODO: This code is identical with TaskTransformedParameters::removeItemFromListWidget()
 void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
 {
-    QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
+    QList<QListWidgetItem*> items = widget->findItems(QString::fromUtf8(itemstr), Qt::MatchExactly);
     if (!items.empty()) {
         for (auto item : items) {
             QListWidgetItem* it = widget->takeItem(widget->row(item));

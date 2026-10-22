@@ -255,7 +255,7 @@ private:
                                          .arg(QString::fromLatin1(controlpoints.c_str()))
                                          .arg(QString::fromLatin1(periodic ? "True" : "False"))
                                          .arg(myDegree);
-                    Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toLatin1());
+                    Gui::Command::runCommand(Gui::Command::Gui, cmdstr.toUtf8());
                     // Adjust internal knots here (raise multiplicity)
                     // How this contributes to the final B-spline
                     if (controlpoints == controlpointses.front()) {
