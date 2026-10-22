@@ -51,6 +51,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pointObjectButton</tabstop>
+  <tabstop>originPointIndex</tabstop>
+  <tabstop>relativeToFirst</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
