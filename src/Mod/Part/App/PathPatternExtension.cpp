@@ -9,7 +9,6 @@
 #include <limits>
 #include <string>
 #include <vector>
-#include <fmt/ranges.h>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>

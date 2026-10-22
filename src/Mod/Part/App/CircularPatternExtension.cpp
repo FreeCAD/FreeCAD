@@ -237,7 +237,7 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
         - axisDirection.Multiplied(binormalDirection.Dot(axisDirection));
 
     if (radialDirection.SquareMagnitude() <= Precision::SquareConfusion()) {
-        throw Base::ValueError("Tangent axis must not be parallel to the pattern axis");
+        throw Base::ValueError("Binormal axis must not be parallel to the pattern axis");
     }
 
     if (FlipBinormalAxis.getValue()) {
