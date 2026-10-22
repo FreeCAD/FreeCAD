@@ -81,7 +81,7 @@ private:
             QString a = server->serverAddress().toString();
             quint16 p = server->serverPort();
             Py::Tuple t(2);
-            t.setItem(0, Py::String((const char*)a.toLatin1()));
+            t.setItem(0, Py::String(a.toStdString()));
             t.setItem(1, Py::Long(p));
             return t;
         }

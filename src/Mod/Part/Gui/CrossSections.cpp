@@ -299,8 +299,8 @@ bool CrossSections::apply()
                     "wires=list()\n"
                     "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n"
                 )
-                    .arg(QLatin1String(doc->getName()), QLatin1String(it->getNameInDocument()))
-                    .toLatin1()
+                    .arg(QString::fromUtf8(doc->getName()), QString::fromUtf8(it->getNameInDocument()))
+                    .toUtf8()
             );
 
             for (double jt : d) {
@@ -314,7 +314,7 @@ bool CrossSections::apply()
                         .arg(b)
                         .arg(c)
                         .arg(jt)
-                        .toLatin1()
+                        .toUtf8()
                 );
                 seq.next();
             }
@@ -328,8 +328,8 @@ bool CrossSections::apply()
                     "slice.purgeTouched()\n"
                     "del slice,comp,wires,shape"
                 )
-                    .arg(QLatin1String(doc->getName()), QLatin1String(s.c_str()))
-                    .toLatin1()
+                    .arg(QString::fromUtf8(doc->getName()), QString::fromStdString(s))
+                    .toUtf8()
             );
         }
         seq.next();

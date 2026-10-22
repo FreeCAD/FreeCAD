@@ -422,17 +422,17 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     }
 
     if (PartDesign::Feature::isDatum(obj)) {
-        return QString::fromLatin1(obj->getNameInDocument());
+        return QString::fromUtf8(obj->getNameInDocument());
     }
 
     if (!sub.empty() && !sub.front().empty()) {
-        return QString::fromLatin1(obj->getNameInDocument()) + QStringLiteral(":")
-            + QString::fromLatin1(sub.front().c_str());
+        return QString::fromUtf8(obj->getNameInDocument()) + QStringLiteral(":")
+            + QString::fromStdString(sub.front());
     }
 
     if (obj->isDerivedFrom<Part::Part2DObject>()) {
         // only return bare name for sketches when no subelement is specified
-        return QString::fromLatin1(obj->getNameInDocument());
+        return QString::fromUtf8(obj->getNameInDocument());
     }
 
     return {};

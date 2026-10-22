@@ -360,7 +360,7 @@ void PlacementHandler::applyPlacement(const App::DocumentObject* obj, const QStr
             cmd = getSimplePlacement(obj, data);
         }
 
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
 }
 
@@ -368,9 +368,9 @@ QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj
 {
     return QStringLiteral(R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
         .arg(
-            QString::fromLatin1(obj->getDocument()->getName()),
-            QString::fromLatin1(obj->getNameInDocument()),
-            QString::fromLatin1(this->propertyName.c_str()),
+            QString::fromUtf8(obj->getDocument()->getName()),
+            QString::fromUtf8(obj->getNameInDocument()),
+            QString::fromUtf8(this->propertyName.c_str()),
             data
         );
 }
@@ -379,9 +379,9 @@ QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, con
 {
     return QStringLiteral("App.getDocument(\"%1\").%2.%3=%4")
         .arg(
-            QString::fromLatin1(obj->getDocument()->getName()),
-            QString::fromLatin1(obj->getNameInDocument()),
-            QString::fromLatin1(this->propertyName.c_str()),
+            QString::fromUtf8(obj->getDocument()->getName()),
+            QString::fromUtf8(obj->getNameInDocument()),
+            QString::fromUtf8(this->propertyName.c_str()),
             data
         );
 }

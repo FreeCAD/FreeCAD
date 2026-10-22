@@ -976,9 +976,9 @@ int SelectionSingleton::setPreselect(
             }
             msg.append(QStringLiteral(" %1.%2.%3 ")
                            .arg(
-                               QString::fromLatin1(pDocName),
-                               QString::fromLatin1(pObjectName),
-                               QString::fromLatin1(pSubName)
+                               QString::fromUtf8(pDocName),
+                               QString::fromUtf8(pObjectName),
+                               QString::fromUtf8(pSubName)
                            ));
 
             if (getMainWindow()) {

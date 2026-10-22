@@ -199,7 +199,7 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("Error"),
-            QString::fromLatin1(e.GetMessageString())
+            QString::fromUtf8(e.GetMessageString())
         );
     }
 }

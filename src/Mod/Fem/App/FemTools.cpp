@@ -305,7 +305,7 @@ std::string Fem::Tools::checkIfBinaryExists(
         // first check the environment paths, normally determined by the PATH environment variable
         // On Windows, the executable extensions(".exe" etc.) should be automatically appended
         QString executablePath = QStandardPaths::findExecutable(
-            QString::fromLatin1(binaryName.c_str())
+            QString::fromStdString(binaryName)
         );
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();
@@ -313,9 +313,9 @@ std::string Fem::Tools::checkIfBinaryExists(
         // check the folder of the FreeCAD binary
         else {
             auto appBinaryPath = App::Application::getHomePath() + "bin/";
-            QStringList pathCandidates = {QString::fromLatin1(appBinaryPath.c_str())};
+            QStringList pathCandidates = {QString::fromStdString(appBinaryPath)};
             QString executablePath = QStandardPaths::findExecutable(
-                QString::fromLatin1(binaryName.c_str()),
+                QString::fromStdString(binaryName),
                 pathCandidates
             );
             if (!executablePath.isEmpty()) {
@@ -328,7 +328,7 @@ std::string Fem::Tools::checkIfBinaryExists(
         // use binary path from settings, fall back to system path if not defined
         auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), binaryName.c_str());
         QString executablePath = QStandardPaths::findExecutable(
-            QString::fromLatin1(binaryPath.c_str())
+            QString::fromStdString(binaryPath)
         );
         if (!executablePath.isEmpty()) {
             return executablePath.toStdString();

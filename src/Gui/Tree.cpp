@@ -6593,7 +6593,7 @@ void DocumentObjectItem::displayStatusInfo()
     }
 
     QString status = TreeWidget::tr("%1, Internal name: %2")
-                         .arg(info, QString::fromLatin1(Obj->getNameInDocument()));
+                         .arg(info, QString::fromUtf8(Obj->getNameInDocument()));
 
     if (!Obj->isError()) {
         getMainWindow()->showMessage(status);
