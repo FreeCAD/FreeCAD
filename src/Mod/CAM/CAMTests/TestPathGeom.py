@@ -453,6 +453,12 @@ class TestPathGeom(PathTestBase):
             "CCW",
         )
 
+        # test short arc: issue https://github.com/FreeCAD/FreeCAD/issues/33146
+        startPoint = Vector(-195.121182, 57.494287, -5.999999)
+        cmd = Path.Command("G2 I-2.013849 J1.305531 K0.000000 X-195.122314 Y57.492542 Z-5.999999")
+        edge = Path.Geom.edgeForCmd(cmd, startPoint)
+        self.assertRoughly(edge.Length, 0.002, 0.001)
+
     def test30(self):
         """Verify proper geometry for arcs with rising and fall ing Z-axis are created."""
         # print("------ rising helix -------")
