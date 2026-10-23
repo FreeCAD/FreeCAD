@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER16 nut, standard",
+  "units": "mm",
+  "type": "ER16",
+  "profile": [
+    [0, 0],
+    [12.9, 0],
+    [14.0, 1.1],
+    [14.0, 17.5],
+    [0, 17.5]
+  ],
+  "notes": "Round clamping nut, M22x1.5 thread.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "ER20 nut, mini",
+  "units": "mm",
+  "type": "ER20",
+  "profile": [
+    [0, 0],
+    [12.9, 0],
+    [14.0, 1.1],
+    [14.0, 19],
+    [0, 19]
+  ],
+  "notes": "Slim (ERM) nut, M24x1 thread, for reach in tight places.",
+  "source": "Typical ER clamping nut sizes (ISO 15488 collets); nuts vary by maker, measure yours"
+}
