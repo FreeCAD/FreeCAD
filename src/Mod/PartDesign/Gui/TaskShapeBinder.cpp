@@ -199,7 +199,7 @@ void TaskShapeBinder::deleteItem()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data = item->text().toLatin1();
+        QByteArray data = item->text().toUtf8();
         delete item;
 
         // search inside the list of sub-elements

@@ -654,7 +654,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         auto mc = dynamic_cast<MacroCommand*>(aCmd);
         if (mc && fn.compare(QLatin1String(mc->getScriptName())) == 0) {
             hasMacroCommand = true;
-            macroMenuText = QString::fromLatin1(mc->getMenuText());
+            macroMenuText = QString::fromUtf8(mc->getMenuText());
         }
     }
 

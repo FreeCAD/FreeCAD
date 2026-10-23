@@ -1476,7 +1476,7 @@ public:
                     Gui::Command::Doc,
                     "%s = %s",
                     propName.c_str(),
-                    str.toLatin1().constData()
+                    str.toUtf8().constData()
                 );
                 return true;
             }

@@ -2853,7 +2853,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             //        temp += ".";
             //        temp += it->SubName;
             //    }
-            //    new QListWidgetItem(QString::fromLatin1(temp.c_str()), selectionView);
+            //    new QListWidgetItem(QString::fromStdString(temp), selectionView);
             //}
         }
         else if (msg.Type == Gui::SelectionChanges::SetPreselect) {
@@ -4269,11 +4269,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "tv.hide(ActiveSketch)\n"
                     "del(tv)\n"
                     "del(ActiveSketch)\n")
-                    .arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
-                         QString::fromLatin1(getSketchObject()->getNameInDocument()),
-                         QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                         QString::fromLatin1(editSubName.c_str()));
-            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+                    .arg(QString::fromUtf8(getDocument()->getDocument()->getName()),
+                         QString::fromUtf8(getSketchObject()->getNameInDocument()),
+                         QString::fromStdString(Gui::Command::getObjectCmd(editObj)),
+                         QString::fromStdString(editSubName));
+            QByteArray cmdstr_bytearray = cmdstr.toUtf8();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         }
         catch (Base::PyException& e) {
@@ -4581,9 +4581,9 @@ void ViewProviderSketch::unsetEdit(int ModNum)
                                 "ActiveSketch.ViewObject.TempoVis = None\n"
                                 "del(tv)\n"
                                 "del(ActiveSketch)\n")
-                .arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
-                     QString::fromLatin1(getSketchObject()->getNameInDocument()));
-        QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+                .arg(QString::fromUtf8(getDocument()->getDocument()->getName()),
+                     QString::fromUtf8(getSketchObject()->getNameInDocument()));
+        QByteArray cmdstr_bytearray = cmdstr.toUtf8();
         Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
     }
     catch (Base::PyException& e) {
@@ -4612,9 +4612,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
                     "  if ActiveSketch.ViewObject.ForceOrtho:\n"
                     "    "
                     "ActiveSketch.ViewObject.Document.ActiveView.setCameraType('Orthographic')\n")
-                    .arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
-                         QString::fromLatin1(getSketchObject()->getNameInDocument()));
-            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+                    .arg(QString::fromUtf8(getDocument()->getDocument()->getName()),
+                         QString::fromUtf8(getSketchObject()->getNameInDocument()));
+            QByteArray cmdstr_bytearray = cmdstr.toUtf8();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         }
         catch (Base::PyException& e) {
@@ -4767,7 +4767,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         QString cmdStr = QStringLiteral("ActiveSketch.ViewObject.TempoVis.sketchClipPlane("
                                         "ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView, %1)\n")
                              .arg(tmpFactor < 0 ? QLatin1String("True") : QLatin1String("False"));
-        Base::Interpreter().runStringObject(cmdStr.toLatin1());
+        Base::Interpreter().runStringObject(cmdStr.toUtf8());
     }
 
     // Stretch the axes to cover the whole viewport.

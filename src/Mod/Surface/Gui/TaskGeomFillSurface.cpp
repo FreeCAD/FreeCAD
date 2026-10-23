@@ -402,7 +402,7 @@ bool GeomFillSurface::accept()
         QMessageBox::warning(
             this,
             tr("Invalid object"),
-            QString::fromLatin1(editedObject->getStatusString())
+            QString::fromUtf8(editedObject->getStatusString())
         );
         return false;
     }
@@ -495,7 +495,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             Gui::SelectionObject sel(msg);
             QString text = QStringLiteral("%1.%2").arg(
                 QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName)
+                QString::fromUtf8(msg.pSubName)
             );
             item->setText(text);
 
