@@ -11,8 +11,6 @@ import unittest
 import CAMTests.cam_test_modules
 
 _EXCLUDE_MODULES = {
-    "TestLinuxCNCLegacyPost",
-    "TestGrblLegacyPost",
     "TestPathToolBitBrowserWidget",
     "TestPathToolBitEditorWidget",
     "TestPathToolBitListWidget",
@@ -20,10 +18,7 @@ _EXCLUDE_MODULES = {
     "TestPathToolDocumentObjectEditorWidget",
 }
 
-_EXCLUDE_MEMBERS = {
-    "TestMachine": ["TestOutputOptions"],
-    "TestPostToolProcessing": ["TestEmptyMoveSuppression"],
-}
+_EXCLUDE_MEMBERS = {}
 
 
 def _load_cam_tests():

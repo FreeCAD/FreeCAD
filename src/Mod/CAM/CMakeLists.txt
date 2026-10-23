@@ -328,7 +328,6 @@ SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
     Path/Post/CAMErrors.py
-    Path/Post/GcodeProcessingUtils.py
     Path/Post/PathOptimizationUtils.py
     Path/Post/PostList.py
     Path/Post/Processor.py
@@ -695,7 +694,6 @@ SET(Tests_SRCS
     CAMTests/TestPostToolProcessing.py
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
-    CAMTests/TestGcodeProcessingUtils.py
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
     CAMTests/TestFeedsSpeedsToolController.py
