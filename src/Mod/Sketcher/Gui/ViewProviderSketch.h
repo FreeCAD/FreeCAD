@@ -545,6 +545,34 @@ public:
     App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
+    App::PropertyIntegerList HiddenLayers;
+    App::PropertyIntegerList LayerOrder;
+    App::PropertyMap LayerColors;
+    App::PropertyMap LayerPatterns;
+    App::PropertyMap LayerLineWidths;
+    App::PropertyIntegerList LayerSolverColorsDisabled;
+    Base::Color getLayerColor(int layerId, const Base::Color& fallback) const;
+    unsigned int getLayerPattern(int layerId, unsigned int fallback = 0xffff) const;
+    float getLayerLineWidth(int layerId, float fallback) const;
+    bool layerUsesSolvedColors(int layerId) const;
+    int getLayerFromCoinIndex(int coinLayer) const;
+    void updateLayerStyles();
+    void updateVisual() override;
+    std::vector<int> getLayerOrder() const;
+    bool areLayersEnabled() const
+    {
+        return showLayers;
+    }
+    fastsignals::signal<void()> signalLayersChanged;
+    int getGeometryCoinLayer(const Sketcher::GeometryFacade* geometry) const;
+    int getGeometryCoinLayerCount() const;
+    bool isCoinLayerVisible(int coinLayer) const;
+    bool isLayerVisible(int layerId) const;
+    void setLayerVisible(int layerId, bool visible);
+    bool isGeometryVisible(int geoId) const;
+    bool isConstraintVisible(const Sketcher::Constraint* constraint) const;
+    void refreshLayers();
+    void appendLayerMenu(QMenu* menu);
     //@}
 
     const ToolManager toolManager;
@@ -1046,6 +1074,8 @@ private:
     //@}
 
 private:
+    void initializeNewLayerStyles();
+    std::set<int> knownLayerIds;
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
@@ -1084,6 +1114,7 @@ private:
     std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
 
     ViewProviderParameters viewProviderParameters;
+    bool showLayers {false};
 
     using Connection = fastsignals::connection;
     Connection connectionToolWidget;

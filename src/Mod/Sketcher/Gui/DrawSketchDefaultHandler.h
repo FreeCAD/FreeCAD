@@ -425,6 +425,11 @@ public:
     ~DrawSketchDefaultHandler() override
     {}
 
+    bool addsToActiveLayer() const override
+    {
+        return true;
+    }
+
     /** @name public DrawSketchHandler interface
      * NOTE: Not intended to be specialised. It calls some functions intended to be
      * overridden/specialised instead.

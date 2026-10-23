@@ -100,6 +100,7 @@
 #include "MDIViewPy.h"
 #include "MDIViewPyWrap.h"
 #include "MDIViewWithCamera.h"
+#include "LayerWidgetPy.h"
 #include "Placement.h"
 #include "SoFCDB.h"
 #include "Selection.h"
@@ -606,6 +607,9 @@ Application::Application(bool GUIenabled)
         Gui::Dialog::TaskPlacementPy::init_type();
         Base::Interpreter().addType(Gui::Dialog::TaskPlacementPy::type_object(),
             module, "TaskPlacement");
+
+        LayerWidgetPy::init_type();
+        Base::Interpreter().addType(LayerWidgetPy::type_object(), module, "LayerWidget");
 
         // PySide additions
         PyModule_AddObject(module, "PySideUic", Base::Interpreter().addModule(new PySideUicModule));
