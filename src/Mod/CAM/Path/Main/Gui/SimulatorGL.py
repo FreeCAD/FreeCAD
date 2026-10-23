@@ -288,9 +288,11 @@ class CAMSimulation:
         form.listOperations.clear()
         self.operations = []
         allhidden = all(
-            not op.Visibility for op in j.Operations.OutList if PathUtil.opProperty(op, "Active")
+            not op.Visibility
+            for op in PathUtils.getOperations(j)
+            if PathUtil.opProperty(op, "Active")
         )
-        for op in j.Operations.OutList:
+        for op in PathUtils.getOperations(j):
             if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
