@@ -28,7 +28,7 @@ bool CArea::HolesLinked()
 
 double CArea::m_clipper_scale = CArea::default_clipper_scale;
 
-static const int min_arc_points = 4;
+int CArea::m_min_arc_points = 4;
 
 Point64 CArea::ToPoint64(const PointD& p)
 {
@@ -79,19 +79,19 @@ void CArea::Xor(const CArea& a2)
     Clip(ClipType::Xor, a2);
 }
 
-void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& metadata) const
+void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& metadata, bool forceOpen) const
 {
     Paths64 closed_paths;
     Paths64 open_paths;
 
     for (const CCurve& curve : m_curves) {
-        bool is_closed = curve.IsClosed();
+        bool is_closed = !forceOpen && curve.IsClosed();
 
         if (!is_closed && as_clip) {
             throw std::logic_error("Open curves cannot be used as clip geometry");
         }
 
-        Path64 p = MakePoly(curve, metadata);
+        Path64 p = MakePoly(curve, metadata, forceOpen);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -135,13 +135,14 @@ void CArea::_Clip(
     bool reverseOpenPathContents,
     bool reverseOpenPathOrder,
     std::optional<std::reference_wrapper<CArea>> cNeg,
-    bool assertOutputClosed
+    bool assertOutputClosed,
+    bool forceOpen
 )
 {
     // Regardless of the provided value for assertOutputClosed, assert anyway if every input curve
     // is exactly closed and all edge tags are the same (i.e. no closed curves will get split up).
     {
-        bool forceAssertClosed = true;
+        bool forceAssertClosed = !forceOpen;
         std::optional<int> observedTag;
         auto checkClosedAndKeepEdges = [&forceAssertClosed, &observedTag](const CArea& a) {
             for (const CCurve& curve : a.m_curves) {
@@ -176,7 +177,7 @@ void CArea::_Clip(
     // Initialize a clipper object and populate it with subject/clip geometry
     Clipper64 c;
     ConversionMetadata metadata;
-    PopulateClipper(c, false, metadata);
+    PopulateClipper(c, false, metadata, forceOpen);
     clip_area.PopulateClipper(c, true, metadata);
 
     // Set up a callback for clipper to log information about points created during
@@ -246,9 +247,9 @@ void CArea::_Clip(
     SetFromResult(openPaths, /*is_closed=*/false, /*assertOutputClosed=*/false, metadata, cNeg);
 }
 
-void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType)
+void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType, bool forceOpen)
 {
-    _Clip(op, clip_area, fillType);
+    _Clip(op, clip_area, fillType, false, false, std::nullopt, false, forceOpen);
 }
 
 void CArea::ClipperNoop()
@@ -623,7 +624,7 @@ void CArea::NaiveOffset(double offset)
 //
 // Edge tags are read from curve.m_edgeTags. If that list is empty, all edges
 // are treated as if they were tagged 1 (positive offset edge).
-Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
+Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, bool forceOpen) const
 {
     if (!curve.m_vertices.size()) {
         return {};
@@ -657,7 +658,8 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
     // Iterate through edges
     for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
         CVertex vertex = *vIt;
-        const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed();
+        const bool isLoop = !forceOpen && std::next(vIt) == curve.m_vertices.end()
+            && curve.IsClosed();
         if (isLoop) {
             // IsClosed() uses tolerance-based heeks::Point equality. If the last vertex doesn't
             // exactly match the first, processing that vertex unmodified will create a new/unique
@@ -713,7 +715,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
             // Determine the number of segments
             const int num_segments
-                = std::max(min_arc_points, (int)ceil(std::abs(phi1 - phi0) / max_dphi));
+                = std::max(CArea::m_min_arc_points, (int)ceil(std::abs(phi1 - phi0) / max_dphi));
             const double dphi = (phi1 - phi0) / num_segments;
 
             // Generate arc points
