@@ -90,6 +90,13 @@ void FixedTimeAnimation::initialize()
     // Convert post-multiplication axis to a pre-multiplication axis
     navigation->getCamera()->orientation.getValue().inverse().multVec(rotationAxisPost, rotationAxis);
 
+    // Avoid dividing by zero, onStop() moves the camera to the target when the duration is 0
+    if (duration() <= 0) {
+        angularVelocity = 0;
+        linearVelocity = SbVec3f(0, 0, 0);
+        return;
+    }
+
     angularVelocity = angle / duration();
     linearVelocity = targetTranslation / duration();
 }
