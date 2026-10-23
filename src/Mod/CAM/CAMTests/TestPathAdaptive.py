@@ -24,14 +24,88 @@ import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
 from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
+import os
+import shutil
 import time
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Adaptive as PathAdaptiveGui
+
+DEBUG_SVGS = False
+
+_MT_CUTTING = 0
+_MT_LINK_CLEAR = 1
+_MT_LINK_NOT_CLEAR = 2
+
+
+def _make_svg_callback(test_name):
+    count = 0
+
+    def callback(results):
+        nonlocal count
+        count += 1
+        svg_dir = os.path.join(os.getcwd(), "debugSvgs")
+        os.makedirs(svg_dir, exist_ok=True)
+        _write_adaptive_svg(results, os.path.join(svg_dir, f"{test_name}_{count}.svg"))
+
+    return callback
+
+
+def _write_adaptive_svg(results, path):
+    all_pts = []
+    segments = []
+    for r in results:
+        for motion_type, dpath in r.AdaptivePaths:
+            pts = [(x, y) for x, y in dpath]
+            if pts:
+                all_pts.extend(pts)
+                segments.append((motion_type, pts))
+
+    if not all_pts:
+        return
+
+    xs = [p[0] for p in all_pts]
+    ys = [p[1] for p in all_pts]
+    minx, maxx = min(xs), max(xs)
+    miny, maxy = min(ys), max(ys)
+    pad = 5
+    W, H = 800, 800
+    sx = (W - 2 * pad) / (maxx - minx) if maxx != minx else 1
+    sy = (H - 2 * pad) / (maxy - miny) if maxy != miny else 1
+    scale = min(sx, sy)
+
+    def tx(x):
+        return pad + (x - minx) * scale
+
+    def ty(y):
+        return H - pad - (y - miny) * scale
+
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}">',
+        f'<rect width="{W}" height="{H}" fill="white"/>',
+    ]
+    for motion_type, pts in segments:
+        if len(pts) < 2:
+            continue
+        coords = " ".join(f"{tx(x):.1f},{ty(y):.1f}" for x, y in pts)
+        if motion_type == _MT_CUTTING:
+            style = 'stroke="green" stroke-width="1" fill="none"'
+        elif motion_type == _MT_LINK_CLEAR:
+            style = 'stroke="red" stroke-width="1" fill="none" stroke-dasharray="4,3"'
+        elif motion_type == _MT_LINK_NOT_CLEAR:
+            style = 'stroke="red" stroke-width="1" fill="none"'
+        else:
+            style = 'stroke="orange" stroke-width="1" fill="none"'
+        lines.append(f'  <polyline points="{coords}" {style}/>')
+    lines.append("</svg>")
+
+    with open(path, "w") as f:
+        f.write("\n".join(lines))
 
 
 class TestPathAdaptive(PathTestBase):
@@ -49,6 +123,11 @@ class TestPathAdaptive(PathTestBase):
         """
         cls.needsInit = True
         cls.test_times = {}  # For tracking per-test execution time
+
+        if DEBUG_SVGS:
+            svg_dir = os.path.join(os.getcwd(), "debugSvgs")
+            if os.path.exists(svg_dir):
+                shutil.rmtree(svg_dir)
 
     @classmethod
     def initClass(cls):
@@ -115,6 +194,9 @@ class TestPathAdaptive(PathTestBase):
         # Start timing this test
         self._test_start_time = time.time()
 
+        if DEBUG_SVGS:
+            PathAdaptive._debug_results_callback = _make_svg_callback(self.id().split(".")[-1])
+
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
@@ -122,6 +204,7 @@ class TestPathAdaptive(PathTestBase):
         """
         # Clean up scene graph visualization
         PathAdaptive.sceneClean()
+        PathAdaptive._debug_results_callback = None
 
         # Record elapsed time for this test
         elapsed = time.time() - self._test_start_time
@@ -219,6 +302,9 @@ class TestPathAdaptive(PathTestBase):
 
         # Execute
         results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
+
+        if PathAdaptive._debug_results_callback is not None:
+            PathAdaptive._debug_results_callback(results)
 
         # Validate
         self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
@@ -495,6 +581,74 @@ class TestPathAdaptive(PathTestBase):
         # self.assertTrue(expected_moves_test01 == operationMoves,
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
+
+    def testRestMachining(self):
+        """testRestMachining() Verify a rest machining Adaptive op recomputes
+        cleanly using the cleared area of a previous Adaptive op in the same job."""
+
+        # Block with a rectangular pocket whose floor is below Z=0. Non-model-aware Adaptive
+        # flattens its input to Z=0 and only sees cleared area from cuts at or below Z=0, so
+        # the pocket must be there for the roughing op's cleared area to be used.
+        floorZ = -1.0
+        block = Part.makeBox(60.0, 40.0, 20.0, FreeCAD.Vector(0, 0, floorZ - 19.0))
+        pocket = Part.makeBox(50.0, 30.0, 1.0, FreeCAD.Vector(5.0, 5.0, floorZ))
+        # Separate document: a second Job in self.doc would make later tests' PathAdaptive.Create()
+        # calls ambiguous about which job to join
+        doc = FreeCAD.newDocument("TestRestMachining")
+        self.addCleanup(FreeCAD.setActiveDocument, self.doc.Name)
+        self.addCleanup(FreeCAD.closeDocument, doc.Name)
+        part = doc.addObject("Part::Feature", "RestMachiningPart")
+        part.Shape = block.cut(pocket)
+
+        # Dedicated job, so only the two ops below contribute cleared area
+        job = PathJob.Create("JobRestMachining", [part])
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        model = job.Model.Group[0]
+        floorFaces = [
+            f"Face{i + 1}"
+            for i, face in enumerate(model.Shape.Faces)
+            if abs(face.BoundBox.ZMax - floorZ) < 1e-6
+            and abs(face.BoundBox.ZMin - floorZ) < 1e-6
+            and face.BoundBox.XLength < 55.0
+        ]
+        self.assertEqual(len(floorFaces), 1, f"expected one pocket floor face, got {floorFaces}")
+
+        def createOp(label, toolDiameter, useRestMachining):
+            # Create the op before adding its tool controller. On creation an op picks the
+            # previous op's TC, or the job's only TC; if the job has several TCs and no previous
+            # op, the GUI prompts the user to choose one.
+            adaptive = PathAdaptive.Create(label, parentJob=job)
+
+            tc = PathToolController.Create(name=f"TC: {toolDiameter}mm Endmill")
+            job.Proxy.addToolController(tc)
+            tc.Tool.Diameter = toolDiameter
+
+            adaptive.Base = [(model, floorFaces)]
+            adaptive.Label = label
+            adaptive.ToolController = tc
+            adaptive.FinishingProfile = False
+            adaptive.StepOverPercent = 50
+            adaptive.UseOutline = False
+            adaptive.UseRestMachining = useRestMachining
+            # Have to clear expression before numerical value assignment
+            adaptive.clearExpression("StepDown")
+            adaptive.StepDown.Value = 20.0
+            _addViewProvider(adaptive)
+            return adaptive
+
+        # Rough with a large tool, then rest machine with a small tool
+        roughing = createOp("RestMachiningRoughing", 5.0, False)
+        rest = createOp("RestMachiningRest", 4.0, True)
+        doc.recompute()
+
+        self.assertTrue(len(roughing.Path.Commands) > 0, "Roughing op produced no commands")
+        self.assertTrue(len(rest.Path.Commands) > 0, "Rest machining op produced no commands")
+        for op in (roughing, rest):
+            self.assertTrue(op.isValid(), f"{op.Label} is not valid: {op.State}")
+            self.assertNotIn("Invalid", op.State, f"{op.Label} state: {op.State}")
+            self.assertNotIn("Touched", op.State, f"{op.Label} still needs recompute: {op.State}")
 
     def testFacesMergedDifferentZ(self):
         """testFacesMergedDifferentZ() Verify path generated on adjacent, combined
