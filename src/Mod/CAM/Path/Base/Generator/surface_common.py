@@ -47,7 +47,6 @@ else:
 
 
 _ocl = None
-_meshpart = None
 
 
 def _get_ocl():
@@ -71,20 +70,6 @@ def _get_ocl():
                 "https://github.com/aewallin/opencamlib"
             )
     return _ocl
-
-
-def _get_meshpart():
-    """Lazily import MeshPart."""
-    global _meshpart
-    if _meshpart is not None:
-        return _meshpart
-    try:
-        import MeshPart as meshpart
-
-        _meshpart = meshpart
-    except ImportError:
-        raise ImportError("MeshPart is required for shape tessellation")
-    return _meshpart
 
 
 # ---------------------------------------------------------------------------
@@ -656,44 +641,70 @@ def _is_triangulated_mesh(faces, sample_size=75, threshold=0.50):
     return len(sample) > 0 and (triangle_count / len(sample)) > threshold
 
 
+# ---------------------------------------------------------------------------
+# Filter vertical faces
+# ---------------------------------------------------------------------------
+
+
+def _horizontal_part(v):
+    return (v.x * v.x + v.y * v.y) ** 0.5
+
+
+def _is_vertical(face, tolerance=0.0005):
+    """True for a face with no XY footprint (a wall parallel to the tool axis).
+
+    Decided from the surface definition, not from one sampled normal: a
+    curved face can have a horizontal normal at its middle (a fillet lying
+    along X) and still have area in XY.
+
+        Plane                       normal horizontal
+        Cylinder                    axis vertical: every ruling runs along Z
+        Extrusion                   extrusion direction vertical
+        B-spline / Bezier           horizontal normals over a 3x3 UV grid
+        Anything else               never a full wall (cone, sphere, torus...)
+    """
+    try:
+        surf = face.Surface
+    except Exception:
+        return False
+    if isinstance(surf, Part.Plane):
+        return abs(surf.Axis.z) < tolerance
+    if isinstance(surf, Part.Cylinder):
+        return _horizontal_part(surf.Axis) < tolerance
+    if isinstance(surf, Part.SurfaceOfExtrusion):
+        return _horizontal_part(surf.Direction) < tolerance
+    if isinstance(surf, (Part.BSplineSurface, Part.BezierSurface)):
+        try:
+            u1, u2, v1, v2 = face.ParameterRange
+            for fu in (0.1, 0.5, 0.9):
+                for fv in (0.1, 0.5, 0.9):
+                    n = face.normalAt(u1 + (u2 - u1) * fu, v1 + (v2 - v1) * fv)
+                    if abs(n.z) >= tolerance:
+                        return False
+            return True
+        except Exception:
+            return False
+    return False
+
+
 def _filter_vertical(model_faces, tolerance=0.0005):
-    """Removes vertical faces from a list of Part.Face objects.
-
-    This function is a performance optimization for BaseBoundBox only.
-
-    The "true" outward-pointing normal is calculated by respecting the
-    face's topological orientation.
+    """Removes vertical faces (walls parallel to the tool axis) from a list of
+    Part.Face objects. They have no XY footprint, so they add nothing to the
+    mesh but triangles. See _is_vertical() for how a wall is recognised.
 
     Args:
         model_faces (list): A list of Part.Face objects to be filtered.
-        tolerance (float, optional): The threshold for the normal vector's
-            Z-component. Faces with abs(normal.z) less than this value are
-            considered vertical and will be removed. Defaults to 0.0005.
+        tolerance (float, optional): How far from vertical a wall may be
+            (Z component of its normal / horizontal component of its axis).
+            Defaults to 0.0005.
 
     Returns:
         list: A new list of Part.Face objects with the vertical faces
             excluded. Returns the original list if filtering would result
             in an empty list.
     """
-    filtered = []
-
-    for face in model_faces:
-        u1, u2, v1, v2 = face.ParameterRange
-        norm = face.normalAt((u1 + u2) / 2.0, (v1 + v2) / 2.0)
-        if face.Orientation == "Reversed":
-            norm = norm.multiply(-1)
-
-        normal_z = abs(norm.z)
-
-        # Reject truly vertical faces
-        if normal_z < tolerance:
-            continue
-        filtered.append(face)
-
-    if filtered:
-        return filtered
-
-    return model_faces
+    filtered = [face for face in model_faces if not _is_vertical(face, tolerance)]
+    return filtered if filtered else model_faces
 
 
 # ---------------------------------------------------------------------------
