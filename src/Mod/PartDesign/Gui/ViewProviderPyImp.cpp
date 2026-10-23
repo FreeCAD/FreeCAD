@@ -72,3 +72,15 @@ PyObject* ViewProviderPy::makeTemporaryVisible(PyObject* args)
 
     return Py::new_reference_to(Py::None());
 }
+
+PyObject* ViewProviderPy::showPreviousFeature(PyObject* args)
+{
+    PyObject* visible;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &visible)) {
+        return nullptr;
+    }
+
+    getViewProviderPtr()->showPreviousFeature(Base::asBoolean(visible));
+
+    return Py::new_reference_to(Py::None());
+}

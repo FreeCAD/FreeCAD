@@ -61,6 +61,7 @@ public:
     std::map<BitmapFactoryInst::Position, std::string> getOverlayIcons() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
+    ValueT allowBoxElementSelection() const;
     void onSelectionChanged(const SelectionChanges&);
     ValueT getElementPicked(const SoPickedPoint* pp, std::string& subname) const;
     bool getElement(const SoDetail* det, std::string&) const;
@@ -154,6 +155,7 @@ private:
     FC_PY_ELEMENT(getOverlayIcons) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
+    FC_PY_ELEMENT(allowBoxElementSelection) \
     FC_PY_ELEMENT(getElementPicked) \
     FC_PY_ELEMENT(getElement) \
     FC_PY_ELEMENT(getDetail) \
@@ -304,6 +306,17 @@ public:
                 return false;
             default:
                 return ViewProviderT::useNewSelectionModel();
+        }
+    }
+    bool allowBoxElementSelection() const override
+    {
+        switch (imp->allowBoxElementSelection()) {
+            case ViewProviderFeaturePythonImp::Accepted:
+                return true;
+            case ViewProviderFeaturePythonImp::Rejected:
+                return false;
+            default:
+                return ViewProviderT::allowBoxElementSelection();
         }
     }
     /// called when the selection changes for the view provider
