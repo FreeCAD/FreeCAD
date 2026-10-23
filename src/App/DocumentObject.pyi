@@ -1,17 +1,15 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
+import FreeCAD  # because `from Document import Document` would overwrite "Document" property
+from App.GeoFeatureGroupExtension import GeoFeatureGroupExtension
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
+from Base.Placement import Placement
 from DepEdge import DepEdge
-from Document import Document
 from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
-from typing import TYPE_CHECKING, Any, Final, List, Optional, Union, Tuple
-
-if TYPE_CHECKING:
-    from FreeCADGui import ViewProviderDocumentObject as _ViewProviderDocumentObject
+from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
+from typing import Any, Final, Self, overload, Literal
 
 
 class DocumentObject(ExtensionContainer):
@@ -21,58 +19,58 @@ class DocumentObject(ExtensionContainer):
     Licence: LGPL
     """
 
-    OutListProp: Final[List[DepEdge]] = []
+    OutListProp: Final[list[DepEdge]]
     """A list of all objects which link to this object with properties."""
 
-    OutList: Final[List["DocumentObject"]] = []
+    OutList: Final[list[DocumentObject]]
     """A list of all objects this object links to."""
 
-    OutListRecursive: Final[List["DocumentObject"]] = []
+    OutListRecursive: Final[list[DocumentObject]]
     """A list of all objects this object links to recursively."""
 
-    InList: Final[List["DocumentObject"]] = []
+    InList: Final[list[DocumentObject]]
     """A list of all objects which link to this object."""
 
-    InListProp: Final[List[DepEdge]] = []
+    InListProp: Final[list[DepEdge]]
     """A list of all objects which link to this object with properties."""
 
-    InListRecursive: Final[List["DocumentObject"]] = []
+    InListRecursive: Final[list[DocumentObject]]
     """A list of all objects which link to this object recursively."""
 
-    FullName: Final[str] = ""
+    FullName: Final[str]
     """Return the document name and internal name of this object"""
 
-    Name: Final[Optional[str]] = ""
+    Name: Final[str | None]
     """Return the internal name of this object"""
 
-    Document: Final[Document] = None
+    Document: Final[FreeCAD.Document]
     """Return the document this object is part of"""
 
-    State: Final[List[Any]] = []
+    State: Final[list[str]]
     """State of the object in the document"""
 
-    ViewObject: Final[_ViewProviderDocumentObject | None] = None
+    ViewObject: Final[ViewProviderDocumentObject | None]
     """
     If the GUI is loaded the associated view provider is returned
     or None if the GUI is not up
     """
 
-    MustExecute: Final[bool] = False
+    MustExecute: Final[bool]
     """Check if the object must be recomputed"""
 
-    ID: Final[int] = 0
+    ID: Final[int]
     """The unique identifier (among its document) of this object"""
 
-    Removing: Final[bool] = False
+    Removing: Final[bool]
     """Indicate if the object is being removed"""
 
-    Parents: Final[List[Any]] = []
+    Parents: Final[list[tuple[DocumentObject, str]]]
     """A List of tuple(parent,subname) holding all parents to this object"""
 
-    OldLabel: Final[str] = ""
+    OldLabel: Final[str]
     """Contains the old label before change"""
 
-    NoTouch: bool = False
+    NoTouch: bool
     """Enable/disable no touch on any property change"""
 
     def addProperty(
@@ -86,7 +84,7 @@ class DocumentObject(ExtensionContainer):
         hidden: bool = False,
         locked: bool = False,
         enum_vals: list[str] | None = None,
-    ) -> "DocumentObject":
+    ) -> Self:
         """
         Add a generic property.
 
@@ -101,7 +99,6 @@ class DocumentObject(ExtensionContainer):
             locked: Whether the property is locked. Defaults to False.
             enum_vals: Initial values for an enumeration property. Defaults to None.
         """
-        ...
 
     def removeProperty(self, string: str, /) -> bool:
         """
@@ -109,13 +106,11 @@ class DocumentObject(ExtensionContainer):
 
         Note, you can only remove user-defined properties but not built-in ones.
         """
-        ...
 
-    def supportedProperties(self) -> list:
+    def supportedProperties(self) -> list[str]:
         """
         A list of supported property types
         """
-        ...
 
     def touch(self, property_name: str = ..., /) -> None:
         """
@@ -125,19 +120,16 @@ class DocumentObject(ExtensionContainer):
         argument, this marks the object as touched *without* forcing a recompute. Finally, if a
         property name is passed, this only touches that property.
         """
-        ...
 
     def purgeTouched(self) -> None:
         """
         Mark the object as unchanged
         """
-        ...
 
     def enforceRecompute(self) -> None:
         """
         Mark the object for recompute
         """
-        ...
 
     def setExpression(self, name: str, expression: str | None, comment: str = ..., /) -> None:
         """
@@ -145,26 +137,22 @@ class DocumentObject(ExtensionContainer):
 
         Pass None as expression to clear an existing expression.
         """
-        ...
 
     def clearExpression(self, name: str, /) -> None:
         """
         Clear the expression for a property
         """
-        ...
 
     @classmethod
     def evalExpression(cls, expression: str, /) -> Any:
         """
         Evaluate an expression
         """
-        ...
 
     def recompute(self, recursive: bool = False, /) -> bool:
         """
         Recomputes this object
         """
-        ...
 
     @constmethod
     def getStatusString(self) -> str:
@@ -174,29 +162,99 @@ class DocumentObject(ExtensionContainer):
         If the object is valid but touched then 'Touched' will be returned,
         'Valid' otherwise.
         """
-        ...
 
     @constmethod
     def isValid(self) -> bool:
         """
         Returns True if the object is valid, False otherwise
         """
-        ...
 
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> object | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
+    ) -> DocumentObject | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[DocumentObject, Matrix] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[DocumentObject, Matrix, object] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> Placement | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> Matrix | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> Placement | None: ...
+    @overload
+    def getSubObject(
+        self, subname: str, *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> Matrix | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[object, ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[DocumentObject, ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[tuple[DocumentObject, Matrix], ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[tuple[DocumentObject, Matrix, object], ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[Placement, ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[Matrix, ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[Placement, ...] | None: ...
+    @overload
+    def getSubObject(
+        self, subname: list[str] | tuple[str, ...], *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[Matrix, ...] | None: ...
+    @overload
     def getSubObject(
         self,
-        subname: Union[str, List[str], Tuple[str, ...]],
+        subname: str | list[str] | tuple[str, ...],
         *,
         retType: int = 0,
-        matrix: Matrix = None,
+        matrix: Matrix | None = None,
         transform: bool = True,
         depth: int = 0,
-    ) -> Any:
+    ) -> Any | None:
         """
         * subname(string|list|tuple): dot separated string or sequence of strings
         referencing subobject.
 
-        * retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject, 3=Placement
+        * retType: return type
+            0=PyObject
+            1=DocObject
+            2=DocAndPyObject
+            3=Placement
+            4=Matrix
+            5=LinkAndPlacement
+            6=LinkAndMatrix
 
             PyObject: return a python binding object for the (sub)object referenced in
             each 'subname' The actual type of 'PyObject' is implementation dependent.
@@ -217,28 +275,34 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
     def getSubObjectList(self, subname: str, /) -> list:
         """
         Return a list of objects referenced by a given subname including this object
         """
-        ...
 
-    def getSubObjects(self, reason: int = 0, /) -> list:
+    def getSubObjects(self, reason: int = 0, /) -> tuple[str, ...]:
         """
         Return subname reference of all sub-objects
         """
-        ...
 
+    @overload
+    def getLinkedObject(
+        self, *, recursive: bool = True, matrix: None = None, transform: bool = True, depth: int = 0,
+    ) -> object: ...
+    @overload
+    def getLinkedObject(
+        self, *, recursive: bool = True, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+    ) -> tuple[object, Matrix]: ...
+    @overload
     def getLinkedObject(
         self,
         *,
         recursive: bool = True,
-        matrix: Matrix = None,
+        matrix: Matrix | None = None,
         transform: bool = True,
         depth: int = 0,
-    ) -> Any:
+    ) -> object | tuple[object, Matrix]:
         """
         Returns the linked object if there is one, or else return itself
 
@@ -252,27 +316,23 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
     def setElementVisible(self, element: str, visible: bool = True, /) -> int:
         """
         Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
-        ...
 
     def isElementVisible(self, element: str, /) -> int:
         """
         Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
         """
-        ...
 
     def hasChildElement(self) -> bool:
         """
         Return true to indicate the object having child elements
         """
-        ...
 
     def getParentGroup(self) -> DocumentObjectGroup | None:
         """
@@ -280,18 +340,16 @@ class DocumentObject(ExtensionContainer):
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
-    def getParentGeoFeatureGroup(self) -> Any:
+    def getParentGeoFeatureGroup(self) -> GeoFeatureGroupExtension:
         """
         Returns the GeoFeatureGroup, and hence the local coordinate system, the object
         is in or None if it is not part of a group.
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
-    def getParent(self) -> Any:
+    def getParent(self) -> DocumentObjectGroup | None:
         """
         Returns the group the object is in or None if it is not part of a group.
 
@@ -299,16 +357,14 @@ class DocumentObject(ExtensionContainer):
         The parent can be a simple group as with getParentGroup() or a GeoFeature group as
         with getParentGeoFeatureGroup().
         """
-        ...
 
     def getPathsByOutList(self, target: DocumentObject, /) -> list[list[DocumentObject]]:
         """
         Get all paths from this object to another object following the OutList.
         """
-        ...
 
     @constmethod
-    def resolve(self, subname: str, /) -> tuple:
+    def resolve(self, subname: str, /) -> tuple[object | None, object | None, str, str]:
         """
         resolve the sub object
 
@@ -318,10 +374,9 @@ class DocumentObject(ExtensionContainer):
         to call parent.isElementVisible/setElementVisible(). 'subElement' is the
         non-object sub-element name if any.
         """
-        ...
 
     @constmethod
-    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple:
+    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple[object | None, str, str]:
         """
         resolve both new and old style sub element
 
@@ -331,34 +386,29 @@ class DocumentObject(ExtensionContainer):
 
         Return tuple(obj,newElementName,oldElementName)
         """
-        ...
 
     def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True, /) -> bool:
         """
         auto correct potential cyclic dependencies
         """
-        ...
 
     @constmethod
     def getElementMapVersion(self, property_name: str, restored: bool = False, /) -> str:
         """
         return element map version of a given geometry property
         """
-        ...
 
     @constmethod
     def isAttachedToDocument(self) -> bool:
         """
         Return true if the object is part of a document, false otherwise.
         """
-        ...
 
-    def getPlacementOf(self, subname: str, target: DocumentObject | None = None, /) -> Any:
+    def getPlacementOf(self, subname: str, target: DocumentObject | None = None, /) -> Placement:
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement
         """
-        ...
 
     @constmethod
     def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
@@ -372,4 +422,3 @@ class DocumentObject(ExtensionContainer):
         targetObj : DocumentObject
             The target object to move the property to.
         """
-        ...
