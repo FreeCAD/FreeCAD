@@ -205,6 +205,29 @@ std::string PythonConverter::convert(
     return constraintlist;
 }
 
+std::string PythonConverter::convertDelConstraints(
+    const std::string& doc,
+    const std::vector<int>& constraints
+)
+{
+    std::string constraintlist = "constraintList = []";
+
+    for (auto constraint : constraints) {
+        constraintlist = boost::str(
+            boost::format("%s\nconstraintList.append(%d)") % constraintlist % constraint
+        );
+    }
+
+    if (!constraints.empty()) {
+        constraintlist = boost::str(
+            boost::format("%s\n%s.delConstraints(constraintList)\ndel constraintList\n")
+            % constraintlist % doc
+        );
+    }
+
+    return constraintlist;
+}
+
 template<typename T>
 std::string makeSplineInfoArrayString(const std::vector<T>& rInfoVec)
 {
