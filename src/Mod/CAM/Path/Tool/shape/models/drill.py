@@ -22,8 +22,22 @@
 # ***************************************************************************
 
 import FreeCAD
-from typing import Tuple, Mapping
+import math
+from typing import Any, Tuple, Mapping
 from .base import ToolBitShape
+
+
+def _value(value) -> float:
+    """A parameter's magnitude, whether it arrives as a Quantity or a number."""
+    return float(value.Value if hasattr(value, "Value") else value)
+
+
+def _tip_length(params) -> float:
+    """Length of the tip cone: the part of a drill that cuts sideways."""
+    angle = _value(params["TipAngle"])
+    if angle <= 0 or angle >= 180:
+        return 0.0
+    return _value(params["Diameter"]) / 2 / math.tan(math.radians(angle / 2))
 
 
 class ToolBitShapeDrill(ToolBitShape):
@@ -32,6 +46,10 @@ class ToolBitShapeDrill(ToolBitShape):
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
             "Diameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
                 "App::PropertyLength",
@@ -49,6 +67,15 @@ class ToolBitShapeDrill(ToolBitShape):
                 "App::PropertyAngle",
             ),
         }
+
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """
+        Only the tip cone cuts sideways - a spot drill doing engraving work is
+        all cone - so the cutting edge height is the cone's length, from the
+        diameter and the included tip angle. The body above it does not cut.
+        """
+        return {"CuttingEdgeHeight": _tip_length}
 
     @property
     def label(self) -> str:

@@ -98,6 +98,7 @@ _TOOL_TYPE_MAP = {
     "ballend": "BallCutter",
     "bullnose": "BullCutter",
     "taperedballnose": "BallCutter",
+    "lollipop": "BallCutter",
     "drill": "ConeCutter",
     "engraver": "ConeCutter",
     "v_bit": "ConeCutter",

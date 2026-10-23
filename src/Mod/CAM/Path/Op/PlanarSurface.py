@@ -1442,7 +1442,7 @@ class ObjectSurface(PathOp.ObjectOp):
         radius = tool_diam / 2.0
         shape_type = tool_params.get("tool_type") or ""
         c_rad = tool_params.get("corner_radius", 0.0)
-        is_3d = shape_type in ("ballend", "bullnose")
+        is_3d = shape_type in ("ballend", "bullnose", "lollipop")
 
         if tool_diam == 0.0 or (not is_3d and "endmill" not in shape_type):
             Path.Log.error(
