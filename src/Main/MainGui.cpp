@@ -37,6 +37,7 @@
 #include <cstdio>
 #include <format>
 #include <map>
+#include <memory>
 #include <stdexcept>
 
 #include <QApplication>
@@ -132,6 +133,17 @@ static void displayInfo(const std::string& msg, bool preformatted = true)
     }
 }
 
+// The QApplication already exists when the failure occurs after the splash has been shown
+static std::unique_ptr<QApplication> ensureQApplication(int& argc, char** argv)
+{
+    Gui::Application::hideSplash(nullptr);
+    // take it over so that it is destroyed before returning from main()
+    if (auto app = Gui::Application::releaseApplication()) {
+        return app;
+    }
+    return std::make_unique<QApplication>(argc, argv);
+}
+
 static void displayCritical(const QString& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
@@ -214,7 +226,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashScreen"] = "freecadsplash";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
-    App::Application::Config()["SplashAlignment"] = "Bottom|Left";
+    App::Application::Config()["SplashAlignment"] = "Top";
     App::Application::Config()["SplashTextColor"] = "#418FDE";
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
     App::Application::Config()["SplashInfoColor"] = "#212529";
@@ -230,7 +242,7 @@ int main(int argc, char** argv)
 
         // Inits the Application
 #if defined(FC_OS_WIN32)
-        App::Application::init(argc_, argv_.data());
+        App::Application::initConfiguration(argc_, argv_.data());
 # ifdef _MSC_VER
         // *Not* installed on mingw, etc.
         Base::CrashReporter::WindowsCrashReporter::install(
@@ -238,7 +250,7 @@ int main(int argc, char** argv)
         );
 # endif
 #else
-        App::Application::init(argc, argv);
+        App::Application::initConfiguration(argc, argv);
 #endif
         // To set the window icon on Wayland, the desktop file has to be available to the
         // compositor. Qt also uses the desktop file name to register with the portal registry.
@@ -248,7 +260,6 @@ int main(int argc, char** argv)
         if (desktopFileIsAvailable(desktopFileName)) {
             QGuiApplication::setDesktopFileName(desktopFileName);
         }
-
         std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
         );
@@ -263,19 +274,32 @@ int main(int argc, char** argv)
 
         Gui::Application::initApplication();
 
+        // Create the QApplication and show the splash before initializing the Python
+        // interpreter and running the init scripts of all modules, which is the slowest part
+        // of the init phase. Not needed when only program information is requested.
+        if (inGuiMode() && !App::Application::isProgramInformationRequested()
+            && !Gui::Application::startApplication()) {
+            // another instance took over
+            App::Application::destruct();
+            return 0;
+        }
+
+        App::Application::initPython();
+        App::Application::initModules();
+
         // Only if 'RunMode' is set to 'Gui' do the replacement
         if (App::Application::Config()["RunMode"] == "Gui") {
             Base::Interpreter().replaceStdOutput();
         }
     }
     catch (const Base::UnknownProgramOption& e) {
-        QApplication app(argc, argv);
+        auto app = ensureQApplication(argc, argv);
         QString msg = QString::fromLatin1(e.what());
         displayCritical(msg);
         return 1;
     }
     catch (const Base::ProgramInformation& e) {
-        QApplication app(argc, argv);
+        auto app = ensureQApplication(argc, argv);
         if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
             displayInfo(Gui::ProgramInformation::collect());
         }
@@ -286,7 +310,7 @@ int main(int argc, char** argv)
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
-        QApplication app(argc, argv);
+        auto app = ensureQApplication(argc, argv);
         QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n")
                           .arg(appName, QString::fromUtf8(e.what()));
@@ -319,7 +343,7 @@ int main(int argc, char** argv)
     }
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
-        QApplication app(argc, argv);
+        auto app = ensureQApplication(argc, argv);
         QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr(
                           "Unknown runtime error occurred while initializing %1.\n\n"

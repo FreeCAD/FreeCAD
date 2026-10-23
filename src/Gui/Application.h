@@ -25,12 +25,14 @@
 
 #include <QPixmap>
 #include <map>
+#include <memory>
 #include <string>
 
 #include <App/Application.h>
 
 #include "StyleParameters/ParameterManager.h"
 
+class QApplication;
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;
@@ -278,12 +280,22 @@ public:
     static void initTypes();
     static void initOpenInventor();
     static void runInitGuiScript();
+    /// create the QApplication and show the splash, false if another instance took over
+    static bool startApplication();
     static void runApplication();
+    /// hand over the QApplication created by startApplication() when not running it
+    static std::unique_ptr<QApplication> releaseApplication();
     void tryClose(QCloseEvent* e);
     //@}
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
+    /// install the language from the user preferences
+    static void activateLanguage();
+    /// close the splash shown by startApplication(), once \a window is on the screen if given
+    static void hideSplash(QWidget* window);
+    /// stop showing messages in the splash, as it processes events with each of them
+    static void freezeSplash();
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits

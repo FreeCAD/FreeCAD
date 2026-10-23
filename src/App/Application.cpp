@@ -403,8 +403,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     _stopRecomputeThread = false;
     _recomputeThread = std::thread(&Application::recomputeWorker, this);
-
-    setupPythonTypes();
 }
 
 Application::~Application()
@@ -2030,7 +2028,9 @@ void Application::destruct()
 
 #ifdef FC_DEBUG
     // Do this only in debug mode for memory leak checkers
-    cleanupUnits();
+    if (Py_IsInitialized()) {
+        cleanupUnits();
+    }
 #endif
 
     CleanupProcess::callCleanup();
@@ -2105,11 +2105,31 @@ void initExceptions()
     new Base::ExceptionProducer<Base::PropertyError>;
     // NOLINTEND
 }
+
+// run a stage of the init phase, forcing the log to flush if it fails
+template<typename Stage>
+void runInitStage(Stage&& stage)
+{
+    try {
+        stage();
+    }
+    catch (...) {
+        Application::destructObserver();
+        throw;
+    }
+}
 }
 
 void Application::init(int argc, char ** argv)
 {
-    try {
+    initConfiguration(argc, argv);
+    initPython();
+    initModules();
+}
+
+void Application::initConfiguration(int argc, char ** argv)
+{
+    runInitStage([&]() {
         // Establish the initial Base snapshot before application or GUI preferences can override it.
         Base::publishNumericLocaleContext(
             Base::createNumericLocaleContext()
@@ -2127,13 +2147,27 @@ void Application::init(int argc, char ** argv)
         initCrashReporter();
 
         initApplication();
+    });
+}
+
+void Application::initModules()
+{
+    runInitStage([]() {
+        // starting the init script
+        Base::Console().log("Run App init script\n");
+        try {
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
+
+        // seed randomizer
+        srand(time(nullptr));
+
         initExceptions();
-    }
-    catch (...) {
-        // force the log to flush
-        destructObserver();
-        throw;
-    }
+    });
 }
 
 // clang-format off
@@ -2579,6 +2613,45 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     }
 }
 
+// Options which can only be handled once the Python interpreter is initialized
+struct DeferredOptions
+{
+    std::vector<std::string> pythonPaths;
+    enum class Information
+    {
+        None,
+        VerboseVersion,
+        DumpConfig,
+        GetConfig
+    };
+    Information information = Information::None;
+    std::string configKey;
+};
+DeferredOptions deferredOptions;  // NOLINT
+
+void emitProgramInformation(const std::map<std::string, std::string>& mConfig)
+{
+    std::stringstream str;
+    switch (deferredOptions.information) {
+        case DeferredOptions::Information::None:
+            return;
+        case DeferredOptions::Information::VerboseVersion:
+            throw Base::ProgramInformation(App::ProgramInformation::verboseVersionEmitMessage);
+        case DeferredOptions::Information::DumpConfig:
+            for (const auto& it : mConfig) {
+                str << it.first << "=" << it.second << '\n';
+            }
+            break;
+        case DeferredOptions::Information::GetConfig:
+            if (auto pos = mConfig.find(deferredOptions.configKey); pos != mConfig.end()) {
+                str << pos->second;
+            }
+            str << '\n';
+            break;
+    }
+    throw Base::ProgramInformation(str.str());
+}
+
 void processProgramOptions(const boost::program_options::variables_map& vm, std::map<std::string,std::string>& mConfig)
 {
     if (vm.contains("version") && !vm.contains("verbose")) {
@@ -2610,9 +2683,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     }
 
     if (vm.contains("python-path")) {
-        auto  Paths = vm["python-path"].as< std::vector<std::string> >();
-        for (const auto & It : Paths)
-            Base::Interpreter().addPythonPath(It.c_str());
+        deferredOptions.pythonPaths = vm["python-path"].as< std::vector<std::string> >();
     }
 
     if (vm.contains("disable-addon")) {
@@ -2703,23 +2774,14 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     }
 
     if (vm.contains("dump-config")) {
-        std::stringstream str;
-        for (const auto & it : mConfig) {
-            str << it.first << "=" << it.second << '\n';
-        }
-        throw Base::ProgramInformation(str.str());
+        deferredOptions.information = DeferredOptions::Information::DumpConfig;
     }
-
-    if (vm.contains("get-config")) {
-        auto configKey = vm["get-config"].as<std::string>();
-        std::stringstream str;
-        std::map<std::string,std::string>::iterator pos;
-        pos = mConfig.find(configKey);
-        if (pos != mConfig.end()) {
-            str << pos->second;
-        }
-        str << '\n';
-        throw Base::ProgramInformation(str.str());
+    else if (vm.contains("get-config")) {
+        deferredOptions.information = DeferredOptions::Information::GetConfig;
+        deferredOptions.configKey = vm["get-config"].as<std::string>();
+    }
+    else if (vm.contains("verbose") && vm.contains("version")) {
+        deferredOptions.information = DeferredOptions::Information::VerboseVersion;
     }
 
     if (vm.contains("set-config")) {
@@ -2816,44 +2878,10 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["Debug"] = "0";
 #   endif
 
-    if (!Py_IsInitialized()) {
-        // init python
-        PyImport_AppendInittab ("FreeCAD", init_freecad_module);
-        PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-    }
-    else {
-        // "import FreeCAD" in a normal Python 3.12 interpreter would raise
-        //     Fatal Python error: PyImport_AppendInittab:
-        //         PyImport_AppendInittab() may not be called after Py_Initialize()
-        //  because the (external) interpreter is already initialized.
-        //  Therefore we use a workaround as described in https://stackoverflow.com/a/57019607
-
-        PyObject* sysModules = PyImport_GetModuleDict();
-
-        auto moduleName = "FreeCAD";
-        PyImport_AddModule(moduleName);
-        PyObject *pyModule = init_freecad_module();
-        PyDict_SetItemString(sysModules, moduleName, pyModule);
-        Py_DECREF(pyModule);
-
-        moduleName = "__FreeCADBase__";
-        PyImport_AddModule(moduleName);
-        pyModule = init_freecad_base_module();
-        PyDict_SetItemString(sysModules, moduleName, pyModule);
-        Py_DECREF(pyModule);
-    }
-
-    std::string pythonpath = Base::Interpreter().init(argc,argv);
-    if (!pythonpath.empty())
-        mConfig["PythonSearchPath"] = pythonpath;
-    else
-        Base::Console().warning("Encoding of Python paths failed\n");
-
     // Handle the options that have impact on the init process
     processProgramOptions(vm, mConfig);
 
     // Init console ===========================================================
-    Base::PyGILStateLocker lock;
     _pConsoleObserverStd = new Base::ConsoleObserverStd();
     Base::Console().attachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
@@ -2875,7 +2903,7 @@ void Application::initConfig(int argc, char ** argv)
     App::installTranslationQtBridge();
 
     // Banner ===========================================================
-    if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
+    if (mConfig["RunMode"] != "Cmd" && !isProgramInformationRequested()) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
@@ -2988,14 +3016,60 @@ void Application::initConfig(int argc, char ** argv)
 #endif
     mConfig["XERCESC_VERSION"] = fcXercescVersion;
     mConfig["CLIPPER2_VERSION"] = fcClipper2Version;
+}
 
+void Application::initPython()
+{
+    runInitStage([]() {
+        if (!Py_IsInitialized()) {
+            // init python
+            PyImport_AppendInittab ("FreeCAD", init_freecad_module);
+            PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+        }
+        else {
+            // "import FreeCAD" in a normal Python 3.12 interpreter would raise
+            //     Fatal Python error: PyImport_AppendInittab:
+            //         PyImport_AppendInittab() may not be called after Py_Initialize()
+            //  because the (external) interpreter is already initialized.
+            //  Therefore we use a workaround as described in https://stackoverflow.com/a/57019607
 
-    logStatus();
+            PyObject* sysModules = PyImport_GetModuleDict();
 
-    if (vm.contains("verbose") && vm.contains("version")) {
-        Application::_pcSingleton = new Application(mConfig);
-        throw Base::ProgramInformation(ProgramInformation::verboseVersionEmitMessage);
-    }
+            auto moduleName = "FreeCAD";
+            PyImport_AddModule(moduleName);
+            PyObject *pyModule = init_freecad_module();
+            PyDict_SetItemString(sysModules, moduleName, pyModule);
+            Py_DECREF(pyModule);
+
+            moduleName = "__FreeCADBase__";
+            PyImport_AddModule(moduleName);
+            pyModule = init_freecad_base_module();
+            PyDict_SetItemString(sysModules, moduleName, pyModule);
+            Py_DECREF(pyModule);
+        }
+
+        std::string pythonpath = Base::Interpreter().init(_argc,_argv);
+        if (!pythonpath.empty())
+            // keep a value given by --set-config
+            mConfig.try_emplace("PythonSearchPath", pythonpath);
+        else
+            Base::Console().warning("Encoding of Python paths failed\n");
+
+        for (const auto& path : deferredOptions.pythonPaths) {
+            Base::Interpreter().addPythonPath(path.c_str());
+        }
+
+        setupPythonTypes();
+
+        logStatus();
+
+        emitProgramInformation(mConfig);
+    });
+}
+
+bool Application::isProgramInformationRequested()
+{
+    return deferredOptions.information != DeferredOptions::Information::None;
 }
 
 void Application::SaveEnv(const char* s)
@@ -3048,19 +3122,6 @@ void Application::initApplication()
 #if defined (_DEBUG)
     Base::Console().log("Application is built with debug information\n");
 #endif
-
-    // starting the init script
-    Base::Console().log("Run App init script\n");
-    try {
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
-        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
-    }
-    catch (const Base::Exception& e) {
-        e.reportException();
-    }
-
-    // seed randomizer
-    srand(time(nullptr));
 }
 
 std::list<std::string> Application::getCmdLineFiles()
@@ -3296,15 +3357,7 @@ void Application::LoadParameters()
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
-        if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
-            // Configuration file optional when using as Python module
-            if (!Py_IsInitialized()) {
-                Base::Console().warning("   Parameter does not exist, writing initial one\n");
-                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
-                                  "   configuration.\n");
-            }
-        }
+        _pcSysParamMngr->LoadOrCreateDocument();
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
@@ -3321,14 +3374,6 @@ void Application::LoadParameters()
             const char* userParamPath = getUserParameterTemplatePath();
             if (userParamPath) {
                 _pcUserParamMngr->LoadDocument(userParamPath);
-            }
-
-            // Configuration file optional when using as Python module
-            if (!Py_IsInitialized()) {
-                Base::Console().warning("   User settings do not exist, writing initial one\n");
-                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
-                                  "   or your configuration was deleted or moved. The system defaults\n"
-                                  "   will be automatically generated for you.\n");
             }
         }
     }
