@@ -109,8 +109,15 @@ protected:
         App::PropertyLength* spacing,
         App::PropertyLength* startOffset,
         App::PropertyLength* endOffset,
+        App::PropertyDistance* cyclicOffset,
         App::PropertyBool* reversePath,
-        App::PropertyBool* align
+        App::PropertyBool* align,
+        App::PropertyLinkSub* tangentAxis,
+        App::PropertyBool* flipTangentAxis,
+        App::PropertyLinkSub* verticalAxis,
+        App::PropertyBool* flipVerticalAxis,
+        App::PropertyInteger* originPointIndex,
+        App::PropertyBool* relativeToFirst
     );
     void setupPointPatternParameterUI(
         QWidget* parent,
