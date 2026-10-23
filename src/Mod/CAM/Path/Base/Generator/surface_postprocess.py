@@ -354,9 +354,7 @@ def _make_safe_pdc(safe_stl, cutter, final_z, sample_interval):
 # ---------------------------------------------------------------------------
 
 
-def _attempt_lead_arc(
-    line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset=0.0
-):
+def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in, depth_offset=0.0):
     """
     Attempts multiple arc lead-in or lead-out strategies in order of preference,
     returning the first successful result.
