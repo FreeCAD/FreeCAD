@@ -131,6 +131,8 @@ std::optional<fs::path> getPythonExecutablePath()
     std::vector<fs::path> candidates {
         base_path.parent_path() / "bin" / versioned,  // conda/venv, homebrew framework
         base_path / "bin" / versioned,                // python.org macOS framework
+        base_path.parent_path() / "bin" / "python",   // non versioned fallback
+        base_path / "bin" / "python",                 // non versioned fallback
     };
     // Linux multiarch / lib64: /usr/lib[/<triplet>]/libpythonX.Y.so -> /usr/bin/pythonX.Y.
     const fs::path lib_dir = base_path.parent_path();
@@ -202,9 +204,9 @@ struct PythonErrorState
     PythonErrorText errorType {};
     PythonErrorText errorInfo {};
     PythonErrorText stackTrace {};
-    Py::Object exceptionType;
-    Py::Object traceback;
-    Py::Object errorDict;
+    Py::Object exceptionType {nullptr};
+    Py::Object traceback {nullptr};
+    Py::Object errorDict {nullptr};
     /// Heap-allocated exception types captured so far. PyException borrows the raw type
     /// pointer without owning a reference, and unlike static types (PyExc_*, PyExc_FC_*)
     /// heap types can be deallocated, so they are retained for the process lifetime.
@@ -956,7 +958,7 @@ std::string InterpreterSingleton::getPythonPath()
         if (!item.isString()) {
             throw Base::RuntimeError("Failed to convert path item to UTF-8 string");
         }
-        if (!result.empty()) {
+        if (i != 0) {
             result += separator;
         }
         result += item.as_string();
