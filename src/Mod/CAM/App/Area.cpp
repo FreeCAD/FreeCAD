@@ -647,14 +647,242 @@ void Area::add(const TopoDS_Shape& shape, short op)
     myShapes.emplace_back(op, shape);
 }
 
+// DEBUG TIMING: accumulates labeled stage times/counts for getClearedArea, printed to stderr
+struct ClearedAreaTiming
+{
+    std::chrono::steady_clock::time_point last = std::chrono::steady_clock::now();
+    std::string out;
+
+    // Record the time since the previous lap (or construction) under `label`
+    void lap(const char* label)
+    {
+        const auto now = std::chrono::steady_clock::now();
+        out += std::format(" {}={:.4f}", label, std::chrono::duration<double>(now - last).count());
+        last = now;
+    }
+    void count(const char* label, size_t n)
+    {
+        out += std::format(" {}#{}", label, n);
+    }
+    static size_t vertices(const CArea& a)
+    {
+        size_t n = 0;
+        for (const CCurve& c : a.m_curves) {
+            n += c.m_vertices.size();
+        }
+        return n;
+    }
+};
+
 class ClearedAreaSegmentVisitor: public PathSegmentVisitor
 {
 private:
-    CArea pathSegments;
+    // A run of consecutive cutting segments (2-vertex curves: a line or an arc). See addSegment()
+    // for where passes are split.
+    struct Pass
+    {
+        std::vector<CCurve> segments;
+        std::string endReason = "end of path";  // DEBUG: why the pass ended
+        std::string step1Note;                  // DEBUG: why step 1 included the pass
+    };
+    std::vector<Pass> passes;
     std::set<std::pair<double, double>> circleCenters;
+
+
+    // DEBUG: copies of intermediate areas, dumped if CLEARED_AREA_DUMP_DIR is set
+    static inline const char* dumpDir = std::getenv("CLEARED_AREA_DUMP_DIR");
+    CArea debugStep1;
+    std::vector<size_t> debugStep1Passes;  // indices of passes included in step 1
+    std::vector<CCurve> debugStep3Pieces;  // center line pieces unioned in step 3
+    std::vector<std::pair<Clipper2Lib::Path64, int>> debugInset;  // U offset inward, as used by step 2
     double maxZ;
     double radius;
     Base::BoundBox3d bbox;
+    CAreaParams params;  // libarea settings in effect for the cleared area
+
+    // State of the pass currently being built
+    bool passOpen = false;
+    Clipper2Lib::Point64 passStart;
+    double passAngle = 0;     // accumulated signed angle change
+    double passMinAngle = 0;  // minimum and maximum of passAngle so far
+    double passMaxAngle = 0;
+    // Once passAngle exceeds +-2pi, the pass's centroid at that point, and the angle the pass has
+    // wound about it (from the pass start); the pass then ends when that exceeds +-2pi instead
+    std::optional<Point> passCentroid;
+    double passWound = 0;
+    double passEndTangent = 0;  // tangent direction at the end of the last segment
+
+    static double normalizeAngle(double a)
+    {
+        while (a <= -M_PI) {
+            a += 2 * M_PI;
+        }
+        while (a > M_PI) {
+            a -= 2 * M_PI;
+        }
+        return a;
+    }
+
+    // Once a pass's accumulated angle has gone this far from zero in one direction, the pass is
+    // split if the angle then comes back by this much
+    static constexpr double reversalThreshold = 5 * M_PI / 180;
+
+    // Angle that `segment` (a 2-vertex curve) winds about `center`. Arcs are split at their
+    // midpoint, so that each piece subtends less than pi about `center` in practice.
+    static double woundAngle(const CCurve& segment, const Point& center)
+    {
+        auto angleAt = [&](const Point& p) {
+            return std::atan2(p.y - center.y, p.x - center.x);
+        };
+        const Point& p0 = segment.m_vertices.front().m_p;
+        const Point& p1 = segment.m_vertices.back().m_p;
+        if (segment.m_vertices.back().m_type == 0) {
+            return normalizeAngle(angleAt(p1) - angleAt(p0));
+        }
+        const Point mid = midpointAndHalfLength(segment).first;
+        return normalizeAngle(angleAt(mid) - angleAt(p0))
+            + normalizeAngle(angleAt(p1) - angleAt(mid));
+    }
+
+    void endPass(std::string reason)
+    {
+        if (passOpen) {
+            passes.back().endReason = std::move(reason);
+        }
+        passOpen = false;
+    }
+
+    // Add a segment from `start` to `end` with the given start/end tangent directions and signed
+    // arc sweep (0 for lines) to the current pass, splitting passes:
+    // - before the segment, if it reverses the accumulated angle change: the accumulated angle has
+    //   reached at least reversalThreshold from zero in one direction, and comes back from that
+    //   extreme by at least reversalThreshold
+    // - after the segment, if it ends where the pass started, or if it completes a revolution: once
+    //   the pass's accumulated angle change exceeds +-2pi, the centroid of the pass so far is
+    //   saved, and the pass ends when the angle it has wound about that centroid (from its start)
+    //   exceeds +-2pi, or the accumulated angle change exceeds +-2.5pi
+    void addSegment(
+        CCurve curve,
+        const Point& start,
+        const Point& end,
+        double startTangent,
+        double endTangent,
+        double sweep
+    )
+    {
+        bool reversed = false;
+        double reversalAngle = 0;  // DEBUG: the angle at which the reversal was detected
+        if (passOpen) {
+            // Angle changes from this segment: the turn from the previous segment's end direction,
+            // then the arc's own sweep
+            const double turn = normalizeAngle(startTangent - passEndTangent);
+            double angle = passAngle;
+            double minAngle = passMinAngle;
+            double maxAngle = passMaxAngle;
+            for (const double change : {turn, sweep}) {
+                angle += change;
+                if ((maxAngle >= reversalThreshold && angle <= maxAngle - reversalThreshold)
+                    || (minAngle <= -reversalThreshold && angle >= minAngle + reversalThreshold)) {
+                    reversed = true;
+                    reversalAngle = angle;
+                    break;
+                }
+                minAngle = std::min(minAngle, angle);
+                maxAngle = std::max(maxAngle, angle);
+            }
+            if (!reversed) {
+                passAngle = angle;
+                passMinAngle = minAngle;
+                passMaxAngle = maxAngle;
+                passes.back().segments.push_back(std::move(curve));
+            }
+        }
+        if (reversed) {
+            passes.back().endReason = std::format(
+                "reversal: next segment would take angle from {:.2f} to {:.2f} (range [{:.2f}, "
+                "{:.2f}]) deg",
+                passAngle * 180 / M_PI,
+                reversalAngle * 180 / M_PI,
+                passMinAngle * 180 / M_PI,
+                passMaxAngle * 180 / M_PI
+            );
+        }
+        if (!passOpen || reversed) {
+            // Start a new pass with this segment
+            passes.emplace_back();
+            passes.back().segments.push_back(std::move(curve));
+            passOpen = true;
+            passStart = CArea::ToPoint64({start.x, start.y});
+            passAngle = sweep;
+            passMinAngle = std::min(0.0, sweep);
+            passMaxAngle = std::max(0.0, sweep);
+            passCentroid.reset();
+            passWound = 0;
+        }
+        passEndTangent = endTangent;
+
+        const std::vector<CCurve>& segments = passes.back().segments;
+        if (passCentroid) {
+            passWound += woundAngle(segments.back(), *passCentroid);
+        }
+        else if (std::abs(passAngle) > 2 * M_PI) {
+            // Length weighted centroid of the pass so far, and the angle wound about it
+            double sx = 0, sy = 0, total = 0;
+            for (const CCurve& segment : segments) {
+                const auto [mid, halfLength] = midpointAndHalfLength(segment);
+                sx += mid.x * halfLength;
+                sy += mid.y * halfLength;
+                total += halfLength;
+            }
+            passCentroid = Point(sx / total, sy / total);
+            passWound = 0;
+            for (const CCurve& segment : segments) {
+                passWound += woundAngle(segment, *passCentroid);
+            }
+        }
+        if (passCentroid && std::abs(passWound) > 2 * M_PI) {
+            endPass(
+                std::format(
+                    "wound {:.1f} deg about centroid ({:.3f}, {:.3f}) (angle change {:.1f} deg)",
+                    passWound * 180 / M_PI,
+                    passCentroid->x,
+                    passCentroid->y,
+                    passAngle * 180 / M_PI
+                )
+            );
+        }
+        else if (std::abs(passAngle) > 2.5 * M_PI) {
+            endPass(std::format("angle {:.1f} deg exceeds +-450", passAngle * 180 / M_PI));
+        }
+        else if (CArea::ToPoint64({end.x, end.y}) == passStart) {
+            endPass("returned to start");
+        }
+    }
+
+    // Add an arc segment (not a full circle) from `start` to `end` about `c`, in direction `type`
+    void arc(const Point& start, const Point& end, const Point& c, int type)
+    {
+        // Skip arcs whose circle does not reach the bbox (the circle's box contains the arc's)
+        const double r = start.dist(c);
+        const Base::BoundBox2d circleBox(c.x - r, c.y - r, c.x + r, c.y + r);
+        if (!bbox.Intersect(circleBox)) {
+            // Skipped segment: the next one does not continue this pass
+            endPass("arc outside bbox");
+            return;
+        }
+
+        circleCenters.emplace(start.x, start.y);
+        circleCenters.emplace(end.x, end.y);
+        CCurve curve;
+        curve.append(CVertex {start});
+        curve.append(CVertex {type, end, c});
+
+        // Tangents are the radius directions rotated 90 degrees in the arc's direction
+        const double startTangent = std::atan2(start.y - c.y, start.x - c.x) + type * M_PI / 2;
+        const double endTangent = std::atan2(end.y - c.y, end.x - c.x) + type * M_PI / 2;
+        const double sweep = Span(start, curve.m_vertices.back()).IncludedAngle();
+        addSegment(std::move(curve), start, end, startTangent, endTangent, sweep);
+    }
 
     void point(const Base::Vector3d& p)
     {
@@ -678,71 +906,292 @@ private:
                     CCurve curve;
                     curve.append(CVertex {{last.x, last.y}});
                     curve.append(CVertex {{next.x, next.y}});
-                    pathSegments.append(curve);
+                    const double tangent = std::atan2(next.y - last.y, next.x - last.x);
+                    addSegment(std::move(curve), {last.x, last.y}, {next.x, next.y}, tangent, tangent, 0);
                 }
             }
+            else {
+                // Skipped segment: the next one does not continue this pass
+                endPass("segment outside bbox");
+            }
+        }
+        else {
+            endPass(std::format("line above max z ({:.3f}, {:.3f} > {:.3f})", last.z, next.z, maxZ));
         }
     }
 
-public:
-    ClearedAreaSegmentVisitor(double maxZ, double radius, Base::BoundBox3d bbox)
-        : maxZ(maxZ)
-        , radius(radius)
-        , bbox(bbox)
-    {
-        bbox.Enlarge(radius);
-    }
+    // Closed clipper paths, each with its orientation (+1 CCW, -1 CW); together they cover the
+    // points of positive winding number
+    using Polygons = std::vector<std::pair<Clipper2Lib::Path64, int>>;
 
-    // Compute and return the cleared area.
-    //
-    // As an optimization to avoid feeding an excess of segments into clipper, we first construct
-    // swept areas ignoring endcaps and union those. Then, we determine which cleared circles
-    // are interior to that shape and only incorporate only those circles to produce the final area.
-    CArea getClearedArea()
+    static Polygons toPolygons(const CArea& area)
     {
-        // Use NaiveOffset to construct swept areas without endcaps.
-        CArea result {pathSegments};
-        result.NaiveOffset(radius);
-        for (CCurve& c : result.m_curves) {
-            auto tag = c.m_edgeTags.begin();
-            for (auto v = std::next(c.m_vertices.begin()); v != c.m_vertices.end(); ++v, ++tag) {
-                assert(tag != c.m_edgeTags.end());
-                if (*tag == 0) {
-                    // replace endcap arcs with lines
-                    v->m_type = 0;
-                }
-            }
-            c.m_edgeTags.clear();
-        }
-        result.Clip(Clipper2Lib::ClipType::Union, CArea {}, Clipper2Lib::FillRule::Positive);
-
-        // Filter circle centers to eliminate interior circles
-        CArea interior {result};
-        interior.Offset(-(radius + 2 * CArea::get_accuracy()));
-        std::vector<std::pair<Clipper2Lib::Path64, int>> polygons;  // <path, orientation>
+        Polygons polygons;
         ConversionMetadata metadata;
-        for (const CCurve& c : interior.m_curves) {
-            Clipper2Lib::Path64 path = interior.MakePoly(c, metadata);
+        for (const CCurve& c : area.m_curves) {
+            Clipper2Lib::Path64 path = area.MakePoly(c, metadata);
             if (path.size() < 3) {
                 continue;
             }
             const int sign = Clipper2Lib::Area(path) > 0 ? 1 : -1;
             polygons.emplace_back(std::move(path), sign);
         }
+        return polygons;
+    }
 
-        CArea circles;
-        for (const auto& [x, y] : circleCenters) {
-            // Compute winding to see if the circle is interior
-            const Clipper2Lib::Point64 pt = CArea::ToPoint64({x, y});
-            int winding = 0;
-            for (const auto& [path, sign] : polygons) {
-                if (Clipper2Lib::PointInPolygon(pt, path)
-                    == Clipper2Lib::PointInPolygonResult::IsInside) {
+    // True if (x, y) has positive winding number in `polygons` (and is not on any of them).
+    // `polygons` must not self-intersect (true of clipper output): then each path's winding number
+    // about the point is its orientation if the point is inside it, else 0.
+    static bool inside(const Polygons& polygons, double x, double y)
+    {
+        const Clipper2Lib::Point64 pt = CArea::ToPoint64({x, y});
+        int winding = 0;
+        for (const auto& [path, sign] : polygons) {
+            switch (Clipper2Lib::PointInPolygon(pt, path)) {
+                case Clipper2Lib::PointInPolygonResult::IsOn:
+                    return false;
+                case Clipper2Lib::PointInPolygonResult::IsInside:
                     winding += sign;
+                    break;
+                case Clipper2Lib::PointInPolygonResult::IsOutside:
+                    break;
+            }
+        }
+        return winding > 0;
+    }
+
+    // Polygons of `area` offset inward by `inset`
+    static Polygons inset(const CArea& area, double inset)
+    {
+        CArea interior {area};
+        interior.Offset(-inset);
+        return toPolygons(interior);
+    }
+
+    // Midpoint and half length of a segment (2-vertex curve)
+    static std::pair<Point, double> midpointAndHalfLength(const CCurve& c)
+    {
+        const Span span(c.m_vertices.front().m_p, c.m_vertices.back());
+        return {span.MidParam(0.5), span.Length() / 2};
+    }
+
+    // The pass made of consecutive `segments`, thickened by `radius` as one curve, with round joins
+    // and round end caps
+    CArea thicken(const std::vector<CCurve>& segments) const
+    {
+        return thickenCurve(centerLine(segments));
+    }
+
+    // The curve through consecutive `segments`
+    static CCurve centerLine(const std::vector<CCurve>& segments)
+    {
+        CCurve curve;
+        curve.append(segments.front().m_vertices.front());
+        for (const CCurve& segment : segments) {
+            curve.append(segment.m_vertices.back());
+        }
+        return curve;
+    }
+
+    // `curve` thickened by `radius` (see thicken())
+    CArea thickenCurve(const CCurve& curve) const
+    {
+        CArea thick;
+        thick.append(curve);
+        thick.NaiveOffset(radius);
+        for (CCurve& c : thick.m_curves) {
+            c.m_edgeTags.clear();
+        }
+        return thick;
+    }
+
+    // Union of every pass thickened by `radius`.
+    //
+    // Unioning all passes at once is slow because they overlap heavily. Instead:
+    // 1. Starting from an empty area U, go through the passes in order, including each pass whose
+    //    first segment's midpoint is not inside U so far. U is unioned once, after all passes are
+    //    visited.
+    // 1.5. For the first point of each curve of U, include the pass nearest to it; repeat until no
+    //    pass is added.
+    // 2. The passes not included are deferred. The open path difference of their center lines
+    //    minus U offset inward by radius + accuracy leaves the pieces of center line whose
+    //    thickened area may not be inside U.
+    // 3. Thicken those pieces and union them into U.
+    CArea unionSegments(ClearedAreaTiming& t)
+    {
+        CAreaParams coarse = params;
+        const double accuracy = params.Accuracy;
+
+        // For the whole segment union: coarser arc accuracy, 10% of the radius (never finer than
+        // the cleared area's accuracy), and a minimum of 1 segment per arc, so that an arc can
+        // become a single chord. Restored, for adding circles, when conf goes out of scope.
+        coarse.Accuracy = std::max(accuracy, 0.1 * radius);
+        coarse.MinArcPoints = 1;
+        CAreaConfig conf(coarse);
+
+        std::vector<CArea> thick;
+        thick.reserve(passes.size());
+        for (const Pass& pass : passes) {
+            thick.push_back(thicken(pass.segments));
+        }
+        t.lap("naiveOffset");
+
+        // 1. Collect passes that are outside the area included so far. They are not unioned until
+        // the end of this step: point tests use the winding number over the included (positively
+        // oriented, possibly overlapping) thickened segments, which is positive exactly in their
+        // union.
+        CArea result;
+        Polygons polys;
+        std::vector<bool> included(passes.size(), false);
+        for (size_t i = 0; i < passes.size(); i++) {
+            const Point mid = midpointAndHalfLength(passes[i].segments.front()).first;
+            if (!inside(polys, mid.x, mid.y)) {
+                // Union the pass by itself first: the step 1 union is then much cheaper, and its
+                // paths become simple (no self-intersections)
+                thick[i].Clip(Clipper2Lib::ClipType::Union, CArea {}, Clipper2Lib::FillRule::Positive);
+                Polygons added = toPolygons(thick[i]);
+                polys.insert(
+                    polys.end(),
+                    std::make_move_iterator(added.begin()),
+                    std::make_move_iterator(added.end())
+                );
+                result.m_curves.insert(
+                    result.m_curves.end(),
+                    thick[i].m_curves.begin(),
+                    thick[i].m_curves.end()
+                );
+                included[i] = true;
+                passes[i].step1Note = "first segment midpoint outside";  // DEBUG
+            }
+        }
+        t.lap("step1Select");
+        result.Clip(Clipper2Lib::ClipType::Union, CArea {}, Clipper2Lib::FillRule::Positive);
+        t.lap("passUnion");
+
+        // 1.5. For the first point of each curve of U, find the pass closest to it; union in those
+        // not yet included. Repeat until no pass is added.
+        size_t step15Rounds = 0;
+        size_t step15Added = 0;
+        while (true) {
+            std::vector<size_t> nearest;
+            for (const CCurve& curve : result.m_curves) {
+                const Point& p = curve.m_vertices.front().m_p;
+                size_t best = passes.size();
+                double bestDistance = std::numeric_limits<double>::max();
+                for (size_t i = 0; i < passes.size(); i++) {
+                    for (const CCurve& segment : passes[i].segments) {
+                        const Span span(segment.m_vertices.front().m_p, segment.m_vertices.back());
+                        const double d = p.dist(span.NearestPoint(p));
+                        if (d < bestDistance) {
+                            bestDistance = d;
+                            best = i;
+                        }
+                    }
+                }
+                if (best < passes.size() && !included[best]
+                    && std::ranges::find(nearest, best) == nearest.end()) {
+                    nearest.push_back(best);
+                    passes[best].step1Note = std::format(
+                        "step 1.5 round {}: nearest pass to ({:.3f}, {:.3f}), distance {:.3f}",
+                        step15Rounds + 1,
+                        p.x,
+                        p.y,
+                        bestDistance
+                    );
                 }
             }
-            if (winding <= 0) {
-                // It is not interior; add it to the area to union
+            if (nearest.empty()) {
+                break;
+            }
+            CArea extra;
+            for (size_t i : nearest) {
+                extra.m_curves.insert(
+                    extra.m_curves.end(),
+                    thick[i].m_curves.begin(),
+                    thick[i].m_curves.end()
+                );
+                included[i] = true;
+            }
+            result.Clip(Clipper2Lib::ClipType::Union, extra, Clipper2Lib::FillRule::Positive);
+            step15Rounds++;
+            step15Added += nearest.size();
+        }
+        t.lap("step15");
+        t.count("step15Rounds", step15Rounds);
+        t.count("step15Passes", step15Added);
+
+        std::vector<size_t> deferred;
+        for (size_t i = 0; i < passes.size(); i++) {
+            if (!included[i]) {
+                deferred.push_back(i);
+            }
+        }
+        t.count("passUnionVerts", ClearedAreaTiming::vertices(result));
+        t.count("unioned", passes.size() - deferred.size());
+        t.count("deferred", deferred.size());
+        if (dumpDir) {
+            debugStep1 = result;  // DEBUG
+            debugStep1Passes.clear();
+            for (size_t i = 0; i < passes.size(); i++) {
+                if (included[i]) {
+                    debugStep1Passes.push_back(i);
+                }
+            }
+        }
+
+        // 2. The parts of the deferred passes' center lines outside U offset inward by the radius
+        // are what is left to union
+        CArea kept;
+        {
+            CArea centerLines;
+            for (size_t i : deferred) {
+                centerLines.append(centerLine(passes[i].segments));
+            }
+            CArea insetArea {result};
+            insetArea.Offset(-(radius + accuracy));
+            if (dumpDir) {
+                debugInset = toPolygons(insetArea);  // DEBUG
+            }
+            centerLines.Clip(
+                Clipper2Lib::ClipType::Difference,
+                insetArea,
+                Clipper2Lib::FillRule::Positive,
+                /*forceOpen=*/true
+            );
+            t.lap("openDifference");
+            t.count("pieces", centerLines.m_curves.size());
+            for (const CCurve& piece : centerLines.m_curves) {
+                const CArea pieceThick = thickenCurve(piece);
+                kept.m_curves.insert(
+                    kept.m_curves.end(),
+                    pieceThick.m_curves.begin(),
+                    pieceThick.m_curves.end()
+                );
+                if (dumpDir) {
+                    debugStep3Pieces.push_back(piece);  // DEBUG
+                }
+            }
+            t.lap("thickenPieces");
+        }
+        t.count("keptCurves", kept.m_curves.size());
+
+        // 3. Union the thickened pieces into U
+        if (!kept.m_curves.empty()) {
+            result.Clip(Clipper2Lib::ClipType::Union, kept, Clipper2Lib::FillRule::Positive);
+        }
+        t.lap("keptUnion");
+        t.count("unionVerts", ClearedAreaTiming::vertices(result));
+        return result;
+    }
+
+    // Union into `area` a circle of `radius` about each of circleCenters, skipping those already
+    // inside `area` (centers inside `area` offset inward by radius)
+    void addCircles(CArea& area, ClearedAreaTiming& t)
+    {
+        const Polygons polygons = inset(area, radius + 2 * CArea::get_accuracy());
+        CArea circles;
+        for (const auto& [x, y] : circleCenters) {
+            if (!inside(polygons, x, y)) {
                 CCurve curve;
                 curve.append(CVertex {{x + radius, y}});
                 curve.append(CVertex {1, {x - radius, y}, {x, y}});
@@ -750,9 +1199,169 @@ public:
                 circles.append(curve);
             }
         }
+        t.lap("circleFilter");
+        t.count("centers", circleCenters.size());
+        t.count("circles", circles.m_curves.size());
 
-        // Union the circles to produce the final result
-        result.Clip(Clipper2Lib::ClipType::Union, circles, Clipper2Lib::FillRule::Positive);
+        area.Clip(Clipper2Lib::ClipType::Union, circles, Clipper2Lib::FillRule::Positive);
+        t.lap("circleUnion");
+        t.count("resultVerts", ClearedAreaTiming::vertices(area));
+    }
+
+public:
+    ClearedAreaSegmentVisitor(double maxZ, double radius, Base::BoundBox3d bbox, const CAreaParams& params)
+        : maxZ(maxZ)
+        , radius(radius)
+        , bbox(bbox)
+        , params(params)
+    {
+        // Segments within `radius` of the bbox clear area inside it
+        this->bbox.Enlarge(radius);
+    }
+
+    // Compute and return the cleared area: the union of every segment thickened by `radius` with
+    // round end caps, plus a circle of `radius` at each drilled point.
+    //
+    // Most end caps are buried inside neighboring segments' areas, and each costs many points in a
+    // union, so segments are first thickened and unioned without end caps; then circles are added
+    // only where they are not already inside that union.
+    CArea getClearedArea(ClearedAreaTiming& t)
+    {
+        size_t segments = 0;
+        for (const Pass& pass : passes) {
+            segments += pass.segments.size();
+        }
+        t.count("segments", segments);
+        t.count("passes", passes.size());
+        CArea result = unionSegments(t);
+        CArea debugSegments;
+        if (dumpDir) {
+            debugSegments = result;  // DEBUG
+        }
+        addCircles(result, t);
+
+        // DEBUG: write <dir>/areas_<call>.json with the step 1 union, the union of all segments,
+        // and the final area (with circles)
+        if (dumpDir) {
+            static int call = 0;
+            auto curvesJson = [](const CArea& area) {
+                std::string out;
+                for (const CCurve& c : area.m_curves) {
+                    out += out.empty() ? "[" : ",[";
+                    bool first = true;
+                    for (const CVertex& v : c.m_vertices) {
+                        out += std::format(
+                            "{}[{},{},{},{},{}]",
+                            first ? "" : ",",
+                            v.m_type,
+                            v.m_p.x,
+                            v.m_p.y,
+                            v.m_c.x,
+                            v.m_c.y
+                        );
+                        first = false;
+                    }
+                    out += "]";
+                }
+                return out;
+            };
+            // per pass in `indices`: [index, [segment curves]]
+            auto passesToJson = [&](const std::vector<size_t>& indices) {
+                std::string out;
+                for (size_t i : indices) {
+                    CArea segments;
+                    segments.m_curves.assign(passes[i].segments.begin(), passes[i].segments.end());
+                    out += std::format("{}[{},[{}]]", out.empty() ? "" : ",", i, curvesJson(segments));
+                }
+                return out;
+            };
+            const std::string passesJson = passesToJson(debugStep1Passes);
+            // per step 3 piece: [passes.size() (no pass), [segment curves]]
+            std::string step3PassesJson;
+            for (const CCurve& piece : debugStep3Pieces) {
+                CArea segments;
+                for (auto v = std::next(piece.m_vertices.begin()); v != piece.m_vertices.end(); ++v) {
+                    CCurve segment;
+                    segment.append(CVertex {std::prev(v)->m_p});
+                    segment.append(*v);
+                    segments.append(segment);
+                }
+                step3PassesJson += std::format(
+                    "{}[{},[{}]]",
+                    step3PassesJson.empty() ? "" : ",",
+                    passes.size(),
+                    curvesJson(segments)
+                );
+            }
+            std::string insetJson;  // paths in clipper units
+            for (const auto& [path, sign] : debugInset) {
+                insetJson += insetJson.empty() ? "[" : ",[";
+                for (size_t k = 0; k < path.size(); k++) {
+                    insetJson += std::format("{}[{},{}]", k ? "," : "", path[k].x, path[k].y);
+                }
+                insetJson += "]";
+            }
+            std::string revolutionPasses;  // per pass ended by a revolution: [index, [segment curves]]
+            for (size_t i = 0; i < passes.size(); i++) {
+                if (passes[i].endReason.starts_with("wound")) {
+                    CArea segments;
+                    segments.m_curves.assign(passes[i].segments.begin(), passes[i].segments.end());
+                    revolutionPasses += std::format(
+                        "{}[{},[{}]]",
+                        revolutionPasses.empty() ? "" : ",",
+                        i,
+                        curvesJson(segments)
+                    );
+                }
+            }
+            std::string passInfo;  // per pass: [segments, end reason, start x, y, end x, y, step 1 note]
+            for (const Pass& pass : passes) {
+                const Point& a = pass.segments.front().m_vertices.front().m_p;
+                const Point& b = pass.segments.back().m_vertices.back().m_p;
+                std::string reason;
+                for (const char ch : pass.endReason) {
+                    if (ch == '"' || ch == '\\') {
+                        reason += '\\';
+                    }
+                    reason += ch;
+                }
+                passInfo += std::format(
+                    "{}[{},\"{}\",{},{},{},{},\"{}\"]",
+                    passInfo.empty() ? "" : ",",
+                    pass.segments.size(),
+                    reason,
+                    a.x,
+                    a.y,
+                    b.x,
+                    b.y,
+                    pass.step1Note
+                );
+            }
+            const std::string fileName = std::format("{}/areas_{:03}.json", dumpDir, call++);
+            if (FILE* f = std::fopen(fileName.c_str(), "w")) {
+                std::fprintf(
+                    f,
+                    "{\"radius\":%.17g,\"accuracy\":%.17g,\"clipperScale\":%.17g,"
+                    "\"step1\":[%s],\"segments\":[%s],\"final\":[%s],\"step1Passes\":[%s],"
+                    "\"passCount\":%zu,\"passInfo\":[%s],\"revolutionPasses\":[%s],"
+                    "\"step3Passes\":[%s],\"insetRadius\":[%s]}\n",
+                    radius,
+                    CArea::get_accuracy(),
+                    CArea::m_clipper_scale,
+                    curvesJson(debugStep1).c_str(),
+                    curvesJson(debugSegments).c_str(),
+                    curvesJson(result).c_str(),
+                    passesJson.c_str(),
+                    passes.size(),
+                    passInfo.c_str(),
+                    revolutionPasses.c_str(),
+                    step3PassesJson.c_str(),
+                    insetJson.c_str()
+                );
+                std::fclose(f);
+                std::fprintf(stderr, "  dumped %s\n", fileName.c_str());
+            }
+        }
         return result;
     }
 
@@ -796,14 +1405,24 @@ public:
             const Base::Vector3d vdirect = next - last;
             const Base::Vector3d vstep = pts[0] - last;
             const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
+            const int type = ccw ? 1 : -1;
 
-            // Add an arc
-            circleCenters.emplace(last.x, last.y);
-            circleCenters.emplace(next.x, next.y);
-            CCurve curve;
-            curve.append(CVertex {{last.x, last.y}});
-            curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
-            pathSegments.append(curve);
+            const Point start(last.x, last.y);
+            const Point end(next.x, next.y);
+            const Point c(center.x, center.y);
+            if (Span(start, CVertex {type, end, c}).IncludedAngle() == 0) {
+                // A full circle, which Span (and so the rest of this class) would treat as zero
+                // length: add it as two half circles, split at the point opposite the start
+                const Point mid(2 * c.x - start.x, 2 * c.y - start.y);
+                arc(start, mid, c, type);
+                arc(mid, end, c, type);
+            }
+            else {
+                arc(start, end, c, type);
+            }
+        }
+        else {
+            endPass(std::format("arc above max z ({:.3f}, {:.3f} > {:.3f})", last.z, next.z, maxZ));
         }
     }
 
@@ -820,6 +1439,7 @@ public:
         (void)id;
         (void)qlist;  // pecks are always within the bounds of plist
 
+        endPass("drilling");
         point(last);
         for (const auto p : pts) {
             point(p);
@@ -829,6 +1449,7 @@ public:
         }
         point(next);
     }
+
     void g38(int id, const Base::Vector3d& last, const Base::Vector3d& next) override
     {
         // probe operation; clears nothing
@@ -866,23 +1487,34 @@ std::shared_ptr<Area> Area::getClearedArea(
 
     CAreaConfig conf(params);
 
-    ClearedAreaSegmentVisitor visitor(zmax, diameter / 2 + buffer, bbox);
+    ClearedAreaTiming t;
+    const auto start = t.last;
+    ClearedAreaSegmentVisitor visitor(zmax, diameter / 2 + buffer, bbox, params);
     PathSegmentWalker walker(*path);
     walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
+    t.lap("walk");
 
     std::shared_ptr<Area> clearedArea = make_shared<Area>(&params);
     clearedArea->myTrsf = {};
-    const CArea ca = visitor.getClearedArea();
+    const CArea ca = visitor.getClearedArea(t);
     if (ca.m_curves.size() > 0) {
         TopoDS_Shape clearedAreaShape = Area::toShape(ca, false);
+        t.lap("toShape");
         clearedArea->add(clearedAreaShape, OperationCompound);
         clearedArea->build();
+        t.lap("build");
     }
     else {
         clearedArea->myArea = std::make_unique<CArea>();
         clearedArea->myAreaOpen = std::make_unique<CArea>();
     }
 
+    std::fprintf(
+        stderr,
+        "getClearedArea: total=%.4f%s\n",
+        std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count(),
+        t.out.c_str()
+    );
     return clearedArea;
 }
 

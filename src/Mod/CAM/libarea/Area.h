@@ -167,6 +167,8 @@ public:
     static bool m_please_abort;  // the user sets this from another thread, to tell
                                  // MakeOnePocketCurve to finish with no result.
     static double m_clipper_scale;
+    // Minimum number of segments an arc is split into when converting to clipper paths
+    static int m_min_arc_points;
     static constexpr double default_clipper_scale = 10000.0;
 
     // Convert between PointD (double) and Point64 (int64, clipper units) with m_clipper_scale
@@ -196,8 +198,13 @@ public:
     void NaiveOffset(double offset);
 
     // Convert `curve` to a clipper path (arcs interpolated, in clipper units scaled by
-    // m_clipper_scale), recording conversion metadata in `metadata`
-    Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
+    // m_clipper_scale), recording conversion metadata in `metadata`. If forceOpen, the curve is
+    // treated as an open path regardless of whether its start and end points are equal.
+    Clipper2Lib::Path64 MakePoly(
+        const CCurve& curve,
+        ConversionMetadata& metadata,
+        bool forceOpen = false
+    ) const;
     unsigned int num_curves()
     {
         return static_cast<int>(m_curves.size());
@@ -237,13 +244,24 @@ public:
     CAREA_PARAM_DECLARE(bool, fit_arcs)
     CAREA_PARAM_DECLARE(double, accuracy)
     CAREA_PARAM_DECLARE(double, clipper_scale)
+    CAREA_PARAM_DECLARE(short, min_arc_points)
 
-    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ConversionMetadata& metadata) const;
+    // If forceOpen, subject curves are added as open paths regardless of whether their start and
+    // end points are equal (not allowed for clip geometry, which must be closed)
+    void PopulateClipper(
+        Clipper2Lib::Clipper64& c,
+        bool as_clip,
+        ConversionMetadata& metadata,
+        bool forceOpen = false
+    ) const;
 
+    // If forceOpen, subject curves are treated as open paths regardless of whether their start and
+    // end points are equal
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule fillType = Clipper2Lib::FillRule::EvenOdd
+        Clipper2Lib::FillRule fillType = Clipper2Lib::FillRule::EvenOdd,
+        bool forceOpen = false
     );
 
     // Reorders open paths so they match the original input order and direction.
@@ -295,7 +313,8 @@ private:
         bool reverseOpenPathContents = false,
         bool reverseOpenPathOrder = false,
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt,
-        bool assertOutputClosed = false
+        bool assertOutputClosed = false,
+        bool forceOpen = false
     );
 };
 
