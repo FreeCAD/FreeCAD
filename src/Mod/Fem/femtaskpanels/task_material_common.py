@@ -42,6 +42,7 @@ import Materials
 import MatGui
 
 from femguiutils import selection_widgets
+from femtools import materialtables
 from . import base_femtaskpanel
 
 
@@ -55,6 +56,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # FreeCAD material dictionary of current material
         self.material = self.obj.Material
+        self.tables = {table: getattr(self.obj, table) for table in materialtables.TABLES}
         self.uuid = self.obj.UUID
         self.material_manager = Materials.MaterialManager()
 
@@ -151,6 +153,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def accept(self):
         if self.selectionWidget.has_equal_references_shape_types():
             self.obj.Material = self.material
+            for table, rows in self.tables.items():
+                setattr(self.obj, table, rows)
             self.obj.UUID = self.uuid
             self.obj.References = self.selectionWidget.references
 
@@ -305,6 +309,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             return
         mat = self.material_manager.getMaterial(value)
         self.material = mat.Properties
+        # Properties gives an empty string for an array, the tables are read apart
+        self.tables = materialtables.tables_from_material(mat)
         self.uuid = mat.UUID
         self.set_mat_params_in_input_fields(self.material)
 
@@ -325,3 +331,5 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         elif self.obj.Category == "Fluid":
             d["KinematicViscosity"] = p.qsb_kinematic_viscosity.property("value").UserString
         self.material = d
+        # Hand typed values are scalars, a table left from a card would override them
+        self.tables = {table: [] for table in materialtables.TABLES}
