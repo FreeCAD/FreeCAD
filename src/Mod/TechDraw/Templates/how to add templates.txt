@@ -1,0 +1,39 @@
+How to Add Custom Page Templates for TechDraw
+---------------------------------------------
+
+Existing template folders do not need to be reorganized. In the Insert New
+Page task panel, select "Choose template manually" in the Standard list,
+then click "Choose Template File…" to select any SVG template.
+The file picker starts in the template directory configured in TechDraw
+preferences and supports flat directories and arbitrary subfolders.
+The "Insert Page Using Browser…" command also remains available.
+
+To select templates using the Standard, Page size, and Orientation controls,
+organize the configured template directory as follows:
+
+    MyCompany/
+      A3/
+        landscape/
+          MyTemplate.svg
+        portrait/
+          MyPortraitTemplate.svg
+
+The first directory names the standard (for example ISO5457, ASME, or
+MyCompany). The next directory names the paper size (for example A3 or
+Letter). The orientation directory must be named "landscape" or "portrait".
+The panel uses the first SVG file alphabetically in that orientation folder.
+Use "Choose template manually" to select another variant directly. Selecting
+a standard again restores the size, orientation, and language controls.
+The filename above the preview identifies the currently selected template.
+
+Click "See template folder" to open the configured template directory in the system
+file manager. After adding files or folders, close and reopen the task panel
+to refresh the standard and size lists.
+
+Templates must be valid SVG files. See HowToExample.svg for editable title
+block fields. Static labels matching the English ISO5457 labels use the
+selected template language through the TechDraw translation catalogs managed
+in Crowdin. Missing translations keep the English label. The template
+language is independent of the interface language. Adding new translatable
+labels requires marking their English source text in TemplateTranslator.cpp
+and providing translations through the normal translation workflow.
