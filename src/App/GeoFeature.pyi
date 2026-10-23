@@ -4,7 +4,7 @@ from App.ComplexGeoData import ComplexGeoData
 from DocumentObject import DocumentObject
 from Base.Metadata import deprecated
 from Base.Placement import Placement
-from typing import Final
+from typing import Any, Final
 
 
 class GeoFeature(DocumentObject):
@@ -21,7 +21,7 @@ class GeoFeature(DocumentObject):
     ElementMapVersion: Final[str]
     """Element map version"""
 
-    def getPaths(self) -> None:
+    def getPaths(self) -> Any:
         """
         Returns all possible paths to the root of the document.
         Note: Not implemented.
