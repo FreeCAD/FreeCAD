@@ -235,6 +235,7 @@ def _linkingOp(strategy, clearance, diameter=5.0):
             "SafeHeight": _Value(5),
             "ClearanceHeight": _Value(10),
             "ToolController": tc,
+            "FlexyHeight": False,
         },
     )()
 

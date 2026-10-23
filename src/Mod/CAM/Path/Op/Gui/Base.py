@@ -356,7 +356,7 @@ class ViewProvider:
 
                     job = PathUtils.findParentJob(self.operation)
                     workplane = PathWorkplane.createWorkplane(
-                        job, picked, sub, label="%s.%s" % (picked.Label, sub)
+                        job, picked, sub, label="f{picked.Label.{sub}"
                     )
                     self.operation.Workplane = workplane
                     FreeCAD.ActiveDocument.recompute()
@@ -366,7 +366,7 @@ class ViewProvider:
                         + "\n"
                     )
                 except Exception as e:
-                    FreeCAD.Console.PrintError("Error setting work plane: %s\n" % e)
+                    FreeCAD.Console.PrintError(f"Error setting work plane: {e}\n")
                 finally:
                     self.active = False
                     FreeCADGui.Selection.removeObserver(self)
@@ -1298,6 +1298,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
             mode = self.form.CollisionAvoidanceStrategy.currentData()
             if mode and obj.CollisionAvoidanceStrategy != mode:
                 obj.CollisionAvoidanceStrategy = mode
+            if obj.FlexyHeight != self.form.chkFlexyHeight:
+                obj.FlexyHeight = self.form.chkFlexyHeight.isChecked()
 
     def setFields(self, obj):
         self.safeHeight.updateWidget()
@@ -1317,6 +1319,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 self.form.CollisionAvoidanceStrategy.blockSignals(True)
                 self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
                 self.form.CollisionAvoidanceStrategy.blockSignals(False)
+            self.form.chkFlexyHeight.setChecked(obj.FlexyHeight)
+
         if hasattr(obj, "Workplane") and getattr(self, "hasWorkplaneSelector", False):
             self.populateWorkplanes(obj)
             linked = obj.Workplane
@@ -1327,6 +1331,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 self.form.workplane.blockSignals(False)
 
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         signals = []
@@ -1343,6 +1348,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         if PathOp.FeatureLinking & self.features:
             signals.append(self.form.CollisionClearance.editingFinished)
             signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
+            signals.append(self.form.chkFlexyHeight.checkStateChanged)
         signals.append(self.form.workplane.currentIndexChanged)
         return signals
 
@@ -1370,6 +1376,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
         self.form.resetDefaults.clicked.connect(lambda: self.resetDefaults(obj))
+        self.form.CollisionAvoidanceStrategy.currentIndexChanged.connect(self.updateVisibility)
 
     def resetDefaults(self, obj):
         """Re-derive every height and depth for the operation's current work
@@ -1406,6 +1413,11 @@ class TaskPanelHeightsPage(TaskPanelPage):
         enabled = self.selectionZLevel(obj, sel) is not None
         self.form.startDepthSet.setEnabled(enabled)
         self.form.finalDepthSet.setEnabled(enabled)
+
+    def updateVisibility(self):
+        if PathOp.FeatureLinking & self.features:
+            enabled = self.form.CollisionAvoidanceStrategy.currentIndex() > 1
+            self.form.chkFlexyHeight.setEnabled(enabled)
 
 
 class TaskPanelToolControllerPage(TaskPanelPage):
