@@ -85,6 +85,20 @@ Color BaseDelegate::parseColor(const QString& color) const
                  parts.length() > 3 ? parts.at(3).toDouble() : 1.0);
 }
 
+void BaseDelegate::setQuantityValue(Gui::QuantitySpinBox* input, const QVariant& item) const
+{
+    // An unset quantity is NaN without units, and the item may also hold the display text
+    // rather than a quantity. Passing either to the editor would replace the property units set
+    // by setUnitText(), and NaN shows as 'nan', which typed input gets appended to.
+    if (item.metaType() != QMetaType::fromType<Base::Quantity>()) {
+        return;
+    }
+    auto quantity = item.value<Base::Quantity>();
+    if (quantity.isValid()) {
+        input->setValue(quantity);
+    }
+}
+
 void BaseDelegate::paintQuantity(QPainter* painter,
                                  const QStyleOptionViewItem& option,
                                  const QModelIndex& index) const
@@ -321,7 +335,7 @@ void BaseDelegate::setEditorData(QWidget* editor, const QModelIndex& index) cons
     if (type == Materials::MaterialValue::Quantity) {
         auto input = dynamic_cast<Gui::QuantitySpinBox*>(editor);
         // input->setQuantityString(item.toString());
-        input->setValue(item.value<Base::Quantity>());
+        setQuantityValue(input, item);
         return;
     }
     if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::ImageList) {
@@ -437,7 +451,7 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(getUnits(index));
-        input->setValue(item.value<Base::Quantity>());
+        setQuantityValue(input, item);
 
         widget = input;
     }

@@ -483,7 +483,7 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
         input->setMaximum(std::numeric_limits<double>::max());
         input->setUnitText(getUnits(index));
         // input->setPrecision(6);
-        input->setValue(item.value<Base::Quantity>());
+        setQuantityValue(input, item);
 
         widget = input;
     }
