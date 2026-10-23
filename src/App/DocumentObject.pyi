@@ -43,7 +43,7 @@ class DocumentObject(ExtensionContainer):
     Name: Final[str | None]
     """Return the internal name of this object"""
 
-    Document: Final[FreeCAD.Document]
+    Document: Final[FreeCAD.Document | None]
     """Return the document this object is part of"""
 
     State: Final[list[str]]
