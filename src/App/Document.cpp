@@ -2334,12 +2334,18 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
                 std::string errMsg;
                 if (link && ((res = link->checkRestore(&errMsg)) != 0)) {
                     d->touchedObjs.insert(obj);
-                    if (res == 1 || checkPartial) {
-                        FC_WARN(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
+                    if (res == 1) {
+                        Base::Console()
+                            .message("{}.{}: {}\n", obj->getFullName(), prop->getName(), errMsg);
                         setStatus(Document::LinkStampChanged, true);
                         if (checkPartial) {
                             return false;
                         }
+                    }
+                    else if (checkPartial) {
+                        FC_WARN(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
+                        setStatus(Document::LinkStampChanged, true);
+                        return false;
                     }
                     else {
                         FC_ERR(obj->getFullName() << '.' << prop->getName() << ": " << errMsg);
