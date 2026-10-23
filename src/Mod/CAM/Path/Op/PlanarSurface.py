@@ -611,16 +611,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
                 ),
             ),
-            (
-                "App::PropertyBool",
-                "EnforceGeofence",
-                "AdaptivePatternSettings",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "WARNING: Disabling this allows the Adaptive2d algorithm to roam outside the stock boundary on open pockets. "
-                    "This can cause erratic plunges, unpredictable toolpaths, and machine crashes! Proceed with extreme caution.",
-                ),
-            ),
         ]
 
     @classmethod
@@ -839,7 +829,6 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("FinishingProfile", C)
         obj.setEditorMode("HelixMaxRampAngle", C)
         obj.setEditorMode("HelixMaxDiameterPercent", C)
-        obj.setEditorMode("EnforceGeofence", C)
 
         # Apply Visibility to Mesh/OCL Group (D)
         obj.setEditorMode("AngularDeflection", D)
@@ -1431,9 +1420,10 @@ class ObjectSurface(PathOp.ObjectOp):
         2. Data preparation
         3. Generate mask for Fill selected holes feature
         4. Generate master boundary (TrimFace) and stable background pool.
-        5. Categorize depths, reconciling standard steps with physical model floors.
-        6. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
-        7. Convert the resulting geometry stack into optimized G-code Path commands.
+        5. Generate real stock outline for Adaptive2d.
+        6. Categorize depths, reconciling standard steps with physical model floors.
+        7. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
+        8. Convert the resulting geometry stack into optimized G-code Path commands.
         """
         from Path.Base.Generator import surface_zlevel
 
@@ -1456,7 +1446,6 @@ class ObjectSurface(PathOp.ObjectOp):
         fill_holes_masks = []
 
         is_adaptive = getattr(obj, "CutPatternZLevel", "None") == "Adaptive"
-        enforce_goefence = getattr(obj, "EnforceGeofence", True)
         fill_selected_holes = getattr(obj, "FillSelectedHoles", False)
         clear_planar_only = getattr(obj, "ClearPlanarOnly", True)
         ignore_outer = getattr(obj, "IgnoreOuter", False)
@@ -1524,7 +1513,23 @@ class ObjectSurface(PathOp.ObjectOp):
 
         trim_face = surface_zlevel.getTrimFace(border_face, bb_face, wpc)
 
-        # 5. Depth categorization
+        # 5. Real stock outline for Adaptive2d (see _resolve_adaptive_stock).
+        stock_face = None
+        if is_adaptive:
+            try:
+                stock_face = surface_common.create_boundary_face(self.stock.Shape.Faces, -0.02)
+            except Exception as e:
+                Path.Log.warning(f"Adaptive: could not build the stock outline: {e}")
+
+            if stock_face is not None:
+                valid, reason = surface_zlevel.validate_stock_outline(
+                    stock_face, self.stock.Shape.BoundBox, shape.BoundBox
+                )
+                if not valid:
+                    Path.Log.warning(f"Adaptive: stock outline rejected — {reason}.")
+                    stock_face = None
+
+        # 6. Depth categorization
         cat_steps = surface_zlevel.categorize_floor_steps(
             shape_copy,
             obj.StartDepth.Value,
@@ -1534,7 +1539,7 @@ class ObjectSurface(PathOp.ObjectOp):
             is_triangulated,
         )
 
-        # 6. Generate Geometry Stack
+        # 7. Generate Geometry Stack
         wl_data = surface_zlevel.zlevel_hybrid_stack(
             shape,
             cat_steps,
@@ -1549,7 +1554,7 @@ class ObjectSurface(PathOp.ObjectOp):
             start_z=obj.StartDepth.Value,
         )
 
-        # 7. Convert to G-Code
+        # 8. Convert to G-Code
         cmds = surface_zlevel.zlevel_hybrid_to_gcode(
             wl_data,
             feed_params,
@@ -1563,7 +1568,7 @@ class ObjectSurface(PathOp.ObjectOp):
             is_adaptive,
             adaptive_params,
             bb_face,
-            enforce_goefence,
+            stock_face,
         )
 
         return cmds
@@ -1976,6 +1981,5 @@ def SetupProperties():
     setup.append("FinishingProfile")
     setup.append("HelixMaxRampAngle")
     setup.append("HelixMaxDiameterPercent")
-    setup.append("EnforceGeofence")
 
     return setup
