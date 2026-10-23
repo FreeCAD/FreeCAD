@@ -1573,7 +1573,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
-    def _prepare_geometry(self, optimize_stl, is_three_plus_two):
+    def _prepare_geometry(self, optimize_stl):
         """
         Resolves the model bodies into one working shape, used
         throughout opExecute for boundary and STL generation.
@@ -1585,21 +1585,18 @@ class ObjectSurface(PathOp.ObjectOp):
 
         Vertical faces are excluded up front — Surface Scan, Waterline,
         and Z-Level all treat them as irrelevant for boundary and mesh
-        purposes. This filtering is skipped for 3+2 operations, for
-        triangulated (mesh-derived) models, and when STL optimization is
-        off. STL optimization is forced off for 3+2.
+        purposes. This filtering is skipped for triangulated (mesh-derived)
+        models, and when STL optimization is off.
 
         Args:
             optimize_stl (bool): The requested STL optimization setting.
-            is_three_plus_two (bool): True if a rotated 3+2 workplane is active.
 
         Returns:
             tuple: (model_shape, model_faces, optimized_shape,
                 optimize_stl, is_triangulated), or None if there is no
-                valid geometry to machine. For 3+2, triangulated models and
+                valid geometry to machine. For triangulated models and
                 when STL optimization is off, model_faces is None and
-                optimized_shape is model_shape. optimize_stl is the effective
-                value: False for 3+2, otherwise the requested one.
+                optimized_shape is model_shape.
         """
 
         # self.model / self.stock are provided by the base
@@ -1647,10 +1644,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Mesh-derived shapes are made of thousands of small planar triangles
         is_triangulated = surface_common._is_triangulated_mesh(model_shape.Faces)
-
-        if is_three_plus_two:
-            # Already in the rotated frame: keep every face and skip shape optimization
-            return model_shape, None, model_shape, False, is_triangulated
 
         if is_triangulated or not optimize_stl:
             # Nothing to filter: meshes have no meaningful vertical faces, and
@@ -1717,8 +1710,6 @@ class ObjectSurface(PathOp.ObjectOp):
         is_surface_scan = strategy == "SurfaceScan"
         is_waterline = strategy == "Waterline"
         is_zlevel = strategy == "ZLevelHybrid"
-        is_three_plus_two = getattr(self, "_geometry_rotation", None)
-        use_cpp = True
 
         # Geometry & Generation Requirements
         needs_face_selection = is_surface_scan
@@ -1733,6 +1724,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # STL Mesh optimization
         optimize_stl = getattr(obj, "OptimizeMeshConversion", True)
+        # Disable C++ tessellation for Waterline if Mesh optimization is disabled
+        use_cpp = not is_waterline if not optimize_stl else True
         stl_filter_adj = boundary_adjustment
 
         if needs_stl and getattr(obj, "LeadInOut", False):
@@ -1748,7 +1741,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Geometry preperation
         geometry = self._prepare_geometry(
             optimize_stl,
-            is_three_plus_two,
         )
         if geometry is None:
             return
@@ -1759,10 +1751,6 @@ class ObjectSurface(PathOp.ObjectOp):
             optimize_stl,
             is_triangulated,
         ) = geometry
-
-        # NOTE: C++ tessellation is disabled for Waterline on 3+2 operations
-        if is_three_plus_two:
-            use_cpp = not is_waterline
 
         # Split selected features
         if needs_face_selection:

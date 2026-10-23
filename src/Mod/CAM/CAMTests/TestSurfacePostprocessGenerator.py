@@ -363,7 +363,13 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         ]
 
         cmds, entry_point = _generate_lead_arc(
-            line, safe_pdc, self.cutter, lead_feed=300.0, lift_lead_z=0.0, is_lead_in=True
+            line,
+            safe_pdc,
+            self.cutter,
+            lead_feed=300.0,
+            lift_lead_z=0.0,
+            depth_offset=0.0,
+            is_lead_in=True,
         )
 
         if not cmds:
@@ -416,7 +422,7 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
             (97.0, 50.0, 10.0),
         ]
 
-        cmds, entry_point = _attempt_lead_arc(line, safe_pdc, self.cutter, 300.0, 0.0, True)
+        cmds, entry_point = _attempt_lead_arc(line, safe_pdc, self.cutter, 300.0, 0.0, True, 0.0)
 
         # Either a strategy succeeds or all fail gracefully
         if cmds:
@@ -425,6 +431,57 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
             self.assertAlmostEqual(entry_point[2], line[0][2], places=3)
         else:
             self.assertIsNone(entry_point, "If no commands, entry_point should be None")
+
+    def test33_lead_arcs_apply_depth_offset(self):
+        """
+        Tests that smart lead-in and lead-out arcs honour depth_offset.
+
+        INPUT:
+        - Function: _attempt_lead_arc()
+        - A scan line near the model edge, depth_offset=-0.5, lift_lead_z=0.0.
+
+        EXPECTED OUTPUT:
+        - Lead-in arc ends at line[0] Z + depth_offset (where the cut starts).
+        - Lead-out move ends at line[-1] Z + depth_offset (+ lift for the retreat).
+        - The returned lead point stays un-offset (raw CL space), because the
+          caller applies depth_offset when emitting the plunge.
+        """
+        from Path.Base.Generator.surface_postprocess import (
+            _attempt_lead_arc,
+            _make_safe_pdc,
+        )
+
+        safe_pdc = _make_safe_pdc(self.flat_stl, self.cutter, 0.0, 0.5)
+        depth_offset = -0.5
+
+        line = [
+            (3.0, 50.0, 10.0),
+            (50.0, 50.0, 10.0),
+            (97.0, 50.0, 10.0),
+        ]
+
+        in_cmds, entry_point = _attempt_lead_arc(
+            line, safe_pdc, self.cutter, 300.0, 0.0, True, depth_offset
+        )
+        if in_cmds:
+            self.assertAlmostEqual(
+                in_cmds[-1].Parameters["Z"],
+                line[0][2] + depth_offset,
+                places=3,
+                msg="Lead-in must end at the offset cut Z",
+            )
+            self.assertAlmostEqual(entry_point[2], line[0][2], places=3)
+
+        out_cmds, exit_point = _attempt_lead_arc(
+            line, safe_pdc, self.cutter, 300.0, 0.0, False, depth_offset
+        )
+        self.assertTrue(out_cmds, "Lead-out always has a fallback strategy")
+        self.assertAlmostEqual(
+            out_cmds[-1].Parameters["Z"],
+            exit_point[2] + depth_offset,
+            places=3,
+            msg="Lead-out Z must include depth_offset",
+        )
 
     # -- Volumetric Feed Tests --
 
