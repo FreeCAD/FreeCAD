@@ -59,7 +59,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</string>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="SpreadsheetGui::SheetTableView" name="cells"/>
+      <widget class="SpreadsheetGui::SheetTableView" name="cells">
+        <property name="alternatingRowColors">
+        <bool>true</bool>
+        </property>
+      </widget>
      </item>
      <item>
       <widget class="QScrollBar" name="realSB_v">
