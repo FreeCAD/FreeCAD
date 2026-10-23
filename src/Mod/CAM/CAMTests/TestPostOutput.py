@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 import os
+import re
 import unittest
 
 import FreeCAD
@@ -2290,3 +2291,167 @@ G1 X20.000 Y10.000 F6000.000
             self.assertAlmostEqual(
                 p_value(g82), 0.1, places=4, msg=f"cycle dwell must not be unit-scaled: {g82}"
             )
+
+    def test_block_delete(self):
+        """Any command annotated with ANNOT_BLOCK_DELETE gets the '/' skip marker; others do not"""
+
+        # Each of these must come out with a leading '/'.
+        add_block_delete = [
+            r"Begin operation",
+            r"\bG0\b",
+            r"Tool: 5mm Endmill",
+            r"\bG1\b",
+            r"\bM3\b",
+            r"\bM5\b",
+            r"\bM7\b",
+            r"\bG54\b",
+            r"\bM6\b",
+            r"\bG81\b",
+        ]
+        post_added_deleted = [r"\bG43\b", r"\bG80\b", r"\bG4\b", r"\bG98\b"]
+        # These commands are not annotated, so they must NOT get a '/'.
+        kept = [r"\bG2\b", r"\bM9\b"]
+
+        commands = [
+            Path.Command(
+                "(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command("(Tool: 5mm Endmill (HSS))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "J": 0.0}, {}),
+            Path.Command("M3", {"S": 1000}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M5", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M7", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M9", {}, {}),
+            Path.Command("G54", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M6", {"T": 3}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G81",
+                {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
+        ]
+
+        def export_lines(line_numbers, tool_change):
+            machine = self._create_machine(
+                comments_enabled=True, output_header=False, line_numbers=line_numbers
+            )
+            # keep the annotated commands as written, don't expand or translate them
+            machine.processing.tool_change = tool_change
+            machine.processing.translate_drill_cycles = False
+            machine.postprocessor_properties["useblockdelete"] = True
+            machine.processing.translate_rapid_moves = False
+            machine.processing.split_arcs = False
+            gcode = self._get_all_gcode(self._run_export2(machine))
+            return [l.strip() for l in gcode.split("\n") if l.strip()]
+
+        with self._modify_operation_path(commands):
+            for line_numbers in (False, True):
+                for tool_change in (True, False):
+                    with self.subTest(line_numbers=line_numbers, tool_change=tool_change):
+                        lines = export_lines(line_numbers, tool_change)
+                        marked = [l for l in lines if l.startswith("/")]
+
+                        for pattern in add_block_delete:
+                            self.assertTrue(
+                                any(re.search(pattern, l) for l in marked),
+                                f"No block delete annotation line matching {pattern}:\n"
+                                + "\n".join(lines),
+                            )
+
+                        for pattern in kept:
+                            matches = [l for l in lines if re.search(pattern, l)]
+                            self.assertTrue(matches, f"No output line matching {pattern}")
+                            for line in matches:
+                                self.assertFalse(
+                                    line.startswith("/"),
+                                    f"No block delete annotation, should not start with /: {line}",
+                                )
+
+                        # nothing else may be block-deleted (preamble, units, postamble, ...)
+                        # and the marker must not be doubled
+                        for line in marked:
+                            self.assertFalse(line.startswith("//"), f"Doubled /: {line}")
+                            self.assertTrue(
+                                any(
+                                    re.search(p, line)
+                                    for p in add_block_delete + post_added_deleted
+                                ),
+                                f"Unexpected block-deleted line: {line}",
+                            )
+
+                        if line_numbers:
+                            # the '/' goes before the line number
+                            self.assertTrue(
+                                any(re.match(r"/N\d+ ", l) for l in marked),
+                                "Expected '/N<number> ...' for block-deleted numbered lines",
+                            )
+
+    def test_block_delete_not_annotated(self):
+        """Without the annotation, no line gets a block delete prefix '/' block"""
+        machine = self._create_machine(comments_enabled=True, output_header=False)
+        gcode = self._get_all_gcode(self._run_export2(machine))
+        for line in (l.strip() for l in gcode.split("\n") if l.strip()):
+            self.assertFalse(line.startswith("/"), f"Should not start with /: {line}")
+
+    def test_block_delete_off(self):
+        """With use-block-delete off, no line gets '/' even if every command is annotated"""
+        commands = [
+            Path.Command(
+                "(Begin operation: Test Operation (fast))", {}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command("(Tool: 5mm Endmill (HSS))", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G1", {"X": 10.0, "Y": 10.0, "F": 100.0}, {Constants.ANNOT_BLOCK_DELETE: True}
+            ),
+            Path.Command(
+                "G2",
+                {"X": 20.0, "Y": 10.0, "I": 5.0, "J": 0.0},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
+            Path.Command("M3", {"S": 1000}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M5", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M7", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M9", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("G54", {}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command("M6", {"T": 3}, {Constants.ANNOT_BLOCK_DELETE: True}),
+            Path.Command(
+                "G81",
+                {"X": 10, "Y": 20, "Z": -10, "R": 1, "F": 100},
+                {Constants.ANNOT_BLOCK_DELETE: True},
+            ),
+        ]
+
+        def export_lines(useblockdelete, line_numbers, tool_change):
+            machine = self._create_machine(
+                comments_enabled=True, output_header=False, line_numbers=line_numbers
+            )
+            # a postprocessor property, so it goes in postprocessor_properties
+            # (not machine.processing / machine.output)
+            machine.postprocessor_properties["useblockdelete"] = useblockdelete
+            machine.processing.tool_change = tool_change
+            machine.processing.translate_drill_cycles = False
+            machine.processing.translate_rapid_moves = False
+            machine.processing.split_arcs = False
+            gcode = self._get_all_gcode(self._run_export2(machine))
+            return [l.strip() for l in gcode.split("\n") if l.strip()]
+
+        with self._modify_operation_path(commands):
+            for line_numbers in (False, True):
+                for tool_change in (True, False):
+                    with self.subTest(line_numbers=line_numbers, tool_change=tool_change):
+                        # make sure no lines start with /
+                        off_lines = export_lines(False, line_numbers, tool_change)
+                        for line in off_lines:
+                            self.assertFalse(
+                                line.startswith("/"),
+                                f"useblockdelete is off, should not start with /: {line}",
+                            )
