@@ -44,6 +44,7 @@
 #include <Base/Stream.h>
 #include <Base/Writer.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
@@ -204,6 +205,11 @@ SheetTableView::SheetTableView(QWidget* parent)
     actionCopy = createAction(":/icons/edit-copy.svg", tr("Copy"), &SheetTableView::copySelection);
     actionPaste = createAction(":/icons/edit-paste.svg", tr("Paste"), &SheetTableView::pasteClipboard);
     actionDel = createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
+    contextMenu.addSeparator();
+    if (auto* command = Gui::Application::Instance->commandManager().getCommandByName(
+            "Std_ViewDockUndockFullscreen")) {
+        command->addTo(&contextMenu);
+    }
 
     addAction(actionProperties);
 

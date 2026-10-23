@@ -495,6 +495,8 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
     if (!addSelectionGroups(menu)) {
         addPageGroup(menu);
     }
+    menu.addSeparator();
+    addCommandsByName(menu, {"Std_ViewDockUndockFullscreen"});
     menu.exec(event->globalPos());
 }
 
