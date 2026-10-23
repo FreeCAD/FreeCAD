@@ -251,6 +251,7 @@ def isBodySubObject(obj):
         or obj.isDerivedFrom("Part::Datum")
         or obj.isDerivedFrom("App::DatumElement")
         or obj.isDerivedFrom("App::LocalCoordinateSystem")
+        or obj.isDerivedFrom("PartDesign::SubShapeBinder")
     )
 
 
