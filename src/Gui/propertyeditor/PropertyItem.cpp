@@ -856,9 +856,9 @@ QWidget* PropertyStringItem::createEditor(
     FrameOption frameOption
 ) const
 {
-    Q_UNUSED(method);
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
+    QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
         le->setAutoApply(autoApply());
