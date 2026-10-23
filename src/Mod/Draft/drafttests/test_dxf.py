@@ -35,6 +35,9 @@
 # @{
 
 import os
+import shutil
+import tempfile
+from collections import Counter
 
 import FreeCAD as App
 import Draft
@@ -93,18 +96,122 @@ class DraftDXF(test_base.DraftTestCaseDoc):
             if doc:
                 App.closeDocument(doc.Name)
 
+    def make_export_objects(self):
+        """Create objects that export without a GUI, plus one the exporter skips."""
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        circle = Draft.make_circle(5)
+        rectangle = Draft.make_rectangle(4, 3)
+        angular_dimension = Draft.make_angular_dimension(
+            App.Vector(0, 0, 0), [0, 90], App.Vector(3, 3, 0)
+        )
+        self.doc.recompute()
+        return [line, circle, rectangle, angular_dimension]
+
+    def check_dxf_structure(self, path):
+        """Check the properties of a DXF file that AutoCAD-family readers depend on."""
+        with open(path, "rb") as f:
+            self.assertTrue(f.read().endswith(b"EOF\n"), "no newline after EOF")
+
+        pairs = aux.dxf_group_pairs(path)
+
+        table_names = []
+        i = 0
+        while i < len(pairs):
+            if pairs[i] == ("0", "TABLE"):
+                name = pairs[i + 1][1]
+                declared = None
+                records = []
+                i += 2
+                while pairs[i] != ("0", "ENDTAB"):
+                    code, value = pairs[i]
+                    if code == "70" and declared is None:
+                        declared = int(value)
+                    elif pairs[i] == ("0", name):
+                        records.append(None)
+                    elif code == "2" and records and records[-1] is None:
+                        records[-1] = value
+                    i += 1
+                table_names.append(name)
+                self.assertEqual(
+                    declared,
+                    len(records),
+                    f"{name} table declares {declared} entries but has {len(records)}",
+                )
+                self.assertEqual(
+                    len(records), len(set(records)), f"{name} table has duplicate names: {records}"
+                )
+            i += 1
+        self.assertEqual(table_names.count("DIMSTYLE"), 1, "expected exactly one DIMSTYLE table")
+
+        blocks = [
+            pairs[k + 1][1]
+            for k, pair in enumerate(pairs[:-1])
+            if pair == ("100", "AcDbBlockBegin")
+        ]
+        self.assertEqual(len(blocks), len(set(blocks)), f"duplicate BLOCK names: {blocks}")
+
+        handles = []
+        in_header = False
+        for code, value in pairs:
+            if (code, value) == ("2", "HEADER"):
+                in_header = True
+            elif (code, value) == ("0", "ENDSEC"):
+                in_header = False
+            elif not in_header and code in ("5", "105") and value.strip():
+                handles.append(value.strip())
+        duplicate_handles = [handle for handle, n in Counter(handles).items() if n > 1]
+        self.assertFalse(duplicate_handles, f"duplicate handles: {duplicate_handles}")
+
     def test_export_dxf(self):
-        """Create some figures and export them to a DXF file."""
-        operation = "importDXF.export"
-        _msg("  Test '{}'".format(operation))
+        """Export figures to a DXF file and check that the file is structurally valid."""
+        out_dir = tempfile.mkdtemp()
+        try:
+            path = os.path.join(out_dir, "out_test.dxf")
+            aux.export_dxf(self.make_export_objects(), path)
+            self.assertTrue(os.path.exists(path), "no DXF file was written")
+            self.check_dxf_structure(path)
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
 
-        file = "Mod/Draft/drafttest/out_test.dxf"
-        out_file = os.path.join(App.getResourceDir(), file)
-        _msg("  file={}".format(out_file))
-        _msg("  exists={}".format(os.path.exists(out_file)))
+    def test_export_dxf_stats(self):
+        """The exporter reports what it wrote and what it skipped."""
+        import Import
 
-        obj = aux.fake_function(out_file)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        objects = self.make_export_objects()
+        out_dir = tempfile.mkdtemp()
+        try:
+            importDXF.readPreferences()
+            stats = Import.exportDxf(
+                obj=objects,
+                name=os.path.join(out_dir, "out_test.dxf"),
+                version=14,
+                helpers=importDXF,
+            )
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
+
+        self.assertEqual(stats["totalObjectsProcessed"], len(objects))
+        self.assertEqual(stats["layerCount"], 1)
+        self.assertEqual(stats["entityCounts"]["CIRCLE"], 1)
+        self.assertEqual(stats["entityCounts"]["LINE"], 5)
+        self.assertEqual(list(stats["skippedObjects"]), ["AngularDimension"])
+        self.assertEqual(len(stats["skippedObjects"]["AngularDimension"]), 1)
+
+    def test_export_dxf_text_encoding(self):
+        """Text is written as Windows-1252 bytes, with escapes for other characters."""
+        text = Draft.make_text(["É à ß € … 日本"], App.Vector(0, 0, 0))
+        self.doc.recompute()
+        out_dir = tempfile.mkdtemp()
+        try:
+            path = os.path.join(out_dir, "out_test.dxf")
+            aux.export_dxf([text], path)
+            pairs = aux.dxf_group_pairs(path)
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
+
+        index = pairs.index(("0", "TEXT"))
+        value = next(value for code, value in pairs[index:] if code == "1")
+        self.assertEqual(value.encode("latin-1"), b"\xc9 \xe0 \xdf \x80 \x85 \\U+65E5\\U+672C")
 
 
 ## @}
