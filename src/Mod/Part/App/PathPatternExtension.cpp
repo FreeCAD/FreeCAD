@@ -30,6 +30,7 @@
 #include "TopoShape.h"
 #include "CircularPatternExtension.h"
 #include "TopExp_Explorer.hxx"
+#include "BaseGeometry.h"
 
 using namespace Part;
 
@@ -518,11 +519,11 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         }
     }
 
-    const auto getWantedTangent = [&](const App::PropertyLinkSub& tangentAxisProperty,
-                                      const App::PropertyBool& flipTangentAxisProperty,
-                                      const gp_Vec& defaultTangent) -> gp_Vec {
+    const auto getWantedDirection = [&](const App::PropertyLinkSub& tangentAxisProperty,
+                                        const App::PropertyBool& flipTangentAxisProperty,
+                                        const gp_Vec& defaultDirection) -> gp_Vec {
         const gp_Ax2 tangentAxis
-            = getAxis(tangentAxisProperty).value_or(gp_Ax2(gp_Pnt(), gp_Dir(defaultTangent)));
+            = getAxis(tangentAxisProperty).value_or(gp_Ax2(gp_Pnt(), gp_Dir(defaultDirection)));
 
         gp_Vec tangent(tangentAxis.Direction());
 
@@ -531,16 +532,17 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         }
 
         if (tangent.SquareMagnitude() < Precision::Confusion() * Precision::Confusion()) {
-            tangent = defaultTangent;
+            tangent = defaultDirection;
         }
 
         return tangent;
     };
 
-    const gp_Vec wantedTangent = getWantedTangent(TangentAxis, FlipTangentAxis, gp_Vec(1.0, 0.0, 0.0));
+    const gp_Vec wantedTangent
+        = getWantedDirection(TangentAxis, FlipTangentAxis, BaseGeometry::X_POS_VEC);
 
     const gp_Vec wantedVertical
-        = getWantedTangent(VerticalAxis, FlipVerticalAxis, gp_Vec(0.0, 0.0, 1.0));
+        = getWantedDirection(VerticalAxis, FlipVerticalAxis, BaseGeometry::Z_POS_VEC);
 
     const bool relative = RelativeToFirst.getValue();
     const int originIndex = relative

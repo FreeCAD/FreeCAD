@@ -21,6 +21,10 @@ class PartGuiExport PatternPathParametersWidget: public QWidget
     Q_OBJECT
 
 public:
+    static inline const int PATH_INDEX = 0;
+    static inline const int TANGENT_AXIS_INDEX = 1;
+    static inline const int VERTICAL_AXIS_INDEX = 2;
+
     explicit PatternPathParametersWidget(QWidget* parent = nullptr);
     ~PatternPathParametersWidget() override;
 

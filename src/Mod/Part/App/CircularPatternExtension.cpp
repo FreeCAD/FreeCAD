@@ -27,6 +27,7 @@
 #include "PatternConstants.h"
 #include "TopoShape.h"
 #include "Tools.h"
+#include "BaseGeometry.h"
 
 using namespace Part;
 
@@ -221,12 +222,9 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     }
 
     const gp_Ax2 axis = getAxis();
-    gp_Ax2 binormalAxis;
+    gp_Ax2 binormalAxis = BaseGeometry::X_AXIS;
     if (const auto val = getAxis(BinormalAxis)) {
         binormalAxis = *val;
-    }
-    else {
-        binormalAxis = gp_Ax2(gp_Pnt(), gp_Dir(1, 0, 0));
     }
 
     const gp_Pnt center = axis.Location();
@@ -245,10 +243,10 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     }
     radialDirection.Normalize();
 
-    gp_Dir lead(0.0, 1.0, 0.0);
+    gp_Dir lead = BaseGeometry::Y_POS_DIR;
     if (std::abs(axis.Direction().X()) <= Precision::Confusion()
         && std::abs(axis.Direction().Z()) <= Precision::Confusion()) {
-        lead = gp_Dir(1.0, 0.0, 0.0);
+        lead = BaseGeometry::X_POS_DIR;
     }
 
     std::list<gp_Trsf> transformations;
@@ -327,7 +325,7 @@ gp_Ax2 CircularPatternExtension::getAxis() const
     if (const auto axis = getAxis(Axis)) {
         return *axis;
     }
-    return gp_Ax2(gp_Pnt(), gp_Dir(0, 0, 1));
+    return BaseGeometry::Z_AXIS;
 }
 
 std::optional<gp_Ax2> CircularPatternExtension::getAxis(const App::PropertyLinkSub& property) const

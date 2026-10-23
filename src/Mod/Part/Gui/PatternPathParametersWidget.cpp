@@ -24,10 +24,11 @@ PatternPathParametersWidget::PatternPathParametersWidget(QWidget* parent)
     , verticalAxisWidget(new PatternReferenceWidget(this))
 {
     ui->setupUi(this);
+    pathWidget->setSelectionIndex(PATH_INDEX);
     tangentAxisWidget->setupReferenceCombo(ui->tangentAxis);
-    tangentAxisWidget->setAxisIndex(1);
+    tangentAxisWidget->setSelectionIndex(TANGENT_AXIS_INDEX);
     verticalAxisWidget->setupReferenceCombo(ui->verticalAxis);
-    verticalAxisWidget->setAxisIndex(2);
+    verticalAxisWidget->setSelectionIndex(VERTICAL_AXIS_INDEX);
 
     connect(ui->pathButton, &QPushButton::clicked, this, [this]() {
         Q_EMIT pathWidget->requestReferenceSelection();
@@ -276,6 +277,6 @@ void PatternPathParametersWidget::updateVisibility()
     ui->verticalAxisLabel->setVisible(ui->align->isChecked());
     ui->verticalAxis->setVisible(ui->align->isChecked());
     ui->flipVerticalAxis->setVisible(ui->align->isChecked());
-    ui->originPointIndexLabel->setVisible(ui->relativeToFirst->isChecked());
-    ui->originPointIndex->setVisible(ui->relativeToFirst->isChecked());
+    ui->originPointIndexLabel->setVisible(ui->relativeToFirst->isChecked() || ui->align->isChecked());
+    ui->originPointIndex->setVisible(ui->relativeToFirst->isChecked() || ui->align->isChecked());
 }

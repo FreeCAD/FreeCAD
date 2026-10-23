@@ -64,6 +64,8 @@
 #include <Mod/Part/Gui/PatternInstanceControls.h>
 #include <Mod/Part/Gui/PatternParametersWidget.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/PatternPathParametersWidget.h>
+#include <Mod/Part/Gui/PatternCircularParametersWidget.h>
 
 #include "ui_TaskPatternParameters.h"
 #include "TaskPatternParameters.h"
@@ -532,7 +534,8 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* circularPattern = freecad_cast<PartDesign::CircularPattern*>(patternObj)) {
-            if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+            if (getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternCircularParametersWidget::BINORMAL_AXIS_INDEX) {
                 circularPattern->BinormalAxis.setValue(selObj, directions);
             }
             else {
@@ -540,10 +543,14 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         else if (auto* pathPattern = freecad_cast<PartDesign::PathPattern*>(patternObj)) {
-            if (getActiveDirectionWidget()->getAxisIndex() == 1) {
+            if (getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternPathParametersWidget::TANGENT_AXIS_INDEX) {
                 pathPattern->TangentAxis.setValue(selObj, directions);
             }
-            else if (getActiveDirectionWidget()->getAxisIndex() == 2) {
+            else if (
+                getActiveDirectionWidget()->getSelectionIndex()
+                == PartGui::PatternPathParametersWidget::VERTICAL_AXIS_INDEX
+            ) {
                 pathPattern->VerticalAxis.setValue(selObj, directions);
             }
             else {
