@@ -1,0 +1,120 @@
+$crash: &crash
+    crash: true
+$0i: &0i
+    return:
+        type: int
+        value: 0
+$-1i: &-1i
+    return:
+        type: int
+        value: -1
+$1i: &1i
+    return:
+        type: int
+        value: 1
+$-EINVAL: &-EINVAL
+    return:
+        type: int
+        value: -22
+$null: &nullptr
+    return:
+        type: void*
+        value: nullptr
+$nop: &nop
+    return:
+        type: void
+$constzeroes: &constzeroes
+    return:
+        type: const void*
+        value: 'constzeroes'
+$object_zeroes: &object_zeroes
+    object:
+        array: true
+        type: char
+        init: "{0}"
+
+# libdrm (sister library to mesa)
+# drmGetDevice: *-EINVAL
+# drmFreeDevice: *nop
+# drmGetVersion: *nullptr
+# drmFreeVersion: *nop
+# drmGetNodeTypeFromFd: *0i
+# drm[A-Z].+: *crash
+
+# SDL2
+SDL_GetVersion: *nop
+SDL_Init: *-1i
+SDL_InitSubSystem: *-1i
+SDL_Quit: *nop
+SDL_GetError:
+    return:
+        type: const char*
+        value: '"SDL2 is removed from the FreeCAD distribution"'
+SDL_GetError: *nop
+SDL_SetError: *nop
+SDL_.+: *crash
+
+# cairo (2D drawing API)
+cairo_create: *nullptr
+    # API docs say this function will never return NULL but a special
+    # error-generating cairo_t* instead. For all intents and purposes
+    # returning NULL will be seen as a normal path by applications and
+    # the overrides of functions below will fool them further.
+cairo_status: *1i  # CAIRO_STATUS_NO_MEMORY
+cairo_reference: *nop
+cairo_destroy: *nop
+cairo_.+: *crash
+
+# libRaw (RAW photo reader API)
+_ZNK?[0-9]{1,2}LibRaw.+: *crash
+_ZTI26LibRaw_abstract_datastream: *object_zeroes
+
+# Theora video codec (dead format)
+th_version_string:
+    return:
+        type: const char*
+        value: '"0.0.0-fc-stub"'
+th_version_number:
+    return:
+        type: uint32_t
+        value: 0
+th_decode_headerin:
+    return:
+        type: int
+        value: -21  # TH_ENOTFORMAT
+th_setup_free: *nop
+th_decode_alloc: *nullptr
+th_decode_free: *nop
+th_encode_alloc: *nullptr
+th_encode_free: *nop
+th_.+: *crash
+
+# libsndfile (simple audio format I/O library)
+sf_.+: *crash
+
+# CURL
+curl_.+: *crash
+
+# OpenVino
+ov_core_create: *-1i  # GENERAL_ERROR
+ov_get_openvino_version: *constzeroes
+ov_version_free: *nop
+ov_.+: *crash
+
+# librsvg (SVG renderer)
+rsvg_handle_new_from_data: *nullptr
+rsvg_h.+: *crash
+
+# libva (Linux accelerated video encode/decode API)
+vaInitialize: *1i  # VA_STATUS_ERROR_OPERATION_FAILED
+vaGetDisplay: *nullptr
+vaGetDisplayDRM: *nullptr
+va[A-Z].+: *crash
+
+# clang (C/C++ compiler)
+clang_.+: *crash
+
+# libvpl (Intel media accelerator)
+MFXLoad: *nullptr
+MFXCreateConfig: *nullptr
+MFX[A-Z].+: *crash
