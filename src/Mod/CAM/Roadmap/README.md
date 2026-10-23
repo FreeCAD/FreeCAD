@@ -37,6 +37,7 @@ Any CAM application meeting the needs above must provide functionality in these 
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
 | [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path                                                                       | Legacy |
 | [ADR-007](<./ADR/ADR-007.md>) | Add semantic information to Path Command                                                                   | DRAFT  |
+| [ADR-010](<./ADR/ADR-010.md>) | A tool holder is data on the tool bit                                                                      | DRAFT  |
 
 
 # ⚠️ Pain Points
