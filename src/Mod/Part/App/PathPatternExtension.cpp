@@ -594,8 +594,8 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
             distances[i],
             Align.getValue(),
             wantedVertical,
-            Align.getValue() ? &wantedTangent : nullptr,
-            relative && Align.getValue() ? &tangentCorrection : nullptr,
+            Align.getValue() ? &originTangent : nullptr,
+            Align.getValue() ? &tangentCorrection : nullptr,
             relative ? &originPosition : nullptr
         );
 
