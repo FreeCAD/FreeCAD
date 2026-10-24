@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include "LinkArrayLinear.h"
+#include "BaseGeometry.h"
 
 #include <Mod/Part/App/Tools.h>
 
@@ -281,13 +282,13 @@ gp_Vec LinkArrayLinear::calculateOffsetVectorWithDefault(LinearPatternDirection 
 {
     const auto objectAxisDirection = [](const std::string& role) -> std::optional<gp_Vec> {
         if (role == "X_Axis") {
-            return gp_Vec(1.0, 0.0, 0.0);
+            return BaseGeometry::X_POS_VEC;
         }
         if (role == "Y_Axis") {
-            return gp_Vec(0.0, 1.0, 0.0);
+            return BaseGeometry::Y_POS_VEC;
         }
         if (role == "Z_Axis") {
-            return gp_Vec(0.0, 0.0, 1.0);
+            return BaseGeometry::Z_POS_VEC;
         }
 
         return {};
@@ -312,7 +313,7 @@ gp_Vec LinkArrayLinear::calculateOffsetVectorWithDefault(LinearPatternDirection 
         }
     }
     if (offset.Magnitude() <= Precision::Confusion()) {
-        offset = isSecondDir ? gp_Vec(0.0, 1.0, 0.0) : gp_Vec(1.0, 0.0, 0.0);
+        offset = isSecondDir ? BaseGeometry::Y_POS_VEC : BaseGeometry::X_POS_VEC;
     }
 
     const auto& occurrencesProp = isSecondDir ? Occurrences2 : Occurrences;

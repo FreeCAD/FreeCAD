@@ -46,6 +46,7 @@
 #include "Part2DObject.h"
 #include "Part2DObjectPy.h"
 #include "Geometry.h"
+#include "BaseGeometry.h"
 
 
 using namespace Part;
@@ -115,7 +116,7 @@ bool Part2DObject::seekTrimPoints(
         return false;
     }
 
-    gp_Pln plane(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1));
+    gp_Pln plane = BaseGeometry::XY_PLANE;
 
     Standard_Boolean periodic = Standard_False;
     double period = 0;
