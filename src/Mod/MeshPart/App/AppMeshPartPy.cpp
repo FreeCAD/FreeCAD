@@ -110,9 +110,6 @@ public:
             "\n"
             "Additionally, when FreeCAD is built with netgen, the following\n"
             "signatures are also available (they are "
-#ifndef HAVE_NETGEN
-            "NOT "
-#endif
             "currently):\n"
             "\n"
             "    meshFromShape(Shape, Fineness, SecondOrder=0,\n"
@@ -571,7 +568,6 @@ private:
         if (Base::Wrapped_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!i|iiidd", kwds_fineness,
                                                 &(Part::TopoShapePy::Type), &shape, &fineness,
                                                 &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
-#if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setFineness(fineness);
@@ -580,9 +576,6 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return runMesher(mesher);
-#else
-            throw Py::RuntimeError("SMESH was built without NETGEN support");
-#endif
         }
 
         static const std::array<const char *, 10> kwds_user{"Shape", "GrowthRate", "SegPerEdge", "SegPerRadius",
@@ -594,7 +587,6 @@ private:
                                                 &(Part::TopoShapePy::Type), &shape,
                                                 &growthRate, &nbSegPerEdge, &nbSegPerRadius,
                                                 &secondOrder, &optimize, &allowquad, &minLen, &maxLen)) {
-#if defined (HAVE_NETGEN)
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
             mesher.setMethod(MeshPart::Mesher::Netgen);
             mesher.setGrowthRate(growthRate);
@@ -605,20 +597,12 @@ private:
             mesher.setQuadAllowed(allowquad != 0);
             mesher.setMinMaxLengths(minLen, maxLen);
             return runMesher(mesher);
-#else
-            throw Py::RuntimeError("SMESH was built without NETGEN support");
-#endif
         }
 
         PyErr_Clear();
         if (PyArg_ParseTuple(args.ptr(), "O!", &(Part::TopoShapePy::Type), &shape)) {
             MeshPart::Mesher mesher(static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape());
-#if defined (HAVE_NETGEN)
-            mesher.setMethod(MeshPart::Mesher::Netgen);
-#else
-            mesher.setMethod(MeshPart::Mesher::Mefisto);
-            mesher.setRegular(true);
-#endif
+            mesher.setMethod(MeshPart::Mesher::Standard);
             return runMesher(mesher);
         }
 
