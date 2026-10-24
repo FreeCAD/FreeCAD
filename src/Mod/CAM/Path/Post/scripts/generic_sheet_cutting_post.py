@@ -577,6 +577,10 @@ class GenericSheetCutting(PostProcessor):
                             # Create new command without Z parameter
                             new_params = dict(cmd.Parameters)
                             del new_params["Z"]
+                            # A removed vertical-only move must not leave a
+                            # feed-only command that changes the planar feed.
+                            if set(new_params).issubset({"F"}):
+                                continue
                             new_cmd = Path.Command(cmd.Name, new_params)
                         new_commands.append(new_cmd)
                     # Replace Path with modified command list
