@@ -24,6 +24,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 #include "PartFeature.h"
 #include "PatternConstants.h"
@@ -265,7 +266,8 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     double distance,
     bool align,
     const gp_Vec& vertical,
-    const bool reverseTangent = false,
+    const gp_Vec* wantedTangent = nullptr,
+    const gp_Quaternion* tangentCorrection = nullptr,
     const gp_Pnt* originPosition = nullptr
 )
 {
@@ -299,7 +301,7 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
         throw Base::ValueError("Path tangent is null");
     }
     tangent.Normalize();
-    if (reversed ^ reverseTangent) {
+    if (reversed) {
         tangent.Reverse();
     }
 
@@ -311,35 +313,37 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     }
 
     gp_Trsf rotationTransform;
-    if (align) {
-        const gp_Dir xDirection(tangent);
-
-        gp_Vec zCandidate = vertical;
-        zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
-
-        if (zCandidate.Magnitude() <= Precision::Confusion()) {
-            zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
-                                                        : gp_Vec(0.0, 1.0, 0.0);
-
-            zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
+    if (align && wantedTangent) {
+        if (tangent.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Path tangent is null");
         }
 
-        const gp_Dir zDirection(zCandidate);
-        const gp_Dir yDirection(gp_Vec(zDirection).Crossed(gp_Vec(xDirection)));
+        gp_Vec rotationAxis = vertical;
+        if (rotationAxis.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Vertical direction is null");
+        }
+        rotationAxis.Normalize();
 
-        const gp_Mat rotationMatrix(
-            xDirection.X(),
-            yDirection.X(),
-            zDirection.X(),
-            xDirection.Y(),
-            yDirection.Y(),
-            zDirection.Y(),
-            xDirection.Z(),
-            yDirection.Z(),
-            zDirection.Z()
+        gp_Vec from(*wantedTangent);
+        gp_Vec to(tangent);
+
+        from -= rotationAxis * from.Dot(rotationAxis);
+        to -= rotationAxis * to.Dot(rotationAxis);
+
+        if (from.Magnitude() <= Precision::Confusion() || to.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Cannot determine tangent angle around vertical");
+        }
+
+        from.Normalize();
+        to.Normalize();
+
+        const double angle = std::atan2(rotationAxis.Dot(from.Crossed(to)), from.Dot(to));
+
+        const gp_Quaternion tangentRotation(rotationAxis, angle);
+
+        rotationTransform.SetRotation(
+            tangentCorrection ? *tangentCorrection * tangentRotation : tangentRotation
         );
-
-        rotationTransform.SetRotation(gp_Quaternion(rotationMatrix));
     }
 
     gp_Trsf toTarget;
@@ -519,30 +523,39 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         }
     }
 
-    const auto getWantedDirection = [&](const App::PropertyLinkSub& tangentAxisProperty,
-                                        const App::PropertyBool& flipTangentAxisProperty,
-                                        const gp_Vec& defaultDirection) -> gp_Vec {
-        const gp_Ax2 tangentAxis
-            = getAxis(tangentAxisProperty).value_or(gp_Ax2(gp_Pnt(), gp_Dir(defaultDirection)));
+    const auto getWantedDirection =
+        [&](const App::PropertyLinkSub& tangentAxisProperty,
+            const App::PropertyBool& flipTangentAxisProperty) -> std::optional<gp_Vec> {
+        const auto tangentAxis = getAxis(tangentAxisProperty);
+        if (!tangentAxis) {
+            return std::nullopt;
+        }
 
-        gp_Vec tangent(tangentAxis.Direction());
+        gp_Vec tangent(tangentAxis->Direction());
 
         if (flipTangentAxisProperty.getValue()) {
             tangent.Reverse();
         }
 
         if (tangent.SquareMagnitude() < Precision::Confusion() * Precision::Confusion()) {
-            tangent = defaultDirection;
+            return std::nullopt;
         }
 
         return tangent;
     };
 
-    const gp_Vec wantedTangent
-        = getWantedDirection(TangentAxis, FlipTangentAxis, BaseGeometry::X_POS_VEC);
+    const auto wantedTangentOpt = getWantedDirection(TangentAxis, FlipTangentAxis);
+
+    auto* pathFeature = freecad_cast<Part::Feature*>(Path.getValue());
+    gp_Vec fallbackVertical = BaseGeometry::Z_POS_VEC;
+    if (auto* pathSketch = freecad_cast<Part::Part2DObject*>(pathFeature)) {
+        fallbackVertical = Base::convertTo<gp_Vec>(
+            pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection()
+        );
+    }
 
     const gp_Vec wantedVertical
-        = getWantedDirection(VerticalAxis, FlipVerticalAxis, BaseGeometry::Z_POS_VEC);
+        = getWantedDirection(VerticalAxis, FlipVerticalAxis).value_or(fallbackVertical);
 
     const bool relative = RelativeToFirst.getValue();
     const int originIndex = relative
@@ -554,11 +567,25 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     }
 
     // identity transformation for reference
-    const auto [originFrame, originPosition, originTangent]
+    auto [originFrame, originPosition, originTangent]
         = frameAt(edges, ends, distances[originIndex], Align.getValue(), wantedVertical);
 
-    const bool needsTangentFlip = (originTangent.Dot(wantedTangent) < 0.0)
-        ^ FlipTangentAxis.getValue();
+    auto wantedTangent = wantedTangentOpt.value_or(originTangent);
+    wantedTangent.Normalize();
+
+    if (FlipTangentAxis.getValue()) {
+        originTangent.Reverse();
+    }
+
+    gp_Vec rotationAxis = wantedVertical;
+    rotationAxis.Normalize();
+
+    const double angle = std::atan2(
+        rotationAxis.Dot(originTangent.Crossed(wantedTangent)),
+        originTangent.Dot(wantedTangent)
+    );
+
+    const gp_Quaternion tangentCorrection(rotationAxis, angle);
 
     std::list<gp_Trsf> transformations;
     for (std::size_t i = 0; i < distances.size(); ++i) {
@@ -568,7 +595,8 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
             distances[i],
             Align.getValue(),
             wantedVertical,
-            needsTangentFlip,
+            Align.getValue() ? &wantedTangent : nullptr,
+            relative && Align.getValue() ? &tangentCorrection : nullptr,
             relative ? &originPosition : nullptr
         );
 
