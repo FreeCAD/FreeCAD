@@ -87,10 +87,8 @@ private:
     void setupDocument();
     void slotActiveDocument(const Gui::Document&);
     void openCommandIfActive(Gui::Document*);
-    void commitCommandIfActive(Gui::Document*);
-    void abortCommandIfActive(Gui::Document*);
-
-private Q_SLOTS:
+    void commitCommandIfActive();
+    void abortCommandIfActive();
     void openTransaction();
 
 private:
@@ -105,6 +103,9 @@ private:
      *  that it's done by the calling instance.
      */
     bool ignoreTransaction;
+
+    /// ID of the transaction by this handler
+    int transactionID {0};
     Connection connectAct;
     /**
      * store these so we can reselect original object
