@@ -1,16 +1,13 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
+import FreeCAD  # BoundBox, Placement (because of same-name property)
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
-from Base.BoundBox import BoundBox
 from Base.Vector import Vector
-from Base.Placement import Placement
 from Base.Rotation import Rotation
 from Base.Matrix import Matrix
 from StringHasher import StringHasher
-from typing import Any, Final
+from typing import Any, Final, Literal, overload
 
 
 @export(
@@ -27,71 +24,61 @@ class ComplexGeoData(Persistence):
         """
         Return a list of element types present in the complex geometric data.
         """
-        ...
 
     @constmethod
     def countSubElements(self, type: str, /) -> int:
         """
         Return the number of elements of a type.
         """
-        ...
 
     @constmethod
     def getFacesFromSubElement(
-        self, type: str, index: int, /
+        self, type: str, index: int, /,
     ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return vertexes and faces from a sub-element.
         """
-        ...
 
     @constmethod
     def getLinesFromSubElement(
-        self, type: str, index: int, /
+        self, type: str, index: int, /,
     ) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return vertexes and lines from a sub-element.
         """
-        ...
 
     @constmethod
     def getPoints(self, accuracy: float, /) -> tuple[list[Vector], list[Vector]]:
         """
-        Return a tuple of points and normals with a given accuracy
+        Return a tuple of points and normals with a given accuracy (default: 0.05)
         """
-        ...
 
     @constmethod
     def getLines(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
-        Return a tuple of points and lines with a given accuracy
+        Return a tuple of points and lines with a given accuracy (default: 0.05)
         """
-        ...
 
     @constmethod
     def getFaces(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
-        Return a tuple of points and triangles with a given accuracy
+        Return a tuple of points and triangles with a given accuracy (default: 0.05)
         """
-        ...
 
     def applyTranslation(self, translation: Vector, /) -> None:
         """
         Apply an additional translation to the placement
         """
-        ...
 
     def applyRotation(self, rotation: Rotation, /) -> None:
         """
         Apply an additional rotation to the placement
         """
-        ...
 
     def transformGeometry(self, transformation: Matrix, /) -> None:
         """
         Apply a transformation to the underlying geometry
         """
-        ...
 
     def setElementName(
         self,
@@ -99,9 +86,9 @@ class ComplexGeoData(Persistence):
         element: str,
         name: str = ...,
         postfix: str = ...,
-        overwrite: bool = ...,
-        sid: Any = ...,
-        tag: int = ...,
+        overwrite: bool = False,
+        sid: Any = None,
+        tag: int = 0,
     ) -> str:
         """
         Set an element name.
@@ -116,56 +103,78 @@ class ComplexGeoData(Persistence):
         An element can have multiple mapped names. However, a name can only be mapped
         to one element
         """
-        ...
 
     @constmethod
     def getElementName(self, name: str, direction: int = 0, /) -> str:
         """
         Return a mapped element name or reverse.
         """
-        ...
 
+    @overload
     @constmethod
     def getElementIndexedName(
-        self, name: str, return_id: bool = ..., /
+        self, name: str, return_id: Literal[False] = False, /,
+    ) -> str: ...
+
+    @overload
+    @constmethod
+    def getElementIndexedName(
+        self, name: str, return_id: Literal[True] = False, /,
+    ) -> tuple[str, list[int]]: ...
+
+    @overload
+    @constmethod
+    def getElementIndexedName(
+        self, name: str, return_id: bool = False, /,
     ) -> str | tuple[str, list[int]]:
         """
         Return the indexed element name.
         """
-        ...
 
+    @overload
     @constmethod
     def getElementMappedName(
-        self, name: str, return_id: bool = ..., /
+        self, name: str, return_id: Literal[False] = False, /,
+    ) -> str: ...
+
+    @overload
+    @constmethod
+    def getElementMappedName(
+        self, name: str, return_id: Literal[True] = False, /,
+    ) -> tuple[str, list[int]]: ...
+
+    @overload
+    @constmethod
+    def getElementMappedName(
+        self, name: str, return_id: bool = False, /,
     ) -> str | tuple[str, list[int]]:
         """
         Return the mapped element name
         """
-        ...
 
-    BoundBox: Final[BoundBox] = ...
+    BoundBox: Final[FreeCAD.BoundBox]
     """Get the bounding box (BoundBox) of the complex geometric data."""
 
-    CenterOfGravity: Final[Vector] = ...
+    CenterOfGravity: Final[Vector]
     """Get the center of gravity"""
 
-    Placement: Placement = ...
+    Placement: FreeCAD.Placement
     """Get the current transformation of the object as placement"""
 
-    Tag: int = 0
+    Tag: int
     """Geometry Tag"""
 
-    Hasher: StringHasher = ...
+    Hasher: StringHasher | None
     """Get/Set the string hasher of this object"""
 
-    ElementMapSize: Final[int] = 0
+    ElementMapSize: Final[int]
     """Get the current element map size"""
 
-    ElementMap: dict[str, str] = {}
+    ElementMap: dict[str, str]
     """Get/Set a dict of element mapping"""
 
-    ElementReverseMap: Final[dict[str, str | list[str]]] = {}
+    ElementReverseMap: Final[dict[str, str | list[str]]]
     """Get a dict of element reverse mapping"""
 
-    ElementMapVersion: Final[str] = ""
+    ElementMapVersion: Final[str]
     """Element map version"""
