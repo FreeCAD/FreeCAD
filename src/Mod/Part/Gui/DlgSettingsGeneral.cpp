@@ -82,6 +82,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkShowTransparentPreview->onSave();
     ui->checkShowProfilePreview->onSave();
     ui->checkSwitchToTask->onSave();
+    ui->checkAutoGroupBodyElements->onSave();
     ui->checkNewSketchAttachmentDialog->onSave();
 }
 
@@ -104,6 +105,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkShowTransparentPreview->onRestore();
     ui->checkShowProfilePreview->onRestore();
     ui->checkSwitchToTask->onRestore();
+    ui->checkAutoGroupBodyElements->onRestore();
     ui->checkNewSketchAttachmentDialog->onRestore();
 }
 
