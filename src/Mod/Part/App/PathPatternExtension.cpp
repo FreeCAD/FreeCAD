@@ -524,18 +524,13 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     }
 
     const auto getWantedDirection =
-        [&](const App::PropertyLinkSub& tangentAxisProperty,
-            const App::PropertyBool& flipTangentAxisProperty) -> std::optional<gp_Vec> {
+        [&](const App::PropertyLinkSub& tangentAxisProperty) -> std::optional<gp_Vec> {
         const auto tangentAxis = getAxis(tangentAxisProperty);
         if (!tangentAxis) {
             return std::nullopt;
         }
 
         gp_Vec tangent(tangentAxis->Direction());
-
-        if (flipTangentAxisProperty.getValue()) {
-            tangent.Reverse();
-        }
 
         if (tangent.SquareMagnitude() < Precision::Confusion() * Precision::Confusion()) {
             return std::nullopt;
@@ -544,18 +539,23 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         return tangent;
     };
 
-    const auto wantedTangentOpt = getWantedDirection(TangentAxis, FlipTangentAxis);
+    const auto wantedTangentOpt = getWantedDirection(TangentAxis);
 
     auto* pathFeature = freecad_cast<Part::Feature*>(Path.getValue());
     gp_Vec fallbackVertical = BaseGeometry::Z_POS_VEC;
     if (auto* pathSketch = freecad_cast<Part::Part2DObject*>(pathFeature)) {
         fallbackVertical = Base::convertTo<gp_Vec>(
-            pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection()
+            static_cast<App::DocumentObject*>(pathSketch)
+                ->getPlacement()
+                .getRotation()
+                .multVec(pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection())
         );
     }
 
-    const gp_Vec wantedVertical
-        = getWantedDirection(VerticalAxis, FlipVerticalAxis).value_or(fallbackVertical);
+    gp_Vec wantedVertical = getWantedDirection(VerticalAxis).value_or(fallbackVertical);
+    if (FlipVerticalAxis.getValue()) {
+        wantedVertical.Reverse();
+    }
 
     const bool relative = RelativeToFirst.getValue();
     const int originIndex = relative
@@ -572,7 +572,6 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
 
     auto wantedTangent = wantedTangentOpt.value_or(originTangent);
     wantedTangent.Normalize();
-
     if (FlipTangentAxis.getValue()) {
         originTangent.Reverse();
     }
