@@ -289,11 +289,11 @@ class DocumentObject(ExtensionContainer):
     @overload
     def getLinkedObject(
         self, *, recursive: bool = True, matrix: None = None, transform: bool = True, depth: int = 0,
-    ) -> object: ...
+    ) -> Any: ...
     @overload
     def getLinkedObject(
         self, *, recursive: bool = True, matrix: Matrix = None, transform: bool = True, depth: int = 0,
-    ) -> tuple[object, Matrix]: ...
+    ) -> tuple[Any, Matrix]: ...
     @overload
     def getLinkedObject(
         self,
@@ -302,7 +302,7 @@ class DocumentObject(ExtensionContainer):
         matrix: Matrix | None = None,
         transform: bool = True,
         depth: int = 0,
-    ) -> object | tuple[object, Matrix]:
+    ) -> Any | tuple[Any, Matrix]:
         """
         Returns the linked object if there is one, or else return itself
 
@@ -364,7 +364,7 @@ class DocumentObject(ExtensionContainer):
         """
 
     @constmethod
-    def resolve(self, subname: str, /) -> tuple[object | None, object | None, str, str]:
+    def resolve(self, subname: str, /) -> tuple[Any | None, Any | None, str, str]:
         """
         resolve the sub object
 
@@ -376,7 +376,7 @@ class DocumentObject(ExtensionContainer):
         """
 
     @constmethod
-    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple[object | None, str, str]:
+    def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple[Any | None, str, str]:
         """
         resolve both new and old style sub element
 
