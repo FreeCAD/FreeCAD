@@ -8,6 +8,7 @@
 #include <string>
 
 #include <BRepAdaptor_Curve.hxx>
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
@@ -42,13 +43,13 @@ std::optional<gp_Ax2> Part::getAxis(
 
     if (!reference) {
         if (subname == "X_Axis") {
-            return gp_Ax2(gp_Pnt(), gp_Dir(1.0, 0.0, 0.0));
+            return BaseGeometry::X_AXIS;
         }
         if (subname == "Y_Axis") {
-            return gp_Ax2(gp_Pnt(), gp_Dir(0.0, 1.0, 0.0));
+            return BaseGeometry::Y_AXIS;
         }
         if (subname == "Z_Axis") {
-            return gp_Ax2(gp_Pnt(), gp_Dir(0.0, 0.0, 1.0));
+            return BaseGeometry::Z_AXIS;
         }
         return std::nullopt;
     }
@@ -243,10 +244,10 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     }
     radialDirection.Normalize();
 
-    gp_Dir lead = BaseGeometry::Y_POS_DIR;
+    gp_Dir lead = gp::DY();
     if (std::abs(axis.Direction().X()) <= Precision::Confusion()
         && std::abs(axis.Direction().Z()) <= Precision::Confusion()) {
-        lead = BaseGeometry::X_POS_DIR;
+        lead = gp::DX();
     }
 
     std::list<gp_Trsf> transformations;
