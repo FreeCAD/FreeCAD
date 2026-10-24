@@ -624,6 +624,7 @@ Document* Application::newDocument(const char * proposedName, const char * propo
     // create the FreeCAD document
     auto doc = new Document(name.c_str());
     doc->setStatus(Document::TempDoc, CreateFlags.temporary);
+    doc->setStatus(Document::HiddenDoc, !CreateFlags.createView);
 
     // add the document to the internal list
     DocMap[name] = doc;
