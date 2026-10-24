@@ -3113,7 +3113,12 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                 throwWrongMode(mmode);
         }
 
-        plm = this->placementFactory(BaseGeometry::Z_POS_VEC, BaseGeometry::X_POS_VEC, BasePoint, gp::Origin());
+        plm = this->placementFactory(
+            BaseGeometry::Z_POS_VEC,
+            BaseGeometry::X_POS_VEC,
+            BasePoint,
+            gp::Origin()
+        );
     }
     else {  // reuse 3d mode
         AttachEngine3D attacher3D;

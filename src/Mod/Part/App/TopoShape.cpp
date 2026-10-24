@@ -2281,12 +2281,7 @@ TopoDS_Shape TopoShape::makeTorus(
     }
 
     BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
-    BRepPrimAPI_MakeRevol mkRevol(
-        mkFace.Face(),
-        gp::OZ(),
-        Base::toRadians<double>(angle3),
-        Standard_True
-    );
+    BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp::OZ(), Base::toRadians<double>(angle3), Standard_True);
     return mkRevol.Shape();
 }
 
