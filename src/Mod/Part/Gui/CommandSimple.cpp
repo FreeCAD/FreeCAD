@@ -473,41 +473,40 @@ void CmdPartDefeaturing::activated(int iMsg)
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
-    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
+    for (const Gui::SelectionObject& obj : objs) {
         try {
-            std::string shape;
-            shape.append("sh=App.");
-            shape.append(it->getDocName());
-            shape.append(".");
-            shape.append(it->getFeatName());
-            shape.append(".Shape\n");
-
             std::string faces;
-            std::vector<std::string> subnames = it->getSubNames();
+            std::vector<std::string> subnames = obj.getSubNames();
             for (const auto& subname : subnames) {
                 faces.append("sh.");
                 faces.append(subname);
                 faces.append(",");
             }
 
+            const auto doc = App::GetApplication().getActiveDocument();
+            const auto oldObj = doc->getActiveObject();
+            const std::string feat = getObjectCmd(obj.getObject());
             doCommand(
                 Doc,
-                "\nsh = App.getDocument('%s').%s.Shape\n"
+                "sh = %s.Shape\n"
                 "nsh = sh.defeaturing([%s])\n"
                 "if not sh.isPartner(nsh):\n"
-                "\t\tdefeat = App.ActiveDocument.addObject('Part::Feature','Defeatured').Shape = "
-                "nsh\n"
-                "\t\tGui.ActiveDocument.%s.hide()\n"
+                "    App.ActiveDocument.addObject('Part::Feature','Defeatured').Shape = nsh\n"
                 "else:\n"
-                "\t\tFreeCAD.Console.PrintError('Defeaturing failed\\n')",
-                it->getDocName(),
-                it->getFeatName(),
-                faces.c_str(),
-                it->getFeatName()
+                "    FreeCAD.Console.PrintError('Defeaturing failed\\n')",
+                feat.c_str(),
+                faces.c_str()
             );
+            const auto newObj = doc->getActiveObject();
+            if (oldObj != newObj) {
+                Gui::cmdGuiObject(obj.getObject(), "hide()");
+                Gui::copyVisualT(newObj, "ShapeAppearance", obj.getObject());
+                Gui::copyVisualT(newObj, "LineColor", obj.getObject());
+                Gui::copyVisualT(newObj, "PointColor", obj.getObject());
+            }
         }
         catch (const Base::Exception& e) {
-            Base::Console().warning("{}: {}\n", it->getFeatName(), e.what());
+            Base::Console().warning("{}: {}\n", obj.getFeatName(), e.what());
         }
     }
     commitCommand();
