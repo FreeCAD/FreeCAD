@@ -207,7 +207,8 @@ SheetTableView::SheetTableView(QWidget* parent)
     actionDel = createAction(":/icons/edit-delete.svg", tr("Delete"), &SheetTableView::deleteSelection);
     contextMenu.addSeparator();
     if (auto* command = Gui::Application::Instance->commandManager().getCommandByName(
-            "Std_ViewDockUndockFullscreen")) {
+            "Std_ViewDockUndockFullscreen"
+        )) {
         command->addTo(&contextMenu);
     }
 
