@@ -30,3 +30,4 @@ from TDTest.DrawViewDetailTest import DrawViewDetailTest  # noqa: F401
 from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
 from TDTest.TechDrawTaskTest import TechDrawTaskTest  # noqa: F401
 
+from TDTest.TaskHatchFaceTest import TaskHatchFaceTest  # noqa: F401
