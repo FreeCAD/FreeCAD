@@ -5,6 +5,7 @@
 
 
 import FreeCAD
+import time
 import unittest
 from .TechDrawTestUtilities import createPageWithSVGTemplate
 from PySide import QtCore
@@ -69,6 +70,36 @@ class DrawViewPartTest(unittest.TestCase):
         self.assertEqual(lineFormat["color"], color)
         self.assertEqual(lineFormat["visible"], visible)
         self.assertEqual(len(view.GeomFormats), 0)
+
+    def testBreakPropertiesOnDrawViewPart(self):
+        """Every DrawViewPart stores multiple breaks without helper sketches."""
+        view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewPart", "BreakableView")
+        self.page.addView(view)
+        view.Source = [FreeCAD.ActiveDocument.Box]
+
+        self.assertEqual(view.BreakPoints, [])
+        self.assertEqual(view.BreakDirections, [])
+        self.assertEqual(view.BreakGaps, [])
+        self.assertEqual(view.BreakLineTypes, [])
+
+        view.BreakPoints = [
+            FreeCAD.Vector(3.0, 0.0, 0.0),
+            FreeCAD.Vector(7.0, 0.0, 0.0),
+        ]
+        view.BreakDirections = [FreeCAD.Vector(1.0, 0.0, 0.0)]
+        view.BreakGaps = [1.0]
+        view.BreakLineTypes = [1]
+        FreeCAD.ActiveDocument.recompute()
+
+        self.assertEqual(len(view.BreakPoints), 2)
+        self.assertEqual(len(view.BreakDirections), 1)
+        self.assertEqual(view.BreakGaps, [1.0])
+        self.assertEqual(view.BreakLineTypes, [1])
+        deadline = time.monotonic() + 10.0
+        while not view.getVisibleEdges() and time.monotonic() < deadline:
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+            time.sleep(0.01)
+        self.assertTrue(view.getVisibleEdges())
 
 if __name__ == "__main__":
     unittest.main()
