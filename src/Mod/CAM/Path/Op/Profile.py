@@ -240,24 +240,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "RampMethod",
-                "RampEntry",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Apply ramp entry",
-                ),
-            ),
-            (
-                "App::PropertyAngle",
-                "RampAngle",
-                "RampEntry",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Angle of ramp",
-                ),
-            ),
-            (
                 "App::PropertyIntegerConstraint",
                 "FinishingPasses",
                 "Profile",
@@ -302,13 +284,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Out of edge"), "Out of edge"),
                 (translate("PathProfile", "Edge"), "Edge"),
             ],
-            "RampMethod": [
-                (translate("PathProfile", "None"), "None"),
-                (translate("PathProfile", "Helix"), "Helix"),
-                (translate("PathProfile", "Method 1"), "Method 1"),
-                (translate("PathProfile", "Method 2"), "Method 2"),
-                (translate("PathProfile", "Method 3"), "Method 3"),
-            ],
         }
 
         if dataType == "raw":
@@ -341,7 +316,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "Stepover": 0,
             "NumPasses": (1, 1, 999999, 1),
             "FinishingPasses": (0, 0, 999999, 1),
-            "RampAngle": 30,
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
