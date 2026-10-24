@@ -83,7 +83,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         tuples.append(("extraOffset", "ExtraOffset"))
         tuples.append(("threshold", "RetractThreshold"))
         tuples.append(("finishingOneStepDown", "FinishingOneStepDown"))
-        tuples.append(("finishingRampHelix", "FinishingRampHelix"))
         tuples.append(("useOutline", "UseOutline"))
         tuples.append(("clearEdges", "clearEdges"))
         tuples.append(("useRestMachining", "UseRestMachining"))
@@ -146,8 +145,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.FinishingOneStepDown != self.form.finishingOneStepDown.isChecked():
             obj.FinishingOneStepDown = self.form.finishingOneStepDown.isChecked()
-        if obj.FinishingRampHelix != self.form.finishingRampHelix.isChecked():
-            obj.FinishingRampHelix = self.form.finishingRampHelix.isChecked()
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
@@ -176,7 +173,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepOver.setValue(obj.StepOver)
 
         self.form.finishingOneStepDown.setChecked(obj.FinishingOneStepDown)
-        self.form.finishingRampHelix.setChecked(obj.FinishingRampHelix)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
         if FeatureOutline & self.pocketFeatures():
@@ -206,7 +202,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.threshold.editingFinished)
         signals.append(self.form.finishingOneStepDown.clicked)
-        signals.append(self.form.finishingRampHelix.clicked)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
@@ -225,11 +220,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.startAt.currentIndexChanged.connect(self.updateVisibility)
 
     def updateVisibility(self):
-        self.form.startAt.setEnabled(self.obj.ClearingPattern in ("Offset", "Helix"))
-        self.form.angle.setEnabled(self.obj.ClearingPattern not in ("Offset", "Helix"))
+        self.form.startAt.setEnabled(self.obj.ClearingPattern in ("Offset",))
+        self.form.angle.setEnabled(self.obj.ClearingPattern not in ("Offset",))
         self.form.finishingOffset.setEnabled(self.obj.FinishingPasses)
         self.form.finishingOneStepDown.setEnabled(self.obj.FinishingPasses)
-        self.form.finishingRampHelix.setEnabled(self.obj.FinishingPasses)
         self.form.useStartPoint.setEnabled(self.obj.StartAt != "Center")
 
     def setStartPoint(self):

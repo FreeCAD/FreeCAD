@@ -70,7 +70,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "ClearingPattern": [
                 (translate("CAM_Pocket", "ZigZag"), "ZigZag"),
                 (translate("CAM_Pocket", "Offset"), "Offset"),
-                (translate("CAM_Pocket", "Helix"), "Helix"),
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
                 (translate("CAM_Pocket", "No clearing"), "No clearing"),
@@ -120,7 +119,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             finishingPassMode = 0 if obj.FinishingPasses else 2
             obj.setEditorMode("FinishingOffset", finishingPassMode)
             obj.setEditorMode("FinishingOneStepDown", finishingPassMode)
-            obj.setEditorMode("FinishingRampHelix", finishingPassMode)
 
             if prop == "ClearingPattern":
                 startAtMode = 0 if obj.ClearingPattern in ("Offset", "Helix") else 2
@@ -248,15 +246,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Finishing pass will processing with one step down at final depth",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "FinishingRampHelix",
-            "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Create helix ramp for finishing pass",
             ),
         )
 
@@ -421,16 +410,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.FinishingPasses = (0, 0, 999999, 1)
             # ZigZagOffset is replaced by ZigZag with a finishing pass
             obj.FinishingPasses = 1 if obj.ClearingPattern == "ZigZagOffset" else 0
-        if not hasattr(obj, "FinishingRampHelix"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "FinishingRampHelix",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Create helix ramp for finishing pass",
-                ),
-            )
         if hasattr(obj, "MinTravel"):
             obj.removeProperty("MinTravel")
 
@@ -463,7 +442,6 @@ def SetupProperties():
     setup.append("FinishingPasses")
     setup.append("FinishingOffset")
     setup.append("FinishingOneStepDown")
-    setup.append("FinishingRampHelix")
     setup.append("StartAt")
     setup.append("StepDown")
     setup.append("StepOver")
