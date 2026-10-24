@@ -27,8 +27,12 @@
 
 class SoCoordinate3;
 class SoDrawStyle;
+class SoFaceSet;
+class SoMaterial;
 class SoShapeHints;
+class SoSwitch;
 class SoTexture2;
+class SoTextureCoordinate2;
 class QImage;
 
 namespace Gui
@@ -52,8 +56,24 @@ public:
     bool doubleClicked() override;
     void onChanged(const App::Property* prop) override;
 
+    /// Show/hide the semi-transparent overlay of the cropped-out area (used while the crop
+    /// task dialog is open).
+    void setCropPreviewActive(bool active);
+    /// Set the overlay's transparency, in the range [0, 1].
+    void setCropPreviewTransparency(float transparency);
+
 private:
+    struct CropFractions
+    {
+        float left;
+        float right;
+        float top;
+        float bottom;
+    };
+
+    CropFractions getCropFractions() const;
     void resizePlane(float xsize, float ysize);
+    void updateCropPreview(float xsize, float ysize);
     void loadImage();
     void setPlaneSize(const QSizeF& size, const QImage& img);
     void reloadIfSvg();
@@ -71,6 +91,17 @@ private:
     SoCoordinate3* pcCoords;
     SoTexture2* texture;
     SoShapeHints* shapeHints;
+    SoTextureCoordinate2* textCoord;
+
+    // Semi-transparent overlay of the cropped-out area, shown only while the crop task
+    // dialog is open. Reuses `texture` and `shapeHints` above; independent of `pcShapeMaterial`
+    // so the kept image's own Transparency setting is never affected by the overlay.
+    SoSwitch* cropPreviewSwitch;
+    SoMaterial* cropPreviewMaterial;
+    SoCoordinate3* cropPreviewCoords;
+    SoTextureCoordinate2* cropPreviewTexCoord;
+    SoFaceSet* cropPreviewFaceSet;
+
     static const char* LightingEnums[];
 };
 
