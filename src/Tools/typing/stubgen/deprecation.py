@@ -5,6 +5,8 @@
 import ast
 import re
 
+from python_api_model.signatures import decorator_name
+
 DEPRECATION_FIELDS = {"deprecated_in", "removed_in", "replacement", "details"}
 RELEASE_RE = re.compile(r"^\d+\.\d+(?:\.\d+)?$")
 
@@ -52,8 +54,36 @@ def structured_deprecation_message(values: dict[str, object]) -> str | None:
         value = values.get(field)
         if value is not None and not isinstance(value, str):
             raise ValueError(f"deprecated() {field} must be a string or None")
-    if replacement := values.get("replacement"):
+    replacement = values.get("replacement")
+    if isinstance(replacement, str) and replacement:
         message += f"; use {replacement} instead"
-    if details := values.get("details"):
+    details = values.get("details")
+    if isinstance(details, str) and details:
         message += f"; {details.rstrip()}"
     return message if message.endswith((".", "!", "?")) else message + "."
+
+
+def normalized_deprecation_message(decorator: ast.expr) -> str | None:
+    """Parse either PEP 702 or FreeCAD lifecycle deprecation metadata."""
+
+    if decorator_name(decorator) != "deprecated":
+        return None
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with a message or lifecycle metadata")
+    if decorator.args:
+        if len(decorator.args) != 1 or decorator.keywords:
+            raise ValueError("deprecated() accepts one positional string or lifecycle keywords")
+        try:
+            message = ast.literal_eval(decorator.args[0])
+        except (ValueError, SyntaxError) as error:
+            raise ValueError("deprecated() positional message must be a literal string") from error
+        if not isinstance(message, str) or not message:
+            raise ValueError("deprecated() positional message must be a non-empty string")
+        return message
+
+    message = structured_deprecation_message(
+        literal_keyword_values(decorator, "deprecated() metadata")
+    )
+    if message is None:
+        raise ValueError("deprecated() requires a message or lifecycle metadata")
+    return message
