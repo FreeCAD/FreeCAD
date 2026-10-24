@@ -267,34 +267,8 @@ class ObjectOp(PathOp.ObjectOp):
             orientation = baseOrientation
             finishing = areaIndex >= len(areaParamsList) - getattr(obj, "FinishingPasses", 0)
             if "Path.Op.Profile" in obj.Proxy.__module__:
-                if obj.RampAngle:
-                    rampParams["angle_rad"] = math.radians(obj.RampAngle.Value)
-                else:
-                    rampParams["pitch"] = obj.StepDown.Value
-
-                if finishing:  # Profile finishing pass
-                    if obj.FinishingOneStepDown:
-                        oneStepDown = True
-                    elif obj.RampMethod == "Helix":
-                        rampParams["method"] = 0
-                        oneStepDown = True
-                elif obj.RampMethod != "None":
-                    oneStepDown = obj.RampMethod == "Helix"
-                    rampParams["method"] = (
-                        0 if obj.RampMethod == "Helix" else int(obj.RampMethod.split()[1])
-                    )
-
-                if rampParams["method"] and not rampParams["angle_rad"]:
-                    # Ramp methods 1-3 need an angle, plunge instead
-                    if areaIndex == 0:
-                        Path.Log.warning(
-                            translate(
-                                "PathAreaOp", "%s: ramp method '%s' needs a ramp angle, plunging"
-                            )
-                            % (obj.Label, obj.RampMethod)
-                        )
-                    rampParams["method"] = None
-
+                if finishing and obj.FinishingOneStepDown:
+                    oneStepDown = True
                 if (
                     obj.UseLongestEdge
                     and not obj.UseStartPoint
