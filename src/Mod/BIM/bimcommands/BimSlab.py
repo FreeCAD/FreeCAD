@@ -82,7 +82,7 @@ class BIM_Slab:
             FreeCADGui.doCommand("s.Label = " + repr(translate("BIM", "Slab")))
             FreeCADGui.doCommand('s.IfcType = "Slab"')
             FreeCADGui.doCommand("s.Normal = FreeCAD.Vector(0,0,-1)")
-            
+
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("ArchComponent")
             FreeCADGui.doCommand("Draft.autogroup(s)")

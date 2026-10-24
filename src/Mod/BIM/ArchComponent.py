@@ -203,12 +203,10 @@ def release_base_from_groups(obj, prop="Base"):
     # ViewProviderComponent.claimChildren), so the Space must stay in its group
     if Draft.getType(obj) == "Wall" and Draft.getType(base) == "Space":
         return
-      
+
     # autogroup did not place obj (no active Level). If the Base already
-    # lives in a group (e.g. a Level it was dragged into), join that group.    
-    obj_grouped = any(
-        hasattr(p, "Group") and obj in p.Group for p in obj.InList
-    )
+    # lives in a group (e.g. a Level it was dragged into), join that group.
+    obj_grouped = any(hasattr(p, "Group") and obj in p.Group for p in obj.InList)
     if not obj_grouped:
         for parent in base.InList:
             if parent is obj or not hasattr(parent, "Group"):
@@ -218,14 +216,12 @@ def release_base_from_groups(obj, prop="Base"):
             if base in parent.Group:
                 parent.addObject(obj)
                 break
-                
-                
+
     for parent in base.InList:
         if parent is obj or not hasattr(parent, "Group"):
             continue
         if base in parent.Group and obj in parent.Group:
             parent.removeObject(base)
-
 
 
 class Component(ArchIFC.IfcProduct):
@@ -1938,6 +1934,7 @@ class ViewProviderComponent:
     def loads(self, state):
 
         return None
+
     def onDelete(self, vobj, subelements):
         """Keep the Base object when its host is deleted from the GUI.
 
@@ -1987,7 +1984,6 @@ class ViewProviderComponent:
                 if child.ViewObject:
                     child.ViewObject.Visibility = True
                 break
-
 
     def claimChildren(self):
         """Define which objects will appear as children in the tree view.
