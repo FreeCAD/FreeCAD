@@ -51,7 +51,6 @@ using namespace std::literals::string_view_literals;
 using namespace PartDesignGui;
 using namespace Gui;
 
-
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(
@@ -111,9 +110,7 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     Selection().clearSelection();
 
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
-
     App::DocumentObject* base = this->getBase();
-
     if (std::strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
         return;
     }
@@ -220,7 +217,7 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
         }
     }
 
-    // normal face/edge selection
+    // Normal face/edge selection.
     if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
         refs.erase(f);
         removeItemFromListWidget(widget, msg.pSubName);
@@ -233,191 +230,47 @@ void TaskDressUpParameters::referenceSelected(const SelectionChanges& msg, QList
     updateFeature(pcDressUp, refs);
 }
 
-void TaskDressUpParameters::convertSelectionToSolids(
-    QListWidget* widget,
-    const bool edgesEnabled,
-    const bool facesEnabled
-)
+void TaskDressUpParameters::convertSelection(QListWidget* widget, const ConversionTarget target)
 {
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
+
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-    convertSelectionToSolids(refs, edgesEnabled, facesEnabled);
+
+    convertSelection(refs, target);
     updateFeature(pcDressUp, refs);
 
     if (widget) {
         QSignalBlocker block(widget);
         widget->clear();
+
         for (const auto& name : refs) {
             widget->addItem(QString::fromStdString(name));
         }
     }
 }
 
-void TaskDressUpParameters::convertSelectionToSolids(
+void TaskDressUpParameters::convertSelection(
     std::vector<std::string>& refs,
-    const bool edgesEnabled,
-    const bool facesEnabled
+    const ConversionTarget target
 ) const
 {
     const auto* feature = dynamic_cast<const Part::Feature*>(this->getBase());
-
     if (!feature) {
         return;
     }
 
-    const Part::TopoShape& topoShape = feature->Shape.getShape();
-    const TopoDS_Shape& shape = topoShape.getShape();
+    const Part::TopoShape& shape = feature->Shape.getShape();
 
-    TopTools_IndexedMapOfShape solids;
-    TopExp::MapShapes(shape, TopAbs_SOLID, solids);
-
-    TopTools_IndexedDataMapOfShapeListOfShape edgeToSolids;
-    TopTools_IndexedDataMapOfShapeListOfShape faceToSolids;
-
-    if (edgesEnabled) {
-        TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_SOLID, edgeToSolids);
-    }
-    if (facesEnabled) {
-        TopExp::MapShapesAndAncestors(shape, TopAbs_FACE, TopAbs_SOLID, faceToSolids);
-    }
-
-    std::vector<std::string> convertedRefs;
-    convertedRefs.reserve(refs.size());
-
-    for (const std::string& ref : refs) {
-        const std::string_view refView {ref};
-
-        const bool isEdge = edgesEnabled && refView.starts_with("Edge"sv);
-        const bool isFace = facesEnabled && refView.starts_with("Face"sv);
-
-        if (!isEdge && !isFace) {
-            convertedRefs.push_back(ref);
-            continue;
-        }
-
-        const TopoDS_Shape selected = topoShape.getSubShape(ref.c_str(), true);
-
-        if (selected.IsNull()) {
-            convertedRefs.push_back(ref);
-            continue;
-        }
-
-        const auto& ancestors = isEdge ? edgeToSolids : faceToSolids;
-
-        if (!ancestors.Contains(selected)) {
-            convertedRefs.push_back(ref);
-            continue;
-        }
-
-        for (const TopoDS_Shape& solid : ancestors.FindFromKey(selected)) {
-            const int solidIndex = solids.FindIndex(solid);
-
-            if (solidIndex > 0) {
-                const std::string solidName = "Solid" + std::to_string(solidIndex);
-
-                if (std::ranges::find(convertedRefs, solidName) == convertedRefs.end()) {
-                    convertedRefs.push_back(solidName);
-                }
-            }
-        }
-    }
-
-    refs = std::move(convertedRefs);
+    refs = Part::convertShapeElements(shape, refs, ConversionTarget::None, target);
 }
 
-void TaskDressUpParameters::convertSelectionToElements(
-    QListWidget* widget,
-    const bool edgesEnabled,
-    const bool facesEnabled
-)
+void TaskDressUpParameters::convertSelection(QListWidget* widget)
 {
-    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
-    std::vector<std::string> refs = pcDressUp->Base.getSubValues();
-    convertSelectionToElements(refs, edgesEnabled, facesEnabled);
-    updateFeature(pcDressUp, refs);
+    const ConversionTarget target = (allowEdges ? ConversionTarget::Edges : ConversionTarget::None)
+        | (allowFaces ? ConversionTarget::Faces : ConversionTarget::None)
+        | (allowSolids ? ConversionTarget::Solids : ConversionTarget::None);
 
-    if (widget) {
-        QSignalBlocker block(widget);
-        widget->clear();
-        for (const auto& name : refs) {
-            widget->addItem(QString::fromStdString(name));
-        }
-    }
-}
-
-void TaskDressUpParameters::convertSelectionToElements(
-    std::vector<std::string>& refs,
-    const bool edgesEnabled,
-    const bool facesEnabled
-) const
-{
-    const auto* feature = dynamic_cast<const Part::Feature*>(this->getBase());
-
-    if (!feature) {
-        return;
-    }
-
-    const Part::TopoShape& topoShape = feature->Shape.getShape();
-    const TopoDS_Shape& shape = topoShape.getShape();
-
-    TopTools_IndexedMapOfShape faces;
-    TopTools_IndexedMapOfShape edges;
-
-    if (facesEnabled) {
-        TopExp::MapShapes(shape, TopAbs_FACE, faces);
-    }
-    if (edgesEnabled) {
-        TopExp::MapShapes(shape, TopAbs_EDGE, edges);
-    }
-
-    std::vector<std::string> convertedRefs;
-    convertedRefs.reserve(refs.size());
-
-    for (const std::string& ref : refs) {
-        const std::string_view refView {ref};
-
-        if (!refView.starts_with("Solid"sv)) {
-            convertedRefs.push_back(ref);
-            continue;
-        }
-
-        const TopoDS_Shape solid = topoShape.getSubShape(ref.c_str(), true);
-
-        if (solid.IsNull()) {
-            convertedRefs.push_back(ref);
-            continue;
-        }
-
-        if (facesEnabled) {
-            for (TopExp_Explorer exp(solid, TopAbs_FACE); exp.More(); exp.Next()) {
-                const int faceIndex = faces.FindIndex(exp.Current());
-
-                if (faceIndex > 0) {
-                    const std::string faceName = "Face" + std::to_string(faceIndex);
-
-                    if (std::ranges::find(convertedRefs, faceName) == convertedRefs.end()) {
-                        convertedRefs.push_back(faceName);
-                    }
-                }
-            }
-        }
-
-        if (edgesEnabled) {
-            for (TopExp_Explorer exp(solid, TopAbs_EDGE); exp.More(); exp.Next()) {
-                const int edgeIndex = edges.FindIndex(exp.Current());
-
-                if (edgeIndex > 0) {
-                    const std::string edgeName = "Edge" + std::to_string(edgeIndex);
-
-                    if (std::ranges::find(convertedRefs, edgeName) == convertedRefs.end()) {
-                        convertedRefs.push_back(edgeName);
-                    }
-                }
-            }
-        }
-    }
-
-    refs = std::move(convertedRefs);
+    convertSelection(widget, target);
 }
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
@@ -752,6 +605,9 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         }
     }
     else {
+        DressUpView->setHighlightFacesAsSolid(allowSolids && !allowFaces);
+        DressUpView->setHighlightEdgesAsSolid(allowSolids && !allowEdges);
+
         DressUpView->highlightReferences(true);
 
         // selection must come from the previous feature, we also need to remember the currently
@@ -760,19 +616,20 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
         DressUpView->showPreviousFeature(true);
     }
     setSelectionGate();
-    Gui::Selection().clearSelection();
+    Selection().clearSelection();
 }
+
 void TaskDressUpParameters::setSelectionGate()
 {
     if (selectionMode == none) {
-        Gui::Selection().rmvSelectionGate();
+        Selection().rmvSelectionGate();
     }
     else {
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::SOLID, allowSolids);
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
+        Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allow));
     }
 }
 

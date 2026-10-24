@@ -1917,7 +1917,8 @@ bool dressupGetSelected(
     // if 1 Part::Feature object selected, but no subobjects, select all edges for the user
     // but only for fillet and chamfer (not for draft or thickness)
     if (selection[0].getSubNames().empty()
-        && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)) {
+        && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0
+            || which.compare("Thickness") == 0)) {
         useAllEdges = true;
         std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE);  //"Edge"
         int count = TopShape.countSubElements(edgeTypeName.c_str());
@@ -1961,9 +1962,17 @@ void finishDressupFeature(
     cmd->openCommand(std::string("Make ") + which);
     FCMD_OBJ_CMD(body, "newObject('PartDesign::" << which << "','" << FeatName << "')");
     auto Feat = body->getDocument()->getObject(FeatName.c_str());
-    FCMD_OBJ_CMD(Feat, "Base = " << str.str());
+    if (useAllEdges) {
+        FCMD_OBJ_CMD(Feat, "Base = " << Gui::Command::getObjectCmd(base));
+    }
+    else {
+        FCMD_OBJ_CMD(Feat, "Base = " << str.str());
+    }
     if (useAllEdges && (which.compare("Fillet") == 0 || which.compare("Chamfer") == 0)) {
         FCMD_OBJ_CMD(Feat, "UseAllEdges = True");
+    }
+    else if (useAllEdges && which.compare("Thickness") == 0) {
+        FCMD_OBJ_CMD(Feat, "SelectionType = 'All solids'");
     }
     Gui::Command::doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base, /* hidePreviousSolid = */ true, updateDocument);

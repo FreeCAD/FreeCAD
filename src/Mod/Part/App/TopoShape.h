@@ -30,6 +30,7 @@
 
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
+#include <Base/Bitmask.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <TopoDS_Compound.hxx>
@@ -278,6 +279,37 @@ enum class RevolMode
     FuseWithBase = 1,
     None = 2
 };
+
+PartExport void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res);
+
+enum class ConversionTarget : std::uint8_t
+{
+    None = 0,
+    Edges = 1 << 0,
+    Faces = 1 << 1,
+    Solids = 1 << 2,
+    Vertices = 1 << 3,
+    All = Edges | Faces | Solids | Vertices
+};
+
+}  // namespace Part
+
+ENABLE_BITMASK_OPERATORS(Part::ConversionTarget)
+
+namespace Part
+{
+
+PartExport constexpr bool hasTarget(ConversionTarget value, ConversionTarget target)
+{
+    return (value & target) != ConversionTarget::None;
+}
+
+PartExport std::vector<std::string> convertShapeElements(
+    const TopoShape& shape,
+    const std::vector<std::string>& source,
+    ConversionTarget sourceConfig,
+    ConversionTarget targetConfig
+);
 
 /** The representation for a CAD Shape
  */
