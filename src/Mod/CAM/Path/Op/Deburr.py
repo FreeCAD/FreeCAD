@@ -75,10 +75,8 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
                     FreeCAD.Console.PrintMessage(
                         translate(
                             "PathDeburr",
-                            "The selected tool has no FlatRadius and no TipDiameter property. Assuming {}\n".format(
-                                "Endmill" if angle == 180 else "V-Bit"
-                            ),
-                        )
+                            "The selected tool has no FlatRadius and no TipDiameter property. Assuming {}\n",
+                        ).format("Endmill" if angle == 180 else "V-Bit")
                     )
                 suppressInfo = True
     else:

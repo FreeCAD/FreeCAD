@@ -75,7 +75,7 @@ class GCodeEditorDialog(QtGui.QDialog):
             self.decFeed = precision["feed"]
 
         QtGui.QDialog.__init__(self, parent)
-        self.setWindowTitle(translate("CAM_Inspect", "CAM Inspect - %s" % PathObj.Label))
+        self.setWindowTitle(translate("CAM_Inspect", "CAM Inspect - %s") % PathObj.Label)
         layout = QtGui.QVBoxLayout(self)
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")

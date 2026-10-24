@@ -1490,7 +1490,10 @@ class ReportTaskPanel:
         # Create the new statement object and add it to the live list.
         new_statement = ReportStatement(
             description=translate(
-                "Arch", f"New Statement {len(self.obj.Proxy.live_statements) + 1}"
+                "Arch", "New Statement {len(self.obj.Proxy.live_statements) + 1}"
+            ).replace(
+                "{len(self.obj.Proxy.live_statements) + 1}",
+                str(len(self.obj.Proxy.live_statements) + 1),
             )
         )
         self.obj.Proxy.live_statements.append(new_statement)
@@ -1522,8 +1525,8 @@ class ReportTaskPanel:
                 None,
                 translate("Arch", "Remove Statement"),
                 translate(
-                    "Arch", f"Are you sure you want to remove statement '{description_to_remove}'?"
-                ),
+                    "Arch", "Are you sure you want to remove statement '{description_to_remove}'?"
+                ).format(description_to_remove=description_to_remove),
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
             )
             == QtWidgets.QMessageBox.Yes
@@ -1544,7 +1547,9 @@ class ReportTaskPanel:
 
         duplicated = ReportStatement()
         duplicated.loads(original.dumps())
-        duplicated.description = translate("Arch", f"Copy of {original.description}")
+        duplicated.description = translate("Arch", "Copy of {original.description}").format(
+            original=original
+        )
 
         self.obj.Proxy.live_statements.insert(row_to_duplicate + 1, duplicated)
         self._set_dirty(True)
@@ -1773,7 +1778,9 @@ class ReportTaskPanel:
             ]
             source_objects = ArchSql._execute_pipeline_for_objects(preceding_statements)
             input_count = len(source_objects)
-            input_count_str = translate("Arch", f" (from {input_count} in pipeline)")
+            input_count_str = translate("Arch", " (from {input_count} in pipeline)").format(
+                input_count=input_count
+            )
 
         count, error = ArchSql.count(current_query, source_objects=source_objects)
 
@@ -2174,7 +2181,11 @@ if FreeCAD.GuiUp:
         def __init__(self, mode, parent=None):
             super().__init__(parent)
             self.mode = mode  # 'query' or 'report'
-            self.setWindowTitle(translate("Arch", f"Manage {mode.capitalize()} Presets"))
+            self.setWindowTitle(
+                translate("Arch", "Manage {mode.capitalize()} Presets").replace(
+                    "{mode.capitalize()}", mode.capitalize()
+                )
+            )
             self.setMinimumSize(500, 400)
 
             # --- UI Layout ---
@@ -2293,8 +2304,8 @@ if FreeCAD.GuiUp:
                 self,
                 translate("Arch", "Delete Preset"),
                 translate(
-                    "Arch", f"Are you sure you want to permanently delete the preset '{name}'?"
-                ),
+                    "Arch", "Are you sure you want to permanently delete the preset '{name}'?"
+                ).format(name=name),
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                 QtWidgets.QMessageBox.No,
             )
@@ -2314,7 +2325,9 @@ if FreeCAD.GuiUp:
                 QtWidgets.QMessageBox.critical(
                     self,
                     translate("Arch", "File Not Found"),
-                    translate("Arch", f"Could not find the preset file at:\n{file_path}"),
+                    translate("Arch", "Could not find the preset file at:\n{file_path}").format(
+                        file_path=file_path
+                    ),
                 )
                 return
 

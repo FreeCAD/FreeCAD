@@ -44,4 +44,9 @@ class ToolBitDrill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         tip_angle = self.get_property_str("TipAngle", "?", precision=3)
         flutes = self.get_property("Flutes")
 
-        return FreeCAD.Qt.translate("CAM", f"{diameter} drill, {tip_angle} tip, {flutes}-flute")
+        return (
+            FreeCAD.Qt.translate("CAM", "{diameter} drill, {tip_angle} tip, {flutes}-flute")
+            .replace("{diameter}", str(diameter))
+            .replace("{tip_angle}", str(tip_angle))
+            .replace("{flutes}", str(flutes))
+        )

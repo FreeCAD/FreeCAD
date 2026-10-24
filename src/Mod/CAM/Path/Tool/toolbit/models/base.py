@@ -829,7 +829,7 @@ class ToolBit(Asset, ABC):
             if name in schema_prop_names:
                 continue
             prop_type = self._tool_bit_shape.get_parameter_type(name)
-            docstring = QT_TRANSLATE_NOOP("App::Property", f"Custom property from shape: {name}")
+            docstring = QT_TRANSLATE_NOOP("App::Property", "Custom property from shape")
 
             # Skip existing properties if they have a different type
             if hasattr(self.obj, name) and self.obj.getTypeIdOfProperty(name) != prop_type:
