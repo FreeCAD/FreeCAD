@@ -252,7 +252,11 @@ class _CommandStructure:
                         "obj = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")"
                     )
                     FreeCADGui.addModule("Draft")
+                    FreeCADGui.addModule("ArchComponent")
+
                     FreeCADGui.doCommand("Draft.autogroup(obj)")
+                    FreeCADGui.doCommand("ArchComponent.release_base_from_groups(obj)")
+
                 self.doc.commitTransaction()
                 self.doc.recompute()
                 return

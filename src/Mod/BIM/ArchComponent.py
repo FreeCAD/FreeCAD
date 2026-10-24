@@ -174,6 +174,56 @@ def removeFromComponent(compobject, subobject):
                 ArchCommands.setAsSubcomponent(subobject)
 
 
+def release_base_from_groups(obj, prop="Base"):
+    """Keep the Base of an Arch object as a child of that object only.
+
+    Draft.autogroup() puts a new object into the active Level (or other group).
+    If its Base object is already in that same group, the Base would be listed
+    twice in the tree: under the group and under the new object. Remove the Base
+    from the groups that now contain the new object, so that it is only claimed
+    by the new object. ViewProviderComponent.onDelete() puts it back into the
+    group if the new object is deleted.
+
+    Parameters
+    ----------
+    obj: App::DocumentObject
+        The newly created Arch object, already added to its group.
+    prop: str
+        The name of the property holding the child object. "Base" by default.
+        Objects that claim more than one child, such as the "Profile" of a
+        Frame, call this once for each of their properties.
+    """
+
+    base = getattr(obj, prop, None)
+    if base is None or not hasattr(base, "isDerivedFrom"):
+        return
+    if not base.isDerivedFrom("App::DocumentObject"):
+        return
+    # A Wall built on a Space does not claim the Space as a child (see
+    # ViewProviderComponent.claimChildren), so the Space must stay in its group
+    if Draft.getType(obj) == "Wall" and Draft.getType(base) == "Space":
+        return
+
+    # autogroup did not place obj (no active Level). If the Base already
+    # lives in a group (e.g. a Level it was dragged into), join that group.
+    obj_grouped = any(hasattr(p, "Group") and obj in p.Group for p in obj.InList)
+    if not obj_grouped:
+        for parent in base.InList:
+            if parent is obj or not hasattr(parent, "Group"):
+                continue
+            if Draft.getType(parent) == "Layer":  # layers are not containers
+                continue
+            if base in parent.Group:
+                parent.addObject(obj)
+                break
+
+    for parent in base.InList:
+        if parent is obj or not hasattr(parent, "Group"):
+            continue
+        if base in parent.Group and obj in parent.Group:
+            parent.removeObject(base)
+
+
 class Component(ArchIFC.IfcProduct):
     """The Arch Component object.
 
@@ -1884,6 +1934,56 @@ class ViewProviderComponent:
     def loads(self, state):
 
         return None
+
+    def onDelete(self, vobj, subelements):
+        """Keep the Base object when its host is deleted from the GUI.
+
+        The Base of an Arch object (for example the rectangle of a Slab) is
+        only claimed as a child in the tree. When the host is deleted, the Base
+        would end up in the document root. If the host is inside a group
+        (a Level, Building, etc.), move the Base into that same group first, and
+        make it visible again because it was hidden while it was the Base.
+
+        Returns
+        -------
+        bool:
+            True, so that the deletion goes ahead.
+        """
+
+        obj = vobj.Object
+        self.restoreChildToGroup(obj, getattr(obj, "Base", None))
+        return True
+
+    def restoreChildToGroup(self, obj, child):
+        """Put a claimed child of obj into the group that contains obj.
+
+        Used when obj is deleted, so that the child (the Base, or for example
+        the Profile of a Frame) is not left in the document root. Subclasses
+        that claim other children call this for each of them.
+
+        Parameters
+        ----------
+        obj: App::DocumentObject
+            The object being deleted.
+        child: App::DocumentObject
+            The child object to keep. Anything that is not an object is ignored.
+        """
+
+        if child is None or not hasattr(child, "isDerivedFrom"):
+            return
+        if not child.isDerivedFrom("App::DocumentObject"):
+            return
+        # Walls keep Space bases hidden and untouched, same as in claimChildren
+        if Draft.getType(obj) == "Wall" and Draft.getType(child) == "Space":
+            return
+
+        for parent in obj.InList:
+            if hasattr(parent, "Group") and obj in parent.Group:
+                if child not in parent.Group:
+                    parent.addObject(child)
+                if child.ViewObject:
+                    child.ViewObject.Visibility = True
+                break
 
     def claimChildren(self):
         """Define which objects will appear as children in the tree view.
