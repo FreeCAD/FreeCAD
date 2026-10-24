@@ -269,6 +269,12 @@ App::DocumentObjectExecReturn* Thickness::execute()
     // store shape before refinement
     this->rawShape = result;
     result = refineShapeIfActive(result);
-    this->Shape.setValue(getSolid(result));
+    TopoShape finalShape = getSolid(result);
+    if (!finalShape.isValid()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Thickness error: Resulting shape is invalid")
+        );
+    }
+    this->Shape.setValue(finalShape);
     return App::DocumentObject::StdReturn;
 }
