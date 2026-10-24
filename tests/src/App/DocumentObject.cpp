@@ -10,6 +10,7 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Interpreter.h>
+#include <Base/Type.h>
 
 using namespace App;
 
@@ -25,6 +26,9 @@ protected:
 
     void SetUp() override
     {
+        if (Base::Type::fromName("Part::Box").isBad()) {
+            GTEST_SKIP() << "Part module is unavailable";
+        }
         _docName = App::GetApplication().getUniqueDocumentName("test");
         _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
     }

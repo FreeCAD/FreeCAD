@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Translation.h>
 
 #include "GeometryFacade.h"
 #include "SketchAnalysis.h"

@@ -492,22 +492,22 @@ TEST_F(MoveProperty, otherDoc)
 }
 
 // Tests whether we can move a static property
-// test#Cube.Length -> FAIL
+// test#Group.Group -> FAIL
 TEST_F(MoveProperty, staticProperty)
 {
     // Arrange
-    App::DocumentObject* cube = doc1->addObject("Part::Box", "Cube");
-    App::Property* prop = cube->getPropertyByName("Length");
+    App::DocumentObject* group = doc1->addObject("App::DocumentObjectGroup", "Group");
+    App::Property* prop = group->getPropertyByName("Group");
 
     // Act
     EXPECT_THROW(varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1), Base::RuntimeError);
 
     // Assert
-    EXPECT_EQ(cube->getPropertyByName("Length"), prop);
-    EXPECT_EQ(varSet2Doc1->getDynamicPropertyByName("Length"), nullptr);
+    EXPECT_EQ(group->getPropertyByName("Group"), prop);
+    EXPECT_EQ(varSet2Doc1->getDynamicPropertyByName("Group"), nullptr);
 
     // Tear down
-    doc1->removeObject(cube->getNameInDocument());
+    doc1->removeObject(group->getNameInDocument());
 }
 
 // Tests whether we can move a static property
