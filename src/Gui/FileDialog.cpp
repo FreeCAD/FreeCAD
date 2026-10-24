@@ -31,6 +31,10 @@
 # include <shlobj.h>
 #endif
 
+#ifdef Q_OS_ANDROID
+# include <QJniObject>
+#endif
+
 #include <QApplication>
 #include <QButtonGroup>
 #include <QCompleter>
@@ -393,6 +397,50 @@ qsizetype indexOfFilterString(const FileDialog::FilterList& filterList, const QS
     return filterList.indexOf(FileDialog::Filter::fromFilterString(filterString));
 }
 
+#ifdef Q_OS_ANDROID
+namespace
+{
+/**
+ * Qt's Android platform theme implements QFileDialog with ACTION_OPEN_DOCUMENT /
+ * ACTION_CREATE_DOCUMENT, i.e. the system (on this ROM: vivo) picker. It hands back a
+ * content:// URI, but FreeCAD's document code -- C++, OCCT and the Python API -- only
+ * understands filesystem paths. MainActivity.resolveContentUri() maps the URI back to
+ * the file behind it, and this is where that bridge is applied, in FreeCAD's one
+ * file-dialog layer, so every workbench's Open/Save/Import/Export goes through it.
+ */
+QString androidPathForUri(const QString& file, bool forWrite)
+{
+    if (!file.startsWith(QLatin1String("content://"))) {
+        return file;
+    }
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+    if (!context.isValid()) {
+        return file;
+    }
+    QJniObject jfile = QJniObject::fromString(file);
+    QJniObject resolved = context.callObjectMethod(
+        "resolveContentUri",
+        "(Ljava/lang/String;Z)Ljava/lang/String;",
+        jfile.object(),
+        static_cast<jboolean>(forWrite)
+    );
+    if (!resolved.isValid()) {
+        return file;
+    }
+    const QString path = resolved.toString();
+    if (path.isEmpty()) {
+        return file;
+    }
+    Base::Console().message(
+        "SAF: %s -> %s\n",
+        file.toUtf8().constData(),
+        path.toUtf8().constData()
+    );
+    return path;
+}
+}  // namespace
+#endif
+
 #ifndef FC_OS_WIN32
 QStringList FileDialogInternal::nativeFileDialog(
     NativeFileDialogMode mode,
@@ -454,6 +502,12 @@ QStringList FileDialogInternal::nativeFileDialog(
         );
         selectedFilterIndex = 0;
     }
+#ifdef Q_OS_ANDROID
+    const bool forWrite = mode == NativeFileDialogMode::Save;
+    for (auto& file : selected) {
+        file = androidPathForUri(file, forWrite);
+    }
+#endif
     return selected;
 }
 #endif
