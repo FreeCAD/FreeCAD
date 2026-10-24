@@ -318,8 +318,8 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
         zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
 
         if (zCandidate.Magnitude() <= Precision::Confusion()) {
-            zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
-                                                        : gp_Vec(0.0, 1.0, 0.0);
+            zCandidate = std::abs(xDirection.Z()) < 0.9 ? BaseGeometry::Z_POS_VEC
+                                                        : BaseGeometry::Y_POS_VEC;
 
             zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
         }
