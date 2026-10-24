@@ -84,6 +84,7 @@
 #include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
@@ -358,7 +359,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);      //NOLINT
 }
 
-TopoDS_Shape DrawViewSection::getShapeToCut()
+Part::TopoShape DrawViewSection::getShapeToCut()
 {
     App::DocumentObject* base = BaseView.getValue();
     TechDraw::DrawViewPart* dvp = nullptr;
@@ -368,7 +369,7 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
         return {};
     }
 
-    TopoDS_Shape shapeToCut;
+    Part::TopoShape shapeToCut;
     if (base->isDerivedFrom<TechDraw::DrawViewSection>()) {
         dvs = static_cast<TechDraw::DrawViewSection*>(base);
         shapeToCut = dvs->getShapeToCut();
@@ -396,9 +397,9 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     return shapeToCut;
 }
 
-TopoDS_Shape DrawViewSection::getShapeForDetail() const
+Part::TopoShape DrawViewSection::getShapeForDetail() const
 {
-    return ShapeUtils::rotateShape(getCutShape(), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(m_cutShape, getProjectionCS(), Rotation.getValue());
 }
 
 App::DocumentObjectExecReturn* DrawViewSection::execute()
@@ -415,15 +416,15 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
         return DrawView::execute();     //NOLINT
     }
 
-    TopoDS_Shape baseShape = getShapeToCut();
+    Part::TopoShape baseShape = getShapeToCut();
 
-    if (baseShape.IsNull()) {
+    if (baseShape.isNull()) {
         return DrawView::execute();     //NOLINT
     }
 
     // is SectionOrigin valid?
     Bnd_Box centerBox;
-    BRepBndLib::AddOptimal(baseShape, centerBox);
+    BRepBndLib::AddOptimal(baseShape.getShape(), centerBox);
     centerBox.SetGap(0.0);
     Base::Vector3d orgPnt = SectionOrigin.getValue();
 
@@ -456,13 +457,13 @@ bool DrawViewSection::isBaseValid() const
     return base && base->isDerivedFrom<TechDraw::DrawViewPart>();
 }
 
-void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
+void DrawViewSection::sectionExec(const Part::TopoShape& baseShape)
 {
     if (waitingForHlr() || waitingForCut()) {
         return;
     }
 
-    if (baseShape.IsNull()) {
+    if (baseShape.isNull()) {
         // should be caught before this
         return;
     }
@@ -501,17 +502,16 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
     }
 }
 
-void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
+void DrawViewSection::makeSectionCut(const Part::TopoShape& baseShape)
 {
     showProgressMessage(getNameInDocument(), "is making section cut");
 
     // We need to copy the shape to not modify the BRepstructure
-    BRepBuilderAPI_Copy BuilderCopy(baseShape);
-    TopoDS_Shape myShape = BuilderCopy.Shape();
+    Part::TopoShape myShape = baseShape.makeElementCopy();
     m_saveShape = myShape;// save shape for 2nd pass
 
     if (debugSection()) {
-        BRepTools::Write(myShape, "DVSCopy.brep");// debug
+        BRepTools::Write(myShape.getShape(), "DVSCopy.brep");// debug
     }
 
     if (debugSection()) {
@@ -520,41 +520,39 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
     // perform the cut. We cut each solid in myShape individually to avoid issues
     // where a compound BaseShape does not cut correctly.
-    BRep_Builder builder;
-    TopoDS_Compound cutPieces;
-    builder.MakeCompound(cutPieces);
-    TopExp_Explorer expl(myShape, TopAbs_SOLID);
-    for (; expl.More(); expl.Next()) {
-        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-        FCBRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+    std::vector<Part::TopoShape> cutPieces;
+    for (const auto& s : myShape.getSubTopoShapes(TopAbs_SOLID)) {
+        FCBRepAlgoAPI_Cut mkCut(s.getShape(), m_cuttingTool);
         if (!mkCut.IsDone()) {
             Base::Console().warning("DVS: Section cut has failed in {}\n", getNameInDocument());
             continue;
         }
-        builder.Add(cutPieces, mkCut.Shape());
+        cutPieces.push_back(Part::TopoShape(0, s.Hasher).makeElementShape(
+            mkCut, std::vector<Part::TopoShape>{s, m_cuttingTool}, Part::OpCodes::Cut));
     }
 
     // cutPieces contains result of cutting each subshape in baseShape with tool
-    m_cutPieces = cutPieces;
+    m_cutPieces = Part::TopoShape(0, myShape.Hasher).makeElementCompound(cutPieces);
     if (debugSection()) {
-        BRepTools::Write(cutPieces, "DVSCutPieces1.brep");// debug
+        BRepTools::Write(m_cutPieces.getShape(), "DVSCutPieces1.brep");// debug
     }
 
     // second cut if requested.  Sometimes the first cut includes extra uncut
     // pieces.
     if (trimAfterCut()) {
-        FCBRepAlgoAPI_Cut mkCut2(cutPieces, m_cuttingTool);
+        FCBRepAlgoAPI_Cut mkCut2(m_cutPieces.getShape(), m_cuttingTool);
         if (mkCut2.IsDone()) {
-            m_cutPieces = mkCut2.Shape();
+            m_cutPieces = Part::TopoShape(0, m_cutPieces.Hasher).makeElementShape(
+                mkCut2, std::vector<Part::TopoShape>{m_cutPieces, m_cuttingTool}, Part::OpCodes::Cut);
             if (debugSection()) {
-                BRepTools::Write(m_cutPieces, "DVSCutPieces2.brep");// debug
+                BRepTools::Write(m_cutPieces.getShape(), "DVSCutPieces2.brep");// debug
             }
         }
     }
 
     // check for error in cut
     Bnd_Box testBox;
-    BRepBndLib::AddOptimal(m_cutPieces, testBox);
+    BRepBndLib::AddOptimal(m_cutPieces.getShape(), testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
@@ -568,17 +566,17 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 //! position, scale and rotate shape for buildGeometryObject
 //! save the cut shape for further processing
-TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShape, double shapeSize)
+Part::TopoShape DrawViewSection::prepareShape(const Part::TopoShape& uncenteredCutShape, double shapeSize)
 {
     (void)shapeSize;// shapeSize is not used in this base class, but is
                     // interesting for derived classes
     // build display geometry as in DVP, with minor mods
-    TopoDS_Shape preparedShape;
+    Part::TopoShape preparedShape;
     try {
         Base::Vector3d origin(0.0, 0.0, 0.0);
         m_projectionCS = getProjectionCS(origin);
         gp_Pnt inputCenter;
-        inputCenter = ShapeUtils::findCentroid(uncenteredCutShape, m_projectionCS);
+        inputCenter = ShapeUtils::findCentroid(uncenteredCutShape.getShape(), m_projectionCS);
         Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 
         m_cutShapeRaw = uncenteredCutShape;
@@ -597,7 +595,7 @@ TopoDS_Shape DrawViewSection::prepareShape(const TopoDS_Shape& uncenteredCutShap
                 ShapeUtils::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
         }
         if (debugSection()) {
-            BRepTools::Write(m_cutShape, "DVSCutShape.brep");// debug
+            BRepTools::Write(m_cutShape.getShape(), "DVSCutShape.brep");// debug
             //            DrawUtil::dumpCS("DVS::makeSectionCut - CS to GO",
             //            viewAxis);
         }
@@ -635,13 +633,13 @@ void DrawViewSection::onSectionCutFinished()
 
     m_preparedShape = prepareShape(getShapeToPrepare(), m_shapeSize);
     if (debugSection()) {
-        BRepTools::Write(m_preparedShape, "DVSPreparedShape.brep");// debug
+        BRepTools::Write(m_preparedShape.getShape(), "DVSPreparedShape.brep");// debug
     }
 
     postSectionCutTasks();
 
     // display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(getShapeForGeometryBuild(), getProjectionCS());
+    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
     if (!DU::isGuiUp()) {
         onHlrFinished();
     }
@@ -649,7 +647,7 @@ void DrawViewSection::onSectionCutFinished()
 
 TopoDS_Shape DrawViewSection::getShapeForGeometryBuild() const
 {
-    return m_preparedShape;
+    return m_preparedShape.getShape();
 }
 
 void DrawViewSection::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
@@ -1189,7 +1187,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
 //! return the center of the shape resulting from the cut operation
 Base::Vector3d DrawViewSection::getCutCentroid() const
 {
-    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS());
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces.getShape(), getProjectionCS());
     return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
 

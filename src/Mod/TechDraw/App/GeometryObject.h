@@ -35,14 +35,17 @@
 #include <vector>
 
 #include <HLRAlgo_Projector.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
+#include <Mod/Part/App/TopoShape.h>
 
 #include "Geometry.h"
+#include "HLRExtractor.h"
 #include "ShapeUtils.h"
 
 
@@ -69,6 +72,13 @@ public:
     GeometryObject(const std::string& parent, TechDraw::DrawView* parentObj);
     virtual ~GeometryObject();
 
+    struct EdgeSegment {
+        TopoDS_Shape edge;
+        std::string mappedName;
+        std::string parentName;
+        int number = 0;
+    };
+
     void clear();
 
     //! Returns 2D bounding box
@@ -83,12 +93,17 @@ public:
     void setEdgeGeometry(BaseGeomPtrVector newGeoms) { edgeGeom = newGeoms; }
 
     HLRAlgo_Projector getProjector(const gp_Ax2& viewAxis) const;
-    void projectShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
-    void projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
+    void projectShape(const  Part::TopoShape& inPartShape, const gp_Ax2& viewAxis);
+    void projectShapeWithPolygonAlgo(const  Part::TopoShape& input, const gp_Ax2& viewAxis);
+    const Part::TopoShape& getPartShape() const { return m_partShape; }
     static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS, bool invertYRequired = true);
     static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape, const gp_Ax2& projCS);
     static TopoDS_Shape projectFace(const TopoDS_Shape& face, const gp_Ax2& CS);
     void makeTDGeometry();
+    std::vector<EdgeSegment> buildSegmentsFromTagged(const std::vector<HLREdge>& hlrEdges,
+                                                      const TopTools_IndexedMapOfShape& edgeMap,
+                                                      const TopTools_IndexedMapOfShape& faceMap);
+    void buildAndInvert(TopoDS_Shape& shape);
     void extractGeometry(EdgeClass category, bool visible);
     void addFaceGeom(FacePtr f);
     void clearFaceGeom();
@@ -144,7 +159,18 @@ protected:
     TopoDS_Shape hidSeam;
     TopoDS_Shape hidIso;
 
-    void addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category, bool visible);
+    std::vector<EdgeSegment> m_visHardSegments;
+    std::vector<EdgeSegment> m_visSmoothSegments;
+    std::vector<EdgeSegment> m_visSeamSegments;
+    std::vector<EdgeSegment> m_visIsoSegments;
+    std::vector<EdgeSegment> m_visOutlineSegments;
+    std::vector<EdgeSegment> m_hidHardSegments;
+    std::vector<EdgeSegment> m_hidSmoothSegments;
+    std::vector<EdgeSegment> m_hidSeamSegments;
+    std::vector<EdgeSegment> m_hidIsoSegments;
+    std::vector<EdgeSegment> m_hidOutlineSegments;
+
+    void addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category, bool visible, const std::vector<EdgeSegment>& segments);
     TechDraw::DrawViewDetail* isParentDetail();
 
     //similar function in Geometry?
@@ -163,6 +189,7 @@ protected:
 
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
+    Part::TopoShape m_partShape;
     int m_isoCount;
     bool m_isPersp;
     double m_focus;

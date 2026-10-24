@@ -577,7 +577,7 @@ DimensionGeometry TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, const Referenc
 
     std::vector<TopoDS_Edge> edges;
     for (auto& ref : refs) {
-        std::vector<TopoDS_Shape> shapesAll = ShapeExtractor::getShapesFromObject(ref.getObject());
+        std::vector<Part::TopoShape> shapesAll = ShapeExtractor::getShapesFromObject(ref.getObject());
         if (shapesAll.empty()) {
             //reference has no geometry
             return DimensionGeometry::isInvalid;

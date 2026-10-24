@@ -67,6 +67,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include <Mod/Part/App/TopoShape.h>
+
 #include "DrawUtil.h"
 #include "ShapeUtils.h"
 
@@ -423,6 +425,27 @@ TopoDS_Shape ShapeUtils::rotateShape(const TopoDS_Shape& input, const gp_Ax2& vi
     return transShape;
 }
 
+//!rotates a shape about a viewAxis
+Part::TopoShape ShapeUtils::rotateShape(const Part::TopoShape& input, const gp_Ax2& viewAxis,
+                                        double rotAngle)
+{
+    Part::TopoShape transShape(input.Tag, input.Hasher);
+    if (input.isNull()) {
+        return transShape;
+    }
+
+    try {
+        gp_Ax1 rotAxis = viewAxis.Axis();
+        gp_Trsf tempTransform;
+        tempTransform.SetRotation(rotAxis, Base::toRadians(rotAngle));
+        transShape.makeElementTransform(input, tempTransform);
+    }
+    catch (...) {
+        return transShape;
+    }
+    return transShape;
+}
+
 //!scales a shape about origin
 TopoDS_Shape ShapeUtils::scaleShape(const TopoDS_Shape& input, double scale)
 {
@@ -433,6 +456,22 @@ TopoDS_Shape ShapeUtils::scaleShape(const TopoDS_Shape& input, double scale)
 
         BRepBuilderAPI_Transform mkTrf(input, scaleTransform);
         transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        return transShape;
+    }
+    return transShape;
+}
+
+//!scales a shape about origin
+Part::TopoShape ShapeUtils::scaleShape(const Part::TopoShape& input, double scale)
+{
+    Part::TopoShape transShape(input.Tag, input.Hasher);
+    try {
+        gp_Trsf scaleTransform;
+        scaleTransform.SetScale(gp_Pnt(0, 0, 0), scale);
+
+        transShape.makeElementTransform(input, scaleTransform);
     }
     catch (...) {
         return transShape;
@@ -457,7 +496,28 @@ TopoDS_Shape ShapeUtils::moveShape(const TopoDS_Shape& input, const Base::Vector
     return transShape;
 }
 
+//!moves a shape
+Part::TopoShape ShapeUtils::moveShape(const Part::TopoShape& input, const Base::Vector3d& motion)
+{
+    Part::TopoShape transShape(input.Tag, input.Hasher);
+    try {
+        gp_Trsf xlate;
+        xlate.SetTranslation(gp_Vec(motion.x, motion.y, motion.z));
+
+        transShape.makeElementTransform(input, xlate);
+    }
+    catch (...) {
+        return transShape;
+    }
+    return transShape;
+}
+
 TopoDS_Shape ShapeUtils::centerShape(const TopoDS_Shape& input, const Base::Vector3d& centroid)
+{
+    return moveShape(input, -centroid);
+}
+
+Part::TopoShape ShapeUtils::centerShape(const Part::TopoShape& input, const Base::Vector3d& centroid)
 {
     return moveShape(input, -centroid);
 }
@@ -576,4 +636,3 @@ bool ShapeUtils::edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1)
     return false;
 
 }
-
