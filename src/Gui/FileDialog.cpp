@@ -431,11 +431,7 @@ QString androidPathForUri(const QString& file, bool forWrite)
     if (path.isEmpty()) {
         return file;
     }
-    Base::Console().message(
-        "SAF: %s -> %s\n",
-        file.toUtf8().constData(),
-        path.toUtf8().constData()
-    );
+    Base::Console().message("SAF: %s -> %s\n", file.toUtf8().constData(), path.toUtf8().constData());
     return path;
 }
 }  // namespace
@@ -502,12 +498,12 @@ QStringList FileDialogInternal::nativeFileDialog(
         );
         selectedFilterIndex = 0;
     }
-#ifdef Q_OS_ANDROID
+# ifdef Q_OS_ANDROID
     const bool forWrite = mode == NativeFileDialogMode::Save;
     for (auto& file : selected) {
         file = androidPathForUri(file, forWrite);
     }
-#endif
+# endif
     return selected;
 }
 #endif
