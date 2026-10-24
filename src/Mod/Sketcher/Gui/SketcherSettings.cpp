@@ -27,17 +27,72 @@
 #include <QPixmap>
 #include <QStyledItemDelegate>
 
+#include <string>
+#include <vector>
 
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Command.h>
+#include <Gui/PreferencePages/ThemeDefaults.h>
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
 #include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
+
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+constexpr const char* sketcherGeneralGroup = "BaseApp/Preferences/Mod/Sketcher/General";
+
+const std::vector<std::string>& sketcherViewColors()
+{
+    static const std::vector<std::string> colors = {
+        "SketchEdgeColor",
+        "SketchVertexColor",
+        "EditedEdgeColor",
+        "ConstructionColor",
+        "ExternalColor",
+        "ExternalDefiningColor",
+        "FullyConstrainedColor",
+        "ConstrainedDimColor",
+        "ConstrainedIcoColor",
+        "NonDrivingConstrDimColor",
+        "InvalidSketchColor",
+        "FullyConstraintElementColor",
+        "FullyConstraintConstructionElementColor",
+        "FullyConstraintInternalAlignmentColor",
+        "InternalAlignedGeoColor",
+        "DeactivatedConstrDimColor",
+        "ExprBasedConstrDimColor",
+        "CursorTextColor",
+        "CursorCrosshairColor",
+        "CreateLineColor",
+        "InformationColor",
+
+    };
+    return colors;
+}
+const std::vector<std::string>& sketcherGeneralColors()
+{
+    static const std::vector<std::string> colors = {
+        "GridLineColor",
+        "SketchFaceColor",
+
+    };
+    return colors;
+}
+// resolve line icon color from the stylesheet rather than the widget palette,
+// which on linux may still hold the host palette - see src/Gui/Application.cpp
+QBrush lineIconBrush()
+{
+    QLabel dummyLabel;
+    dummyLabel.show();
+    return {dummyLabel.palette().color(QPalette::Text)};
+}
+}  // namespace
 
 using namespace SketcherGui;
 
@@ -143,7 +198,7 @@ void SketcherSettings::saveSettings()
     {
         DimensionSingleTool,
         DimensionSeparateTools,
-        DimensionBoth
+        DimensionBoth,
     };
 
     // Dimensioning constraints mode
@@ -367,7 +422,7 @@ bool SketcherSettingsGrid::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+        const QBrush brush = lineIconBrush();
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->gridLinePattern->setItemIcon(i, icon);
@@ -528,6 +583,14 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVSectionView->onRestore();
     ui->axisTransparency->onRestore();
     ui->occludedAxisTransparency->onRestore();
+}
+
+void SketcherSettingsGrid::resetSettingsToDefaults()
+{
+    PreferencePage::resetSettingsToDefaults();
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    Gui::ThemeDefaults::applyWidgetColors(this);
+    loadSettings();
 }
 
 /**
@@ -718,13 +781,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-
-        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
-        QLabel dummyLabel;
-        dummyLabel.show();
-
-        QColor textColor = dummyLabel.palette().color(QPalette::Text);
-        QBrush brush = QBrush(textColor);
+        const QBrush brush = lineIconBrush();
 
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
@@ -917,6 +974,39 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->AxisLinePattern->setCurrentIndex(index);
+}
+
+void SketcherSettingsAppearance::loadThemeDefaults()
+{
+    Gui::ThemeDefaults::applyColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::applyColors(sketcherGeneralGroup, sketcherGeneralColors());
+}
+
+void SketcherSettingsAppearance::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hSketcherView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View"
+    );
+
+    // line patterns use plain combo boxes, which the base reset doesn't handle
+    hSketcherView->RemoveInt("AxisLinePattern");
+    hSketcherView->RemoveInt("ConstructionPattern");
+    hSketcherView->RemoveInt("DimensionalConstraintLinePattern");
+    hSketcherView->RemoveInt("EdgePattern");
+    hSketcherView->RemoveInt("ExternalDefiningPattern");
+    hSketcherView->RemoveInt("ExternalDefiningPattern");
+    hSketcherView->RemoveInt("ExternalPattern");
+    hSketcherView->RemoveInt("InformationPattern");
+    hSketcherView->RemoveInt("InternalPattern");
+
+    Gui::ThemeDefaults::removeColors(viewGroup, sketcherViewColors());
+    Gui::ThemeDefaults::removeColors(sketcherGeneralGroup, sketcherGeneralColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 /**
