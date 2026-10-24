@@ -67,7 +67,6 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
-    -   id: mixed-line-ending
 -   repo: https://github.com/psf/black-pre-commit-mirror
     rev: 4160603246a6b365d4a2af661c6d71b0a0f50478  # frozen: 26.5.1
     hooks:
@@ -92,3 +91,7 @@ repos:
         language: python
         files: '(pixi\.toml|recipe\.yaml|declarations\.nsh|freecad\.spec)'
         pass_filenames: false
+    -   id: preserve-eol
+        name: Preserve line endings from HEAD
+        entry: python tools/lint/preserve_eol.py --revision auto
+        language: python
