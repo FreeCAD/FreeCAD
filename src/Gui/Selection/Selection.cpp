@@ -740,6 +740,9 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
     std::set<App::DocumentObject*> objs;
 
     for (auto& sel : _SelList) {
+        if (pcDoc && pcDoc != sel.pDoc) {
+            continue;
+        }
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
             auto ret = objs.insert(pObject);
             if (ret.second) {
