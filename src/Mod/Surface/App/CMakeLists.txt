@@ -51,6 +51,8 @@ SET(Surface_SRCS
 
 add_library(Surface SHARED ${Surface_SRCS})
 
+include(FreehandBSpline.cmake)
+
 if(FREECAD_USE_PCH)
     target_precompile_headers(Surface PRIVATE
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">

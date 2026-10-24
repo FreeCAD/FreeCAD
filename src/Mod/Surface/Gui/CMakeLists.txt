@@ -61,6 +61,8 @@ add_library(SurfaceGui SHARED
     ${SurfaceGuiIcon_SVG}
 )
 
+include(FreehandBSpline.cmake)
+
 if(FREECAD_USE_PCH)
     target_precompile_headers(SurfaceGui PRIVATE
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
