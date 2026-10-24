@@ -140,3 +140,21 @@ TEST_F(XMLParserTest, TestWriteValidDocument)
     std::getline(fin, line);
     EXPECT_EQ(line, "</FCParameters>");
 }
+
+TEST_F(XMLParserTest, TestWriteUTF8Content)
+{
+    Base::XMLElement xml;
+    xml.tag = "FCParameters";
+    auto text = std::make_unique<Base::XMLElement>();
+    text->tag = "FCText";
+    const std::string value = "caf\xC3\xA9-th\xC3\xA9\xC3\xA2tre";
+    text->content = value;
+    xml.children.emplace_back(std::move(text));
+
+    const fs::path saveTo = Base::FileInfo::getTempFileName();
+    Base::SaveXMLFile(saveTo, xml);
+    auto parsedXML = Base::ParseXMLFile(saveTo);
+
+    ASSERT_EQ(parsedXML->children.size(), 1);
+    EXPECT_EQ(parsedXML->children[0]->content, value);
+}
