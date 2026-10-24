@@ -59,6 +59,12 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
         this,
         &DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished
     );
+    connect(
+        ui->buttonApplyToExisting,
+        &QPushButton::clicked,
+        this,
+        &DlgSettings3DViewPart::onApplyToExistingClicked
+    );
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
@@ -119,17 +125,26 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 
 void DlgSettings3DViewPart::saveSettings()
 {
+    // Save defaults for newly created objects. Existing objects are only updated
+    // when the user explicitly clicks "Apply to open documents".
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+}
 
-    // search for Part view providers and apply the new settings
-    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (auto it : docs) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(it);
-        std::vector<Gui::ViewProvider*> views = doc->getViewProvidersOfType(
-            ViewProviderPart::getClassTypeId()
-        );
-        for (auto view : views) {
+void DlgSettings3DViewPart::onApplyToExistingClicked()
+{
+    saveSettings();
+
+    // Explicitly apply the saved tessellation preferences to open documents.
+    const auto docs = App::GetApplication().getDocuments();
+    for (App::Document* appDoc : docs) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(appDoc);
+        if (!doc) {
+            continue;
+        }
+
+        const auto views = doc->getViewProvidersOfType(ViewProviderPart::getClassTypeId());
+        for (Gui::ViewProvider* view : views) {
             static_cast<ViewProviderPart*>(view)->reload();
         }
     }
