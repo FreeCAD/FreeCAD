@@ -212,7 +212,10 @@ void DrawViewCollection::unsetupObject()
     // Remove the collection's views from document
     std::string docName = getDocument()->getName();
 
-    for (auto* view : Views.getValues()) {
+    // Removing a view breaks its backlink and mutates Views. Iterate over a
+    // snapshot so the range iterator is not invalidated by removeObject().
+    const std::vector<App::DocumentObject*> views = Views.getValues();
+    for (auto* view : views) {
         if (view->isAttachedToDocument()) {
             std::string viewName = view->getNameInDocument();
             Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
