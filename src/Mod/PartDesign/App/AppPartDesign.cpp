@@ -50,6 +50,7 @@
 #include "FeatureMultiTransform.h"
 #include "FeaturePad.h"
 #include "FeaturePathPattern.h"
+#include "FeatureRib.h"
 #include "FeaturePipe.h"
 #include "FeaturePointPattern.h"
 #include "FeaturePocket.h"
@@ -115,6 +116,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Body                        ::init();
     PartDesign::FeatureExtrude              ::init();
     PartDesign::Pad                         ::init();
+    PartDesign::Rib                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
     PartDesign::Revolved                    ::init();
