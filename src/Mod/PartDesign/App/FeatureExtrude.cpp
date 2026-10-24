@@ -42,6 +42,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Converter.h>
 #include <Base/ProgramVersion.h>
@@ -375,6 +376,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         return App::DocumentObject::StdReturn;
     }
 
+    // const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
@@ -469,6 +471,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     catch (const Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
+
+    sketchshape.markOwnership(getID());
 
     // if the Base property has a valid shape, fuse the prism into it
     TopoShape base = getBaseTopoShape(true);
@@ -764,7 +768,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
 
         // --- Combine generated prisms (all in global CS) ---
-        TopoShape prism(0, getDocument()->getStringHasher());
+        TopoShape prism = makeTopoShape();
         if (prisms.empty()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "No extrusion geometry was generated.")
@@ -805,7 +809,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prism.Tag = -this->getID();
 
             // Let's call algorithm computing a fuse operation:
-            TopoShape result(0, getDocument()->getStringHasher());
+            TopoShape result = makeTopoShape();
             try {
                 result.makeElementBoolean(
                     getBooleanMaker(),
@@ -906,7 +910,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     TopLoc_Location& invObjLoc
 )
 {
-    TopoShape prism(0, getDocument()->getStringHasher());
+    TopoShape prism = makeTopoShape();
 
     if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace"
         || method == "UpToShape") {
@@ -915,10 +919,10 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {
-            supportface = TopoShape();
+            supportface = makeTopoShape();
         }
 
-        TopoShape upToShape;
+        TopoShape upToShape = makeTopoShape();
         int faceCount = 1;
         // Find a valid shape, face or datum plane to extrude up to
         if (method == "UpToFace") {
@@ -947,7 +951,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         }
 
         try {
-            TopoShape _base;
+            TopoShape _base = makeTopoShape();
             if (addSubType != FeatureAddSub::Type::Subtractive) {
                 _base = base;  // avoid issue #16690
             }

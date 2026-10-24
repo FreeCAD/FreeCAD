@@ -202,6 +202,10 @@ App::DocumentObjectExecReturn* Revolution::execute()
         TopoShape sourceShape
             = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
 
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            sourceShape.markOwnership(getID());
+        }
+
         TopoDS_Shape shape = sourceShape.getShape();
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Cannot revolve null shape");
