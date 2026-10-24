@@ -308,6 +308,7 @@ void QGIViewDimension::updateDim()
     prepareGeometryChange();
     datumLabel->setDimString(QString::fromStdString(labelText));
     datumLabel->setToleranceString();
+    datumLabel->setSuffixString();
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
