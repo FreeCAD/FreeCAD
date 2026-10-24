@@ -349,7 +349,7 @@ class DocumentObject(ExtensionContainer):
         Note that an object can only be in a single group, hence only a single return value.
         """
 
-    def getParent(self) -> DocumentObjectGroup | None:
+    def getParent(self) -> DocumentObject | None:
         """
         Returns the group the object is in or None if it is not part of a group.
 
