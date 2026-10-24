@@ -88,7 +88,14 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
             return
 
         self.ui = Gui.draftToolBar
-        objs = [obj for obj in self.doc.Objects if groups.is_group(obj)]
+        sel = Gui.Selection.getSelection()
+
+        excluded = set(sel)
+        for s in sel:
+            if groups.is_group(s):
+                excluded.update(s.InListRecursive)
+
+        objs = [obj for obj in self.doc.Objects if groups.is_group(obj) and obj not in excluded]
         objs.sort(key=lambda obj: obj.Label)
         self.objects = [None] + [None] + objs
         self.labels = (
