@@ -2253,6 +2253,8 @@ void FCDepthFunc::set(int32_t f)
 
 SO_NODE_SOURCE(SoFCPathAnnotation)
 
+bool SoFCPathAnnotation::renderingOnTop = false;
+
 SoFCPathAnnotation::SoFCPathAnnotation(ViewProvider* vp, const char* sub, View3DInventorViewer* viewer)
     : viewProvider(vp)
     , subname(sub ? sub : "")
@@ -2333,6 +2335,9 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
         if (zbenabled) {
             glDisable(GL_DEPTH_TEST);
         }
+
+        const bool prevRenderingOnTop = renderingOnTop;
+        renderingOnTop = true;
 
         if (det) {
             inherited::GLRenderInPath(action);
@@ -2437,6 +2442,8 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 }
             }
         }
+
+        renderingOnTop = prevRenderingOnTop;
 
         if (zbenabled) {
             glEnable(GL_DEPTH_TEST);
