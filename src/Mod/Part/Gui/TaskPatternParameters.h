@@ -145,7 +145,11 @@ protected:
     void clearActiveDirectionWidget();
 
     virtual App::DocumentObject* getPatternObject() const = 0;
-    virtual void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) = 0;
+    virtual void fillDirectionCombo(
+        Gui::ComboLinks& combo,
+        Part::LinearPatternDirection direction,
+        bool allowEmpty = false
+    ) = 0;
     virtual void onReferenceSelectionRequested() = 0;
     virtual void onPatternParametersChanged() = 0;
     virtual void setupPatternTransaction() = 0;

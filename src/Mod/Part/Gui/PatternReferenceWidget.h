@@ -21,6 +21,7 @@ public:
     static constexpr int DefaultDirectionUserData = -2;
     static constexpr int SelectReferenceUserData = -3;
     static constexpr int ObjectDirectionUserData = -4;
+    static constexpr int NoDirectionUserData = -5;
 
     explicit PatternReferenceWidget(QWidget* parent = nullptr);
 

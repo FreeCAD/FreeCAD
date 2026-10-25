@@ -313,15 +313,15 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     }
 
     gp_Pnt position;
-    gp_Vec tangent;
-    curve.D1(parameter, position, tangent);
+    gp_Vec currentTangent;
+    curve.D1(parameter, position, currentTangent);
 
-    if (tangent.Magnitude() <= Precision::Confusion()) {
+    if (currentTangent.Magnitude() <= Precision::Confusion()) {
         throw Base::ValueError("Path tangent is null");
     }
-    tangent.Normalize();
+    currentTangent.Normalize();
     if (reversed) {
-        tangent.Reverse();
+        currentTangent.Reverse();
     }
 
     gp_Trsf toOrigin;
@@ -333,7 +333,7 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
 
     gp_Trsf rotationTransform;
     if (align && wantedTangent) {
-        if (tangent.Magnitude() <= Precision::Confusion()) {
+        if (currentTangent.Magnitude() <= Precision::Confusion()) {
             throw Base::ValueError("Path tangent is null");
         }
 
@@ -344,7 +344,7 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
         rotationAxis.Normalize();
 
         gp_Vec from(*wantedTangent);
-        gp_Vec to(tangent);
+        gp_Vec to(currentTangent);
 
         from -= rotationAxis * from.Dot(rotationAxis);
         to -= rotationAxis * to.Dot(rotationAxis);
@@ -371,7 +371,7 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     // toOrigin -> rotationTransform -> toTarget
     const gp_Trsf frame = toTarget * rotationTransform * toOrigin;
 
-    return {frame, position, tangent};
+    return {frame, position, currentTangent};
 }
 
 }  // namespace
@@ -563,18 +563,13 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     auto* pathFeature = freecad_cast<Part::Feature*>(Path.getValue());
     gp_Vec fallbackVertical = BaseGeometry::Z_POS_VEC;
     if (auto* pathSketch = freecad_cast<Part::Part2DObject*>(pathFeature)) {
-        const gp_Trsf supportTransform = Base::convertTo<gp_Trsf>(
-            static_cast<App::DocumentObject*>(pathSketch)->getPlacement()
-        );
         fallbackVertical = gp_Vec(
-                               Base::convertTo<gp_XYZ>(
-                                   pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection()
-                               )
-        )
-                               .Transformed(supportTransform);
+            Base::convertTo<gp_XYZ>(pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection())
+        );
     }
 
     gp_Vec wantedVertical = getWantedDirection(VerticalAxis).value_or(fallbackVertical);
+    wantedVertical.Normalize();
     if (FlipVerticalAxis.getValue()) {
         wantedVertical.Reverse();
     }
@@ -599,15 +594,11 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     }
 
     // correct the transform by the angle between the wanted tangent and origin tangent
-    gp_Vec rotationAxis = wantedVertical;
-    rotationAxis.Normalize();
-
     const double angle = std::atan2(
-        rotationAxis.Dot(originTangent.Crossed(wantedTangent)),
+        wantedVertical.Dot(originTangent.Crossed(wantedTangent)),
         originTangent.Dot(wantedTangent)
     );
-
-    const gp_Quaternion tangentCorrection(rotationAxis, angle);
+    const gp_Quaternion tangentCorrection(wantedVertical, angle);
 
     std::list<gp_Trsf> transformations;
     for (std::size_t i = 0; i < distances.size(); ++i) {
