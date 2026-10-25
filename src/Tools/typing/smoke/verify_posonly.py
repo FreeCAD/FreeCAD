@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-'''
+"""
 Test whether all function definitions declare a positional-only arg.
-'''
+"""
+
 import ast
 import argparse
 from pathlib import Path
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose", action="store_true")
@@ -20,15 +20,16 @@ else:
     scripts_dir = Path(__file__).resolve().parent.parent
     src_dir = scripts_dir.parent.parent  # "src" dir
     files = sorted(
-        path for path in src_dir.rglob("*.pyi")
+        path
+        for path in src_dir.rglob("*.pyi")
         if scripts_dir not in path.parents  # ignore generated types
     )
     relative_to = src_dir
 
 
 for path in files:
-    if path.name == 'PropertyPythonContracts.pyi':
-        print(f'ignored: {path.relative_to(relative_to)}')
+    if path.name == "PropertyPythonContracts.pyi":
+        print(f"ignored: {path.relative_to(relative_to)}")
         continue  # they are not re-exported, so we dont care
 
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
