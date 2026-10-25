@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
+from DocumentObject import DocumentObject
 from DocumentObjectExtension import DocumentObjectExtension
-from typing import Any, Final, List, Tuple, Optional, Union, overload
+from typing import Any, Final, overload
+from collections.abc import Sequence
 
 
-@export(Include="App/Link.h", )
+@export(
+    Include="App/Link.h",
+)
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -15,10 +17,10 @@ class LinkBaseExtension(DocumentObjectExtension):
     Licence: LGPL
     """
 
-    LinkedChildren: Final[List[Any]] = []
+    LinkedChildren: Final[list[DocumentObject]]
     """Return a flattened (in case grouped by plain group) list of linked children"""
 
-    def configLinkProperty(self, *args, **kwargs) -> Any:
+    def configLinkProperty(self, *args, **kwargs) -> None:
         """
         Examples:
             Called with default names:
@@ -44,22 +46,19 @@ class LinkBaseExtension(DocumentObjectExtension):
         If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
         it is assumed that the actual property name is the same as 'key'
         """
-        ...
 
     def getLinkExtProperty(self, name: str, /) -> Any:
         """
         return the property value by its predefined name
         """
-        ...
 
     def getLinkExtPropertyName(self, name: str, /) -> str:
         """
         lookup the property name by its predefined name
         """
-        ...
 
     @overload
-    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str]]:
+    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str], ...]:
         ...
 
     @overload
@@ -70,6 +69,7 @@ class LinkBaseExtension(DocumentObjectExtension):
     def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]:
         ...
 
+    @overload
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         Overloads:
@@ -77,13 +77,15 @@ class LinkBaseExtension(DocumentObjectExtension):
             (index): return (name,type,doc) of a specific property
             (name): return (type,doc) of a specific property
         """
-        ...
 
     def setLink(
         self,
-        obj: Any,
-        subName: Optional[str] = None,
-        subElements: Optional[Union[str, Tuple[str, ...]]] = None,
+        obj: DocumentObject
+            | Sequence[DocumentObject | tuple[DocumentObject] | tuple[DocumentObject, str] | tuple[DocumentObject, str, list[str]]]
+            | dict[int, DocumentObject | tuple[DocumentObject] | tuple[DocumentObject, str] | tuple[DocumentObject, str, list[str]]]
+            | None,
+        subName: str | None = None,
+        subElements: str | tuple[str, ...] | None = None,
         /,
     ) -> None:
         """
@@ -95,7 +97,6 @@ class LinkBaseExtension(DocumentObjectExtension):
 
         subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
         """
-        ...
 
     def cacheChildLabel(self, enable: bool = True, /) -> None:
         """
@@ -104,16 +105,13 @@ class LinkBaseExtension(DocumentObjectExtension):
         The cache is not updated on child label change for performance reason. You must
         call this function on any child label change
         """
-        ...
 
     def flattenSubname(self, subname: str, /) -> str:
         """
         Return a flattened subname in case it references an object inside a linked plain group
         """
-        ...
 
     def expandSubname(self, subname: str, /) -> str:
         """
         Return an expanded subname in case it references an object inside a linked plain group
         """
-        ...
