@@ -840,6 +840,9 @@ class PostProcessor:
         # Use `with self.use_machine_state():`
         self.machine_state = None
 
+        # The parsed command names of the ignored and supported text properties
+        self._command_name_sets = {}
+
         # Handle job: can be single job or list of jobs
         if isinstance(job, list):
             self._jobs = job
@@ -2081,26 +2084,29 @@ class PostProcessor:
         from. A disabled operation must not block or colour the output."""
         return [op for op in self._operations if PathUtil.activeForOp(op)]
 
-    def _solve_pose(self, placement, chain):
+    def _solve_pose(self, placement, chain, current=None):
         """The rotary positions that index the machine to placement's tool
         axis: zeros when the axis is Z, the solver's answer otherwise.
+        current is where the rotaries are, the previous operation's
+        positions: of the poses that reach the plane the solver prefers the
+        nearest, so operations on one plane keep one pose.
         Returns (positions, reason); positions is None when unreachable."""
         import Path.Base.Generator.rotation as rotation
 
         if not _tool_axis_tilted(placement):
             return {axis.name: 0.0 for axis in chain}, None
         tool_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-        result = rotation.solve_orientation(self._machine, tool_axis)
+        result = rotation.solve_orientation(self._machine, tool_axis, current_state=current)
         if not result.success:
             return None, result.reason
         return {k: float(v) for k, v in result.angles.items()}, None
 
-    def _solve_positions(self, item, placement, chain):
+    def _solve_positions(self, item, placement, chain, current=None):
         """Rotary positions for an operation, or a refusal naming the plane,
         the machine and its rotary limits."""
         import Path.Dressup.Utils as PathDressup
 
-        positions, reason = self._solve_pose(placement, chain)
+        positions, reason = self._solve_pose(placement, chain, current)
         if positions is not None:
             return positions
         plane = getattr(PathDressup.baseOp(item.source), "Workplane", None)
@@ -2240,6 +2246,9 @@ class PostProcessor:
             return frame, angles
 
         result = []
+        # Where the rotaries are: the last operation's positions. A tool or
+        # fixture change does not move them, so this outlives the pose.
+        positions = None
         for section_name, sublist in postables:
             pose = None  # (frame, angles) the machine is at; None when not assumed
             declared = False  # a TWP plane is in effect
@@ -2284,7 +2293,7 @@ class PostProcessor:
 
                 if tilted:
                     self._check_rotation_strategy(strategy, item)
-                positions = self._solve_positions(item, placement, chain)
+                positions = self._solve_positions(item, placement, chain, positions)
 
                 # A plane that will not be declared has no pose of its own
                 # beyond the rotary angles: two datum planes at different
@@ -2420,6 +2429,7 @@ class PostProcessor:
 
             # could be "gcode" in the block, so MachineState is now invalid
             self.machine_state.setState(None)
+            self.machine_state.addGcodeText(item.data["str"])
             return
 
         if not item.path:
@@ -3344,12 +3354,14 @@ class PostProcessor:
 
         chain = rotation.build_kinematic_chain(self._machine)
         previous = None
+        current = None
         for op in self._operations_to_post():
             base = PathDressup.baseOp(op)
             placement = getattr(base, "Placement", None) or FreeCAD.Placement()
-            positions, _ = self._solve_pose(placement, chain)
+            positions, _ = self._solve_pose(placement, chain, current)
             if positions is None:
                 continue
+            current = positions
             key = tuple(sorted((k, round(float(v), 6)) for k, v in positions.items()))
             if previous is not None and key != previous:
                 return True
@@ -3382,6 +3394,20 @@ class PostProcessor:
             "squawkType": squawk_type,
             "squawkIcon": f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{icon_map.get(squawk_type, 'Sanity_Note')}.svg",
         }
+
+    def _command_names(self, value) -> frozenset:
+        """The command names in a text property, one per line, or in a list.
+
+        A text property is matched name by name, not as a substring: G1 is
+        not in "G17", nor G5 in "G54".
+        """
+        if not isinstance(value, str):
+            return frozenset(value or ())
+        names = self._command_name_sets.get(value)
+        if names is None:
+            names = frozenset(name.strip() for name in value.splitlines() if name.strip())
+            self._command_name_sets[value] = names
+        return names
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
         """
@@ -3423,20 +3449,26 @@ class PostProcessor:
         if "as-is" in command.Annotations:
             # and we no longer know the MachineState
             self.machine_state.setState(None)
+            self.machine_state.addGcodeText(command.Annotations[Constants.ANNOT_AS_IS])
             return command.Annotations[Constants.ANNOT_AS_IS]
 
         # "ignored" commands need not be in "SUPPORTED_COMMANDS"
-        if command.Name != "" and command.Name in self.values["IGNORED_COMMANDS"]:
+        if command.Name != "" and command.Name in self._command_names(
+            self.values["IGNORED_COMMANDS"]
+        ):
             Path.Log.debug(f"ignored {command}")
             return None
 
         # Validate command is supported
-        supported = self.values.get(
-            "SUPPORTED_COMMANDS",
-            Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
+        supported = self._command_names(
+            self.values.get(
+                "SUPPORTED_COMMANDS",
+                Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
+            )
         )
         if not (
-            command.Name in supported
+            command.Name == ""  # a modal-stripped command: its parameters alone
+            or command.Name in supported
             or (len(command.Name) > 0 and command.Name[0] in Constants.GCODE_NON_CONFORMING_BARE)
             or command.Name.startswith("(")
             or command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
@@ -3521,10 +3553,11 @@ class PostProcessor:
         if command_name in Constants.GCODE_FIXTURES:
             return self._convert_fixture(command)
 
-        # Modal commands (G43, G80, G90, G91, G92, G93, G94, G95, G96, G97, G98, G99, etc.)
+        # Modal commands (G17, G43, G80, G90, G91, G92, G93, G94, G95, G96, G97, G98, G99, etc.)
         if (
             command_name
-            in Constants.GCODE_TOOL_LENGTH_OFFSET
+            in Constants.GCODE_PLANE
+            + Constants.GCODE_TOOL_LENGTH_OFFSET
             + Constants.GCODE_CYCLE_CANCEL
             + Constants.GCODE_DISTANCE_MODE
             + Constants.GCODE_OFFSET
@@ -3712,7 +3745,19 @@ class PostProcessor:
             if len(non_N_params) == 0:
                 return None
 
+        # An arc's center is given in its plane. The center word along the
+        # plane's normal, K on a G17 arc, J on G18, I on G19, says nothing
+        # (a helix carries its pitch in the axis word), and LinuxCNC and Fanuc
+        # refuse it. The plane follows G17 G18 G19 in the path and in the
+        # text blocks the post emits as written; the default is G17.
+        normal_word = None
+        if command_name in Constants.GCODE_MOVE_ARC:
+            plane = self.machine_state.Plane if self.machine_state else "G17"
+            normal_word = Constants.ARC_CENTER_WORD_NORMAL_TO_PLANE.get(plane)
+
         for parameter in parameter_order:
+            if parameter == normal_word:
+                continue
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]

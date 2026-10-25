@@ -156,8 +156,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "BIM_ArrayTools",
             "Arch_CutPlane",
-            "BIM_Extrude",
-            "BIM_ExtrudeFace",
+            "BIM_ExtrudeTools",
             "BIM_BooleanTools",
         ]
 
@@ -311,6 +310,19 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
 
+        class BIM_ExtrudeTools:
+            def GetCommands(self):
+                # default: face extrusion (BIM_ExtrudeFace)
+                return ("BIM_ExtrudeFace", "BIM_Extrude")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ExtrudeTools", "Extrude Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_ExtrudeFace"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
         class BIM_IfcManageTools:
             def GetCommands(self):
                 return (
@@ -398,6 +410,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
         FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
         FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
+        FreeCADGui.addCommand("BIM_ExtrudeTools", BIM_ExtrudeTools())
         FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
         FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools())
@@ -576,6 +589,7 @@ class BIMWorkbench(Workbench):
             ("BIM_BooleanTools", BIM_BooleanTools),
             ("BIM_CloneTools", BIM_CloneTools),
             ("BIM_Create2DViews", BIM_Create2DViews),
+            ("BIM_ExtrudeTools", BIM_ExtrudeTools),
             ("BIM_GenericTools", BIM_GenericTools),
             ("BIM_IfcManageTools", BIM_IfcManageTools),
             ("BIM_OffsetTools", BIM_OffsetTools),

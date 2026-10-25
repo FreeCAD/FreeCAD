@@ -1157,7 +1157,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         Base::Console().log("{} restore time: {}\n", doc.getDocumentName(), timing.d1.count());
         Base::Console().log("{} postprocess time: {}\n", doc.getDocumentName(), timing.d2.count());
     }
-    PropertyLinkBase::updateAllElementReferences();
+    PropertyLinkBase::updateAllElementReferences(openedDocs);
     _isRestoring = false;
 
     signalFinishOpenDocument();
@@ -2766,6 +2766,9 @@ void Application::initConfig(int argc, char ** argv)
         }
         if (auto branch = Base::FCVersionInfo::RepositoryBranch(); !branch.empty()) {
             Application::Config()["BuildRevisionBranch"] = branch;
+        }
+        if (auto type = Base::FCVersionInfo::BuildType(); !type.empty()) {
+            Application::Config()["BuildType"] = type;
         }
     }
 

@@ -28,6 +28,9 @@
 #include "PartFeature.h"
 #include "PatternConstants.h"
 #include "TopoShape.h"
+#include "CircularPatternExtension.h"
+#include "TopExp_Explorer.hxx"
+#include "BaseGeometry.h"
 
 using namespace Part;
 
@@ -61,15 +64,25 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
 
     std::list<Part::TopoShape> edges;
     const auto subnames = pathProperty.getSubValues();
+
     for (const auto& subname : subnames) {
         if (subname.empty()) {
             continue;
         }
+
         const TopoDS_Shape subshape = shape.getSubShape(subname.c_str());
-        if (subshape.ShapeType() != TopAbs_EDGE) {
-            throw Base::TypeError("Path subelements must be edges");
+
+        if (subshape.ShapeType() == TopAbs_EDGE) {
+            edges.emplace_back(subshape);
         }
-        edges.emplace_back(subshape);
+        else if (subshape.ShapeType() == TopAbs_FACE) {
+            for (TopExp_Explorer explorer(subshape, TopAbs_EDGE); explorer.More(); explorer.Next()) {
+                edges.emplace_back(explorer.Current());
+            }
+        }
+        else {
+            throw Base::TypeError("Path subelements must be edges or faces");
+        }
     }
 
     if (edges.empty()) {
@@ -106,6 +119,7 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
         bool connected = false;
         for (auto it = edges.begin(); it != edges.end(); ++it) {
             TopoDS_Edge candidate = TopoDS::Edge(it->getShape());
+
             TopoDS_Vertex candidateFirst;
             TopoDS_Vertex candidateLast;
             TopExp::Vertices(candidate, candidateFirst, candidateLast, true);
@@ -135,6 +149,7 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
             throw Base::ValueError("Path edges must form one connected path");
         }
     }
+
     return result;
 }
 
@@ -172,72 +187,102 @@ std::vector<double> calculateDistances(
     double endOffset
 )
 {
+    const double tolerance = Precision::Confusion();
+
+    if (!std::isfinite(pathLength) || pathLength < 0.0 || !std::isfinite(startOffset)
+        || !std::isfinite(endOffset)) {
+        throw Base::ValueError("Path length and offsets must be finite");
+    }
     if (startOffset < 0.0 || endOffset < 0.0) {
         throw Base::ValueError("Path offsets cannot be negative");
     }
-    if (startOffset + endOffset > pathLength + Precision::Confusion()) {
+    if (startOffset + endOffset > pathLength + tolerance) {
         throw Base::ValueError("Path offsets exceed the path length");
+    }
+    if (count < 1) {
+        throw Base::ValueError("Occurrence count must be at least one");
     }
 
     const double available = std::max(0.0, pathLength - startOffset - endOffset);
+
     std::vector<double> distances;
 
     if (mode == PathPatternSpacingMode::FixedCount) {
-        const int segments
-            = std::max(1, closed && startOffset == 0.0 && endOffset == 0.0 ? count : count - 1);
+        const bool fullClosedPath = closed && startOffset <= tolerance && endOffset <= tolerance;
+
+        const int segments = fullClosedPath ? count : std::max(1, count - 1);
         const double step = available / segments;
-        distances.reserve(count);
+
+        distances.reserve(static_cast<std::size_t>(count));
         for (int index = 0; index < count; ++index) {
             distances.push_back(startOffset + index * step);
         }
         return distances;
     }
 
-    if (spacing <= Precision::Confusion()) {
+    if (!std::isfinite(spacing) || spacing <= tolerance) {
         throw Base::ValueError("Path spacing must be greater than zero");
     }
 
     const int maximum = mode == PathPatternSpacingMode::FixedCountAndSpacing
         ? count
-        : std::numeric_limits<int>::max();
+        : PatternConstants::MaximumOccurrences + 1;
+
+    distances.reserve(
+        static_cast<std::size_t>(std::min(maximum, PatternConstants::MaximumOccurrences))
+    );
+
+    const double endDistance = pathLength - endOffset;
     for (int index = 0; index < maximum; ++index) {
         const double distance = startOffset + index * spacing;
-        if (distance > startOffset + available + Precision::Confusion()) {
+
+        if (distance > endDistance + tolerance) {
             break;
         }
+
         distances.push_back(distance);
         if (distances.size() > PatternConstants::MaximumOccurrences) {
-            const auto limit = std::to_string(PatternConstants::MaximumOccurrences);
-            throw Base::ValueError("Path pattern would create more than " + limit + " occurrences");
+            throw Base::ValueError(
+                "Path pattern would create more than "
+                + std::to_string(PatternConstants::MaximumOccurrences) + " occurrences"
+            );
         }
     }
+
     return distances;
 }
 
 /** Build an occurrence frame at an arc-length distance along the ordered path.
  * `ends` contains cumulative edge lengths. Evaluate from the edge's oriented start.
- * With alignment disabled the frame only translates. Otherwise X follows the tangent;
- * the preferred vertical vector is projected perpendicular to X to define Z. If they
- * are parallel, a world axis supplies a stable fallback. Y completes a right-handed frame.
+ * With alignment disabled the frame only translates. Otherwise the Tangent vector is aligned with
+ * the path's tangent on the first transform; the preferred vertical vector is projected
+ * perpendicular to X to define Z. If they are parallel, a world axis supplies a stable fallback. Y
+ * completes a right-handed frame.
  */
-gp_Trsf frameAt(
+std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     const std::vector<TopoDS_Edge>& edges,
     const std::vector<double>& ends,
     double distance,
     bool align,
-    const Base::Vector3d& vertical
+    const gp_Vec& vertical,
+    const bool reverseTangent = false,
+    const gp_Pnt* originPosition = nullptr
 )
 {
-    auto end = std::lower_bound(ends.begin(), ends.end(), distance - Precision::Confusion());
+    auto end = std::upper_bound(ends.begin(), ends.end(), distance);
     const std::size_t index = end == ends.end() ? edges.size() - 1
                                                 : static_cast<std::size_t>(end - ends.begin());
+
     const double edgeStart = index == 0 ? 0.0 : ends[index - 1];
-    const double localDistance = std::clamp(distance - edgeStart, 0.0, edgeLength(edges[index]));
+    const double edgeEnd = ends[index] - edgeStart;
+    const double localDistance = std::clamp(distance - edgeStart, 0.0, edgeEnd);
 
     BRepAdaptor_Curve curve(edges[index]);
     const bool reversed = edges[index].Orientation() == TopAbs_REVERSED;
     const double startParameter = reversed ? curve.LastParameter() : curve.FirstParameter();
+
     double parameter = startParameter;
+
     if (localDistance > Precision::Confusion()) {
         GCPnts_AbscissaPoint point(curve, reversed ? -localDistance : localDistance, startParameter);
         if (!point.IsDone()) {
@@ -249,26 +294,40 @@ gp_Trsf frameAt(
     gp_Pnt position;
     gp_Vec tangent;
     curve.D1(parameter, position, tangent);
-    if (reversed) {
+
+    if (tangent.Magnitude() <= Precision::Confusion()) {
+        throw Base::ValueError("Path tangent is null");
+    }
+    tangent.Normalize();
+    if (reversed ^ reverseTangent) {
         tangent.Reverse();
     }
 
-    gp_Trsf frame;
+    gp_Trsf toOrigin;
+    if (originPosition) {
+        toOrigin.SetTranslation(
+            gp_Vec(-originPosition->X(), -originPosition->Y(), -originPosition->Z())
+        );
+    }
+
+    gp_Trsf rotationTransform;
     if (align) {
-        if (tangent.Magnitude() <= Precision::Confusion()) {
-            throw Base::ValueError("Path tangent is null");
-        }
-        gp_Dir xDirection(tangent);
-        gp_Vec zCandidate = Base::convertTo<gp_Vec>(vertical);
+        const gp_Dir xDirection(tangent);
+
+        gp_Vec zCandidate = vertical;
         zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
+
         if (zCandidate.Magnitude() <= Precision::Confusion()) {
             zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
                                                         : gp_Vec(0.0, 1.0, 0.0);
+
             zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
         }
+
         const gp_Dir zDirection(zCandidate);
         const gp_Dir yDirection(gp_Vec(zDirection).Crossed(gp_Vec(xDirection)));
-        const gp_Mat rotation(
+
+        const gp_Mat rotationMatrix(
             xDirection.X(),
             yDirection.X(),
             zDirection.X(),
@@ -279,10 +338,17 @@ gp_Trsf frameAt(
             yDirection.Z(),
             zDirection.Z()
         );
-        frame.SetRotation(gp_Quaternion(rotation));
+
+        rotationTransform.SetRotation(gp_Quaternion(rotationMatrix));
     }
-    frame.SetTranslationPart(Base::convertTo<gp_Vec>(position));
-    return frame;
+
+    gp_Trsf toTarget;
+    toTarget.SetTranslation(gp_Vec(position.X(), position.Y(), position.Z()));
+
+    // toOrigin -> rotationTransform -> toTarget
+    const gp_Trsf frame = toTarget * rotationTransform * toOrigin;
+
+    return {frame, position, tangent};
 }
 
 }  // namespace
@@ -330,6 +396,13 @@ PathPatternExtension::PathPatternExtension()
         "Unused distance at path end."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
+        CyclicOffset,
+        (0.0),
+        "PathPattern",
+        App::Prop_None,
+        "Closed paths only: Offsets all transformations by this distance."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
         ReversePath,
         (false),
         "PathPattern",
@@ -341,26 +414,68 @@ PathPatternExtension::PathPatternExtension()
         (false),
         "PathPattern",
         App::Prop_None,
-        "Aligns the occurrence X axes to the path."
+        "Aligns the occurrence to the path using the tangent direction."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
-        VerticalVector,
-        (Base::Vector3d::UnitZ),
+        VerticalAxis,
+        (nullptr),
         "PathPattern",
         App::Prop_None,
-        "Preferred local Z direction when aligning occurrences."
+        "The axis representing the vertical direction of the first occurence."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        FlipVerticalAxis,
+        (false),
+        "PathPattern",
+        App::Prop_None,
+        "Reverse the vertical axis' direction."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        TangentAxis,
+        (nullptr),
+        "PathPattern",
+        App::Prop_None,
+        "The axis representing the tangent of the first occurence."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        FlipTangentAxis,
+        (false),
+        "PathPattern",
+        App::Prop_None,
+        "Reverse the tangent axis' direction."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        OriginPointIndex,
+        (0),
+        "PathPattern",
+        App::Prop_None,
+        "The origin point index, used for the identity transformation."
+    );
+    EXTENSION_ADD_PROPERTY_TYPE(
+        RelativeToFirst,
+        (false),
+        "PathPattern",
+        App::Prop_None,
+        "Moves all transformations relative to the first one."
     );
     updatePropertyStatus();
 }
 
-std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeToFirst) const
+bool PathPatternExtension::identityTransformSuppressed() const
+{
+    return true;
+}
+
+std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
 {
     if (!Path.getValue()) {
         return {};
     }
 
+    const bool reversed = ReversePath.getValue();
+
     auto edges = getPathEdges(Path);
-    if (ReversePath.getValue()) {
+    if (reversed) {
         std::reverse(edges.begin(), edges.end());
         for (auto& edge : edges) {
             edge.Reverse();
@@ -378,49 +493,98 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeT
         throw Base::ValueError("Path length must be greater than zero");
     }
 
+    const auto closed = isClosed(edges);
+
     const auto mode = static_cast<PathPatternSpacingMode>(SpacingMode.getValue());
-    const auto distances = calculateDistances(
+    auto distances = calculateDistances(
         totalLength,
-        isClosed(edges),
+        closed,
         Count.getValue(),
         mode,
         Spacing.getValue(),
-        StartOffset.getValue(),
-        EndOffset.getValue()
+        reversed ? EndOffset.getValue() : StartOffset.getValue(),
+        reversed ? StartOffset.getValue() : EndOffset.getValue()
     );
     if (distances.empty()) {
         throw Base::ValueError("Path pattern produced no occurrences");
     }
 
-    std::list<gp_Trsf> transformations;
-    for (double distance : distances) {
-        transformations.push_back(
-            frameAt(edges, ends, distance, Align.getValue(), VerticalVector.getValue())
-        );
-    }
-
-    if (relativeToFirst) {
-        const gp_Trsf& first = transformations.front();
-        const gp_Quaternion inverseFirstRotation = first.GetRotation().Inverted();
-        const gp_XYZ firstTranslation = first.TranslationPart();
-        for (auto& transform : transformations) {
-            gp_Quaternion relativeRotation = transform.GetRotation().Multiplied(inverseFirstRotation);
-            const gp_XYZ relativeTranslation = transform.TranslationPart() - firstTranslation;
-            transform.SetRotation(relativeRotation);
-            transform.SetTranslationPart(gp_Vec(relativeTranslation));
+    if (closed && !distances.empty()) {
+        const double offset = CyclicOffset.getValue();
+        for (double& distance : distances) {
+            distance = std::fmod(distance + offset, totalLength);
+            if (distance < 0.0) {
+                distance += totalLength;
+            }
         }
     }
+
+    const auto getWantedDirection = [&](const App::PropertyLinkSub& tangentAxisProperty,
+                                        const App::PropertyBool& flipTangentAxisProperty,
+                                        const gp_Vec& defaultDirection) -> gp_Vec {
+        const gp_Ax2 tangentAxis
+            = getAxis(tangentAxisProperty).value_or(gp_Ax2(gp_Pnt(), gp_Dir(defaultDirection)));
+
+        gp_Vec tangent(tangentAxis.Direction());
+
+        if (flipTangentAxisProperty.getValue()) {
+            tangent.Reverse();
+        }
+
+        if (tangent.SquareMagnitude() < Precision::Confusion() * Precision::Confusion()) {
+            tangent = defaultDirection;
+        }
+
+        return tangent;
+    };
+
+    const gp_Vec wantedTangent
+        = getWantedDirection(TangentAxis, FlipTangentAxis, BaseGeometry::X_POS_VEC);
+
+    const gp_Vec wantedVertical
+        = getWantedDirection(VerticalAxis, FlipVerticalAxis, BaseGeometry::Z_POS_VEC);
+
+    const bool relative = RelativeToFirst.getValue();
+    const int originIndex = relative
+        ? ((OriginPointIndex.getValue() % distances.size()) + distances.size()) % distances.size()
+        : 0;
+
+    if (originIndex < 0 || static_cast<std::size_t>(originIndex) >= distances.size()) {
+        throw Base::ValueError("Origin point index is out of range");
+    }
+
+    // identity transformation for reference
+    const auto [originFrame, originPosition, originTangent]
+        = frameAt(edges, ends, distances[originIndex], Align.getValue(), wantedVertical);
+
+    const bool needsTangentFlip = (originTangent.Dot(wantedTangent) < 0.0)
+        ^ FlipTangentAxis.getValue();
+
+    std::list<gp_Trsf> transformations;
+    for (std::size_t i = 0; i < distances.size(); ++i) {
+        auto [frame, position, tangent] = frameAt(
+            edges,
+            ends,
+            distances[i],
+            Align.getValue(),
+            wantedVertical,
+            needsTangentFlip,
+            relative ? &originPosition : nullptr
+        );
+
+        transformations.push_back(frame);
+    }
+
     return transformations;
 }
 
 short PathPatternExtension::extensionMustExecute()
 {
-    if (Path.isTouched() || Count.isTouched() || SpacingMode.isTouched() || Spacing.isTouched()
+    return Path.isTouched() || Count.isTouched() || SpacingMode.isTouched() || Spacing.isTouched()
         || StartOffset.isTouched() || EndOffset.isTouched() || ReversePath.isTouched()
-        || Align.isTouched() || VerticalVector.isTouched()) {
-        return 1;
-    }
-    return 0;
+        || Align.isTouched() || VerticalAxis.isTouched() || FlipVerticalAxis.isTouched()
+        || TangentAxis.isTouched() || FlipTangentAxis.isTouched() || OriginPointIndex.isTouched()
+        || RelativeToFirst.isTouched();
 }
 
 void PathPatternExtension::extensionOnChanged(const App::Property* prop)
@@ -436,5 +600,13 @@ void PathPatternExtension::updatePropertyStatus()
     const auto mode = static_cast<PathPatternSpacingMode>(SpacingMode.getValue());
     Count.setStatus(App::Property::Hidden, mode == PathPatternSpacingMode::FixedSpacing);
     Spacing.setStatus(App::Property::Hidden, mode == PathPatternSpacingMode::FixedCount);
-    VerticalVector.setStatus(App::Property::Hidden, !Align.getValue());
+    VerticalAxis.setStatus(App::Property::Hidden, !Align.getValue());
+    FlipVerticalAxis.setStatus(App::Property::Hidden, !Align.getValue());
+    TangentAxis.setStatus(App::Property::Hidden, !Align.getValue());
+    FlipTangentAxis.setStatus(App::Property::Hidden, !Align.getValue());
+}
+
+std::optional<gp_Ax2> PathPatternExtension::getAxis(const App::PropertyLinkSub& property) const
+{
+    return Part::getAxis(property, getExtendedObject());
 }

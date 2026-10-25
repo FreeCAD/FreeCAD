@@ -1543,8 +1543,7 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         pointsOnCurve.push_back(Base::convertTo<Base::Vector3d>(newpoint));
     }
 
-    double tolerance = EWTOLERANCE;     // not as demanding as Precision::Confusion() but more
-                                        // demanding than using the edge length
+    double tolerance = Precision::Confusion();
 
     isArc = false;
     if (!firstPoint.IsEqual(lastPoint, tolerance)) {
@@ -1696,22 +1695,24 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
         // either not a line or a zero length line?
         return false;
     }
+    if (adapt.Degree() == 1) {
+        // Skip the calculation.  This is a line masquerading as a bspline.
+        return true;
+    }
+
+    // still might be a line disguised as a curve with a really big curvature.
 
     // in a line the sum of the lengths of the segments should equal the distance
     // from start to end
     double endPointLength = (endPoint - startPoint).Length();
 
-    int low = 0;
-    int high = spline->NbPoles() - 1;
-    TColgp_Array1OfPnt poles(low, high);
-    spline->Poles(poles);
+    const TColgp_Array1OfPnt& poles = spline->Poles();
     double lenTotal = 0.0;
-    for (int i = 0; i < high; i++) {
-        gp_Pnt p1 = poles(i);
-        Base::Vector3d v1 = Base::convertTo<Base::Vector3d>(p1);
-        gp_Pnt p2 = poles(i+1);
-        Base::Vector3d v2 = Base::convertTo<Base::Vector3d>(p2);
-        lenTotal += (v2-v1).Length();
+    for (int i = poles.Lower(); i < poles.Upper() - 1; i++) {
+        gp_Pnt p1 = poles.Value(i);
+        gp_Pnt p2 = poles.Value(i+1);
+        auto v = Base::convertTo<Base::Vector3d>(p2.XYZ() - p1.XYZ());
+        lenTotal += v.Length();
     }
 
     return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);

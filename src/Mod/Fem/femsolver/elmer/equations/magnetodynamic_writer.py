@@ -165,24 +165,24 @@ class MgDynwriter:
     def _outputMagnetodynamicBodyForce(self, obj, name, equation):
         if femutils.is_derived_from(obj, "Fem::ConstraintCurrentDensity") and obj.Mode == "Custom":
             # output only if current density is enabled and needed
-            if obj.EnableCurrentDensity_re_1:
+            if obj.EnableCurrentDensity_1:
                 current_density = obj.CurrentDensity_re_1.getValueAs("A/m^2")
                 self.write.bodyForce(name, "Current Density 1", current_density)
-            if obj.EnableCurrentDensity_re_2:
+            if obj.EnableCurrentDensity_2:
                 current_density = obj.CurrentDensity_re_2.getValueAs("A/m^2")
                 self.write.bodyForce(name, "Current Density 2", current_density)
-            if obj.EnableCurrentDensity_re_3:
+            if obj.EnableCurrentDensity_3:
                 current_density = obj.CurrentDensity_re_3.getValueAs("A/m^2")
                 self.write.bodyForce(name, "Current Density 3", current_density)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
-                if obj.EnableCurrentDensity_im_1:
+                if obj.EnableCurrentDensity_1:
                     current_density = obj.CurrentDensity_im_1.getValueAs("A/m^2")
                     self.write.bodyForce(name, "Current Density Im 1", current_density)
-                if obj.EnableCurrentDensity_im_2:
+                if obj.EnableCurrentDensity_2:
                     current_density = obj.CurrentDensity_im_2.getValueAs("A/m^2")
                     self.write.bodyForce(name, "Current Density Im 2", current_density)
-                if obj.EnableCurrentDensity_im_3:
+                if obj.EnableCurrentDensity_3:
                     current_density = obj.CurrentDensity_im_3.getValueAs("A/m^2")
                     self.write.bodyForce(name, "Current Density Im 3", current_density)
 

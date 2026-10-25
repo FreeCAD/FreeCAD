@@ -20,7 +20,7 @@ void LinkArrayPoint::onDocumentRestored()
 
 std::vector<Base::Placement> LinkArrayPoint::getElementPlacements()
 {
-    return placementsFromTransforms(calculateTransformations(false));
+    return placementsFromTransforms(calculateTransformations());
 }
 
 void LinkArrayPoint::setPointObjectLinkScope()

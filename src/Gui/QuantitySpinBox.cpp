@@ -250,7 +250,27 @@ void QuantitySpinBox::evaluateExpression()
 
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    commitQuantity(expr->getQuantity(), TextPolicy::ReformatEditor, false);
+    Q_D(QuantitySpinBox);
+    Base::Quantity quantity = expr->getQuantity();
+    // A dimensionless expression result inherits the widget's required unit
+    // without rescaling, matching expression/property assignment semantics.
+    // The displayed input unit may use a different scale.
+    // see: https://github.com/FreeCAD/FreeCAD/issues/32968
+    if (d->unit != Base::Unit::One) {
+        if (quantity.isDimensionless()) {
+            quantity.setUnit(d->unit);
+        }
+        else if (quantity.getUnit() != d->unit) {
+            const QString message = numericInputDiagnosticText(InputDiagnosticKind::IncompatibleUnit);
+            throw UnitsMismatchError(message.toStdString());
+        }
+    }
+    // An expression result is a semantic change: listeners (task panel previews, bound
+    // feature updates) must be notified, as they were before c152324 via validateInput().
+    // see: https://github.com/FreeCAD/FreeCAD/issues/33098
+    const bool changed = quantity.getValue() != d->quantity.getValue()
+        || quantity.getUnit() != d->quantity.getUnit();
+    commitQuantity(quantity, TextPolicy::ReformatEditor, changed);
 }
 
 bool QuantitySpinBox::apply(const std::string& propName)

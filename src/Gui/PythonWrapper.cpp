@@ -95,6 +95,9 @@
 
 #ifdef HAVE_PYSIDE
 # include <signalmanager.h>
+# if __has_include(<pyobjectwrapper.h>)
+#  include <pyobjectwrapper.h>
+# endif
 #endif  // HAVE_PYSIDE
 
 //-----------------------------------------------------------------------------

@@ -95,7 +95,11 @@ QStringList platformFontFiles()
 {
     // Includes ~/Library/Fonts, /Library/Fonts, and /System/Library/Fonts.
     QStringList directories = QStandardPaths::standardLocations(QStandardPaths::FontsLocation);
+
+    // Work around QTBUG-151372
+    directories << QStringLiteral("/System/Library/Fonts");
     directories << QStringLiteral("/Network/Library/Fonts");
+    directories.removeDuplicates();
     return filesInDirectories(directories);
 }
 #else

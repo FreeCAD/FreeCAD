@@ -26,6 +26,8 @@ cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
 cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
 rm -rf ${conda_env}/bin_tmp
 
+${conda_env}/bin/dot -c
+
 sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
 
 echo -e "\nCopying Icon and Desktop file"
@@ -103,6 +105,14 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
+echo "Copying resources and compiling translations for the AppRun script..."
+cp ../../../src/Gui/Icons/launch-error.svg AppDir/
+for po in ./AppDir/locale/*/AppRun.po; do
+    LC_MESSAGES_DIR="$(dirname "${po}")/LC_MESSAGES"
+    mkdir -p "${LC_MESSAGES_DIR}"
+    msgfmt -o "${LC_MESSAGES_DIR}/AppRun.mo" "${po}"
+done
+
 echo "Running FreeCAD command-line smoke test..."
 if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
     echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
@@ -135,6 +145,7 @@ fi
 echo -e "\nCreate the appimage"
 # export GPG_TTY=$(tty)
 chmod a+x ./AppDir/AppRun
+export VERSION="${BUILD_TAG}"
 ./appimagetool-$(uname -m).AppImage \
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \
@@ -143,17 +154,14 @@ chmod a+x ./AppDir/AppRun
   AppDir ${version_name}.AppImage
   # -s --sign-key ${GPG_KEY_ID} \
 
-echo -e "\nCreate hash"
-sha256sum ${version_name}.AppImage > ${version_name}.AppImage-SHA256.txt
-
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage.zsync" "${version_name}.AppImage-SHA256.txt"
+    gh release upload --clobber ${BUILD_TAG} "${version_name}.AppImage" "${version_name}.AppImage.zsync"
     if [ "${GH_UPDATE_TAG}" == "weeklies" ]; then
         generic_name="FreeCAD_weekly-Linux-$(uname -m)"
         mv "${version_name}.AppImage" "${generic_name}.AppImage"
         mv "${version_name}.AppImage.zsync" "${generic_name}.AppImage.zsync"
-        mv "${version_name}.AppImage-SHA256.txt" "${generic_name}.AppImage-SHA256.txt"
+        sed -i "s/URL: ${version_name}/URL: ${generic_name}/g" "${generic_name}.AppImage.zsync"
         gh release create weeklies --prerelease | true
-        gh release upload --clobber weeklies "${generic_name}.AppImage" "${generic_name}.AppImage.zsync" "${generic_name}.AppImage-SHA256.txt"
+        gh release upload --clobber weeklies "${generic_name}.AppImage" "${generic_name}.AppImage.zsync"
     fi
 fi

@@ -58,7 +58,9 @@
 #include "DrawComplexSection.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawViewDetail.h"
+#include "DrawViewPartPy.h"
 #include "DrawViewSection.h"
 #include "GeometryObject.h"
 #include "Preferences.h"
@@ -256,6 +258,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     showProgressMessage(getNameInDocument(), "is making detail shape");
 
     Base::Vector3d dirDetail = dvp->Direction.getValue();
+    Base::Vector3d dirXDetail = dvp->XDirection.getValue();
     double radius = getFudgeRadius();
 
     //make a copy of the input shape so we don't inadvertently change it
@@ -293,6 +296,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
     gp_Pnt gpnt(toolPlaneOrigin.x, toolPlaneOrigin.y, toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x, dirDetail.y, dirDetail.z);
+    gp_Dir gxdir = Base::convertTo<gp_Dir>(dirXDetail);
 
     TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
@@ -301,7 +305,8 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
     TopoDS_Shape tool;
     if (Preferences::mattingStyle()) {
         //square mat
-        gp_Pln gpln(gpnt, gdir);
+        gp_Ax3 csPln(gpnt, gdir, gxdir);
+        gp_Pln gpln(csPln);
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if (extrusionFace.IsNull()) {
@@ -568,6 +573,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewDetailPython, TechDraw::DrawViewDetai
 template<> const char* TechDraw::DrawViewDetailPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderViewPart";
+}
+template<>
+PyObject* TechDraw::DrawViewDetailPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewPartPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

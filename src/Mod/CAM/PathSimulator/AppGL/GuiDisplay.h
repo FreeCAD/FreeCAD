@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <QColor>
 #include <QWidget>
 
 namespace CAMSimulator
@@ -47,6 +48,7 @@ public:
     void setRotateEnabled(bool b);
     void setPathVisible(bool b);
     void setSsaoEnabled(bool b);
+    void setBackgroundColor(const QColor& background);
 
 Q_SIGNALS:
     void play(bool b);

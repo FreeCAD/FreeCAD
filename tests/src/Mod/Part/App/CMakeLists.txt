@@ -20,6 +20,7 @@ add_executable(Part_tests_run
         FuzzyBoolean.cpp
         Geometry.cpp
         LinkArrayPolar.cpp
+        ModelRefine.cpp
         PartFeature.cpp
         PartFeatures.cpp
         PartTestHelpers.cpp

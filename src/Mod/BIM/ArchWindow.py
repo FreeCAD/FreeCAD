@@ -117,6 +117,24 @@ class _Window(ArchComponent.Component):
         obj.IfcType = "Window"
         obj.MoveWithHost = True
 
+        # Add features in the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
+
+    def addSketchArchFeatures(self, obj, linkObj=None, mode=None):
+        """
+        To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
+        -  import ArchSketchObject module, and
+        -  set properties that are common to ArchObjects (including Links) and ArchSketch
+           to support the additional features
+
+        To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
+        """
+
+        import ArchSketchObject
+
+        if hasattr(ArchSketchObject.ArchSketch, "setPropertiesLinkCommon"):
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, linkObj, mode)
+
     def setProperties(self, obj, mode=None):
 
         lp = obj.PropertiesList
@@ -296,6 +314,9 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj, mode="ODR")
+
+        # Add features in the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj, mode="ODR")
 
         # During the v1.1 dev cycle an experiment with a new SillHeight handling was
         # undertaken. This did not work out as intended and was therefore reverted.

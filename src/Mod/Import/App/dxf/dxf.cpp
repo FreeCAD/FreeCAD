@@ -2776,10 +2776,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
                 break;
             }
             if (!IsObjectName("SECTION")) {
-                ImportError(
-                    "Found {} record when expecting start of a SECTION\n",
-                    m_record_data.c_str()
-                );
+                ImportError("Found {} record when expecting start of a SECTION\n", m_record_data);
                 continue;
             }
             if (!ReadSection()) {

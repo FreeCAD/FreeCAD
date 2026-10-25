@@ -1,0 +1,180 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2026 FreeCAD Contributors                               *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# Publish freecad-typings to PyPI via trusted publishing (OIDC). Manual dispatch only.
+#
+# There are three main publication mechanisms, depending on which version of FreeCAD is being published:
+# 1) dev - always publishes to TestPyPI, never to the real PyPI index. Intended only for testing, should not be used to
+#    publish a real release of the stubs.
+# 2) rcN - publishes to the real PyPI, but as a "pre-release" version, with the same version number that the next real
+#    release will have but with a suffix of "rcN".
+# 3) (no suffix -- e.g. a real release) - publishes to the real PyPI as a full release. The API version is taken from
+#    src/Tools/typing/api_version.json and the patch version is auto-incremented from the last published version.
+#
+# Only a branch can be dispatched. Tags are refused because the tag namespace carries no ruleset,
+# so anyone with write access could create or move one and aim a publish at it.
+
+name: Publish freecad-typings
+
+on:
+  workflow_dispatch: ~
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-freecad-typings
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      index_name: ${{ steps.target.outputs.index_name }}
+      environment: ${{ steps.target.outputs.environment }}
+      repository_url: ${{ steps.target.outputs.repository_url }}
+      skip_existing: ${{ steps.target.outputs.skip_existing }}
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+
+      - name: Determine target index
+        id: target
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          import sys
+
+          # Only the "is this branch ready to publish" policy lives here; which suffixes are
+          # publishable, and what they render as, belongs to stubgen.project.
+          if os.environ["REF_TYPE"] != "branch":
+              sys.exit(
+                  f"Refusing to publish from the {os.environ['REF_TYPE']} "
+                  f"{os.environ['REF_NAME']!r}: dispatch from the releases/* branch this version "
+                  "was built on. Tag refs are not an allowed deployment source."
+              )
+
+          if os.environ["REF_NAME"].startswith("releases/"):
+              try:
+                  with open("version.json", encoding="utf-8") as f:
+                      suffix = json.load(f)["version_suffix"].strip().lstrip(".")
+              except FileNotFoundError:
+                  sys.exit("Refusing to publish to PyPI: this branch has no version.json.")
+              if suffix.lower() == "dev":
+                  sys.exit(
+                      "Refusing to publish to PyPI: this release branch still carries the 'dev' "
+                      "version suffix. Run sync_version.py on the branch first."
+                  )
+              print("index_name=PyPI")
+              print("environment=pypi")
+              print("repository_url=https://upload.pypi.org/legacy/")
+              print("skip_existing=false")
+              print("dev_build=")
+          else:
+              print("index_name=TestPyPI")
+              print("environment=testpypi")
+              print("repository_url=https://test.pypi.org/legacy/")
+              print("skip_existing=true")
+              print(f"dev_build={os.environ['RUN_NUMBER']}")
+          PY
+
+      - name: Assign patch number
+        id: version
+        run: |
+          patch=$(python3 src/Tools/typing/generate_stubs.py next-patch --root .)
+          echo "patch=$patch" >> "$GITHUB_OUTPUT"
+
+      - name: Generate and validate stubs
+        env:
+          PATCH: ${{ steps.version.outputs.patch }}
+          DEV_BUILD: ${{ steps.target.outputs.dev_build }}
+        run: |
+          args=(check --root . --out-dir src/Tools/typing/generated --no-pyright
+                --patch-number "$PATCH")
+          if [ -n "$DEV_BUILD" ]; then
+            args+=(--dev-build "$DEV_BUILD")
+          fi
+          python3 src/Tools/typing/generate_stubs.py "${args[@]}"
+
+      - name: Build package
+        working-directory: src/Tools/typing/generated
+        run: |
+          uv build
+          echo "Built: $(ls dist | tr '\n' ' ')" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dist
+          path: src/Tools/typing/generated/dist
+          retention-days: 30
+
+  publish:
+    name: Publish to ${{ needs.build.outputs.index_name }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ needs.build.outputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to ${{ needs.build.outputs.index_name }}
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          packages-dir: dist
+          repository-url: ${{ needs.build.outputs.repository_url }}
+          skip-existing: ${{ needs.build.outputs.skip_existing }}

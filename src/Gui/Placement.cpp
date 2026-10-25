@@ -93,7 +93,15 @@ public:
 
         // search for the placement property
         std::map<std::string, App::Property*>::iterator jt;
-        jt = std::find_if(props.begin(), props.end(), find_placement(propertyName));
+        std::string name = propertyName;
+        if (name == "Placement") {
+            // Links synchronize Placement and LinkPlacement, but only one alias is visible.
+            auto* placement = obj->getPlacementProperty();
+            if (placement && !placement->testStatus(App::Property::Hidden)) {
+                name = placement->getName();
+            }
+        }
+        jt = std::find_if(props.begin(), props.end(), find_placement(name));
         if (jt != props.end()) {
             return dynamic_cast<App::PropertyPlacement*>(jt->second);
         }

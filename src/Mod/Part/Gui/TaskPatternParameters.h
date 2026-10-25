@@ -94,7 +94,10 @@ protected:
         App::PropertyLength* radialDistance,
         App::PropertyLength* tangentialDistance,
         App::PropertyIntegerConstraint* numberCircles,
-        App::PropertyIntegerConstraint* symmetry
+        App::PropertyIntegerConstraint* symmetry,
+        App::PropertyBool* startAtShape,
+        App::PropertyLinkSub* binormalAxis,
+        App::PropertyBool* flipBinormalAxis
     );
     void setupPathPatternParameterUI(
         QWidget* parent,
@@ -106,14 +109,23 @@ protected:
         App::PropertyLength* spacing,
         App::PropertyLength* startOffset,
         App::PropertyLength* endOffset,
+        App::PropertyDistance* cyclicOffset,
         App::PropertyBool* reversePath,
-        App::PropertyBool* align
+        App::PropertyBool* align,
+        App::PropertyLinkSub* tangentAxis,
+        App::PropertyBool* flipTangentAxis,
+        App::PropertyLinkSub* verticalAxis,
+        App::PropertyBool* flipVerticalAxis,
+        App::PropertyInteger* originPointIndex,
+        App::PropertyBool* relativeToFirst
     );
     void setupPointPatternParameterUI(
         QWidget* parent,
         QWidget* placeholder,
         QObject* signalContext,
-        App::PropertyLinkSub* pointObject
+        App::PropertyLinkSub* pointObject,
+        App::PropertyBool* relativeToFirst,
+        App::PropertyInteger* originPointIndex
     );
 
     void updatePatternParameterUI();

@@ -40,6 +40,15 @@ public:
 
     Gui::ComboLinks dirLinks;
 
+    inline int getSelectionIndex() const
+    {
+        return selectionIndex;
+    }
+    inline void setSelectionIndex(int index)
+    {
+        selectionIndex = index;
+    }
+
 Q_SIGNALS:
     void requestReferenceSelection();
     void parametersChanged();
@@ -49,6 +58,7 @@ private:
 
     App::PropertyLinkSub* referenceProperty = nullptr;
     bool blockReferenceUpdate = false;
+    int selectionIndex = 0;
 };
 
 }  // namespace PartGui
