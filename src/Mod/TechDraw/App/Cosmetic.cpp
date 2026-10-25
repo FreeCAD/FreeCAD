@@ -102,6 +102,15 @@ CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
 CosmeticEdge::~CosmeticEdge()
 {
     //shared pointer will delete m_geometry when ref count goes to zero.
+
+    // DocumentObject cleans up the Python twin for object that inherit from it.
+    // CosmeticEdge does not inherit from DocumentObject, so we need to duplicate the
+    // clean up code here.
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
 }
 
 void CosmeticEdge::initialize()
@@ -347,6 +356,11 @@ GeomFormat::GeomFormat(const int idx,
 
 GeomFormat::~GeomFormat()
 {
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
 }
 
 void GeomFormat::dump(const char* title) const
