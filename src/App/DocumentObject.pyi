@@ -75,6 +75,7 @@ class DocumentObject(ExtensionContainer):
 
     def addProperty(
         self,
+        /,
         type: str,
         name: str,
         group: str = "",
@@ -171,71 +172,88 @@ class DocumentObject(ExtensionContainer):
 
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> object | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
     ) -> DocumentObject | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
     ) -> tuple[DocumentObject, Matrix] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[DocumentObject, Matrix, object] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> Placement | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> Matrix | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> Placement | None: ...
+
     @overload
     def getSubObject(
-        self, subname: str, *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: str, *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> Matrix | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[0] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[object, ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[DocumentObject, ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[1] = 0, matrix: Matrix = None, transform: bool = True, depth: int = 0,
     ) -> tuple[tuple[DocumentObject, Matrix], ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[2] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[tuple[DocumentObject, Matrix, object], ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[3] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Placement, ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[4] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Matrix, ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[5] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Placement, ...] | None: ...
+
     @overload
     def getSubObject(
-        self, subname: list[str] | tuple[str, ...], *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
+        self, /, subname: list[str] | tuple[str, ...], *, retType: Literal[6] = 0, matrix: Matrix | None = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Matrix, ...] | None: ...
+
     @overload
     def getSubObject(
         self,
+        /,
         subname: str | list[str] | tuple[str, ...],
         *,
         retType: int = 0,
@@ -288,15 +306,18 @@ class DocumentObject(ExtensionContainer):
 
     @overload
     def getLinkedObject(
-        self, *, recursive: bool = True, matrix: None = None, transform: bool = True, depth: int = 0,
+        self, /, *, recursive: bool = True, matrix: None = None, transform: bool = True, depth: int = 0,
     ) -> Any: ...
+
     @overload
     def getLinkedObject(
-        self, *, recursive: bool = True, matrix: Matrix = None, transform: bool = True, depth: int = 0,
+        self, /, *, recursive: bool = True, matrix: Matrix = None, transform: bool = True, depth: int = 0,
     ) -> tuple[Any, Matrix]: ...
+
     @overload
     def getLinkedObject(
         self,
+        /,
         *,
         recursive: bool = True,
         matrix: Matrix | None = None,

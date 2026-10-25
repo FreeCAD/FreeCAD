@@ -154,7 +154,7 @@ class PropertyContainer(Persistence):
         """
 
     @constmethod
-    def dumpPropertyContent(self, Property: str, *, Compression: int = 3) -> bytearray:
+    def dumpPropertyContent(self, /, Property: str, *, Compression: int = 3) -> bytearray:
         """
         Dumps the content of the property, both the XML representation and the additional
         data files required, into a byte representation.

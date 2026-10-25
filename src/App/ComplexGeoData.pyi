@@ -82,6 +82,7 @@ class ComplexGeoData(Persistence):
 
     def setElementName(
         self,
+        /,
         *,
         element: str,
         name: str = ...,
