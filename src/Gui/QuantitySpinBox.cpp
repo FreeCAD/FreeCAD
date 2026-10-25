@@ -321,12 +321,7 @@ int digitExponent(const QString& text, int numberLen, int index, const QString& 
 
 /// Index of the digit with the given exponent. If the (re-formatted) text no longer has such
 /// a digit, the closest existing one is returned. Returns -1 if there are no digits at all.
-int digitIndexForExponent(
-    const QString& text,
-    int numberLen,
-    int exponent,
-    const QString& decimalSeparator
-)
+int digitIndexForExponent(const QString& text, int numberLen, int exponent, const QString& decimalSeparator)
 {
     const int decPos = decimalPosition(text, numberLen, decimalSeparator);
     const int fracStart = decPos + decimalSeparator.size();
