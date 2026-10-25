@@ -30,7 +30,6 @@
 
 #include <App/Expression.h>
 #include <App/PropertyExpressionEngine.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "Utils.h"
 

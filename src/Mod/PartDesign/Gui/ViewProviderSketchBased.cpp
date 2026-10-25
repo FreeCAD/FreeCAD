@@ -28,7 +28,6 @@
 #include <Base/ServiceProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Utilities.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "ViewProviderSketchBased.h"
