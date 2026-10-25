@@ -25,12 +25,14 @@
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/Converter.h>
 
 #include "PartFeature.h"
 #include "PatternConstants.h"
 #include "TopoShape.h"
 #include "CircularPatternExtension.h"
 #include "TopExp_Explorer.hxx"
+#include "BRepBuilderAPI_Transform.hxx"
 #include "BaseGeometry.h"
 
 using namespace Part;
@@ -62,6 +64,8 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
     if (shape.isNull()) {
         throw Base::ValueError("Path shape is empty");
     }
+
+    const gp_Trsf transform = Base::convertTo<gp_Trsf>(feature->getPlacement()).Inverted();
 
     std::list<Part::TopoShape> edges;
     const auto subnames = pathProperty.getSubValues();
@@ -107,22 +111,37 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
 
     std::vector<TopoDS_Edge> result;
     result.reserve(edges.size());
-    result.push_back(TopoDS::Edge(edges.front().getShape()));
+
+    auto transformEdge = [&transform](const Part::TopoShape& edge) {
+        TopoDS_Edge source = TopoDS::Edge(edge.getShape());
+
+        BRepBuilderAPI_Transform builder(source, transform, true);
+        if (!builder.IsDone()) {
+            throw Base::ValueError("Failed to transform path edge");
+        }
+
+        return TopoDS::Edge(builder.Shape());
+    };
+
+    result.push_back(transformEdge(edges.front()));
     edges.pop_front();
 
     while (!edges.empty()) {
         TopoDS_Vertex currentFirst;
         TopoDS_Vertex currentLast;
         TopoDS_Vertex ignored;
+
         TopExp::Vertices(result.front(), currentFirst, ignored, true);
         TopExp::Vertices(result.back(), ignored, currentLast, true);
 
         bool connected = false;
+
         for (auto it = edges.begin(); it != edges.end(); ++it) {
-            TopoDS_Edge candidate = TopoDS::Edge(it->getShape());
+            TopoDS_Edge candidate = transformEdge(*it);
 
             TopoDS_Vertex candidateFirst;
             TopoDS_Vertex candidateLast;
+
             TopExp::Vertices(candidate, candidateFirst, candidateLast, true);
 
             if (verticesCoincide(currentLast, candidateFirst)) {
@@ -544,12 +563,15 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     auto* pathFeature = freecad_cast<Part::Feature*>(Path.getValue());
     gp_Vec fallbackVertical = BaseGeometry::Z_POS_VEC;
     if (auto* pathSketch = freecad_cast<Part::Part2DObject*>(pathFeature)) {
-        fallbackVertical = Base::convertTo<gp_Vec>(
-            static_cast<App::DocumentObject*>(pathSketch)
-                ->getPlacement()
-                .getRotation()
-                .multVec(pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection())
+        const gp_Trsf supportTransform = Base::convertTo<gp_Trsf>(
+            static_cast<App::DocumentObject*>(pathSketch)->getPlacement()
         );
+        fallbackVertical = gp_Vec(
+                               Base::convertTo<gp_XYZ>(
+                                   pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection()
+                               )
+        )
+                               .Transformed(supportTransform);
     }
 
     gp_Vec wantedVertical = getWantedDirection(VerticalAxis).value_or(fallbackVertical);
@@ -576,6 +598,7 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         originTangent.Reverse();
     }
 
+    // correct the transform by the angle between the wanted tangent and origin tangent
     gp_Vec rotationAxis = wantedVertical;
     rotationAxis.Normalize();
 
