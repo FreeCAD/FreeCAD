@@ -832,17 +832,15 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 for (double fbTol : fallbackTolerances) {
                     try {
                         TopoShape fallbackResult(0, getDocument()->getStringHasher());
-                        fallbackResult.makeElementBoolean(
-                            getBooleanMaker(),
-                            {base, prism},
-                            nullptr,
-                            fbTol
-                        );
+                        fallbackResult
+                            .makeElementBoolean(getBooleanMaker(), {base, prism}, nullptr, fbTol);
                         auto fbSol = this->getSolid(fallbackResult);
                         if (!fbSol.isNull() && isSingleSolidRuleSatisfied(fbSol.getShape())) {
                             result = fallbackResult;
                             booleanSuccess = true;
-                            FC_LOG("Boolean operation recovered using fallback fuzzy tolerance: " << fbTol);
+                            FC_LOG(
+                                "Boolean operation recovered using fallback fuzzy tolerance: " << fbTol
+                            );
                             break;
                         }
                     }
