@@ -220,10 +220,14 @@ App::DocumentObject* TaskPatternParameters::getPatternObject() const
     return getObject();
 }
 
-void TaskPatternParameters::fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection /*direction*/)
+void TaskPatternParameters::fillDirectionCombo(
+    Gui::ComboLinks& combo,
+    Part::LinearPatternDirection /*direction*/,
+    bool allowEmpty
+)
 {
     auto* sketch = freecad_cast<Part::Part2DObject*>(getSketchObject());
-    this->fillAxisCombo(combo, sketch);
+    this->fillAxisCombo(combo, sketch, allowEmpty);
 }
 
 void TaskPatternParameters::setupPatternTransaction()

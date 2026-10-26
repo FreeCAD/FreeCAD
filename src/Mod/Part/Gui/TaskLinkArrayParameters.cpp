@@ -553,7 +553,8 @@ void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
 
 void TaskLinkArrayParameters::fillDirectionCombo(
     Gui::ComboLinks& combo,
-    Part::LinearPatternDirection direction
+    Part::LinearPatternDirection direction,
+    bool allowEmpty
 )
 {
     combo.clear();
@@ -561,6 +562,16 @@ void TaskLinkArrayParameters::fillDirectionCombo(
     App::PropertyLinkSub defaultAxis;
     const bool isLinear = array->isDerivedFrom<Part::LinkArrayLinear>();
     const bool isSecondDirection = direction == Part::LinearPatternDirection::Second;
+
+    // first so it defaults to this if nothing is selected
+    if (allowEmpty) {
+        combo.addLink(
+            nullptr,
+            std::string(),
+            tr("No reference"),
+            PatternParametersWidget::NoDirectionUserData
+        );
+    }
 
     if (isLinear && !isSecondDirection) {
         combo.addLink(defaultAxis, tr("Object X-axis"), PatternParametersWidget::DefaultDirectionUserData);
