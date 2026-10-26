@@ -1887,7 +1887,7 @@ int SketchObject::getSingleScaleDefiningConstraint() const
     return found;
 }
 
-const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
+const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups() const
 {
     // this function is different from getDirectlyCoincidentPoints in that:
     // - getDirectlyCoincidentPoints only considers direct coincidence (the points that are linked via a
@@ -1983,7 +1983,7 @@ void SketchObject::isCoincidentWithExternalGeometry(int GeoId, bool& start_exter
 }
 
 const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int GeoId,
-                                                                             PointPos PosId)
+                                                                             PointPos PosId) const
 {
     const std::vector<std::map<int, Sketcher::PointPos>> coincidenttree = getCoincidenceGroups();
 
@@ -2087,7 +2087,7 @@ void SketchObject::getDirectlyCoincidentPoints(
     }
 }
 
-bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
+bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2) const
 {
     if (GeoId1 == GeoId2 && PosId1 == PosId2)
         return true;
@@ -2149,7 +2149,7 @@ std::vector<int> SketchObject::getPointOnSameObjectConstraints(
     int GeoId2,
     PointPos PosId2,
     bool followCoincident
-)
+) const
 {
     auto getPoints = [&](int geoId, PointPos posId) {
         std::map<int, PointPos> points;

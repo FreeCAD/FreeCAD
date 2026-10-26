@@ -693,6 +693,34 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
+    def getPointOnSameObjectConstraints(
+        self,
+        geo_id1: int,
+        pos_id1: int,
+        geo_id2: int,
+        pos_id2: int,
+        follow_coincident: bool = True,
+        /,
+    ) -> List[int]:
+        """Return indices of PointOnObject constraints that would be redundant
+        if these two points were made coincident. By default, also examine
+        points connected to either point by existing Coincident constraints.
+        """
+        ...
+
+    @constmethod
+    def getAllCoincidentPoints(self, geo_id: int, pos_id: int, /) -> List[Tuple[int, int]]:
+        """Return (geometry ID, point position) pairs coincident with this point."""
+        ...
+
+    @constmethod
+    def arePointsCoincident(
+        self, geo_id1: int, pos_id1: int, geo_id2: int, pos_id2: int, /
+    ) -> bool:
+        """Check whether two points are directly or transitively coincident."""
+        ...
+
+    @constmethod
     def getAxis(self, ax_id: int, /) -> Axis:
         """
         Return an axis based on the corresponding construction line

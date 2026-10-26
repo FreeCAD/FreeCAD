@@ -1461,6 +1461,83 @@ PyObject* SketchObjectPy::getGeoVertexIndex(PyObject* args) const
     return Py::new_reference_to(tuple);
 }
 
+PyObject* SketchObjectPy::getPointOnSameObjectConstraints(PyObject* args) const
+{
+    int geo1, pos1, geo2, pos2;
+    int followCoincident = 1;
+    if (!PyArg_ParseTuple(args, "iiii|p", &geo1, &pos1, &geo2, &pos2, &followCoincident)) {
+        return nullptr;
+    }
+    if ((pos1 < static_cast<int>(Sketcher::PointPos::none)
+         && pos1 > static_cast<int>(Sketcher::PointPos::mid))
+        || (pos2 < static_cast<int>(Sketcher::PointPos::none)
+            && pos2 > static_cast<int>(Sketcher::PointPos::mid))) {
+        PyErr_SetString(PyExc_ValueError, "Invalid point position");
+        return nullptr;
+    }
+
+    const auto indices = getSketchObjectPtr()->getPointOnSameObjectConstraints(
+        geo1,
+        static_cast<PointPos>(pos1),
+        geo2,
+        static_cast<PointPos>(pos2),
+        followCoincident
+    );
+    Py::List result;
+    for (int index : indices) {
+        result.append(Py::Long(index));
+    }
+    return Py::new_reference_to(result);
+}
+
+PyObject* SketchObjectPy::getAllCoincidentPoints(PyObject* args) const
+{
+    int geo, pos;
+    if (!PyArg_ParseTuple(args, "ii", &geo, &pos)) {
+        return nullptr;
+    }
+    if (pos < static_cast<int>(Sketcher::PointPos::none)
+        && pos > static_cast<int>(Sketcher::PointPos::mid)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid point position");
+        return nullptr;
+    }
+
+    const auto points = getSketchObjectPtr()->getAllCoincidentPoints(geo, static_cast<PointPos>(pos));
+    Py::List result;
+    for (const auto& [geoId, pointPos] : points) {
+        Py::Tuple entry(2);
+        entry.setItem(0, Py::Long(geoId));
+        entry.setItem(1, Py::Long(static_cast<int>(pointPos)));
+        result.append(entry);
+    }
+    return Py::new_reference_to(result);
+}
+
+PyObject* SketchObjectPy::arePointsCoincident(PyObject* args) const
+{
+    int geo1, pos1, geo2, pos2;
+    if (!PyArg_ParseTuple(args, "iiii", &geo1, &pos1, &geo2, &pos2)) {
+        return nullptr;
+    }
+    if ((pos1 >= static_cast<int>(Sketcher::PointPos::none)
+         && pos1 <= static_cast<int>(Sketcher::PointPos::mid))
+        || (pos2 >= static_cast<int>(Sketcher::PointPos::none)
+            && pos2 <= static_cast<int>(Sketcher::PointPos::mid))) {
+        return PyBool_FromLong(
+            getSketchObjectPtr()->arePointsCoincident(
+                geo1,
+                static_cast<PointPos>(pos1),
+                geo2,
+                static_cast<PointPos>(pos2)
+            )
+        );
+    }
+    else {
+        PyErr_SetString(PyExc_ValueError, "Invalid point position");
+        return nullptr;
+    }
+}
+
 PyObject* SketchObjectPy::getPoint(PyObject* args) const
 {
     int GeoId, PointType;
