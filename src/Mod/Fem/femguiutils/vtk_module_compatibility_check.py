@@ -8,16 +8,17 @@ import sys
 
 import Fem
 
-try:
-    folder = os.environ.get("FREECAD_FEM_VTK_PYTHON_PATH")
-    if folder:
-        sys.path = [folder]
+if os.environ.get("FREECAD_FEM_VTK_PYTHON_PATH") is not None:
+    try:
+        folder = os.environ.get("FREECAD_FEM_VTK_PYTHON_PATH")
+        if folder:
+            sys.path = [folder]
 
-    from vtkmodules.vtkCommonCore import vtkBitArray, vtkVersion
+        from vtkmodules.vtkCommonCore import vtkBitArray, vtkVersion
 
-    compatible = Fem.getVtkVersion() == vtkVersion.GetVTKVersion()
-    compatible = compatible and Fem.isVtkCompatible(vtkBitArray())
-except Exception:
-    compatible = False
+        compatible = Fem.getVtkVersion() == vtkVersion.GetVTKVersion()
+        compatible = compatible and Fem.isVtkCompatible(vtkBitArray())
+    except Exception:
+        compatible = False
 
-os._exit(0 if compatible else 1)
+    os._exit(0 if compatible else 1)
