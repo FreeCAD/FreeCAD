@@ -3,6 +3,7 @@
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from PropertyPythonContracts import _ColorValue, _ColorInput
+from typing import overload
 
 
 @export(
@@ -22,6 +23,11 @@ class Material(PyObjectBase):
     UserDocu: This is the Material class
     """
 
+    @overload
+    def __init__(self) -> None:
+        ...
+
+    @overload
     def __init__(
         self,
         /,
@@ -32,7 +38,7 @@ class Material(PyObjectBase):
         Shininess: float = ...,
         Transparency: float = ...,
     ) -> None:
-        """Initialize material."""
+        ...
 
     def set(self, string: str, /) -> None:
         """
