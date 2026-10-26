@@ -223,7 +223,7 @@ TopoDS_Face Deformation::deform(
 
     // get the surface
     Handle(Geom_Surface) surf = BRep_Tool::Surface(TopoDS::Face(face));
-    Base::Console().log(surf->DynamicType()->Name());
+    // Base::Console().log(surf->DynamicType()->Name());
 
     if (!surf->IsKind("Geom_BSplineSurface")) {
         // Convert to BSpline
