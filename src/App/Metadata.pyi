@@ -2,7 +2,7 @@
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import TypedDict, NotRequired, Literal, overload, type_check_only
+from typing import TYPE_CHECKING, TypedDict, NotRequired, Literal, overload
 
 
 @export(
@@ -338,50 +338,44 @@ class Metadata(PyObjectBase):
         Write the metadata to the given file as XML data.
         """
 
-# Helper types
+    if TYPE_CHECKING:
+        class _MaintainerDict(TypedDict):
+            """A maintainer info object."""
+            name: str
+            email: str
 
-@type_check_only
-class _MaintainerDict(TypedDict):
-    """A maintainer info object."""
-    name: str
-    email: str
+        class _AuthorDict(TypedDict):
+            """An author info object."""
+            name: str
+            email: str
 
-@type_check_only
-class _AuthorDict(TypedDict):
-    """An author info object."""
-    name: str
-    email: str
+        class _LicenseDict(TypedDict):
+            """A license info object."""
+            name: str
+            file: str
 
-@type_check_only
-class _LicenseDict(TypedDict):
-    """A license info object."""
-    name: str
-    file: str
+        class _UrlDict(TypedDict):
+            """An url info object."""
+            location: str
+            type: Literal["website", "repository", "bugtracker", "readme", "documentation", "discussion", "unknown"]
+            branch: NotRequired[str]
+            """Only set if type is 'repository'."""
 
-@type_check_only
-class _UrlDict(TypedDict):
-    """An url info object."""
-    location: str
-    type: Literal["website", "repository", "bugtracker", "readme", "documentation", "discussion", "unknown"]
-    branch: NotRequired[str]
-    """Only set if type is 'repository'."""
-
-@type_check_only
-class _DependencyDict(TypedDict):
-    """A dependency info object."""
-    package: str
-    """Required. Must exactly match the contents of the 'name' element in the referenced package's package.xml file."""
-    version_lt: NotRequired[str]
-    """Optional. The dependency to the package is restricted to versions less than the stated version number."""
-    version_lte: NotRequired[str]
-    """Optional. The dependency to the package is restricted to versions less or equal than the stated version number."""
-    version_eq: NotRequired[str]
-    """Optional. The dependency to the package is restricted to a version equal than the stated version number."""
-    version_gt: NotRequired[str]
-    """Optional. The dependency to the package is restricted to versions greater than the stated version number."""
-    version_gte: NotRequired[str]
-    """Optional. The dependency to the package is restricted to versions greater or equal than the stated version number."""
-    condition: NotRequired[str]
-    """Optional. Conditional expression as documented in REP149."""
-    optional: NotRequired[bool]
-    type: NotRequired[Literal["automatic", "addon", "internal", "python"]]
+        class _DependencyDict(TypedDict):
+            """A dependency info object."""
+            package: str
+            """Required. Must exactly match the contents of the 'name' element in the referenced package's package.xml file."""
+            version_lt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less than the stated version number."""
+            version_lte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less or equal than the stated version number."""
+            version_eq: NotRequired[str]
+            """Optional. The dependency to the package is restricted to a version equal than the stated version number."""
+            version_gt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater than the stated version number."""
+            version_gte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater or equal than the stated version number."""
+            condition: NotRequired[str]
+            """Optional. Conditional expression as documented in REP149."""
+            optional: NotRequired[bool]
+            type: NotRequired[Literal["automatic", "addon", "internal", "python"]]
