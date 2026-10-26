@@ -9,7 +9,7 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include "gp_Ax2.hxx"
+#include <gp_Ax2.hxx>
 #include <gp_Trsf.hxx>
 
 #include <Mod/Part/PartGlobal.h>

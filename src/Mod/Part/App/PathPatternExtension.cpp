@@ -24,12 +24,15 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
+#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/Converter.h>
 
 #include "PartFeature.h"
 #include "PatternConstants.h"
 #include "TopoShape.h"
 #include "CircularPatternExtension.h"
 #include "TopExp_Explorer.hxx"
+#include "BRepBuilderAPI_Transform.hxx"
 #include "BaseGeometry.h"
 
 using namespace Part;
@@ -61,6 +64,8 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
     if (shape.isNull()) {
         throw Base::ValueError("Path shape is empty");
     }
+
+    const gp_Trsf transform = Base::convertTo<gp_Trsf>(feature->getPlacement()).Inverted();
 
     std::list<Part::TopoShape> edges;
     const auto subnames = pathProperty.getSubValues();
@@ -106,22 +111,37 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
 
     std::vector<TopoDS_Edge> result;
     result.reserve(edges.size());
-    result.push_back(TopoDS::Edge(edges.front().getShape()));
+
+    auto transformEdge = [&transform](const Part::TopoShape& edge) {
+        TopoDS_Edge source = TopoDS::Edge(edge.getShape());
+
+        BRepBuilderAPI_Transform builder(source, transform, true);
+        if (!builder.IsDone()) {
+            throw Base::ValueError("Failed to transform path edge");
+        }
+
+        return TopoDS::Edge(builder.Shape());
+    };
+
+    result.push_back(transformEdge(edges.front()));
     edges.pop_front();
 
     while (!edges.empty()) {
         TopoDS_Vertex currentFirst;
         TopoDS_Vertex currentLast;
         TopoDS_Vertex ignored;
+
         TopExp::Vertices(result.front(), currentFirst, ignored, true);
         TopExp::Vertices(result.back(), ignored, currentLast, true);
 
         bool connected = false;
+
         for (auto it = edges.begin(); it != edges.end(); ++it) {
-            TopoDS_Edge candidate = TopoDS::Edge(it->getShape());
+            TopoDS_Edge candidate = transformEdge(*it);
 
             TopoDS_Vertex candidateFirst;
             TopoDS_Vertex candidateLast;
+
             TopExp::Vertices(candidate, candidateFirst, candidateLast, true);
 
             if (verticesCoincide(currentLast, candidateFirst)) {
@@ -265,7 +285,8 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     double distance,
     bool align,
     const gp_Vec& vertical,
-    const bool reverseTangent = false,
+    const gp_Vec* wantedTangent = nullptr,
+    const gp_Quaternion* tangentCorrection = nullptr,
     const gp_Pnt* originPosition = nullptr
 )
 {
@@ -292,15 +313,15 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     }
 
     gp_Pnt position;
-    gp_Vec tangent;
-    curve.D1(parameter, position, tangent);
+    gp_Vec currentTangent;
+    curve.D1(parameter, position, currentTangent);
 
-    if (tangent.Magnitude() <= Precision::Confusion()) {
+    if (currentTangent.Magnitude() <= Precision::Confusion()) {
         throw Base::ValueError("Path tangent is null");
     }
-    tangent.Normalize();
-    if (reversed ^ reverseTangent) {
-        tangent.Reverse();
+    currentTangent.Normalize();
+    if (reversed) {
+        currentTangent.Reverse();
     }
 
     gp_Trsf toOrigin;
@@ -311,35 +332,37 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     }
 
     gp_Trsf rotationTransform;
-    if (align) {
-        const gp_Dir xDirection(tangent);
-
-        gp_Vec zCandidate = vertical;
-        zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
-
-        if (zCandidate.Magnitude() <= Precision::Confusion()) {
-            zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
-                                                        : gp_Vec(0.0, 1.0, 0.0);
-
-            zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
+    if (align && wantedTangent) {
+        if (currentTangent.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Path tangent is null");
         }
 
-        const gp_Dir zDirection(zCandidate);
-        const gp_Dir yDirection(gp_Vec(zDirection).Crossed(gp_Vec(xDirection)));
+        gp_Vec rotationAxis = vertical;
+        if (rotationAxis.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Vertical direction is null");
+        }
+        rotationAxis.Normalize();
 
-        const gp_Mat rotationMatrix(
-            xDirection.X(),
-            yDirection.X(),
-            zDirection.X(),
-            xDirection.Y(),
-            yDirection.Y(),
-            zDirection.Y(),
-            xDirection.Z(),
-            yDirection.Z(),
-            zDirection.Z()
+        gp_Vec from(*wantedTangent);
+        gp_Vec to(currentTangent);
+
+        from -= rotationAxis * from.Dot(rotationAxis);
+        to -= rotationAxis * to.Dot(rotationAxis);
+
+        if (from.Magnitude() <= Precision::Confusion() || to.Magnitude() <= Precision::Confusion()) {
+            throw Base::ValueError("Cannot determine tangent angle around vertical");
+        }
+
+        from.Normalize();
+        to.Normalize();
+
+        const double angle = std::atan2(rotationAxis.Dot(from.Crossed(to)), from.Dot(to));
+
+        const gp_Quaternion tangentRotation(rotationAxis, angle);
+
+        rotationTransform.SetRotation(
+            tangentCorrection ? *tangentCorrection * tangentRotation : tangentRotation
         );
-
-        rotationTransform.SetRotation(gp_Quaternion(rotationMatrix));
     }
 
     gp_Trsf toTarget;
@@ -348,7 +371,7 @@ std::tuple<gp_Trsf, gp_Pnt, gp_Vec> frameAt(
     // toOrigin -> rotationTransform -> toTarget
     const gp_Trsf frame = toTarget * rotationTransform * toOrigin;
 
-    return {frame, position, tangent};
+    return {frame, position, currentTangent};
 }
 
 }  // namespace
@@ -519,30 +542,37 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
         }
     }
 
-    const auto getWantedDirection = [&](const App::PropertyLinkSub& tangentAxisProperty,
-                                        const App::PropertyBool& flipTangentAxisProperty,
-                                        const gp_Vec& defaultDirection) -> gp_Vec {
-        const gp_Ax2 tangentAxis
-            = getAxis(tangentAxisProperty).value_or(gp_Ax2(gp_Pnt(), gp_Dir(defaultDirection)));
-
-        gp_Vec tangent(tangentAxis.Direction());
-
-        if (flipTangentAxisProperty.getValue()) {
-            tangent.Reverse();
+    const auto getWantedDirection =
+        [&](const App::PropertyLinkSub& tangentAxisProperty) -> std::optional<gp_Vec> {
+        const auto tangentAxis = getAxis(tangentAxisProperty);
+        if (!tangentAxis) {
+            return std::nullopt;
         }
 
+        gp_Vec tangent(tangentAxis->Direction());
+
         if (tangent.SquareMagnitude() < Precision::Confusion() * Precision::Confusion()) {
-            tangent = defaultDirection;
+            return std::nullopt;
         }
 
         return tangent;
     };
 
-    const gp_Vec wantedTangent
-        = getWantedDirection(TangentAxis, FlipTangentAxis, BaseGeometry::X_POS_VEC);
+    const auto wantedTangentOpt = getWantedDirection(TangentAxis);
 
-    const gp_Vec wantedVertical
-        = getWantedDirection(VerticalAxis, FlipVerticalAxis, BaseGeometry::Z_POS_VEC);
+    auto* pathFeature = freecad_cast<Part::Feature*>(Path.getValue());
+    gp_Vec fallbackVertical = BaseGeometry::Z_POS_VEC;
+    if (auto* pathSketch = freecad_cast<Part::Part2DObject*>(pathFeature)) {
+        fallbackVertical = gp_Vec(
+            Base::convertTo<gp_XYZ>(pathSketch->getAxis(Part::Part2DObject::N_Axis).getDirection())
+        );
+    }
+
+    gp_Vec wantedVertical = getWantedDirection(VerticalAxis).value_or(fallbackVertical);
+    wantedVertical.Normalize();
+    if (FlipVerticalAxis.getValue()) {
+        wantedVertical.Reverse();
+    }
 
     const bool relative = RelativeToFirst.getValue();
     const int originIndex = relative
@@ -554,11 +584,21 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
     }
 
     // identity transformation for reference
-    const auto [originFrame, originPosition, originTangent]
+    auto [originFrame, originPosition, originTangent]
         = frameAt(edges, ends, distances[originIndex], Align.getValue(), wantedVertical);
 
-    const bool needsTangentFlip = (originTangent.Dot(wantedTangent) < 0.0)
-        ^ FlipTangentAxis.getValue();
+    auto wantedTangent = wantedTangentOpt.value_or(originTangent);
+    wantedTangent.Normalize();
+    if (FlipTangentAxis.getValue()) {
+        originTangent.Reverse();
+    }
+
+    // correct the transform by the angle between the wanted tangent and origin tangent
+    const double angle = std::atan2(
+        wantedVertical.Dot(originTangent.Crossed(wantedTangent)),
+        originTangent.Dot(wantedTangent)
+    );
+    const gp_Quaternion tangentCorrection(wantedVertical, angle);
 
     std::list<gp_Trsf> transformations;
     for (std::size_t i = 0; i < distances.size(); ++i) {
@@ -568,7 +608,8 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations() const
             distances[i],
             Align.getValue(),
             wantedVertical,
-            needsTangentFlip,
+            Align.getValue() ? &originTangent : nullptr,
+            Align.getValue() ? &tangentCorrection : nullptr,
             relative ? &originPosition : nullptr
         );
 
