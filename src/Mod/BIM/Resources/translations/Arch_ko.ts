@@ -12103,16 +12103,6 @@ FreeCAD 설치를 확인하거나, [환경 설정] → [가져오기/내보내�
       <source>Converts any object to a BIM component</source>
       <translation>모든 객체를 BIM 구성요소로 변환합니다</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>그룹에서 제거</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>이 객체를 상위 그룹에서 제거합니다</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13724,6 +13714,19 @@ Do you want to proceed?</source>
       <translation>이 복잡한 벽의 기초 부분을 제거하면 벽의 모양이 바뀌고 위치가 재설정됩니다.
 
 계속 진행하시겠습니까?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

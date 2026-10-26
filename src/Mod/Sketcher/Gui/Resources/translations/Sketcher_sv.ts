@@ -1000,7 +1000,7 @@ ogiltiga begränsningar och degenererad geometri</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -4065,12 +4065,12 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
       <translation>Skissen är ogiltig och kan inte redigeras.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Följande begränsning är delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Följande begränsningar är delvis överflödiga:</translation>
     </message>
@@ -4095,72 +4095,72 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
       <translation>Öppna verktyget för skissvalidering?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>Ta bort följande begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Ta bort minst en av följande begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Ta bort följande överflödiga begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Ta bort följande överflödiga begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Ta bort följande felaktiga begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Ta bort följande felaktiga begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>Tom skiss</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>Överbegränsad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>Felaktigt utformade begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>Överflödiga begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n frihetsgrad</numerusform>
@@ -4168,12 +4168,12 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation>Saknad extern geometri</translation>
     </message>
@@ -4664,7 +4664,7 @@ Eigen Sparse QR-algoritmen är optimerad för glesa matriser; vanligtvis snabbar
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>och %1 mer</translation>
     </message>
@@ -4672,57 +4672,57 @@ Eigen Sparse QR-algoritmen är optimerad för glesa matriser; vanligtvis snabbar
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofiler</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>S&amp;kiss</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>Redigeringsläge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>Geometrier</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>Begränsningar</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>Sketchers hjälpverktyg</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>B-spline-verktyg</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>Visuella hjälpare</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>Virtuellt utrymme</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>Sketchers redigeringsverktyg</translation>
     </message>

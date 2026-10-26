@@ -994,7 +994,7 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -4074,12 +4074,12 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <translation>L'esquisse n'est pas valide et ne peut pas être éditée.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La contrainte suivante est partiellement redondante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Les contraintes suivantes sont partiellement redondantes :</translation>
     </message>
@@ -4104,72 +4104,72 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       <translation>Faut-il ouvrir l'outil de validation des esquisses ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>Supprimer la contrainte suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Supprimer au moins une des contraintes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Supprimer la contrainte redondante suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Supprimer les contraintes redondantes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Supprimer la contrainte défectueuse suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Supprimer les contraintes défectueuses suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>Esquisse vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>Esquisse avec contraintes défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>Esquisse avec contraintes redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>Esquisse avec contraintes partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>Esquisse sous-contrainte :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degré de liberté</numerusform>
@@ -4177,12 +4177,12 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation>Une géométrie externe est manquante.</translation>
     </message>
@@ -4670,7 +4670,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
@@ -4678,57 +4678,57 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofils</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>Es&amp;quisse</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>Mode d'édition</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>Géométries</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>Contraintes</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>Assistants de Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>Outils des B-splines</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>Assistants graphiques</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>Espace virtuel</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>Outils de modification de Sketcher</translation>
     </message>

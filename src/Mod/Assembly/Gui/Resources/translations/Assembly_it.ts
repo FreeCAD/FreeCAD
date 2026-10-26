@@ -1633,7 +1633,7 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1644,6 +1644,9 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Acquisisce lo stato corrente dell'assieme (posizionamenti e visibilità). Facendo doppio clic sull'oggetto Snapshot, l'assieme viene ripristinato a tale stato.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

@@ -5664,72 +5664,72 @@ originally selected prior to opening this dialog</source>
       <translation>挑選物件清單</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>僅選擇</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>最適化縮放</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>前往選擇項目</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>標記為重新計算</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>標記此物件來作重新計算</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>至 Python 主控台</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>複製子形狀</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>僅選擇此物件</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>取消選擇</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>取消選擇此物件</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>於3D視窗選取並聚焦於此物件</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>於樹狀圖中選取並定位此物件</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>在Python控制台中顯示這個物件與其子元件集。</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>在文件中建立這個子形狀的獨立副本</translation>
     </message>
@@ -14627,7 +14627,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>整個物件</translation>
     </message>

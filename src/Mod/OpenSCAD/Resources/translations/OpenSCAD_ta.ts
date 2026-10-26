@@ -225,11 +225,6 @@
       <translation>OpenSCAD உறுப்பைச் சேர்க்கவும்</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>விளிம்புகளை முகங்களாக மாற்றுகிறது</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>முதலில் 3 பொருட்களைத் தேர்ந்தெடுக்கவும்</translation>
@@ -433,6 +428,11 @@
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
       <translation>விளிம்புகளை முகங்களாக மாற்றவும்</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation type="unfinished">Converts edges to faces</translation>
     </message>
   </context>
   <context>

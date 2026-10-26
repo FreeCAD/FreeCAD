@@ -1013,7 +1013,7 @@ nevaljana ograničenja, degenerirana geometrija itd</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
@@ -4079,12 +4079,12 @@ To se radi analizom geometrije i ograničenja skice.</translation>
       <translation>Skica je neispravna i ne može se uređivati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Sljedeće ograničenje je djelomično suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Sljedeća ograničenja su djelomično suvišna:</translation>
     </message>
@@ -4109,72 +4109,72 @@ To se radi analizom geometrije i ograničenja skice.</translation>
       <translation>Otvoriti alat za provjeru valjanosti skice?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>Uklanja sljedeće ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Uklanja barem jedno od sljedećih ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Ukloni sljedeće suvišno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Ukloni sljedeća suvišna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Uklanja sljedeće neispravno oblikovano ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Uklanja sljedeća neispravno oblikovana ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>Prazan skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>Pretjerano ograničeno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>Deformirana ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>Suvišna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>Djelomično suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspio konvergirati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>Premalo ograničen:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Stupanj slobode</numerusform>
@@ -4183,12 +4183,12 @@ To se radi analizom geometrije i ograničenja skice.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation type="unfinished">Missing external geometry</translation>
     </message>
@@ -4678,7 +4678,7 @@ Eigen Sparse QR algoritam optimiziran je za rijetke matrice; obično brže</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>i %1 još</translation>
     </message>
@@ -4686,57 +4686,57 @@ Eigen Sparse QR algoritam optimiziran je za rijetke matrice; obično brže</tran
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofili</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>S&amp;kica</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Skica</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>Način uređivanja</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>Geometrije</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>Ograničenja</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>Pomagač crtača</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>B-Spline alati</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>Vizualni pomagači</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>Virtualni prostor</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>Alati uređivanja crtača</translation>
     </message>

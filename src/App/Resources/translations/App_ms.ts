@@ -2,26 +2,32 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ms" sourcelanguage="en">
   <context>
-    <name>LinkParams</name>
-    <message>
-      <location filename="../../Link.cpp" line="131"/>
-      <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</source>
-      <translation>Menyimpan pilihan terakhir pengguna sama ada untuk menerapkan tetapan CopyOnChange kepada semua pautan yang merujuk kepada objek boleh dikonfigurasikan yang sama</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="458"/>
+      <location filename="../../Application.cpp" line="610"/>
       <source>Unnamed</source>
-      <translation>Tidak bernama</translation>
+      <translation>Tidak dinamakan</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>True</source>
+      <translation>Benar</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="583"/>
+      <source>False</source>
+      <translation>Salah</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="601"/>
+      <source>Null</source>
+      <translation>Tiada</translation>
     </message>
   </context>
   <context>
     <name>App::OriginGroupExtension</name>
     <message>
-      <location filename="../../OriginGroupExtension.cpp" line="161"/>
+      <location filename="../../OriginGroupExtension.cpp" line="156"/>
       <source>Origin</source>
       <translation>Asal</translation>
     </message>
@@ -29,7 +35,7 @@ that reference the same configurable object</source>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1117"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -41,39 +47,48 @@ Pengguna kemudiannya perlu mengklik butang Muat semula dalam bar alat utama.</tr
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="265"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>X-axis</source>
       <translation>Paksi-X</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="266"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>Y-axis</source>
       <translation>Paksi-Y</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="267"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>Z-axis</source>
       <translation>Paksi-Z</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="268"/>
+      <location filename="../../Datums.cpp" line="270"/>
       <source>XY-plane</source>
       <translation>Pesawat-XY</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="269"/>
+      <location filename="../../Datums.cpp" line="271"/>
       <source>XZ-plane</source>
       <translation>Pesawat-XZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="270"/>
+      <location filename="../../Datums.cpp" line="272"/>
       <source>YZ-plane</source>
       <translation>Pesawat-YZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="271"/>
-      <source>Origin</source>
-      <translation>Asal</translation>
+      <location filename="../../Datums.cpp" line="273"/>
+      <source>Origin-Point</source>
+      <translation>Titik-asal</translation>
+    </message>
+  </context>
+  <context>
+    <name>LinkParams</name>
+    <message>
+      <location filename="../../Link.cpp" line="131"/>
+      <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
+that links to the same configurable object</source>
+      <translation>Menyimpan pilihan terakhir pengguna sama ada untuk menggunakan tetapan CopyOnChange kepada semua pautan yang merujuk kepada objek boleh konfigurasi yang sama</translation>
     </message>
   </context>
 </TS>

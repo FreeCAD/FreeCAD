@@ -3051,48 +3051,48 @@ if they match the X, Y or Z axis of the global coordinate system</source>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="741"/>
       <source>Relative</source>
       <translation>יַחֲסִי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="739"/>
+      <location filename="../../DraftGui.py" line="751"/>
       <source>Global</source>
       <translation>גלובלי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="765"/>
-      <location filename="../../DraftGui.py" line="1155"/>
+      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="1187"/>
       <source>Continue</source>
       <translation>לְהַמשִׁיך</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="785"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>אם מסומן, הפקודה לא תסתיים עד שתלחץ שוב על כפתור הפקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>אם מסומן, הממד הבא ימוקם בשרשרת עם הממד שהוצב קודם לכן</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="807"/>
       <source>Close</source>
       <translation>סגור</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="808"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Set Working Plane</source>
       <translation>הגדר מטוס עבודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="814"/>
+      <location filename="../../DraftGui.py" line="826"/>
       <source>Select Edge</source>
       <translation>בחר Edge</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="822"/>
+      <location filename="../../DraftGui.py" line="834"/>
       <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <location filename="../../draftguitools/gui_move.py" line="221"/>
       <location filename="../../draftguitools/gui_scale.py" line="229"/>
@@ -3100,7 +3100,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>לְהַעְתִיק</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="799"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Wipe</source>
       <translation>לְנַגֵב</translation>
     </message>
@@ -3181,283 +3181,283 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>מיקום:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="682"/>
-      <location filename="../../DraftGui.py" line="711"/>
-      <location filename="../../DraftGui.py" line="1862"/>
-      <location filename="../../DraftGui.py" line="1880"/>
+      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="723"/>
+      <location filename="../../DraftGui.py" line="1899"/>
+      <location filename="../../DraftGui.py" line="1917"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>ללא</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="710"/>
+      <location filename="../../DraftGui.py" line="722"/>
       <source>active command:</source>
       <translation>פקודה פעילה:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="724"/>
       <source>Active Draft command</source>
       <translation>פקודת טיוטה פעילה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="725"/>
       <source>X coordinate of the point</source>
       <translation>קואורדינטת X של הנקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="726"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="715"/>
+      <location filename="../../DraftGui.py" line="727"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="728"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="721"/>
+      <location filename="../../DraftGui.py" line="733"/>
       <source>Length</source>
       <translation>אורך</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="722"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="303"/>
+      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="304"/>
       <source>Angle</source>
       <translation>זווית</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="726"/>
-      <location filename="../../DraftGui.py" line="1138"/>
+      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="1170"/>
       <source>Radius</source>
       <translation>רַדִיוּס</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="838"/>
+      <location filename="../../DraftGui.py" line="850"/>
       <source>Creates the text object and finishes the command</source>
       <translation>יוצר את אובייקט הטקסט ומסיים את הפקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="860"/>
+      <location filename="../../DraftGui.py" line="872"/>
       <source>Changes the default style for new objects</source>
       <translation>משנה את סגנון ברירת המחדל עבור אובייקטים חדשים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="861"/>
+      <location filename="../../DraftGui.py" line="873"/>
       <source>Toggles construction mode</source>
       <translation>מחליף מצב בנייה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1118"/>
       <source>Label Type</source>
       <translation>סוג תווית</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1139"/>
+      <location filename="../../DraftGui.py" line="1171"/>
       <source>Radius of Circle</source>
       <translation>רדיוס המעגל</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="737"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>קואורדינטות ביחס לנקודה האחרונה או למקור מערכת הקואורדינטות
 אם היא הנקודה הראשונה להגדיר</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="717"/>
+      <location filename="../../DraftGui.py" line="729"/>
       <source>Y coordinate of the point</source>
       <translation>קואורדינטת Y של הנקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="718"/>
+      <location filename="../../DraftGui.py" line="730"/>
       <source>Z coordinate of the point</source>
       <translation>קואורדינטת Z של הנקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="731"/>
       <source>Enter Point</source>
       <translation>הזן נקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="736"/>
       <source>Length of the current segment</source>
       <translation>אורך הקטע הנוכחי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="725"/>
+      <location filename="../../DraftGui.py" line="737"/>
       <source>Angle of the current segment</source>
       <translation>זווית של הקטע הנוכחי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="727"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Radius of the circle</source>
       <translation>רדיוס המעגל</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="747"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>קואורדינטות ביחס למערכת הקואורדינטות העולמית.
 בטל את הסימון כדי להשתמש במערכת הקואורדינטות של מישור העבודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="759"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>Finish</source>
       <translation>סִיוּם</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="775"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>מסיים את פעולת הציור או העריכה הנוכחית</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2095"/>
+      <location filename="../../DraftGui.py" line="2132"/>
       <source>Modify Objects</source>
       <translation>שנה אובייקטים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2257"/>
+      <location filename="../../DraftGui.py" line="2298"/>
       <source>Facebinder Elements</source>
       <translation>Facebinder Elements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="789"/>
+      <location filename="../../DraftGui.py" line="801"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>אם מסומן, יבוצע היסט בסגנון OCC במקום היסט הקלאסי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="794"/>
       <source>OCC-style offset</source>
       <translation>אופסט בסגנון OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="791"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <source>Undo</source>
       <translation>לְבַטֵל</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="825"/>
+      <location filename="../../DraftGui.py" line="837"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>אם מסומן, אובייקטים יועתקו במקום יוזזו</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="793"/>
+      <location filename="../../DraftGui.py" line="805"/>
       <source>Undo the last segment</source>
       <translation>בטל את הקטע האחרון</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="720"/>
+      <location filename="../../DraftGui.py" line="732"/>
       <source>Enter a point with given coordinates</source>
       <translation>הזן נקודה עם קואורדינטות נתונות</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="749"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Make face</source>
       <translation>תעשה פרצוף</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="757"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>אם מסומן, האובייקט יתמלא בפנים.
 לא זמין אם ההעדפה 'השתמש בפרימיטיבים של חלק' מופעלת</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="786"/>
       <source>Chained mode</source>
       <translation>מצב משורשר</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="809"/>
       <source>Finishes and closes the current line</source>
       <translation>מסיים וסוגר את הקו הנוכחי</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="806"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>מחק את הקטעים הקיימים של הקו הזה ומתחיל שוב מהנקודה האחרונה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="812"/>
+      <location filename="../../DraftGui.py" line="824"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>מכוון מחדש את מישור העבודה על הקטע האחרון</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="818"/>
+      <location filename="../../DraftGui.py" line="830"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>בוחר קצה קיים שיימדד לפי ממד זה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="819"/>
+      <location filename="../../DraftGui.py" line="831"/>
       <source>Sides</source>
       <translation>צדדים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="820"/>
+      <location filename="../../DraftGui.py" line="832"/>
       <source>Number of sides</source>
       <translation>מספר הצדדים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="828"/>
+      <location filename="../../DraftGui.py" line="840"/>
       <source>Modify subelements</source>
       <translation>שנה רכיבי משנה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="834"/>
+      <location filename="../../DraftGui.py" line="846"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>אם מסומן, רכיבי משנה ישונו במקום אובייקטים שלמים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="862"/>
-      <location filename="../../DraftGui.py" line="1868"/>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="874"/>
+      <location filename="../../DraftGui.py" line="1905"/>
+      <location filename="../../DraftGui.py" line="1923"/>
       <source>Autogroup off</source>
       <translation>קבוצה אוטומטית כבויה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="996"/>
+      <location filename="../../DraftGui.py" line="1025"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>קו</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1011"/>
+      <location filename="../../DraftGui.py" line="1040"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1034"/>
+      <location filename="../../DraftGui.py" line="1063"/>
       <source>Circle</source>
       <translation>מעגל</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1039"/>
+      <location filename="../../DraftGui.py" line="1068"/>
       <source>Arc</source>
       <translation>קשת</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1044"/>
+      <location filename="../../DraftGui.py" line="1073"/>
       <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>סובב</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1050"/>
+      <location filename="../../DraftGui.py" line="1079"/>
       <source>Point</source>
       <translation>נקודה</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1116"/>
       <source>Label</source>
       <translation>תווית</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1106"/>
+      <location filename="../../DraftGui.py" line="1135"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3465,32 +3465,32 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>היסט</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1111"/>
-      <location filename="../../DraftGui.py" line="1131"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="299"/>
+      <location filename="../../DraftGui.py" line="1140"/>
+      <location filename="../../DraftGui.py" line="1163"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="300"/>
       <source>Distance</source>
       <translation>מֶרְחָק</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1112"/>
-      <location filename="../../DraftGui.py" line="1132"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="300"/>
+      <location filename="../../DraftGui.py" line="1141"/>
+      <location filename="../../DraftGui.py" line="1164"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="301"/>
       <source>Offset distance</source>
       <translation>מרחק קיזוז</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1128"/>
+      <location filename="../../DraftGui.py" line="1160"/>
       <location filename="../../draftguitools/gui_trimex.py" line="84"/>
       <source>Trimex</source>
       <translation>טרימקס</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1232"/>
-      <location filename="../../DraftGui.py" line="1234"/>
-      <location filename="../../DraftGui.py" line="1235"/>
-      <location filename="../../DraftGui.py" line="1237"/>
-      <location filename="../../DraftGui.py" line="1238"/>
-      <location filename="../../DraftGui.py" line="1239"/>
+      <location filename="../../DraftGui.py" line="1264"/>
+      <location filename="../../DraftGui.py" line="1266"/>
+      <location filename="../../DraftGui.py" line="1267"/>
+      <location filename="../../DraftGui.py" line="1269"/>
+      <location filename="../../DraftGui.py" line="1270"/>
+      <location filename="../../DraftGui.py" line="1271"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3498,12 +3498,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>מקומי {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1241"/>
-      <location filename="../../DraftGui.py" line="1242"/>
-      <location filename="../../DraftGui.py" line="1243"/>
-      <location filename="../../DraftGui.py" line="1245"/>
-      <location filename="../../DraftGui.py" line="1246"/>
-      <location filename="../../DraftGui.py" line="1247"/>
+      <location filename="../../DraftGui.py" line="1273"/>
+      <location filename="../../DraftGui.py" line="1274"/>
+      <location filename="../../DraftGui.py" line="1275"/>
+      <location filename="../../DraftGui.py" line="1277"/>
+      <location filename="../../DraftGui.py" line="1278"/>
+      <location filename="../../DraftGui.py" line="1279"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3511,27 +3511,27 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>גלובלי {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1876"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Autogroup:</source>
       <translation>קבוצה אוטומטית:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2076"/>
+      <location filename="../../DraftGui.py" line="2113"/>
       <source>Create Objects</source>
       <translation>צור אובייקט</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2254"/>
+      <location filename="../../DraftGui.py" line="2295"/>
       <source>Faces</source>
       <translation>פרצופים</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2255"/>
+      <location filename="../../DraftGui.py" line="2296"/>
       <source>Remove</source>
       <translation>הסר</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2256"/>
+      <location filename="../../DraftGui.py" line="2297"/>
       <source>Add</source>
       <translation>הוסף</translation>
     </message>
@@ -3656,44 +3656,44 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_layer.py" line="150"/>
       <location filename="../../draftutils/utils.py" line="1135"/>
       <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftutils/gui_utils.py" line="944"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <source>No active document. Aborting.</source>
       <translation>אין מסמך פעיל. הפלה.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="137"/>
-      <location filename="../../draftutils/gui_utils.py" line="932"/>
+      <location filename="../../draftutils/gui_utils.py" line="952"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>קלט שגוי: אובייקט {} לא במסמך.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="176"/>
+      <location filename="../../draftutils/gui_utils.py" line="196"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>לא ניתן להכניס אובייקט חדש לחלק בקנה מידה</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="284"/>
+      <location filename="../../draftutils/gui_utils.py" line="304"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>סמל לא מיושם. שימוש בסמל ברירת מחדל.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="806"/>
+      <location filename="../../draftutils/gui_utils.py" line="826"/>
       <source>image is Null</source>
       <translation>התמונה היא Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="814"/>
+      <location filename="../../draftutils/gui_utils.py" line="834"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>שם הקובץ אינו קיים במערכת או בקובץ המשאבים</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="873"/>
+      <location filename="../../draftutils/gui_utils.py" line="893"/>
       <source>unable to load texture</source>
       <translation>לא מצליח לטעון מרקם</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="940"/>
+      <location filename="../../draftutils/gui_utils.py" line="960"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>אין לו 'ViewObject.RootNode'.</translation>
     </message>
@@ -3824,7 +3824,7 @@ or try saving to a lower DWG version.</source>
       <translation>בחר נקודה ראשונה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="501"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="514"/>
       <source>Edges do not intersect!</source>
       <translation>קצוות לא מצטלבים!</translation>
     </message>
@@ -3902,7 +3902,7 @@ or try saving to a lower DWG version.</source>
       <translation>בחר נקודת מיקום</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="835"/>
+      <location filename="../../DraftGui.py" line="847"/>
       <location filename="../../draftguitools/gui_texts.py" line="133"/>
       <source>Create Text</source>
       <translation>צור טקסט</translation>
@@ -4171,49 +4171,49 @@ or try saving to a lower DWG version.</source>
       <translation>בחר אובייקט טיוטה לעריכה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="374"/>
+      <location filename="../../draftguitools/gui_edit.py" line="378"/>
       <source>%1 select object to edit</source>
       <translation>% 1 בחר אובייקט לעריכה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="382"/>
+      <location filename="../../draftguitools/gui_edit.py" line="386"/>
       <source>%1 pick node to edit</source>
       <translation>% 1 בחר צומת לעריכה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="384"/>
+      <location filename="../../draftguitools/gui_edit.py" line="388"/>
       <source>%1 options for hovered node/edge</source>
       <translation>%1 אפשרויות עבור צומת/קצה מרחף</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="387"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
+      <location filename="../../draftguitools/gui_edit.py" line="391"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
       <location filename="../../draftguitools/gui_subelements.py" line="179"/>
       <source>%1 finish</source>
       <translation>סיום %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="392"/>
+      <location filename="../../draftguitools/gui_edit.py" line="396"/>
       <source>%1 place node</source>
       <translation>%1 צומת מקום</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="541"/>
+      <location filename="../../draftguitools/gui_edit.py" line="545"/>
       <source>Edit Node</source>
       <translation>ערוך צומת</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="856"/>
+      <location filename="../../draftguitools/gui_edit.py" line="860"/>
       <source>Too many objects selected, maximum number set to:</source>
       <translation>יותר מדי אובייקטים נבחרו, המספר המרבי הוגדר ל:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="597"/>
+      <location filename="../../draftguitools/gui_edit.py" line="601"/>
       <source>No edit point found for selected object</source>
       <translation>לא נמצאה נקודת עריכה עבור האובייקט שנבחר</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="864"/>
+      <location filename="../../draftguitools/gui_edit.py" line="868"/>
       <source>: this object is not editable</source>
       <translation>: אובייקט זה אינו ניתן לעריכה</translation>
     </message>
@@ -4513,7 +4513,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>אובייקט זה אינו נתמך</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="210"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="211"/>
       <source>Only a single face can be extruded</source>
       <translation>ניתן להוציא רק פנים בודדות</translation>
     </message>
@@ -4529,17 +4529,17 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Trimex אינו תומך בסוג אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="590"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="607"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>אין אפשרות לקצץ את האובייקטים האלה, רק חוטי טיוטה וקשתות נתמכים</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="610"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="627"/>
       <source>These objects do not intersect</source>
       <translation>חפצים אלו אינם מצטלבים</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="613"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="630"/>
       <source>Too many intersection points</source>
       <translation>יותר מדי נקודות צומת</translation>
     </message>
@@ -4559,55 +4559,55 @@ The final angle will be the base angle plus this amount.</source>
       <translation>מרחק בחר %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="189"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="190"/>
       <location filename="../../draftguitools/gui_offset.py" line="152"/>
       <source>Pick distance</source>
       <translation>בחר מרחק</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="199"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="716"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="200"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="733"/>
       <source>Select a single face to extrude</source>
       <translation>בחר פאה אחת להבלטה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="304"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="305"/>
       <source>Offset angle</source>
       <translation>זווית היסט</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="593"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="610"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>לא ניתן לקצץ את החפצים האלה, יותר מדי חוטים</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="689"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
       <source>%1 pick target</source>
       <translation>%1 בחר יעד</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="691"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="708"/>
       <source>Hold %1 free direction</source>
       <translation>החזק את% 1 כיוון פנוי</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="694"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="711"/>
       <source>Hold %1 keep active endpoint</source>
       <translation>החזק את% 1 שמור על נקודת קצה פעילה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="697"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="714"/>
       <source>Hold %1 invert trim direction</source>
       <translation>החזק את %1 הפוך את כיוון החיתוך</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="706"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="723"/>
       <source>Extrude Face</source>
       <translation>משיכת פאה
 </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="707"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="724"/>
       <source>Select a face to extrude</source>
       <translation type="unfinished">Select a face to extrude</translation>
     </message>
@@ -4868,37 +4868,37 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_dimensions.py" line="208"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="223"/>
       <location filename="../../draftguitools/gui_dimensions.py" line="253"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="269"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="277"/>
       <source>Create Dimension</source>
       <translation>צור מימד</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="487"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="500"/>
       <source>Edge too short!</source>
       <translation>קצה קצר מדי!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="596"/>
       <source>%1 pick dimension position</source>
       <translation>%1 בחר מיקום ממד</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="598"/>
       <source>%1 select edge</source>
       <translation>% 1 בחר קצה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="615"/>
       <source>%1 pick next dimension point</source>
       <translation>%1 בחר את נקודת הממד הבאה</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="623"/>
       <source>%1 pick first dimension point</source>
       <translation>%1 בחר את נקודת הממד הראשון</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="632"/>
       <source>%1 pick second dimension point</source>
       <translation>%1 בחר נקודת מימד שני</translation>
     </message>

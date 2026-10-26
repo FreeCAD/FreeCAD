@@ -1636,7 +1636,7 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1647,6 +1647,9 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Zachytí aktuální stav sestavy (umístění a viditelnost). Poklepáním na objekt Snímek se sestava obnoví do tohoto stavu.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

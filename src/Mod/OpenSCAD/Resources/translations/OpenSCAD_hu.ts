@@ -225,11 +225,6 @@
       <translation>OpenSCAD elem hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>Élek felületté konvertálása</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>Először válassz ki 3 tárgyat</translation>
@@ -433,6 +428,11 @@
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
       <translation>Élek felületté konvertálása</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation type="unfinished">Converts edges to faces</translation>
     </message>
   </context>
   <context>

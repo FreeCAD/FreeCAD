@@ -1000,7 +1000,7 @@ ungültigen Randbedingungen und degenerierter Geometrie</translation>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
@@ -4067,12 +4067,12 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
       <translation>Die Skizze ist ungültig und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Die folgende Randbedingung ist teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Die folgenden Randbedingungen sind teilweise überflüssig:</translation>
     </message>
@@ -4097,72 +4097,72 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
       <translation>Skizzenprüfung öffnen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>Folgende Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Wenigstens eine der folgenden Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Folgende überflüssige Randbedingung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Folgende überflüssige Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Folgende fehlerhafte Randbedingung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Folgende fehlerhafte Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>Leere Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>Überbestimmt:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>Fehlerhafte Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>Überflüssige Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>Teilweise redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>Der Gleichungslöser konnte keine Lösung annähern</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>Unterbestimmt:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n (nicht bestimmter) Freiheitsgrad</numerusform>
@@ -4170,12 +4170,12 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>Vollständig bestimmt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation>Fehlende externe Geometrie</translation>
     </message>
@@ -4665,7 +4665,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>und %1 mehr</translation>
     </message>
@@ -4673,57 +4673,57 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;rofile</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>S&amp;kizze</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>Geometrien</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>Randbedingungen</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>Sketcher-Helfer</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>B-Spline-Werkzeuge</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>Visuelle Hilfsmittel</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>Virtueller Raum</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>Sketcher-Bearbeitungs-Werkzeuge</translation>
     </message>

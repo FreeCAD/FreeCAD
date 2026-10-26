@@ -6659,16 +6659,6 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Cuir sonraí leis ó</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>Amharcléirithe Sonraí</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>Amharcléirithe éagsúla chun sonraí iarphróiseála a thaispeáint i</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>Easpórtáil go CSV</translation>
@@ -8827,9 +8817,6 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <source>Shape-Based Refinement</source>
       <translation>Mionchoigeartú Bunaithe ar Chruth</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -8998,6 +8985,19 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation>Roghnóir Tagartha Geoiméadrachta Sclábhaí</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>Amharcléirithe Sonraí</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Amharcléirithe éagsúla chun sonraí iarphróiseála a thaispeáint i</translation>
     </message>
   </context>
   <context>

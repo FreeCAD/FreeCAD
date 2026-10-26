@@ -5684,72 +5684,72 @@ seçilmiş olan nesnelerle devam edin</translation>
       <translation>Özel seçilen nesne listesi</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>Yalnızca Seç</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>Sığdır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>Seçime Git</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>Yeniden Hesaplanacak Olarak İşaretle</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>Bu nesneyi yeniden hesaplanacak olarak işaretler</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>Python Konsoluna</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>Alt Şekli Çoğalt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>Sadece bu nesneyi seçer</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>Seçimi kaldır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>Bu nesneyi sil</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Bu nesneyi seçer ve 3B Penceresine sığdırır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Bu nesneyi unsur ağacında bulur ve seçer</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>Bu nesneyi ve alt öğelerini Python konsolunda gösterir.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Belgede bu alt şablonun bağımsız bir kopyasını oluşturur</translation>
     </message>
@@ -14662,7 +14662,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>Tüm Nesne</translation>
     </message>

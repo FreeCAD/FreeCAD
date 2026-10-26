@@ -276,6 +276,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lao")] = "lo";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hebrew")] = "he";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish")] = "es-CO";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English")] = "en-GB";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");

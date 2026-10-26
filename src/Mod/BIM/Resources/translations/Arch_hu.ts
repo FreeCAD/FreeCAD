@@ -12139,16 +12139,6 @@ Kérem, ellenőrizze a FreeCAD telepítését, vagy adjon meg egyéni sablont az
       <source>Converts any object to a BIM component</source>
       <translation>Bármilyen objektumot BIM összetevővé alakít át</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Eltávolítás a csoportból</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Eltávolítja ezt az objektumot a szülőcsoportjából</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13758,6 +13748,19 @@ Do you want to proceed?</source>
       <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
 
 Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

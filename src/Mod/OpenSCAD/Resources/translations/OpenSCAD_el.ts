@@ -225,11 +225,6 @@
       <translation>Προσθήκη Στοιχείου OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>Μετατρέπει ακμές σε έδρες</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>Επιλέξτε πρώτα 3 αντικείμενα</translation>
@@ -433,6 +428,11 @@
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
       <translation>Μετατροπή Ακμών σε Εδρες</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation type="unfinished">Converts edges to faces</translation>
     </message>
   </context>
   <context>

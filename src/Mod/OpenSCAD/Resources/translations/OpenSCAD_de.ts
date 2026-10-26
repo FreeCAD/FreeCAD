@@ -225,11 +225,6 @@
       <translation>OpenSCAD-Element hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>Wandelt Kanten in Flächen um</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>Zuerst drei Objekte auswählen</translation>
@@ -433,6 +428,11 @@
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
       <translation>Kanten in Flächen umwandeln</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation>Wandelt Kanten in Flächen um</translation>
     </message>
   </context>
   <context>

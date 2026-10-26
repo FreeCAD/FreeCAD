@@ -2736,7 +2736,7 @@ la dimensione del file STEP risultante.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>Seleziona</translation>
     </message>
@@ -2863,48 +2863,48 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>Selezionare…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>Il documento '%1' non esiste.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation>Creazione estrusione fallita.
 Nessuna forma può essere estrusa.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Creazione estrusione non riuscita.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Creazione estrusione non riuscita.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>Oggetto non trovato: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Nessuna forma selezionata per l'estrusione.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2913,12 +2913,12 @@ Nessuna forma può essere estrusa.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>Errore sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2927,17 +2927,17 @@ Nessuna forma può essere estrusa.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>La direzione impostata prevede di utilizzare un bordo, ma non è stato collegato nessun bordo.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Il vettore di direzione di estrusione è di lunghezza zero. Deve essere diversa da zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>La lunghezza totale estrusione è zero (lung. 1 = = - length2). Deve essere diversa da zero.</translation>
     </message>
@@ -7976,7 +7976,7 @@ I volumi delle forme che si sovrappongono verranno rimossi.</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation>Seleziona oggetto Punto</translation>
     </message>

@@ -1633,7 +1633,7 @@ Nota: actualment només se seleccionen les peces no connectades, no les peces re
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1644,6 +1644,9 @@ Nota: actualment només se seleccionen les peces no connectades, no les peces re
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Captura l'estat actual del muntatge (posicionaments i visibilitat). Fer doble clic a l'objecte Instantània restaura el muntatge a aquest estat.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

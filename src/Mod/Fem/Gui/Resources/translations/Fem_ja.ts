@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
       <source>Geometrical nonlinearity</source>
-      <translation type="unfinished">Geometrical nonlinearity</translation>
+      <translation>幾何学的非線形性</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
@@ -926,7 +926,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
       <source>Use geometrical nonlinearity</source>
-      <translation type="unfinished">Use geometrical nonlinearity</translation>
+      <translation>幾何学的非線形性を使用</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
@@ -941,7 +941,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>No legacy results (use enhanced solver)</source>
-      <translation type="unfinished">No legacy results (use enhanced solver)</translation>
+      <translation>旧来型の結果はありません（改良版ソルバーを使用）</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
@@ -3046,7 +3046,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
       <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
+      <translation>磁束密度を定義</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
@@ -3459,7 +3459,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>集中</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
@@ -3640,7 +3640,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;再分割によるメッシュサイズ出力を可視化します。再分割によるメッシュサイズが、プレビュー用メッシュ上に色表示されます。このプレビューは粗いメッシュに対する再分割を評価するものなので、メッシュサイズよりも細かい詳細は表示されない場合があることに注意してください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
@@ -3655,19 +3655,19 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>構造化アルゴリズムを使用してエッジ上に定義した固定数のメッシュ節点を作成</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
       <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
+      <translation>エッジ上の節点の数</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
+      <translation>プログレッション</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
@@ -3686,7 +3686,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
+      <translation>バンプ</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
@@ -3703,7 +3703,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <translation>ダイアグラム</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
@@ -3713,18 +3713,18 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
+      <translation>バンプ/プログレッションの増加率の係数</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
       <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
+      <translation>グローバルな再分割プレビュー設定</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+      <translation>再分割タスクダイアログを開くと、再分割メッシュサイズの可視化が自動で有効になります。</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
@@ -3750,17 +3750,17 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
+      <translation>AttractorAnisoCurve</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
+      <translation>MathEval</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
+      <translation>MathEvalAniso</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3778,7 +3778,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>選択した参照エッジまでの距離を計算し、最も近い曲線も対する法線方向と平行方向にそれぞれにメッシュサイズを指定します。 効率のため、各曲線は一連のサンプル点に置き換えられた上で距離が計算されます。</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="121"/>
@@ -3795,14 +3795,14 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+      <translation>異方性メッシュの再分割は BAMG (2D) および MMG3D (3D) アルゴリズムでのみ動作します</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>メッシュサイズがSizeMaximumとなる距離</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
@@ -3815,7 +3815,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
+      <translation>サイズ接線</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
@@ -3830,7 +3830,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>メッシュサイズがSizeMinimumとなるまでの距離</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
@@ -3846,13 +3846,13 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;座標（x, y, z）およびその他の詳細条件（F1, F2など）に基づく計算式から、メッシュサイズを算出&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>再分割をツリー内の高度なメッシュオブジェクトにドラッグして、数式でアクセスできるようにする</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3862,11 +3862,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>利用可能なのは3つの座標 x、y、z （小文字）と Sin、Log（大文字）などの通常の数学関数です。
+また全ての子の再分割値は変数 F（例. F1、F2など）から使用できます。
+サポートされている演算子は +、-、*、/、^ です。
 
-Example: "F2 + Sin(z)"</translation>
+例: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3882,12 +3882,12 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
+      <translation>EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;座標（x, y, z）およびその他の詳細条件（F1, F2など）に基づく複数の計算式から、異方性メッシュのサイズを算出&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
@@ -3906,11 +3906,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>利用可能なのは3つの座標 x、y、z （小文字）と Sin、Log（大文字）などの通常の数学関数です。
+また全ての子の再分割値は変数 F（例. F1、F2など）から使用できます。
+サポートされている演算子は +、-、*、/、^ です。
 
-Example: "F2 + Sin(z)"</translation>
+例: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
@@ -3940,17 +3940,17 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>選択した参照ジオメトリー（頂点、エッジ、サーフェス）までの距離を計算します。効率のために曲線、サーフェスは一連の点で置き換えられます。</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+      <translation>FEM後処理パイプラインのデータフィールドをメッシュサイズとして使用します。 これにより、結果の物理的振る舞いに応じてメッシュを調整できます。</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
       <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
+      <translation>選択した参照ジオメトリーまでの距離に基づいてメッシュ要素のサイズを定義します。</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -3976,7 +3976,7 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>SizeMinimumからSizeMaximumの間のメッシュサイズの補間を、線形とするかシグモイド関数とするかを定義</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
@@ -3986,40 +3986,40 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
+      <translation>3つまたは4つのエッジを持つ複数の面を選択します。3角形の面のコーナー頂点を含めることも可能です。</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;または&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;4つ以上のエッジを持つ1面を選択し、さらに3つまたは4つのコーナー点を選択します。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>反対のエッジ（またはコーナー点間のワイヤー）には、同じ数のメッシュ節点が必要です。 これを実現する最も簡単な方法はトランス有限曲線の使用です。</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>表面の三角形を四角形へと再結合するかどうかを定義</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>再結合</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>三角形が超限メッシュ内でどの方向になるのかを定義（再結合されていない場合）</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
@@ -4035,51 +4035,51 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>有効にすると、選択したサーフェス上のエッジで、まだ超限曲線が定義されていないものが、自動的に超限曲線として設定されます。
+超限曲線の定義を戦略的に配置することで、自動アルゴリズムの処理を制御できます。
 
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+注意:
+1. ユーザーが定義した曲線は、選択されたすべての面で、面の反対側のエッジへ伝播します。
+2. 3辺または4辺で構成される面に対してのみ機能します。それ以上の辺数を持つ面では、手動での設定が必要です。
+3. 繋がっているかどうかによらず、ほとんどの面に対して機能します。</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>超限曲線を自動適用</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>分散</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
       <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
+      <translation>反転したバンプ</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <translation>反転したプログレッション</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <translation>超限曲面で設定された体積に構造化メッシュを作成</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
       <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
+      <translation>5面または6面の体積を任意の数だけ選択</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <translation>すべての体積表面は超限的でなければなりません。表面に異なる種類のメッシュがある場合（四角形 vs 三角形）体積でも混合要素を有効にしてメッシュ化する必要があります。</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
@@ -4094,17 +4094,17 @@ Use strategically placed transfinite curve and surface definitions to guide the 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+      <translation>有効にすると、選択した体積に含まれるエッジおよびサーフェスのうち、まだ超限が定義が設定されていないものが、自動的に超限として定義されます。
+超限曲線および超限曲面の定義を戦略的に配置することで、自動アルゴリズムの処理を制御できます。
 
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
+注意:
+1. ユーザーが定義した曲線は、選択されたすべての面で、その面の反対側のエッジへ伝播します。
+2. 繋がっているか否かにかかわらず、任意の数の体積に対して機能します。</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <translation>超限曲面と超限曲線を自動適用</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -4114,7 +4114,7 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
       <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
+      <translation>ドキュメントツリーの操作オブジェクトに変更する再分割値をドラッグ</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
@@ -4150,13 +4150,13 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>選択した参照要素に対して子要素再分割の適用を制限します。</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>選択した参照要素の境界を含める</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
@@ -4205,7 +4205,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
+      <translation>Delta</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="527"/>
@@ -4229,7 +4229,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Kind</translation>
     </message>
   </context>
   <context>
@@ -4573,12 +4573,12 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation> 全サイクル</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>半サイクル</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
@@ -6638,16 +6638,6 @@ No matching module was found in the current Python path.</source>
       <translation>データの追加元</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>データ可視化</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>後処理データを表示するためのさまざまな可視化処理</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>CSVにエクスポート</translation>
@@ -6970,7 +6960,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="2559"/>
       <source>Defines a contours filter that displays iso contours</source>
-      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
+      <translation>ISO等高線を表示する等高線フィルターを定義</translation>
     </message>
   </context>
   <context>
@@ -8382,7 +8372,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="608"/>
       <source>Add non-linear mechanical properties to material</source>
-      <translation type="unfinished">Add non-linear mechanical properties to material</translation>
+      <translation>材料に非線形の機械特性を追加</translation>
     </message>
   </context>
   <context>
@@ -8770,7 +8760,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+      <translation>頂点、エッジ、面までの距離に基づいてメッシュのサイズを設定</translation>
     </message>
   </context>
   <context>
@@ -8796,7 +8786,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Allows to define the mesh size by various advanced means</source>
-      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+      <translation>さまざまな高度な手段でメッシュのサイズを定義可能</translation>
     </message>
   </context>
   <context>
@@ -8806,13 +8796,10 @@ Leave blank to use default Python executable</source>
       <source>Shape-Based Refinement</source>
       <translation>シェイプベースの再分割</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+      <translation>幾何形状の内外にメッシュの大きさを設定（直方体、球、円柱）</translation>
     </message>
   </context>
   <context>
@@ -8820,12 +8807,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="965"/>
       <source>Structured Transfinite Curve</source>
-      <translation type="unfinished">Structured Transfinite Curve</translation>
+      <translation>構造化された超限曲線</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="969"/>
       <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
-      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
+      <translation>構造化アルゴリズムを使用してエッジ上に固定数の節点を作成</translation>
     </message>
   </context>
   <context>
@@ -8833,12 +8820,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="981"/>
       <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
+      <translation>構造化された超限曲面</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="984"/>
       <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
+      <translation>面上に構造化メッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -8846,12 +8833,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="996"/>
       <source>Structured Transfinite Volume</source>
-      <translation type="unfinished">Structured Transfinite Volume</translation>
+      <translation>構造化された超限体積</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
+      <translation>超限曲面で囲まれた4面または5面の体積に構造化メッシュを作成</translation>
     </message>
   </context>
   <context>
@@ -8977,6 +8964,19 @@ Leave blank to use default Python executable</source>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation>従属ジオメトリー参照セレクター</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>データ可視化</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>後処理データを表示するためのさまざまな可視化処理</translation>
     </message>
   </context>
   <context>

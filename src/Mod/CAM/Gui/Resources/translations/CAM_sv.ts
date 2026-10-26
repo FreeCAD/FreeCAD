@@ -8369,41 +8369,14 @@ Större värden beräknas snabbare; mindre värden ger mer exakta verktygsbanor.
       <translation>Ange False för att hindra operationen från att generera kod</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
-      <source>Edit</source>
-      <translation>Redigera</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
-      <source>Base Geometry</source>
-      <translation>Basgeometri</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
-      <source>Multiple operations are labeled as</source>
-      <translation>Flera operationer betecknas som</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
-      <source>Base Location</source>
-      <translation>Basposition</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
-      <source>Heights</source>
-      <translation>Höjder</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
-      <source>FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>FinalDepth kan inte ändras för denna operation.
-Om det är nödvändigt att ställa in FinalDepth manuellt, välj en annan operation.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
       <source>Operation Deleted</source>
       <translation>Operation borttagen</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
+      <source>Edit</source>
+      <translation>Redigera</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
@@ -8431,9 +8404,36 @@ Om det är nödvändigt att ställa in FinalDepth manuellt, välj en annan opera
       <translation>u26a0 Föråldrad: {}</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
+      <source>Base Geometry</source>
+      <translation>Basgeometri</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
+      <source>Multiple operations are labeled as</source>
+      <translation>Flera operationer betecknas som</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
+      <source>Base Location</source>
+      <translation>Basposition</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
+      <source>Heights</source>
+      <translation>Höjder</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
       <source>Tool Controller</source>
       <translation>Verktygsstyrning</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
+      <source>FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</source>
+      <translation>FinalDepth kan inte ändras för denna operation.
+Om det är nödvändigt att ställa in FinalDepth manuellt, välj en annan operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
@@ -8454,16 +8454,6 @@ Om det är nödvändigt att ställa in FinalDepth manuellt, välj en annan opera
       <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Ångra skapandet av AreaOp-operation</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
-      <source>Start Point Selection</source>
-      <translation>Val av startpunkt</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
-      <source>Selects the start point</source>
-      <translation>Väljer startpunkt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
@@ -8904,12 +8894,12 @@ Utan val av delelement:
   <context>
     <name>CAM_DressupDragKnife</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="594"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
       <source>Drag Knife</source>
       <translation>Dragkniv</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="598"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="603"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
       <translation>Ändrar en verktygsbana för att lägga till hörnrörelser för en dragkniv</translation>
     </message>
@@ -9738,16 +9728,6 @@ G-koden under markören definierar verktygsformens placering</translation>
       <translation>Kontrollerar CAM-jobbet för vanliga fel</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
-      <source>Quick Validate</source>
-      <translation>Snabbvalidering</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
-      <source>Validates the CAM job for common issues without generating a full report</source>
-      <translation>Validerar CAM-jobbet med avseende på vanliga problem utan att generera en fullständig rapport</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="155"/>
       <source>Quick Validate: No issues found.
 </source>
@@ -9772,11 +9752,6 @@ G-koden under markören definierar verktygsformens placering</translation>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
-      <source>CAM Simulator</source>
-      <translation>CAM-simulator</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>Hög</translation>
@@ -9798,7 +9773,6 @@ G-koden under markören definierar verktygsformens placering</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="630"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>Simulerar G-kod på ämnet</translation>
     </message>
@@ -10706,6 +10680,7 @@ Detta kommer inte att radera verktygsbitarna som finns i det.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="180"/>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="156"/>
       <source>Program Name</source>
       <translation>Programnamn</translation>
     </message>
@@ -11094,6 +11069,21 @@ Spindle_Control: Alla M3/M5-kommandon skickas ut oförändrade.</translation>
       <translation>Masso G3-postprocessor</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="81"/>
+      <source>Use Alternative Tool Change</source>
+      <translation>Använd alternativt verktygsbyte</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="83"/>
+      <source>Use M0 instead of M6 for tool changes</source>
+      <translation>Använd M0 i stället för M6 vid verktygsbyte</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="90"/>
+      <source>Estlcam post processor</source>
+      <translation>Estlcam-postprocessor</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
       <source>Centroid post processor</source>
       <translation>Centroid-postprocessor</translation>
@@ -11102,6 +11092,76 @@ Spindle_Control: Alla M3/M5-kommandon skickas ut oförändrade.</translation>
       <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
       <source>Grbl post processor</source>
       <translation>Grbl-postprocessor</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="139"/>
+      <source>Write G43 H&lt;tool&gt; after every tool change. A Delta applies the tool table&apos;s length with the T word; enable this only on a control set up for separate T and H codes.</source>
+      <translation>Skriv G43 H&lt;tool&gt; efter varje verktygsbyte. En Delta tillämpar verktygstabellens längd med T-ordet. Aktivera detta endast på en styrning som är inställd för separata T- och H-koder.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="163"/>
+      <source>The name written in parentheses on the first line, which the control files the program under. Eight characters at most, letters and digits; empty takes the document&apos;s name.</source>
+      <translation>Namnet inom parentes på första raden, som styrningen registrerar programmet under. Högst åtta tecken, bokstäver och siffror. Tomt använder dokumentets namn.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="169"/>
+      <source>Upper-Case Comments</source>
+      <translation>Kommentarer med versaler</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="175"/>
+      <source>Write the program name and every text event in upper case, as the control displays them.</source>
+      <translation>Skriv programnamnet och varje texthändelse med versaler, så som styrningen visar dem.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="181"/>
+      <source>Absolute Arc Centers</source>
+      <translation>Absoluta bågcentrum</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="187"/>
+      <source>Write I and J as the absolute coordinates of the arc center, which is how a Delta reads them. Off, I and J are offsets from the start point.</source>
+      <translation>Skriv I och J som de absoluta koordinaterna för bågcentrumet, vilket är hur en Delta läser dem. När avstängt är I och J förskjutningar från startpunkten.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="193"/>
+      <source>Second Reference Plane (O)</source>
+      <translation>Andra referensplanet (O)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="201"/>
+      <source>Write the operation&apos;s clearance height as the O word of every quill cycle: the absolute Z the tool returns to before the rapid to the next hole, so it clears a clamp the R plane would not. Off, the cycle retracts to R between holes.</source>
+      <translation>Skriv operationens frigångshöjd som O-ordet för varje dubbcykel: det absoluta Z som verktyget återgår till före snabbrörelsen till nästa hål, så att det går fritt från en klämma som R-planet inte skulle undvika. När avstängt dras cykeln tillbaka till R mellan hålen.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="207"/>
+      <source>XYZ Move After Tool Change</source>
+      <translation>XYZ-rörelse efter verktygsbyte</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="214"/>
+      <source>A Delta refuses a program whose first move after M6 does not command all three axes. The first rapid with a Z after a tool change gets X0 Y0 when it carries no XY of its own.</source>
+      <translation>En Delta vägrar ett program vars första rörelse efter M6 inte styr alla tre axlarna. Den första snabbrörelsen med Z efter ett verktygsbyte får X0 Y0 när den saknar egna XY-koordinater.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="220"/>
+      <source>End-of-File Marker (E)</source>
+      <translation>Slutmarkör för fil (E)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="226"/>
+      <source>Write E on the last line. The control reads it as end of file when loading from external media and strips it from the stored program.</source>
+      <translation>Skriv E på sista raden. Styrningen läser den som filslut vid inläsning från externt media och tar bort den från det lagrade programmet.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="237"/>
+      <source>Dynapath post processor</source>
+      <translation>Dynapath-postprocessor</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="542"/>
+      <source>Sequence numbers would reach N{last}; a Dynapath stops at N{max}. Turn line numbers off, lower the increment, or split the output.</source>
+      <translation>Sekvensnummer skulle nå N{last}, men en Dynapath stannar vid N{max}. Stäng av radnummer, minska steget eller dela upp utdata.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Generator/leadinout.py" line="950"/>
@@ -12062,16 +12122,6 @@ Flera operationer kan användas med identisk verktygsstyrning och identiskt kylm
       <translation>Postprocessar det valda jobbet</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="356"/>
-      <source>Post Process Selected</source>
-      <translation>Postprocessa valda</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Command.py" line="358"/>
-      <source>Post Processes the selected operations</source>
-      <translation>Postprocessar de valda operationerna</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Post/Utils.py" line="197"/>
       <source>The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
 </source>
@@ -12265,12 +12315,12 @@ Flera operationer kan användas med identisk verktygsstyrning och identiskt kylm
   <context>
     <name>CAM_ToolBitSave</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="80"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="83"/>
       <source>Save Tool</source>
       <translation>Spara verktyg</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="85"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="86"/>
       <source>Saves an existing toolbit object to a file</source>
       <translation>Sparar en befintlig verktygsdefinition till en fil</translation>
     </message>
@@ -12278,12 +12328,12 @@ Flera operationer kan användas med identisk verktygsstyrning och identiskt kylm
   <context>
     <name>CAM_ToolBitLoad</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="125"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="129"/>
       <source>Load Tool</source>
       <translation>Läs in verktyg</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="128"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="132"/>
       <source>Loads an existing toolbit object from a file</source>
       <translation>Läser in en befintlig verktygsdefinition från en fil</translation>
     </message>
@@ -12554,67 +12604,61 @@ Verktygsnummer för {}:</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="88"/>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Machines</source>
       <translation>Maskiner</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
-      <source>Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</source>
-      <translation>Varning: Maskindefinition är en experimentell funktion. Ändringar som görs här påverkar inte någon CAM-funktion</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="96"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
       <source>Import...</source>
       <translation>Importera…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="103"/>
       <source>Create a machine from the probe document of an MTConnect agent</source>
       <translation>Skapa en maskin från probedokumentet för en MTConnect-agent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="121"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="104"/>
       <source>Edit</source>
       <translation>Redigera</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="139"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
       <source>Check for tool updates from the library when opening a document</source>
       <translation>Sök efter verktygsuppdateringar i biblioteket när ett dokument öppnas</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="160"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="143"/>
       <source>Select Asset Directory</source>
       <translation>Välj resurskatalog</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="179"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
       <source>Warning</source>
       <translation>Varning</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="180"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
       <source>The selected asset path is not writable.</source>
       <translation>Det går inte att skriva till den valda resurssökvägen.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="259"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="242"/>
       <source>Delete Machine</source>
       <translation>Ta bort maskin</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="262"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="245"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>Vill du verkligen ta bort den här maskinfilen?</translation>
     </message>
@@ -12622,12 +12666,12 @@ Verktygsnummer för {}:</translation>
   <context>
     <name>CAM_ToolBitLibraryOpen</name>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="78"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="76"/>
       <source>Toolbit Library Manager</source>
       <translation>Bibliotekshanterare för verktygsbitar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="81"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="79"/>
       <source>Opens an editor to manage toolbit libraries</source>
       <translation>Öppnar en redigerare för att hantera bibliotek med verktygsdefinitioner</translation>
     </message>
@@ -12939,6 +12983,11 @@ Verktygsnummer för {}:</translation>
       <source>Save Tool As…</source>
       <translation>Spara verktyg som…</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="81"/>
+      <source>Saves an existing toolbit object to a file</source>
+      <translation>Sparar en befintlig verktygsdefinition till en fil</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Toolbit</name>
@@ -13009,19 +13058,6 @@ Verktygsnummer för {}:</translation>
       <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>Omvänd</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_ToolBitSelection</name>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
-      <source>Add Toolbit…</source>
-      <translation>Lägg till verktygsdefinition…</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="54"/>
-      <source>Opens the toolbit selection dialog</source>
-      <translation>Öppnar dialogrutan för val av verktygsdefinitioner</translation>
     </message>
   </context>
   <context>
@@ -13237,707 +13273,722 @@ Verktygsnummer för {}:</translation>
   <context>
     <name>CAM_MachineEditor</name>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
       <source>Include Blank Lines</source>
       <translation>Inkludera tomma rader</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Path Labels</source>
       <translation>Banetiketter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
       <source>Include Machine Name</source>
       <translation>Inkludera maskinnamn</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
       <source>Output Duplicate Axis Values</source>
       <translation>Mata ut duplicerade axelvärden</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
       <source>Adaptive Output</source>
       <translation>Adaptiva utdata</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
       <source>Axis Precision</source>
       <translation>Axelprecision</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="188"/>
       <source>Feed Precision</source>
       <translation>Matningsprecision</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Toolhead Decimals</source>
       <translation>Decimaler för verktygshuvud</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Comment Symbol</source>
       <translation>Kommentarsymbol</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
       <source>Modal Output (Suppress Repeats)</source>
       <translation>Modal utmatning (undertryck upprepningar)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Translate Drill Cycles</source>
       <translation>Omvandla borrningscykler</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Translate Rapid Moves</source>
       <translation>Omvandla snabbförflyttningar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
       <source>Split Arcs</source>
       <translation>Dela bågar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
       <source>XY Before Z After Tool Change</source>
       <translation>XY före Z efter verktygsbyte</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Show Editor After Generation</source>
       <translation>Visa redigeraren efter generering</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>List Tools in Preamble</source>
       <translation>Lista verktyg i inledningen</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Show Machine Units</source>
       <translation>Visa maskinenheter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Show Operation Labels</source>
       <translation>Visa operationsetiketter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Output T Before M6</source>
       <translation>Mata ut T före M6</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Chipbreaking Amount (mm)</source>
       <translation>Spånbrytningssträcka (mm)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Toolhead Wait Time (seconds)</source>
       <translation>Väntetid för verktygshuvud (sekunder)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
       <source>Post Processor</source>
       <translation>Postprocessor</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Post Processor Arguments</source>
       <translation>Postprocessorargument</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Use Tool Length Offset</source>
       <translation>Använd verktygslängdskompensering</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
       <source>Output Tool Length Offset (G43)</source>
       <translation>Mata ut verktygslängdskompensering (G43)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Enable Remote Posting</source>
       <translation>Aktivera fjärröverföring</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
       <source>Stop Toolhead for Tool Change</source>
       <translation>Stoppa verktygshuvudet vid verktygsbyte</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Enable Coolant</source>
       <translation>Aktivera kylmedel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Enable Machine-Specific Commands</source>
       <translation>Aktivera maskinspecifika kommandon</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
       <source>Output Units</source>
       <translation>Utdataenheter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
       <source>Header Options</source>
       <translation>Rubrikalternativ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Comment Options</source>
       <translation>Kommentarsalternativ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Formatting Options</source>
       <translation>Formateringsalternativ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
       <source>Precision Options</source>
       <translation>Precisionsalternativ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <source>Duplicate Output Options</source>
       <translation>Alternativ för duplicerade utdata</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <source>Output Header</source>
       <translation>Mata ut rubrik</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Include Date</source>
       <translation>Inkludera datum</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <source>Include Description</source>
       <translation>Inkludera beskrivning</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <source>Include Document Name</source>
       <translation>Inkludera dokumentnamn</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
       <source>Include Project File</source>
       <translation>Inkludera projektfil</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Include Units</source>
       <translation>Inkludera enheter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
       <source>Include Tool List</source>
       <translation>Inkludera verktygslista</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
       <source>Include Fixture List</source>
       <translation>Inkludera fixturlista</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Enable Comments</source>
       <translation>Aktivera kommentarer</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
       <source>Include Operation Labels</source>
       <translation>Inkludera operationsetiketter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
       <source>Output bCNC Comments</source>
       <translation>Mata ut bCNC-kommentarer</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
       <source>Line Numbers</source>
       <translation>Radnummer</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
       <source>Line Number Start</source>
       <translation>Startnummer för rader</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
       <source>Line Number Prefix</source>
       <translation>Prefix för radnummer</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
       <source>Line Increment</source>
       <translation>Radsteg</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
       <source>Command Space</source>
       <translation>Mellanslag mellan kommandon</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
       <source>End of Line Chars</source>
       <translation>Radslutstecken</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="189"/>
       <source>Toolhead Precision</source>
       <translation>Precision för verktygshuvud</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="191"/>
       <source>Duplicate Commands</source>
       <translation>Duplicera kommandon</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="192"/>
       <source>Duplicate Parameters</source>
       <translation>Duplicera parametrar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="194"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1144"/>
       <source>Kinematics</source>
       <translation>Kinematik</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="195"/>
       <source>Base Frame</source>
       <translation>Baskoordinatsystem</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="196"/>
       <source>Origin</source>
       <translation>Origo</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="197"/>
       <source>Orientation Quaternion</source>
       <translation>Orienteringskvaternion</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="198"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1153"/>
       <source>TCP Supported</source>
       <translation>TCP stöds</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1038"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="199"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1184"/>
       <source>Rotation Strategy</source>
       <translation>Rotationsstrategi</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="200"/>
       <source>Kinematics Notes</source>
       <translation>Kinematikanmärkningar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="202"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1487"/>
       <source>Role</source>
       <translation>Roll</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="203"/>
       <source>Parent Axis</source>
       <translation>Överordnad axel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="204"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1511"/>
       <source>Sequence</source>
       <translation>Sekvens</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1303"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1445"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="205"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1449"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1591"/>
       <source>Joint Origin</source>
       <translation>Ledens origo</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="206"/>
       <source>Joint Axis</source>
       <translation>Ledaxel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="207"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1604"/>
       <source>Solution Preference</source>
       <translation>Föredragen lösning</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1466"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="208"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1612"/>
       <source>Allow Flip</source>
       <translation>Tillåt vändning</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1488"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="209"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1634"/>
       <source>Wrap Strategy</source>
       <translation>Hantering av vinkelomslag</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="376"/>
       <source>Custom Machine</source>
       <translation>Anpassad maskin</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="343"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="381"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>2-axlig svarv (X, Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="348"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="386"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>3-axlig fräs (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="391"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>4-axlig fräs (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="358"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="396"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>4-axlig fräs (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="363"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="401"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>5-axlig fräs (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="368"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="406"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>5-axlig fräs (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="620"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="662"/>
       <source>Machine Editor</source>
       <translation>Maskinredigerare</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
       <source>Machine</source>
       <translation>Maskin</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="468"/>
       <source>Toolheads</source>
       <translation>Verktygshuvuden</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="473"/>
       <source>Postprocessor</source>
       <translation>Postprocessor</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="478"/>
       <source>Options</source>
       <translation>Alternativ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2279"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="505"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2428"/>
       <source>Edit as Text</source>
       <translation>Redigera som text</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="509"/>
       <source>Validate</source>
       <translation>Validera</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="474"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="516"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation>Kontrollera maskinen för problem som hindrar den från att läsas in eller gör att inställningar ignoreras utan meddelande</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="484"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="526"/>
       <source>Save</source>
       <translation>Spara</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="529"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="789"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="831"/>
       <source>Remove Toolhead</source>
       <translation>Ta bort verktygshuvud</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="832"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>Ta bort verktygshuvudet? Åtgärden kan inte ångras.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="863"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="891"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1025"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1108"/>
       <source>Custom</source>
       <translation>Anpassad</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="871"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="939"/>
+      <source>Community-maintained machine definitions are available in the Machines addon.</source>
+      <translation>Maskindefinitioner som underhålls av gemenskapen finns i tillägget Machines.</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="940"/>
+      <source>Open Addon Manager</source>
+      <translation>Öppna tilläggshanteraren</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
+      <source>Do not show again</source>
+      <translation>Visa inte igen</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1033"/>
       <source>Template Load Error</source>
       <translation>Fel vid inläsning av mall</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1034"/>
       <source>Could not load template</source>
       <translation>Kunde inte läsa in mallen</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="921"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1114"/>
       <source>Load settings from an existing machine template</source>
       <translation>Läs in inställningar från en befintlig maskinmall</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="975"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1115"/>
       <source>Template</source>
       <translation>Mall</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="979"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1125"/>
       <source>Manufacturer</source>
       <translation>Tillverkare</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1129"/>
       <source>Description</source>
       <translation>Beskrivning</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1132"/>
       <source>Metric</source>
       <translation>Metriska</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1133"/>
       <source>Imperial</source>
       <translation>Brittiska måttenheter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1135"/>
       <source>Units</source>
       <translation>Enheter</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1141"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1013"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1159"/>
       <source>Not declared</source>
       <translation>Inte deklarerad</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1160"/>
       <source>Dynamic work offset (DWO)</source>
       <translation>Dynamisk arbetsförskjutning (DWO)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1161"/>
       <source>Tilted work plane (TWP)</source>
       <translation>Lutat arbetsplan (TWP)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1164"/>
       <source>Post transform (not available yet)</source>
       <translation>Eftertransformering (inte tillgängligt ännu)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1177"/>
       <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
       <translation>Hur styrsystemet kör en operation på ett lutat arbetsplan. DWO: postprocessorn styr rotationsaxlarna och styrsystemet tillämpar sina pivotförskjutningar. TWP: postprocessorn deklarerar planet och styrsystemet positionerar rotationsaxlarna. En maskin med rotationsaxlar utan strategi kan inte postprocessa en sådan operation. Kommandot som används för att deklarera planet kommer från postprocessorn.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1193"/>
       <source>Notes</source>
       <translation>Anteckningar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1053"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1199"/>
       <source>Axes</source>
       <translation>Axlar</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1081"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1082"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1227"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1228"/>
       <source>Add Toolhead</source>
       <translation>Lägg till verktygshuvud</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1207"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1502"/>
       <source>Parent</source>
       <translation>Överordnad</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1234"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
       <source>Direction</source>
       <translation>Riktning</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1245"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1373"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1391"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1519"/>
       <source>Min Limit</source>
       <translation>Nedre gräns</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1255"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1401"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1526"/>
       <source>Max Limit</source>
       <translation>Övre gräns</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1265"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1411"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1535"/>
       <source>Max Velocity</source>
       <translation>Maximal hastighet</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1407"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1553"/>
       <source>Rotation Axis</source>
       <translation>Rotationsaxel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1622"/>
       <source>Prefer Positive</source>
       <translation>Föredra positivt</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1853"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2002"/>
       <source>Postprocessor Selection</source>
       <translation>Val av postprocessor</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2012"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>Välj postprocessorfil för maskinen</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1889"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2038"/>
       <source>Post Processor:</source>
       <translation>Postprocessor:</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1895"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2044"/>
       <source>Postprocessor Configuration</source>
       <translation>Postprocessorkonfiguration</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2446"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2595"/>
       <source>JSON Error</source>
       <translation>JSON-fel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2342"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2434"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2491"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2596"/>
       <source>Invalid JSON: {}</source>
       <translation>Ogiltig JSON: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2309"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2602"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2291"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2440"/>
       <source>Failed to parse data: {}</source>
       <translation>Det gick inte att tolka data: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2304"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
       <source>Edit as Form</source>
       <translation>Redigera som formulär</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2310"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2459"/>
       <source>Failed to generate JSON: {}</source>
       <translation>Kunde inte generera JSON: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2364"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2490"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2513"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2529"/>
       <source>Validation</source>
       <translation>Validering</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2498"/>
       <source>This machine does not load: {}</source>
       <translation>Maskinen kan inte läsas in: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2514"/>
       <source>No problems found.</source>
       <translation>Inga problem hittades.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2371"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2520"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation>{} fel och {} varningar hittades.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2376"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2525"/>
       <source>{} warning(s) found.</source>
       <translation>{} varningar hittades.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2420"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2569"/>
       <source>Duplicate Machine Name</source>
       <translation>Maskinnamnet används redan</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2424"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2573"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>Det finns redan en maskin med namnet &apos;{}&apos;. Välj ett annat namn.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2603"/>
       <source>Failed to save: {}</source>
       <translation>Kunde inte spara: {}</translation>
     </message>
@@ -14279,6 +14330,19 @@ Verktygsnummer för {}:</translation>
     </message>
   </context>
   <context>
+    <name>CAM_PostSelected</name>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="356"/>
+      <source>Post Process Selected</source>
+      <translation>Efterbehandla markerade</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="360"/>
+      <source>Post Processes the selected operations</source>
+      <translation>Efterbehandlar de valda operationerna</translation>
+    </message>
+  </context>
+  <context>
     <name>MirrorDressup</name>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
@@ -14583,6 +14647,19 @@ Verktygsnummer för {}:</translation>
       <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
       <source>Choose material</source>
       <translation>Välj material</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_ToolBitDock</name>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
+      <source>Add Toolbit…</source>
+      <translation>Lägg till verktygsspets…</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
+      <source>Opens the toolbit selection dialog</source>
+      <translation>Öppnar dialogrutan för att välja verktygsspets</translation>
     </message>
   </context>
   <context>
@@ -15035,6 +15112,19 @@ Verktygstyper som stöds: pinnfräs med plan ände, hörnradiefräs och V-fräs.
     </message>
   </context>
   <context>
+    <name>CAM_SetStartPoint</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
+      <source>Start Point Selection</source>
+      <translation>Val av startpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
+      <source>Selects the start point</source>
+      <translation>Väljer startpunkten</translation>
+    </message>
+  </context>
+  <context>
     <name>PathShape</name>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
@@ -15056,6 +15146,19 @@ Verktygstyper som stöds: pinnfräs med plan ände, hörnradiefräs och V-fräs.
     </message>
   </context>
   <context>
+    <name>CAM_QuickValidate</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
+      <source>Quick Validate</source>
+      <translation>Snabbvalidera</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
+      <source>Validates the CAM job for common issues without generating a full report</source>
+      <translation>Validerar CAM-jobbet för vanliga problem utan att skapa en fullständig rapport</translation>
+    </message>
+  </context>
+  <context>
     <name>CAM_Workplane</name>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="80"/>
@@ -15072,6 +15175,19 @@ Verktygstyper som stöds: pinnfräs med plan ände, hörnradiefräs och V-fräs.
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="122"/>
       <source>Name</source>
       <translation>Namn</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_SimulatorGL</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
+      <source>CAM Simulator</source>
+      <translation>CAM-simulator</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <source>Simulates G-code on stock</source>
+      <translation>Simulerar G-kod på ämnet</translation>
     </message>
   </context>
   <context>

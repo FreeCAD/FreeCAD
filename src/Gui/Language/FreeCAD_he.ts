@@ -5682,72 +5682,72 @@ originally selected prior to opening this dialog</source>
       <translation>רשימת אובייקטים שנבחרה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>בחר רק</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>Zoom Fit</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>עבור אל בחירה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>סמן לחישוב מחדש</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>מסמן אובייקט זה לחישוב מחדש</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>ל-Python Console</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>שכפול תת-צורה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>בוחר רק אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>ביטול הבחירה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>מבטל את הבחירה של אובייקט זה</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>בוחר ומתאים אובייקט זה בחלון התלת-ממד</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>בוחר ומאתר אובייקט זה בתצוגת העץ</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>חושף את האובייקט הזה ואת רכיבי המשנה שלו בקונסולת Python.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>יוצר עותק עצמאי של תת-צורה זו במסמך</translation>
     </message>
@@ -14657,7 +14657,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>אובייקט שלם</translation>
     </message>

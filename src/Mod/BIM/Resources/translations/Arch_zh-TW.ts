@@ -12087,16 +12087,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <source>Converts any object to a BIM component</source>
       <translation>轉換任何物件為 BIM 組件</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>從群組移除</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>從其父群組中移除此物件</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13707,6 +13697,19 @@ Do you want to proceed?</source>
       <translation>移除此複雜牆的基準會改變其形狀並重設位置。
 
 要繼續嗎？</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

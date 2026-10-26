@@ -9311,7 +9311,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Page</source>
       <translation>頁</translation>
     </message>
@@ -9319,7 +9319,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Template</source>
       <translation>模板</translation>
     </message>
@@ -9327,7 +9327,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>檢視</translation>
     </message>
@@ -9335,7 +9335,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>View</source>
       <translation>檢視</translation>
     </message>
@@ -9343,7 +9343,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>剖面</translation>
     </message>
@@ -9351,7 +9351,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Section</source>
       <translation>剖面</translation>
     </message>
@@ -9359,7 +9359,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Detail</source>
       <translation>詳細資料</translation>
     </message>
@@ -9367,7 +9367,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>ActiveView</source>
       <translation>主動視圖</translation>
     </message>
@@ -9375,7 +9375,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Annotation</source>
       <translation>注釋</translation>
     </message>
@@ -9383,7 +9383,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Image</source>
       <translation>影像</translation>
     </message>
@@ -9391,7 +9391,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Symbol</source>
       <translation>符號</translation>
     </message>
@@ -9399,7 +9399,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Draft</source>
       <translation>草稿</translation>
     </message>
@@ -9407,7 +9407,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>LeaderLine</source>
       <translation>指線</translation>
     </message>
@@ -9415,7 +9415,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
       <translation>件號圓圈</translation>
     </message>
@@ -9423,7 +9423,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Dimension</source>
       <translation>標註尺寸</translation>
     </message>
@@ -9431,7 +9431,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Extent</source>
       <translation>範圍</translation>
     </message>
@@ -9439,7 +9439,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>Hatch</source>
       <translation>填充</translation>
     </message>
@@ -9447,7 +9447,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="76"/>
+      <location filename="../../../App/DrawView.cpp" line="77"/>
       <source>GeomHatch</source>
       <translation>幾何填充</translation>
     </message>
@@ -9625,14 +9625,8 @@ there is an open task dialog.</source>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="49"/>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
       <source>Offset Vertex</source>
       <translation>偏移頂點</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>由一個選取頂點建立偏移</translation>
     </message>
   </context>
   <context>
@@ -9931,19 +9925,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDraw_PositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>放置剖面視圖</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>將選取剖面視圖與來源視圖正交對齊，或與選取視圖對齊</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="228"/>
@@ -10061,17 +10042,17 @@ there is an open task dialog.</source>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="101"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>None</source>
       <translation>無</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
       <translation>之字形</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
       <translation>簡單</translation>
     </message>
@@ -10135,7 +10116,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -10195,19 +10176,6 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="77"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>在軸測視圖建立長度尺寸，以選取邊或頂點對定義方向與量測</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_ExtensionVertexAtIntersection</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>裝飾相交頂點</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>在選取邊的交點加入裝飾頂點</translation>
     </message>
   </context>
   <context>
@@ -10359,6 +10327,45 @@ there is an open task dialog.</source>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Quadrant Vertices</source>
       <translation>象限頂點</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation type="unfinished">Position Section View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>裝飾相交頂點</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>偏移頂點</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation type="unfinished">Creates an offset from one selected vertex</translation>
     </message>
   </context>
   <context>

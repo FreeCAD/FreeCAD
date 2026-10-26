@@ -1000,7 +1000,7 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>ຊ່າງສະເກັດ (Sketcher)</translation>
     </message>
@@ -4057,12 +4057,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>ສະເກັດບໍ່ຖືກຕ້ອງ ແລະ ບໍ່ສາມາດແກ້ໄຂໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>ຂໍ້ຈຳກັດຕໍ່ໄປນີ້ມີຄວາມຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>ຂໍ້ຈຳກັດຕໍ່ໄປນີ້ມີຄວາມຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
@@ -4087,84 +4087,84 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>ເປີດເຄື່ອງມືກວດສອບສະເກັດບໍ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດຕໍ່ໄປນີ້ອອກຢ່າງໜ້ອຍໜຶ່ງອັນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>ສະເກັດຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>ຂໍ້ຈຳກັດຫຼາຍເກີນໄປ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>ຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>ຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>ຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>ຕົວແກ້ໄຂບໍ່ສາມາດຄິດໄລ່ໃຫ້ລົງຕົວໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>ຂໍ້ຈຳກັດບໍ່ພຽງພໍ:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ອົງສາອິດສະຫຼະ</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>ຂໍ້ຈຳກັດຄົບຖ້ວນແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation type="unfinished">Missing external geometry</translation>
     </message>
@@ -4655,7 +4655,7 @@ Eigen Sparse QR ແມ່ນອັລກໍຣິທຶມທີ່ປັບມ�
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>ແລະ ອີກ %1 ອັນ</translation>
     </message>
@@ -4663,57 +4663,57 @@ Eigen Sparse QR ແມ່ນອັລກໍຣິທຶມທີ່ປັບມ�
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>ໂປຣໄຟລ໌ (&amp;P)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>ສະເກັດ (&amp;K)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>ຊ່າງສະເກັດ (Sketcher)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>ໂໝດແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>ເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>ຂໍ້ກຳນົດ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>ຕົວຊ່ວຍສະເກັດ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>ເຄື່ອງມື B-Spline</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>ຕົວຊ່ວຍການເບິ່ງ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>ພື້ນທີ່ສະເໝືອນ</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>ເຄື່ອງມືແກ້ໄຂສະເກັດ</translation>
     </message>

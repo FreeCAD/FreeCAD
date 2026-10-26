@@ -964,7 +964,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
       <source>Mirror</source>
-      <translation>Дзеркало</translation>
+      <translation>Дзеркально відобразити</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>

@@ -1036,7 +1036,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
-      <translation>Previše ograničena skica:</translation>
+      <translation>Prekomerno ograničena skica:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
@@ -1634,7 +1634,7 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Snima trenutno stanje sklopa (položaje i vidljivost). Dvostruki klik na objekat Snimak vraća sklop u stanje snimljeno na tom snimku.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
@@ -1738,7 +1741,7 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select Malformed Constraints</source>
-      <translation>Izaberi oštećena ograničenja</translation>
+      <translation>Izaberi neispravna ograničenja</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>

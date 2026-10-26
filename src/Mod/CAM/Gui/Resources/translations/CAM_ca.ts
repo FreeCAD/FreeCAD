@@ -8369,41 +8369,14 @@ Els valors més grans calculen més ràpid; els valors més petits donen traject
       <translation>Marqueu «fals», per a evitar l'operació de generació de codi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
-      <source>Edit</source>
-      <translation>Edita</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
-      <source>Base Geometry</source>
-      <translation>Geometria de base</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
-      <source>Multiple operations are labeled as</source>
-      <translation>Diverses operacions estan etiquetades com</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
-      <source>Base Location</source>
-      <translation>Ubicació base</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
-      <source>Heights</source>
-      <translation>Alçàries</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
-      <source>FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>La profunditat final no es pot modificar per a aquesta operació.
-Si cal definir la profunditat final manualment, seleccioneu una operació diferent.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
       <source>Operation Deleted</source>
       <translation>Operació eliminada</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
+      <source>Edit</source>
+      <translation>Edita</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
@@ -8431,9 +8404,36 @@ Si cal definir la profunditat final manualment, seleccioneu una operació difere
       <translation>u26a0 obsolet: {}</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
+      <source>Base Geometry</source>
+      <translation>Geometria de base</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
+      <source>Multiple operations are labeled as</source>
+      <translation>Diverses operacions estan etiquetades com</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
+      <source>Base Location</source>
+      <translation>Ubicació base</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
+      <source>Heights</source>
+      <translation>Alçàries</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
       <source>Tool Controller</source>
       <translation>Controlador d'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
+      <source>FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</source>
+      <translation>La profunditat final no es pot modificar per a aquesta operació.
+Si cal definir la profunditat final manualment, seleccioneu una operació diferent.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
@@ -8454,16 +8454,6 @@ Si cal definir la profunditat final manualment, seleccioneu una operació difere
       <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Desfer l'operació AreaOp</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
-      <source>Start Point Selection</source>
-      <translation>Selecció del punt d'inici</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
-      <source>Selects the start point</source>
-      <translation>Selecciona el punt d'inici</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
@@ -8904,12 +8894,12 @@ Sense subselecció:
   <context>
     <name>CAM_DressupDragKnife</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="594"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
       <source>Drag Knife</source>
       <translation>Fulla d'arrossegament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="598"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="603"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
       <translation>Modifica un recorregut d'eina per a afegir accions de cantonada de fulla d'arrossegament</translation>
     </message>
@@ -9737,16 +9727,6 @@ El G-code sota el cursor defineix el posicionament de la forma de l'eina</transl
       <translation>Comprova si hi ha errors comuns a la tasca CAM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
-      <source>Quick Validate</source>
-      <translation>Validació ràpida</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
-      <source>Validates the CAM job for common issues without generating a full report</source>
-      <translation>Valida la tasca de CAM cercant problemes comuns sense generar un informe complet</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="155"/>
       <source>Quick Validate: No issues found.
 </source>
@@ -9771,11 +9751,6 @@ El G-code sota el cursor defineix el posicionament de la forma de l'eina</transl
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
-      <source>CAM Simulator</source>
-      <translation>Simulador CAM</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>Alt</translation>
@@ -9797,7 +9772,6 @@ El G-code sota el cursor defineix el posicionament de la forma de l'eina</transl
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="630"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>Simula el G-code sobre el material en brut</translation>
     </message>
@@ -10705,6 +10679,7 @@ Això no suprimirà les broques que conté.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="180"/>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="156"/>
       <source>Program Name</source>
       <translation>Nom del programa</translation>
     </message>
@@ -11093,6 +11068,21 @@ Spindle_Control: les ordres M3/M5 s'emeten tal com són.</translation>
       <translation>Postprocessador Masso G3</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="81"/>
+      <source>Use Alternative Tool Change</source>
+      <translation>Utilitza un canvi d'eina alternatiu</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="83"/>
+      <source>Use M0 instead of M6 for tool changes</source>
+      <translation>Utilitza M0 en contres de M6 pel canvi d'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="90"/>
+      <source>Estlcam post processor</source>
+      <translation>Postprocesador Estlcam</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
       <source>Centroid post processor</source>
       <translation>Postprocessador Centroid</translation>
@@ -11101,6 +11091,78 @@ Spindle_Control: les ordres M3/M5 s'emeten tal com són.</translation>
       <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
       <source>Grbl post processor</source>
       <translation>Postprocessador Grbl</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="139"/>
+      <source>Write G43 H&lt;tool&gt; after every tool change. A Delta applies the tool table&apos;s length with the T word; enable this only on a control set up for separate T and H codes.</source>
+      <translation>Escriviu G43 H&lt;tool&gt; després de cada canvi d'eina. En un sistema Delta, la longitud de l'eina s'aplica mitjançant el paràmetre T; activeu-ho només en un control configurat per utilitzar codis T i H per separat.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="163"/>
+      <source>The name written in parentheses on the first line, which the control files the program under. Eight characters at most, letters and digits; empty takes the document&apos;s name.</source>
+      <translation>El nom escrit entre parèntesis a la primera línia, sota el qual el programa desa el fitxer. Com a màxim vuit caràcters, formats per lletres i dígits; si es deixa buit, s'utilitza el nom del document.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="169"/>
+      <source>Upper-Case Comments</source>
+      <translation>Comentaris en majúscula</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="175"/>
+      <source>Write the program name and every text event in upper case, as the control displays them.</source>
+      <translation>Escriu el nom del programa i tots els esdeveniments de text en majúscules, tal com els mostra el control.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="181"/>
+      <source>Absolute Arc Centers</source>
+      <translation>Centres d'arcs absoluts</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="187"/>
+      <source>Write I and J as the absolute coordinates of the arc center, which is how a Delta reads them. Off, I and J are offsets from the start point.</source>
+      <translation>Escriu I i J com a coordenades absolutes del centre de l'arc; és així com les interpreta una Delta. En canvi, I i J representen desplaçaments respecte al punt inicial.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="193"/>
+      <source>Second Reference Plane (O)</source>
+      <translation>Segon pla de referència (O)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="201"/>
+      <source>Write the operation&apos;s clearance height as the O word of every quill cycle: the absolute Z the tool returns to before the rapid to the next hole, so it clears a clamp the R plane would not. Off, the cycle retracts to R between holes.</source>
+      <translation>Escriu l'alçada de seguretat de l'operació com a paràmetre O en cada cicle de perforació: es tracta de la coordenada Z absoluta a la qual retorna l'eina abans del desplaçament ràpid cap al següent forat, de manera que se salvi qualsevol brida que el pla R no evitaria. Altrament, el cicle retorna al pla R entre forats.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="207"/>
+      <source>XYZ Move After Tool Change</source>
+      <translation>Moviment XYZ després del canvi d'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="214"/>
+      <source>A Delta refuses a program whose first move after M6 does not command all three axes. The first rapid with a Z after a tool change gets X0 Y0 when it carries no XY of its own.</source>
+      <translation>Una Delta rebutja un programa en què el primer moviment després d'un M6 no controla els tres eixos. El primer moviment ràpid amb una coordenada Z, després d'un canvi d'eina, pren els valors X0 Y0 si no porta especificades les coordenades XY.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="220"/>
+      <source>End-of-File Marker (E)</source>
+      <translation>Marcador de final de fitxer (E)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="226"/>
+      <source>Write E on the last line. The control reads it as end of file when loading from external media and strips it from the stored program.</source>
+      <translation>Escriu E a l'última línia. El sistema de control la interpreta com a final de fitxer quan es carrega des d'un suport extern i l'elimina del programa emmagatzemat.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="237"/>
+      <source>Dynapath post processor</source>
+      <translation>Postprocessador Dynapath</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="542"/>
+      <source>Sequence numbers would reach N{last}; a Dynapath stops at N{max}. Turn line numbers off, lower the increment, or split the output.</source>
+      <translation>Els números de seqüència arribarien a N{last}; un Dynapath s'atura a N{max}. Desactiveu la numeració de línies, reduïu l'increment o dividiu la sortida.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Generator/leadinout.py" line="950"/>
@@ -12061,16 +12123,6 @@ Es poden utilitzar diverses operacions amb el mateix controlador d'eina i mode d
       <translation>Postprocessa la tasca seleccionada</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="356"/>
-      <source>Post Process Selected</source>
-      <translation>Postprocessa la selecció</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Command.py" line="358"/>
-      <source>Post Processes the selected operations</source>
-      <translation>Postprocessa les operacions seleccionades</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Post/Utils.py" line="197"/>
       <source>The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
 </source>
@@ -12263,12 +12315,12 @@ Es poden utilitzar diverses operacions amb el mateix controlador d'eina i mode d
   <context>
     <name>CAM_ToolBitSave</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="80"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="83"/>
       <source>Save Tool</source>
       <translation>Desa l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="85"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="86"/>
       <source>Saves an existing toolbit object to a file</source>
       <translation>Desa un objecte de broca existent en un fitxer</translation>
     </message>
@@ -12276,12 +12328,12 @@ Es poden utilitzar diverses operacions amb el mateix controlador d'eina i mode d
   <context>
     <name>CAM_ToolBitLoad</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="125"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="129"/>
       <source>Load Tool</source>
       <translation>Carrega l'eina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="128"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="132"/>
       <source>Loads an existing toolbit object from a file</source>
       <translation>Carrega un objecte de broca existent des d'un fitxer</translation>
     </message>
@@ -12552,67 +12604,61 @@ Número d'eina per a {}:</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="88"/>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Machines</source>
       <translation>Màquines</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
-      <source>Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</source>
-      <translation>Avís: la definició de màquines és una funció experimental. Els canvis fets aquí no afectaran cap funcionalitat de CAM</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="96"/>
       <source>Add</source>
       <translation>Afegeix</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
       <source>Import...</source>
       <translation>Importa...</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="103"/>
       <source>Create a machine from the probe document of an MTConnect agent</source>
       <translation>Crea una màquina a partir del document probe d'un agent MTConnect</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="121"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="104"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="139"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
       <source>Check for tool updates from the library when opening a document</source>
       <translation>Comprova si hi ha actualitzacions d'eines a la biblioteca en obrir un document</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="160"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="143"/>
       <source>Select Asset Directory</source>
       <translation>Seleccioneu el directori de recursos</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="179"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
       <source>Warning</source>
       <translation>Advertència</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="180"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
       <source>The selected asset path is not writable.</source>
       <translation>El camí del recurs seleccionat no és editable.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="259"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="242"/>
       <source>Delete Machine</source>
       <translation>Suprimeix la màquina</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="262"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="245"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>Segur que voleu suprimir aquest fitxer de màquina?</translation>
     </message>
@@ -12620,12 +12666,12 @@ Número d'eina per a {}:</translation>
   <context>
     <name>CAM_ToolBitLibraryOpen</name>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="78"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="76"/>
       <source>Toolbit Library Manager</source>
       <translation>Gestor de la biblioteca de broques</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="81"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="79"/>
       <source>Opens an editor to manage toolbit libraries</source>
       <translation>Obre un editor per a gestionar les biblioteques de broques</translation>
     </message>
@@ -12937,6 +12983,11 @@ Número d'eina per a {}:</translation>
       <source>Save Tool As…</source>
       <translation>Anomena i desa l'eina…</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="81"/>
+      <source>Saves an existing toolbit object to a file</source>
+      <translation>Desa un objecte de broca existent en un fitxer</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Toolbit</name>
@@ -13007,19 +13058,6 @@ Número d'eina per a {}:</translation>
       <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>Revers</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_ToolBitSelection</name>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
-      <source>Add Toolbit…</source>
-      <translation>Afegeix una eina de tall…</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="54"/>
-      <source>Opens the toolbit selection dialog</source>
-      <translation>Obre el diàleg de selecció de broques</translation>
     </message>
   </context>
   <context>
@@ -13235,707 +13273,722 @@ Número d'eina per a {}:</translation>
   <context>
     <name>CAM_MachineEditor</name>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
       <source>Include Blank Lines</source>
       <translation>Inclou les línies en blanc</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Path Labels</source>
       <translation>Etiquetes de trajectòria</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
       <source>Include Machine Name</source>
       <translation>Inclou el nom de la màquina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
       <source>Output Duplicate Axis Values</source>
       <translation>Escriu els valors d'eix duplicats</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
       <source>Adaptive Output</source>
       <translation>Sortida adaptativa</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
       <source>Axis Precision</source>
       <translation>Precisió dels eixos</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="188"/>
       <source>Feed Precision</source>
       <translation>Precisió de l'avanç</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Toolhead Decimals</source>
       <translation>Decimals del capçal</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Comment Symbol</source>
       <translation>Símbol de comentari</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
       <source>Modal Output (Suppress Repeats)</source>
       <translation>Sortida modal (suprimeix les repeticions)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Translate Drill Cycles</source>
       <translation>Tradueix els cicles de perforació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Translate Rapid Moves</source>
       <translation>Tradueix els moviments ràpids</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
       <source>Split Arcs</source>
       <translation>Divideix els arcs</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
       <source>XY Before Z After Tool Change</source>
       <translation>XY abans de Z després del canvi d'eina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Show Editor After Generation</source>
       <translation>Mostra l'editor després de la generació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>List Tools in Preamble</source>
       <translation>Llista les eines al preàmbul</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Show Machine Units</source>
       <translation>Mostra les unitats de la màquina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Show Operation Labels</source>
       <translation>Mostra les etiquetes de les operacions</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Output T Before M6</source>
       <translation>Escriu T abans de M6</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Chipbreaking Amount (mm)</source>
       <translation>Quantitat de trencament de ferritja (mm)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Toolhead Wait Time (seconds)</source>
       <translation>Temps d'espera del capçal (segons)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
       <source>Post Processor</source>
       <translation>Postprocessador</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Post Processor Arguments</source>
       <translation>Arguments del postprocessador</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Use Tool Length Offset</source>
       <translation>Usa la compensació de longitud d'eina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
       <source>Output Tool Length Offset (G43)</source>
       <translation>Escriu la compensació de longitud d'eina (G43)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Enable Remote Posting</source>
       <translation>Habilita el postprocessament remot</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
       <source>Stop Toolhead for Tool Change</source>
       <translation>Atura el capçal per al canvi d'eina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Enable Coolant</source>
       <translation>Habilita el refrigerant</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Enable Machine-Specific Commands</source>
       <translation>Habilita les ordres específiques de la màquina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
       <source>Output Units</source>
       <translation>Unitats de sortida</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
       <source>Header Options</source>
       <translation>Opcions de capçalera</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Comment Options</source>
       <translation>Opcions de comentaris</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Formatting Options</source>
       <translation>Opcions de format</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
       <source>Precision Options</source>
       <translation>Opcions de precisió</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <source>Duplicate Output Options</source>
       <translation>Opcions de sortida duplicada</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <source>Output Header</source>
       <translation>Capçalera de sortida</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Include Date</source>
       <translation>Inclou la data</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <source>Include Description</source>
       <translation>Inclou la descripció</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <source>Include Document Name</source>
       <translation>Inclou el nom del document</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
       <source>Include Project File</source>
       <translation>Inclou el fitxer del projecte</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Include Units</source>
       <translation>Inclou les unitats</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
       <source>Include Tool List</source>
       <translation>Inclou la llista d'eines</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
       <source>Include Fixture List</source>
       <translation>Inclou la llista d'accessoris</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Enable Comments</source>
       <translation>Habilita els comentaris</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
       <source>Include Operation Labels</source>
       <translation>Inclou les etiquetes de les operacions</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
       <source>Output bCNC Comments</source>
       <translation>Escriu comentaris de bCNC</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
       <source>Line Numbers</source>
       <translation>Números de línia</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
       <source>Line Number Start</source>
       <translation>Inici de la numeració de línies</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
       <source>Line Number Prefix</source>
       <translation>Prefix del número de línia</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
       <source>Line Increment</source>
       <translation>Increment de línia</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
       <source>Command Space</source>
       <translation>Espai entre ordres</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
       <source>End of Line Chars</source>
       <translation>Caràcters de final de línia</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="189"/>
       <source>Toolhead Precision</source>
       <translation>Precisió del capçal</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="191"/>
       <source>Duplicate Commands</source>
       <translation>Ordres duplicades</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="192"/>
       <source>Duplicate Parameters</source>
       <translation>Paràmetres duplicats</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="194"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1144"/>
       <source>Kinematics</source>
       <translation>Cinemàtica</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="195"/>
       <source>Base Frame</source>
       <translation>Marc base</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="196"/>
       <source>Origin</source>
       <translation>Origen</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="197"/>
       <source>Orientation Quaternion</source>
       <translation>Quaternió d'orientació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="198"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1153"/>
       <source>TCP Supported</source>
       <translation>Compatible amb TCP</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1038"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="199"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1184"/>
       <source>Rotation Strategy</source>
       <translation>Estratègia de rotació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="200"/>
       <source>Kinematics Notes</source>
       <translation>Notes de cinemàtica</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="202"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1487"/>
       <source>Role</source>
       <translation>Rol</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="203"/>
       <source>Parent Axis</source>
       <translation>Eix pare</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="204"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1511"/>
       <source>Sequence</source>
       <translation>Seqüència</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1303"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1445"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="205"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1449"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1591"/>
       <source>Joint Origin</source>
       <translation>Origen de l'articulació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="206"/>
       <source>Joint Axis</source>
       <translation>Eix de l'articulació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="207"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1604"/>
       <source>Solution Preference</source>
       <translation>Preferència de solució</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1466"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="208"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1612"/>
       <source>Allow Flip</source>
       <translation>Permet la inversió</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1488"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="209"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1634"/>
       <source>Wrap Strategy</source>
       <translation>Estratègia d'embolcall</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="376"/>
       <source>Custom Machine</source>
       <translation>Màquina personalitzada</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="343"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="381"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>Torn de 2 eixos (X, Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="348"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="386"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>Fresadora de 3 eixos (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="391"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>Fresadora de 4 eixos (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="358"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="396"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>Fresadora de 4 eixos (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="363"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="401"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>Fresadora de 5 eixos (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="368"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="406"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>Fresadora de 5 eixos (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="620"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="662"/>
       <source>Machine Editor</source>
       <translation>Editor de màquines</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
       <source>Machine</source>
       <translation>Màquina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="468"/>
       <source>Toolheads</source>
       <translation>Capçals</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="473"/>
       <source>Postprocessor</source>
       <translation>Postprocessador</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="478"/>
       <source>Options</source>
       <translation>Opcions</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2279"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="505"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2428"/>
       <source>Edit as Text</source>
       <translation>Edita com a text</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="509"/>
       <source>Validate</source>
       <translation>Valida</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="474"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="516"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation>Comprova si aquesta màquina té problemes que n'impedirien la càrrega o que descartarien paràmetres silenciosament</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="484"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="526"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="529"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="789"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="831"/>
       <source>Remove Toolhead</source>
       <translation>Elimina el capçal</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="832"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>Voleu eliminar el capçal? Aquesta acció no es pot desfer.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="863"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="891"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1025"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1108"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="871"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="939"/>
+      <source>Community-maintained machine definitions are available in the Machines addon.</source>
+      <translation>Les definicions de màquines mantingudes per la comunitat estan disponibles al complement Machines.</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="940"/>
+      <source>Open Addon Manager</source>
+      <translation>Obre el gestor de complements</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
+      <source>Do not show again</source>
+      <translation>No ho tornis a mostrar</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1033"/>
       <source>Template Load Error</source>
       <translation>Error en carregar la plantilla</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1034"/>
       <source>Could not load template</source>
       <translation>No s'ha pogut carregar la plantilla</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="921"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1114"/>
       <source>Load settings from an existing machine template</source>
       <translation>Carrega els paràmetres d'una plantilla de màquina existent</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="975"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1115"/>
       <source>Template</source>
       <translation>Plantilla</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="979"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1125"/>
       <source>Manufacturer</source>
       <translation>Fabricant</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1129"/>
       <source>Description</source>
       <translation>Descripció</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1132"/>
       <source>Metric</source>
       <translation>Sistema mètric decimal</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1133"/>
       <source>Imperial</source>
       <translation>Sistema anglosaxó d'unitats</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1135"/>
       <source>Units</source>
       <translation>Unitats</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1141"/>
       <source>Type</source>
       <translation>Tipus</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1013"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1159"/>
       <source>Not declared</source>
       <translation>No declarat</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1160"/>
       <source>Dynamic work offset (DWO)</source>
       <translation>Desplaçament dinàmic de treball (DWO)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1161"/>
       <source>Tilted work plane (TWP)</source>
       <translation>Pla de treball inclinat (TWP)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1164"/>
       <source>Post transform (not available yet)</source>
       <translation>Transformació posterior (encara no està disponible)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1177"/>
       <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
       <translation>Com executa el control una operació en un pla de treball inclinat. DWO: el postprocessador ordena els eixos rotatius i el control aplica els desplaçaments dels pivots. TWP: el postprocessador declara el pla i el control posiciona els eixos rotatius. No es poden generar operacions d'aquest tipus per a una màquina amb eixos de rotació si no s'ha definit cap estratègia. L'ordre per declarar el pla depèn del postprocessador.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1193"/>
       <source>Notes</source>
       <translation>Notes</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1053"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1199"/>
       <source>Axes</source>
       <translation>Eixos</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1081"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1082"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1227"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1228"/>
       <source>Add Toolhead</source>
       <translation>Afegeix un capçal</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1207"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1502"/>
       <source>Parent</source>
       <translation>Pare</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1234"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
       <source>Direction</source>
       <translation>Direcció</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1245"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1373"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1391"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1519"/>
       <source>Min Limit</source>
       <translation>Límit mínim</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1255"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1401"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1526"/>
       <source>Max Limit</source>
       <translation>Límit màxim</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1265"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1411"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1535"/>
       <source>Max Velocity</source>
       <translation>Velocitat màxima</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1407"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1553"/>
       <source>Rotation Axis</source>
       <translation>Eix de rotació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1622"/>
       <source>Prefer Positive</source>
       <translation>Prefereix positiu</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1853"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2002"/>
       <source>Postprocessor Selection</source>
       <translation>Selecció del postprocessador</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2012"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>Seleccioneu el fitxer de postprocessador per a aquesta màquina</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1889"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2038"/>
       <source>Post Processor:</source>
       <translation>Postprocessador:</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1895"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2044"/>
       <source>Postprocessor Configuration</source>
       <translation>Configuració del postprocessador</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2446"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2595"/>
       <source>JSON Error</source>
       <translation>Error de JSON</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2342"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2434"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2491"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2596"/>
       <source>Invalid JSON: {}</source>
       <translation>JSON no vàlid: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2309"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2602"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2291"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2440"/>
       <source>Failed to parse data: {}</source>
       <translation>No s'han pogut analitzar les dades: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2304"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
       <source>Edit as Form</source>
       <translation>Edita com a formulari</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2310"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2459"/>
       <source>Failed to generate JSON: {}</source>
       <translation>No s'ha pogut generar el JSON: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2364"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2490"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2513"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2529"/>
       <source>Validation</source>
       <translation>Validació</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2498"/>
       <source>This machine does not load: {}</source>
       <translation>Aquesta màquina no es carrega: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2514"/>
       <source>No problems found.</source>
       <translation>No s'ha trobat cap problema.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2371"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2520"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation>S'han trobat {} error(s) i {} avís(os).</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2376"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2525"/>
       <source>{} warning(s) found.</source>
       <translation>S'han trobat {} avís(os).</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2420"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2569"/>
       <source>Duplicate Machine Name</source>
       <translation>Nom de màquina duplicat</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2424"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2573"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>Ja existeix una màquina amb el nom &apos;{}&apos;. Trieu un nom diferent.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2603"/>
       <source>Failed to save: {}</source>
       <translation>No s'ha pogut desar: {}</translation>
     </message>
@@ -14277,6 +14330,19 @@ Número d'eina per a {}:</translation>
     </message>
   </context>
   <context>
+    <name>CAM_PostSelected</name>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="356"/>
+      <source>Post Process Selected</source>
+      <translation>Postprocessador seleccionat</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="360"/>
+      <source>Post Processes the selected operations</source>
+      <translation>Postprocessa les operacions seleccionades</translation>
+    </message>
+  </context>
+  <context>
     <name>MirrorDressup</name>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
@@ -14581,6 +14647,19 @@ Número d'eina per a {}:</translation>
       <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
       <source>Choose material</source>
       <translation>Trieu un material</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_ToolBitDock</name>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
+      <source>Add Toolbit…</source>
+      <translation>Afegeix una broca…</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
+      <source>Opens the toolbit selection dialog</source>
+      <translation>Obre el diàleg de selecció de broques</translation>
     </message>
   </context>
   <context>
@@ -15033,6 +15112,19 @@ Tipus d'eina compatibles: plana, tòrica, fresa en V.</translation>
     </message>
   </context>
   <context>
+    <name>CAM_SetStartPoint</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
+      <source>Start Point Selection</source>
+      <translation>Selecció del punt d'inici</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
+      <source>Selects the start point</source>
+      <translation>Selecciona el punt d'inici</translation>
+    </message>
+  </context>
+  <context>
     <name>PathShape</name>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
@@ -15054,6 +15146,19 @@ Tipus d'eina compatibles: plana, tòrica, fresa en V.</translation>
     </message>
   </context>
   <context>
+    <name>CAM_QuickValidate</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
+      <source>Quick Validate</source>
+      <translation>Validació ràpida</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
+      <source>Validates the CAM job for common issues without generating a full report</source>
+      <translation>Valida la tasca de CAM cercant problemes comuns sense generar un informe complet</translation>
+    </message>
+  </context>
+  <context>
     <name>CAM_Workplane</name>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="80"/>
@@ -15070,6 +15175,19 @@ Tipus d'eina compatibles: plana, tòrica, fresa en V.</translation>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="122"/>
       <source>Name</source>
       <translation>Nom</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_SimulatorGL</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
+      <source>CAM Simulator</source>
+      <translation>Simulador CAM</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <source>Simulates G-code on stock</source>
+      <translation>Simula el G-code sobre el material en brut</translation>
     </message>
   </context>
   <context>

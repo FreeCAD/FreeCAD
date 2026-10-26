@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation> Malha a partir de forma</translation>
+      <translation>Malha a partir de forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -504,7 +504,7 @@ Defina o 'tip' do corpo ou selecione uma forma diferente.</translation>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation> Erro: forma sem faces selecionada.
+      <translation>Erro: forma sem faces selecionada.
 Selecione uma forma diferente.</translation>
     </message>
     <message>

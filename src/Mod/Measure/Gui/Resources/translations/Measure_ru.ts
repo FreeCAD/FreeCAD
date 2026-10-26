@@ -67,7 +67,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Nominal distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Nominal distance: %1, Axis distance: %2</translation>
+      <translation>Номинальное расстояние: %1, Осевое расстояние: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="233"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation>Общая площадь: %1, расстояние оси: %2, осевой угол: %3</translation>
+      <translation>Общая площадь: %1, Осевое расстояние: %2, осевой угол: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="266"/>
@@ -185,7 +185,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation>Измеряет функцию</translation>
+      <translation>Измеряет элемент</translation>
     </message>
   </context>
   <context>
@@ -208,12 +208,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
-      <translation>Суммируемый замер</translation>
+      <translation>Накопительное выделение</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation>При установленном флажке измерения будут суммированы с новым замером. Если флажок не установлен, то необходимо нажать клавишу Ctrl для добавления элемента в текущее измерение, иначе будет начат с нуля новый замер</translation>
+      <translation>При установленном флажке новое выделение будет добавлено в измерение. Если флажок не установлен, то необходимо нажать клавишу Ctrl для добавления элемента в текущее измерение, иначе будет начат с нуля новый замер</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="175"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
-      <translation>Авто</translation>
+      <translation>Автоопределение</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="222"/>
@@ -378,7 +378,7 @@
       <location filename="../../TaskMassProperties.ui" line="339"/>
       <location filename="../../TaskMassProperties.ui" line="472"/>
       <source>Create Datum Point</source>
-      <translation>Создать базовую точку</translation>
+      <translation>Создать опорную точку</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation>Создать ЛСК главных осей</translation>
+      <translation>Создать локальную систему координат главных осей</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="362"/>
       <source>Center of Volume</source>
-      <translation>Центр объема</translation>
+      <translation>Центр объёма</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="363"/>
@@ -499,12 +499,12 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="451"/>
       <source>Reset</source>
-      <translation>Сброс</translation>
+      <translation>Сбросить</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
-      <translation> (Среднее)</translation>
+      <translation> (Усреднённое)</translation>
     </message>
   </context>
   <context>
@@ -517,7 +517,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="129"/>
       <source>Distance Free</source>
-      <translation>Свободная дистанция </translation>
+      <translation>Свободное расстояние</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="137"/>
@@ -552,7 +552,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <translation>Геометрический центр</translation>
     </message>
   </context>
 </TS>

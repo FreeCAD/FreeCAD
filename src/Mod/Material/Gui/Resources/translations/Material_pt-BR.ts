@@ -148,7 +148,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
       <source>Point size</source>
-      <translation>Tamanho do Ponto</translation>
+      <translation>Tamanho do ponto</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
@@ -1352,7 +1352,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="109"/>
       <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
-      <translation>Concluído</translation>
+      <translation>concluído</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>

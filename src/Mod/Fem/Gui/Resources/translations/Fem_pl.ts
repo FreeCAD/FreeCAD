@@ -6665,16 +6665,6 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
       <translation>Dodaj dane z</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>Wizualizacje danych</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>Różne wizualizacje do pokazania danych obróbki wyników w</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>Eksport do CSV</translation>
@@ -8833,9 +8823,6 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
       <source>Shape-Based Refinement</source>
       <translation>Zagęszczenie oparte o kształt</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -9004,6 +8991,19 @@ Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation>Wybór geometrii odniesienia powierzchni drugorzędnej</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>Wizualizacje danych</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Różne wizualizacje do pokazania danych obróbki wyników w</translation>
     </message>
   </context>
   <context>

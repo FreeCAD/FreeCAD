@@ -8358,41 +8358,14 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>设为False，以防止加工生成代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
-      <source>Base Geometry</source>
-      <translation>基本几何图形</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
-      <source>Multiple operations are labeled as</source>
-      <translation>多个加工标记为</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
-      <source>Base Location</source>
-      <translation>基准位置</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
-      <source>Heights</source>
-      <translation>高度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
-      <source>FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>无法为此加工修改FinalDepth。
-      如果需要手动设置FinalDepth，请选择其他加工。</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
       <source>Operation Deleted</source>
       <translation>操作已删除</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
+      <source>Edit</source>
+      <translation>编辑</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
@@ -8420,9 +8393,36 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>u26a0 已弃用：{}</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
+      <source>Base Geometry</source>
+      <translation>基本几何图形</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="970"/>
+      <source>Multiple operations are labeled as</source>
+      <translation>多个加工标记为</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1044"/>
+      <source>Base Location</source>
+      <translation>基准位置</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1272"/>
+      <source>Heights</source>
+      <translation>高度</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
       <source>Tool Controller</source>
       <translation>刀具控制器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
+      <source>FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</source>
+      <translation>无法为此加工修改FinalDepth。
+      如果需要手动设置FinalDepth，请选择其他加工。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
@@ -8443,16 +8443,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>取消创建AreaOp加工</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
-      <source>Start Point Selection</source>
-      <translation>起点选择</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
-      <source>Selects the start point</source>
-      <translation>选择起点</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
@@ -8893,12 +8883,12 @@ Without sub selection:
   <context>
     <name>CAM_DressupDragKnife</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="594"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
       <source>Drag Knife</source>
       <translation>拖刀</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="598"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="603"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
       <translation>修改刀具路径以添加拖刀转角动作</translation>
     </message>
@@ -9726,16 +9716,6 @@ G-code under the cursor defines tool shape placement</source>
       <translation>检查 CAM 作业中的常见错误</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
-      <source>Quick Validate</source>
-      <translation>快速验证</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
-      <source>Validates the CAM job for common issues without generating a full report</source>
-      <translation>对 CAM 作业进行常规问题检查，但不生成完整报告</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="155"/>
       <source>Quick Validate: No issues found.
 </source>
@@ -9760,11 +9740,6 @@ G-code under the cursor defines tool shape placement</source>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
-      <source>CAM Simulator</source>
-      <translation>CAM模拟器</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>高</translation>
@@ -9786,7 +9761,6 @@ G-code under the cursor defines tool shape placement</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="630"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>在毛坯上模拟 G 代码</translation>
     </message>
@@ -10694,6 +10668,7 @@ This will not delete the toolbits contained within it.</source>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="180"/>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="156"/>
       <source>Program Name</source>
       <translation>程序名称</translation>
     </message>
@@ -11082,6 +11057,21 @@ Spindle_Control：任何 M3/M5 指令均按原样输出。</translation>
       <translation>Masso G3 后处理器</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="81"/>
+      <source>Use Alternative Tool Change</source>
+      <translation>使用替代换刀方式</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="83"/>
+      <source>Use M0 instead of M6 for tool changes</source>
+      <translation>换刀时使用 M0 而不是 M6</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="90"/>
+      <source>Estlcam post processor</source>
+      <translation>Estlcam 后处理器</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
       <source>Centroid post processor</source>
       <translation>Centroid 后处理器</translation>
@@ -11090,6 +11080,76 @@ Spindle_Control：任何 M3/M5 指令均按原样输出。</translation>
       <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
       <source>Grbl post processor</source>
       <translation>Grbl 后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="139"/>
+      <source>Write G43 H&lt;tool&gt; after every tool change. A Delta applies the tool table&apos;s length with the T word; enable this only on a control set up for separate T and H codes.</source>
+      <translation>每次换刀后写入 G43 H&lt;tool&gt;。Delta 控制器通过 T 字应用刀具表的长度；仅在配置为使用独立 T 和 H 代码的控制器上启用此项。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="163"/>
+      <source>The name written in parentheses on the first line, which the control files the program under. Eight characters at most, letters and digits; empty takes the document&apos;s name.</source>
+      <translation>写在第一行括号中的名称，控制器以此归档程序。最多八个字符，字母和数字；留空则使用文档名称。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="169"/>
+      <source>Upper-Case Comments</source>
+      <translation>大写注释</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="175"/>
+      <source>Write the program name and every text event in upper case, as the control displays them.</source>
+      <translation>按控制器显示的方式，以大写形式写入程序名称和每个文本事件。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="181"/>
+      <source>Absolute Arc Centers</source>
+      <translation>绝对圆弧中心</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="187"/>
+      <source>Write I and J as the absolute coordinates of the arc center, which is how a Delta reads them. Off, I and J are offsets from the start point.</source>
+      <translation>将 I 和 J 写为圆弧中心的绝对坐标，这是 Delta 控制器的读取方式。关闭时，I 和 J 是相对于起始点的偏移量。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="193"/>
+      <source>Second Reference Plane (O)</source>
+      <translation>第二参考平面 (O)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="201"/>
+      <source>Write the operation&apos;s clearance height as the O word of every quill cycle: the absolute Z the tool returns to before the rapid to the next hole, so it clears a clamp the R plane would not. Off, the cycle retracts to R between holes.</source>
+      <translation>将工序的退刀高度写为每个钻孔循环的 O 字：刀具在快速移动到下一个孔之前返回的绝对 Z 值，以便越过 R 平面无法越过的夹具。关闭时，循环在孔之间退刀至 R 平面。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="207"/>
+      <source>XYZ Move After Tool Change</source>
+      <translation>换刀后 XYZ 移动</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="214"/>
+      <source>A Delta refuses a program whose first move after M6 does not command all three axes. The first rapid with a Z after a tool change gets X0 Y0 when it carries no XY of its own.</source>
+      <translation>Delta 控制器会拒绝执行 M6 之后首次移动未指令全部三个轴的程序。换刀后第一个带 Z 的快速移动若自身不包含 XY，则自动附加 X0 Y0。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="220"/>
+      <source>End-of-File Marker (E)</source>
+      <translation>文件结束标记 (E)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="226"/>
+      <source>Write E on the last line. The control reads it as end of file when loading from external media and strips it from the stored program.</source>
+      <translation>在最后一行写入 E。控制器在从外部介质加载时将其读取为文件结束，并在存储程序时将其去除。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="237"/>
+      <source>Dynapath post processor</source>
+      <translation>Dynapath 后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="542"/>
+      <source>Sequence numbers would reach N{last}; a Dynapath stops at N{max}. Turn line numbers off, lower the increment, or split the output.</source>
+      <translation>序号将达到 N{last}；Dynapath 在 N{max} 处停止。请关闭行号、减小增量或拆分输出。</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Generator/leadinout.py" line="950"/>
@@ -12049,16 +12109,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>对选定的作业进行后处理</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="356"/>
-      <source>Post Process Selected</source>
-      <translation>后处理所选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Command.py" line="358"/>
-      <source>Post Processes the selected operations</source>
-      <translation>对选定的加工进行后处理</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Post/Utils.py" line="197"/>
       <source>The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
 </source>
@@ -12252,12 +12302,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolBitSave</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="80"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="83"/>
       <source>Save Tool</source>
       <translation>保存刀具</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="85"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="86"/>
       <source>Saves an existing toolbit object to a file</source>
       <translation>将现有刀具位对象保存到文件</translation>
     </message>
@@ -12265,12 +12315,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolBitLoad</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="125"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="129"/>
       <source>Load Tool</source>
       <translation>加载刀具</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="128"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="132"/>
       <source>Loads an existing toolbit object from a file</source>
       <translation>从文件加载现有刀具位对象</translation>
     </message>
@@ -12541,67 +12591,61 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="88"/>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Machines</source>
       <translation>数控设备</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
-      <source>Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</source>
-      <translation>警告：数控设备定义是一项实验性功能。在此处所做的更改不会影响任何 CAM（计算机辅助制造）功能</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="96"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
       <source>Import...</source>
       <translation>导入...</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="103"/>
       <source>Create a machine from the probe document of an MTConnect agent</source>
       <translation>从 MTConnect 代理的 probe 文档中创建机床</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="121"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="104"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="139"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
       <source>Check for tool updates from the library when opening a document</source>
       <translation>打开文档时检查刀具库是否有更新</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="160"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="143"/>
       <source>Select Asset Directory</source>
       <translation>选择资源目录</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="179"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="180"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
       <source>The selected asset path is not writable.</source>
       <translation>所选资源路径不可写。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="259"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="242"/>
       <source>Delete Machine</source>
       <translation>删除设备</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="262"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="245"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>你确定要删除这个数控设备文件吗？</translation>
     </message>
@@ -12609,12 +12653,12 @@ Tool number for {}:</source>
   <context>
     <name>CAM_ToolBitLibraryOpen</name>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="78"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="76"/>
       <source>Toolbit Library Manager</source>
       <translation>刀具位库管理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="81"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="79"/>
       <source>Opens an editor to manage toolbit libraries</source>
       <translation>打开编辑器以管理刀具位库</translation>
     </message>
@@ -12926,6 +12970,11 @@ Tool number for {}:</source>
       <source>Save Tool As…</source>
       <translation>工具另存为…</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="81"/>
+      <source>Saves an existing toolbit object to a file</source>
+      <translation>将现有刀具位对象保存到文件</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Toolbit</name>
@@ -12996,19 +13045,6 @@ Tool number for {}:</source>
       <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>反转</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_ToolBitSelection</name>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
-      <source>Add Toolbit…</source>
-      <translation>添加刀具…</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="54"/>
-      <source>Opens the toolbit selection dialog</source>
-      <translation>打开刀具位选择对话框</translation>
     </message>
   </context>
   <context>
@@ -13224,707 +13260,722 @@ Tool number for {}:</source>
   <context>
     <name>CAM_MachineEditor</name>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
       <source>Include Blank Lines</source>
       <translation>包含空白行</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Path Labels</source>
       <translation>路径标签</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
       <source>Include Machine Name</source>
       <translation>包含设备名称</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
       <source>Output Duplicate Axis Values</source>
       <translation>输出重复的轴数值</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
       <source>Adaptive Output</source>
       <translation>自适应输出</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
       <source>Axis Precision</source>
       <translation>轴精度</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="188"/>
       <source>Feed Precision</source>
       <translation>进给精度</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Toolhead Decimals</source>
       <translation>刀头小数位</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Comment Symbol</source>
       <translation>注释符号</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
       <source>Modal Output (Suppress Repeats)</source>
       <translation>模态输出（抑制重复）</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Translate Drill Cycles</source>
       <translation>转换钻孔循环</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Translate Rapid Moves</source>
       <translation>转换快速移动</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
       <source>Split Arcs</source>
       <translation>拆分圆弧</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
       <source>XY Before Z After Tool Change</source>
       <translation>换刀后先走 XY 再走 Z</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Show Editor After Generation</source>
       <translation>生成后显示编辑器</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>List Tools in Preamble</source>
       <translation>在文件头列出刀具清单</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Show Machine Units</source>
       <translation>显示设备单位</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Show Operation Labels</source>
       <translation>显示加工标签</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Output T Before M6</source>
       <translation>在 M6 之前输出 T</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Chipbreaking Amount (mm)</source>
       <translation>啄钻深度（mm）</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Toolhead Wait Time (seconds)</source>
       <translation>主轴等待时间 （秒）</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
       <source>Post Processor</source>
       <translation>后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Post Processor Arguments</source>
       <translation>后处理器参数</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Use Tool Length Offset</source>
       <translation>使用刀具长度</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
       <source>Output Tool Length Offset (G43)</source>
       <translation>输出刀具长度补偿 (G43)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Enable Remote Posting</source>
       <translation>启用远程后处理</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
       <source>Stop Toolhead for Tool Change</source>
       <translation>换刀时停止主轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Enable Coolant</source>
       <translation>启用冷却液</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Enable Machine-Specific Commands</source>
       <translation>启用机床特定指令</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
       <source>Output Units</source>
       <translation>输出单位</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
       <source>Header Options</source>
       <translation>文件头选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Comment Options</source>
       <translation>注释选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Formatting Options</source>
       <translation>格式化选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
       <source>Precision Options</source>
       <translation>精度选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <source>Duplicate Output Options</source>
       <translation>重复输出选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <source>Output Header</source>
       <translation>输出文件头</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Include Date</source>
       <translation>包含日期</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <source>Include Description</source>
       <translation>包含描述</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <source>Include Document Name</source>
       <translation>包含文档名称</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
       <source>Include Project File</source>
       <translation>包含项目文件</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Include Units</source>
       <translation>包含单位</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
       <source>Include Tool List</source>
       <translation>包含刀具清单</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
       <source>Include Fixture List</source>
       <translation>包含夹具清单</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Enable Comments</source>
       <translation>启用注释</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
       <source>Include Operation Labels</source>
       <translation>包含工序标签</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
       <source>Output bCNC Comments</source>
       <translation>输出 bCNC 注释</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
       <source>Line Numbers</source>
       <translation>行号</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
       <source>Line Number Start</source>
       <translation>起始行号</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
       <source>Line Number Prefix</source>
       <translation>行号前缀</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
       <source>Line Increment</source>
       <translation>行号增量</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
       <source>Command Space</source>
       <translation>指令空格</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
       <source>End of Line Chars</source>
       <translation>行尾字符</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="189"/>
       <source>Toolhead Precision</source>
       <translation>刀头精度</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="191"/>
       <source>Duplicate Commands</source>
       <translation>重复指令</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="192"/>
       <source>Duplicate Parameters</source>
       <translation>重复参数</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="194"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1144"/>
       <source>Kinematics</source>
       <translation>运动方式</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="195"/>
       <source>Base Frame</source>
       <translation>基座坐标系</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="196"/>
       <source>Origin</source>
       <translation>原点</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="197"/>
       <source>Orientation Quaternion</source>
       <translation>方向四元数</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="198"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1153"/>
       <source>TCP Supported</source>
       <translation>支持刀尖跟随</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1038"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="199"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1184"/>
       <source>Rotation Strategy</source>
       <translation>旋转策略</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="200"/>
       <source>Kinematics Notes</source>
       <translation>运动方式备注</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="202"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1487"/>
       <source>Role</source>
       <translation>角色</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="203"/>
       <source>Parent Axis</source>
       <translation>父轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="204"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1511"/>
       <source>Sequence</source>
       <translation>序列</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1303"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1445"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="205"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1449"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1591"/>
       <source>Joint Origin</source>
       <translation>关节原点</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="206"/>
       <source>Joint Axis</source>
       <translation>关节轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="207"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1604"/>
       <source>Solution Preference</source>
       <translation>解算偏好</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1466"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="208"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1612"/>
       <source>Allow Flip</source>
       <translation>允许翻转</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1488"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="209"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1634"/>
       <source>Wrap Strategy</source>
       <translation>包络策略</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="376"/>
       <source>Custom Machine</source>
       <translation>自定义设备</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="343"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="381"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>两轴车床 (X , Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="348"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="386"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>三轴铣床 (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="391"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>四轴铣床 (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="358"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="396"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>四轴铣床 (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="363"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="401"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>五轴铣床 (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="368"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="406"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>五轴铣床 (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="620"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="662"/>
       <source>Machine Editor</source>
       <translation>设备编辑器</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
       <source>Machine</source>
       <translation>机器</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="468"/>
       <source>Toolheads</source>
       <translation>主轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="473"/>
       <source>Postprocessor</source>
       <translation>后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="478"/>
       <source>Options</source>
       <translation>选项</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2279"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="505"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2428"/>
       <source>Edit as Text</source>
       <translation>以文本形式编辑</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="509"/>
       <source>Validate</source>
       <translation>验证</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="474"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="516"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation>检查此机床是否存在阻止其加载或静默丢失设置的问题</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="484"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="526"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="529"/>
       <source>Close</source>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="789"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="831"/>
       <source>Remove Toolhead</source>
       <translation>移除主轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="832"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>要移除主轴吗？此操作无法撤销。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="863"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="891"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1025"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1108"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="871"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="939"/>
+      <source>Community-maintained machine definitions are available in the Machines addon.</source>
+      <translation>社区维护的机床定义可在 Machines 附加组件中获取。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="940"/>
+      <source>Open Addon Manager</source>
+      <translation>打开附加组件管理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
+      <source>Do not show again</source>
+      <translation>不再显示</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1033"/>
       <source>Template Load Error</source>
       <translation>模板加载错误</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1034"/>
       <source>Could not load template</source>
       <translation>无法加载模板</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="921"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1114"/>
       <source>Load settings from an existing machine template</source>
       <translation>现有的设备模板加载设置</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="975"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1115"/>
       <source>Template</source>
       <translation>模板</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="979"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1125"/>
       <source>Manufacturer</source>
       <translation>制造商</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1129"/>
       <source>Description</source>
       <translation>说明</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1132"/>
       <source>Metric</source>
       <translation>公制</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1133"/>
       <source>Imperial</source>
       <translation>英制</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1135"/>
       <source>Units</source>
       <translation>单位</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1141"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1013"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1159"/>
       <source>Not declared</source>
       <translation>未声明</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1160"/>
       <source>Dynamic work offset (DWO)</source>
       <translation>动态工件偏置 (DWO)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1161"/>
       <source>Tilted work plane (TWP)</source>
       <translation>倾斜工作平面 (TWP)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1164"/>
       <source>Post transform (not available yet)</source>
       <translation>后变换（尚不可用）</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1177"/>
       <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
       <translation>控制器如何在倾斜工作平面上运行操作。DWO：后处理器命令旋转轴，控制器应用其枢轴偏置。TWP：后处理器声明平面，控制器定位旋转轴。具有旋转轴但未设置策略的机床无法为此类操作生成后处理。声明平面所用的命令来自后处理器。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1193"/>
       <source>Notes</source>
       <translation>备注</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1053"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1199"/>
       <source>Axes</source>
       <translation>轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1081"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1082"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1227"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1228"/>
       <source>Add Toolhead</source>
       <translation>添加主轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1207"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1502"/>
       <source>Parent</source>
       <translation>父级</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1234"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
       <source>Direction</source>
       <translation>方向</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1245"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1373"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1391"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1519"/>
       <source>Min Limit</source>
       <translation>最小限制</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1255"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1401"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1526"/>
       <source>Max Limit</source>
       <translation>最大限制</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1265"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1411"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1535"/>
       <source>Max Velocity</source>
       <translation>最大速度</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1407"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1553"/>
       <source>Rotation Axis</source>
       <translation>旋转轴</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1622"/>
       <source>Prefer Positive</source>
       <translation>优先正向</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1853"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2002"/>
       <source>Postprocessor Selection</source>
       <translation>后处理器选择</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2012"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>为此设备选择后处理器文件</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1889"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2038"/>
       <source>Post Processor:</source>
       <translation>后处理器：</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1895"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2044"/>
       <source>Postprocessor Configuration</source>
       <translation>后处理器配置</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2446"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2595"/>
       <source>JSON Error</source>
       <translation>JSON错误</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2342"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2434"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2491"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2596"/>
       <source>Invalid JSON: {}</source>
       <translation>无效JSON：{}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2309"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2602"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2291"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2440"/>
       <source>Failed to parse data: {}</source>
       <translation>解析数据失败：{}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2304"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
       <source>Edit as Form</source>
       <translation>以表单形式编辑</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2310"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2459"/>
       <source>Failed to generate JSON: {}</source>
       <translation>生成JSON失败：{}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2364"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2490"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2513"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2529"/>
       <source>Validation</source>
       <translation>验证</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2498"/>
       <source>This machine does not load: {}</source>
       <translation>此机床无法加载：{}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2514"/>
       <source>No problems found.</source>
       <translation>未发现问题。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2371"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2520"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation>发现 {} 个错误和 {} 个警告。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2376"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2525"/>
       <source>{} warning(s) found.</source>
       <translation>发现 {} 个警告。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2420"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2569"/>
       <source>Duplicate Machine Name</source>
       <translation>设备名称重复</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2424"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2573"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>名为&apos;{}&apos;的设备已存在。请选择其他名称。</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2603"/>
       <source>Failed to save: {}</source>
       <translation>保存失败：{}</translation>
     </message>
@@ -14266,6 +14317,19 @@ Tool number for {}:</source>
     </message>
   </context>
   <context>
+    <name>CAM_PostSelected</name>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="356"/>
+      <source>Post Process Selected</source>
+      <translation>后处理所选</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="360"/>
+      <source>Post Processes the selected operations</source>
+      <translation>对所选工序进行后处理</translation>
+    </message>
+  </context>
+  <context>
     <name>MirrorDressup</name>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
@@ -14570,6 +14634,19 @@ Tool number for {}:</source>
       <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
       <source>Choose material</source>
       <translation>选择材料</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_ToolBitDock</name>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
+      <source>Add Toolbit…</source>
+      <translation>添加刀具…</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
+      <source>Opens the toolbit selection dialog</source>
+      <translation>打开刀具选择对话框</translation>
     </message>
   </context>
   <context>
@@ -15020,6 +15097,19 @@ Supported tool types: flat, bull-nose, V-bit.</source>
     </message>
   </context>
   <context>
+    <name>CAM_SetStartPoint</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
+      <source>Start Point Selection</source>
+      <translation>起点选择</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
+      <source>Selects the start point</source>
+      <translation>选择起点</translation>
+    </message>
+  </context>
+  <context>
     <name>PathShape</name>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
@@ -15041,6 +15131,19 @@ Supported tool types: flat, bull-nose, V-bit.</source>
     </message>
   </context>
   <context>
+    <name>CAM_QuickValidate</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
+      <source>Quick Validate</source>
+      <translation>快速验证</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
+      <source>Validates the CAM job for common issues without generating a full report</source>
+      <translation>验证 CAM 作业的常见问题，而不生成完整报告</translation>
+    </message>
+  </context>
+  <context>
     <name>CAM_Workplane</name>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="80"/>
@@ -15057,6 +15160,19 @@ Supported tool types: flat, bull-nose, V-bit.</source>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="122"/>
       <source>Name</source>
       <translation>名称</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_SimulatorGL</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
+      <source>CAM Simulator</source>
+      <translation>CAM 模拟器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <source>Simulates G-code on stock</source>
+      <translation>在毛坯上模拟 G 代码</translation>
     </message>
   </context>
   <context>

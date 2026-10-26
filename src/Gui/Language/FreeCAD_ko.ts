@@ -5676,72 +5676,72 @@ originally selected prior to opening this dialog</source>
       <translation>선택한 대상체 목록</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>선택만</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>화면에 맞춤</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>선택으로 가기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>재계산 표시</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>이 객체를 재계산 대상으로 표시합니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>Python 콘솔로</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>하위 형상 복제</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>이 대상체만 선택하기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>선택 해제</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>이 객체의 선택을 취소</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>이 객체를 선택하고 3D 창에 맞춤</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>트리 보기에서 이 객체를 선택하고 찾습니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>파이썬 명령창에 이 객체와 하위 요소를 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>문서에서 이 하위 모양의 독립 실행형 사본을 만듭니다</translation>
     </message>
@@ -14650,7 +14650,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>전체 대상체</translation>
     </message>

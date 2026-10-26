@@ -11,7 +11,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
       <source>Default Property Values</source>
-      <translation>Значення параметрів за замовчуванням</translation>
+      <translation>Типові значення властивостей</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>Радіус стрілки</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>Висота стрілки</translation>
     </message>
   </context>
   <context>
@@ -56,13 +56,13 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation>Загальна площа %1</translation>
+      <translation>Загальна площа: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
       <location filename="../../QuickMeasure.cpp" line="269"/>
       <source>Nominal distance: %1</source>
-      <translation>Номінальна відстань %1</translation>
+      <translation>Номінальна відстань: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
@@ -87,12 +87,12 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="252"/>
       <source>Total area: %1, Axis distance: %2</source>
-      <translation>Загальна площа: %1, відстань вісі: %2</translation>
+      <translation>Загальна площа: %1, відстань між осями: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation>Загальна площа: %1, відстань вісі: %2, кут вісі: %3</translation>
+      <translation>Загальна площа: %1, відстань між осями: %2, кут між осями: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="266"/>
@@ -132,38 +132,38 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="292"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation>Мінімальна відстань: %1, відстань вісі: %2</translation>
+      <translation>Мінімальна відстань: %1, відстань між осями: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="298"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation>Мінімальна відстань: %1, відстань до центру: %2</translation>
+      <translation>Мінімальна відстань: %1, відстань між центрами: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="305"/>
       <location filename="../../QuickMeasure.cpp" line="322"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation>Загальна довжина: %1, відстань до центру: %2</translation>
+      <translation>Загальна довжина: %1, відстань між центрами: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="312"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation>Загальна довжина: %1, відстань до центру: %2, кут вісі: %3</translation>
+      <translation>Загальна довжина: %1, відстань між центрами: %2, кут між осями: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="327"/>
       <source>Center surface distance: %1</source>
-      <translation>Відстань до центру поверхні: %1</translation>
+      <translation>Відстань між центрами поверхонь: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="332"/>
       <source>Center axis distance: %1</source>
-      <translation>Відстань до центру осей: %1</translation>
+      <translation>Відстань між центральними осями: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="335"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation>Відстань до центру осей: %1, Кут осей: %2</translation>
+      <translation>Відстань між центральними осями: %1, кут між осями: %2</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measures a feature</source>
-      <translation type="unfinished">Measures a feature</translation>
+      <translation>Вимірює елемент</translation>
     </message>
   </context>
   <context>
@@ -203,17 +203,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation>Автозбереження останнього вимірювання при створенні нового вимірювання. Використовуйте Shift для тимчасового інвертування поведінки.</translation>
+      <translation>Автоматично зберігати останнє вимірювання, коли починається нове. Утримуйте Shift, щоб тимчасово змінити цю поведінку на протилежну.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
-      <translation>Додане виділення</translation>
+      <translation>Додавання до вибору</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation>Якщо позначено, то нові пункти будуть додані до вимірювання. Якщо не позначено, то натисніть клавішу Ctrl для додавання обраного виміру в іншому випадку почнеться нове вимірювання</translation>
+      <translation>Якщо позначено, новий вибір додається до вимірювання. Якщо ні — щоб додати вибір до поточного вимірювання, утримуйте Ctrl, інакше почнеться нове вимірювання</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="175"/>
@@ -238,37 +238,37 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
-      <translation type="unfinished">%1 auto-save</translation>
+      <translation>%1 автозбереження</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
-      <translation type="unfinished">%1 start new measurement</translation>
+      <translation>%1 почати нове вимірювання</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
-      <translation type="unfinished">%1 add to measurement</translation>
+      <translation>%1 додати до вимірювання</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 нове вимірювання, %2 перемкнути автозбереження</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 додати до вимірювання, %2 перемкнути автозбереження</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="820"/>
       <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
+      <translation>Показувати дельту</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
-      <translation>Збережені вимірювання в активному документі</translation>
+      <translation>Зберігає вимірювання в активному документі</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="269"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="38"/>
       <source>Objects to measure</source>
-      <translation type="unfinished">Objects to measure</translation>
+      <translation>Об'єкти для вимірювання</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="58"/>
@@ -304,37 +304,37 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Центр ваги</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
       <source>Custom</source>
-      <translation>Власний</translation>
+      <translation>Власне значення</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation type="unfinished">Select…</translation>
+      <translation>Вибрати…</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
       <source>mm, kg, kg*mm^2</source>
-      <translation type="unfinished">mm, kg, kg*mm^2</translation>
+      <translation>мм, кг, кг*мм^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="142"/>
       <source>m, kg, kg*m^2</source>
-      <translation type="unfinished">m, kg, kg*m^2</translation>
+      <translation>м, кг, кг*м^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="147"/>
       <source>in, lb, lb*in^2</source>
-      <translation type="unfinished">in, lb, lb*in^2</translation>
+      <translation>дюйм, фунт, фунт*дюйм^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="152"/>
       <source>ft, lb, lb*ft^2</source>
-      <translation type="unfinished">ft, lb, lb*ft^2</translation>
+      <translation>фут, фунт, фунт*фут^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="172"/>
@@ -349,12 +349,12 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="200"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Густина</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Площа поверхні</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -378,12 +378,12 @@
       <location filename="../../TaskMassProperties.ui" line="339"/>
       <location filename="../../TaskMassProperties.ui" line="472"/>
       <source>Create Datum Point</source>
-      <translation type="unfinished">Create Datum Point</translation>
+      <translation>Створити опорну точку</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
       <source>Inertia Matrix</source>
-      <translation type="unfinished">Inertia Matrix</translation>
+      <translation>Матриця інерції</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Головні моменти інерції</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
@@ -438,12 +438,12 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Створити ЛСК за головними осями</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
+      <translation>Момент інерції відносно осі</translation>
     </message>
   </context>
   <context>
@@ -451,12 +451,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
+      <translation>Масові характеристики</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+      <translation>Обчислює масові характеристики вибраних об'єктів</translation>
     </message>
   </context>
   <context>
@@ -469,22 +469,22 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="358"/>
       <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
+      <translation>Фізичні властивості</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="361"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Центр ваги</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="362"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Центр об'єму</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
+      <translation>Інерція</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="444"/>
@@ -504,7 +504,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation> (середнє)</translation>
     </message>
   </context>
   <context>
@@ -512,7 +512,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="121"/>
       <source>Distance</source>
-      <translation>Відстань Х</translation>
+      <translation>Відстань</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="129"/>
@@ -532,7 +532,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="153"/>
       <source>Position</source>
-      <translation>Позиція</translation>
+      <translation>Положення</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="161"/>
@@ -552,7 +552,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="185"/>
       <source>Geometric Center</source>
-      <translation type="unfinished">Geometric Center</translation>
+      <translation>Геометричний центр</translation>
     </message>
   </context>
 </TS>

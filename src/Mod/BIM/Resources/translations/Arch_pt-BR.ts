@@ -326,7 +326,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation>Se selecionado, este objeto quantitativo manterá uma planilha associada, contendo os resultados.</translation>
+      <translation>Se selecionado, este objeto quantitativo manterá uma planilha associada, contendo os resultados</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="129"/>
@@ -757,7 +757,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="60"/>
       <source>Toggle Visibility</source>
-      <translation>Alternar Visibilidade</translation>
+      <translation>Alternar visibilidade</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="67"/>
@@ -860,12 +860,12 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="42"/>
       <source>Use preset</source>
-      <translation/>
+      <translation>Usar predefinição</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</source>
-      <translation>As configurações acima podem ser salvas como uma predefinição. As predefinições são armazenadas como arquivos .txt na sua pasta local de usuário FreeCAD</translation>
+      <translation>As configurações abaixo podem ser salvas como uma predefinição. As predefinições são armazenadas como arquivos .txt na pasta local de usuário do FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
@@ -1271,7 +1271,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
       <location filename="../ui/dialogSpaces.ui" line="75"/>
       <location filename="../ui/dialogSpaces.ui" line="145"/>
       <source>1.00 m²</source>
-      <translation>1.00 m2</translation>
+      <translation>1,00 m²</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="85"/>
@@ -1828,7 +1828,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>…</source>
-      <translation>...</translation>
+      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
@@ -2018,7 +2018,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Form['&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;']</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;O padrão IFC exige pelo menos um terreno, um edifício e um nível ou pavimento por projeto. Este teste verifica se existe no modelo pelo menos um objeto de cada um desses 3 tipos.&lt;/p&gt;&lt;p&gt;Observe que, como este é um requisito obrigatório, o FreeCAD adicionará automaticamente um terreno, um edifício e/ou um pavimento padrão se algum deles estiver faltando. Assim, mesmo que este teste não passe, o arquivo IFC exportado atenderá aos requisitos.&lt;/p&gt;&lt;p&gt;No entanto, é sempre melhor criar esses objetos manualmente para ter mais controle sobre nomes e propriedades.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
@@ -2083,10 +2083,7 @@ Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contid
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Paredes, colunas e vigas no FreeCAD podem ser construídas de diversas maneiras, mas alguns aplicativos BIM mais simples podem ter dificuldades com paredes que não sejam do tipo mais simples. Ou seja, uma única peça reta de parede (que corresponde a um tipo de caixa padrão de parede.) ou vigas e colunas que não são baseadas em uma extrusão reta de um perfil plano (Caso padrão de viga, caso padrão de coluna).
-Este teste encontrará qualquer parede que não seja um caso padrão.
-
-&lt;span style=" font-weight:600;"&gt;&lt;/span&gt;Observação&lt;/span&gt;: No momento, os objetos BIM que atendem aos requisitos para serem de um caso padrão ainda são exportados como Parede Ifc, Viga Ifc e Coluna Ifc</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Paredes, colunas e vigas no FreeCAD podem ser construídas de muitas maneiras, mas alguns aplicativos BIM mais simples podem ter dificuldades com paredes que não sejam do tipo mais simples. Ou seja, uma única peça reta de parede (que corresponde ao tipo IfcWallStandardCase) ou vigas e colunas que não sejam baseadas em uma extrusão reta de um perfil plano (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;Este teste encontrará qualquer parede que não seja um desses casos padrão.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Observação&lt;/span&gt;: no momento, os objetos BIM que atendem aos requisitos de um caso padrão ainda são exportados como IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
@@ -2872,7 +2869,7 @@ a footprint display mode</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="340"/>
       <source>Draft line</source>
-      <translation>Linha de rascunho (Draft)</translation>
+      <translation>Linha do Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="345"/>
@@ -3403,9 +3400,9 @@ Se estiver usando o Netgen, certifique-se de que ele está instalado.</translati
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation>Valor de pontuação a ser usado para malha usando Netgen.
-Este valor descreve o quanto o tamanho da malha diminui com a distância.
-O gradiente do tamanho da malha local h(x) está calculado por  |Δh(x)| ≤ 1/value.</translation>
+      <translation>Valor de gradação a ser usado na geração de malha com o Netgen.
+Este valor descreve a rapidez com que o tamanho da malha diminui.
+O gradiente do tamanho local da malha h(x) é limitado por |Δh(x)| ≤ 1/value.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -3688,8 +3685,7 @@ Um local não é obrigatório, mas uma prática comum é ter pelo menos um no ar
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="389"/>
       <source>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</source>
-      <translation>Se não estiver marcado, os grupos padrão do FreeCAD (App::DocumentObjectGroup) não serão exportados como IfcGroup ou IfcElementAssembly.
-Seus filhos serão reassociados ao contêiner do grupo ignorado na estrutura IFC.</translation>
+      <translation>Se não estiver marcado, os grupos padrão do FreeCAD (App::DocumentObjectGroup) não serão exportados como IfcGroup ou IfcElementAssembly.\nSeus filhos serão reassociados ao contêiner do grupo ignorado na estrutura IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="410"/>
@@ -3736,7 +3732,7 @@ The default template is located at:
       <translation>Um modelo HTML WebGL personalizado é usado para exportação. Caso contrário, o modelo padrão será usado.
 
 O modelo padrão está localizado em:
-&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html</translation>
+&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="38"/>
@@ -3940,7 +3936,7 @@ O modelo padrão está localizado em:
     <message>
       <location filename="../../ArchStructure.py" line="299"/>
       <source>%1 pick base point</source>
-      <translation>%1 indicar ponto base</translation>
+      <translation>%1 escolha o ponto base</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
@@ -4003,7 +3999,7 @@ O modelo padrão está localizado em:
       <location filename="../../ArchStructure.py" line="1715"/>
       <location filename="../../ArchStructure.py" line="1765"/>
       <source>The chosen object is not a Structure</source>
-      <translation>O objeto escolhido não é uma Estrutura.</translation>
+      <translation>O objeto escolhido não é uma Estrutura</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1720"/>
@@ -4027,7 +4023,8 @@ O modelo padrão está localizado em:
       <location filename="../../ArchStructure.py" line="1742"/>
       <source>Intersection found.
 </source>
-      <translation>Interseção encontrada.</translation>
+      <translation>Interseção encontrada.
+</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1793"/>
@@ -5431,7 +5428,7 @@ Se Run = 0, a projeção é calculada para que a altura seja a mesma do perfil r
       <location filename="../../bimcommands/BimPanel.py" line="126"/>
       <location filename="../../bimcommands/BimProfile.py" line="76"/>
       <source>%1 pick point</source>
-      <translation>%1 escolher ponto</translation>
+      <translation>%1 escolha o ponto</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="197"/>
@@ -5943,7 +5940,7 @@ Se Run = 0, a projeção é calculada para que a altura seja a mesma do perfil r
     <message>
       <location filename="../../ArchReport.py" line="1778"/>
       <source> (from {input_count} in pipeline)</source>
-      <translation>(de {input_count} no pipeline)</translation>
+      <translation> (de {input_count} no pipeline)</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1793"/>
@@ -5973,7 +5970,7 @@ Se Run = 0, a projeção é calculada para que a altura seja a mesma do perfil r
     <message>
       <location filename="../../ArchReport.py" line="2177"/>
       <source>Manage {mode.capitalize()} Presets</source>
-      <translation>Gerenciar pré-ajustes de {mode.capitalize()}</translation>
+      <translation>Gerenciar predefinições de {mode.capitalize()}</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="2187"/>
@@ -6086,7 +6083,7 @@ Se Run = 0, a projeção é calculada para que a altura seja a mesma do perfil r
     <message>
       <location filename="../../ArchPipe.py" line="205"/>
       <source>corrected 'Height' and 'Width' properties</source>
-      <translation>Propriedades 'Altura' e 'Largura' corrigidas</translation>
+      <translation>propriedades 'Height' e 'Width' corrigidas</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="241"/>
@@ -6333,7 +6330,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1310"/>
       <source>Wrong base type</source>
-      <translation>Tipo de base incorreto </translation>
+      <translation>Tipo de base incorreto</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1053"/>
@@ -6569,7 +6566,7 @@ O módulo Python ladybug ou pysolar é necessário.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2478"/>
       <source>Hosts</source>
-      <translation>Anfitriões</translation>
+      <translation>Hospedeiros</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2542"/>
@@ -6874,7 +6871,7 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="548"/>
       <source>Draft line</source>
-      <translation>Linha de rascunho (Draft)</translation>
+      <translation>Linha do Draft</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="549"/>
@@ -7143,7 +7140,7 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1177"/>
       <source>Save Camera View</source>
-      <translation>Salvar visualização da câmera</translation>
+      <translation>Salvar vista da câmera</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1183"/>
@@ -8522,7 +8519,7 @@ Mantenha 0 para corresponder automaticamente à altura do Nível ou Edifício qu
     <message>
       <location filename="../../ArchStairs.py" line="523"/>
       <source>Use Base ArchSketch (if used) data (e.g. selected edge, widths, aligns) instead of Stairs' properties</source>
-      <translation>Usar dados do ArchSketch base (se usado) (ex.: aresta selecionada, meias-larguras, alinhamentos) em vez das propriedades da escada</translation>
+      <translation>Usar dados do ArchSketch base (se usado) (ex.: aresta selecionada, larguras, alinhamentos) em vez das propriedades da escada</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="536"/>
@@ -8552,7 +8549,7 @@ Mantenha 0 para corresponder automaticamente à altura do Nível ou Edifício qu
     <message>
       <location filename="../../ArchFence.py" line="107"/>
       <source>The number of posts used to build the fence</source>
-      <translation>O número de postes usados ​​para construir a cerca</translation>
+      <translation>O número de postes usados para construir a cerca</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="302"/>
@@ -9016,7 +9013,7 @@ Mantenha 0 para corresponder automaticamente à altura do Nível ou Edifício qu
     <message>
       <location filename="../../ArchCurtainWall.py" line="356"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
-      <translation>Entrada são números de índice de arestas do ArchSketch/Sketch (modo de edição). Bordas selecionadas são usadas para criar a forma desta Parede de Cortina Arca (em vez de usar todas as arestas por padrão). [INICIADO pelo ArchSketch] A ferramenta "Editar Cortina Wall" é fornecida em Add-on externo ('SketchArch') para permitir que os usuários selecionem as arestas interativamente. 'Toponaming-Tolerant' se o ArchSketch for usado em Base (e o complemento SketchArch está instalado). Aviso: Não 'Toponaming-Tolerant' se apenas o Sketch é usado. A propriedade é ignorada se o ArchSketch Base forneceu as arestas selecionadas.</translation>
+      <translation>As entradas são números de índice das arestas das geometrias do ArchSketch/Sketch base (no modo de edição).  As arestas selecionadas são usadas para criar a forma desta fachada-cortina Arch (em vez de usar todas as arestas por padrão).  [APRIMORADO pelo ArchSketch] A ferramenta de GUI 'Edit Curtain Wall' é fornecida no complemento externo ('SketchArch') para permitir que os usuários selecionem as arestas interativamente.  'Toponaming-Tolerant' se o ArchSketch for usado na Base (e o complemento SketchArch estiver instalado).  Aviso : não é 'Toponaming-Tolerant' se apenas um Sketch for usado. A propriedade é ignorada se o ArchSketch base fornecer as arestas selecionadas.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="105"/>
@@ -9554,17 +9551,17 @@ ou $floor, $walls, $ceiling para acabamentos, para inserir os respectivos dados.
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Isto substitui o atributo Largura para definir a largura de cada segmento de parede. Desativado e ignorado se o objeto base (ArchSketch) fornece informação sobre as larguras. com método getWidths() (Se um valor for zero, o valor de 'Width' será usado). [ENHANCEMENT by ArchSketch] A ferramenta 'Edit Wall Segment Width' é fornecida no Add-on externo SketchArch para permitir que os usuários definam os valores interativamente. 'Toponaming-Tolerant' se o ArchSketch for usado em Base (e o complemento SketchArch está instalado). Aviso: Não 'Toponaming-Tolerant' se apenas um esboço normal for usado.</translation>
+      <translation>Isto substitui o atributo Width para definir a largura de cada segmento da parede.  Desativado e ignorado se o objeto Base (ArchSketch) fornecer informações de larguras, com o método getWidths()  (Se um valor for zero, será seguido o valor de 'Width').  [APRIMORAMENTO pelo ArchSketch] A ferramenta de GUI 'Edit Wall Segment Width' é fornecida no complemento externo SketchArch para permitir que os usuários definam os valores interativamente.  'Toponaming-Tolerant' se o ArchSketch for usado na Base (e o complemento SketchArch estiver instalado).  Aviso : não é 'Toponaming-Tolerant' se apenas um Sketch for usado.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Isso substitui o atributo Alinhamento para definir alinhamento de cada segmento de parede. Desativado e ignorado se o objeto Base (ArchSketch) fornece informação de Alinhamentos, com o método getAligns() (Se um valor não é 'Esquerda, Direita, Centro', o valor de 'Alinhamento' será seguido). Interface 'Editar Alinhamento do Segmento da Parede' é fornecida em Add-on SketchArch externo para permitir que os usuários definam os valores interativamente. 'Toponaming-Tolerant' se o ArchSketch for usado em Base (e o complemento SketchArch está instalado). Aviso: Não 'Toponaming-Tolerant' se apenas o esboço for usado.</translation>
+      <translation>Isto substitui o atributo Align para definir o alinhamento de cada segmento da parede.  Desativado e ignorado se o objeto Base (ArchSketch) fornecer informações de alinhamentos, com o método getAligns()  (Se um valor não for 'Left, Right, Center', será seguido o valor de 'Align').  [APRIMORAMENTO pelo ArchSketch] A ferramenta de GUI 'Edit Wall Segment Align' é fornecida no complemento externo SketchArch para permitir que os usuários definam os valores interativamente.  'Toponaming-Tolerant' se o ArchSketch for usado na Base (e o complemento SketchArch estiver instalado).  Aviso : não é 'Toponaming-Tolerant' se apenas um Sketch for usado.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="227"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
-      <translation>Isso substitui o atributo de deslocamento para definir o deslocamento de cada segmento de parede. Desativado e ignorado se um objeto Base (ArchSketch) fornece informações sobre Offsets com método getOffsets() (Se um valor for zero, o valor de 'Offset' será seguido). [HANCED pelo ArchSketch] GUI 'Editar Offset do segmento de Wall é fornecido em complemento externo ('SketchArch') para que os usuários selecionem as arestas interativamente. 'Toponaming-Tolerant' se o ArchSketch for usado em Base (e o complemento SketchArch está instalado). Aviso: Não 'Toponaming-Tolerant' se apenas o Sketch é usado. A propriedade é ignorada se o ArchSketch Base forneceu as arestas selecionadas. </translation>
+      <translation>Isto substitui o atributo Offset para definir o deslocamento de cada segmento da parede.  Desativado e ignorado se o objeto Base (ArchSketch) fornecer informações de deslocamentos, com o método getOffsets()  (Se um valor for zero, será seguido o valor de 'Offset').  [APRIMORADO pelo ArchSketch] A ferramenta de GUI 'Edit Wall Segment Offset' é fornecida no complemento externo ('SketchArch') para permitir que os usuários selecionem as arestas interativamente.  'Toponaming-Tolerant' se o ArchSketch for usado na Base (e o complemento SketchArch estiver instalado).  Aviso : não é 'Toponaming-Tolerant' se apenas um Sketch for usado. A propriedade é ignorada se o ArchSketch base fornecer as arestas selecionadas. </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="181"/>
@@ -9647,7 +9644,7 @@ Ignorado se esta parede for baseada em um sólido.</translation>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation>Selecione o Conjunto de Propriedades definido pelo usuário a ser usado na criação de formas e camadas variantes da Parede Arch com o mesmo ArchSketch</translation>
+      <translation>Selecione o Conjunto de Propriedades definido pelo usuário a ser usado na criação de formas e camadas variantes da Parede Arch com o mesmo ArchSketch </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="863"/>
@@ -10562,7 +10559,7 @@ Ignorado se esta parede for baseada em um sólido.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="357"/>
       <source>Starts survey</source>
-      <translation>Inicia o modo gerencidor de obra</translation>
+      <translation>Inicia o levantamento de quantitativos</translation>
     </message>
   </context>
   <context>
@@ -10614,7 +10611,7 @@ Ignorado se esta parede for baseada em um sólido.</translation>
     <message>
       <location filename="../../InitGui.py" line="617"/>
       <source>Draft</source>
-      <translation>Projeto</translation>
+      <translation>Inclinação</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="877"/>
@@ -10732,7 +10729,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="325"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
-      <translation>Os objetos ainda têm a mesma forma, mas têm um material diferente. Atualizá-los no documento principal?</translation>
+      <translation>objetos ainda têm a mesma forma, mas têm um material diferente. Atualizá-los no documento principal?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="380"/>
@@ -10767,7 +10764,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="496"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
-      <translation>Os objetos não existem mais no novo documento. Movê-los para um grupo 'A Excluir'?</translation>
+      <translation>objetos não existem mais no novo documento. Movê-los para um grupo 'A excluir'?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="511"/>
@@ -11005,7 +11002,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
       <source>%1 pick opposite point</source>
-      <translation>%1 indicar ponto oposto</translation>
+      <translation>%1 escolha o ponto oposto</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="200"/>
@@ -11200,7 +11197,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="126"/>
       <source> Material Operations</source>
-      <translation>Operações de material</translation>
+      <translation> Operações de material</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="132"/>
@@ -11298,7 +11295,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="162"/>
       <source>This test has succeeded.</source>
-      <translation>Este teste foi concluido com sucesso</translation>
+      <translation>Este teste foi concluído com sucesso.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="173"/>
@@ -11656,7 +11653,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="101"/>
       <source>Toggle Visibility</source>
-      <translation>Alternar Visibilidade</translation>
+      <translation>Alternar visibilidade</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="138"/>
@@ -11676,7 +11673,7 @@ Alt+/ para alternar entre modo automático e manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
-      <translation>Salvar visualização da câmera</translation>
+      <translation>Salvar vista da câmera</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="104"/>
@@ -12123,16 +12120,6 @@ Por favor, verifique a instalação do FreeCAD ou forneça um modelo personaliza
       <source>Converts any object to a BIM component</source>
       <translation>Converte qualquer objetos em componente BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Remover do grupo</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Remove este objeto do seu grupo</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -12236,7 +12223,7 @@ Por favor, verifique a instalação do FreeCAD ou forneça um modelo personaliza
     <message>
       <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
-      <translation>Selecione uma seção, postar e caminho exatamente nesta ordem para construir uma cerca.</translation>
+      <translation>Selecione uma seção, um poste e um caminho exatamente nesta ordem para construir uma cerca.</translation>
     </message>
   </context>
   <context>
@@ -13099,7 +13086,7 @@ Por favor, verifique a instalação do FreeCAD ou forneça um modelo personaliza
     <message>
       <location filename="../ui/dialogSetup.ui" line="571"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Onde a grade aparece na inicialização do FreeCAD. Localização nas preferências: &lt;span style=" font-weight:600;"&gt;Rascunho &amp;gt; Geral &amp;gt; Plano de trabalho padrão&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Onde a grade aparece na inicialização do FreeCAD. Localização nas preferências: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Geral &amp;gt; Plano de trabalho padrão&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="267"/>
@@ -13369,7 +13356,7 @@ Por favor, verifique a instalação do FreeCAD ou forneça um modelo personaliza
       <source>Creates a 2D projection of the selected objects on the XY-plane.
 The initial projection direction is the opposite of the current active view direction.</source>
       <translation>Cria uma projeção 2D dos objetos selecionados no plano XY.
-A direção inicial de projeção é o oposto da direção de visualização atual ativa.</translation>
+A direção inicial de projeção é oposta à direção da vista ativa atual.</translation>
     </message>
   </context>
   <context>
@@ -13648,7 +13635,7 @@ selecione a vista e a página antes de executar o comando.</translation>
     <message>
       <location filename="../../InitGui.py" line="239"/>
       <source>Arc Tools</source>
-      <translation>Ferramentas de Arco</translation>
+      <translation>Ferramentas de arco</translation>
     </message>
   </context>
   <context>
@@ -13680,7 +13667,7 @@ selecione a vista e a página antes de executar o comando.</translation>
     <message>
       <location filename="../../InitGui.py" line="294"/>
       <source>Array Tools</source>
-      <translation>Ferramentas de Matriz</translation>
+      <translation>Ferramentas de matriz</translation>
     </message>
   </context>
   <context>
@@ -13696,7 +13683,7 @@ selecione a vista e a página antes de executar o comando.</translation>
     <message>
       <location filename="../../InitGui.py" line="320"/>
       <source>Extrude Tools</source>
-      <translation type="unfinished">Extrude Tools</translation>
+      <translation>Ferramentas de extrusão</translation>
     </message>
   </context>
   <context>
@@ -13743,6 +13730,19 @@ Do you want to proceed?</source>
       <translation>A remoção da base desta parede complexa alterará sua forma e redefinirá sua posição.
 
 Deseja prosseguir?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Remover do grupo</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Remove este objeto do seu grupo pai</translation>
     </message>
   </context>
   <context>

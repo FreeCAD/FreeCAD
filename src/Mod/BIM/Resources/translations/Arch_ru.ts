@@ -825,7 +825,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="222"/>
       <source>Elevation</source>
-      <translation>Высота</translation>
+      <translation>Отметка уровня 0</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="229"/>
@@ -958,7 +958,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="273"/>
       <source>The elevation of this site</source>
-      <translation>Высота этого места</translation>
+      <translation>Отметка нулевого уровня этого места</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="283"/>
@@ -2187,7 +2187,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
       <source>Elevation</source>
-      <translation>Высота</translation>
+      <translation>Отметка уровня 0</translation>
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="84"/>
@@ -7397,8 +7397,8 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="801"/>
       <source>The height or extrusion depth of this element.
 Keep 0 to automatically match the height of the enclosing Level or Building.</source>
-      <translation type="unfinished">The height or extrusion depth of this element.
-Keep 0 to automatically match the height of the enclosing Level or Building.</translation>
+      <translation>Высота или глубина выдавливания этого элемента.
+Оставьте значение 0, чтобы автоматически установить высоту ограждающего этажа или здания.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="812"/>
@@ -9502,9 +9502,8 @@ Keep 0 to automatically match the height of the enclosing Level or Building.</tr
       <source>Template for the space's label text.
 Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
 or $floor, $walls, $ceiling for finishes, to insert the respective data.</source>
-      <translation type="unfinished">Template for the space's label text.
-Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive),
-or $floor, $walls, $ceiling for finishes, to insert the respective data.</translation>
+      <translation>Шаблон отображаемого текста надписи. 
+Используйте $area, $label, $longname, $description или любое другое название свойства, с префиксом $ (без учета регистра), или $floor, $walls, $ceiling для завершения, при вставке соответствующих данных.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
@@ -9570,29 +9569,29 @@ or $floor, $walls, $ceiling for finishes, to insert the respective data.</transl
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall.
 Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</source>
-      <translation type="unfinished">The length of this wall.
-Editable only if this wall's baseline is a Draft line, an unconstrained sketch with a single line, or none.</translation>
+      <translation>Длина этой стены.
+Редактируется, только если базовой линией этой стены является линия наброска, неограниченный эскиз с одной линией или ничего.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall.
 Ignored if this wall is based on a solid or a face.</source>
-      <translation type="unfinished">The width of this wall.
-Ignored if this wall is based on a solid or a face.</translation>
+      <translation>Ширина стены.
+Игнорируется, если эта стена основана на грани или твердотельном объекте.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall.
 Keep 0 to automatically match the height of the enclosing Level or Building.
 Ignored if this wall is based on a solid.</source>
-      <translation type="unfinished">The height of this wall.
-Keep 0 to automatically match the height of the enclosing Level or Building.
-Ignored if this wall is based on a solid.</translation>
+      <translation>Высота этой стены.
+Оставьте значение 0, чтобы автоматически установить высоту как у ограждающего этажа или здания.
+Игнорируется если стена основана на базе твердотельного объекта.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable.</translation>
+      <translation>Выравнивание стены на базовом объекте, если возможно.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -10670,12 +10669,12 @@ Alt+PgUp для удлинения выдавливания Alt+PgDown для у
     <message>
       <location filename="../../InitGui.py" line="697"/>
       <source>2D Drafting</source>
-      <translation type="unfinished">2D Drafting</translation>
+      <translation>2-мерный набросок</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="698"/>
       <source>3D/BIM Geometry</source>
-      <translation type="unfinished">3D/BIM Geometry</translation>
+      <translation>Трёхмерная / ТИМ Геометрия</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="699"/>
@@ -12118,16 +12117,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../bimcommands/BimConvert.py" line="36"/>
       <source>Converts any object to a BIM component</source>
       <translation>Конвертирует любой объект в BIM компонент</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Удалить из группы</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Удаляет этот объект из его родительской группы</translation>
     </message>
   </context>
   <context>
@@ -13693,7 +13682,7 @@ select both the view and the page before executing the command.</source>
     <message>
       <location filename="../../InitGui.py" line="320"/>
       <source>Extrude Tools</source>
-      <translation type="unfinished">Extrude Tools</translation>
+      <translation>Инструменты выдавливания</translation>
     </message>
   </context>
   <context>
@@ -13743,6 +13732,19 @@ Do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Удалить из группы</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Удаляет этот объект из его родительской группы</translation>
+    </message>
+  </context>
+  <context>
     <name>BimWall</name>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="305"/>
@@ -13773,7 +13775,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Создаёт объединение нескольких фигур</translation>
     </message>
   </context>
   <context>
@@ -13825,7 +13827,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Создаёт пересечение двух фигур</translation>
     </message>
   </context>
   <context>
@@ -13833,7 +13835,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Построитель фигур</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="36"/>
@@ -13846,12 +13848,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="115"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Сечение</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation type="unfinished">Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</translation>
+      <translation>Создаёт двумерную проекцию выбранных объектов на плоскости XY. Начальное направление проекции противоположно направлению текущего вида</translation>
     </message>
   </context>
   <context>
@@ -13859,12 +13861,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2-мерное смещение</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Утилита смещения плоских фигур</translation>
     </message>
   </context>
 </TS>

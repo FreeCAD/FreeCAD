@@ -2732,7 +2732,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>선택</translation>
     </message>
@@ -2859,48 +2859,48 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>형상</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>선택 중…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation type="unfinished">Creating extrusion failed.
 No shape could be extruded.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>돌출 실패.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>돌출 실패.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>객체를 찾을 수 없습니다: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>돌출할 형상이 선택되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2909,12 +2909,12 @@ No shape could be extruded.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>알 수 없는 오류</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2923,17 +2923,17 @@ No shape could be extruded.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>방향 모드가 모서리를 사용하도록 설정되어 있지만, 연결된 모서리가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>돌출 방향 벡터의 길이가 0입니다. 0이 아닌 값이어야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>총 돌출 길이가 0입니다(길이1 == -길이2). 0이 아닌 값이어야 합니다.</translation>
     </message>
@@ -7962,7 +7962,7 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation type="unfinished">Select Point Object</translation>
     </message>

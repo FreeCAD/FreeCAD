@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Središnja ravan između stranica</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>Koordinatni početak ravni će se naći na sredini između dve ravne stranice, a njena orijentacija je usmerena tako da polovi ugao između njih. U slučaju površi koje nisu paralelne, ravan sadrži njihovu presečnu liniju.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Središnja ravan između stranica</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>Koordinatni početak ravni će se naći na sredini između dve ravne stranice, a njena orijentacija je usmerena tako da polovi ugao između njih. U slučaju površi koje nisu paralelne, ravan sadrži njihovu presečnu liniju.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -2197,7 +2197,7 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Kružno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2212,12 +2212,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Pravougaono umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Polarno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -2399,7 +2399,7 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation type="unfinished">Attachment Mode</translation>
+      <translation>Režim pridruživanja</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2735,7 +2735,7 @@ veličina sačuvane STEP datoteke.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>Izaberi</translation>
     </message>
@@ -2862,48 +2862,48 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>Izbor…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Izvlačenje nije uspelo.
+Nije moguće izvlačenje nijednog oblika.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Izvlačenje nije uspelo.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Pravljenje izvlačenja nije uspelo.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>Objekat nije pronađen: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Nema izabranih oblika za izvlačenje.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2912,12 +2912,12 @@ No shape could be extruded.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>Nepoznata greška</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2926,17 +2926,17 @@ No shape could be extruded.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Kao pravac izvlačenja bi trebala da se koristi ivica, ali ivica nije zadata.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Vektor pravca izvlačenja je nulte dužine. Dužina mora biti različita od nule.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Ukupna dužina izvlačenja je nula (dužina 1 == -dužina2). Mora biti različita od nule.</translation>
     </message>
@@ -3001,12 +3001,12 @@ No shape could be extruded.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation type="unfinished">Constant radius</translation>
+      <translation>Konstantan poluprečnik</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable radius</source>
-      <translation type="unfinished">Variable radius</translation>
+      <translation>Promenljiv poluprečnik</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
@@ -3233,12 +3233,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
+      <translation>Tokom uvoza spoji sve oblike u jedan Sastavljeni objekat. Ovo produžava vreme uvoza, ali ne utiče na tačnost geometrije niti na kvalitet prikaza.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
       <source>Enable STEP compound merge</source>
-      <translation>Omogući STEP objedinjavanje sastavljenih objekata</translation>
+      <translation>Omogući objedinjavanje u sastavljeni objekat</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
@@ -3421,7 +3421,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation type="unfinished">Select the type of geometric primitive to create</translation>
+      <translation>Izaberi vrstu geometrijskog primitiva koji želiš da napraviš</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3433,7 +3433,7 @@ Check one or more edge entities first.</source>
       <location filename="../../DlgPrimitives.ui" line="45"/>
       <location filename="../../DlgPrimitives.cpp" line="395"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kvadar</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="54"/>
@@ -3532,7 +3532,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="250"/>
       <source>Length of the plane in the local X direction</source>
-      <translation type="unfinished">Length of the plane in the local X direction</translation>
+      <translation>Dužina ravni u lokalnom X pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="266"/>
@@ -3543,17 +3543,17 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="273"/>
       <source>Width of the plane in the local Y direction</source>
-      <translation type="unfinished">Width of the plane in the local Y direction</translation>
+      <translation>Širina ravni u lokalnom Y pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="347"/>
       <source>Length of the box in the local X direction</source>
-      <translation type="unfinished">Length of the box in the local X direction</translation>
+      <translation>Dužina kvadra u lokalnom X pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="370"/>
       <source>Width of the box in the local Y direction</source>
-      <translation type="unfinished">Width of the box in the local Y direction</translation>
+      <translation>Širina kvadra u lokalnom Y pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="386"/>
@@ -3567,7 +3567,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="393"/>
       <source>Height of the box in the local Z direction</source>
-      <translation type="unfinished">Height of the box in the local Z direction</translation>
+      <translation>Visina kvadra u lokalnom Z pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="463"/>
@@ -3581,22 +3581,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="470"/>
       <source>Radius of the cylinder</source>
-      <translation type="unfinished">Radius of the cylinder</translation>
+      <translation>Poluprečnik valjka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="493"/>
       <source>Height of the cylinder along the local Z axis</source>
-      <translation type="unfinished">Height of the cylinder along the local Z axis</translation>
+      <translation>Visina valjka duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="516"/>
       <source>Skew angle of the cylinder in the first direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the first direction</translation>
+      <translation>Ugao zakošenja cilindra u prvom pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="542"/>
       <source>Skew angle of the cylinder in the second direction</source>
-      <translation type="unfinished">Skew angle of the cylinder in the second direction</translation>
+      <translation>Ugao zakošenja cilindra u drugom pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="593"/>
@@ -3606,7 +3606,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="600"/>
       <source>Rotation angle of the cylinder cross-section</source>
-      <translation type="unfinished">Rotation angle of the cylinder cross-section</translation>
+      <translation>Ugao okretanja poprečnog preseka valjka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="670"/>
@@ -3618,7 +3618,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="677"/>
       <source>Radius of the cone at the bottom</source>
-      <translation type="unfinished">Radius of the cone at the bottom</translation>
+      <translation>Poluprečnik kupe na dnu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="693"/>
@@ -3630,12 +3630,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="700"/>
       <source>Radius of the cone at the top</source>
-      <translation type="unfinished">Radius of the cone at the top</translation>
+      <translation>Poluprečnik kupe na vrhu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="723"/>
       <source>Height of the cone along the local Z axis</source>
-      <translation type="unfinished">Height of the cone along the local Z axis</translation>
+      <translation>Visina kupe duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="765"/>
@@ -3646,12 +3646,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="772"/>
       <source>Rotation angle of the cone cross-section</source>
-      <translation type="unfinished">Rotation angle of the cone cross-section</translation>
+      <translation>Ugao okretanja poprečnog preseka kupe</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="849"/>
       <source>Radius of the sphere</source>
-      <translation type="unfinished">Radius of the sphere</translation>
+      <translation>Poluprečnik lopte</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="894"/>
@@ -3663,7 +3663,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="901"/>
       <source>Rotation angle of the sphere cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the sphere cross-section around the local Z axis</translation>
+      <translation>Ugao okretanja poprečnog preseka lopte oko Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="917"/>
@@ -3673,22 +3673,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
       <source>Start angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">Start angle of the sphere along the local Z axis</translation>
+      <translation>Početni ugao lopte duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="956"/>
       <source>End angle of the sphere along the local Z axis</source>
-      <translation type="unfinished">End angle of the sphere along the local Z axis</translation>
+      <translation>Krajnji ugao sfere duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1033"/>
       <source>Radius of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Z axis</translation>
+      <translation>Poluprečnik elipsoida duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1056"/>
       <source>Radius of the ellipsoid along the local X axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local X axis</translation>
+      <translation>Poluprečnik elipsoida duž lokalne X ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1072"/>
@@ -3698,12 +3698,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1079"/>
       <source>Radius of the ellipsoid along the local Y axis</source>
-      <translation type="unfinished">Radius of the ellipsoid along the local Y axis</translation>
+      <translation>Poluprečnik elipsoida duž lokalne Y ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1131"/>
       <source>Rotation angle of the ellipsoid cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the ellipsoid cross-section around the local Z axis</translation>
+      <translation>Ugao okretanja poprečnog preseka elipsoida oko Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
@@ -3714,37 +3714,37 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Start angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">Start angle of the ellipsoid along the local Z axis</translation>
+      <translation>Početni ugao elipsoida duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1186"/>
       <source>End angle of the ellipsoid along the local Z axis</source>
-      <translation type="unfinished">End angle of the ellipsoid along the local Z axis</translation>
+      <translation>Krajnji ugao elipsoida duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1260"/>
       <source>Radius from the center of the torus to the center of the cross-section</source>
-      <translation type="unfinished">Radius from the center of the torus to the center of the cross-section</translation>
+      <translation>Poluprečnik od centra torusa do centra kružnog poprečnog preseka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1283"/>
       <source>Radius of the torus cross-section</source>
-      <translation type="unfinished">Radius of the torus cross-section</translation>
+      <translation>Poluprečnik kružnog poprečnog preseka torusa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
       <source>Rotation angle of the torus cross-section around the local Z axis</source>
-      <translation type="unfinished">Rotation angle of the torus cross-section around the local Z axis</translation>
+      <translation>Ugao okretanja kružnog poprečnog preseka torusa oko Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1358"/>
       <source>Start angle of the torus cross-section</source>
-      <translation type="unfinished">Start angle of the torus cross-section</translation>
+      <translation>Početni ugao kružnog poprečnog preseka torusa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1390"/>
       <source>End angle of the torus cross-section</source>
-      <translation type="unfinished">End angle of the torus cross-section</translation>
+      <translation>Krajnji ugao kružnog poprečnog preseka torusa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1460"/>
@@ -3755,7 +3755,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1467"/>
       <source>Number of sides of the polygon cross-section</source>
-      <translation type="unfinished">Number of sides of the polygon cross-section</translation>
+      <translation>Broj strana mnogougla koji predstavlja poprečni presek</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
@@ -3766,22 +3766,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
       <source>Circumradius of the polygon cross-section</source>
-      <translation type="unfinished">Circumradius of the polygon cross-section</translation>
+      <translation>Poluprečnik opisane kružnice mnogougla koji predstavlja poprečni presek</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
       <source>Height of the prism along the local Z axis</source>
-      <translation type="unfinished">Height of the prism along the local Z axis</translation>
+      <translation>Visina prizme duž lokalne Z ose</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1539"/>
       <source>Skew angle of the prism in the first direction</source>
-      <translation type="unfinished">Skew angle of the prism in the first direction</translation>
+      <translation>Ugao zakošenja prizme u prvom pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1565"/>
       <source>Skew angle of the prism in the second direction</source>
-      <translation type="unfinished">Skew angle of the prism in the second direction</translation>
+      <translation>Ugao zakošenja prizme u drugom pravcu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1611"/>
@@ -3791,12 +3791,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1618"/>
       <source>Minimum X value of the base face</source>
-      <translation type="unfinished">Minimum X value of the base face</translation>
+      <translation>Minimalna X vrednost osnove</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1631"/>
       <source>Maximum X value of the base face</source>
-      <translation type="unfinished">Maximum X value of the base face</translation>
+      <translation>Maksimalna X vrednost osnove</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1647"/>
@@ -3806,12 +3806,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1654"/>
       <source>Minimum Y value (height start)</source>
-      <translation type="unfinished">Minimum Y value (height start)</translation>
+      <translation>Minimalna Y vrednost (početna visina)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1667"/>
       <source>Maximum Y value (height end)</source>
-      <translation type="unfinished">Maximum Y value (height end)</translation>
+      <translation>Maksimalna Y vrednost (krajnja visina)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1683"/>
@@ -3821,12 +3821,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1690"/>
       <source>Minimum Z value of the base face</source>
-      <translation type="unfinished">Minimum Z value of the base face</translation>
+      <translation>Minimalna Z vrednost osnove</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1703"/>
       <source>Maximum Z value of the base face</source>
-      <translation type="unfinished">Maximum Z value of the base face</translation>
+      <translation>Maksimalna Z vrednost osnove</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1719"/>
@@ -3836,12 +3836,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1726"/>
       <source>Minimum X value of the top face</source>
-      <translation type="unfinished">Minimum X value of the top face</translation>
+      <translation>Minimalna X vrednost gornje strane</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1742"/>
       <source>Maximum X value of the top face</source>
-      <translation type="unfinished">Maximum X value of the top face</translation>
+      <translation>Maksimalna X vrednost gornje strane</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1758"/>
@@ -3851,12 +3851,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
       <source>Minimum Z value of the top face</source>
-      <translation type="unfinished">Minimum Z value of the top face</translation>
+      <translation>Minimalna Z vrednost gornje strane</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1781"/>
       <source>Maximum Z value of the top face</source>
-      <translation type="unfinished">Maximum Z value of the top face</translation>
+      <translation>Maksimalna Z vrednost gornje strane</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1848"/>
@@ -3866,22 +3866,22 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1855"/>
       <source>Distance between consecutive turns of the helix</source>
-      <translation type="unfinished">Distance between consecutive turns of the helix</translation>
+      <translation>Dužina za koju se zavojnica pomeri aksijalno u pravcu ose kada se obrne za jedan puni krug</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1878"/>
       <source>Total height of the helix</source>
-      <translation type="unfinished">Total height of the helix</translation>
+      <translation>Ukupna visina zavojnice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1901"/>
       <source>Radius of the helix</source>
-      <translation type="unfinished">Radius of the helix</translation>
+      <translation>Poluprečnik zavojnice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1924"/>
       <source>Taper angle of the helix</source>
-      <translation type="unfinished">Taper angle of the helix</translation>
+      <translation>Ugao suženja zavojnice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
@@ -3891,17 +3891,17 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1944"/>
       <source>Handedness of the helix: right-handed or left-handed</source>
-      <translation type="unfinished">Handedness of the helix: right-handed or left-handed</translation>
+      <translation>Smer namotavanja zavojnice: levi ili desni</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2012"/>
       <source>Growth</source>
-      <translation>Rast</translation>
+      <translation>Faktor rasta</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2019"/>
       <source>Radial growth per rotation of the spiral</source>
-      <translation type="unfinished">Radial growth per rotation of the spiral</translation>
+      <translation>Faktor rasta za puni ugao rotacije</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
@@ -3911,12 +3911,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2042"/>
       <source>Total number of rotations of the spiral</source>
-      <translation type="unfinished">Total number of rotations of the spiral</translation>
+      <translation>Ukupan broj obrta spirale</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2065"/>
       <source>Starting radius of the spiral</source>
-      <translation type="unfinished">Starting radius of the spiral</translation>
+      <translation>Početni poluprečnik spirale</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2124"/>
@@ -3932,7 +3932,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2147"/>
       <source>Start angle of the circular arc</source>
-      <translation type="unfinished">Start angle of the circular arc</translation>
+      <translation>Početni ugao kružnog luka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2160"/>
@@ -3943,12 +3943,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2167"/>
       <source>End angle of the circular arc</source>
-      <translation type="unfinished">End angle of the circular arc</translation>
+      <translation>Krajnji ugao kružnog luka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2200"/>
       <source>Define the circle by selecting 3 points in the 3D view</source>
-      <translation type="unfinished">Define the circle by selecting 3 points in the 3D view</translation>
+      <translation>Zadaj kružnicu izborom 3 tačke u 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2203"/>
@@ -3983,7 +3983,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2304"/>
       <source>End angle of the elliptical arc</source>
-      <translation type="unfinished">End angle of the elliptical arc</translation>
+      <translation>Krajnji ugao eliptičnog luka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2341"/>
@@ -4016,42 +4016,42 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2458"/>
       <source>X coordinate of the start point</source>
-      <translation type="unfinished">X coordinate of the start point</translation>
+      <translation>X koordinata početne tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2471"/>
       <source>X coordinate of the end point</source>
-      <translation type="unfinished">X coordinate of the end point</translation>
+      <translation>X koordinata kranje tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2497"/>
       <source>Y coordinate of the start point</source>
-      <translation type="unfinished">Y coordinate of the start point</translation>
+      <translation>Y koordinata početne tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2510"/>
       <source>Y coordinate of the end point</source>
-      <translation type="unfinished">Y coordinate of the end point</translation>
+      <translation>Y koordinata kranje tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2536"/>
       <source>Z coordinate of the start point</source>
-      <translation type="unfinished">Z coordinate of the start point</translation>
+      <translation>Z koordinata početne tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2549"/>
       <source>Z coordinate of the end point</source>
-      <translation type="unfinished">Z coordinate of the end point</translation>
+      <translation>Z koordinata kranje tačke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2623"/>
       <source>Number of sides of the regular polygon</source>
-      <translation type="unfinished">Number of sides of the regular polygon</translation>
+      <translation>Broj strana pravilnog mnogougla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
       <source>Circumradius of the regular polygon</source>
-      <translation type="unfinished">Circumradius of the regular polygon</translation>
+      <translation>Poluprečnik opisane kružnice pravilnog mnogougla</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="509"/>
@@ -4111,7 +4111,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2654"/>
       <source>C&amp;reate</source>
-      <translation type="unfinished">C&amp;reate</translation>
+      <translation>Napravi</translation>
     </message>
   </context>
   <context>
@@ -4340,7 +4340,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.cpp" line="538"/>
       <source>Selecting… (Line or Arc)</source>
-      <translation type="unfinished">Selecting… (Line or Arc)</translation>
+      <translation>Izbor... (Duž ili kružnica)</translation>
     </message>
   </context>
   <context>
@@ -4426,7 +4426,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="145"/>
       <source>Currently not implemented: this option does not yet modify automatically generated Part feature names</source>
-      <translation type="unfinished">Currently not implemented: this option does not yet modify automatically generated Part feature names</translation>
+      <translation>Trenutno nije implementirano: ova opcija još uvek ne menja automatski generisana imena tipskih oblika dela</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
@@ -4436,7 +4436,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
       <source>Specifies which profile geometry types are accepted by the Part Design Hole feature</source>
-      <translation type="unfinished">Specifies which profile geometry types are accepted by the Part Design Hole feature</translation>
+      <translation>Određuje koja vrsta geometrije profila će biti prihvaćena tipskim oblikom Rupa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="181"/>
@@ -4446,7 +4446,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="194"/>
       <source>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</source>
-      <translation type="unfinished">Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</translation>
+      <translation>Određuje vrstu geometrijskih elemenata (tačke, kružnice ili lukovi) skice koju će tipski oblik Rupa koristiti kao centre rupa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="207"/>
@@ -4471,12 +4471,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="258"/>
       <source>Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</source>
-      <translation type="unfinished">Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</translation>
+      <translation>Prilikom pravljenja nove skice uvek u okruženju Konstruisanje delova otvori dijalog Pridruživanje, bez obzira na izbor ili držanje tastera Shift. Bez ovoga, dijalog se preskače samo kada je izabrana jedna stranica ili ravan.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="261"/>
       <source>Always open attachment dialog for new sketches</source>
-      <translation type="unfinished">Always open attachment dialog for new sketches</translation>
+      <translation>Uvek otvori dijalog Pridruživanje za nove skice</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
@@ -4486,7 +4486,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation type="unfinished">Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</translation>
+      <translation>Tokom uređivanja tipskih oblika prikaži u 3D pogledu potpuno proračunat model tj. konačni rezultat umesto samo izdvojenog tipskog oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
@@ -4496,7 +4496,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation type="unfinished">Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</translation>
+      <translation>Tokom uređivanja tipskih oblika prikaži poluprovidni pregled rezultata, omogućavajući vizuelizaciju promena pre njihove primene</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
@@ -4506,7 +4506,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
-      <translation type="unfinished">Visually highlights the source sketch or geometry used to generate the feature currently being edited</translation>
+      <translation>Vizuelno istakni izvornu skicu ili geometriju koja je korišćena za pravljenje tipskog oblika koji se trenutno uređuje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="361"/>
@@ -4521,12 +4521,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
-      <translation>Prilikom uređivanja prikaži neaktivni vučni triedar</translation>
+      <translation>Prilikom uređivanja prikaži interaktivne vučne komande</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
-      <translation type="unfinished">Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</translation>
+      <translation>Omogući u 3D pogledu prikaz vučnih komandi koje služe za interaktivnu izmenu dimenzija i parametara tipskih oblika koji se uređuju</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="408"/>
@@ -4536,57 +4536,57 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
-      <translation type="unfinished">Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</translation>
+      <translation>Spreči ponovni proračun modela tokom manipulacije pomoću vučnih komandi. Oblik se proračuna tek nakon otpuštanja dugmeta miša.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
-      <translation type="unfinished">Enable coarse snapping while dragging</translation>
+      <translation>Omogući veće korake tokom vučenja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
       <source>Enables larger snapping increments while  manipulating draggers</source>
-      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+      <translation>Omogući veće korake promene vrednosti prilikom rada sa vučnim komandama</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
-      <translation type="unfinished">Fine snap modifier</translation>
+      <translation>Taster za omogućavanje finih koraka</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
       <source>Defines the modifier key used for fine snapping while dragging</source>
-      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+      <translation>Taster za omogućavanje finih koraka promene vrednosti tokom vučenja komandi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
-      <translation type="unfinished">Default coarse drag behavior</translation>
+      <translation>Unapred podešeno grubo vučenje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
-      <translation type="unfinished">Determines whether the drag is coarse or fine without holding the modifier key</translation>
+      <translation>Odredi da li je unapred podešen grub ili fini korak promene vrednosti tokom vučenja komandi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
-      <translation type="unfinished">Coarse movement multiplier</translation>
+      <translation>Množilac grubog vučenja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="515"/>
       <source>Multiplies the base movement increment when coarse snapping is active</source>
-      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+      <translation>Množilac koraka promene vrednosti kada je aktivno grubo vučenje komandi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
-      <translation type="unfinished">Coarse rotation step (degrees)</translation>
+      <translation>Ugao grubog vučnog okretanja (stepena) </translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="548"/>
       <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
-      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
+      <translation>Ugao koraka promene vrednosti kada je aktivno grubo okretanje vučnih komandi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4596,32 +4596,32 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="33"/>
       <source>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</source>
-      <translation type="unfinished">Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</translation>
+      <translation>Proveri ispravnost geometrije (BRep) nakon svake Bulove operacije radi otkrivanja grešaka. Napomena: Ovo može usporiti rad pri radu sa složenim modelima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="55"/>
       <source>Automatic refinement of Part Boolean results</source>
-      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+      <translation>Automatski poboljšaj rezultate Bulovih operacija</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Refines Part Boolean results by removing redundant edges and merging adjacent faces</source>
-      <translation type="unfinished">Refines Part Boolean results by removing redundant edges and merging adjacent faces</translation>
+      <translation>Poboljšava rezultate Bulovih operacija uklanjanjem suvišnih ivica i spajanjem susednih površi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="80"/>
       <source>Automatic refinement of Part Design features</source>
-      <translation type="unfinished">Automatic refinement of Part Design features</translation>
+      <translation>Automatski poboljšaj tipske oblike delova</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
       <source>Refines Part Design features after creation by removing unnecessary edges</source>
-      <translation type="unfinished">Refines Part Design features after creation by removing unnecessary edges</translation>
+      <translation>Poboljšava tipske oblike na delovima nastalim u okruženju Konstruisanje delova tako što uklanja nepotrebne ivice</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</source>
-      <translation type="unfinished">Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</translation>
+      <translation>Omogući novim telima sa se sastoje od više međusobno nepovezanih punih tela. Ako ova opcija nije označena, kontejner telo je strogo ograničeno na jedno jedinstveno, povezano puno telo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -4844,13 +4844,13 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../Location.ui" line="32"/>
       <source>Set the placement location coordinates</source>
-      <translation type="unfinished">Set the placement location coordinates</translation>
+      <translation>Zadaj koordinate položaja</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="40"/>
       <location filename="../../Location.ui" line="50"/>
       <source>X coordinate of the placement location</source>
-      <translation type="unfinished">X coordinate of the placement location</translation>
+      <translation>X koordinata položaja</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="43"/>
@@ -4862,7 +4862,7 @@ osvetljenja ili crna boja.</translation>
       <location filename="../../Location.ui" line="63"/>
       <location filename="../../Location.ui" line="73"/>
       <source>Y coordinate of the placement location</source>
-      <translation type="unfinished">Y coordinate of the placement location</translation>
+      <translation>Y koordinata položaja</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="66"/>
@@ -4874,7 +4874,7 @@ osvetljenja ili crna boja.</translation>
       <location filename="../../Location.ui" line="86"/>
       <location filename="../../Location.ui" line="96"/>
       <source>Z coordinate of the placement location</source>
-      <translation type="unfinished">Z coordinate of the placement location</translation>
+      <translation>Z koordinata položaja</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="89"/>
@@ -4890,7 +4890,7 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../Location.ui" line="145"/>
       <source>X-component of the rotation axis direction vector</source>
-      <translation type="unfinished">X-component of the rotation axis direction vector</translation>
+      <translation>X-komponenta ose rotacije vektora pravca</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="155"/>
@@ -4900,7 +4900,7 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../Location.ui" line="177"/>
       <source>Y-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Y-component of the rotation axis direction vector</translation>
+      <translation>Y-komponenta ose rotacije vektora pravca</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="187"/>
@@ -4910,7 +4910,7 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../Location.ui" line="209"/>
       <source>Z-component of the rotation axis direction vector</source>
-      <translation type="unfinished">Z-component of the rotation axis direction vector</translation>
+      <translation>Z-komponenta ose rotacije vektora pravca</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="219"/>
@@ -4927,18 +4927,18 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Location.ui" line="111"/>
       <source>Select a point in the 3D view to set the location automatically</source>
-      <translation type="unfinished">Select a point in the 3D view to set the location automatically</translation>
+      <translation>Da bi automatski zadao lokaciju izaberi tačku u 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="114"/>
       <source>Pick Position</source>
-      <translation type="unfinished">Pick Position</translation>
+      <translation>Izaberi Položaj</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="244"/>
       <location filename="../../Location.ui" line="254"/>
       <source>Rotation angle around the specified axis</source>
-      <translation type="unfinished">Rotation angle around the specified axis</translation>
+      <translation>Ugao rotacije oko navedene ose</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="247"/>
@@ -4961,7 +4961,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Premalo elemenata</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="189"/>
@@ -5329,12 +5329,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Premalo elemenata</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Neispravan izbor</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5433,7 +5433,7 @@ objekta koji se pridružuje</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation type="unfinished">Attachment Mode</translation>
+      <translation>Režim pridruživanja</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
@@ -5529,7 +5529,7 @@ objekta koji se pridružuje.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="444"/>
       <source>Attachment Offset (in its local coordinate system):</source>
-      <translation type="unfinished">Attachment Offset (in its local coordinate system):</translation>
+      <translation>Pomak pridruživanja (u lokalnim koordinatama):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="445"/>
@@ -5705,7 +5705,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
-      <translation type="unfinished">Run Check</translation>
+      <translation>Pokreni proveru</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
@@ -5876,12 +5876,12 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1564"/>
       <source>%1 select reference</source>
-      <translation type="unfinished">%1 select reference</translation>
+      <translation>%1 izaberi referencu</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1570"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 izaberi i potvrdi</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1731"/>
@@ -6209,13 +6209,13 @@ Da li želiš da nastaviš?</translation>
       <location filename="../../Command.cpp" line="1084"/>
       <location filename="../../Command.cpp" line="1154"/>
       <source>STEP with colors</source>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP sa bojama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1086"/>
       <location filename="../../Command.cpp" line="1156"/>
       <source>IGES with colors</source>
-      <translation type="unfinished">IGES with colors</translation>
+      <translation>IGES sa bojama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1205"/>
@@ -6225,12 +6225,12 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../Command.cpp" line="2553"/>
       <source>Select at most one object to array.</source>
-      <translation type="unfinished">Select at most one object to array.</translation>
+      <translation>Izaberi jedan objekat za umnožavanje.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Select one object from the active document.</source>
-      <translation type="unfinished">Select one object from the active document.</translation>
+      <translation>Izaberi jedan objekat iz aktivnog dokumenta.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2282"/>
@@ -7753,7 +7753,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="76"/>
       <source>Extent</source>
-      <translation>Opseg</translation>
+      <translation>Raspon</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="81"/>
@@ -7785,13 +7785,13 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
       <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Total Angle</source>
-      <translation type="unfinished">Total Angle</translation>
+      <translation>Ugaoni raspon</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <location filename="../../PatternParametersWidget.cpp" line="83"/>
       <source>Angular Spacing</source>
-      <translation type="unfinished">Angular Spacing</translation>
+      <translation>Ugaoni razmak</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="371"/>
@@ -7820,7 +7820,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="162"/>
       <source>unknown object</source>
-      <translation type="unfinished">unknown object</translation>
+      <translation>nepoznati objekat</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="306"/>
@@ -7834,7 +7834,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
       <location filename="../../../Init.py" line="42"/>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP sa bojama</translation>
     </message>
   </context>
   <context>
@@ -7847,7 +7847,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.ui" line="27"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Izaberi objekat</translation>
     </message>
   </context>
   <context>
@@ -7855,7 +7855,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="29"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Kružno umnožavanje</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="35"/>
@@ -7875,7 +7875,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
       <source>Concentric circles</source>
-      <translation type="unfinished">Concentric circles</translation>
+      <translation>Koncentrične kružnice</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="95"/>
@@ -7885,17 +7885,17 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
       <source>Start at selected shape</source>
-      <translation type="unfinished">Start at selected shape</translation>
+      <translation>Počni od izabranog oblika</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
       <source>Binormal axis</source>
-      <translation type="unfinished">Binormal axis</translation>
+      <translation>Binormala</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
       <source>Flip binormal direction</source>
-      <translation type="unfinished">Flip binormal direction</translation>
+      <translation>Obrni smer binormale</translation>
     </message>
   </context>
   <context>
@@ -7909,7 +7909,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
       <location filename="../../PatternPathParametersWidget.ui" line="7"/>
       <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
       <source>Select Path</source>
-      <translation type="unfinished">Select Path</translation>
+      <translation>Izaberi putanju</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="8"/>
@@ -7929,12 +7929,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="14"/>
       <source>Start offset</source>
-      <translation type="unfinished">Start offset</translation>
+      <translation>Početni odmak</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="16"/>
       <source>End offset</source>
-      <translation type="unfinished">End offset</translation>
+      <translation>Krajnji odmak</translation>
     </message>
     <message>
       <location filename="../../PatternPathParametersWidget.ui" line="18"/>
@@ -7964,7 +7964,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
       <source>(+%1)</source>
-      <translation type="unfinished">(+%1)</translation>
+      <translation>(+%1)</translation>
     </message>
   </context>
   <context>
@@ -7972,13 +7972,13 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="19"/>
       <source>Point object</source>
-      <translation type="unfinished">Point object</translation>
+      <translation>Objekat tačka</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
-      <translation type="unfinished">Select Point Object</translation>
+      <translation>Izaberi objekat Tačku</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="36"/>
@@ -8001,12 +8001,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Kružno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Creates a concentric circular array of linked objects</source>
-      <translation type="unfinished">Creates a concentric circular array of linked objects</translation>
+      <translation>Napravi umnožavanje po koncentričnim kružnicama spona nekog objekta</translation>
     </message>
   </context>
   <context>
@@ -8024,7 +8024,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
       <source>Creates an array of linked objects along a path</source>
-      <translation type="unfinished">Creates an array of linked objects along a path</translation>
+      <translation>Napravi umnožavanje po putanji spona nekog objekta</translation>
     </message>
   </context>
   <context>
@@ -8042,7 +8042,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
       <source>Creates an array of linked objects at each point of a sketch or shape</source>
-      <translation type="unfinished">Creates an array of linked objects at each point of a sketch or shape</translation>
+      <translation>Napravi umnožavanje spona nekog objekta po tačkama skice ili oblika</translation>
     </message>
   </context>
   <context>
@@ -8055,12 +8055,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Pravougaono umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
       <source>Creates a linear array of linked objects</source>
-      <translation type="unfinished">Creates a linear array of linked objects</translation>
+      <translation>Napravi pravougaono umnožavanje spona nekog objekta</translation>
     </message>
   </context>
   <context>
@@ -8073,12 +8073,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Polarno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
       <source>Creates a polar array of linked objects</source>
-      <translation type="unfinished">Creates a polar array of linked objects</translation>
+      <translation>Napravi polarno umnožavanje spona nekog objekta</translation>
     </message>
   </context>
   <context>
@@ -8125,7 +8125,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Kružno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
@@ -8140,12 +8140,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Polarno umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Pravougaono umnožavanje spona</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
@@ -8155,7 +8155,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
       <source>Select Object</source>
-      <translation type="unfinished">Select Object</translation>
+      <translation>Izaberi objekat</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
@@ -8167,21 +8167,21 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
       <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
       <source>Object X-axis</source>
-      <translation type="unfinished">Object X-axis</translation>
+      <translation>X osa objekta</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
       <source>Object Y-axis</source>
-      <translation type="unfinished">Object Y-axis</translation>
+      <translation>Y osa objekta</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
       <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object Z-axis</source>
-      <translation type="unfinished">Object Z-axis</translation>
+      <translation>Z osa objekta</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
@@ -8191,17 +8191,17 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
       <source>Select connected path edges</source>
-      <translation type="unfinished">Select connected path edges</translation>
+      <translation>Izaberi ivice spojene u putanju</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
       <source>Select a sketch or shape containing points</source>
-      <translation type="unfinished">Select a sketch or shape containing points</translation>
+      <translation>Izaberi skicu ili oblik koji sadrži tačke</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
       <source>Select a rotation axis</source>
-      <translation type="unfinished">Select a rotation axis</translation>
+      <translation>Izaberi osu rotacije</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>

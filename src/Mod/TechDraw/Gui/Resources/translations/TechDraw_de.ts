@@ -9342,7 +9342,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Page</source>
       <translation>Zeichnungsblatt</translation>
     </message>
@@ -9350,7 +9350,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Template</source>
       <translation>Vorlage</translation>
     </message>
@@ -9358,7 +9358,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>Ansicht</translation>
     </message>
@@ -9366,7 +9366,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>View</source>
       <translation>Ansicht</translation>
     </message>
@@ -9374,7 +9374,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>Schnitt</translation>
     </message>
@@ -9382,7 +9382,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Section</source>
       <translation>Schnitt</translation>
     </message>
@@ -9390,7 +9390,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Detail</source>
       <translation>Detail</translation>
     </message>
@@ -9398,7 +9398,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>ActiveView</source>
       <translation>Aktive Ansicht</translation>
     </message>
@@ -9406,7 +9406,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Annotation</source>
       <translation>Beschriftung</translation>
     </message>
@@ -9414,7 +9414,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Image</source>
       <translation>Grafik</translation>
     </message>
@@ -9422,7 +9422,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Symbol</source>
       <translation>Zeichnungselement</translation>
     </message>
@@ -9430,7 +9430,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Draft</source>
       <translation>Draft</translation>
     </message>
@@ -9438,7 +9438,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>LeaderLine</source>
       <translation>Hinweislinie</translation>
     </message>
@@ -9446,7 +9446,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
       <translation>Hinweisfeld</translation>
     </message>
@@ -9454,7 +9454,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Dimension</source>
       <translation>Maß</translation>
     </message>
@@ -9462,7 +9462,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Extent</source>
       <translation>Ausdehnung</translation>
     </message>
@@ -9470,7 +9470,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>Hatch</source>
       <translation>Schraffur</translation>
     </message>
@@ -9478,7 +9478,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="76"/>
+      <location filename="../../../App/DrawView.cpp" line="77"/>
       <source>GeomHatch</source>
       <translation>Geometrische Schraffur</translation>
     </message>
@@ -9656,14 +9656,8 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="49"/>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
       <source>Offset Vertex</source>
       <translation>Knoten versetzen</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>Erstellt einen Versatz von einem ausgewählten Punkt</translation>
     </message>
   </context>
   <context>
@@ -9962,19 +9956,6 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_PositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>Schnittansicht ausrichten</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Richtet die ausgewählte Schnittansicht orthogonal zu ihrer Quellansicht aus oder die ausgewählte Kante in der Schnittansicht auf den ausgewählten Knotenpunkt in der Basisansicht</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="228"/>
@@ -10092,17 +10073,17 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="101"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>None</source>
       <translation>Kein</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
       <translation>Zick­zack</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
       <translation>Einfach</translation>
     </message>
@@ -10166,7 +10147,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -10226,19 +10207,6 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="77"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Erstellt ein Längenmaß in einer axonometrischer Ansicht und verwendet ausgewählte Kanten oder Knotenpaare zum Festlegen von Richtung und Messung</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_ExtensionVertexAtIntersection</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Hilfsschnittpunkte</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>Fügt Hilfspunkte an den Kreuzungspunkten ausgewählter Kanten hinzu</translation>
     </message>
   </context>
   <context>
@@ -10390,6 +10358,45 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Quadrant Vertices</source>
       <translation>Quadrantengrenzpunkte</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>Schnittansicht ausrichten</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>Richtet die ausgewählte Schnittansicht orthogonal zu ihrer Quellansicht aus oder die ausgewählte Kante in der Schnittansicht auf den ausgewählten Knotenpunkt in der Basisansicht</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Hilfsschnittpunkte</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>Fügt Hilfspunkte an den Kreuzungspunkten ausgewählter Kanten hinzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Versetzter Hilfspunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>Erstellt einen Hilfspunkt mit Abstand von einem ausgewählten Knoten aus</translation>
     </message>
   </context>
   <context>

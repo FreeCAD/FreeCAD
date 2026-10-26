@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="206"/>
       <source>Clear text color</source>
-      <translation type="unfinished">Clear text color</translation>
+      <translation>Обриши боју текста</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
@@ -379,7 +379,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="283"/>
       <source>Clear background color</source>
-      <translation type="unfinished">Clear background color</translation>
+      <translation>Обриши боју позадине</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
@@ -741,8 +741,8 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.cpp" line="47"/>
       <source>Allows referring to a cell by an alias name, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Allows referring to a cell by an alias name, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Омогућава упућивање на ћелију помоћу алтернативног имена (алијаса), на пример
+Spreadsheet.moje_alternativno_ime уместо Spreadsheet.Б1</translation>
     </message>
   </context>
   <context>
@@ -985,17 +985,17 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Ћелије</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Максимални број колона</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Максимални број редова</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -1005,7 +1005,7 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Displays the cell alias using the custom format.</source>
-      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+      <translation>Приказује алтернативно име ћелије користећи сопствени формат.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="194"/>
@@ -1015,7 +1015,7 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="207"/>
       <source>Sets the table view zoom level from 60% to 160%.</source>
-      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+      <translation>Подешавање нивоа увећања приказа табеле у распону од 60% до 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="210"/>
@@ -1063,7 +1063,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote character</source>
-      <translation type="unfinished">Quote character</translation>
+      <translation>Знак за наводник</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
@@ -1073,7 +1073,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>Излазна секвенца</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
@@ -1287,62 +1287,62 @@ Defaults to: %V = %A
     <message>
       <location filename="../../PropertiesDialog.cpp" line="342"/>
       <source>Alias conflicts with a reserved unit token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved unit token used by expressions</translation>
+      <translation>Алтернативно име је у сукобу са резервисаним токеном мерне јединице који користе изрази</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="343"/>
       <source>Invalid: reserved unit token</source>
-      <translation type="unfinished">Invalid: reserved unit token</translation>
+      <translation>Неважеће: резервисани токен мерне јединице</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="346"/>
       <source>Alias conflicts with a reserved constant token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved constant token used by expressions</translation>
+      <translation>Алтернативно име је у сукобу са резервисаним токеном констане који користе изрази</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="347"/>
       <source>Invalid: reserved constant token</source>
-      <translation type="unfinished">Invalid: reserved constant token</translation>
+      <translation>Неважеће: резервисани токен константе</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="350"/>
       <source>Alias already defined</source>
-      <translation type="unfinished">Alias already defined</translation>
+      <translation>Такво алтернативно име је већ задато</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="351"/>
       <source>Invalid: alias already exists</source>
-      <translation type="unfinished">Invalid: alias already exists</translation>
+      <translation>Неважеће: такво алтернативно име већ постоји</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="354"/>
       <source>Alias cannot look like a cell address such as A1 or C12</source>
-      <translation type="unfinished">Alias cannot look like a cell address such as A1 or C12</translation>
+      <translation>Алтернативно име не може да изгледа као адреса ћелије, на пример А1 или Ц12</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="355"/>
       <source>Invalid: alias matches cell address pattern</source>
-      <translation type="unfinished">Invalid: alias matches cell address pattern</translation>
+      <translation>Неважеће: алтернативно име се поклапа са шаблоном назива адресе ћелије</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="358"/>
       <source>Alias conflicts with an existing spreadsheet property name</source>
-      <translation type="unfinished">Alias conflicts with an existing spreadsheet property name</translation>
+      <translation>Алтернативно име је у сукобу са постојећим именом својства табеле</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="359"/>
       <source>Invalid: conflicts with existing property name</source>
-      <translation type="unfinished">Invalid: conflicts with existing property name</translation>
+      <translation>Неважеће: сукоб са постојећим именом својства табеле</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="362"/>
       <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
-      <translation type="unfinished">Alias must start with a letter and contain only letters, digits, and '_'</translation>
+      <translation>Алтернативно име мора да почиње словом и да садржи само слова, бројке и знак '_'</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="363"/>
       <source>Invalid: bad alias syntax</source>
-      <translation type="unfinished">Invalid: bad alias syntax</translation>
+      <translation>Неважеће: погрешна синтакса алтернативног имена</translation>
     </message>
   </context>
 </TS>

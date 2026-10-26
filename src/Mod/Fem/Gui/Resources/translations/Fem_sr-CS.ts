@@ -457,7 +457,7 @@
     <message>
       <location filename="../../Command.cpp" line="2860"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kvadar</translation>
     </message>
   </context>
   <context>
@@ -3290,7 +3290,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshShape.ui" line="145"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kvadar</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="150"/>
@@ -4861,7 +4861,7 @@ Za moguće promenljive, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Kvadar</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -6661,16 +6661,6 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../../femguiutils/extract_link_view.py" line="555"/>
       <source>Add data from</source>
       <translation type="unfinished">Add data from</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation type="unfinished">Different visualizations to show post processing data in</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
@@ -8831,9 +8821,6 @@ Leave blank to use default Python executable</translation>
       <source>Shape-Based Refinement</source>
       <translation type="unfinished">Shape-Based Refinement</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -9002,6 +8989,19 @@ Leave blank to use default Python executable</translation>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation type="unfinished">Slave Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation type="unfinished">Data Visualizations</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation type="unfinished">Different visualizations to show post processing data in</translation>
     </message>
   </context>
   <context>

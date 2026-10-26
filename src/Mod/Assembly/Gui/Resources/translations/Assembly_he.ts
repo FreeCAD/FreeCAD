@@ -1635,7 +1635,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1646,6 +1646,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>לוכד את מצב ההרכבה הנוכחי (מיקומים ונראות). לחיצה כפולה על אובייקט Snapshot משחזרת את המכלול למצב זה.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

@@ -22,7 +22,8 @@
       <location filename="../../../App/FeatureHelix.cpp" line="108"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation>O modo de entrada da hélice especifica quais propriedades são selecionadas pelo usuário.</translation>
+      <translation>O modo de entrada da hélice especifica quais propriedades são definidas pelo usuário.
+As propriedades dependentes são então calculadas.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="120"/>
@@ -52,8 +53,8 @@ Valores positivos fazem o raio crescer, negativos fazem-no diminuir.</translatio
       <location filename="../../../App/FeatureHelix.cpp" line="158"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation>O crescimento do raio de hélice por volta. U
-Valores não zero transformam a hélice em uma espiral cônica.</translation>
+      <translation>O crescimento do raio da hélice por volta.
+Valores diferentes de zero transformam a hélice em uma espiral cônica.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="169"/>
@@ -284,7 +285,7 @@ para que a auto-interseção seja evitada.</translation>
     <message>
       <location filename="../../Command.cpp" line="2161"/>
       <source>Draft</source>
-      <translation>Projeto</translation>
+      <translation>Inclinação</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2162"/>
@@ -785,12 +786,12 @@ para que a auto-interseção seja evitada.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Additive Cylinder</source>
-      <translation>Cilindro Aditivo</translation>
+      <translation>Cilindro aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="233"/>
       <source>Additive Sphere</source>
-      <translation>Esfera Aditiva</translation>
+      <translation>Esfera aditiva</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
@@ -800,22 +801,22 @@ para que a auto-interseção seja evitada.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="248"/>
       <source>Additive Ellipsoid</source>
-      <translation>Elipsoide Aditivo</translation>
+      <translation>Elipsoide aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="254"/>
       <source>Additive Torus</source>
-      <translation>Toro Aditivo</translation>
+      <translation>Toro aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="260"/>
       <source>Additive Prism</source>
-      <translation>Prisma Aditivo</translation>
+      <translation>Prisma aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="266"/>
       <source>Additive Wedge</source>
-      <translation>Cunha Aditiva</translation>
+      <translation>Cunha aditiva</translation>
     </message>
   </context>
   <context>
@@ -1292,7 +1293,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch</source>
-      <translation>Passo do dente</translation>
+      <translation>Passo</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1665,7 +1666,8 @@ Se for zero, é igual ao Raio2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="346"/>
       <source>Empty chamfer created!
 </source>
-      <translation>Chaframento vazio criado!</translation>
+      <translation>Chanfro vazio criado!
+</translation>
     </message>
   </context>
   <context>
@@ -1716,12 +1718,12 @@ Se for zero, é igual ao Raio2</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
       <translation>- selecione um item para destacá-lo
-- clique duas vezes em um item para ver os rascunhos</translation>
+- clique duas vezes em um item para ver as inclinações</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="46"/>
       <source>Draft angle</source>
-      <translation>Ângulo de projeto</translation>
+      <translation>Ângulo de inclinação</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="79"/>
@@ -1742,7 +1744,8 @@ Se for zero, é igual ao Raio2</translation>
       <location filename="../../TaskDraftParameters.cpp" line="304"/>
       <source>Empty draft created!
 </source>
-      <translation>Inclinação vazia criada!</translation>
+      <translation>Inclinação vazia criada!
+</translation>
     </message>
   </context>
   <context>
@@ -1826,7 +1829,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="773"/>
       <source>Sketch normal</source>
-      <translation>Nornal do sketch</translation>
+      <translation>Normal do esboço</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="776"/>
@@ -2090,7 +2093,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch</source>
-      <translation>Passo do dente</translation>
+      <translation>Passo</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
@@ -2510,7 +2513,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="44"/>
       <source>Reverses pad direction</source>
-      <translation>Inverte a direção do pad</translation>
+      <translation>Inverte a direção do preenchimento</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2567,13 +2570,13 @@ Se for zero, é igual ao Raio2</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="274"/>
       <location filename="../../TaskPadPocketParameters.ui" line="503"/>
       <source>Select all faces</source>
-      <translation>Selecionar faces</translation>
+      <translation>Selecionar todas as faces</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="299"/>
       <location filename="../../TaskPadPocketParameters.ui" line="528"/>
       <source>Select</source>
-      <translation>Selecione</translation>
+      <translation>Selecionar</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="337"/>
@@ -2602,7 +2605,7 @@ do modelo como referência</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="628"/>
       <source>Sketch normal</source>
-      <translation>Nornal do sketch</translation>
+      <translation>Normal do esboço</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="638"/>
@@ -2613,8 +2616,8 @@ do modelo como referência</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="651"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Use um vetor personalizado para dar direção ao pad; caso contrário, será usada
-a direção normal do sketch como vetor</translation>
+      <translation>Usar vetor personalizado para a direção do preenchimento; caso contrário,
+o vetor normal do plano do esboço será usado</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="603"/>
@@ -3387,7 +3390,8 @@ medido ao longo da direção especificada</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="293"/>
       <source>Empty thickness created!
 </source>
-      <translation>Espessura vazia criada!</translation>
+      <translation>Espessura vazia criada!
+</translation>
     </message>
   </context>
   <context>
@@ -3738,31 +3742,35 @@ medido ao longo da direção especificada</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="148"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation>%1 Já pertence a um corpo e não pode ser usado como recurso base para outro corpo.</translation>
+      <translation>%1 já pertence a um corpo e não pode ser usado como recurso base para outro corpo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="185"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>A forma selecionada consiste em vários sólidos. Isso pode levar a resultados inesperados.</translation>
+      <translation>A forma selecionada consiste em vários sólidos.
+Isso pode levar a resultados inesperados.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="191"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>A forma selecionada consiste em vários cascos. Isso pode levar a resultados inesperados.</translation>
+      <translation>A forma selecionada consiste em várias cascas.
+Isso pode levar a resultados inesperados.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="197"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>A forma selecionada consiste apenas num casco. Isso pode levar a resultados inesperados.</translation>
+      <translation>A forma selecionada consiste apenas em uma casca.
+Isso pode levar a resultados inesperados.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="203"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>A forma selecionada consiste em vários sólidos ou cascos. Isso pode levar a resultados inesperados.</translation>
+      <translation>A forma selecionada consiste em vários sólidos ou cascas.
+Isso pode levar a resultados inesperados.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="210"/>
@@ -4000,7 +4008,8 @@ Para documentos antigos com objetos do Part Design sem um corpo, use a função 
       <location filename="../../ViewProviderDressUp.cpp" line="101"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation>%1 Não possui um recurso base.\nEste recurso está corrompido e não pode ser editado.</translation>
+      <translation>%1 não possui um recurso base.
+Este recurso está corrompido e não pode ser editado.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
@@ -4667,10 +4676,10 @@ conta para definir a profundidade dos furos cegos</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation>Angulação do furo
+      <translation>Ângulo de conicidade do furo
 90 graus: furo reto
-abaixo de 90: raio menor do furo na parte inferior
-acima de 90: raio maior do furo na parte inferior</translation>
+abaixo de 90: raio do furo menor no fundo
+acima de 90: raio do furo maior no fundo</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="702"/>
@@ -5031,7 +5040,7 @@ acima de 90: raio maior do furo na parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="313"/>
       <source>Size2 must be greater than zero</source>
-      <translation>A medida deve ser maior que zero</translation>
+      <translation>Size2 deve ser maior que zero</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="320"/>
@@ -5059,9 +5068,10 @@ acima de 90: raio maior do furo na parte inferior</translation>
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation>O objeto requerido não pode ser criado. A razão pode ser:
-- O corpo ativo não contém nenhuma forma de base, por tanto não há material a remover;
-- O esboço selecionado não pertence ao corpo ativo.</translation>
+      <translation>O recurso solicitado não pode ser criado. O motivo pode ser:
+  - o corpo ativo não contém uma forma base, então não há
+  material a ser removido;
+  - o esboço selecionado não pertence ao corpo ativo.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="451"/>
@@ -5108,7 +5118,8 @@ acima de 90: raio maior do furo na parte inferior</translation>
       <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation>A face não pôde ser criada a partir do esboço. Entidades com interseção não são permitidas no esboço.</translation>
+      <translation>Não foi possível criar a face a partir do esboço.
+Entidades do esboço que se cruzam não são permitidas em um esboço.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="236"/>
@@ -5258,8 +5269,8 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <location filename="../../../App/FeatureHole.cpp" line="2157"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation>Não foi possível criar a face do esboço.
-Interseção de entidades de esboços ou múltiplas faces,  não são permitidas para fazer um rebaixo em uma face.</translation>
+      <translation>Não foi possível criar a face a partir do esboço.
+Entidades de esboço que se interceptam ou várias faces em um esboço não são permitidas para criar um rebaixo até uma face.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2330"/>
@@ -5301,7 +5312,8 @@ Interseção de entidades de esboços ou múltiplas faces,  não são permitidas
       <location filename="../../../App/FeatureExtrude.cpp" line="880"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation>A face não pôde ser criada a partir do esboço. Entidades com interseção não são permitidas no esboço.</translation>
+      <translation>Não foi possível criar a face a partir do esboço.
+Entidades do esboço que se cruzam ou várias faces em um esboço não são permitidas.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="187"/>
@@ -5475,27 +5487,27 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="761"/>
       <source>delta x of wedge too small</source>
-      <translation>Variação (x) da fatia é muito pequena</translation>
+      <translation>delta x da cunha é pequeno demais</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="767"/>
       <source>delta y of wedge too small</source>
-      <translation>Variação (y) da fatia é muito pequena</translation>
+      <translation>delta y da cunha é pequeno demais</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="773"/>
       <source>delta z of wedge too small</source>
-      <translation>Variação (z) da fatia é muito pequena</translation>
+      <translation>delta z da cunha é pequeno demais</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="779"/>
       <source>delta z2 of wedge is negative</source>
-      <translation>Variação z2 da fatia é negativa</translation>
+      <translation>delta z2 da cunha é negativo</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="785"/>
       <source>delta x2 of wedge is negative</source>
-      <translation>Variação x2 da fatia é negativa</translation>
+      <translation>delta x2 da cunha é negativo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="246"/>
@@ -5592,7 +5604,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../SprocketFeature.py" line="69"/>
       <source>Creates or edits the sprocket definition.</source>
-      <translation>Cria ou edita a definição de roda dentada</translation>
+      <translation>Cria ou edita a definição de roda dentada.</translation>
     </message>
   </context>
   <context>
@@ -5756,7 +5768,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1202"/>
       <source>Attachment</source>
-      <translation>Fixação</translation>
+      <translation>Anexação</translation>
     </message>
   </context>
   <context>

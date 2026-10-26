@@ -1634,7 +1634,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Rögzíti az összeállítás aktuális állapotát (elrendezések és láthatóság). A Pillanatkép objektumra dupla kattintással az összeállítás visszaállítható erre az állapotra.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

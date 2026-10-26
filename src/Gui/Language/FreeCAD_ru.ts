@@ -4077,15 +4077,15 @@ The value is the diameter of the sphere to fit on the screen.</source>
 Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
 Applies to touchpads and other devices that report
 pixel-precise scrolling. Ordinary wheel mice keep zooming.</source>
-      <translation type="unfinished">Two-finger scroll on a touchpad pans the view.
-Shift + scroll orbits, Ctrl + scroll (Cmd on macOS) zooms.
-Applies to touchpads and other devices that report
-pixel-precise scrolling. Ordinary wheel mice keep zooming.</translation>
+      <translation>Прокрутка двумя пальцами на тачпаде перемещает вид.
+Shift + прокрутка вращает вид.
+Ctrl + прокрутка (Cmd на macOS) изменяет масштаб.
+Работает для тачпадов и других устройств, передающих прокрутку с попиксельной точностью. Обычные мыши с колесиком продолжают масштабировать.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="745"/>
       <source>Touchpad scroll pans instead of zooming</source>
-      <translation type="unfinished">Touchpad scroll pans instead of zooming</translation>
+      <translation>Прокрутка сенсорной панели перемещает вместо масштабирования</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="786"/>
@@ -4221,8 +4221,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
       <source>Prevents view tilting when pinch-zooming.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Предотвращает наклонения при масштабировании двумя пальцами. Влияет только на стиль навигации жестами. Эта настройка не выключает наклонение мышью.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="723"/>
@@ -5674,72 +5673,72 @@ originally selected prior to opening this dialog</source>
       <translation>Список выбранных объектов</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>Только выделенные</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>Вписать в окно</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>Перейти к выделенному</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>Отметить для пересчета</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>Пометить этот объект для повторного вычисления</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>К консоли Python</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>Дублировать подформу</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>Выделить только этот объект</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>Снять выделение</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>Снять выделение с этого объекта</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Выделить и вписать этот объект в 3D-виде</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Выделить объект и показать его в дереве проекта</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>Показать этот объект и его подэлементы в консоли Python.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Создаёт автономную копию этой подформы в документе</translation>
     </message>
@@ -5838,7 +5837,7 @@ Save all changes?</source>
     <message>
       <location filename="../EditorView.cpp" line="698"/>
       <source>%1 / %2 (un)comment</source>
-      <translation type="unfinished">%1 / %2 (un)comment</translation>
+      <translation>%1 /%2 (рас)комментировать</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="702"/>
@@ -5853,7 +5852,7 @@ Save all changes?</source>
     <message>
       <location filename="../EditorView.cpp" line="719"/>
       <source>%1 next result</source>
-      <translation type="unfinished">%1 next result</translation>
+      <translation>%1 следующий</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="722"/>
@@ -14652,7 +14651,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>Весь объект</translation>
     </message>
@@ -14910,17 +14909,17 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../Command.cpp" line="1065"/>
       <source>EXPERIMENTAL: this command may change.</source>
-      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+      <translation>ЭКСПЕРИМЕНТАЛЬНАЯ: эта команда может измениться.</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1069"/>
       <source>Development preview</source>
-      <translation type="unfinished">Development preview</translation>
+      <translation>Разрабатываемая версия</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1070"/>
       <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
+      <translation>РАЗРАБАТЫВАЕМАЯ ВЕРСИЯ: эта команда может быть удалена или изменена.</translation>
     </message>
   </context>
   <context>
@@ -14954,32 +14953,32 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../NumericLocale.cpp" line="86"/>
       <source>Incomplete number</source>
-      <translation type="unfinished">Incomplete number</translation>
+      <translation>Незавершенное значение</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="88"/>
       <source>Malformed grouping separator placement</source>
-      <translation type="unfinished">Malformed grouping separator placement</translation>
+      <translation>Неправильное размещение разделителя группировки</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="90"/>
       <source>Invalid number</source>
-      <translation type="unfinished">Invalid number</translation>
+      <translation>Недопустимое число</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="92"/>
       <source>Invalid expression</source>
-      <translation type="unfinished">Invalid expression</translation>
+      <translation>Недопустимое выражение</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="94"/>
       <source>Expression could not be evaluated</source>
-      <translation type="unfinished">Expression could not be evaluated</translation>
+      <translation>Выражение не может быть высчитано</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="96"/>
       <source>Incompatible unit</source>
-      <translation type="unfinished">Incompatible unit</translation>
+      <translation>Недопустимая единица измерения</translation>
     </message>
     <message>
       <location filename="../NumericLocale.cpp" line="98"/>

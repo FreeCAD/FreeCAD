@@ -2725,7 +2725,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>選擇</translation>
     </message>
@@ -2852,48 +2852,48 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>造型</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>選取中…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation>建立擠出失敗。
 沒有可擠出的形狀。</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>建立擠出失敗。
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>建立拉伸失敗。
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>未發現物件：%1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>未選取要擠出的形狀。</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2902,12 +2902,12 @@ No shape could be extruded.</source>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>未知錯誤</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2915,17 +2915,17 @@ No shape could be extruded.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>方向模式是使用一個邊線，但沒有連結的邊線。</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>拉伸方向向量之長度為零。它必須不為零。</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>總拉伸長度為零(length1 == -length2)。它必須不為零。</translation>
     </message>
@@ -7938,7 +7938,7 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation>選取點物件</translation>
     </message>

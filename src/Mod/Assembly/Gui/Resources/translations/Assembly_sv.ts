@@ -1634,7 +1634,7 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Registrerar sammanställningens aktuella tillstånd (placeringar och synlighet). Om du dubbelklickar på objektet Ögonblicksbild återställs sammanställningen till detta tillstånd.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

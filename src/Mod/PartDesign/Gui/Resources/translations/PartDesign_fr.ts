@@ -5787,7 +5787,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../ViewProviderBody.cpp" line="220"/>
       <source>Active Body</source>
-      <translation>Corps actif</translation>
+      <translation>Activer le corps</translation>
     </message>
   </context>
   <context>

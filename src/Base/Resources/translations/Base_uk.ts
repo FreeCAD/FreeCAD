@@ -6,22 +6,22 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="94"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation>Стандарт (мм, кг, с, градус)</translation>
+      <translation>Стандартна (мм, кг, с, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="355"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation>МКС (м, кг, сек, градус)</translation>
+      <translation>МКС (м, кг, с, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="779"/>
       <source>US customary (in, lb)</source>
-      <translation>Умовні позначення США (дюйми, фунти)</translation>
+      <translation>Американська звичаєва (дюйми, фунти)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="839"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation>Імперська для цивільних інженерів (фути, фунти, милі/год)</translation>
+      <translation>Імперська для цивільного будівництва (фути, фунти, милі/год)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="77"/>
@@ -31,17 +31,17 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Будівництво Євро (см, м², м³)</translation>
+      <translation>Будівельна європейська (см, м², м³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Будівництво США (фути-дюйми, фути², фути³)</translation>
+      <translation>Будівельна США (фути-дюйми, кв. фути, куб. фути)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
+      <translation>Метрична для дрібних деталей і ЧПК (мм, мм/хв)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="627"/>
@@ -69,27 +69,27 @@
     <message>
       <location filename="../../Exception.cpp" line="325"/>
       <source>No write permission for the file or the file is read-only</source>
-      <translation type="unfinished">No write permission for the file or the file is read-only</translation>
+      <translation>Немає дозволу на запис у файл, або файл доступний лише для читання</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="326"/>
       <source>File format not supported</source>
-      <translation type="unfinished">File format not supported</translation>
+      <translation>Формат файлу не підтримується</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="327"/>
       <source>Error reading from file</source>
-      <translation type="unfinished">Error reading from file</translation>
+      <translation>Помилка читання з файлу</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="328"/>
       <source>Error writing to file</source>
-      <translation type="unfinished">Error writing to file</translation>
+      <translation>Помилка запису у файл</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="330"/>
       <source>Directory does not exist</source>
-      <translation type="unfinished">Directory does not exist</translation>
+      <translation>Каталог не існує</translation>
     </message>
   </context>
 </TS>

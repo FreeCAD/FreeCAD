@@ -1634,7 +1634,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Erfasst den aktuellen Zusammenbauzustand (Positionierung und Sichtbarkeit). Ein Doppelklick auf das Momentaufnahme-Objekt setzt die Baugruppe wieder in diesen Zustand zurück.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

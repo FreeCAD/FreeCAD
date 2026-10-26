@@ -2734,7 +2734,7 @@ za účelem minimalizace velikosti výsledného souboru STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>Vybrat</translation>
     </message>
@@ -2861,48 +2861,48 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
       <translation>Tvar</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>Výběr…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation type="unfinished">Creating extrusion failed.
 No shape could be extruded.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Vytvoření extruze selhalo. 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Vytvoření extruze selhalo. 
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>Objekt nebyl nalezen: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Žádné tvary nejsou vybírány pro extruzi.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2911,12 +2911,12 @@ No shape could be extruded.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>Neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2925,17 +2925,17 @@ No shape could be extruded.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Mód směru je použitelný na hranu, ale hrana není připojená.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Vektor směru vysunutí má nulovou délku. Musí být nenulový.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Celková dálka vysunutí je nulová (délka1 == -délka2). Musí být nenulová.</translation>
     </message>
@@ -7981,7 +7981,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation>Vybrat bodový objek</translation>
     </message>

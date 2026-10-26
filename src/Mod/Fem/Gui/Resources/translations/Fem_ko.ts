@@ -6641,16 +6641,6 @@ No matching module was found in the current Python path.</source>
       <translation>다음에서 데이터 추가</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>데이터 시각화</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>후처리 데이터를 표시할 다양한 시각화 방식</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>CSV로 내보내기</translation>
@@ -8809,9 +8799,6 @@ Leave blank to use default Python executable</source>
       <source>Shape-Based Refinement</source>
       <translation>형상 기반 세분화</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -8980,6 +8967,19 @@ Leave blank to use default Python executable</source>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation type="unfinished">Slave Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>데이터 시각화</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>후처리 데이터를 표시할 다양한 시각화 방식</translation>
     </message>
   </context>
   <context>

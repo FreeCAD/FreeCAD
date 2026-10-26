@@ -1171,7 +1171,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
       <source>Columns</source>
-      <translation>Колонки</translation>
+      <translation>Стовпці</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
@@ -1636,7 +1636,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1647,6 +1647,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Зберігає поточний стан збірки (розміщення та видимість). Подвійне клацання на об'єкті знімка повертає збірку до цього стану.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

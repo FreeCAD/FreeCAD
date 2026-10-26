@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="92"/>
+      <location filename="../../FirstStartWidget.cpp" line="91"/>
       <source>Done</source>
       <translation>Selesai</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>Selamat datang ke %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
       <translation type="unfinished">Set your basic configuration options below.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
       <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
     </message>
@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>Buka Fail</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>Pemasangan</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>Lakaran Dua Dimensi</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation type="unfinished">Creates a 2D Draft document</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="229"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>Pemodelan Maklumat Bangunan / arkitektur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="206"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation type="unfinished">Empty File</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="207"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation type="unfinished">Creates a new empty FreeCAD file</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="216"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation type="unfinished">Parametric Body</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation type="unfinished">Creates a body with the Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation type="unfinished">Creates an assembly project</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="230"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation type="unfinished">Creates an architectural project</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="509"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>Fail Baru</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="510"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Contoh- contoh</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Fail sekarang</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="527"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation type="unfinished">Open First Start Setup</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="528"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>Mula</translation>
     </message>
@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
       <translation>Mod antaramuka klasik</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
       <translation>Mod antaramuka gelap</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
       <translation>Mod antaramuka terang</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>Tema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Mencari lebih banyak tema? Anda boleh memperolehnya menggunakan &lt;a href="freecad:Std_AddonMgr"&gt;Pengurus Addon&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>Mod antaramuka gelap</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>Mod antaramuka terang</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>Mod antara muka klasik</translation>
@@ -261,9 +261,22 @@ Multiple folders can be added using ";;" to separate paths.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="90"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Mula</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start::DisplayedFilesModel</name>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <source>Created at:</source>
+      <translation type="unfinished">Created at:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
+      <source>Modified at:</source>
+      <translation type="unfinished">Modified at:</translation>
     </message>
   </context>
 </TS>

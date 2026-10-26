@@ -1118,7 +1118,7 @@ Os arquivos são chamados "runPreDrag.asmt" e "dragging.log" e estão localizado
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
       <source>Align Dragger</source>
-      <translation>Alinhar alça de arraste </translation>
+      <translation>Alinhar alça de arraste</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
@@ -1196,7 +1196,7 @@ Os arquivos são chamados "runPreDrag.asmt" e "dragging.log" e estão localizado
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Cria uma lista de materiais da montagem atual. Se uma montagem estiver ativa, será uma BOM dessa montagem. Caso contrário, será uma BOM de todo o documento.&lt;/p&gt;&lt;p&gt;O objeto BOM é um objeto do documento que armazena as configurações da sua lista de materiais. Ele também é um objeto de planilha para que você possa visualizar facilmente a BOM. Se você não precisar que o objeto BOM seja salvo como um objeto do documento, basta exportar e cancelar a tarefa.&lt;/p&gt;&lt;p&gt;As colunas \'Índice\', \'Nome\', \'Nome do Arquivo\' e \'Quantidade\' são geradas automaticamente ao recalculá-lo. As colunas \'Descrição\' e personalizadas não são sobrescritas.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Cria uma lista de materiais da montagem atual. Se uma montagem estiver ativa, será uma BOM dessa montagem. Caso contrário, será uma BOM de todo o documento.&lt;/p&gt;&lt;p&gt;O objeto BOM é um objeto do documento que armazena as configurações da sua lista de materiais. Ele também é um objeto de planilha para que você possa visualizar facilmente a BOM. Se você não precisar que o objeto BOM seja salvo como um objeto do documento, basta exportar e cancelar a tarefa.&lt;/p&gt;&lt;p&gt;As colunas 'Índice', 'Nome', 'Nome do Arquivo' e 'Quantidade' são geradas automaticamente ao recalcular. As colunas 'Descrição' e personalizadas não são sobrescritas.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1553,7 +1553,7 @@ Os arquivos são chamados "runPreDrag.asmt" e "dragging.log" e estão localizado
     <message>
       <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation>&lt;p&gt;Alterna a fixação de uma peça.&lt;/p&gt;&lt;p&gt;Fixar uma peça trava permanentemente sua posição na montagem, impedindo qualquer movimento ou rotação.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Alterna a fixação de uma peça.&lt;/p&gt;&lt;p&gt;Fixar uma peça trava permanentemente sua posição na montagem, impedindo qualquer movimento ou rotação.</translation>
     </message>
   </context>
   <context>
@@ -1622,7 +1622,9 @@ Os arquivos são chamados "runPreDrag.asmt" e "dragging.log" e estão localizado
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>&lt;p&gt;A montagem possui componentes não restritos que dão origem a estes graus de liberdade.&lt;/p&gt;&lt;p&gt;Seleciona estes componentes não restritos.&lt;/p&gt;&lt;p&gt;Nota: Atualmente, isso seleciona apenas peças não conectadas, não peças restritas que ainda possuem GdL livres.&lt;/p&gt;</translation>
+      <translation>A montagem possui componentes não restritos que dão origem a estes graus de liberdade.
+Seleciona estes componentes não restritos.
+Nota: atualmente, isso seleciona apenas peças não conectadas, não peças restritas que ainda possuem GdL livres.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
@@ -1631,7 +1633,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1642,6 +1644,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Captura o estado atual da montagem (posicionamentos e visibilidade). Um duplo clique no objeto Instantâneo restaura a montagem para esse estado.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

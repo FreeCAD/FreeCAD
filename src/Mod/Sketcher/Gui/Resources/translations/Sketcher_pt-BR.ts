@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="9071"/>
       <source>Constrain radius</source>
-      <translation>Restrição de raio</translation>
+      <translation>Restringir raio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9077"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="696"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>Modifica a multiplicidade do nós selecionados de uma B-spline</translation>
+      <translation>Modifica a multiplicidade do nó selecionado de uma B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="762"/>
@@ -180,13 +180,15 @@
       <location filename="../../Command.cpp" line="1161"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation>Ignorando geometria externa #%1</translation>
+      <translation>Ignorando geometria externa #%1
+</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1204"/>
       <source>External geometry '%1' is out of scope:
 </source>
-      <translation>A geometria externa '%1' está fora do escopo:</translation>
+      <translation>A geometria externa '%1' está fora do escopo:
+</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1255"/>
@@ -212,13 +214,15 @@
       <location filename="../../Command.cpp" line="1361"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation>Copiadas %1 de %2 restrições de '%3'. Algumas foram ignoradas.</translation>
+      <translation>Copiadas %1 de %2 restrições de '%3'. Algumas foram ignoradas.
+</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
-      <translation>Ignorando restrição #%1 de '%2': referencia geometria não mesclada.</translation>
+      <translation>Ignorando restrição #%1 de '%2': referencia geometria não mesclada.
+</translation>
     </message>
   </context>
   <context>
@@ -239,7 +243,7 @@ selecionado usando os eixos X ou Y, ou o ponto de origem, como referência de es
     <message>
       <location filename="../../Command.cpp" line="966"/>
       <source>Wrong selection</source>
-      <translation>Seleção erradaseleção</translation>
+      <translation>Seleção errada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="967"/>
@@ -307,7 +311,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../Command.cpp" line="926"/>
       <source>Select only 1 sketch.</source>
-      <translation>Selecione apenas 1 esboço</translation>
+      <translation>Selecione apenas 1 esboço.</translation>
     </message>
   </context>
   <context>
@@ -342,30 +346,30 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="5995"/>
       <location filename="../../CommandConstraints.cpp" line="6249"/>
       <source>Add distance from horizontal axis constraint</source>
-      <translation>Adiciona restrição na distância ao eixo horizontal</translation>
+      <translation>Adicionar restrição de distância ao eixo horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6007"/>
       <location filename="../../CommandConstraints.cpp" line="6263"/>
       <source>Add distance from vertical axis constraint</source>
-      <translation>Adiciona restrição na distância ao eixo vertical</translation>
+      <translation>Adicionar restrição de distância ao eixo vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6019"/>
       <location filename="../../CommandConstraints.cpp" line="6276"/>
       <source>Add point to point distance constraint</source>
-      <translation>Adiciona restrição na distância ponto a ponto</translation>
+      <translation>Adicionar restrição de distância ponto a ponto</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3074"/>
       <source>Add point to line Distance constraint</source>
-      <translation>Adicionar restrição na distância entre ponto e linha</translation>
+      <translation>Adicionar restrição de distância entre ponto e linha</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6108"/>
       <location filename="../../CommandConstraints.cpp" line="6400"/>
       <source>Add circle to circle distance constraint</source>
-      <translation>Validar um esboço olhando para coincidências faltando, restrições inválidas e geometria</translation>
+      <translation>Adicionar restrição de distância entre círculos</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6139"/>
@@ -381,7 +385,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="6203"/>
       <location filename="../../CommandConstraints.cpp" line="6312"/>
       <source>Add length constraint</source>
-      <translation>Adiciona restrição de comprimento</translation>
+      <translation>Adicionar restrição de comprimento</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2307"/>
@@ -398,34 +402,34 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3039"/>
       <source>Add 'Distance to origin' constraint</source>
-      <translation>Adicionar restrição de 'Distancia para origem'</translation>
+      <translation>Adicionar restrição de 'Distância à origem'</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3055"/>
       <location filename="../../CommandConstraints.cpp" line="3669"/>
       <location filename="../../CommandConstraints.cpp" line="3906"/>
       <source>Add Distance constraint</source>
-      <translation>Adicionar restrição de Distância</translation>
+      <translation>Adicionar restrição de distância</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3060"/>
       <location filename="../../CommandConstraints.cpp" line="3089"/>
       <location filename="../../CommandConstraints.cpp" line="3123"/>
       <source>Add 'Horizontal' constraints</source>
-      <translation>Adicionar restrição horizontal</translation>
+      <translation>Adicionar restrições horizontais</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3064"/>
       <location filename="../../CommandConstraints.cpp" line="3096"/>
       <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>Add 'Vertical' constraints</source>
-      <translation>Adicionar restrição vertical</translation>
+      <translation>Adicionar restrições verticais</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3079"/>
       <location filename="../../CommandConstraints.cpp" line="3142"/>
       <source>Add Symmetry constraint</source>
-      <translation>Adicionar restrição simétrica</translation>
+      <translation>Adicionar restrição de simetria</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3102"/>
@@ -471,7 +475,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3250"/>
       <source>Add Equality constraints</source>
-      <translation>Adicionar restrição de Igualdade</translation>
+      <translation>Adicionar restrições de igualdade</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10429"/>
@@ -481,7 +485,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10849"/>
       <source>Activate/Deactivate constraints</source>
-      <translation>Ativar/desativar restrição</translation>
+      <translation>Ativar/desativar restrições</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3298"/>
@@ -492,7 +496,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3352"/>
       <source>Add concentric and length constraint</source>
-      <translation>Adicionar restrição de concentricidade e tamanho</translation>
+      <translation>Adicionar restrição de concentricidade e comprimento</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3886"/>
@@ -508,13 +512,13 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="5237"/>
       <location filename="../../CommandConstraints.cpp" line="5423"/>
       <source>Add point on object constraint</source>
-      <translation>Adiciona restrição tipo 'ponto-no-objeto'</translation>
+      <translation>Adicionar restrição de ponto no objeto</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3303"/>
       <location filename="../../CommandConstraints.cpp" line="3335"/>
       <source>Add arc length constraint</source>
-      <translation>Adicionar restrição de tamanho do arco</translation>
+      <translation>Adicionar restrição de comprimento do arco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6051"/>
@@ -536,24 +540,24 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6583"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation>Adiciona restrição de coordenada x fixa</translation>
+      <translation>Adicionar restrição de coordenada x fixa</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6550"/>
       <location filename="../../CommandConstraints.cpp" line="6671"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation>Adiciona restrição de distância vertical ponto a ponto</translation>
+      <translation>Adicionar restrição de distância vertical ponto a ponto</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6584"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation>Adiciona restrição de coordenada y fixa</translation>
+      <translation>Adicionar restrição de coordenada y fixa</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6840"/>
       <location filename="../../CommandConstraints.cpp" line="6879"/>
       <source>Add parallel constraint</source>
-      <translation>Adiciona restrição paralela</translation>
+      <translation>Adicionar restrição de paralelismo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6972"/>
@@ -565,7 +569,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="7502"/>
       <location filename="../../CommandConstraints.cpp" line="7556"/>
       <source>Add perpendicular constraint</source>
-      <translation>Adiciona restrição perpendicular</translation>
+      <translation>Adicionar restrição perpendicular</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7141"/>
@@ -586,7 +590,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="8403"/>
       <location filename="../../CommandConstraints.cpp" line="8433"/>
       <source>Add tangent constraint</source>
-      <translation>Adiciona restrição tangente</translation>
+      <translation>Adicionar restrição de tangência</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7981"/>
@@ -604,7 +608,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="8292"/>
       <location filename="../../CommandConstraints.cpp" line="8319"/>
       <source>Add tangent constraint point</source>
-      <translation>Adiciona ponto de tangência</translation>
+      <translation>Adicionar ponto de restrição de tangência</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3307"/>
@@ -623,7 +627,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8510"/>
       <source>Add radiam constraint</source>
-      <translation>Adicionar restrição de raio</translation>
+      <translation>Adicionar restrição de raio/diâmetro</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="570"/>
@@ -654,17 +658,17 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="10072"/>
       <location filename="../../CommandConstraints.cpp" line="10143"/>
       <source>Add symmetric constraint</source>
-      <translation>Adicionar restrição simétrica</translation>
+      <translation>Adicionar restrição de simetria</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10300"/>
       <source>Add Snell's law constraint</source>
-      <translation>Adicionar restrição lei de Snell</translation>
+      <translation>Adicionar restrição de lei de Snell</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10762"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Ativar/desativar restrição dimensional/referência</translation>
+      <translation>Alternar restrição entre dimensional/referência</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
@@ -679,7 +683,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Reorient sketch</source>
-      <translation>Reorientar um esboço</translation>
+      <translation>Reorientar esboço</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -704,42 +708,42 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="135"/>
       <source>Add sketch line</source>
-      <translation>Adicionar linha do esboço</translation>
+      <translation>Adicionar linha ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="514"/>
       <source>Add sketch box</source>
-      <translation>Adicionar caixa de esboço</translation>
+      <translation>Adicionar retângulo ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="281"/>
       <source>Add sketch arc</source>
-      <translation>Adicionar esboço de arco</translation>
+      <translation>Adicionar arco ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="211"/>
       <source>Add sketch circle</source>
-      <translation>Adicionar esboço de círculo</translation>
+      <translation>Adicionar círculo ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="210"/>
       <source>Add sketch ellipse</source>
-      <translation>Adicionar esboço de elipse</translation>
+      <translation>Adicionar elipse ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="211"/>
       <source>Add sketch arc of ellipse</source>
-      <translation>Adicionar esboço de arco de elipse</translation>
+      <translation>Adicionar arco de elipse ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="210"/>
       <source>Add sketch arc of hyperbola</source>
-      <translation>Adicionar esboço de arco de hipérbole</translation>
+      <translation>Adicionar arco de hipérbole ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="95"/>
       <source>Add sketch point</source>
-      <translation>Adicionar ponto</translation>
+      <translation>Adicionar ponto ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="216"/>
@@ -821,7 +825,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1171"/>
       <source>Exposing Internal Geometry</source>
-      <translation>Exposição da geometria interna</translation>
+      <translation>Expor geometria interna</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1374"/>
@@ -847,7 +851,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2407"/>
       <source>Remove Axes Alignment</source>
-      <translation>Remover Alinhamento dos Eixos</translation>
+      <translation>Remover alinhamento dos eixos</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="170"/>
@@ -877,22 +881,22 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Point</source>
-      <translation>Arrastar Ponto</translation>
+      <translation>Arrastar ponto</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2213"/>
       <source>Drag Curve</source>
-      <translation>Arrastar Curva</translation>
+      <translation>Arrastar curva</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2214"/>
       <source>Drag geometries</source>
-      <translation>Arraste geometrias</translation>
+      <translation>Arrastar geometrias</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1417"/>
       <source>Drag Constraint</source>
-      <translation>Restrição de arrasto</translation>
+      <translation>Arrastar restrição</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1666"/>
@@ -924,22 +928,22 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
-      <translation>Girar geometrias</translation>
+      <translation>Rotacionar geometrias</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="128"/>
       <source>Scale geometries</source>
-      <translation>Geometrias de escala</translation>
+      <translation>Escalar geometrias</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="127"/>
       <source>Translate geometries</source>
-      <translation>Traduzir geometrias</translation>
+      <translation>Transladar geometrias</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="137"/>
       <source>Symmetry geometries</source>
-      <translation>Geometrias de simetria</translation>
+      <translation>Simetria de geometrias</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
@@ -960,7 +964,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="249"/>
       <source>Toggle construction geometry</source>
-      <translation>Ativar/desativar geometria de construção</translation>
+      <translation>Alternar geometria de construção</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandler.cpp" line="1613"/>
@@ -973,7 +977,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../DrawSketchHandlerBSpline.h" line="633"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="780"/>
       <source>Add Sketch B-Spline</source>
-      <translation>Adicionar B-Spline no esboço</translation>
+      <translation>Adicionar B-spline ao esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
@@ -994,7 +998,7 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
@@ -1004,19 +1008,19 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
       <source>You are requesting no change in knot multiplicity.</source>
-      <translation>Você não solicitou nenhuma mudança de multiplicidade em nós.</translation>
+      <translation>Você não solicitou nenhuma mudança na multiplicidade do nó.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="2984"/>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3162"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>Índice de Geometria B-spline (GeoID) está fora dos limites.</translation>
+      <translation>O índice de geometria da B-spline (GeoID) está fora dos limites.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3178"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation>O índice de Geometria (GeoId) fornecida não é uma curva B-spline.</translation>
+      <translation>O índice de geometria (GeoId) fornecido não é uma B-spline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3013"/>
@@ -1041,17 +1045,17 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3169"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation>Nó não pode ter multiplicidade zero.</translation>
+      <translation>O nó não pode ter multiplicidade zero.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3191"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
-      <translation>Multiplicidade de nóo não pode ser maior que o grau da B-spline.</translation>
+      <translation>A multiplicidade do nó não pode ser maior que o grau da B-spline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectOperations.cpp" line="3201"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
-      <translation>Nó não pode ser inserido fora do alcance do parâmetro da B-spline</translation>
+      <translation>O nó não pode ser inserido fora do intervalo de parâmetros da B-spline.</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.cpp" line="353"/>
@@ -1124,12 +1128,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
-      <translation>Não existem modos que aceitem o conjunto de sub-elementos selecionado</translation>
+      <translation>Não há modos que aceitem o conjunto de subelementos selecionado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
-      <translation>Ligação perdida aos sub-elementos de suporte</translation>
+      <translation>Vínculo quebrado com os subelementos de suporte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="132"/>
@@ -1155,7 +1159,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
-      <translation>Demasiados objetos selecionados</translation>
+      <translation>Objetos demais selecionados</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="197"/>
@@ -1315,7 +1319,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="111"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
-      <translation>Não é possível editar o dado porque o esboço contém restrições conflitantes</translation>
+      <translation>Não é permitido editar o valor da cota porque o esboço contém restrições conflitantes</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="110"/>
@@ -1463,7 +1467,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5151"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
-      <translation>Uma tangência de ponto a ponto de extremidade foi aplicado em vez disso.</translation>
+      <translation>Em vez disso, foi aplicada uma tangência entre extremidades.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5302"/>
@@ -1499,7 +1503,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5103"/>
       <source>Endpoint to edge tangency was applied instead.</source>
-      <translation>Uma tangência de ponto de extremidade a aresta foi aplicada em vez disso.</translation>
+      <translation>Em vez disso, foi aplicada uma tangência entre extremidade e aresta.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5255"/>
@@ -1788,7 +1792,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9574"/>
       <source>Select two or more compatible edges.</source>
-      <translation>Selecione duas os mais arestas compatíveis.</translation>
+      <translation>Selecione duas ou mais arestas compatíveis.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9581"/>
@@ -2005,7 +2009,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../TaskSketcherElements.cpp" line="678"/>
       <location filename="../../TaskSketcherElements.cpp" line="728"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation>Atualmente não há suporte para mover geometria externa para outra camada visual. A geometria externa será omitida.</translation>
+      <translation>Atualmente não há suporte para mover geometria externa para outra camada visual. A geometria externa será omitida</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="92"/>
@@ -2147,7 +2151,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="125"/>
       <source>Block</source>
-      <translation>Bloquear</translation>
+      <translation>Bloco</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="126"/>
@@ -2325,7 +2329,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="157"/>
       <source>Lock</source>
-      <translation>Bloquear</translation>
+      <translation>Travar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="160"/>
@@ -3604,7 +3608,7 @@ No entanto, nenhuma restrição vinculada aos pontos finais foi encontrada.</tra
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="419"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Excluir restrições para geometria externa</translation>
+      <translation>Excluir restrições com geom. externa.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="420"/>
@@ -4057,12 +4061,12 @@ Isso é feito analisando as geometrias e restrições do esboço.</translation>
       <translation>O esboço é inválido e não pode ser editado.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4406"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A restrição seguinte é parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4407"/>
       <source>The following constraints are partially redundant:</source>
       <translation>As restrições seguintes são parcialmente redundantes:</translation>
     </message>
@@ -4087,72 +4091,72 @@ Isso é feito analisando as geometrias e restrições do esboço.</translation>
       <translation>Abrir a ferramenta de validação de esboço?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4392"/>
       <source>Remove the following constraint:</source>
       <translation>Remova a seguinte restrição:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4393"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Remova pelo menos uma das seguintes restrições:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4399"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Remova a seguinte restrição redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4400"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Remova as seguintes restrições redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4413"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Remova a seguinte restrição malformada:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4411"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4414"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Remova as seguintes restrições malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4470"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
       <source>Empty sketch</source>
       <translation>Esboço vazio</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4475"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4478"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restrito:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4481"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4484"/>
       <source>Malformed constraints:</source>
       <translation>Restrições malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4489"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
       <source>Redundant constraints:</source>
       <translation>Restrições redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4498"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4502"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4505"/>
       <source>Solver failed to converge</source>
       <translation>O solucionador falhou na conversão</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4508"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4511"/>
       <source>Under-constrained:</source>
       <translation>Subrestrito:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4510"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4513"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grau de liberdade</numerusform>
@@ -4160,12 +4164,12 @@ Isso é feito analisando as geometrias e restrições do esboço.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4514"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4517"/>
       <source>Fully constrained</source>
       <translation>Totalmente restrito</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5040"/>
+      <location filename="../../ViewProviderSketch.cpp" line="5038"/>
       <source>Missing external geometry</source>
       <translation>Geometria externa ausente</translation>
     </message>
@@ -4319,7 +4323,8 @@ Selecione um outro método para anexar este esboço aos objetos selecionados.</t
       <location filename="../../Command.cpp" line="855"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation>Não é possível mapear um esboço para suporte:%1</translation>
+      <translation>Não é possível mapear um esboço para o suporte:
+%1</translation>
     </message>
   </context>
   <context>
@@ -4439,7 +4444,7 @@ para determinar se uma solução converge ou não</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
       <source>Default solver</source>
-      <translation>Calculador padrão</translation>
+      <translation>Solucionador padrão</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="32"/>
@@ -4655,7 +4660,7 @@ o algorítimo Eigen Sparse QR é otimizado para matrizes escassas; geralmente é
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4456"/>
       <source>and %1 more</source>
       <translation>e %1 mais</translation>
     </message>
@@ -4663,57 +4668,57 @@ o algorítimo Eigen Sparse QR é otimizado para matrizes escassas; geralmente é
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="37"/>
       <source>P&amp;rofiles</source>
       <translation>P&amp;erfis</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="39"/>
+      <location filename="../../Workbench.cpp" line="38"/>
       <source>S&amp;ketch</source>
       <translation>E&amp;sboço</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="40"/>
+      <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher</source>
       <translation>Esboço</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="41"/>
+      <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
       <translation>Modo de edição</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
       <translation>Geometrias</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
       <translation>Restrições</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
       <translation>Auxiliares do esboço</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
       <translation>Ferramentas de B-Spline</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Helpers</source>
       <translation>Auxiliares visuais</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="48"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
       <translation>Espaço virtual</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="49"/>
+      <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
       <translation>Ferramentas de edição do esboço</translation>
     </message>
@@ -4753,7 +4758,7 @@ o algorítimo Eigen Sparse QR é otimizado para matrizes escassas; geralmente é
       <location filename="../../SketcherSettingsGrid.ui" line="210"/>
       <location filename="../../SketcherSettingsGrid.ui" line="354"/>
       <source>Line pattern</source>
-      <translation>Linha Padrão</translation>
+      <translation>Padrão de linha</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
@@ -4867,7 +4872,7 @@ O espaçamento da grade muda se ficar menor do que o tamanho em pixels especific
     <message>
       <location filename="../../../App/SketchObjectConstraints.cpp" line="156"/>
       <source>"%1" has partially redundant constraint(s).</source>
-      <translation>"%1" possui restrição(ões) parcialmente redundante(s).</translation>
+      <translation>"%1" possui restrição(ões) parcialmente redundantes.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1116"/>
@@ -6026,8 +6031,7 @@ Isso limpará a propriedade AttachmentSupport.</translation>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Display grid</source>
-      <translation>
-</translation>
+      <translation>Exibir grade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1501"/>
@@ -7519,7 +7523,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2315"/>
       <source>Remove Axes Alignment</source>
-      <translation>Remover Alinhamento dos Eixos</translation>
+      <translation>Remover alinhamento dos eixos</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2316"/>

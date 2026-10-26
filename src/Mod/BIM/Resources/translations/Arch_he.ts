@@ -12136,16 +12136,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <source>Converts any object to a BIM component</source>
       <translation>ממירה כל אובייקט לרכיב BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>הסר מהקבוצה</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>מסיר אובייקט זה מקבוצת האב שלו</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13757,6 +13747,19 @@ Do you want to proceed?</source>
       <translation>הסרת הבסיס של הקיר המורכב הזה תשנה את צורתו ותאפס את מיקומו.
 
 האם אתה רוצה להמשיך?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

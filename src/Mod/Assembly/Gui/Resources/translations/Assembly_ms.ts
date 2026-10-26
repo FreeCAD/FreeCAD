@@ -17,25 +17,25 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
       <translation>&lt;p&gt;Masukkan komponen ke dalam pemasangan aktif. Ini akan mewujudkan pautan dinamik ke bahagian, badan, primitif dan pemasangan. Untuk memasukkan komponen luaran, pastikan fail &lt;b&gt;buka dalam sesi semasa&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Sisipkan dengan mengklik kiri item dalam senarai.&lt;/li&gt;&lt;li&gt;Alih keluar dengan mengklik kanan item dalam senarai.&lt;/li&gt;&lt;li&gt;Tekan anjakan untuk menambah beberapa contoh komponen semasa mengklik pada paparan.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="81"/>
-      <source>Component</source>
-      <translation>Komponen</translation>
+      <location filename="../../../CommandInsertLink.py" line="80"/>
+      <source>Insert Component</source>
+      <translation>Masukkan Komponen</translation>
     </message>
   </context>
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="50"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>Selesaikan Perhimpunan</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="55"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>Selesaikan perhimpunan yang sedang aktif.</translation>
     </message>
@@ -43,42 +43,42 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="74"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="156"/>
       <source>Active object</source>
       <translation>Objek aktif</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="154"/>
       <source>Turn flexible</source>
       <translation>Hidupkan fleksibel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="156"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Sub-himpunan anda pada masa ini tegar. Ini akan menjadikannya fleksibel sebaliknya.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="160"/>
       <source>Turn rigid</source>
       <translation>Berubah tegar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="162"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Subhimpunan anda fleksibel pada masa ini. Ini akan menjadikannya tegar sebaliknya.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="287"/>
+      <location filename="../../../App/BomObject.cpp" line="329"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="311"/>
+      <location filename="../../../App/BomObject.cpp" line="353"/>
       <source>Not supported</source>
       <translation>Tidak disokong</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="109"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Perhimpunan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="110"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Sendi Perhimpunan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Perhimpunan</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1793"/>
+      <location filename="../../../JointObject.py" line="2068"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
@@ -170,27 +170,37 @@
       <translation>Tali pinggang</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="819"/>
       <source>Broken link in: </source>
       <translation>Pautan terputus: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1612"/>
+      <location filename="../../../JointObject.py" line="1249"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1431"/>
+      <source>Update Stored Positions</source>
+      <translation type="unfinished">Update Stored Positions</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1876"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Anda perlu memilih 2 elemen daripada 2 bahagian yang berasingan</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1795"/>
+      <location filename="../../../JointObject.py" line="2070"/>
       <source>Radius 1</source>
       <translation>Jejari 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1797"/>
+      <location filename="../../../JointObject.py" line="2072"/>
       <source>Thread pitch</source>
       <translation>Langkah ulir</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1799"/>
+      <location filename="../../../JointObject.py" line="2074"/>
       <source>Pitch radius</source>
       <translation>Jejari padang</translation>
     </message>
@@ -250,52 +260,52 @@
       <translation>Nama ini sudah digunakan. Sila pilih nama lain.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="364"/>
+      <location filename="../../../CommandCreateBom.py" line="365"/>
       <source>Options</source>
-      <translation>Tetapan</translation>
+      <translation>Pilihan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="371"/>
+      <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
-      <translation>Komponen sub-pemasangan: semua komponen di bawah sub-pemasangan akan dimasukkan ke dalam Senarai Bahan</translation>
+      <translation>Anak sub-assembly: anak kepada sub-assembly akan dimasukkan dalam senarai bahan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="377"/>
+      <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
-      <translation>Komponen bahagian: komponen di bawah sesuatu bahagian akan ditambahkan ke dalam Senarai Bahan</translation>
+      <translation>Anak bahagian: anak kepada bahagian akan ditambah ke dalam senarai bahan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="383"/>
+      <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Hanya bahagian : hanya kontena bahagian dan sub-pemasangan akan dimasukkan ke dalam Senarai Bahan. Objek pepejal seperti badan Part Design, pengikat atau primitif dari Part Workbench akan diabaikan.</translation>
+      <translation>Hanya bahagian: hanya bekas bahagian dan sub-assembly ditambah ke dalam senarai bahan. Pepejal seperti badan Part Design, pengikat, atau primitif Workbench Part akan diabaikan.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Columns</source>
       <translation>Lajur</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="398"/>
+      <location filename="../../../CommandCreateBom.py" line="399"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Lajur tersuai : Lajur seperti “Description” dan mana-mana lajur tersuai yang ditambah melalui butang “Add column” tidak akan menimpa data sedia ada. Jika nama lajur bermula dengan tanda titik . diikuti nama sifat (contoh: .Length), lajur tersebut akan diisi secara automatik berdasarkan nilai sifat berkenaan. Lajur-lajur ini boleh dinamakan semula dengan klik dua kali atau menekan kekunci F2. Namun, penukaran nama lajur buat masa ini akan menyebabkan data dalam lajur tersebut hilang.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="404"/>
+      <location filename="../../../CommandCreateBom.py" line="405"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Mana-mana lajur (sama ada lajur tersuai atau lajur standard) boleh dipadam dengan menekan kekunci Delete</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Export</source>
       <translation>Eksport</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="413"/>
+      <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>Format fail yang dieksport boleh disesuaikan dalam tetapan Spreadsheet Workbench</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="392"/>
+      <location filename="../../../CommandCreateBom.py" line="393"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Lajur automatik : Lajur seperti (Index, Quantity, Name dan lain-lain) akan diisi secara automatik oleh sistem. Sebarang pengubahsuaian yang dibuat akan ditindih (override) oleh sistem. Lajur-lajur ini tidak boleh dinamakan semula.</translation>
     </message>
@@ -347,59 +357,59 @@
       <translation>Jangan Pautkan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="488"/>
-      <source>Enter your formula...</source>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
+      <source>Enter your formula…</source>
       <translation>Masukkan formula anda...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>Tulisan huruf besar menandakan pembolehubah yang perlu digantikan dengan nilai sebenar. Maklumat lanjut bagi setiap contoh terdapat pada tooltip-nya.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation>Huruf besar ialah pemboleh ubah yang perlu anda gantikan dengan nilai sebenar. ‘initialValue’ akan digantikan secara dinamik dengan sudut atau jarak semasa. Maklumat lanjut bagi setiap contoh boleh dilihat pada petua alatnya.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Linear: C + VEL*masa</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kuadratik: C + VEL*masa + ACC*masa^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmonik: C + AMP*sin(VEL*masa − FASA)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="552"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Eksponen: C*exp(masa/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="558"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Smooth Step: L1 + (L2 − L1)*((1/2) + (1/π) *arctan(SLOPE*(masa − T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="565"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Smooth Square Impulse: (H / π)*(arctan(SLOPE *(masa − T1)) − arctan(SLOPE*(masa − T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="572"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Smooth Ramp Top Impulse: ((1/π)*(arctan(1000*(masa−T1))−arctan(1000*(masa−T2))))*(((H2−H1)/(T2−T1))*(masa−T1)+H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="582"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C ialah pemalar anjakan.
 VEL ialah halaju atau kecerunan or gradien bagi garis lurus.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="590"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -408,7 +418,7 @@ VEL ialah halaju atau kecerunan bagi garis lurus.
 ACC ialah pecutan atau pekali tertib kedua. Fungsi yang terhasil berbentuk parabola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="599"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -419,92 +429,172 @@ VEL ialah halaju sudut dalam unit radian sesaat.
 PHASE ialah fasa gelombang sinus.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="606"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C ialah pemalar.
 TIMEC ialah pemalar masa bagi fungsi eksponen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="614"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">L1 is step level before time = T0.
-L2 is step level after time = T0.
-SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>L1 ialah aras langkah sebelum masa = T0.
+L2 ialah aras langkah selepas masa = T0.
+SLOPE menentukan tahap kecuraman peralihan antara L1 dan L2 pada sekitar masa = T0. Nilai yang lebih tinggi menghasilkan langkah dengan bucu yang lebih tajam. Nilai SLOPE = 1000 atau lebih adalah sesuai.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>H ialah ketinggian impuls.
+T1 ialah permulaan impuls.
+T2 ialah penghujung impuls.
+SLOPE menentukan tahap kecuraman peralihan antara 0 dan H pada sekitar masa = T1 dan T2. Nilai yang lebih tinggi menghasilkan impuls dengan bucu yang lebih tajam. Nilai SLOPE = 1000 atau lebih adalah sesuai.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="634"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Ini serupa dengan impuls segi empat, tetapi bahagian atasnya mempunyai cerun condong. Ia sesuai digunakan untuk membina fungsi linear berperingkat yang licin dengan menambah beberapa siri bentuk ini.
+T1 ialah permulaan impuls.
+T2 ialah penghujung impuls.
+H1 ialah ketinggian pada T1, iaitu pada permulaan cerun.
+H2 ialah ketinggian pada T2, iaitu pada penghujung cerun.
+SLOPE menentukan tahap kecuraman peralihan antara 0 ke H1 dan H2 ke 0 masing-masing pada sekitar masa = T1 dan T2. Nilai yang lebih tinggi menghasilkan impuls dengan bucu yang lebih tajam. Nilai SLOPE = 1000 atau lebih adalah sesuai.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="672"/>
-      <location filename="../../../CommandCreateSimulation.py" line="689"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Bantuan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="687"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Sembunyikan bantuan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="142"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <source>Animation</source>
+      <translation>Animasi</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
+      <source>Not enough frames to create an animation.</source>
+      <translation>Bilangan bingkai tidak mencukupi untuk menghasilkan animasi.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1068"/>
+      <source>Save Animation</source>
+      <translation>Simpan Animasi</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1093"/>
+      <source>Pillow (PIL) is not installed. It is required for video export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1100"/>
+      <source>Generating Frames…</source>
+      <translation>Menjana Bingkai…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1101"/>
+      <source>Cancel</source>
+      <translation>Batal</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1128"/>
+      <source>Assembling animation…</source>
+      <translation>Menyusun animasi…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1150"/>
+      <source>An error occurred while saving the animation</source>
+      <translation>Ralat berlaku semasa menyimpan animasi</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1186"/>
+      <source>PyAv is not installed. It is required for video export.</source>
+      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1205"/>
+      <source>Unknown video export format</source>
+      <translation type="unfinished">Unknown video export format</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Cipta</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="158"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Aktif</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Masukkan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Pembumian</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Kekangan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="246"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Alatan</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="259"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Simulasi</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation type="unfinished">Radial Translation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>Pusingan</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation type="unfinished">Translation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation type="unfinished">Angle of this exploded-view move</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation type="unfinished">Distance of this exploded-view move</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation type="unfinished">Edit placement</translation>
     </message>
   </context>
   <context>
@@ -627,70 +717,95 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>Rujukan {order} bagi sambungan</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1221"/>
+      <location filename="../../../JointObject.py" line="1295"/>
+      <source>List of references to compnents to group together</source>
+      <translation type="unfinished">List of references to compnents to group together</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1454"/>
       <source>The object to ground</source>
       <translation>Objek kepada bumi</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="368"/>
-      <location filename="../../../CommandCreateView.py" line="405"/>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>Objek-objek yang digerakkan oleh pergerakan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="380"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ini ialah pergerakan bagi move. Kedudukan akhir adalah hasil daripada kedudukan awal * kedudukan ini.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="389"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>Jenis pergerakan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="111"/>
+      <location filename="../../../CommandCreateSimulation.py" line="116"/>
       <source>Simulation start time.</source>
       <translation>Masa mula simulasi.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="123"/>
+      <location filename="../../../CommandCreateSimulation.py" line="128"/>
       <source>Simulation end time.</source>
       <translation>Masa tamat simulasi.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="135"/>
+      <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Simulation time step for output.</source>
       <translation>Langkah masa simulasi untuk output.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="147"/>
+      <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
       <translation>Toleransi ralat global integrasi.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="164"/>
       <source>Frames Per Second.</source>
       <translation>Bingkai Per Saat.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="211"/>
+      <location filename="../../../CommandCreateSimulation.py" line="216"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Bilangan perpuluhan yang digunakan untuk teks yang dikira</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="311"/>
+      <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
       <translation>Sambungan yang digerakkan oleh pergerakan</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="323"/>
+      <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>Ini ialah formula bagi pergerakan. Contohnya ‘1.0*time’.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="332"/>
+      <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>Jenis pergerakan</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="113"/>
+      <source>List of components captured in this snapshot.</source>
+      <translation type="unfinished">List of components captured in this snapshot.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="124"/>
+      <source>List of corresponding placements for the components.</source>
+      <translation type="unfinished">List of corresponding placements for the components.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="135"/>
+      <source>List of visibility states for the components.</source>
+      <translation type="unfinished">List of visibility states for the components.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="146"/>
+      <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
+      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
     </message>
   </context>
   <context>
@@ -713,27 +828,27 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
-      <translation>Pusingan</translation>
+      <translation type="unfinished">Rotation</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
-      <translation type="unfinished">Offset1</translation>
+      <translation>Ofset1</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
-      <translation type="unfinished">Offset2</translation>
+      <translation>Ofset2</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>Tunjukkan ofset lanjutan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Joint</source>
-      <translation type="unfinished">Joint</translation>
+      <translation>Sambungan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="25"/>
@@ -748,52 +863,62 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
+      <translation>Menetapkan ofset lampiran bagi penanda pertama sambungan (sistem koordinat)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
+      <translation>Menetapkan ofset lampiran bagi penanda kedua (sistem koordinat) sambungan</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
-      <translation type="unfinished">Reverse the direction of the joint</translation>
+      <translation>Membalikkan arah sambungan</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
-      <translation type="unfinished">Reverse</translation>
+      <translation>Terbalik</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Putar</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
-      <translation type="unfinished">Limits</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
-      <source>Min length</source>
-      <translation type="unfinished">Min length</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
-      <source>Max length</source>
-      <translation type="unfinished">Max length</translation>
+      <translation>Had</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <source>Min length</source>
+      <translation>Panjang minimum</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
+      <source>Max length</source>
+      <translation>Panjang maksimum</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
-      <translation type="unfinished">Min angle</translation>
+      <translation>Sudut minimum</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
-      <translation type="unfinished">Max angle</translation>
+      <translation>Sudut maksimum</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
-      <translation type="unfinished">Reverse rotation</translation>
+      <translation>Putaran terbalik</translation>
     </message>
   </context>
   <context>
@@ -801,17 +926,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="14"/>
       <source>Insert</source>
-      <translation type="unfinished">Insert</translation>
+      <translation>Masukkan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts…</source>
-      <translation type="unfinished">Search parts…</translation>
+      <translation>Cari bahagian…</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation type="unfinished">Cannot find the part? </translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -821,12 +946,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>Shows only parts in the list</source>
-      <translation type="unfinished">Shows only parts in the list</translation>
+      <translation>Hanya memaparkan bahagian dalam senarai</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
       <source>Show only parts</source>
-      <translation type="unfinished">Show only parts</translation>
+      <translation>Hanya papar bahagian</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="74"/>
@@ -835,16 +960,15 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</translation>
+      <translation>Menetapkan sama ada sub-assembly yang dimasukkan adalah tegar atau fleksibel.
+Tegar bermaksud sub-assembly yang ditambah akan dianggap sebagai satu unit pepejal dalam assembly induk.
+Fleksibel bermaksud sub-assembly yang ditambah akan membenarkan pergerakan sambungan bagi komponen individunya dalam assembly induk.
+Anda boleh menukar tingkah laku ini pada bila-bila masa dengan klik kanan pada sub-assembly dalam pepohon dokumen dan memilih arahan ‘Jadikan tegar’ / ‘Jadikan fleksibel’, atau dengan mengedit sifat Tegar dalam penyunting sifat.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
       <source>Rigid sub-assemblies</source>
-      <translation type="unfinished">Rigid sub-assemblies</translation>
+      <translation>Sub-assembly tegar</translation>
     </message>
   </context>
   <context>
@@ -857,131 +981,120 @@ You can change this behavior at any time by either right-clicking the sub-assemb
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allows leaving edit mode when pressing the Esc key</source>
-      <translation type="unfinished">Allows leaving edit mode when pressing the Esc key</translation>
+      <translation>Membenarkan keluar daripada mod edit apabila menekan kekunci Esc</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation type="unfinished">Log the dragging steps of the solver. Useful to report a bug.
-The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</translation>
+      <translation>Merekod langkah seretan oleh solver. Berguna untuk melaporkan pepijat.
+Fail dinamakan ‘runPreDrag.asmt’ dan ‘dragging.log’ serta terletak dalam direktori lalai std::ofstream (pada Windows, ia ialah Desktop)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part</source>
-      <translation type="unfinished">Ground first part</translation>
+      <translation>Tetapkan bahagian pertama sebagai tetap</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When inserting the first part in the assembly, it can be grounded automatically</source>
-      <translation type="unfinished">When inserting the first part in the assembly, it can be grounded automatically</translation>
+      <translation>Apabila memasukkan bahagian pertama ke dalam assembly, ia boleh ditetapkan sebagai tetap secara automatik</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Esc keluar daripada mod edit</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation type="unfinished">Log dragging steps</translation>
+      <translation>Rakam langkah seretan</translation>
     </message>
   </context>
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="224"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objek dikaitkan dengan satu atau lebih sendi.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="226"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
+      <translation>Adakah anda mahu menggerakkan objek dan memadam sambungan yang berkaitan?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1143"/>
       <source>Move part</source>
-      <translation type="unfinished">Move part</translation>
+      <translation>Alihkan bahagian</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
-      <source>ViewProviderAssembly</source>
-      <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1898"/>
       <source>Empty Assembly</source>
-      <translation type="unfinished">Empty Assembly</translation>
+      <translation>Assembly kosong</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
-      <translation type="unfinished">Over-constrained:</translation>
+      <translation>Terlalu banyak kekangan:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
       <source>Malformed joints:</source>
-      <translation type="unfinished">Malformed joints:</translation>
+      <translation>Sambungan tidak sah:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
-      <source>Redundant joints:</source>
-      <translation type="unfinished">Redundant joints:</translation>
+      <location filename="../../ViewProviderAssembly.cpp" line="1883"/>
+      <source>and %1 more</source>
+      <translation>dan %1 lagi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
-      <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1942"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Solver gagal mencapai penumpuan</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1950"/>
       <source>Under-constrained:</source>
-      <translation type="unfinished">Under-constrained:</translation>
+      <translation>Kurang kekangan:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1952"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n Darjah Kebebasan</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1956"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Dikekang sepenuhnya</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
-      <translation type="unfinished">Screw Joint</translation>
+      <translation>Sambungan Skru</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
-      <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
+      <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Mencipta sambungan skru yang menghubungkan bahagian dengan sambungan gelangsar kepada bahagian dengan sambungan putar&lt;/p&gt;&lt;p&gt;Pilih sistem koordinat yang sama seperti sambungan putar dan gelangsar. Jejari pic menentukan nisbah pergerakan antara skru yang berputar dan bahagian yang meluncur.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
-      <translation type="unfinished">Gears/Belt Joint</translation>
+      <translation>Sambungan Gear/Tali Sawat</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Mencipta sambungan gear atau tali sawat yang menghubungkan 2 gear berputar bersama&lt;/p&gt;&lt;p&gt;Pilih sistem koordinat yang sama seperti sambungan putar&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -989,67 +1102,67 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="14"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Pandangan Meletup</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation type="unfinished">If checked, parts will be selected as a single solid</translation>
+      <translation>Jika ditanda, bahagian akan dipilih sebagai satu pepejal tunggal</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
       <source>Parts as single solid</source>
-      <translation type="unfinished">Parts as single solid</translation>
+      <translation>Bahagian sebagai pepejal tunggal</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
       <source>Align Dragger</source>
-      <translation type="unfinished">Align Dragger</translation>
+      <translation>Jajarkan Penyeret</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation type="unfinished">Select a feature to align. Press Esc to cancel.</translation>
+      <translation>Pilih ciri untuk dijajarkan. Tekan Esc untuk batal.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation type="unfinished">Explode Radially</translation>
+      <translation>Letakkan Letupan Secara Jejari</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation type="unfinished">Sub-assemblies children</translation>
+      <translation>Anak sub-assembly</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation type="unfinished">Parts children</translation>
+      <translation>Anak bahagian</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
       <source>Bill of Materials</source>
-      <translation type="unfinished">Bill of Materials</translation>
+      <translation>Senarai Bahan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>Includes children of sub-assemblies in the bill of materials</source>
-      <translation type="unfinished">Includes children of sub-assemblies in the bill of materials</translation>
+      <translation>Sertakan anak sub-assembly dalam senarai bahan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>Include child parts in the bill of materials</source>
-      <translation type="unfinished">Include child parts in the bill of materials</translation>
+      <translation>Sertakan anak bahagian dalam senarai bahan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation type="unfinished">Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</translation>
+      <translation>Hanya menambah bekas bahagian dan sub-assembly ke dalam senarai bahan. Pepejal (contohnya badan, pengikat, primitif) dikecualikan.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
       <source>Only parts</source>
-      <translation type="unfinished">Only parts</translation>
+      <translation>Hanya bahagian</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
@@ -1059,12 +1172,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
       <source>Add Column</source>
-      <translation type="unfinished">Add Column</translation>
+      <translation>Tambah Kolum</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Eksport</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="109"/>
@@ -1077,18 +1190,18 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="69"/>
       <source>Bill of Materials</source>
-      <translation type="unfinished">Bill of Materials</translation>
+      <translation>Senarai Bahan</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Mencipta senarai bahan bagi assembly semasa. Jika assembly sedang aktif, ia akan menjadi BOM untuk assembly tersebut. Jika tidak, ia akan menjadi BOM bagi keseluruhan dokumen.&lt;/p&gt;&lt;p&gt;Objek BOM ialah objek dokumen yang menyimpan tetapan BOM anda. Ia juga merupakan objek hamparan, jadi anda boleh melihat BOM dengan mudah. Jika anda tidak mahu objek BOM disimpan sebagai objek dokumen, anda hanya perlu mengeksport dan membatalkan tugas tersebut.&lt;/p&gt;&lt;p&gt;Lajur ‘Index’, ‘Name’, ‘File Name’ dan ‘Quantity’ dijana secara automatik apabila recompute. Lajur ‘Description’ dan lajur tersuai tidak akan ditimpa.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Sendi</translation>
     </message>
@@ -1096,7 +1209,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
       <translation>Togol Tegar</translation>
     </message>
@@ -1106,12 +1219,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation type="unfinished">New Part</translation>
+      <translation>Bahagian Baharu</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>Masukkan bahagian baharu ke dalam assembly aktif. Titik asal bahagian baharu boleh diletakkan dalam assembly.</translation>
     </message>
   </context>
   <context>
@@ -1119,17 +1232,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>Gerakan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>Tambah gerakan ditetapkan</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>Padam gerakan yang dipilih</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
@@ -1139,29 +1252,29 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation Settings</source>
-      <translation type="unfinished">Simulation Settings</translation>
+      <translation>Tetapan Simulasi</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Mula</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Masa mula simulasi</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Tamat</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Masa tamat simulasi</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
@@ -1172,23 +1285,28 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Langkah masa</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation type="unfinished">Global error tolerance</translation>
+      <translation>Toleransi ralat global</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <source>Save the animation as a GIF or video file.</source>
+      <translation>Simpan animasi sebagai fail GIF atau video.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
       <source>Animation Player</source>
-      <translation type="unfinished">Animation Player</translation>
+      <translation>Pemain Animasi</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="236"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Bingkai per saat</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1196,44 +1314,44 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Toleransi</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="168"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>Jana</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="205"/>
       <source>Frame</source>
       <translation>Bingkai</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Langkah ke belakang</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>Main ke belakang</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Berhenti</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>Main ke hadapan</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Langkah ke hadapan</translation>
     </message>
   </context>
   <context>
@@ -1241,12 +1359,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation type="unfinished">New Assembly</translation>
+      <translation>Assembly Baharu</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
       <source>Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>“Mencipta objek assembly dalam dokumen semasa, atau dalam assembly aktif (jika ada). Hanya satu root assembly dibenarkan bagi setiap fail.</translation>
     </message>
   </context>
   <context>
@@ -1255,199 +1373,199 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation type="unfinished">Activate Assembly</translation>
+      <translation>Aktifkan Assembly</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation type="unfinished">Select an assembly to activate:</translation>
+      <translation>Pilih assembly untuk diaktifkan:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
       <source>Sets an assembly as the active one for editing.</source>
-      <translation type="unfinished">Sets an assembly as the active one for editing.</translation>
+      <translation>Menetapkan assembly sebagai aktif untuk penyuntingan.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
-      <translation type="unfinished">Fixed Joint</translation>
+      <translation>Sambungan Tetap</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
-      <translation type="unfinished">Revolute Joint</translation>
+      <translation>Sambungan Putar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
-      <translation type="unfinished">Creates a revolute joint allowing rotation around a single axis between selected parts</translation>
+      <translation>Mencipta sambungan putar yang membenarkan putaran sekitar satu paksi antara bahagian yang dipilih</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
-      <translation type="unfinished">Cylindrical Joint</translation>
+      <translation>Sambungan Silinder</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
-      <translation type="unfinished">Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</translation>
+      <translation>Mencipta sambungan silinder yang membenarkan putaran dan translasi sepanjang satu paksi antara bahagian yang dipasang</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
-      <translation type="unfinished">Slider Joint</translation>
+      <translation>Sambungan Gelangsar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation type="unfinished">Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</translation>
+      <translation>Mencipta sambungan gelangsar yang membenarkan pergerakan linear sepanjang satu paksi, tetapi menghalang putaran antara bahagian yang dipilih</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
-      <translation type="unfinished">Ball Joint</translation>
+      <translation>Sambungan Bebola</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
-      <translation type="unfinished">Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</translation>
+      <translation>Mencipta sambungan bebola yang menyambungkan bahagian pada satu titik, membenarkan pergerakan bebas selagi titik sambungan kekal bersentuhan</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
-      <translation type="unfinished">Distance Joint</translation>
+      <translation>Sambungan Jarak</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
+      <translation> Mencipta sambungan jarak (distance joint) yang menetapkan jarak antara objek yang dipilih  Mencipta salah satu daripada beberapa jenis sambungan berdasarkan pilihan. Contohnya, jarak 0 antara satah dan silinder akan mencipta sambungan tangen. Jarak 0 antara satah akan menjadikan kedua-duanya seplanar.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
-      <translation type="unfinished">Parallel Joint</translation>
+      <translation>Sambungan Selari</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
-      <translation type="unfinished">Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</translation>
+      <translation>Mencipta sambungan selari yang menjadikan paksi Z bagi sistem koordinat yang dipilih selari</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
-      <translation type="unfinished">Perpendicular Joint</translation>
+      <translation>Sambungan Serenjang</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
-      <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
+      <translation>Mencipta sambungan serenjang yang menjadikan paksi Z bagi sistem koordinat yang dipilih berserenjang</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
-      <translation type="unfinished">Angle Joint</translation>
+      <translation>Sambungan Sudut</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
+      <translation>Mencipta sambungan sudut yang menetapkan sudut antara paksi Z bagi sistem koordinat yang dipilih</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
-      <translation type="unfinished">Rack and Pinion Joint</translation>
+      <translation>Sambungan Rak dan Pinion</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
-      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
+      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Mencipta sambungan rak dan pinion yang menghubungkan bahagian dengan sambungan gelangsar kepada bahagian dengan sambungan putar&lt;/p&gt;&lt;p&gt;Pilih sistem koordinat yang sama seperti untuk sambungan putar dan sambungan gelangsar. Jejari pic menentukan nisbah pergerakan antara rak dan pinion.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
-      <translation type="unfinished">Gears Joint</translation>
+      <translation>Sambungan Gear</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Mencipta sambungan gear yang menghubungkan dua gear berputar bersama. Arah putaran adalah bertentangan.&lt;/p&gt;&lt;p&gt;Pilih sistem koordinat yang sama seperti sambungan putar.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
-      <translation type="unfinished">Belt Joint</translation>
+      <translation>Sambungan Tali Sawat</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Mencipta sambungan tali sawat yang menghubungkan 2 objek berputar bersama. Arah putaran adalah sama.&lt;/p&gt;&lt;p&gt;Pilih sistem koordinat yang sama seperti sambungan putar.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
-      <translation type="unfinished">Toggle Grounded</translation>
+      <translation>Togol Tetap</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
-      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
+      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
+      <translation>&lt;p&gt;Menogol keadaan tetap bagi sesuatu bahagian.&lt;/p&gt;&lt;p&gt;Menetapkan bahagian sebagai grounded akan mengunci kedudukannya secara kekal dalam assembly, menghalang sebarang pergerakan atau putaran.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateSimulation</name>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="67"/>
+      <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Simulation</source>
       <translation>Simulasi</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="72"/>
+      <location filename="../../../CommandCreateSimulation.py" line="77"/>
       <source>Creates a new simulation of the current assembly</source>
-      <translation type="unfinished">Creates a new simulation of the current assembly</translation>
+      <translation>Mencipta simulasi baharu bagi assembly semasa</translation>
     </message>
   </context>
   <context>
@@ -1455,30 +1573,30 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Paparan diperluaskan</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation type="unfinished">Creates an exploded view of the current assembly</translation>
+      <translation>Mencipta pandangan letupan bagi assembly semasa</translation>
     </message>
   </context>
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="65"/>
+      <location filename="../../../CommandInsertLink.py" line="64"/>
       <source>Insert Component</source>
       <translation>Masukkan Komponen</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="219"/>
+      <location filename="../../../CommandInsertLink.py" line="222"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Dimuatkan sebahagian</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="609"/>
+      <location filename="../../../CommandInsertLink.py" line="613"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Muatkan dokumen sepenuhnya</translation>
     </message>
   </context>
   <context>
@@ -1486,27 +1604,183 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Mesej solver</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
-      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
-      <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateSnapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
+      <source>Snapshot</source>
+      <translation type="unfinished">Snapshot</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
+      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
+      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
+      <source>Create Snapshot</source>
+      <translation type="unfinished">Create Snapshot</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
+      <source>Restore Snapshot</source>
+      <translation type="unfinished">Restore Snapshot</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation type="unfinished">Create Rigid Group</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblyLinkSelectLinked</name>
+    <message>
+      <location filename="../../Commands.cpp" line="101"/>
+      <source>Assembly</source>
+      <translation>Pemasangan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="102"/>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="103"/>
+      <source>Selects the linked assembly and switches to its original document</source>
+      <translation>Memilih assembly terpaut dan beralih ke dokumen asalnya</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectConflictingConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="165"/>
+      <source>Assembly</source>
+      <translation>Perhimpunan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="166"/>
+      <source>Select Conflicting Constraints</source>
+      <translation type="unfinished">Select Conflicting Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="167"/>
+      <source>Selects conflicting joints in the active assembly</source>
+      <translation>Memilih sambungan yang bercanggah dalam assembly aktif</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectRedundantConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="200"/>
+      <source>Assembly</source>
+      <translation>Perhimpunan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="201"/>
+      <source>Select Redundant Constraints</source>
+      <translation type="unfinished">Select Redundant Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="202"/>
+      <source>Selects redundant joints in the active assembly</source>
+      <translation>Memilih sambungan yang berlebihan dalam assembly aktif</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectMalformedConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="233"/>
+      <source>Assembly</source>
+      <translation>Perhimpunan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="234"/>
+      <source>Select Malformed Constraints</source>
+      <translation type="unfinished">Select Malformed Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="235"/>
+      <source>Selects malformed joints in the active assembly</source>
+      <translation>Memilih sambungan yang tidak sah dalam assembly aktif</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectComponentsWithDoFs</name>
+    <message>
+      <location filename="../../Commands.cpp" line="267"/>
+      <source>Assembly</source>
+      <translation>Perhimpunan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="268"/>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="269"/>
+      <source>Selects unconstrained components in the active assembly</source>
+      <translation>Memilih komponen yang tidak dikekang dalam assembly aktif</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectJointsOfComponent</name>
+    <message>
+      <location filename="../../Commands.cpp" line="310"/>
+      <source>Assembly</source>
+      <translation>Perhimpunan</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="311"/>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="312"/>
+      <source>Selects all joints referencing the selected component</source>
+      <translation>Memilih semua sambungan yang merujuk kepada komponen yang dipilih</translation>
     </message>
   </context>
 </TS>

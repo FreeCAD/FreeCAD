@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Перетворити на точки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Перетворює на точки</translation>
     </message>
   </context>
   <context>
@@ -29,13 +29,13 @@
     <message>
       <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Експортувати точки…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="152"/>
       <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
-      <translation>Експорт хмари точок</translation>
+      <translation>Експортує хмару точок</translation>
     </message>
   </context>
   <context>
@@ -48,12 +48,12 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Імпортувати точки…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Imports a point cloud</source>
-      <translation>Імпорт хмари точок</translation>
+      <translation>Імпортує хмару точок</translation>
     </message>
   </context>
   <context>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Об'єднати хмари точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Об'єднує кілька хмар точок в одну</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Cut Point Cloud</source>
-      <translation type="unfinished">Cut Point Cloud</translation>
+      <translation>Вирізати хмару точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Cuts a point cloud with a selected polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a selected polygon</translation>
+      <translation>Вирізає частину хмари точок вибраним багатокутником</translation>
     </message>
   </context>
   <context>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Structured Point Cloud</source>
-      <translation type="unfinished">Structured Point Cloud</translation>
+      <translation>Структурована хмара точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
-      <translation type="unfinished">Converts points to a structured point cloud</translation>
+      <translation>Перетворює точки на структуровану хмару точок</translation>
     </message>
   </context>
   <context>
@@ -120,13 +120,13 @@
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Convert to points</source>
-      <translation>Конвертувати в точки</translation>
+      <translation>Перетворити на точки</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="487"/>
       <location filename="../../ViewProvider.cpp" line="655"/>
       <source>Cut points</source>
-      <translation>Точки розрізу</translation>
+      <translation>Вирізати точки</translation>
     </message>
   </context>
   <context>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII Points Import</source>
-      <translation type="unfinished">ASCII Points Import</translation>
+      <translation>Імпорт точок ASCII</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -174,44 +174,44 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Спеціальні рядки</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Перший рядок</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation type="unfinished">Cluster by lines starting with</translation>
+      <translation>Групувати за рядками, що починаються з</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with</source>
-      <translation type="unfinished">Ignore lines starting with</translation>
+      <translation>Ігнорувати рядки, що починаються з</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point Format</source>
-      <translation type="unfinished">Point Format</translation>
+      <translation>Формат точки</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Роздільник чисел</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation type="unfinished">Points format</translation>
+      <translation>Формат точок</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block</source>
-      <translation type="unfinished">Next block</translation>
+      <translation>Наступний блок</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
@@ -225,14 +225,14 @@
       <location filename="../../DlgPointsRead.ui" line="250"/>
       <location filename="../../DlgPointsRead.ui" line="286"/>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (нормальний вектор)</translation>
+      <translation>I,J,K (вектор нормалі)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="219"/>
       <location filename="../../DlgPointsRead.ui" line="255"/>
       <location filename="../../DlgPointsRead.ui" line="291"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (нормальний вектор 2D)</translation>
+      <translation>I,K (вектор нормалі 2D)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="224"/>
@@ -246,12 +246,12 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (значення сірого)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Кількість рядків попереднього перегляду</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -265,22 +265,22 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="168"/>
       <source>Point formats</source>
-      <translation>Формат точок</translation>
+      <translation>Формати точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Points not at Origin</source>
-      <translation>Вказує не на джерело</translation>
+      <translation>Точки не в початку координат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>Габаритний прямокутник імпортованих точок не містить початку координат. Перемістити його в початок координат?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Distance</source>
-      <translation>Відстань Х</translation>
+      <translation>Відстань</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Інструменти точок</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../../Init.py" line="35"/>
       <source>Point formats</source>
-      <translation>Формат точок</translation>
+      <translation>Формати точок</translation>
     </message>
   </context>
 </TS>

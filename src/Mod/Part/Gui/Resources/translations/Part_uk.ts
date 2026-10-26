@@ -2736,7 +2736,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>Вибрати</translation>
     </message>
@@ -2863,48 +2863,48 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>Вибір…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation type="unfinished">Creating extrusion failed.
 No shape could be extruded.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Не вдалося створити видавлювання.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Не вдалося створити видавлювання.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>Обʼєкт не знайдено: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Не вибрано форм для видавлювання.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2913,12 +2913,12 @@ No shape could be extruded.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>Невідома помилка</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2927,17 +2927,17 @@ No shape could be extruded.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Режим напрямку передбачає використання ребра, але ребро не прив'язано.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Вектор напрямку видавлювання має нульову довжину. Він має бути ненульовим.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Загальна довжина видавлювання дорівнює нулю (length1 == -length2). Вона має бути ненульовою.</translation>
     </message>
@@ -7731,7 +7731,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Більше не показувати це вікно</translation>
     </message>
   </context>
   <context>
@@ -7982,7 +7982,7 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation>Вибрати об'єкт точок</translation>
     </message>
@@ -8025,7 +8025,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2672"/>
       <source>Path Link Array</source>
-      <translation type="unfinished">Path Link Array</translation>
+      <translation>Масив посилань уздовж траєкторії</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
@@ -8043,7 +8043,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2707"/>
       <source>Point Link Array</source>
-      <translation type="unfinished">Point Link Array</translation>
+      <translation>Масив посилань у точках</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
@@ -8136,12 +8136,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
       <source>Path Link Array</source>
-      <translation type="unfinished">Path Link Array</translation>
+      <translation>Масив посилань уздовж траєкторії</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
       <source>Point Link Array</source>
-      <translation type="unfinished">Point Link Array</translation>
+      <translation>Масив посилань у точках</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>

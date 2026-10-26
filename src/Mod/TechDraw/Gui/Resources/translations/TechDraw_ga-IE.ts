@@ -9353,7 +9353,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Page</source>
       <translation>Leathanach</translation>
     </message>
@@ -9361,7 +9361,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Template</source>
       <translation>Teimpléad</translation>
     </message>
@@ -9369,7 +9369,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>Amharc</translation>
     </message>
@@ -9377,7 +9377,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>View</source>
       <translation>Amharc</translation>
     </message>
@@ -9385,7 +9385,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>Roinn</translation>
     </message>
@@ -9393,7 +9393,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Section</source>
       <translation>Roinn</translation>
     </message>
@@ -9401,7 +9401,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Detail</source>
       <translation>Mionsonraí</translation>
     </message>
@@ -9409,7 +9409,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>ActiveView</source>
       <translation>Radharc Gníomhach</translation>
     </message>
@@ -9417,7 +9417,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Annotation</source>
       <translation>Anótáil</translation>
     </message>
@@ -9425,7 +9425,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Image</source>
       <translation>Íomhá</translation>
     </message>
@@ -9433,7 +9433,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Symbol</source>
       <translation>Siombail</translation>
     </message>
@@ -9441,7 +9441,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Draft</source>
       <translation>Dréacht</translation>
     </message>
@@ -9449,7 +9449,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>LeaderLine</source>
       <translation>Líne Ceannaire</translation>
     </message>
@@ -9457,7 +9457,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
       <translation>Balún</translation>
     </message>
@@ -9465,7 +9465,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Dimension</source>
       <translation>Toise</translation>
     </message>
@@ -9473,7 +9473,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Extent</source>
       <translation>Méid</translation>
     </message>
@@ -9481,7 +9481,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>Hatch</source>
       <translation>Haiste</translation>
     </message>
@@ -9489,7 +9489,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="76"/>
+      <location filename="../../../App/DrawView.cpp" line="77"/>
       <source>GeomHatch</source>
       <translation>Haiste gheoiméadrach</translation>
     </message>
@@ -9667,14 +9667,8 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="49"/>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
       <source>Offset Vertex</source>
       <translation>Fritháireamh Buaicphointe</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>Cruthaíonn sé fritháireamh ó bhuaicphointe amháin roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -9973,19 +9967,6 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_PositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>Radharc na Rannóige Seasamh</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Ailíníonn sé an radharc alt roghnaithe lena radharc foinse go horthagónach nó an imeall roghnaithe san radharc alt leis an mbuaicphointe roghnaithe san radharc bun</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="228"/>
@@ -10103,17 +10084,17 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="101"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
       <translation>Fiarlán</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
       <translation>Simplí</translation>
     </message>
@@ -10177,7 +10158,7 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -10237,19 +10218,6 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="77"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Cruthaíonn sé toise faid le radharc aicsiniméadrach, ag baint úsáide as imill roghnaithe nó péirí buaicphointí chun treo agus tomhas a shainiú</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_ExtensionVertexAtIntersection</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Buaicphointí Trasnaithe Cosmaideacha</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>Cuireann buaicphointí cosmaideacha leis ag trasnú na n-imeall roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -10401,6 +10369,45 @@ go bhfuil dialóg tascanna oscailte ann.</translation>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Quadrant Vertices</source>
       <translation>Buaicphointí na gCeathrúnach</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>Amharc Rannóige a Shuíomh</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>Déanann sé an radharc trasghearrtha roghnaithe a ailíniú go hortagónach leis an radharc foinse, nó ailíníonn sé an imeall roghnaithe sa radharc trasghearrtha leis an mbarrphointe roghnaithe sa bhunradharc</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Buaicphointí Trasnaithe Cosmaideacha</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>Cuireann sé veirteicseanna cosmaideacha ag crosbhealaí na n-imill roghnaithe</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Fritháireamh Buaicphointe</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>Cruthaíonn sé fritháireamh ó bhuaicphointe amháin atá roghnaithe</translation>
     </message>
   </context>
   <context>
