@@ -60,7 +60,7 @@
     <text id="creator_label" x="80.5" y="3.6">Wykonał:</text>
     <text id="document_type_label" x="0.5" y="27.6">Rodzaj dokumentu:</text>
     <text id="document_status_label" x="0.5" y="39.6">Stan dokumentu:</text>
-    <text id="paper_size_label" x="80.5" y="39.6">Paper size:</text>
+    <text id="paper_size_label" x="80.5" y="39.6">Format:</text>
   </g>
   <g id="title_block_data_fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
     <text id="legal_owner_1_data_field" x="160" y="9.1" freecad:editable="legal_owner_1" freecad:autofill="organization" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan> </tspan></text>
