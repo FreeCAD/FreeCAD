@@ -588,9 +588,7 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
         display += i;
     }
 
-    propName = display;
-
-    QString str = QApplication::translate("App::Property", propName.toUtf8());
+    QString str = QApplication::translate("App::Property", display.toUtf8());
     displayText = str;
 }
 
