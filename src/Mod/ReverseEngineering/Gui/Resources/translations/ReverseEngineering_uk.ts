@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Апроксимує циліндр</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="142"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>Апроксимує площину</translation>
     </message>
   </context>
   <context>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>Поліноміальна поверхня</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>Апроксимує поліноміальну поверхню</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>Апроксимує сферу</translation>
     </message>
   </context>
   <context>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>Апроксимувати B-сплайнову поверхню…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>Апроксимує B-сплайнову поверхню</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Полілінія з межі сітки…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Створює полілінію з меж сітки</translation>
     </message>
   </context>
   <context>
@@ -114,17 +114,17 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Пуассон…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>Виконує реконструкцію поверхні методом Пуассона</translation>
     </message>
   </context>
   <context>
@@ -132,17 +132,17 @@
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Сегментація сітки…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Створює окремі сегменти сітки за типами поверхонь</translation>
     </message>
   </context>
   <context>
@@ -150,17 +150,17 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>З компонентів</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>Створює сегменти сітки з компонентів</translation>
     </message>
   </context>
   <context>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>Ручна сегментація…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>Створює сегменти сітки вручну</translation>
     </message>
   </context>
   <context>
@@ -186,22 +186,22 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>Структуровані хмари точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>Тріангулює структуровані хмари точок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Триангуляція хмар структурованих точок</translation>
+      <translation>Тріангуляція структурованих хмар точок</translation>
     </message>
   </context>
   <context>
@@ -209,48 +209,48 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
-      <translation>Розмістити площину</translation>
+      <translation>Апроксимувати площину</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
-      <translation>Розмістити циліндр</translation>
+      <translation>Апроксимувати циліндр</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
-      <translation>Розмістити сферу</translation>
+      <translation>Апроксимувати сферу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
-      <translation>Розмістити поліноміальну поверхню</translation>
+      <translation>Апроксимувати поліноміальну поверхню</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>
       <source>View triangulation</source>
-      <translation>Переглянути тріангуляцію</translation>
+      <translation>Тріангулювати хмару точок</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="160"/>
       <source>Placement</source>
-      <translation>Розміщення</translation>
+      <translation>Змінити розміщення</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <source>Fit B-spline</source>
-      <translation>Розмістити B-сплайн</translation>
+      <translation>Апроксимувати B-сплайн</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="87"/>
       <source>Poisson reconstruction</source>
-      <translation>Реконструкція Пуассона</translation>
+      <translation>Реконструювати поверхню методом Пуассона</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="265"/>
       <source>Segmentation</source>
-      <translation>Сегментація</translation>
+      <translation>Сегментувати</translation>
     </message>
   </context>
   <context>
@@ -259,28 +259,28 @@
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation>Кут</translation>
+      <translation>Ступінь</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
       <location filename="../../FitBSplineSurface.ui" line="122"/>
       <source>Control points</source>
-      <translation>Контрольні точки</translation>
+      <translation>Керуючі точки</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation type="unfinished">Fit B-Spline Surface</translation>
+      <translation>Апроксимація B-сплайновою поверхнею</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>U-Direction</source>
-      <translation type="unfinished">U-Direction</translation>
+      <translation>Напрямок U</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>V-Direction</source>
-      <translation type="unfinished">V-Direction</translation>
+      <translation>Напрямок V</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -295,22 +295,22 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation>Розмірний фактор</translation>
+      <translation>Коефіцієнт розміру</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
       <source>User-defined u/v directions</source>
-      <translation>Користувацькі u / v напрямки</translation>
+      <translation>Власні напрямки u/v</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create Placement</source>
-      <translation type="unfinished">Create Placement</translation>
+      <translation>Створити розміщення</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total weight</source>
-      <translation type="unfinished">Total weight</translation>
+      <translation>Загальна вага</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -320,7 +320,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
       <source>Length of gradient</source>
-      <translation>Довжина градієнту</translation>
+      <translation>Довжина градієнта</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="305"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="334"/>
       <source>Curvature variation</source>
-      <translation>Варіанти кривизни</translation>
+      <translation>Варіація кривизни</translation>
     </message>
   </context>
   <context>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="216"/>
       <source>Select a single placement object to get the local orientation.</source>
-      <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
+      <translation>Виберіть один об'єкт розміщення, щоб отримати локальну орієнтацію.</translation>
     </message>
   </context>
   <context>
@@ -357,7 +357,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Пуассона</translation>
+      <translation>Пуассон</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -372,12 +372,12 @@
     <message>
       <location filename="../../Poisson.ui" line="46"/>
       <source>Solver divide</source>
-      <translation>Вирішувач поділу</translation>
+      <translation>Поділ розв'язувача</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation>Зразків на вузол</translation>
+      <translation>Вибірок на вузол</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
@@ -397,17 +397,17 @@
     <message>
       <location filename="../../Command.cpp" line="82"/>
       <source>Select a point cloud.</source>
-      <translation type="unfinished">Select a point cloud.</translation>
+      <translation>Виберіть хмару точок.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Select a point cloud or mesh.</source>
-      <translation type="unfinished">Select a point cloud or mesh.</translation>
+      <translation>Виберіть хмару точок або сітку.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>Select a single point cloud.</source>
-      <translation type="unfinished">Select a single point cloud.</translation>
+      <translation>Виберіть одну хмару точок.</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@
     <message>
       <location filename="../../Command.cpp" line="671"/>
       <source>View triangulation failed</source>
-      <translation>Перегляд непрорахованими тріангуляції</translation>
+      <translation>Не вдалося виконати тріангуляцію</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Сегментація сітки</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation>Створити полігональну сітку з невикористаних трикутників</translation>
+      <translation>Створити сітку з невикористаних трикутників</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation>Створити сполуку</translation>
+      <translation>Створити складений об'єкт</translation>
     </message>
   </context>
   <context>
@@ -486,22 +486,22 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="88"/>
       <source>&lt; faces than</source>
-      <translation>&gt; граней, ніж</translation>
+      <translation>&lt; граней, ніж</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation type="unfinished">Manual Mesh Segmentation</translation>
+      <translation>Ручна сегментація сітки</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Вибрати трикутник</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
       <source>Select whole component</source>
-      <translation>Вибрати всі компоненти</translation>
+      <translation>Вибрати весь компонент</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
@@ -525,7 +525,7 @@
       <location filename="../../SegmentationManual.ui" line="188"/>
       <location filename="../../SegmentationManual.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>Точність</translation>
+      <translation>Допуск</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="155"/>
@@ -547,27 +547,27 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Параметри області</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Враховувати лише трикутники з нормалями до екрана</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Поважати лише видимі трикутники</translation>
+      <translation>Враховувати лише видимі трикутники</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation>Сегментація</translation>
+      <translation>Сегментувати</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation>Вирізати сегмент з сітки</translation>
+      <translation>Вирізати сегмент із сітки</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
@@ -588,27 +588,27 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>&amp;Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Surface Reconstruction</source>
-      <translation type="unfinished">Surface Reconstruction</translation>
+      <translation>Реконструкція поверхні</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Segmentation</source>
-      <translation>Сегментація</translation>
+      <translation>Сегментувати</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Approximation</source>
-      <translation type="unfinished">Approximation</translation>
+      <translation>Апроксимація</translation>
     </message>
   </context>
   <context>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation type="unfinished">Fit B-Spline Curve</translation>
+      <translation>Апроксимація B-сплайновою кривою</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>Рівновіддалена</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -696,7 +696,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation>Закрита крива</translation>
+      <translation>Замкнена крива</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
@@ -724,17 +724,17 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
-      <translation>Зворотнє проектування</translation>
+      <translation>Зворотна інженерія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation type="unfinished">Approximate B-Spline Curve…</translation>
+      <translation>Апроксимувати B-сплайнову криву…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation type="unfinished">Approximates a B-spline curve</translation>
+      <translation>Апроксимує B-сплайнову криву</translation>
     </message>
   </context>
   <context>

@@ -106,5 +106,6 @@
         <file>translations/Tux_lo.qm</file>
         <file>translations/Tux_he.qm</file>
         <file>translations/Tux_es-CO.qm</file>
+        <file>translations/Tux_en-GB.qm</file>
     </qresource>
 </RCC>

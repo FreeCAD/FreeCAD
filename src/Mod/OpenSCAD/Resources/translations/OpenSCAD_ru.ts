@@ -225,11 +225,6 @@
       <translation>Добавить элемент OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>Преобразовать рёбра в грани</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>Сначала выберите 3 объекта</translation>
@@ -432,6 +427,11 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
+      <translation>Преобразовать рёбра в грани</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
       <translation>Преобразовать рёбра в грани</translation>
     </message>
   </context>

@@ -2282,12 +2282,12 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1751"/>
       <source>Points: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Points: &lt;%1, %2, %3&gt;</translation>
+      <translation>Точки: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1758"/>
       <source>Neighbours: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Neighbours: &lt;%1, %2, %3&gt;</translation>
+      <translation>Соседние: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1764"/>

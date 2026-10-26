@@ -5683,72 +5683,72 @@ originally selected prior to opening this dialog</source>
       <translation>Список вибраних обʼєктів</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="657"/>
+      <location filename="../Selection/SelectionView.cpp" line="637"/>
       <source>Select Only</source>
       <translation>Виділити лише це</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="665"/>
+      <location filename="../Selection/SelectionView.cpp" line="645"/>
       <source>Zoom Fit</source>
       <translation>Вмістити у вид</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="649"/>
       <source>Go to Selection</source>
       <translation>Перейти до вибраного</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Mark to Recompute</source>
       <translation>Позначити для перерахунку</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Marks this object to be recomputed</source>
       <translation>Позначає цей об'єкт для перерахунку</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="676"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>To Python Console</source>
       <translation>У консоль Python</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="683"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Duplicate Subshape</source>
       <translation>Дублювати підформу</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="659"/>
+      <location filename="../Selection/SelectionView.cpp" line="639"/>
       <source>Selects only this object</source>
       <translation>Виділяє лише цей об'єкт</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="661"/>
+      <location filename="../Selection/SelectionView.cpp" line="641"/>
       <source>Deselect</source>
       <translation>Зняти виділення</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="643"/>
       <source>Deselects this object</source>
       <translation>Знімає виділення з цього об'єкта</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="647"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Виділяє об'єкт і вміщує його в 3D-виді</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="670"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Виділяє об'єкт і знаходить його в дереві</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="678"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>Показує цей об'єкт і його піделементи в консолі Python.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="685"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Створює в документі окрему копію цієї підформи</translation>
     </message>
@@ -14667,7 +14667,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1185"/>
+      <location filename="../Selection/SelectionView.cpp" line="1165"/>
       <source>Whole Object</source>
       <translation>Цілий об'єкт</translation>
     </message>
@@ -15099,27 +15099,27 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3588"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Визначає основний колір поверхні під освітленням. Відображає, як об'єкт рівномірно розсіює світло в усіх напрямках незалежно від кута огляду. Ця властивість найбільше впливає на колір матеріалу.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3598"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Визначає колір поверхні за непрямого рівномірного освітлення: як вона виглядає в сцені лише з навколишнім світлом, без спрямованого світла, затінення й відблисків</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3608"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Визначає колір і яскравість дзеркальних відблисків, що з'являються на блискучих або відбивних поверхнях, коли на них прямо падає світло. Для блискучих об'єктів задавайте яскраві кольори.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3618"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Визначає колір, який поверхня ніби випромінює як джерело світла незалежно від зовнішнього освітлення, тож об'єкт здається самосвітним. Установіть чорний, щоб вимкнути випромінювання.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3630"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Визначає розмір і різкість відблисків на поверхні. Більші значення дають малі різкі відблиски, менші — широкі м'які. Яскравість відблиску задає колір відблиску.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3642"/>
@@ -15132,27 +15132,27 @@ treated as shortcut key sequence 'F, F'.</source>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3954"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Визначає основний колір поверхні під освітленням. Відображає, як об'єкт рівномірно розсіює світло в усіх напрямках незалежно від кута огляду. Ця властивість найбільше впливає на колір матеріалу.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3964"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Визначає колір поверхні за непрямого рівномірного освітлення: як вона виглядає в сцені лише з навколишнім світлом, без спрямованого світла, затінення й відблисків</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3974"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Визначає колір і яскравість дзеркальних відблисків, що з'являються на блискучих або відбивних поверхнях, коли на них прямо падає світло. Для блискучих об'єктів задавайте яскраві кольори.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3984"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Визначає колір, який поверхня ніби випромінює як джерело світла незалежно від зовнішнього освітлення, тож об'єкт здається самосвітним. Установіть чорний, щоб вимкнути випромінювання.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="3996"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Визначає розмір і різкість відблисків на поверхні. Більші значення дають малі різкі відблиски, менші — широкі м'які. Яскравість відблиску задає колір відблиску.</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4008"/>

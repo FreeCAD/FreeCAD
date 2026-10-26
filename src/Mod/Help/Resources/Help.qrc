@@ -43,5 +43,6 @@
         <file>translations/Help_lo.qm</file>
         <file>translations/Help_he.qm</file>
         <file>translations/Help_es-CO.qm</file>
+        <file>translations/Help_en-GB.qm</file>
     </qresource>
 </RCC>

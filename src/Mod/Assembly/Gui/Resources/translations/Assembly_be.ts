@@ -1687,7 +1687,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1699,6 +1699,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <translation>Фіксуе бягучы стан зборкі (месца размяшчэння і бачнасць).
 Падвоеная пстрычка па аб'екце маментальнага здымка аднаўляе зборку да гэтага стану.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

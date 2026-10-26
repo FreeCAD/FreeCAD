@@ -12280,16 +12280,6 @@ Sprawdź swoją instalację FreeCAD lub wprowadź niestandardowy szablon w menu 
       <source>Converts any object to a BIM component</source>
       <translation>Convertir n'importe quel objet en un composant BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Usuń z grupy</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Supprimer cet objet de son groupe parent</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13912,6 +13902,19 @@ Do you want to proceed?</source>
       <translation>Usunięcie podstawy tej złożonej ściany zmieni jej kształt i zresetuje jej pozycję.
 
 Czy chcesz kontynuować?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Usuń z grupy</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Usuń ten obiekt z grupy nadrzędnej</translation>
     </message>
   </context>
   <context>

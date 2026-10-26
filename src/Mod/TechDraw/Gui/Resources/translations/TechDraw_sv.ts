@@ -9345,7 +9345,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Page</source>
       <translation>Sida</translation>
     </message>
@@ -9353,7 +9353,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Template</source>
       <translation>Mall</translation>
     </message>
@@ -9361,7 +9361,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>Visa</translation>
     </message>
@@ -9369,7 +9369,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>View</source>
       <translation>Visa</translation>
     </message>
@@ -9377,7 +9377,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>Snittvy</translation>
     </message>
@@ -9385,7 +9385,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Section</source>
       <translation>Snittvy</translation>
     </message>
@@ -9393,7 +9393,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Detail</source>
       <translation>Detalj</translation>
     </message>
@@ -9401,7 +9401,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>ActiveView</source>
       <translation>Aktiv vy</translation>
     </message>
@@ -9409,7 +9409,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Annotation</source>
       <translation>Anteckning</translation>
     </message>
@@ -9417,7 +9417,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Image</source>
       <translation>Bild</translation>
     </message>
@@ -9425,7 +9425,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Symbol</source>
       <translation>Symbol</translation>
     </message>
@@ -9433,7 +9433,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Draft</source>
       <translation>Utkast</translation>
     </message>
@@ -9441,7 +9441,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>LeaderLine</source>
       <translation>Hänvisningslinje</translation>
     </message>
@@ -9449,7 +9449,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
       <translation>Ballong</translation>
     </message>
@@ -9457,7 +9457,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Dimension</source>
       <translation>Mått</translation>
     </message>
@@ -9465,7 +9465,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Extent</source>
       <translation>Totalmått</translation>
     </message>
@@ -9473,7 +9473,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>Hatch</source>
       <translation>Skraffering</translation>
     </message>
@@ -9481,7 +9481,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="76"/>
+      <location filename="../../../App/DrawView.cpp" line="77"/>
       <source>GeomHatch</source>
       <translation>GeomHatch</translation>
     </message>
@@ -9659,14 +9659,8 @@ en uppgiftsdialog är öppen.</translation>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="49"/>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
       <source>Offset Vertex</source>
       <translation>Förskjut hörnpunkt</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>Skapar en förskjuten hörnpunkt från en markerad hörnpunkt</translation>
     </message>
   </context>
   <context>
@@ -9965,19 +9959,6 @@ en uppgiftsdialog är öppen.</translation>
     </message>
   </context>
   <context>
-    <name>TechDraw_PositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>Placera snittvy</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Riktar in den markerade snittvyn ortogonalt mot dess källvy, eller den markerade kanten i snittvyn mot den markerade hörnpunkten i basvyn</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="228"/>
@@ -10095,17 +10076,17 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="101"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
       <translation>Sicksack</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
       <translation>Enkel</translation>
     </message>
@@ -10169,7 +10150,7 @@ en uppgiftsdialog är öppen.</translation>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -10229,19 +10210,6 @@ en uppgiftsdialog är öppen.</translation>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="77"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Skapar ett längdmått i en axonometrisk vy med markerade kanter eller hörnpunktspar som definierar riktning och mått</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_ExtensionVertexAtIntersection</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Kosmetiska skärningspunkter</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>Lägger till kosmetiska hörnpunkter i skärningspunkterna mellan markerade kanter</translation>
     </message>
   </context>
   <context>
@@ -10393,6 +10361,45 @@ en uppgiftsdialog är öppen.</translation>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Quadrant Vertices</source>
       <translation>Hörnpunkter i kvadrantpunkter</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>Placera sektionsvy</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>Justerar den valda sektionsvyn mot dess källvy ortogonalt eller den valda kanten i sektionsvyn mot den valda hörnpunkten i basvyn</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Kosmetiska skärningspunkter</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>Lägger till kosmetiska hörnpunkter vid skärningarna mellan valda kanter</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Förskjut hörnpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>Skapar en förskjutning från en vald hörnpunkt</translation>
     </message>
   </context>
   <context>

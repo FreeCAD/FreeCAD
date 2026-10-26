@@ -12115,16 +12115,6 @@ Comproveu la instal·lació de FreeCAD o proporcioneu una plantilla personalitza
       <source>Converts any object to a BIM component</source>
       <translation>Converteix qualsevol objecte a una component BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Elimina del grup</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Elimina aquest objecte del grup del seu pare</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13736,6 +13726,19 @@ Do you want to proceed?</source>
       <translation>Si elimineu la base d'aquesta paret complexa, se'n modificarà la forma i se'n reiniciarà la posició.
 
 Voleu continuar?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Elimina del grup</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Elimina aquest objecte del grup pare</translation>
     </message>
   </context>
   <context>

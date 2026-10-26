@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Array2D.ui" line="14"/>
       <source>2D Array</source>
-      <translation>Масив 2D</translation>
+      <translation>2D-масив</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="79"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Array3D.ui" line="14"/>
       <source>3D Array</source>
-      <translation>Масив 3D</translation>
+      <translation>3D-масив</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>Видалення призведе до видалення всього 2D вмісту.</translation>
+      <translation>Видалення призведе до видалення всього 2D-вмісту.</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation>Користувацький вигляд</translation>
+      <translation>Власний вигляд</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
@@ -246,22 +246,22 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse color</source>
-      <translation>Розсіяний колір</translation>
+      <translation>Дифузний колір</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Визначає основний колір поверхні під освітленням. Відображає, як об'єкт рівномірно розсіює світло в усіх напрямках незалежно від кута огляду. Ця властивість найбільше впливає на колір матеріалу.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
       <source>Ambient color</source>
-      <translation>Навколишній колір</translation>
+      <translation>Колір оточення</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Визначає колір поверхні за непрямого рівномірного освітлення: як вона виглядає в сцені лише з навколишнім світлом, без спрямованого світла, затінення й відблисків</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,17 +271,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Визначає колір, який поверхня ніби випромінює як джерело світла незалежно від зовнішнього освітлення, тож об'єкт здається самосвітним. Установіть чорний, щоб вимкнути випромінювання.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
       <source>Specular color</source>
-      <translation>Дзеркальний колір</translation>
+      <translation>Колір відблиску</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Визначає колір і яскравість дзеркальних відблисків, що з'являються на блискучих або відбивних поверхнях, коли на них прямо падає світло. Для блискучих об'єктів задавайте яскраві кольори.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Визначає розмір і різкість відблисків на поверхні. Більші значення дають малі різкі відблиски, менші — широкі м'які. Яскравість відблиску задає колір відблиску.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
-      <translation>Позначка: </translation>
+      <translation>Мітка: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
@@ -410,17 +410,17 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation>Директорія бібліотеки: </translation>
+      <translation>Каталог бібліотеки: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation>Підтека: </translation>
+      <translation>Підкаталог: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation>Підтека: </translation>
+      <translation>Підкаталог: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation>UID моделі: </translation>
+      <translation>UUID моделі: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -483,7 +483,7 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation>Типовий Матеріал</translation>
+      <translation>Типовий матеріал</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
@@ -506,7 +506,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
       <source>Use materials from external workbenches</source>
-      <translation>Використовувати матеріали із зовнішніх робочих просторів</translation>
+      <translation>Використовувати матеріали із зовнішніх робочих середовищ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="118"/>
@@ -521,32 +521,32 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation>Вбудовані картки FreeCAD будуть перераховані як доступні</translation>
+      <translation>Вбудовані картки FreeCAD буде показано як доступні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation>Використовувати матеріали, додані зовнішніми верстатами</translation>
+      <translation>Використовувати матеріали, додані зовнішніми робочими середовищами</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation>Картки з директорії налаштувань FreeCAD також перелічені як доступні</translation>
+      <translation>Картки з каталогу налаштувань FreeCAD також буде показано як доступні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation>Використовувати матеріали з директорії налаштувань матеріалів</translation>
+      <translation>Використовувати матеріали з каталогу налаштувань матеріалів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation>Картки матеріалів із вказаної директорії також будуть доступні</translation>
+      <translation>Картки матеріалів із вказаного каталогу також буде показано як доступні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation>Використовувати матеріали з директорії, вказаної користувачем</translation>
+      <translation>Використовувати матеріали з каталогу, вказаного користувачем</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
@@ -567,18 +567,18 @@
       <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation>Карти матеріалів будуть сортовані за їх ресурсами (розташуванням).
-Якщо прапорець не встановлений, сортуватимуться за назвою.</translation>
+      <translation>Картки матеріалів упорядковуються за ресурсами (розташуванням).
+Якщо прапорець знято, їх буде впорядковано за назвою.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
-      <translation>Сортування за ресурсами</translation>
+      <translation>Упорядкувати за ресурсами</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="202"/>
       <source>Material Selector</source>
-      <translation>Меню вибору матеріалу</translation>
+      <translation>Вибір матеріалу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="208"/>
@@ -602,7 +602,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../DlgSettingsMaterial.ui" line="256"/>
       <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
-      <translation>Показати порожні папки</translation>
+      <translation>Показати порожні теки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="269"/>
@@ -646,7 +646,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ImageEdit.cpp" line="195"/>
       <source>Select an image</source>
-      <translation>Обрати зображення</translation>
+      <translation>Вибрати зображення</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="207"/>
@@ -658,7 +658,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ImageEdit.cpp" line="208"/>
       <location filename="../../ImageEdit.cpp" line="224"/>
       <source>All files</source>
-      <translation>Всі файли</translation>
+      <translation>Усі файли</translation>
     </message>
   </context>
   <context>
@@ -712,7 +712,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
       <source>New Folder</source>
-      <translation>Нова папка</translation>
+      <translation>Нова тека</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="97"/>
@@ -732,7 +732,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>Перезаписати '%1'?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="221"/>
@@ -757,7 +757,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation>Збереження копії не рекомендується, оскільки це може порушити інші документи. Рекомендується зберегти як новий матеріал.</translation>
+      <translation>Не рекомендується зберігати копію, оскільки це може порушити роботу інших документів. Краще зберегти як новий матеріал.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="256"/>
@@ -816,7 +816,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation>Батьківський елемент</translation>
+      <translation>Батьківський матеріал</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -866,12 +866,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="188"/>
       <source>&amp;New</source>
-      <translation>Новий</translation>
+      <translation>&amp;Новий</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation>Успадковувати нове</translation>
+      <translation>Новий успадкований</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
@@ -921,7 +921,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation>Ця картка використовує старий формат і повинна бути збережена перед використанням</translation>
+      <translation>Ця картка має старий формат, і її потрібно зберегти перед використанням</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
@@ -1083,17 +1083,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>Відкрити URL-адресу продукту цього матеріалу в зовнішньому браузері</translation>
+      <translation>Відкриває URL-адресу продукту цього матеріалу в зовнішньому браузері</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation>Наявні карти матеріалів</translation>
+      <translation>Наявні картки матеріалів</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation>Відкрити наявну картку матеріалу</translation>
+      <translation>Відкриває наявну картку матеріалу</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
@@ -1128,7 +1128,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation>Зберегти цей матеріал як картку</translation>
+      <translation>Зберігає цей матеріал як картку</translation>
     </message>
   </context>
   <context>
@@ -1144,7 +1144,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
-      <translation>Верстат матеріалів</translation>
+      <translation>Робоче середовище Material</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
@@ -1167,7 +1167,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>Видалити '%1'?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="575"/>
@@ -1279,7 +1279,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
       <source>Status</source>
-      <translation>Статус</translation>
+      <translation>Стан</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="178"/>
@@ -1318,7 +1318,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation>Частота влучень</translation>
+      <translation>Частка влучань</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
@@ -1373,7 +1373,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>
       <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation>Невідоме виключення — перервано</translation>
+      <translation>Невідомий виняток — перервано</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="125"/>

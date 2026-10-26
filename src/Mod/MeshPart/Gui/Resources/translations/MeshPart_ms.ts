@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation type="unfinished">MeshPart</translation>
+      <translation>Bahagian Mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Keratan-rentas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Menerapkan keratan-rentas pada mesh</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Jaring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Lengkung pada jaring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Menerapkan keratan rentas pada jaring</translation>
     </message>
   </context>
   <context>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Jaring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Mesh daripada bentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation type="unfinished">Tessellate shape</translation>
+      <translation>Tesselasi bentuk</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Jaring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Mencipta keratan daripada mesh dan satah</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Keratan</translation>
     </message>
   </context>
   <context>
@@ -78,12 +78,12 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Jaring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Potong mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Potong dengan satah</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Keratan dengan satah</translation>
     </message>
   </context>
   <context>
@@ -109,67 +109,67 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Keratan rentas</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Satah panduan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Kedudukan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Jarak</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation type="unfinished">Sections</translation>
+      <translation>Keratan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation type="unfinished">On both sides</translation>
+      <translation>Di kedua-dua sisi</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation type="unfinished">Count</translation>
+      <translation>Kiraan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
       <source>Options</source>
-      <translation type="unfinished">Options</translation>
+      <translation>Pilihan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Sambungkan tepi jika jarak kurang daripada</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="390"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Kegagalan</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Tutup wayar</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="361"/>
@@ -192,17 +192,17 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="362"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Batal</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Mesh yang dipilih tidak betul</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Tiada titik dipilih</translation>
     </message>
   </context>
   <context>
@@ -210,61 +210,61 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Lengkung pada jaring</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Tekan “Start”, kemudian pilih titik pada mesh; apabila bilangan titik yang mencukupi telah ditetapkan, klik kanan dan pilih “Create”. Ulang proses ini untuk menghasilkan spline tambahan. Tutup panel tugas ini untuk menyelesaikan operasi.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Arahan ini hanya berfungsi dengan objek Mesh, bukan permukaan atau muka biasa. Untuk menukar objek kepada mesh, gunakan alat dalam Workbench Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Wayar</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Toleransi snap kepada bucu</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Ambang pemisahan</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation type="unfinished">Spline Approximation</translation>
+      <translation>Pendekatan spline</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Toleransi terhadap mesh</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Keterusan</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Darjah maksimum lengkung</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation type="unfinished">Start</translation>
+      <translation>Mula</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
-      <translation type="unfinished">Tessellation</translation>
+      <translation>Tesselasi</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
@@ -282,27 +282,27 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Gunakan penjana mesh standard</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Penyimpangan linear maksimum bagi bahagian mesh daripada permukaan objek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Penyimpangan sudut maksimum bagi bahagian mesh terhadap bahagian seterusnya</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
       <source>Relative surface deviation</source>
-      <translation type="unfinished">Relative surface deviation</translation>
+      <translation>Penyimpangan relatif permukaan</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Mesh akan mengambil warna permukaan daripada objek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -383,11 +383,6 @@ The smallest value is 0.</translation>
       <translation type="unfinished">Use the Netgen mesher</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Kehalusan:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation type="unfinished">Very coarse</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 A value in the range of 0.1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,8 +490,8 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation type="unfinished">No active document</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>
@@ -569,7 +569,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation type="unfinished">MeshPart</translation>
+      <translation>Bahagian Mesh</translation>
     </message>
   </context>
   <context>

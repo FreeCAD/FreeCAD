@@ -1636,7 +1636,7 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1647,6 +1647,9 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Gabhann sé staid reatha an tionóil (socrúcháin agus infheictheacht). Trí chliceáil faoi dhó ar an réad Roghbhlúire, cuirtear an tionól ar ais sa staid sin.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

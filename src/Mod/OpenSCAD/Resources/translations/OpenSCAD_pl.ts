@@ -226,11 +226,6 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
       <translation>Dodaj element OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>Przekształca krawędzie na ściany</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>Najpierw wybierz 3 obiekty</translation>
@@ -435,6 +430,11 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
       <translation>Przekształć krawędzie na ściany</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
+      <translation>Przekształca krawędzie na ściany</translation>
     </message>
   </context>
   <context>

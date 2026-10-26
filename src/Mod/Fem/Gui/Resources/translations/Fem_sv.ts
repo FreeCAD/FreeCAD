@@ -6663,16 +6663,6 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Lägg till data från</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>Datavisualiseringar</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>Olika visualiseringar för att visa efterbehandlingsdata i</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>Exportera till CSV</translation>
@@ -8831,9 +8821,6 @@ Lämna tomt för att använda den körbara standardfilen för Python</translatio
       <source>Shape-Based Refinement</source>
       <translation>Formbaserad förfining</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -9002,6 +8989,19 @@ Lämna tomt för att använda den körbara standardfilen för Python</translatio
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation>Väljare för referens till slavgeometri</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>Datavisualiseringar</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Olika visualiseringar för att visa efterbehandlingsdata i</translation>
     </message>
   </context>
   <context>

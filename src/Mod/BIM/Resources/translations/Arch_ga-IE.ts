@@ -12137,16 +12137,6 @@ Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin 
       <source>Converts any object to a BIM component</source>
       <translation>Tiontaíonn sé aon réad go comhpháirt BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Bain den Ghrúpa</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Baintear an réad seo as a ghrúpa tuismitheora</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13758,6 +13748,19 @@ Do you want to proceed?</source>
       <translation>Má bhaintear bun an bhalla chasta seo, athrófar a chruth agus athshocrófar a shuíomh.
 
 Ar mhaith leat dul ar aghaidh?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Bain ón nGrúpa</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Baineann an réad seo ón ngrúpa tuismitheora</translation>
     </message>
   </context>
   <context>

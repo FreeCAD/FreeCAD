@@ -12137,16 +12137,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <source>Converts any object to a BIM component</source>
       <translation>ປ່ຽນວັດຖຸໃດໆໃຫ້ເປັນສ່ວນປະກອບ BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>ເອົາອອກຈາກກຸ່ມ</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>ເອົາວັດຖຸນີ້ອອກຈາກກຸ່ມຫຼັກຂອງມັນ</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13754,6 +13744,19 @@ select both the view and the page before executing the command.</source>
 
 Do you want to proceed?</source>
       <translation>ການລົບຖານຂອງຝາທີ່ຊັບຊ້ອນນີ້ຈະປ່ຽນແປງຮູບຊົງ ແລະ ຕັ້ງຄ່າຕຳແໜ່ງໃໝ່. ທ່ານຕ້ອງການດຳເນີນການຕໍ່ບໍ່?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

@@ -6626,7 +6626,7 @@ Python-modulen ladybug eller pysolar krävs.</translation>
       <location filename="../../ArchComponent.py" line="2704"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
-      <translation>Ny objekt</translation>
+      <translation>Ny egenskap</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2741"/>
@@ -12145,16 +12145,6 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under Inställn
       <source>Converts any object to a BIM component</source>
       <translation>Konverterar valfritt objekt till en BIM-komponent</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Ta bort från grupp</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Tar bort detta objekt från dess överordnade grupp</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13766,6 +13756,19 @@ Do you want to proceed?</source>
       <translation>Om basen för den här komplexa väggen tas bort ändras dess form och positionen återställs.
 
 Vill du fortsätta?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Ta bort från grupp</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Tar bort detta objekt från dess överordnade grupp</translation>
     </message>
   </context>
   <context>

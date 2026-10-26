@@ -1634,7 +1634,7 @@ Nota: por ahora solo selecciona las piezas no conectadas, no las piezas restring
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Nota: por ahora solo selecciona las piezas no conectadas, no las piezas restring
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Captura el estado actual del ensamble (posicionamientos y visibilidad). Al hacer doble clic en el objeto instantánea se restaura el ensamble a ese estado.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

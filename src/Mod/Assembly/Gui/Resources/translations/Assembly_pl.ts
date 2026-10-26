@@ -1666,7 +1666,7 @@ Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zd
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1677,6 +1677,9 @@ Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zd
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Przechwytuje bieżący stan złożenia (umiejscowienia i widoczności). Dwukrotne kliknięcie na obiekcie Zrzutu przywraca złożenie do tego stanu.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

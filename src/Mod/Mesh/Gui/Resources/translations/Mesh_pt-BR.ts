@@ -1470,7 +1470,8 @@ to a smoother appearance.
 </source>
       <translation>Se esta opção estiver ativada, será usado sombreamento Phong; caso contrário, sombreamento plano. O sombreamento define a aparência das superfícies.
 
-Com sombreamento plano, as normais da superfície não são definidas por vértice, o que resulta em uma aparência irreal para superfícies curvas, enquanto o sombreamento Phong produz uma aparência mais suave.</translation>
+Com sombreamento plano, as normais da superfície não são definidas por vértice, o que resulta em uma aparência irreal para superfícies curvas, enquanto o sombreamento Phong produz uma aparência mais suave.
+</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="369"/>
@@ -1689,17 +1690,17 @@ Com sombreamento plano, as normais da superfície não são definidas por vérti
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation>Conversão em malhas</translation>
+      <translation>Geração de malha</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation>Tamanho máximo do elemento (0.0 = Auto)</translation>
+      <translation>Tamanho máximo do elemento (0,0 = Automático)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation>Tamanho mínimo do elemento (0.0 = Auto)</translation>
+      <translation>Tamanho mínimo do elemento (0,0 = Automático)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>

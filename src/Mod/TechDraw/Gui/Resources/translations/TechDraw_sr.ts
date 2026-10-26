@@ -3308,12 +3308,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="2174"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+      <translation>Изабрани смер одступа %1 степени од ортогоналног смера. Замени изабрани смер са %2?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2179"/>
       <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
+      <translation>Смер је близу ортогоналном</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1422"/>
@@ -4199,7 +4199,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskDimRepair.cpp" line="125"/>
       <source>This will change the dimension&apos;s owner view. Continue?</source>
-      <translation type="unfinished">This will change the dimension&apos;s owner view. Continue?</translation>
+      <translation>Ovo će koti promeniti vlasnički pogled. Nastavi?</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="140"/>
@@ -4803,7 +4803,7 @@ Increase the limit if necessary.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="570"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation>Изабери не-конфликтну комбинацију типки на тастури јер неке комбинације типки које диктира ОС и стил-а навигације могу бити у сукобу са унапред задатим модификаторским типкама.</translation>
+      <translation>Изабери не-конфликтну комбинацију тастера на тастури јер неке комбинације тастера које диктира ОС и стил-а навигације могу бити у сукобу са унапред задатим модификаторским тастерима.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="584"/>
@@ -6090,7 +6090,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
-      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+      <translation>Постави поглед у његов поравнати положај када се он налази унутар овог дела величине погледа у односу на циљ поравнања.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
@@ -6338,7 +6338,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
       <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
-      <translation type="unfinished">Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</translation>
+      <translation>Исцртава темена и ивице у константној величини на екрану, уместо да их скалира заједно са цртежом. Ова опција се такође може укључити или искључити путем контекстуалног менија цртежа.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
@@ -6675,7 +6675,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="77"/>
       <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
-      <translation type="unfinished">The centerline is positioned at the center of the combined bounding box of the selected elements</translation>
+      <translation>Осна линија је постављена у средиште правоугаоног оквира око изабраних елемената</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="95"/>
@@ -7625,12 +7625,12 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
       <source>Override Angles</source>
-      <translation type="unfinished">Override Angles</translation>
+      <translation>Измени углове</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>Подеси да угао помоћне котне линије одговара изабраној ивици или теменима</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
@@ -7641,17 +7641,17 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>Подеси да угао котне линије одговара изабраној ивици или теменима</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>
       <source>Resets the dimension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the dimension line angle to the default orthographic value</translation>
+      <translation>Врати угао котне линије на почетну ортогоналну вредност</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="423"/>
       <source>Resets the extension line angle to the default orthographic value</source>
-      <translation type="unfinished">Resets the extension line angle to the default orthographic value</translation>
+      <translation>Врати угао помоћне котне линије на почетну ортогоналну вредност</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="390"/>
@@ -9340,7 +9340,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Page</source>
       <translation>Страна</translation>
     </message>
@@ -9348,7 +9348,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>Template</source>
       <translation>Празни цртеж</translation>
     </message>
@@ -9356,7 +9356,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>Приказ</translation>
     </message>
@@ -9364,7 +9364,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>View</source>
       <translation>Приказ</translation>
     </message>
@@ -9372,7 +9372,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>Пресек</translation>
     </message>
@@ -9380,7 +9380,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Section</source>
       <translation>Пресек</translation>
     </message>
@@ -9388,7 +9388,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Detail</source>
       <translation>Детаљ</translation>
     </message>
@@ -9396,7 +9396,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>ActiveView</source>
       <translation>Активни поглед</translation>
     </message>
@@ -9404,7 +9404,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Annotation</source>
       <translation>Напомена</translation>
     </message>
@@ -9412,7 +9412,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Image</source>
       <translation>Слика</translation>
     </message>
@@ -9420,7 +9420,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Symbol</source>
       <translation>Ознака шава</translation>
     </message>
@@ -9428,7 +9428,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Draft</source>
       <translation>Закошење</translation>
     </message>
@@ -9436,7 +9436,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>LeaderLine</source>
       <translation>Показна линија</translation>
     </message>
@@ -9444,7 +9444,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
       <translation>Позициона ознака</translation>
     </message>
@@ -9452,7 +9452,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Dimension</source>
       <translation>Кота</translation>
     </message>
@@ -9460,7 +9460,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Extent</source>
       <translation>Опсег</translation>
     </message>
@@ -9468,7 +9468,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>Hatch</source>
       <translation>Шрафура</translation>
     </message>
@@ -9476,7 +9476,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="76"/>
+      <location filename="../../../App/DrawView.cpp" line="77"/>
       <source>GeomHatch</source>
       <translation>Геометријска шрафура</translation>
     </message>
@@ -9654,14 +9654,8 @@ there is an open task dialog.</source>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="49"/>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
       <source>Offset Vertex</source>
       <translation>Одмакнута тачка</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
-      <source>Creates an offset from one selected vertex</source>
-      <translation>Направи тачку одмакнуту од изабране тачке</translation>
     </message>
   </context>
   <context>
@@ -9960,19 +9954,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDraw_PositionSectionView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
-      <source>Position Section View</source>
-      <translation>Позиционирај пресек</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
-      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation>Поравнај изабрани пресека ортогонално са његовим изворним погледом или неку изабрану ивицу пресека са изабраним теменом неког погледа</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="228"/>
@@ -9997,7 +9978,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/Preferences.cpp" line="470"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
-      <translation type="unfinished">The LineStandard parameter is invalid. Using zero instead.</translation>
+      <translation>Параметар LineStandard је неважећи. Користиће се нула уместо њега.</translation>
     </message>
   </context>
   <context>
@@ -10089,17 +10070,17 @@ there is an open task dialog.</source>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="101"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
       <translation>Цикцак</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
       <translation>Једноставно</translation>
     </message>
@@ -10163,7 +10144,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -10223,19 +10204,6 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="77"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Направи дужинску коту на аксонометријском погледу, користећи изабране ивице или парове темена за одређивање правца и дужине</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_ExtensionVertexAtIntersection</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
-      <source>Cosmetic Intersection Vertices</source>
-      <translation>Помоћне пресечне тачке</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
-      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation>Направи помоћне пресечне тачке на местима где се укрштају изабране линије</translation>
     </message>
   </context>
   <context>
@@ -10387,6 +10355,45 @@ there is an open task dialog.</source>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Quadrant Vertices</source>
       <translation>Kвадрант тачке</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ExtensionPositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="53"/>
+      <source>Position Section View</source>
+      <translation>Позиционирај пресек</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="57"/>
+      <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
+      <translation>Поравнај изабрани пресека ортогонално са његовим изворним погледом или неку изабрану ивицу пресека са изабраним теменом неког погледа</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandVertexCreationGroup</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="62"/>
+      <source>Cosmetic Intersection Vertices</source>
+      <translation>Помоћне пресечне тачке</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="65"/>
+      <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
+      <translation>Направи помоћне пресечне тачке на местима где се укрштају изабране линије</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_CommandAddOffsetVertex</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="83"/>
+      <source>Offset Vertex</source>
+      <translation>Одмакнута тачка</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="86"/>
+      <source>Creates an offset from one selected vertex</source>
+      <translation>Направи тачку одмакнуту од изабране тачке</translation>
     </message>
   </context>
   <context>

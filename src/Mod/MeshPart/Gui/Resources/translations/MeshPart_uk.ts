@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Перерізи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Будує перерізи сітки</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="313"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Крива на сітці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Створює апроксимовану криву на поверхні сітки</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Сітка з форми</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Теселяція форми</translation>
+      <translation>Теселювати форму</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Створює переріз сітки площиною</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Обрізати сітку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Обрізати сітку площиною</translation>
+      <translation>Обрізає сітку площиною</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation>Переріз площиною</translation>
+      <translation>Розрізати площиною</translation>
     </message>
   </context>
   <context>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Перерізи</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Напрямна площина</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation>Позиція</translation>
+      <translation>Положення</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation>Відстань Х</translation>
+      <translation>Відстань</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation>З’єднати краї, якщо відстань менша ніж</translation>
+      <translation>З'єднувати ребра, якщо відстань менша за</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="390"/>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="359"/>
       <source>Close wire</source>
-      <translation>Замкнути сітку</translation>
+      <translation>Замкнути полілінію</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="361"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Вибрано неправильну сітку</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Не вибрано жодної точки</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Крива на сітці</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Натисніть 'Почати', потім вибирайте точки на сітці; коли точок достатньо, клацніть правою кнопкою й виберіть 'Створити'. Повторіть, щоб створити більше сплайнів. Закрийте цю панель завдань, щоб завершити операцію.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Ця команда працює лише з об'єктом сітки, а не зі звичайною гранню чи поверхнею. Щоб перетворити об'єкт на сітку, скористайтеся інструментами робочого середовища Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -229,7 +229,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Прив'язати допуск до вершин</translation>
+      <translation>Допуск прив'язки до вершин</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -249,7 +249,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation>Точність сітки</translation>
+      <translation>Допуск до сітки</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
@@ -259,7 +259,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation>Максимальний кут кривої</translation>
+      <translation>Максимальний ступінь кривої</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
@@ -282,7 +282,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Використовувати стандартний обробник сіток</translation>
+      <translation>Використовувати стандартний генератор сітки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -307,20 +307,21 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Застосувати кольори поверхні до сітки</translation>
+      <translation>Застосувати кольори граней до сітки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation>Сегменти сітки будуть згруповані відповідно до кольору граней об’єкта.
-Ці групи будуть експортовані для підтримки виводу форматів функцій сітки (наприклад, формат OBJ).</translation>
+      <translation>Сегменти сітки буде згруповано за кольором граней об'єкта.
+Ці групи експортуються у формати сіток, що підтримують
+цю можливість (наприклад, OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Визначте відрізки за кольорами поверхні</translation>
+      <translation>Визначати сегменти за кольорами граней</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -330,41 +331,41 @@ this feature (e.g. the format OBJ).</source>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation>Використовувати розв'язувач сітки Mefisto</translation>
+      <translation>Використовувати генератор сітки Mefisto</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Параметри побудови сітки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Відхилення від поверхні</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Кутове відхилення</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Максимальне лінійне відхилення сегмента сітки дорівнює заданому
+відхиленню від поверхні, помноженому на довжину поточного сегмента сітки (ребра)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Максимальна довжина ребра</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation>Якщо це число менше, то сітка стає кращою.
-Найменше значення дорівнює 0.</translation>
+      <translation>Що менше це число, то дрібніша сітка.
+Найменше значення — 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
@@ -379,7 +380,7 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation>Використовувати розв'язувач сітки Netgen</translation>
+      <translation>Використовувати генератор сітки Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -389,17 +390,17 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Шорсткий</translation>
+      <translation>Грубо</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Помірний</translation>
+      <translation>Помірно</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation>Добре</translation>
+      <translation>Дрібно</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -414,37 +415,37 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Градація розміру сітки</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Елементів на ребро</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Елементів на радіус кривизни</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation>Якщо цей параметр менший, то сітка стає кращою.
-Значення в діапазоні 0,1-1.</translation>
+      <translation>Що менший цей параметр, то дрібніша сітка.
+Значення в діапазоні 0.1–1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness</source>
-      <translation>Ступінь дроблення</translation>
+      <translation>Дрібність</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation>Якщо цей параметр більший, сітка стає кращою.
-Значення в діапазоні від 0.2-10.</translation>
+      <translation>Що більший цей параметр, то дрібніша сітка.
+Значення в діапазоні 0.2–10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -469,12 +470,12 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Чи будуть розміщені сітки переважно з використанням чотирикутних граней</translation>
+      <translation>Чи будувати сітки переважно з чотирикутних граней</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
       <source>Quad dominated</source>
-      <translation>Домінуючий чотирикутник</translation>
+      <translation>Переважно чотирикутники</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
@@ -496,20 +497,20 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation>Помилка: вибрано тіло без активного елемента.
-Встановіть активний елемент тіла або виберіть іншу форму.</translation>
+      <translation>Помилка: вибрано тіло без кінцевого елемента.
+Задайте кінцевий елемент тіла або виберіть іншу форму.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Помилка: вибрано форму без граней.
+Виберіть іншу форму.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="293"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Спочатку оберіть форму для злиття.</translation>
+      <translation>Спочатку виберіть форму для побудови сітки.</translation>
     </message>
   </context>
   <context>
@@ -517,12 +518,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Select plane</source>
-      <translation>Оберіть площину</translation>
+      <translation>Виберіть площину</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Виберіть площину для перерізу сітки.</translation>
     </message>
   </context>
   <context>
@@ -530,32 +531,32 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Select plane</source>
-      <translation>Оберіть площину</translation>
+      <translation>Виберіть площину</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+      <translation>Виберіть площину для обрізання сітки.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Обрізати площиною</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Виберіть сторону, яку залишити</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>Below</source>
-      <translation>Знизу</translation>
+      <translation>Нижче</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Above</source>
-      <translation>Згори</translation>
+      <translation>Вище</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="112"/>
@@ -576,12 +577,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="51"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Розгорнути сітку</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Знаходить пласке представлення сітки</translation>
     </message>
   </context>
   <context>
@@ -589,12 +590,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Розгорнути грань</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Знаходить пласке представлення грані</translation>
     </message>
   </context>
 </TS>

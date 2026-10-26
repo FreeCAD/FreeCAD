@@ -1672,7 +1672,7 @@ de degrés de liberté.</translation>
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1684,6 +1684,9 @@ de degrés de liberté.</translation>
       <translation>Enregistre l'état courant de l'assemblage (positionnement et visibilité). Un double-clic sur l'objet « Snapshot » permet de rétablir cet état dans
 l'assemblage.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>

@@ -1802,7 +1802,7 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc.)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc.)</translation>
+      <translation>Mostra alternative disponibili nei formati dei file per la libreria degli oggetti (STEP, IFC, etc.)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
@@ -1812,7 +1812,7 @@ di quel progetto, indifferentemente se espansi o meno.</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
       <source>Links the selected object in the current document. Only works in offline mode.</source>
-      <translation type="unfinished">Links the selected object in the current document. Only works in offline mode.</translation>
+      <translation>Seleziona gli oggetti nel documento corrente. Questo funziona solo nella modalità non connesso alla rete.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
@@ -12131,16 +12131,6 @@ Verificare l'installazione di FreeCAD o fornire un modello personalizzato nel me
       <source>Converts any object to a BIM component</source>
       <translation>Converte qualsiasi oggetto in un componente BIM</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation type="unfinished">Remove From Group</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Rimuove questo oggetto dal suo gruppo genitore</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13752,6 +13742,19 @@ Do you want to proceed?</source>
       <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
 
 Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation>Rimuovi dal gruppo</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation>Rimuove questo oggetto dal suo gruppo genitore</translation>
     </message>
   </context>
   <context>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Обмеження підшипника</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="294"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Обмеження контакту</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="295"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="372"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>Гранична умова переміщення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>Гранична умова закріплення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="427"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="536"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Гранична умова течії</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>Створіть граничну умову рідини на об'єкті грані для Обчислювальної гідродинаміки</translation>
+      <translation>Створює граничну умову течії на грані для обчислювальної гідродинаміки (CFD)</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>Силове навантаження</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="596"/>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="658"/>
       <source>Gear Constraint</source>
-      <translation>Передавальне обмеження</translation>
+      <translation>Обмеження зубчастої передачі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="659"/>
       <source>Creates a gear constraint</source>
-      <translation>Створює обмеження передачі</translation>
+      <translation>Створює обмеження зубчастої передачі</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="706"/>
       <source>Heat Flux Load</source>
-      <translation>Навантаження теплом</translation>
+      <translation>Навантаження тепловим потоком</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="707"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation>Створює навантаження теплового потоку, що діє на грань</translation>
+      <translation>Створює навантаження тепловим потоком на грань</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="836"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>Площинне багатоточкове обмеження</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="837"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation>Створює навантаження тиску, що діє на грань</translation>
+      <translation>Створює навантаження тиском на грань</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Обмеження шківа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="957"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Пружна гранична умова</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="958"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Створює пружну граничну умову на грані</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="1069"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Температурна гранична умова</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation>Створює температурне навантаження/концентрований тепловий потік, що діє на грань</translation>
+      <translation>Створює температурне навантаження/зосереджений тепловий потік на грань</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="1127"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation type="unfinished">Creates a local coordinate system on a face</translation>
+      <translation>Створює локальну систему координат на грані</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Набір вузлів</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1322"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>Виберіть одну сітку МСЕ або один набір вузлів.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1482"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Виберіть одну сітку МСЕ.</translation>
     </message>
   </context>
   <context>
@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1223"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Набір вузлів за багатокутником</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1224"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Створює набір вузлів вибором багатокутником</translation>
     </message>
   </context>
   <context>
@@ -332,12 +332,12 @@
     <message>
       <location filename="../../Command.cpp" line="2889"/>
       <source>Apply Changes to Pipeline</source>
-      <translation type="unfinished">Apply Changes to Pipeline</translation>
+      <translation>Застосувати зміни до конвеєра</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2890"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
-      <translation type="unfinished">Applies changes to parameters directly and not on recompute only</translation>
+      <translation>Застосовує зміни параметрів одразу, а не лише під час перерахунку</translation>
     </message>
   </context>
   <context>
@@ -350,17 +350,17 @@
     <message>
       <location filename="../../Command.cpp" line="2253"/>
       <source>Region Clip Filter</source>
-      <translation type="unfinished">Region Clip Filter</translation>
+      <translation>Фільтр відсікання області</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2254"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Defines a clip filter which uses functions to define the clipped region</translation>
+      <translation>Задає фільтр відсікання, що визначає відсічену область функціями</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>
       <source>Select a pipeline.</source>
-      <translation type="unfinished">Select a pipeline.</translation>
+      <translation>Виберіть конвеєр.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Command.cpp" line="2292"/>
       <source>Function Cut Filter</source>
-      <translation type="unfinished">Function Cut Filter</translation>
+      <translation>Фільтр розрізу функцією</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2293"/>
       <source>Cuts the data along an implicit function</source>
-      <translation type="unfinished">Cuts the data along an implicit function</translation>
+      <translation>Розрізає дані вздовж неявної функції</translation>
     </message>
   </context>
   <context>
@@ -396,12 +396,12 @@
     <message>
       <location filename="../../Command.cpp" line="2329"/>
       <source>Line Clip Filter</source>
-      <translation type="unfinished">Line Clip Filter</translation>
+      <translation>Фільтр даних уздовж лінії</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2330"/>
       <source>Defines a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Defines a clip filter which clips a field along a line</translation>
+      <translation>Задає фільтр, що вибирає дані поля вздовж лінії</translation>
     </message>
   </context>
   <context>
@@ -414,12 +414,12 @@
     <message>
       <location filename="../../Command.cpp" line="2366"/>
       <source>Data at Point Clip Filter</source>
-      <translation type="unfinished">Data at Point Clip Filter</translation>
+      <translation>Фільтр даних у точці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2367"/>
       <source>Defines a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Defines a clip filter which clips a field data at point</translation>
+      <translation>Задає фільтр, що вибирає дані поля в точці</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../Command.cpp" line="2631"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Функції фільтрів</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2632"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>Функції для фільтрів постобробки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2830"/>
@@ -457,7 +457,7 @@
     <message>
       <location filename="../../Command.cpp" line="2860"/>
       <source>Box</source>
-      <translation>Коробка</translation>
+      <translation>Паралелепіпед</translation>
     </message>
   </context>
   <context>
@@ -496,7 +496,7 @@
       <location filename="../../Command.cpp" line="2169"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
-      <translation>Всього</translation>
+      <translation>Разом</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2403"/>
@@ -506,18 +506,18 @@
     <message>
       <location filename="../../Command.cpp" line="2404"/>
       <source>Stress Linearization Plot</source>
-      <translation type="unfinished">Stress Linearization Plot</translation>
+      <translation>Графік лінеаризації напружень</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2405"/>
       <source>Defines a stress linearization plot</source>
-      <translation type="unfinished">Defines a stress linearization plot</translation>
+      <translation>Задає графік лінеаризації напружень</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2444"/>
       <location filename="../../Command.cpp" line="2455"/>
       <source>Select a clip filter which clips a stress field along a line</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
+      <translation>Виберіть фільтр, що вибирає поле напружень уздовж лінії</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2443"/>
@@ -536,7 +536,7 @@
     <message>
       <location filename="../../Command.cpp" line="2930"/>
       <source>Post Pipeline From Result</source>
-      <translation type="unfinished">Post Pipeline From Result</translation>
+      <translation>Конвеєр постобробки з результату</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2931"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="3016"/>
       <source>Select a result object.</source>
-      <translation type="unfinished">Select a result object.</translation>
+      <translation>Виберіть об'єкт результату.</translation>
     </message>
   </context>
   <context>
@@ -564,12 +564,12 @@
     <message>
       <location filename="../../Command.cpp" line="2484"/>
       <source>Scalar Clip Filter</source>
-      <translation type="unfinished">Scalar Clip Filter</translation>
+      <translation>Фільтр відсікання за скаляром</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2485"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Defines a clip filter which clips a field with a scalar value</translation>
+      <translation>Задає фільтр, що відсікає поле за скалярним значенням</translation>
     </message>
   </context>
   <context>
@@ -582,12 +582,12 @@
     <message>
       <location filename="../../Command.cpp" line="2521"/>
       <source>Warp Filter</source>
-      <translation type="unfinished">Warp Filter</translation>
+      <translation>Фільтр деформування</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2522"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation type="unfinished">Warps the geometry along a vector field by a certain factor</translation>
+      <translation>Деформує геометрію вздовж векторного поля із заданим коефіцієнтом</translation>
     </message>
   </context>
   <context>
@@ -600,27 +600,27 @@
     <message>
       <location filename="../../Command.cpp" line="263"/>
       <source>Make bearing constraint</source>
-      <translation>Створіть обмеження підшипника</translation>
+      <translation>Створити обмеження підшипника</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Make contact constraint on a face</source>
-      <translation>Створіть обмеження контакту на грані</translation>
+      <translation>Створити обмеження контакту на грані</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Make displacement boundary condition on face</source>
-      <translation>Створіть граничну умову переміщення на грані</translation>
+      <translation>Створити граничну умову переміщення на грані</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="443"/>
       <source>Make fixed boundary condition for geometry</source>
-      <translation>Зробити фіксовану граничну умову для геометрії</translation>
+      <translation>Створити граничну умову закріплення для геометрії</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
       <source>Make rigid body constraint</source>
-      <translation>Створити жорстке обмеження тіла</translation>
+      <translation>Створити обмеження абсолютно жорсткого тіла</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="612"/>
@@ -630,17 +630,17 @@
     <message>
       <location filename="../../Command.cpp" line="674"/>
       <source>Make gear constraint</source>
-      <translation>Створіть обмеження передачі</translation>
+      <translation>Створити обмеження зубчастої передачі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="723"/>
       <source>Make heat flux load on face</source>
-      <translation>Навантаження теплового потоку на грань</translation>
+      <translation>Створити навантаження тепловим потоком на грань</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="796"/>
       <source>Make initial temperature condition on body</source>
-      <translation>Створіть початковий температурний режим на тілі</translation>
+      <translation>Створити початкову температурну умову на тілі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="853"/>
@@ -655,22 +655,22 @@
     <message>
       <location filename="../../Command.cpp" line="974"/>
       <source>Make Spring Constraint</source>
-      <translation type="unfinished">Make Spring Constraint</translation>
+      <translation>Створити пружне обмеження</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1033"/>
       <source>Make pulley constraint</source>
-      <translation>Створіть обмеження шківа</translation>
+      <translation>Створити обмеження шківа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1086"/>
       <source>Make temperature boundary condition on face</source>
-      <translation>Створіть температурну граничну умову на грані</translation>
+      <translation>Створити температурну граничну умову на грані</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
       <source>Make local coordinate system on face</source>
-      <translation>Створіть локальну систему координат на грані</translation>
+      <translation>Створити локальну систему координат на грані</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1197"/>
@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation type="unfinished">Edit Shape</translation>
+      <translation>Редагувати форму</translation>
     </message>
   </context>
   <context>
@@ -726,12 +726,12 @@
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Діалогове вікно</translation>
+      <translation>Діалог</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation type="unfinished">Mesh groups detected. Choose values for the different groups.</translation>
+      <translation>Виявлено групи сітки. Виберіть значення для різних груп.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -741,7 +741,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
       <source>Label</source>
-      <translation>Позначка</translation>
+      <translation>Мітка</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
@@ -761,7 +761,7 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>Виберіть вершини, лінії та поверхні</translation>
     </message>
     <message>
       <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
@@ -796,22 +796,22 @@
     <message>
       <location filename="../../Command.cpp" line="2832"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation>Створити функцію площини, яка визначається її початком координат та нормаллю</translation>
+      <translation>Створює функцію площини, задану початком і нормаллю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2842"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation>Створити функцію сфери, яка визначається її центром та радіусом</translation>
+      <translation>Створює функцію сфери, задану центром і радіусом</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2852"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation>Створіть функцію циліндра, задану його центром, віссю та радіусом</translation>
+      <translation>Створює функцію циліндра, задану центром, віссю та радіусом</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2862"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation>Створити функцію коробки, яка задає її центр, довжину, ширину та висоту</translation>
+      <translation>Створює функцію паралелепіпеда, задану центром, довжиною, шириною й висотою</translation>
     </message>
   </context>
   <context>
@@ -826,12 +826,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="77"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Залиште порожнім, щоб використовувати стандартний двійковий файл CalculiX ccx</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл CalculiX ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="90"/>
       <source>Input file splitting</source>
-      <translation>Розділення вхідного файлу на фрагменти</translation>
+      <translation>Розділення вхідного файлу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="100"/>
@@ -846,7 +846,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="142"/>
       <source>Default type on analysis</source>
-      <translation>Стандартний тип аналізу</translation>
+      <translation>Типовий тип аналізу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="155"/>
@@ -861,7 +861,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
       <source>Thermomech</source>
-      <translation>Термомеханіка</translation>
+      <translation>Термомеханічний</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="182"/>
@@ -871,27 +871,27 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="191"/>
       <source>Buckling</source>
-      <translation>Стійкість</translation>
+      <translation>Втрата стійкості</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="229"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Початковий приріст часу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="236"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Тривалість</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
       <source>Overwrite CCX defaults</source>
-      <translation type="unfinished">Overwrite CCX defaults</translation>
+      <translation>Перевизначити типові значення CCX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
       <source>3D output, unchecked for 2D output</source>
-      <translation type="unfinished">3D output, unchecked for 2D output</translation>
+      <translation>3D-вивід; якщо знято — 2D-вивід</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
       <source>Geometrical nonlinearity</source>
-      <translation type="unfinished">Geometrical nonlinearity</translation>
+      <translation>Геометрична нелінійність</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
@@ -911,67 +911,67 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
       <source>Advanced solver controls</source>
-      <translation type="unfinished">Advanced solver controls</translation>
+      <translation>Розширене керування розв'язувачем</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Максимальна кількість приростів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="453"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Мінімальний приріст часу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
       <source>Use geometrical nonlinearity</source>
-      <translation type="unfinished">Use geometrical nonlinearity</translation>
+      <translation>Використовувати геометричну нелінійність</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
       <source>1D and 2D element output format</source>
-      <translation type="unfinished">1D and 2D element output format</translation>
+      <translation>Формат виводу 1D- і 2D-елементів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Максимальний приріст часу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>No legacy results (use enhanced solver)</source>
-      <translation type="unfinished">No legacy results (use enhanced solver)</translation>
+      <translation>Без застарілих результатів (покращений розв'язувач)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation type="unfinished">Thermo-Mechanical Defaults</translation>
+      <translation>Типові значення для термомеханіки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="685"/>
       <source>Frequency Defaults</source>
-      <translation type="unfinished">Frequency Defaults</translation>
+      <translation>Типові значення для частотного аналізу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
       <source>Upper frequency bound</source>
-      <translation type="unfinished">Upper frequency bound</translation>
+      <translation>Верхня межа частоти</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
       <source>Number of eigenmodes</source>
-      <translation type="unfinished">Number of eigenmodes</translation>
+      <translation>Кількість власних форм</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
       <source>Lower frequency bound</source>
-      <translation type="unfinished">Lower frequency bound</translation>
+      <translation>Нижня межа частоти</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> Гц</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="317"/>
@@ -981,17 +981,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="121"/>
       <source>Analysis Defaults</source>
-      <translation type="unfinished">Analysis Defaults</translation>
+      <translation>Типові значення аналізу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="208"/>
       <source>Solver Defaults</source>
-      <translation type="unfinished">Solver Defaults</translation>
+      <translation>Типові значення розв'язувача</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="259"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>Кількість процесорів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="322"/>
@@ -1011,41 +1011,41 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="337"/>
       <source>Iterative Scaling</source>
-      <translation>Ітеративне масштабування</translation>
+      <translation>Ітераційне масштабування</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
-      <translation type="unfinished">CalculiX path</translation>
+      <translation>Шлях до CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="590"/>
       <source>Result object</source>
-      <translation type="unfinished">Result object</translation>
+      <translation>Об'єкт результату</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="600"/>
       <source>Load results as pipeline instead of CCX_Results objects.
 After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
-      <translation type="unfinished">Load results as pipeline instead of CCX_Results objects.
-After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</translation>
+      <translation>Завантажувати результати як конвеєр замість об'єктів CCX_Results.
+Якщо зняти цей прапорець, команда CalculiX поводиться як SolverCalculiXCcxTools</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="617"/>
       <source>Result format</source>
-      <translation type="unfinished">Result format</translation>
+      <translation>Формат результату</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="624"/>
       <source>Save result in binary format.
 Only takes effect if 'Pipeline only' is enabled</source>
-      <translation type="unfinished">Save result in binary format.
-Only takes effect if 'Pipeline only' is enabled</translation>
+      <translation>Зберігати результат у двійковому форматі.
+Діє, лише якщо ввімкнено 'Pipeline only'</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="628"/>
       <source>Use binary format</source>
-      <translation>Використовувати бінарний формат</translation>
+      <translation>Використовувати двійковий формат</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="657"/>
@@ -1065,7 +1065,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="132"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -1079,27 +1079,27 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
       <source>ElmerSolver path</source>
-      <translation type="unfinished">ElmerSolver path</translation>
+      <translation>Шлях до ElmerSolver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerSolver binary file</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл ElmerSolver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
       <source>ElmerGrid path</source>
-      <translation type="unfinished">ElmerGrid path</translation>
+      <translation>Шлях до ElmerGrid</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Докладність журналу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="209"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>Максимальний рівень виводу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
@@ -1109,7 +1109,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="241"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <translation>Кількість паралельних завдань. Встановіть `1`, якщо Elmer не використовує MPI.&lt;br&gt;Рекомендується парна кількість ядер, щоб скористатися симетрією сітки&lt;br&gt;(8 ядер можуть працювати швидше, ніж 9).&lt;br&gt;В крайніх випадках ElmerSolver може не збігатися, якщо ядер забагато.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="257"/>
@@ -1119,7 +1119,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="267"/>
       <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
-      <translation>Кількість потоків виконання на завдання. Дійсно, якщо Elmer використовує OpenMP.</translation>
+      <translation>Кількість потоків на завдання. Діє, якщо Elmer використовує OpenMP.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="288"/>
@@ -1129,42 +1129,42 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="294"/>
       <source>Save result in binary format</source>
-      <translation>Зберегти результат у бінарному форматі</translation>
+      <translation>Зберігати результат у двійковому форматі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Use binary format</source>
-      <translation>Використовувати бінарний формат</translation>
+      <translation>Використовувати двійковий формат</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="313"/>
       <source>Save the index of geometric entities</source>
-      <translation>Зберегти індекс геометричних сутностей</translation>
+      <translation>Зберігати індекс геометричних сутностей</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save geometry IDs</source>
-      <translation>Зберегти ідентифікатори геометрії</translation>
+      <translation>Зберігати ідентифікатори геометрії</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="125"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
-      <translation>Залиште порожнім, щоб використовувати типово двійковий файл ElmerGrid</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл ElmerGrid</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer Binaries</source>
-      <translation type="unfinished">Elmer Binaries</translation>
+      <translation>Виконувані файли Elmer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
       <source>MPI path</source>
-      <translation type="unfinished">MPI path</translation>
+      <translation>Шлях до MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Leave blank to use default MPI binary file</source>
-      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
@@ -1174,7 +1174,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -1202,17 +1202,17 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Усі: експортуються всі елементи.
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+Найвищі: експортуються лише елементи найвищого рівня, тобто об'єми для об'ємної сітки й грані для сітки оболонки.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+МСЕ: експортуються лише елементи МСЕ, тобто лише ребра,
+що не належать граням, і грані, що не належать об'ємам.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>параметр елементів: Усі — усі елементи, Найвищі — лише елементи найвищого рівня, МСЕ — лише елементи МСЕ (лише ребра, що не належать граням, і грані, що не належать об'ємам)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="84"/>
@@ -1220,10 +1220,10 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Групи сітки також експортуються.
+Кожен елемент аналізу і, якщо матеріали різні,
+матеріал складається з двох груп сітки — граней і вузлів, до яких
+застосовано обмеження або матеріал.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="59"/>
@@ -1233,7 +1233,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="64"/>
       <source>Highest</source>
-      <translation>Найвищий</translation>
+      <translation>Найвищі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="69"/>
@@ -1243,7 +1243,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="77"/>
       <source>Export group data</source>
-      <translation>Експорт даних групи</translation>
+      <translation>Експортувати дані груп</translation>
     </message>
   </context>
   <context>
@@ -1263,7 +1263,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
-      <translation>Дозвольте програмі керувати (створювати, видаляти) робочими каталогами для всіх розв'язувачів. Використовуйте тимчасові каталоги.</translation>
+      <translation>Дозволити програмі керувати (створювати, видаляти) робочими каталогами всіх розв'язувачів. Використовувати тимчасові каталоги.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="76"/>
@@ -1278,46 +1278,46 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working Directory for Solving Analysis and Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
+      <translation>Робочий каталог для розв'язання аналізу й побудови сітки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Створювати каталог у тій самій теці, де лежить файл FCStd документа. Для кожного об'єкта — окрема підтека
+(напр., для файлу ./mydoc.FCStd і розв'язувача з міткою Elmer002 — ./mydoc/Elmer002).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>Власний каталог</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>Створювати окремий підкаталог для кожного об'єкта. Каталог називається за міткою розв'язувача з префіксом — назвою документа.
+Залиште порожнім, щоб використовувати домашній каталог користувача.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>Редактор вхідного файлу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>Шлях до редактора</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>Залиште порожнім, щоб використовувати вбудований редактор FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
       <source>Create mesh groups for analysis reference shapes (experimental)</source>
-      <translation type="unfinished">Create mesh groups for analysis reference shapes (experimental)</translation>
+      <translation>Створювати групи сітки для опорних форм аналізу (експериментально)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="238"/>
@@ -1328,13 +1328,13 @@ Leave blank to use user home directory.</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="249"/>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
-      <translation>Існуючі об'єкти результатів буде збережено
-інакше буде замінено новим запуском розв'язувача</translation>
+      <translation>Наявні об'єкти результатів буде збережено,
+інакше їх буде перезаписано новим запуском розв'язувача</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="253"/>
       <source>Keep results on calculation re-run</source>
-      <translation>Зберегти результати під час повторного запуску розрахунку</translation>
+      <translation>Зберігати результати під час повторного розрахунку</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="269"/>
@@ -1352,13 +1352,13 @@ with the last used dialog settings</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="292"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Всі функції аналізу приховані у поданні моделі
-коли відкрито діалогове вікно результатів</translation>
+      <translation>Усі елементи аналізу приховуються у виді моделі,
+коли відкрито діалог результатів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="296"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation>Приховувати функції аналізу при відкритті діалогового вікна результатів</translation>
+      <translation>Приховувати елементи аналізу під час відкриття діалогу результатів</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="320"/>
@@ -1374,8 +1374,8 @@ when the results dialog is opened</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="341"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Типовий розв'язувач буде додано під час
-додавання контейнера для аналізу</translation>
+      <translation>Типовий розв'язувач, який додається
+під час додавання контейнера аналізу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="352"/>
@@ -1385,12 +1385,12 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="134"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="141"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>Каталог '%1' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -1404,17 +1404,17 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh Binary</source>
-      <translation type="unfinished">Gmsh Binary</translation>
+      <translation>Виконуваний файл Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
       <source>Leave blank to use default Gmsh binary file</source>
-      <translation>Залиште порожнім, щоб використовувати стандартний бінарний файл Gmsh</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
       <source>Gmsh path</source>
-      <translation type="unfinished">Gmsh path</translation>
+      <translation>Шлях до Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="101"/>
@@ -1424,32 +1424,32 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="109"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Докладність журналу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="116"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation>Рівень вербозності, що виводиться на панелі завдань</translation>
+      <translation>Рівень докладності виводу на панелі завдань</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="135"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Кількість потоків</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="145"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Кількість потоків для побудови сітки</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
       <source>Silent</source>
-      <translation type="unfinished">Silent</translation>
+      <translation>Без виводу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
@@ -1464,7 +1464,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
       <source>Direct</source>
-      <translation type="unfinished">Direct</translation>
+      <translation>Прямий вивід</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
@@ -1474,12 +1474,12 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="104"/>
       <source>Status</source>
-      <translation>Статус</translation>
+      <translation>Стан</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="105"/>
       <source>Debug</source>
-      <translation type="unfinished">Debug</translation>
+      <translation>Налагодження</translation>
     </message>
   </context>
   <context>
@@ -1511,15 +1511,15 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation>Об'єкт результату VTK: Буде імпортовано об'єкт результату VTK FreeCAD FEM
-(дорівнює об'єкту, який було експортовано).
+      <translation>Об'єкт результату VTK: буде імпортовано об'єкт результату VTK FreeCAD FEM
+(такий самий, як об'єкт, що було експортовано).
 
-Об'єкт сітки МСЕ: Результати у файлі VTK будуть пропущені, будуть імпортовані лише дані
-буде імпортовано лише дані сіті та створено об'єкт сіті МСЕ FreeCAD.
+Об'єкт сітки МСЕ: результати у файлі VTK буде пропущено, імпортуються лише
+дані сітки, і створюється об'єкт сітки МСЕ FreeCAD.
 
-Об'єкт результатів FreeCAD: Імпортовані дані будуть перетворені в об'єкт
-об'єкт результату МСЕ FreeCAD. Нотатка: цей параметр потребує точних назв компонентів результату
-імена компонентів, тому воно працює належним чином лише з файлами VTK
+Об'єкт результату FreeCAD: імпортовані дані буде перетворено на
+об'єкт FreeCAD FEM Result. Примітка: для цього потрібні точні назви
+компонентів результату, тому параметр коректно працює лише з файлами VTK,
 експортованими з FreeCAD.</translation>
     </message>
     <message>
@@ -1550,12 +1550,12 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
       <source>Mesh elements to export</source>
-      <translation type="unfinished">Mesh elements to export</translation>
+      <translation>Елементи сітки для експорту</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
       <source>Mesh element level to export</source>
-      <translation type="unfinished">Mesh element level to export</translation>
+      <translation>Рівень елементів сітки для експорту</translation>
     </message>
   </context>
   <context>
@@ -1569,17 +1569,17 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran Binary</source>
-      <translation type="unfinished">Mystran Binary</translation>
+      <translation>Виконуваний файл Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="49"/>
       <source>Mystran path</source>
-      <translation type="unfinished">Mystran path</translation>
+      <translation>Шлях до Mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="80"/>
       <source>Leave blank to use default mystran binary file</source>
-      <translation type="unfinished">Leave blank to use default mystran binary file</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл mystran</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="93"/>
@@ -1589,12 +1589,12 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="100"/>
       <source>Write comments to input file</source>
-      <translation>Записувати коментарі для вхідного файлу</translation>
+      <translation>Записувати коментарі до вхідного файлу</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="80"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -1608,22 +1608,22 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 Binary</source>
-      <translation type="unfinished">Z88 Binary</translation>
+      <translation>Виконуваний файл Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="52"/>
       <source>z88r path</source>
-      <translation type="unfinished">z88r path</translation>
+      <translation>Шлях до z88r</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="83"/>
       <source>Leave blank to use default z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default z88r binary file</translation>
+      <translation>Залиште порожнім, щоб використовувати типовий виконуваний файл z88r</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="110"/>
       <source>Solver Settings</source>
-      <translation type="unfinished">Solver Settings</translation>
+      <translation>Параметри розв'язувача</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="121"/>
@@ -1633,17 +1633,17 @@ exported from FreeCAD.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="137"/>
       <source>Solver method to be used</source>
-      <translation>Метод розв'язувача для використання</translation>
+      <translation>Метод розв'язувача, що використовується</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
       <source>Stiffness matrix entries</source>
-      <translation type="unfinished">Stiffness matrix entries</translation>
+      <translation>Елементи матриці жорсткості</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
       <source>Coincidence vector entries</source>
-      <translation type="unfinished">Coincidence vector entries</translation>
+      <translation>Елементи вектора інцидентності</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
@@ -1653,12 +1653,12 @@ exported from FreeCAD.</source>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+      <translation>Максимальна кількість місць у векторі інцидентності.
+(кількість вузлів на елемент, помножена
+ на кількість скінченних елементів)
+Може знадобитися збільшити це значення, якщо з
+ітераційним розв'язувачем з'являється повідомлення
+про необхідність збільшити "MAXKOI".</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
@@ -1666,30 +1666,30 @@ that "MAXKOI" needs to be increased.</translation>
 You might need to increase this when using the
 Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
-      <translation type="unfinished">Maximum places in the stiffness matrix.
-You might need to increase this when using the
-Cholesky solver and getting the error message
-that "MAXGS" needs to be increased.</translation>
+      <translation>Максимальна кількість місць у матриці жорсткості.
+Може знадобитися збільшити це значення, якщо з
+розв'язувачем Холеського з'являється повідомлення
+про необхідність збільшити "MAXGS".</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Послідовна верхня релаксація (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="89"/>
       <source>Shifted incomplete Cholesky (SIC)</source>
-      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
+      <translation>Зсунутий неповний метод Холеського (SIC)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="90"/>
       <source>Simple Cholesky</source>
-      <translation type="unfinished">Simple Cholesky</translation>
+      <translation>Простий метод Холеського</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Виконуваний файл '%1' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -1748,7 +1748,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="58"/>
       <source>Analysis Feature Properties</source>
-      <translation>Аналіз Властивостей Елементів</translation>
+      <translation>Властивості елемента аналізу</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="184"/>
@@ -1771,17 +1771,17 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="226"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="173"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>Для обмеження підшипника використовуйте лише одне посилання</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
       <source>Only faces can be picked</source>
-      <translation>Можливо обрати лише грані</translation>
+      <translation>Можна вибирати тільки грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="188"/>
@@ -1815,12 +1815,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="138"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation>Тільки одна грань в об'єкті! - переміщено на головну грань</translation>
+      <translation>Лише одна грань в об'єкті! — переміщено до основної грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
       <source>Select slave geometry of type: </source>
-      <translation type="unfinished">Select slave geometry of type: </translation>
+      <translation>Виберіть підпорядковану геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="137"/>
@@ -1843,30 +1843,30 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="442"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="451"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="154"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>натисніть «Додати» або «Видалити»</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="154"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="153"/>
       <source>Select master geometry of type: </source>
-      <translation type="unfinished">Select master geometry of type: </translation>
+      <translation>Виберіть основну геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="350"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
-      <translation>Тільки одна основна та одна допоміжна грані для обмеження контакту!</translation>
+      <translation>Для обмеження контакту — лише одна основна й одна підпорядкована грань!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
@@ -1880,7 +1880,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="217"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation>Тільки одна допоміжна грань для обмеження контакту!</translation>
+      <translation>Для обмеження контакту — лише одна підпорядкована грань!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="228"/>
@@ -1894,23 +1894,23 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="237"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="382"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="403"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
+      <translation>Можна вибирати лише грані (ребра у 2D-моделях)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="363"/>
       <source>Only one master for a contact constraint!</source>
-      <translation>Тільки один майстер для обмеження контактів!</translation>
+      <translation>Для обмеження контакту — лише один основний об'єкт!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="392"/>
       <source>Only one master face for a contact constraint!</source>
-      <translation>Тільки одна основна грань для обмеження контакту!</translation>
+      <translation>Для обмеження контакту — лише одна основна грань!</translation>
     </message>
   </context>
   <context>
@@ -1918,12 +1918,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="160"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="160"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="239"/>
@@ -1939,7 +1939,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="324"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="334"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="249"/>
@@ -1950,12 +1950,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="258"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="297"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation>Дозволено лише один тип виділення (вершина, грань або ребро) для кожного елемента аналізу!</translation>
+      <translation>Дозволено лише один тип вибору (вершина, грань або ребро) на один елемент аналізу!</translation>
     </message>
   </context>
   <context>
@@ -1963,12 +1963,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="89"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="89"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="115"/>
@@ -1984,7 +1984,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="196"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="124"/>
@@ -1995,7 +1995,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="133"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="169"/>
@@ -2018,17 +2018,17 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="349"/>
       <source>Thermal</source>
-      <translation>Тепловий</translation>
+      <translation>Теплові</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="351"/>
       <source>select boundary type, faces and set value</source>
-      <translation>виберіть тип межі, грані та встановіть значення</translation>
+      <translation>виберіть тип межі, грані й задайте значення</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="392"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="392"/>
@@ -2069,22 +2069,22 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="577"/>
       <source>Flux [W/m2]</source>
-      <translation>Випромінювання [Вт/м2]</translation>
+      <translation>Потік [Вт/м2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>Порожній вибір</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Виберіть ребро або грань.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="665"/>
       <source>Selected object is not a part object!</source>
-      <translation>Вибраний об'єкт не є об'єктом деталі!</translation>
+      <translation>Вибраний об'єкт не є деталлю!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="665"/>
@@ -2129,7 +2129,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="931"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="941"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="858"/>
@@ -2140,7 +2140,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="904"/>
@@ -2153,12 +2153,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="95"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="95"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="128"/>
@@ -2174,7 +2174,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="137"/>
@@ -2185,7 +2185,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="183"/>
@@ -2201,7 +2201,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="319"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Виберіть ребро або грань.</translation>
     </message>
   </context>
   <context>
@@ -2211,7 +2211,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="176"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
@@ -2234,12 +2234,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="158"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="158"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
@@ -2256,7 +2256,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="371"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="382"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
@@ -2267,13 +2267,13 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="302"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="314"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="383"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>Вибір має складатися лише з граней! (ребер у 2D-моделях)</translation>
     </message>
   </context>
   <context>
@@ -2281,7 +2281,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="100"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Виберіть одну геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="100"/>
@@ -2299,7 +2299,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="229"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="239"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="133"/>
@@ -2322,12 +2322,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="171"/>
       <source>Only faces can be picked</source>
-      <translation>Можливо обрати лише грані</translation>
+      <translation>Можна вибирати тільки грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="181"/>
@@ -2340,12 +2340,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="77"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="77"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="130"/>
@@ -2361,7 +2361,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="196"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="205"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="139"/>
@@ -2372,12 +2372,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="148"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="160"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
+      <translation>Можна вибирати лише грані (ребра у 2D-моделях)</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2385,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="99"/>
       <source>Pulley diameter</source>
-      <translation>Діаметр шківу</translation>
+      <translation>Діаметр шківа</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="100"/>
@@ -2398,7 +2398,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="106"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="106"/>
@@ -2419,7 +2419,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="206"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="144"/>
@@ -2430,7 +2430,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="153"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="162"/>
@@ -2443,12 +2443,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="103"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="103"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="200"/>
@@ -2463,7 +2463,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="258"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="267"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="209"/>
@@ -2474,7 +2474,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="218"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
   </context>
   <context>
@@ -2482,12 +2482,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="166"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="214"/>
       <source>Analysis feature update error</source>
-      <translation>Помилка оновлення функції аналізу</translation>
+      <translation>Помилка оновлення елемента аналізу</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -2502,33 +2502,33 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="472"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="481"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>Лише одна грань (ребро у 2D-моделі) для прямокутної локальної системи координат!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>Лише одна грань (ребро у 2D-моделі) для локальної системи координат!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="377"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>Можна вибирати лише грані (ребра у 2D-моделі)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>Можна вибирати лише циліндричні грані (ребра у 2D-моделі)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="439"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>Можна вибирати лише перетворювані грані (ребра у 2D-моделі)! Спочатку застосуйте до межі граничну умову переміщення або силове навантаження, а потім — локальну систему координат.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -2539,7 +2539,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="353"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="344"/>
@@ -2550,12 +2550,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="166"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Виберіть одну геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="215"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
-      <translation type="unfinished">The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</translation>
+      <translation>Перетворювані грані змінилися. Додайте лише перетворювані грані й видаліть неперетворювані!</translation>
     </message>
   </context>
   <context>
@@ -2563,7 +2563,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="689"/>
       <source>Data Along a Line Options</source>
-      <translation type="unfinished">Data Along a Line Options</translation>
+      <translation>Параметри даних уздовж лінії</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1097"/>
@@ -2577,12 +2577,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1131"/>
       <source>Data at Point Options</source>
-      <translation type="unfinished">Data at Point Options</translation>
+      <translation>Параметри даних у точці</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1472"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation>%1 у (%2; %3; %4) є: %5 %6</translation>
+      <translation>%1 у точці (%2; %3; %4): %5 %6</translation>
     </message>
   </context>
   <context>
@@ -2598,7 +2598,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../../TaskTetParameter.cpp" line="40"/>
       <source>Tet Parameter</source>
-      <translation>Параметри тетраедра</translation>
+      <translation>Параметри тетраедрів</translation>
     </message>
   </context>
   <context>
@@ -2629,12 +2629,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>Матеріал МСЕ</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Густина</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="91"/>
@@ -2644,42 +2644,42 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="102"/>
       <source>Young's modulus</source>
-      <translation type="unfinished">Young's modulus</translation>
+      <translation>Модуль Юнга</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson ratio</source>
-      <translation type="unfinished">Poisson ratio</translation>
+      <translation>Коефіцієнт Пуассона</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal conductivity</source>
-      <translation type="unfinished">Thermal conductivity</translation>
+      <translation>Теплопровідність</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion coefficient</source>
-      <translation type="unfinished">Expansion coefficient</translation>
+      <translation>Коефіцієнт розширення</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="343"/>
       <source>Reference temperature</source>
-      <translation type="unfinished">Reference temperature</translation>
+      <translation>Опорна температура</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation type="unfinished">Specific heat capacity</translation>
+      <translation>Питома теплоємність</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
       <source>Fluidic Properties</source>
-      <translation>Властивості текучості</translation>
+      <translation>Властивості текучого середовища</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="201"/>
       <source>Kinematic viscosity</source>
-      <translation type="unfinished">Kinematic viscosity</translation>
+      <translation>Кінематична в'язкість</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
@@ -2689,7 +2689,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+      <translation>Опорна температура для теплового розширення</translation>
     </message>
   </context>
   <context>
@@ -2697,7 +2697,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation>Параметр перерізу рідини/газу</translation>
+      <translation>Параметри перерізу потоку</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2718,7 +2718,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid section parameter</source>
-      <translation type="unfinished">Liquid section parameter</translation>
+      <translation>Параметр перерізу рідини</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -2728,34 +2728,34 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe area</source>
-      <translation type="unfinished">Pipe area</translation>
+      <translation>Площа труби</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic radius</source>
-      <translation type="unfinished">Hydraulic radius</translation>
+      <translation>Гідравлічний радіус</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning coefficient</source>
-      <translation type="unfinished">Manning coefficient</translation>
+      <translation>Коефіцієнт Маннінга</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial area</source>
-      <translation type="unfinished">Initial area</translation>
+      <translation>Початкова площа</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged area</source>
-      <translation type="unfinished">Enlarged area</translation>
+      <translation>Розширена площа</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted area</source>
-      <translation type="unfinished">Contracted area</translation>
+      <translation>Звужена площа</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2805,27 +2805,27 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance area</source>
-      <translation type="unfinished">Entrance area</translation>
+      <translation>Площа входу</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm area</source>
-      <translation type="unfinished">Diaphragm area</translation>
+      <translation>Площа діафрагми</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend radius / pipe diameter</source>
-      <translation type="unfinished">Bend radius / pipe diameter</translation>
+      <translation>Радіус згину / діаметр труби</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend angle</source>
-      <translation type="unfinished">Bend angle</translation>
+      <translation>Кут згину</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump characteristic</source>
-      <translation type="unfinished">Pump characteristic</translation>
+      <translation>Характеристика насоса</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
@@ -2835,12 +2835,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas section parameter</source>
-      <translation type="unfinished">Gas section parameter</translation>
+      <translation>Параметр перерізу газу</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open channel section parameter</source>
-      <translation type="unfinished">Open channel section parameter</translation>
+      <translation>Параметр перерізу відкритого каналу</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2850,12 +2850,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
-      <translation>Коефіцієнт закриття затворного клапана</translation>
+      <translation>Коефіцієнт закриття засувки</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
-      <translation>Швидкість течії [мм^3/с]</translation>
+      <translation>Витрата [мм^3/с]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -2870,27 +2870,27 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
       <source>Tie Parameter</source>
-      <translation type="unfinished">Tie Parameter</translation>
+      <translation>Параметри зв'язування</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="56"/>
       <source>Tolerance</source>
-      <translation>Точність</translation>
+      <translation>Допуск</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="63"/>
       <source>Enable adjust</source>
-      <translation type="unfinished">Enable adjust</translation>
+      <translation>Дозволити коригування</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="70"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Перевернути основну</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Перевернути підпорядковану</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -2902,7 +2902,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="47"/>
       <source>Revolutions per second</source>
-      <translation type="unfinished">Revolutions per second</translation>
+      <translation>Обертів за секунду</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
@@ -2917,12 +2917,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>Параметри відцентрового навантаження</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>Частота обертання</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -2932,7 +2932,7 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>Section Print Parameter</source>
-      <translation type="unfinished">Section Print Parameter</translation>
+      <translation>Параметри друку перерізу</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
@@ -2942,12 +2942,12 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>Гранична умова</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>Потенціал</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="60"/>
@@ -2957,77 +2957,77 @@ that "MAXGS" needs to be increased.</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>Електромагнітний потенціал</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="100"/>
       <location filename="../ui/Electromagnetic.ui" line="419"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Уявна частина використовується тільки для рівнянь
-з гармонійною/коливальною рушійною силою</translation>
+      <translation>Уявна частина використовується лише для рівнянь
+з гармонічною/коливальною рушійною силою</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="140"/>
       <source>Real part of scalar potential</source>
-      <translation type="unfinished">Real part of scalar potential</translation>
+      <translation>Дійсна частина скалярного потенціалу</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="191"/>
       <source>Real part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Дійсна частина x-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="214"/>
       <source>Imaginary part of vector potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Уявна частина x-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="244"/>
       <source>Real part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Дійсна частина y-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="267"/>
       <source>Imaginary part of vector potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Уявна частина y-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="297"/>
       <source>Real part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Дійсна частина z-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="320"/>
       <source>Imaginary part of vector potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of vector potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Уявна частина z-компоненти векторного потенціалу
+Примітка: не діє, якщо вибрано тіло</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="381"/>
       <source>Electric flux density</source>
-      <translation type="unfinished">Electric flux density</translation>
+      <translation>Електрична індукція</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="614"/>
       <source>Capacitance body</source>
-      <translation type="unfinished">Capacitance body</translation>
+      <translation>Тіло з ємністю</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="617"/>
       <source>Enabled by 'Calculate capacity matrix' in Electrostatic equation</source>
-      <translation type="unfinished">Enabled by 'Calculate capacity matrix' in Electrostatic equation</translation>
+      <translation>Вмикається параметром 'Calculate capacity matrix' в електростатичному рівнянні</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="358"/>
@@ -3037,82 +3037,82 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="348"/>
       <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+      <translation>Наближення дальнього поля за сферичної симетрії</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="351"/>
       <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
+      <translation>Дальнє поле</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>Сталий потенціал</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="373"/>
       <source>Neumann</source>
-      <translation type="unfinished">Neumann</translation>
+      <translation>Неймана</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
-      <translation type="unfinished">Normal component of electric displacement field</translation>
+      <translation>Нормальна компонента поля електричного зміщення</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
       <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
+      <translation>Для задання магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="403"/>
       <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
+      <translation>Магнітна індукція</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="459"/>
       <source>Real part of magnetic flux density x-component</source>
-      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
+      <translation>Дійсна частина x-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="481"/>
       <source>Imaginary part of magnetic flux density x-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
+      <translation>Уявна частина x-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="510"/>
       <source>Real part of magnetic flux density y-component</source>
-      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
+      <translation>Дійсна частина y-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="532"/>
       <source>Imaginary part of magnetic flux density y-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
+      <translation>Уявна частина y-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="561"/>
       <source>Real part of magnetic flux density z-component</source>
-      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
+      <translation>Дійсна частина z-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
+      <translation>Уявна частина z-компоненти магнітної індукції</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="608"/>
       <source>Capacitance</source>
-      <translation type="unfinished">Capacitance</translation>
+      <translation>Ємність</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="39"/>
       <source>Dirichlet</source>
-      <translation type="unfinished">Dirichlet</translation>
+      <translation>Діріхле</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="81"/>
       <source>To define scalar potential and magnetic vector potential</source>
-      <translation type="unfinished">To define scalar potential and magnetic vector potential</translation>
+      <translation>Для задання скалярного потенціалу й магнітного векторного потенціалу</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="39"/>
@@ -3121,7 +3121,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/Electromagnetic.ui" line="113"/>
       <location filename="../ui/Electromagnetic.ui" line="432"/>
       <source>Real</source>
-      <translation>Фактичні</translation>
+      <translation>Дійсна</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="49"/>
@@ -3145,12 +3145,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Лічильник тіла (або грані) з ємністю</translation>
+      <translation>Номер тіла (або грані) з ємністю</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam Section Rotation</source>
-      <translation type="unfinished">Beam Section Rotation</translation>
+      <translation>Поворот перерізу балки</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
@@ -3160,22 +3160,22 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation>Обертання</translation>
+      <translation>Поворот</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation type="unfinished">Mesh Boundary Layer Settings</translation>
+      <translation>Параметри примежового шару сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
       <source>Maximum layers</source>
-      <translation type="unfinished">Maximum layers</translation>
+      <translation>Максимальна кількість шарів</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="51"/>
       <source>Minimum/1st thickness</source>
-      <translation type="unfinished">Minimum/1st thickness</translation>
+      <translation>Мінімальна товщина / товщина 1-го шару</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="77"/>
@@ -3185,12 +3185,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Група сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier Used for Mesh Export</source>
-      <translation type="unfinished">Identifier Used for Mesh Export</translation>
+      <translation>Ідентифікатор для експорту сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3200,18 +3200,18 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation>Позначка</translation>
+      <translation>Мітка</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam Section Parameter</source>
-      <translation type="unfinished">Beam Section Parameter</translation>
+      <translation>Параметри перерізу балки</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
-      <translation type="unfinished">Cross-Section Parameter</translation>
+      <translation>Параметри поперечного перерізу</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
@@ -3245,40 +3245,40 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Зовнішній діаметр</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>Задати розмір сітки всередині й поза формою з можливою товщиною перехідного шару</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>Розмір сітки всередині форми</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>Розмір усередині</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>Розмір сітки поза формою</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>Розмір ззовні</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <translation>Товщина перехідного шару між внутрішнім і зовнішнім розмірами сітки (додається ззовні форми)</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="109"/>
@@ -3305,32 +3305,32 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
       <source>Axis1 length</source>
-      <translation type="unfinished">Axis1 length</translation>
+      <translation>Довжина осі 1</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="236"/>
       <source>Axis2 length</source>
-      <translation type="unfinished">Axis2 length</translation>
+      <translation>Довжина осі 2</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 thickness</source>
-      <translation type="unfinished">T1 thickness</translation>
+      <translation>Товщина T1</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 thickness</source>
-      <translation type="unfinished">T2 thickness</translation>
+      <translation>Товщина T2</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 thickness</source>
-      <translation type="unfinished">T3 thickness</translation>
+      <translation>Товщина T3</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 thickness</source>
-      <translation type="unfinished">T4 thickness</translation>
+      <translation>Товщина T4</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="25"/>
@@ -3350,25 +3350,25 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
-      <translation type="unfinished">Unspecified</translation>
+      <translation>Не задано</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
-      <translation type="unfinished">Velocity X</translation>
+      <translation>Швидкість X</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
-      <translation type="unfinished">Velocity Y</translation>
+      <translation>Швидкість Y</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
-      <translation type="unfinished">Velocity Z</translation>
+      <translation>Швидкість Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3402,86 +3402,86 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total power</source>
-      <translation type="unfinished">Total power</translation>
+      <translation>Повна потужність</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation rate</source>
-      <translation type="unfinished">Dissipation rate</translation>
+      <translation>Швидкість дисипації</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
-      <translation type="unfinished">Imaginary part is only used for equations
-with harmonic/oscillating driving current</translation>
+      <translation>Уявна частина використовується лише для рівнянь
+з гармонічним/коливальним рушійним струмом</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of magnetization x-component</source>
-      <translation type="unfinished">Real part of magnetization x-component</translation>
+      <translation>Дійсна частина x-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="88"/>
       <source>Imaginary part of magnetization x-component</source>
-      <translation type="unfinished">Imaginary part of magnetization x-component</translation>
+      <translation>Уявна частина x-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="117"/>
       <source>Real part of magnetization y-component</source>
-      <translation type="unfinished">Real part of magnetization y-component</translation>
+      <translation>Дійсна частина y-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="139"/>
       <source>Imaginary part of magnetization y-component</source>
-      <translation type="unfinished">Imaginary part of magnetization y-component</translation>
+      <translation>Уявна частина y-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="168"/>
       <source>Real part of magnetization z-component</source>
-      <translation type="unfinished">Real part of magnetization z-component</translation>
+      <translation>Дійсна частина z-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="190"/>
       <source>Imaginary part of magnetization z-component</source>
-      <translation type="unfinished">Imaginary part of magnetization z-component</translation>
+      <translation>Уявна частина z-компоненти намагніченості</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="50"/>
       <source>Free surface charge density</source>
-      <translation type="unfinished">Free surface charge density</translation>
+      <translation>Густина вільного поверхневого заряду</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Густина</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
       <source>Free volume charge density</source>
-      <translation type="unfinished">Free volume charge density</translation>
+      <translation>Густина вільного об'ємного заряду</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="136"/>
       <source>Free total charge</source>
-      <translation type="unfinished">Free total charge</translation>
+      <translation>Вільний повний заряд</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="141"/>
       <source>Total charge</source>
-      <translation type="unfinished">Total charge</translation>
+      <translation>Повний заряд</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>Зосереджений</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
       <source>Select custom mode to enable vector current density</source>
-      <translation type="unfinished">Select custom mode to enable vector current density</translation>
+      <translation>Виберіть власний режим, щоб увімкнути векторну густину струму</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="56"/>
@@ -3495,12 +3495,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="88"/>
       <source>Real part of current density x-component</source>
-      <translation type="unfinished">Real part of current density x-component</translation>
+      <translation>Дійсна частина x-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="110"/>
       <source>Imaginary part of current density x-component</source>
-      <translation type="unfinished">Imaginary part of current density x-component</translation>
+      <translation>Уявна частина x-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="107"/>
@@ -3514,12 +3514,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="139"/>
       <source>Real part of current density y-component</source>
-      <translation type="unfinished">Real part of current density y-component</translation>
+      <translation>Дійсна частина y-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="161"/>
       <source>Imaginary part of current density y-component</source>
-      <translation type="unfinished">Imaginary part of current density y-component</translation>
+      <translation>Уявна частина y-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="158"/>
@@ -3533,37 +3533,37 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="190"/>
       <source>Real part of current density z-component</source>
-      <translation type="unfinished">Real part of current density z-component</translation>
+      <translation>Дійсна частина z-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="212"/>
       <source>Imaginary part of current density z-component</source>
-      <translation type="unfinished">Imaginary part of current density z-component</translation>
+      <translation>Уявна частина z-компоненти густини струму</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="237"/>
       <source>Current density normal to surface</source>
-      <translation type="unfinished">Current density normal to surface</translation>
+      <translation>Густина струму, нормальна до поверхні</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="263"/>
       <source>Normal</source>
-      <translation>Звичайна</translation>
+      <translation>Нормаль</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell Thickness Parameter</source>
-      <translation type="unfinished">Shell Thickness Parameter</translation>
+      <translation>Параметр товщини оболонки</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>Уточнення сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Maximum element size</source>
-      <translation type="unfinished">Maximum element size</translation>
+      <translation>Максимальний розмір елемента</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
@@ -3593,45 +3593,45 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
-      <translation>Каркаси</translation>
+      <translation>Кадри</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
       <source>One field for each frame</source>
-      <translation type="unfinished">One field for each frame</translation>
+      <translation>Одне поле для кожного кадру</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>Індекс</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
       <source>X field</source>
-      <translation type="unfinished">X field</translation>
+      <translation>Поле X</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
-      <translation type="unfinished">Y field</translation>
+      <translation>Поле Y</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
-      <translation type="unfinished">One Y field for each frame</translation>
+      <translation>Одне поле Y для кожного кадру</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
+      <translation>Найменший розмір сітки в уточненні, позначений зеленим у попередньому перегляді.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>Мін.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
@@ -3642,12 +3642,12 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshPreview.ui" line="138"/>
       <location filename="../ui/MeshPreview.ui" line="151"/>
       <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
+      <translation>Найбільший розмір сітки в уточненні, позначений червоним у попередньому перегляді.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>Макс.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
@@ -3657,12 +3657,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Візуалізує розмір сітки, заданий уточненням: показує розміри кольорами на сітці попереднього перегляду. Зауважте, що перегляд обчислює уточнення на грубій сітці, тож деталі, менші за розмір сітки, можуть бути невидимі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>Візуалізувати</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -3672,12 +3672,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>Створює задану кількість вузлів сітки на ребрах структурованим алгоритмом.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
       <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
+      <translation>Кількість вузлів на ребрі</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
@@ -3710,7 +3710,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
       <source>Constant</source>
-      <translation>Постійний</translation>
+      <translation>Стала</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
@@ -3720,43 +3720,43 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <translation>Діаграма</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
       <source>Coefficient</source>
-      <translation type="unfinished">Coefficient</translation>
+      <translation>Коефіцієнт</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
+      <translation>Коефіцієнт швидкості зростання для bump/progression</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
       <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
+      <translation>Глобальні параметри попереднього перегляду уточнення</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
       <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+      <translation>Автоматично вмикає візуалізацію розміру сітки уточнення під час відкриття діалогу уточнення.</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
       <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
+      <translation>Автоматично вмикати під час відкриття</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
       <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+      <translation>Визначає дрібність сітки попереднього перегляду. Більше число — дрібніша сітка (менші елементи)</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
+      <translation>Дрібність сітки попереднього перегляду</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3795,7 +3795,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>Обчислює відстань до вибраних опорних ребер і задає розмір сітки окремо в напрямках нормалі та дотичної до найближчої кривої. Для швидкодії кожну криву замінено набором точок дискретизації, до яких і обчислюється відстань.</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="121"/>
@@ -3812,14 +3812,14 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+      <translation>Анізотропні уточнення сітки працюють лише з алгоритмами BAMG (2D) і MMG3D (3D)</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>Відстань, на якій розмір сітки дорівнюватиме SizeMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
@@ -3827,12 +3827,12 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshDistance.ui" line="68"/>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <translation>Розмір сітки, коли відстань = DistanceMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
+      <translation>Розмір по дотичній</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
@@ -3840,36 +3840,36 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/MeshDistance.ui" line="178"/>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <translation>Розмір сітки, коли відстань &lt; DistanceMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
       <location filename="../ui/MeshDistance.ui" line="219"/>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>Відстань, до якої розмір сітки дорівнюватиме SizeMinimum</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>Розмір по нормалі</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
       <location filename="../ui/MeshAdvanced.ui" line="916"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>Дискретизація</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Обчислює розмір сітки за формулою від координат (x, y, z) та інших уточнень (F1, F2 тощо)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>Перетягніть уточнення в об'єкт розширеної сітки в дереві, щоб вони стали доступні у формулі</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3879,11 +3879,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Доступні 3 координати x,y,z (малими літерами) і звичайні математичні
+функції, як-от Sin, Log (з великої літери). Крім того, усі дочірні уточнення
+доступні через змінну F, напр. F1, F2 тощо. Підтримувані оператори: +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Приклад: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3894,7 +3894,7 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
+      <translation>Рівняння розміру сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
@@ -3904,7 +3904,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Обчислює анізотропний розмір сітки за кількома формулами від координат (x, y, z) та інших уточнень (F1, F2 тощо)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
@@ -3923,11 +3923,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Доступні 3 координати x,y,z (малими літерами) і звичайні математичні
+функції, як-от Sin, Log (з великої літери). Крім того, усі дочірні уточнення
+доступні через змінну F, напр. F1, F2 тощо.  Підтримувані оператори: +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Приклад: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
@@ -3957,17 +3957,17 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>Обчислює відстань до вибраної опорної геометрії (вершин, ребер і поверхонь). Для швидкодії криві й поверхні замінено наборами точок</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
       <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
+      <translation>Використовує поле даних з конвеєра постобробки МСЕ як розмір сітки. Це дає змогу адаптувати сітку до фізичної поведінки результату.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
       <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
+      <translation>Задає розмір елементів сітки залежно від відстані до вибраної опорної геометрії.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="140"/>
@@ -3977,71 +3977,71 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <translation>Інтерполяція</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
       <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
+      <translation>Розмір дискретизації</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
       <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
+      <translation>Кількість точок дискретизації кривих і поверхонь. Для поверхонь — кількість у кожному напрямку.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>Визначає, чи інтерполяція розміру сітки між SizeMinimum і SizeMaximum лінійна, чи сигмоїдна</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>Лінійна</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
+      <translation>Виберіть кілька граней з 3 або 4 ребрами, за потреби з кутовими вершинами трибічних граней.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;або&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Виберіть одну грань з понад 4 ребрами й додатково виберіть 3 або 4 кутові вузли.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>Протилежні ребра (або полілінії між кутовими точками) повинні мати однакову кількість вузлів сітки. Найпростіше досягти цього трансфінітними кривими.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>Визначає, чи об'єднувати трикутники на поверхні в чотирикутники</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
       <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>Рекомбінувати</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>Визначає орієнтацію трикутників у трансфінітній сітці (якщо їх не рекомбіновано)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Орієнтація трикутників</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4052,56 +4052,56 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>Якщо ввімкнено, усі ребра вибраних поверхонь, для яких ще не задано трансфінітну криву, автоматично стають трансфінітними.
+Стратегічно розміщені визначення трансфінітних кривих спрямовують автоматичний алгоритм.
 
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+Примітки:
+1. Визначені користувачем криві поширюються на протилежні ребра граней по всіх вибраних гранях.
+2. Працює лише для три- або чотирибічних граней. Багатобічні грані потрібно налаштувати вручну.
+3. Працює з більшістю граней, з'єднаних чи ні </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>Автоматично застосовувати трансфінітні криві</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>Розподіл</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
       <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
+      <translation>Bump (інвертовано)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
       <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
+      <translation>Progression (інвертовано)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <translation>Створює структуровану сітку в об'ємі, керовану його трансфінітними поверхнями.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
       <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
+      <translation>Виберіть будь-яку кількість п'яти- або шестибічних об'ємів</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
       <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <translation>Усі поверхні об'єму мають бути трансфінітними. Якщо поверхні мають різні типи сітки (чотирикутники й трикутники), об'єм також потрібно розбивати з увімкненими змішаними елементами.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
       <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <translation>Змішані елементи сітки</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
@@ -4111,17 +4111,17 @@ Use strategically placed transfinite curve and surface definitions to guide the 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+      <translation>Якщо ввімкнено, усі ребра й поверхні вибраних об'ємів, для яких ще не задано трансфінітне визначення, автоматично стають трансфінітними.
+Стратегічно розміщені визначення трансфінітних кривих і поверхонь спрямовують автоматичний алгоритм.
 
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
+Примітки:
+1. Визначені користувачем криві поширюються на протилежні ребра граней по всіх вибраних гранях.
+2. Працює з будь-якою кількістю об'ємів, з'єднаних чи ні </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
       <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
+      <translation>Автоматично застосовувати трансфінітні поверхні й криві</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
@@ -4131,28 +4131,28 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
       <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
+      <translation>Перетягніть уточнення, яке потрібно змінити, в об'єкт Manipulate у дереві документа</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Обмежити</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>Поріг</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>Середнє</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>Градієнт</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -4162,48 +4162,48 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>Лапласіан</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>Обмежити застосування дочірнього уточнення вибраними опорними елементами.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>Включити межу вибраних опорних елементів</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
+      <translation>Включити межу</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>Застосувати поріг до значення дочірніх уточнень</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>Вихідний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
+      <translation>Вхідне значення</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>Лінійна інтерполяція</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>Зупинитися на максимальному вході</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -4211,7 +4211,7 @@ Notes:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>Обчислює середнє значення дочірнього уточнення G:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -4222,7 +4222,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
+      <translation>Дельта</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="527"/>
@@ -4230,7 +4230,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="708"/>
       <location filename="../ui/MeshManipulate.ui" line="780"/>
       <source>Delta in the aforementioned equation</source>
-      <translation type="unfinished">Delta in the aforementioned equation</translation>
+      <translation>Дельта в наведеному рівнянні</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="565"/>
@@ -4238,7 +4238,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>Обчислює скінченно-різницевий градієнт дочірнього уточнення G:
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </translation>
@@ -4274,7 +4274,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshGmsh.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Шлях до робочого каталогу. Залиште порожнім, щоб використати налаштування користувача</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="80"/>
@@ -4284,22 +4284,22 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
       <source>Element dimension</source>
-      <translation type="unfinished">Element dimension</translation>
+      <translation>Вимірність елементів</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="101"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Максимальний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="139"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Мінімальний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="180"/>
       <source>Element order</source>
-      <translation type="unfinished">Element order</translation>
+      <translation>Порядок елементів</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="226"/>
@@ -4309,13 +4309,13 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshGmsh.ui" line="252"/>
       <source>Gmsh Version</source>
-      <translation type="unfinished">Gmsh Version</translation>
+      <translation>Версія Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="111"/>
       <location filename="../ui/MeshGmsh.ui" line="149"/>
       <source>Use 0.0 to set size automatically</source>
-      <translation type="unfinished">Use 0.0 to set size automatically</translation>
+      <translation>0.0 — автоматичний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="198"/>
@@ -4359,24 +4359,24 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../../Command.cpp" line="78"/>
       <source>No active Analysis</source>
-      <translation>Немає активних аналізів</translation>
+      <translation>Немає активного аналізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="79"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Вам потрібно створити або активувати аналіз</translation>
+      <translation>Потрібно створити або активувати аналіз</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="157"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="901"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>Діалогове вікно вже відкрито в панелі задач</translation>
+      <translation>Діалог уже відкрито на панелі завдань</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="158"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="902"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Ви бажаєте закрити це діалогове вікно?</translation>
+      <translation>Закрити цей діалог?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="56"/>
@@ -4427,7 +4427,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="122"/>
       <source>Polyhedrons</source>
-      <translation>багатокутники</translation>
+      <translation>Багатогранники</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="123"/>
@@ -4442,7 +4442,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="165"/>
       <source>Edit Analysis Feature</source>
-      <translation>Змінити Аналіз Елементів</translation>
+      <translation>Редагувати елемент аналізу</translation>
     </message>
   </context>
   <context>
@@ -4475,7 +4475,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="229"/>
       <source>Displacement Scaling</source>
-      <translation type="unfinished">Displacement Scaling</translation>
+      <translation>Масштаб переміщень</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="264"/>
@@ -4485,17 +4485,17 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="349"/>
       <source>Animation Control</source>
-      <translation type="unfinished">Animation Control</translation>
+      <translation>Керування анімацією</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="496"/>
       <source>Toggles between Start and Stop</source>
-      <translation type="unfinished">Toggles between Start and Stop</translation>
+      <translation>Перемикає між запуском і зупинкою</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="499"/>
       <source>Start Animation</source>
-      <translation type="unfinished">Start Animation</translation>
+      <translation>Запустити анімацію</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
@@ -4505,42 +4505,42 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Показати результат</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="26"/>
       <source>Result Type</source>
-      <translation type="unfinished">Result Type</translation>
+      <translation>Тип результату</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="56"/>
       <source>Displacement magnitude</source>
-      <translation type="unfinished">Displacement magnitude</translation>
+      <translation>Модуль переміщення</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>Напруження за фон Мізесом</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>Максимальне головне напруження</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>Мінімальне головне напруження</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="123"/>
       <source>Maximum shear stress (Tresca)</source>
-      <translation type="unfinished">Maximum shear stress (Tresca)</translation>
+      <translation>Максимальне дотичне напруження (Треска)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="136"/>
       <source>Equivalent plastic strain</source>
-      <translation type="unfinished">Equivalent plastic strain</translation>
+      <translation>Еквівалентна пластична деформація</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="143"/>
@@ -4550,7 +4550,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="163"/>
       <source>Network pressure</source>
-      <translation type="unfinished">Network pressure</translation>
+      <translation>Тиск у мережі</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="181"/>
@@ -4570,37 +4570,37 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/ResultShow.ui" line="300"/>
       <source>Slider maximum</source>
-      <translation type="unfinished">Slider maximum</translation>
+      <translation>Максимум повзунка</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="373"/>
       <source>Number of steps per cycle</source>
-      <translation type="unfinished">Number of steps per cycle</translation>
+      <translation>Кількість кроків за цикл</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="420"/>
       <source>Number of cycles</source>
-      <translation type="unfinished">Number of cycles</translation>
+      <translation>Кількість циклів</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="458"/>
       <source>Frame rate</source>
-      <translation type="unfinished">Frame rate</translation>
+      <translation>Частота кадрів</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation> Повний цикл</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>Півцикл</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
       <source>User-Defined Equation</source>
-      <translation type="unfinished">User-Defined Equation</translation>
+      <translation>Рівняння користувача</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="548"/>
@@ -4626,7 +4626,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/ResultShow.ui" line="576"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
-      <translation>P1 - P3 # Максимальне - мінімальне основне напруження</translation>
+      <translation>P1 - P3 # Максимальне - мінімальне головне напруження</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="43"/>
@@ -4636,7 +4636,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/ResultHints.ui" line="65"/>
       <source>temperature: T</source>
-      <translation>температура: Т</translation>
+      <translation>температура: T</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="90"/>
@@ -4646,12 +4646,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
       <source>network pressure: NP</source>
-      <translation>тиск мережі: NP</translation>
+      <translation>тиск у мережі: NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation>деформація: exx, eyy, ezz, exy, exz, eyz, eyy, eyy, eyy, eyy</translation>
+      <translation>деформація: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
@@ -4666,42 +4666,42 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>maximum shear stress: MS</source>
-      <translation type="unfinished">maximum shear stress: MS</translation>
+      <translation>максимальне дотичне напруження: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>maximum princ. stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
+      <translation>вектор максимального головного напруження: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>максимальне головне напруження: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>medium princ. stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
+      <translation>вектор середнього головного напруження: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>medium principal stress: P2</source>
-      <translation type="unfinished">medium principal stress: P2</translation>
+      <translation>середнє головне напруження: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>minimum princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>вектор мінімального головного напруження: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>minimum principal stress: P3</source>
-      <translation type="unfinished">minimum principal stress: P3</translation>
+      <translation>мінімальне головне напруження: P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr-Coulomb: mc</source>
-      <translation type="unfinished">Mohr-Coulomb: mc</translation>
+      <translation>Мора — Кулона: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -4711,17 +4711,17 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
       <source>Hints User-Defined Equations</source>
-      <translation type="unfinished">Hints User-Defined Equations</translation>
+      <translation>Підказки до рівнянь користувача</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="20"/>
       <source>Available Result Types</source>
-      <translation type="unfinished">Available Result Types</translation>
+      <translation>Доступні типи результатів</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
       <source>equivalent plastic strain: Peeq</source>
-      <translation>еквівалентна пластична деформація: ЕПД</translation>
+      <translation>еквівалентна пластична деформація: Peeq</translation>
     </message>
   </context>
   <context>
@@ -4729,7 +4729,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical Analysis</source>
-      <translation type="unfinished">Mechanical Analysis</translation>
+      <translation>Механічний аналіз</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
@@ -4739,7 +4739,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation type="unfinished">Analysis Type</translation>
+      <translation>Тип аналізу</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -4764,17 +4764,17 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
       <source>Buckling</source>
-      <translation>Стійкість</translation>
+      <translation>Втрата стійкості</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation type="unfinished">Write .inp File</translation>
+      <translation>Записати файл .inp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp File</source>
-      <translation type="unfinished">Edit .inp File</translation>
+      <translation>Редагувати файл .inp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
@@ -4820,7 +4820,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="326"/>
       <source>Object dependencies</source>
-      <translation>Залежності обʼєктів</translation>
+      <translation>Залежності об'єктів</translation>
     </message>
   </context>
   <context>
@@ -4828,12 +4828,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes</source>
-      <translation type="unfinished">Meshes</translation>
+      <translation>Сітки</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation>Функції аналізу</translation>
+      <translation>Елементи аналізу</translation>
     </message>
   </context>
   <context>
@@ -4856,7 +4856,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation>Багатокутників</translation>
+      <translation>Багатокутник</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -4876,12 +4876,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-Search</source>
-      <translation type="unfinished">Angle-Search</translation>
+      <translation>Пошук за кутом</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle</source>
-      <translation type="unfinished">Stop angle</translation>
+      <translation>Граничний кут</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -4894,7 +4894,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Додати посилання</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -4914,7 +4914,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
       <source>Center distance</source>
-      <translation>Середина відстані</translation>
+      <translation>Міжосьова відстань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
@@ -4942,12 +4942,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Додати посилання</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
       <source>Gear diameter</source>
-      <translation>Діаметр передачі</translation>
+      <translation>Діаметр зубчастого колеса</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="59"/>
@@ -4957,7 +4957,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="80"/>
       <source>Center distance</source>
-      <translation>Середина відстані</translation>
+      <translation>Міжосьова відстань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="101"/>
@@ -4967,7 +4967,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="122"/>
       <source>Belt tension force</source>
-      <translation>Сила натяжіння ременя</translation>
+      <translation>Сила натягу ременя</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="141"/>
@@ -4987,12 +4987,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="189"/>
       <source>Reversed direction</source>
-      <translation>Зворотній напрямок</translation>
+      <translation>Зворотний напрямок</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="196"/>
       <source>Axial free</source>
-      <translation>Вільні вісі</translation>
+      <translation>Вільний в осьовому напрямку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="205"/>
@@ -5022,12 +5022,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Виберіть геометрію типу: ребро, грань; натисніть «Додати» або «Видалити»</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Виберіть підпорядковану геометрію типу: ребро, грань; натисніть «Додати» або «Видалити»</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5037,37 +5037,37 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="156"/>
       <source>Contact stiffness</source>
-      <translation type="unfinished">Contact stiffness</translation>
+      <translation>Контактна жорсткість</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="179"/>
       <source>Clearance adjustment</source>
-      <translation type="unfinished">Clearance adjustment</translation>
+      <translation>Коригування зазору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="202"/>
       <source>Enable friction</source>
-      <translation type="unfinished">Enable friction</translation>
+      <translation>Увімкнути тертя</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="209"/>
       <source>Friction coefficient</source>
-      <translation type="unfinished">Friction coefficient</translation>
+      <translation>Коефіцієнт тертя</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="232"/>
       <source>Stick slope</source>
-      <translation type="unfinished">Stick slope</translation>
+      <translation>Нахил прилипання</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="255"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Перевернути основну</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Перевернути підпорядковану</translation>
     </message>
   </context>
   <context>
@@ -5075,12 +5075,12 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>Призначене зміщення</translation>
+      <translation>Задане переміщення</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Виберіть геометрію типу: вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -5098,8 +5098,8 @@ For possible variables, see the description box below.</source>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="185"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
-      <translation>Формули дійсні тільки
-для Elmer solver</translation>
+      <translation>Формули дійсні лише
+для розв'язувача Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="123"/>
@@ -5135,9 +5135,9 @@ surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
       <translation>Розв'язок течії використовується для визначення
-поверхневої сили (а отже, і переміщення)
-що створюється течією
-(Опція застосовується лише до Elmer solver)</translation>
+поверхневої сили (а отже, і переміщення),
+спричиненої течією
+(параметр діє лише для розв'язувача Elmer)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
@@ -5147,22 +5147,22 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for beam and shell elements</source>
-      <translation type="unfinished">Rotations are only valid for beam and shell elements</translation>
+      <translation>Повороти діють лише для балкових і оболонкових елементів</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>Поворот X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Поворот Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Поворот Z</translation>
     </message>
   </context>
   <context>
@@ -5170,7 +5170,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Виберіть геометрію типу: вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -5198,7 +5198,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Виберіть геометрію типу: грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -5223,12 +5223,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="176"/>
       <source>Value [Unit]</source>
-      <translation>Значення [Одиниця виміру]</translation>
+      <translation>Значення [одиниця]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="239"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation>Виберіть плоску кромку або грань, а потім натисніть цю кнопку</translation>
+      <translation>Виберіть пласке ребро або грань, потім натисніть цю кнопку</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
@@ -5254,8 +5254,8 @@ generated by the flow
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Напрямок ребра або напрямок
-вектор нормалі грані використовується як напрямок</translation>
+      <translation>Як напрямок використовується напрямок ребра або напрямок
+вектора нормалі грані</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -5270,7 +5270,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
       <source>Turbulence specification</source>
-      <translation>Специфікація турбулентності</translation>
+      <translation>Параметри турбулентності</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="357"/>
@@ -5290,7 +5290,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="441"/>
       <source>HT coeff</source>
-      <translation>Коеф. HT</translation>
+      <translation>Коеф. тепловіддачі</translation>
     </message>
   </context>
   <context>
@@ -5298,12 +5298,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="26"/>
       <source>Prescribed Force</source>
-      <translation>Приписувана сила</translation>
+      <translation>Задана сила</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Виберіть геометрію типу: вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -5353,12 +5353,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>Task Heat Flux Load</source>
-      <translation type="unfinished">Task Heat Flux Load</translation>
+      <translation>Навантаження тепловим потоком</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select  geometry of type: Edge, Face</translation>
+      <translation>Виберіть  геометрію типу: ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -5378,18 +5378,18 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="96"/>
       <source>Surface heat flux</source>
-      <translation type="unfinished">Surface heat flux</translation>
+      <translation>Поверхневий тепловий потік</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Коефіцієнт тепловіддачі</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>Температура середовища</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -5415,7 +5415,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Виберіть одну геометрію типу: грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -5433,7 +5433,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Edge, Face</translation>
+      <translation>Виберіть геометрію типу: ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -5471,28 +5471,28 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="75"/>
       <source>Normal stiffness</source>
-      <translation type="unfinished">Normal stiffness</translation>
+      <translation>Нормальна жорсткість</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>Stiffness used for the Elmer solver</source>
-      <translation type="unfinished">Stiffness used for the Elmer solver</translation>
+      <translation>Жорсткість для розв'язувача Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
       <location filename="../../TaskFemConstraintSpring.ui" line="105"/>
       <source>N/m</source>
-      <translation type="unfinished">N/m</translation>
+      <translation>Н/м</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Виберіть геометрію типу: грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
       <source>Tangential stiffness</source>
-      <translation type="unfinished">Tangential stiffness</translation>
+      <translation>Тангенціальна жорсткість</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
@@ -5505,7 +5505,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Виберіть геометрію типу: вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -5530,7 +5530,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="107"/>
       <source>Concentrated heat flux</source>
-      <translation>Концентрований тепловий потік</translation>
+      <translation>Зосереджений тепловий потік</translation>
     </message>
   </context>
   <context>
@@ -5548,7 +5548,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation type="unfinished">Select single geometry of type: Face</translation>
+      <translation>Виберіть одну геометрію типу: грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5563,7 +5563,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation>Обертання системи</translation>
+      <translation>Поворот системи</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -5589,7 +5589,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintTransform.ui" line="190"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="209"/>
       <source>Transformable Surfaces</source>
-      <translation type="unfinished">Transformable Surfaces</translation>
+      <translation>Перетворювані поверхні</translation>
     </message>
   </context>
   <context>
@@ -5602,12 +5602,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside out</source>
-      <translation type="unfinished">Inside out</translation>
+      <translation>Навиворіт</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut cells</source>
-      <translation type="unfinished">Cut cells</translation>
+      <translation>Розрізати комірки</translation>
     </message>
   </context>
   <context>
@@ -5653,7 +5653,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="184"/>
       <source>Select Points</source>
-      <translation>Обрати точки</translation>
+      <translation>Вибрати точки</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="193"/>
@@ -5686,7 +5686,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
@@ -5711,7 +5711,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
       <source>Select Point</source>
-      <translation>Обрати точку</translation>
+      <translation>Вибрати точку</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="169"/>
@@ -5742,7 +5742,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation>Поверхня з краями</translation>
+      <translation>Поверхня з ребрами</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5768,7 +5768,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="136"/>
       <source>Styling</source>
-      <translation>Стилістика</translation>
+      <translation>Стиль</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="142"/>
@@ -5806,22 +5806,22 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Minimum scalar</source>
-      <translation type="unfinished">Minimum scalar</translation>
+      <translation>Мінімальний скаляр</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Maximum scalar</source>
-      <translation type="unfinished">Maximum scalar</translation>
+      <translation>Максимальний скаляр</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation>Вирізати скаляр</translation>
+      <translation>Відсікти за скаляром</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
       <source>Clip inside out</source>
-      <translation>Вирізати всередину</translation>
+      <translation>Інвертувати відсікання</translation>
     </message>
   </context>
   <context>
@@ -5834,22 +5834,22 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="42"/>
       <source>warp vectors</source>
-      <translation>вектори викривлення</translation>
+      <translation>вектори деформування</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>
       <source>Minimum warp</source>
-      <translation type="unfinished">Minimum warp</translation>
+      <translation>Мінімальна деформація</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="118"/>
       <source>Maximum warp</source>
-      <translation type="unfinished">Maximum warp</translation>
+      <translation>Максимальна деформація</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="105"/>
       <source>Warp factor</source>
-      <translation>Фактор викривлення</translation>
+      <translation>Коефіцієнт деформування</translation>
     </message>
   </context>
   <context>
@@ -5862,17 +5862,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Максимальний розмір</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="46"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Мінімальний розмір</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness</source>
-      <translation>Ступінь дроблення</translation>
+      <translation>Дрібність</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -5882,22 +5882,22 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
-      <translation>Шорсткий</translation>
+      <translation>Грубо</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="92"/>
       <source>Moderate</source>
-      <translation>Помірний</translation>
+      <translation>Помірно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
-      <translation>Добре</translation>
+      <translation>Дрібно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
-      <translation>Дуже добре</translation>
+      <translation>Дуже дрібно</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="107"/>
@@ -5907,12 +5907,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Швидкість зростання</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Number of segments per edge</source>
-      <translation type="unfinished">Number of segments per edge</translation>
+      <translation>Кількість сегментів на ребро</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
@@ -5922,17 +5922,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="184"/>
       <source>Node count</source>
-      <translation type="unfinished">Node count</translation>
+      <translation>Кількість вузлів</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="198"/>
       <source>Triangle count</source>
-      <translation type="unfinished">Triangle count</translation>
+      <translation>Кількість трикутників</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="212"/>
       <source>Tetrahedron count</source>
-      <translation type="unfinished">Tetrahedron count</translation>
+      <translation>Кількість тетраедрів</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5980,97 +5980,97 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>&amp;Element Geometry</source>
-      <translation>&amp;Геометрія елементу</translation>
+      <translation>&amp;Геометрія елемента</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">Electrostatic Boundary Conditions</translation>
+      <translation>Електростатичні граничні умови</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Electrostatic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electrostatic Boundary Conditions</translation>
+      <translation>&amp;Електростатичні граничні умови</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Fluid Boundary Conditions</source>
-      <translation type="unfinished">Fluid Boundary Conditions</translation>
+      <translation>Граничні умови течії</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Fluid Boundary Conditions</source>
-      <translation type="unfinished">&amp;Fluid Boundary Conditions</translation>
+      <translation>Граничні умови &amp;течії</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Електромагнітні граничні умови</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>&amp;Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic Boundary Conditions</translation>
+      <translation>Е&amp;лектромагнітні граничні умови</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Geometrical Analysis Features</source>
-      <translation>Геометричний Аналіз Елементів</translation>
+      <translation>Геометричні елементи аналізу</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>&amp;Geometrical Analysis Features</source>
-      <translation>&amp;Геометричний Аналіз Елементів</translation>
+      <translation>&amp;Геометричні елементи аналізу</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">Mechanical Boundary Conditions and Loads</translation>
+      <translation>Механічні граничні умови й навантаження</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>&amp;Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Mechanical Boundary Conditions and Loads</translation>
+      <translation>&amp;Механічні граничні умови й навантаження</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">Thermal Boundary Conditions and Loads</translation>
+      <translation>Теплові граничні умови й навантаження</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>&amp;Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Thermal Boundary Conditions and Loads</translation>
+      <translation>Т&amp;еплові граничні умови й навантаження</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Analysis Features Without Solver</source>
-      <translation type="unfinished">Analysis Features Without Solver</translation>
+      <translation>Елементи аналізу без розв'язувача</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>&amp;Analysis Features Without Solver</source>
-      <translation type="unfinished">&amp;Analysis Features Without Solver</translation>
+      <translation>Елементи &amp;аналізу без розв'язувача</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Функції фільтрів</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>&amp;Filter Functions</source>
-      <translation type="unfinished">&amp;Filter Functions</translation>
+      <translation>&amp;Функції фільтрів</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
       <source>Overwrite Constants</source>
-      <translation>Перезаписати константи</translation>
+      <translation>Перевизначити константи</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>&amp;Overwrite Constants</source>
-      <translation>&amp;Перезаписати константи</translation>
+      <translation>&amp;Перевизначити константи</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -6119,22 +6119,22 @@ normal vector of the face is used as direction</source>
       <location filename="../../Command.cpp" line="2022"/>
       <location filename="../../Command.cpp" line="2034"/>
       <source>The filter could not be set up.</source>
-      <translation>Не вдалося встановити фільтр.</translation>
+      <translation>Не вдалося налаштувати фільтр.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2033"/>
       <source>Error: no post processing object selected.</source>
-      <translation>Помилка: об'єкт для обробки не обраний.</translation>
+      <translation>Помилка: не вибрано об'єкт постобробки.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2052"/>
       <source>Error: Object not in a post processing group</source>
-      <translation type="unfinished">Error: Object not in a post processing group</translation>
+      <translation>Помилка: об'єкт не входить до групи постобробки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2053"/>
       <source>The filter could not be set up: Object not in a post processing group.</source>
-      <translation type="unfinished">The filter could not be set up: Object not in a post processing group.</translation>
+      <translation>Не вдалося налаштувати фільтр: об'єкт не входить до групи постобробки.</translation>
     </message>
   </context>
   <context>
@@ -6142,7 +6142,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Новий аналіз</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="64"/>
@@ -6155,7 +6155,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="165"/>
       <source>Remove All Clipping Planes</source>
-      <translation type="unfinished">Remove All Clipping Planes</translation>
+      <translation>Видалити всі площини відсікання</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="168"/>
@@ -6168,7 +6168,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="560"/>
       <source>FEM Examples</source>
-      <translation type="unfinished">FEM Examples</translation>
+      <translation>Приклади МСЕ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="561"/>
@@ -6186,7 +6186,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="578"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation>Відкриває редактор матеріалу FreeCAD</translation>
+      <translation>Відкриває редактор матеріалів FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -6194,12 +6194,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="635"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Армований матеріал (бетон)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="639"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation>Створює матеріал для армованого заповнювального матеріалу, такого як бетон</translation>
+      <translation>Створює матеріал для армованого матеріалу-матриці, наприклад бетону</translation>
     </message>
   </context>
   <context>
@@ -6207,12 +6207,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="661"/>
       <source>FEM Mesh to Mesh</source>
-      <translation type="unfinished">FEM Mesh to Mesh</translation>
+      <translation>Сітка МСЕ в сітку</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="664"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation>Перетворює поверхню сітки МСЕ в сітку</translation>
+      <translation>Перетворює поверхню сітки МСЕ на сітку</translation>
     </message>
   </context>
   <context>
@@ -6220,12 +6220,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="760"/>
       <source>Display Mesh Info</source>
-      <translation type="unfinished">Display Mesh Info</translation>
+      <translation>Інформація про сітку</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
-      <translation>Відображає інформацію щодо сітки МСЕ</translation>
+      <translation>Показує інформацію про сітку МСЕ</translation>
     </message>
   </context>
   <context>
@@ -6233,12 +6233,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="784"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation type="unfinished">Mesh From Shape by Gmsh</translation>
+      <translation>Сітка з форми (Gmsh)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Створити сітку МСЕ з фігури за допомогою генератора сітки Gmsh</translation>
+      <translation>Створює сітку МСЕ з форми генератором сітки Gmsh</translation>
     </message>
   </context>
   <context>
@@ -6246,12 +6246,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="845"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation type="unfinished">Mesh From Shape by Netgen</translation>
+      <translation>Сітка з форми (Netgen)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="849"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Створює МСЕ-сітку з твердого тіла або грані за допомогою внутрішньої сітки Netgen</translation>
+      <translation>Створює сітку МСЕ з тіла або грані внутрішнім генератором сітки Netgen</translation>
     </message>
   </context>
   <context>
@@ -6259,12 +6259,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1176"/>
       <source>Solver CalculiX Standard</source>
-      <translation>Розв’язувач CalculiX Standard</translation>
+      <translation>Розв'язувач CalculiX Standard</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1181"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>Створює стандартний МСЕ розв'язувач CalculiX за допомогою інструментів ccx</translation>
+      <translation>Створює стандартний розв'язувач МСЕ CalculiX з інструментами ccx</translation>
     </message>
   </context>
   <context>
@@ -6272,7 +6272,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1219"/>
       <source>Solver Job Control</source>
-      <translation type="unfinished">Solver Job Control</translation>
+      <translation>Керування завданням розв'язувача</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1224"/>
@@ -6298,12 +6298,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1275"/>
       <source>Solver Mystran</source>
-      <translation>Розв'язувач Містрана</translation>
+      <translation>Розв'язувач Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1277"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation>Створено МСЕ розв'язувач Mystran</translation>
+      <translation>Створює розв'язувач МСЕ Mystran</translation>
     </message>
   </context>
   <context>
@@ -6311,12 +6311,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1287"/>
       <source>Run Solver</source>
-      <translation type="unfinished">Run Solver</translation>
+      <translation>Запустити розв'язувач</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1291"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation>Запускає обчислення для обраного розв'язувача</translation>
+      <translation>Запускає обчислення для вибраного розв'язувача</translation>
     </message>
   </context>
   <context>
@@ -6329,7 +6329,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1310"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>Створює розв'язувач Z88 МСЕ</translation>
+      <translation>Створює розв'язувач МСЕ Z88</translation>
     </message>
   </context>
   <context>
@@ -6361,7 +6361,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="242"/>
       <source>Elapsed Time:</source>
-      <translation>Витрачено часу:</translation>
+      <translation>Минуло часу:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="302"/>
@@ -6404,12 +6404,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="163"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Обрати Грані/Ребра/Вершини</translation>
+      <translation>Вибрати грані/ребра/вершини</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="164"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation>Щоб додати посилання: виберіть їх у 3D-вигляді та натисніть «Додати».</translation>
+      <translation>Щоб додати посилання: виберіть їх у 3D-виді й натисніть «Додати».</translation>
     </message>
   </context>
   <context>
@@ -6417,12 +6417,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="179"/>
       <source>Select Solids</source>
-      <translation>Вибрати твердотілі</translation>
+      <translation>Вибрати тіла</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="185"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Виберіть елементи, що входять до складу твердого тіла, які потрібно додати до списку. Щоб додати тіло, натисніть кнопку «Додати».</translation>
+      <translation>Виберіть елементи тіла, яке потрібно додати до списку. Щоб додати тіло, натисніть «Додати».</translation>
     </message>
   </context>
   <context>
@@ -6440,17 +6440,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="306"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Виберіть геометрію типу: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="335"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation type="unfinished">Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</translation>
+      <translation>Клацніть і виберіть геометричні елементи, щоб додати їх до списку.{}Можна вибрати такі геометричні елементи: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="338"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation>{}Якщо до списку не додано жодної геометрії, використовуються всі інші.</translation>
+      <translation>{}Якщо до списку не додано жодної геометрії, використовується вся решта.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="314"/>
@@ -6460,12 +6460,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="299"/>
       <source>Geometry Reference Selector</source>
-      <translation type="unfinished">Geometry Reference Selector</translation>
+      <translation>Вибір посилань на геометрію</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="316"/>
       <source>Solid</source>
-      <translation>Суцільне тіло</translation>
+      <translation>Тіло</translation>
     </message>
   </context>
   <context>
@@ -6493,22 +6493,22 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="328"/>
       <source>Displacement magnitude</source>
-      <translation type="unfinished">Displacement magnitude</translation>
+      <translation>Модуль переміщення</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="364"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>Напруження за фон Мізесом</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="376"/>
       <source>Maximum shear stress (Tresca)</source>
-      <translation type="unfinished">Maximum shear stress (Tresca)</translation>
+      <translation>Максимальне дотичне напруження (Треска)</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="388"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>Максимальне головне напруження</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="412"/>
@@ -6518,17 +6518,17 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="424"/>
       <source>Network pressure</source>
-      <translation type="unfinished">Network pressure</translation>
+      <translation>Тиск у мережі</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="436"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>Мінімальне головне напруження</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="448"/>
       <source>Equivalent plastic strain</source>
-      <translation type="unfinished">Equivalent plastic strain</translation>
+      <translation>Еквівалентна пластична деформація</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="468"/>
@@ -6540,7 +6540,7 @@ normal vector of the face is used as direction</source>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Гістограма недоступна.
-Будь ласка, спочатку виберіть тип результату.</translation>
+Спочатку виберіть тип результату.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
@@ -6555,13 +6555,13 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="771"/>
       <source>Result mesh is empty</source>
-      <translation type="unfinished">Result mesh is empty</translation>
+      <translation>Сітка результату порожня</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="785"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="794"/>
       <source>No result object</source>
-      <translation>Немає обʼєкта результату</translation>
+      <translation>Немає об'єкта результату</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="169"/>
@@ -6569,9 +6569,9 @@ Please select a result type first.</source>
 
 Correct module found in: 
 {}</source>
-      <translation type="unfinished">
+      <translation>
 
-Correct module found in: 
+Правильний модуль знайдено в: 
 {}</translation>
     </message>
     <message>
@@ -6579,78 +6579,78 @@ Correct module found in:
       <source>
 
 Should this module be loaded instead?</source>
-      <translation type="unfinished">
+      <translation>
 
-Should this module be loaded instead?</translation>
+Завантажити замість цього цей модуль?</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
 No matching module was found in the current Python path.</source>
-      <translation type="unfinished">
+      <translation>
 
-No matching module was found in the current Python path.</translation>
+У поточному шляху Python відповідного модуля не знайдено.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="198"/>
       <source>VTK Python module conflict</source>
-      <translation type="unfinished">VTK Python module conflict</translation>
+      <translation>Конфлікт модуля Python VTK</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="224"/>
       <source>VTK Python Module Conflict</source>
-      <translation type="unfinished">VTK Python Module Conflict</translation>
+      <translation>Конфлікт модуля Python VTK</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
       <source>This functionality is not available due to VTK Python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
+      <translation>Ця функція недоступна через конфлікт модуля Python VTK</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="58"/>
       <source>New {}</source>
-      <translation type="unfinished">New {}</translation>
+      <translation>Новий {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="65"/>
       <source>with {}</source>
-      <translation type="unfinished">with {}</translation>
+      <translation>з {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="100"/>
       <source>Add {}</source>
-      <translation type="unfinished">Add {}</translation>
+      <translation>Додати {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="116"/>
       <source>From {}</source>
-      <translation type="unfinished">From {}</translation>
+      <translation>З {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="125"/>
       <source>add {}</source>
-      <translation type="unfinished">add {}</translation>
+      <translation>додати {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="373"/>
       <source>{}: Data source not available</source>
-      <translation type="unfinished">{}: Data source not available</translation>
+      <translation>{}: джерело даних недоступне</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
       <source>Data used in:</source>
-      <translation type="unfinished">Data used in:</translation>
+      <translation>Дані використано в:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="534"/>
       <source>Data used from:</source>
-      <translation type="unfinished">Data used from:</translation>
+      <translation>Дані взято з:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="543"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Додати дані до</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="548"/>
@@ -6660,197 +6660,187 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="555"/>
       <source>Add data from</source>
-      <translation type="unfinished">Add data from</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation type="unfinished">Different visualizations to show post processing data in</translation>
+      <translation>Додати дані з</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
-      <translation type="unfinished">Export to CSV</translation>
+      <translation>Експортувати в CSV</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="215"/>
       <source>Save as csv file</source>
-      <translation type="unfinished">Save as csv file</translation>
+      <translation>Зберегти як CSV-файл</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="220"/>
       <source>CSV file export aborted: no filename selected</source>
-      <translation type="unfinished">CSV file export aborted: no filename selected</translation>
+      <translation>Експорт у CSV-файл перервано: не вибрано ім'я файлу</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="89"/>
       <source>The data table that stores the extracted data</source>
-      <translation type="unfinished">The data table that stores the extracted data</translation>
+      <translation>Таблиця даних, що зберігає видобуті дані</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="96"/>
       <source>The data source from which the data is extracted</source>
-      <translation type="unfinished">The data source from which the data is extracted</translation>
+      <translation>Джерело даних, з якого видобуваються дані</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="149"/>
       <source>The field to use as X data</source>
-      <translation type="unfinished">The field to use as X data</translation>
+      <translation>Поле для даних X</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="158"/>
       <source>Which part of the X field vector to use for the X axis</source>
-      <translation type="unfinished">Which part of the X field vector to use for the X axis</translation>
+      <translation>Яку частину вектора поля X використовувати для осі X</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="288"/>
       <source>The field to use as Y data</source>
-      <translation type="unfinished">The field to use as Y data</translation>
+      <translation>Поле для даних Y</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="297"/>
       <source>Which part of the Y field vector to use for the Y axis</source>
-      <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
+      <translation>Яку частину вектора поля Y використовувати для осі Y</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract1D.py" line="66"/>
       <location filename="../../../femobjects/post_extract2D.py" line="66"/>
       <source>Specify if the field shall be extracted for every available frame</source>
-      <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
+      <translation>Чи видобувати поле для кожного доступного кадру</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract1D.py" line="142"/>
       <source>Specify for which index the data should be extracted</source>
-      <translation type="unfinished">Specify for which index the data should be extracted</translation>
+      <translation>Для якого індексу видобувати дані</translation>
     </message>
     <message>
       <location filename="../../../femobjects/post_extract2D.py" line="157"/>
       <source>Specify for which point index the data should be extracted</source>
-      <translation type="unfinished">Specify for which point index the data should be extracted</translation>
+      <translation>Для якого індексу точки видобувати дані</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/base_fempostpanel.py" line="71"/>
       <source>Edit {}</source>
-      <translation type="unfinished">Edit {}</translation>
+      <translation>Редагувати {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="58"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="58"/>
       <source>Show Plot</source>
-      <translation type="unfinished">Show Plot</translation>
+      <translation>Показати графік</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="61"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="61"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>Показати дані</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="71"/>
       <source>Histogram Data</source>
-      <translation type="unfinished">Histogram Data</translation>
+      <translation>Дані гістограми</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="78"/>
       <source>Histogram View Settings</source>
-      <translation type="unfinished">Histogram View Settings</translation>
+      <translation>Параметри перегляду гістограми</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="71"/>
       <source>Lineplot Data</source>
-      <translation type="unfinished">Lineplot Data</translation>
+      <translation>Дані лінійного графіка</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="78"/>
       <source>Lineplot View Settings</source>
-      <translation type="unfinished">Lineplot View Settings</translation>
+      <translation>Параметри перегляду лінійного графіка</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="56"/>
       <source>Show Table</source>
-      <translation type="unfinished">Show Table</translation>
+      <translation>Показати таблицю</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="66"/>
       <source>Table Data</source>
-      <translation type="unfinished">Table Data</translation>
+      <translation>Дані таблиці</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="285"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="269"/>
       <source>The name used in the plots legend</source>
-      <translation type="unfinished">The name used in the plots legend</translation>
+      <translation>Назва в легенді графіка</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="276"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="297"/>
       <source>The color the data bin area is drawn with</source>
-      <translation type="unfinished">The color the data bin area is drawn with</translation>
+      <translation>Колір, яким малюється область стовпця даних</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="283"/>
       <source>The hatch pattern drawn in the bar</source>
-      <translation type="unfinished">The hatch pattern drawn in the bar</translation>
+      <translation>Візерунок штрихування стовпця</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="290"/>
       <source>The line width of the hatch)</source>
-      <translation type="unfinished">The line width of the hatch)</translation>
+      <translation>Ширина ліній штрихування)</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="306"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="418"/>
       <source>The width of the bar, between 0 and 1 (1 being without gaps)</source>
-      <translation type="unfinished">The width of the bar, between 0 and 1 (1 being without gaps)</translation>
+      <translation>Ширина стовпця, від 0 до 1 (1 — без проміжків)</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="299"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="313"/>
       <source>The style the line is drawn in</source>
-      <translation type="unfinished">The style the line is drawn in</translation>
+      <translation>Стиль лінії</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="402"/>
       <source>If the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If the bars should show the cumulative sum left to right</translation>
+      <translation>Чи показувати стовпцями накопичену суму зліва направо</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="409"/>
       <source>The type of histogram plotted</source>
-      <translation type="unfinished">The type of histogram plotted</translation>
+      <translation>Тип гістограми</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="425"/>
       <source>The line width of all drawn hatch patterns</source>
-      <translation type="unfinished">The line width of all drawn hatch patterns</translation>
+      <translation>Ширина ліній усіх візерунків штрихування</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="432"/>
       <source>The number of bins the data is split into</source>
-      <translation type="unfinished">The number of bins the data is split into</translation>
+      <translation>Кількість інтервалів, на які поділяються дані</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="423"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="439"/>
       <source>The histogram plot title</source>
-      <translation type="unfinished">The histogram plot title</translation>
+      <translation>Заголовок гістограми</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="430"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="446"/>
       <source>The label shown for the histogram X axis</source>
-      <translation type="unfinished">The label shown for the histogram X axis</translation>
+      <translation>Підпис осі X гістограми</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="453"/>
       <source>The label shown for the histogram Y axis</source>
-      <translation type="unfinished">The label shown for the histogram Y axis</translation>
+      <translation>Підпис осі Y гістограми</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="444"/>
@@ -6858,42 +6848,42 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="460"/>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="467"/>
       <source>Determines if the legend is plotted</source>
-      <translation type="unfinished">Determines if the legend is plotted</translation>
+      <translation>Чи показувати легенду</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="292"/>
       <source>The color the line and the markers are drawn with</source>
-      <translation type="unfinished">The color the line and the markers are drawn with</translation>
+      <translation>Колір лінії й маркерів</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="306"/>
       <source>The width the line is drawn with</source>
-      <translation type="unfinished">The width the line is drawn with</translation>
+      <translation>Ширина лінії</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="313"/>
       <source>The style the data markers are drawn with</source>
-      <translation type="unfinished">The style the data markers are drawn with</translation>
+      <translation>Стиль маркерів даних</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="320"/>
       <source>The size the data markers are drawn in</source>
-      <translation type="unfinished">The size the data markers are drawn in</translation>
+      <translation>Розмір маркерів даних</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="409"/>
       <source>If be the bars should show the cumulative sum left to right</source>
-      <translation type="unfinished">If be the bars should show the cumulative sum left to right</translation>
+      <translation>Чи показувати стовпцями накопичену суму зліва направо</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="416"/>
       <source>The scale the axis are drawn in</source>
-      <translation type="unfinished">The scale the axis are drawn in</translation>
+      <translation>Масштаб осей</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="190"/>
       <source>The name used in the table header. Default name is used if empty</source>
-      <translation type="unfinished">The name used in the table header. Default name is used if empty</translation>
+      <translation>Назва в заголовку таблиці. Якщо порожньо, використовується типова</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="211"/>
@@ -6916,7 +6906,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1506"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Електромагнітні граничні умови</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
@@ -6939,7 +6929,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="77"/>
       <source>Enable Laplacian smoothing</source>
-      <translation type="unfinished">Enable Laplacian smoothing</translation>
+      <translation>Увімкнути згладжування Лапласа</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="80"/>
@@ -6949,12 +6939,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="97"/>
       <source>Factor to control vertex displacement</source>
-      <translation>Коефіцієнт для контролю зміщення вершин</translation>
+      <translation>Коефіцієнт керування зміщенням вершин</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="113"/>
       <source>Contour lines will not be colored</source>
-      <translation>Контурні лінії не будуть зафарбовані</translation>
+      <translation>Контурні лінії не буде розфарбовано</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="116"/>
@@ -6972,7 +6962,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1690"/>
       <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
+      <translation>Електромагнітні рівняння</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1691"/>
@@ -6990,12 +6980,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>Фільтр контурів</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2559"/>
       <source>Defines a contours filter that displays iso contours</source>
-      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
+      <translation>Задає фільтр контурів, що показує ізолінії</translation>
     </message>
   </context>
   <context>
@@ -7003,7 +6993,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="44"/>
@@ -7041,7 +7031,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="32"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="38"/>
@@ -7082,7 +7072,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1886"/>
       <source>Mechanical Equations</source>
-      <translation type="unfinished">Mechanical Equations</translation>
+      <translation>Механічні рівняння</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1887"/>
@@ -7095,12 +7085,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="210"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Об'ємне джерело тепла</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="213"/>
       <source>Creates a body heat source</source>
-      <translation>Створює джерело тепла тіла</translation>
+      <translation>Створює об'ємне джерело тепла</translation>
     </message>
   </context>
   <context>
@@ -7108,7 +7098,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="223"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Відцентрове навантаження</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="224"/>
@@ -7121,7 +7111,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="237"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>Гранична умова густини струму</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="241"/>
@@ -7134,7 +7124,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="286"/>
       <source>Flow Velocity Boundary Condition</source>
-      <translation type="unfinished">Flow Velocity Boundary Condition</translation>
+      <translation>Гранична умова швидкості течії</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="289"/>
@@ -7147,12 +7137,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="317"/>
       <source>Initial Pressure Condition</source>
-      <translation type="unfinished">Initial Pressure Condition</translation>
+      <translation>Початкова умова тиску</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="320"/>
       <source>Creates an initial pressure condition</source>
-      <translation>Створює початкові умови тиску</translation>
+      <translation>Створює початкову умову тиску</translation>
     </message>
   </context>
   <context>
@@ -7160,7 +7150,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Magnetization Boundary Condition</source>
-      <translation type="unfinished">Magnetization Boundary Condition</translation>
+      <translation>Гранична умова намагніченості</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="335"/>
@@ -7173,12 +7163,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="345"/>
       <source>Section Print Feature</source>
-      <translation type="unfinished">Section Print Feature</translation>
+      <translation>Елемент друку перерізу</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Creates a section print feature</source>
-      <translation>Створює функцію друку перерізу</translation>
+      <translation>Створює елемент друку перерізу</translation>
     </message>
   </context>
   <context>
@@ -7186,7 +7176,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Гравітаційне навантаження</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="359"/>
@@ -7199,12 +7189,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="369"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Обмеження зв'язування</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="370"/>
       <source>Creates a tie constraint</source>
-      <translation>Створює обмеження зв'язку</translation>
+      <translation>Створює обмеження зв'язування (tie)</translation>
     </message>
   </context>
   <context>
@@ -7212,12 +7202,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="899"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>Уточнення сітки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="900"/>
       <source>Creates a FEM mesh refinement</source>
-      <translation>Створює уточнення сітки МСЕ</translation>
+      <translation>Створює згущення сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -7230,7 +7220,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Виберіть геометрію типу: вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -7283,7 +7273,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="177"/>
       <source>Translational Mode</source>
-      <translation>Режим трансляції</translation>
+      <translation>Поступальний режим</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="225"/>
@@ -7298,7 +7288,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="394"/>
       <source>Rotational Mode</source>
-      <translation>Режим обертання</translation>
+      <translation>Обертальний режим</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
@@ -7326,12 +7316,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>Rigid Body Constraint</source>
-      <translation type="unfinished">Rigid Body Constraint</translation>
+      <translation>Обмеження абсолютно жорсткого тіла</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="477"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation>Створює жорстке обмеження тіла для геометричного об'єкта</translation>
+      <translation>Створює обмеження абсолютно жорсткого тіла для геометричного об'єкта</translation>
     </message>
   </context>
   <context>
@@ -7339,12 +7329,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="279"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Виберіть геометрію типу: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="279"/>
       <source>Vertex, Edge, Face</source>
-      <translation type="unfinished">Vertex, Edge, Face</translation>
+      <translation>Вершина, ребро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="304"/>
@@ -7360,7 +7350,7 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="386"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="396"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Помилка вибору</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="313"/>
@@ -7371,7 +7361,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Вибір зовнішніх об'єктів не підтримується</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="359"/>
@@ -7389,22 +7379,22 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="28"/>
       <source>Poly</source>
-      <translation>Багатокутників</translation>
+      <translation>Багатокутник</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase elements by polygon</source>
-      <translation type="unfinished">Erase elements by polygon</translation>
+      <translation>Стерти елементи багатокутником</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete new meshes</source>
-      <translation type="unfinished">Delete new meshes</translation>
+      <translation>Видалити нові сітки</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy result mesh</source>
-      <translation type="unfinished">Copy result mesh</translation>
+      <translation>Копіювати сітку результату</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -7422,7 +7412,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1436"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Стерти елементи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1481"/>
@@ -7436,12 +7426,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="243"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
+      <translation>Неможливо скопіювати ResultMesh у ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="254"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation type="unfinished">Mesh must be a ResultMesh</translation>
+      <translation>Сітка має бути ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="610"/>
@@ -7458,7 +7448,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="810"/>
       <source>All Elements Erased - no mesh generated.</source>
-      <translation>Усі елементи стерто - сітку не згенеровано.</translation>
+      <translation>Усі елементи стерто — сітку не створено.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
@@ -7489,12 +7479,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Element Set From Polygon</source>
-      <translation type="unfinished">Element Set From Polygon</translation>
+      <translation>Набір елементів за багатокутником</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Creates a collection of elements selected by a polygon</source>
-      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
+      <translation>Створює набір елементів, вибраних багатокутником</translation>
     </message>
   </context>
   <context>
@@ -7502,7 +7492,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation>Сітка FEM за допомогою Netgen</translation>
+      <translation>Сітка МСЕ від Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="20"/>
@@ -7522,7 +7512,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Шлях до робочого каталогу. Залиште порожнім, щоб використати налаштування користувача</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="80"/>
@@ -7537,12 +7527,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="101"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Максимальний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Мінімальний розмір</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="171"/>
@@ -7552,17 +7542,17 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="178"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Швидкість зростання</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="201"/>
       <source>Curvature safety</source>
-      <translation type="unfinished">Curvature safety</translation>
+      <translation>Запас за кривизною</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="218"/>
       <source>Segments per edge</source>
-      <translation>Кількість сегментів на ребро</translation>
+      <translation>Сегментів на ребро</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="274"/>
@@ -7572,7 +7562,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="300"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Версія Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
@@ -7591,24 +7581,24 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="26"/>
       <source>Use legacy Netgen object implementation</source>
-      <translation type="unfinished">Use legacy Netgen object implementation</translation>
+      <translation>Використовувати застарілу реалізацію об'єкта Netgen</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="35"/>
       <source>Legacy Netgen</source>
-      <translation type="unfinished">Legacy Netgen</translation>
+      <translation>Застарілий Netgen</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Шлях до Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Виконуваний файл Python, для якого встановлено прив'язки Netgen для Python.
+Залиште порожнім, щоб використовувати типовий виконуваний файл Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7618,12 +7608,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="110"/>
       <source>Log verbosity</source>
-      <translation type="unfinished">Log verbosity</translation>
+      <translation>Докладність журналу</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="117"/>
       <source>Level of verbosity printed on the task panel</source>
-      <translation>Рівень вербозності, що виводиться на панелі завдань</translation>
+      <translation>Рівень докладності виводу на панелі завдань</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="136"/>
@@ -7641,12 +7631,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1195"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Розв'язувач CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1200"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Створює розв'язувач МСЕ CalculiX</translation>
     </message>
   </context>
   <context>
@@ -7654,22 +7644,22 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
       <source>Field name</source>
-      <translation type="unfinished">Field name</translation>
+      <translation>Назва поля</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
       <source>Mathematical expression</source>
-      <translation type="unfinished">Mathematical expression</translation>
+      <translation>Математичний вираз</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="54"/>
       <source>Available fields</source>
-      <translation type="unfinished">Available fields</translation>
+      <translation>Доступні поля</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>Скаляри</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -7679,17 +7669,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>Оператори</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>Замінювати некоректні дані</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
       <source>Replacement value for invalid operations</source>
-      <translation type="unfinished">Replacement value for invalid operations</translation>
+      <translation>Значення для заміни результатів некоректних операцій</translation>
     </message>
   </context>
   <context>
@@ -7697,7 +7687,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вибирає вхідні дані, які отримають дочірні фільтри:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Послідовно:&lt;/span&gt; перший фільтр гілки отримує вхідні дані гілки як свої. Наступний фільтр отримує вихід першого фільтра як вхід і так далі.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Паралельно: &lt;/span&gt;усі фільтри гілки отримують вхідні дані гілки як свої. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -7707,12 +7697,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Вибирає вхідні дані, які отримають дочірні фільтри:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Послідовно:&lt;/span&gt; перший фільтр гілки отримує вхідні дані гілки як свої. Наступний фільтр отримує вихід першого фільтра як вхід і так далі.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Паралельно: &lt;/span&gt;усі фільтри гілки отримують вхідні дані гілки як свої. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
       <source>Serial</source>
-      <translation type="unfinished">Serial</translation>
+      <translation>Послідовно</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="59"/>
@@ -7723,17 +7713,17 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Визначає, як формується вихід гілки:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Наскрізно:&lt;/span&gt; вихід гілки збігається з її входом, незалежно від дій дочірніх фільтрів.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Додавання:&lt;/span&gt; вихід гілки — це сукупність виходів усіх дочірніх фільтрів, об'єднаних разом.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
       <source>Passthrough</source>
-      <translation type="unfinished">Passthrough</translation>
+      <translation>Наскрізно</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>Додавання</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -7751,17 +7741,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
       <source>Type of frames</source>
-      <translation type="unfinished">Type of frames</translation>
+      <translation>Тип кадрів</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
       <source>Resonant frequencies</source>
-      <translation type="unfinished">Resonant frequencies</translation>
+      <translation>Резонансні частоти</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
       <source>Frame</source>
-      <translation>Рамка</translation>
+      <translation>Кадр</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="89"/>
@@ -7774,7 +7764,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>Керування розв'язувачем CalculiX</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
@@ -7804,17 +7794,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="74"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>Параметри розв'язувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Шлях до робочого каталогу. Залиште порожнім, щоб використати налаштування користувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="129"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>Версія розв'язувача</translation>
     </message>
   </context>
   <context>
@@ -7822,17 +7812,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>Армування матеріалу МСЕ</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation>Матеріал заповнювач</translation>
+      <translation>Матеріал-матриця</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="61"/>
       <source>Reinforcement Material</source>
-      <translation>Армуючий матеріал</translation>
+      <translation>Армувальний матеріал</translation>
     </message>
   </context>
   <context>
@@ -7843,7 +7833,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation type="unfinished">The form of the glyph</translation>
+      <translation>Форма гліфа</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7888,7 +7878,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
+      <translation>Яке векторне поле використовується для орієнтації гліфів</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7906,13 +7896,13 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation type="unfinished">Sca&amp;le</translation>
+      <translation>Мас&amp;штаб</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation type="unfinished">Which data field is used to scale the glyphs</translation>
+      <translation>Яке поле даних використовується для масштабування гліфів</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7925,7 +7915,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
+      <translation>Сталий множник масштабу гліфів</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7935,40 +7925,40 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+      <translation>Змінює коефіцієнт масштабу на ±50% від заданого</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
+      <translation>Якщо дані масштабу — вектор, ця властивість визначає, чи масштабувати гліф за модулем вектора, чи за окремими компонентами</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
       <source>Not a vector</source>
-      <translation type="unfinished">Not a vector</translation>
+      <translation>Не вектор</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="235"/>
       <source>By magnitude</source>
-      <translation type="unfinished">By magnitude</translation>
+      <translation>За модулем</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="240"/>
       <source>By components</source>
-      <translation type="unfinished">By components</translation>
+      <translation>За компонентами</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
       <source>Vertex Mas&amp;king</source>
-      <translation type="unfinished">Vertex Mas&amp;king</translation>
+      <translation>Маскування в&amp;ершин</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation type="unfinished">Which vertices are used as glyph locations</translation>
+      <translation>Які вершини використовуються як місця гліфів</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -7978,23 +7968,23 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
       <source>Defines the maximal number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximal number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>Задає максимальну кількість вершин для режиму маскування "Uniform Sampling"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="298"/>
       <location filename="../ui/TaskPostGlyph.ui" line="330"/>
       <source>Define the stride for "Every Nth" masking mode</source>
-      <translation type="unfinished">Define the stride for "Every Nth" masking mode</translation>
+      <translation>Задає крок для режиму маскування "Every Nth"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="301"/>
       <source>Stride</source>
-      <translation type="unfinished">Stride</translation>
+      <translation>Крок</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="311"/>
       <source>Defines the maximum number of vertices used for "Uniform Sampling" masking mode</source>
-      <translation type="unfinished">Defines the maximum number of vertices used for "Uniform Sampling" masking mode</translation>
+      <translation>Задає максимальну кількість вершин для режиму маскування "Uniform Sampling"</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="314"/>
@@ -8009,17 +7999,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="358"/>
       <source>Every Nth</source>
-      <translation type="unfinished">Every Nth</translation>
+      <translation>Кожна N-та</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="363"/>
       <source>Uniform Sampling</source>
-      <translation type="unfinished">Uniform Sampling</translation>
+      <translation>Рівномірна вибірка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="40"/>
       <source>Bins</source>
-      <translation type="unfinished">Bins</translation>
+      <translation>Інтервали</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="69"/>
@@ -8029,13 +8019,13 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="94"/>
       <source>Cumulative</source>
-      <translation type="unfinished">Cumulative</translation>
+      <translation>Накопичувальна</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Легенда</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="112"/>
@@ -8059,7 +8049,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>Вісь X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
@@ -8070,17 +8060,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="192"/>
       <source>Visuals</source>
-      <translation type="unfinished">Visuals</translation>
+      <translation>Оформлення</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="208"/>
       <source>Hatch Line Width</source>
-      <translation type="unfinished">Hatch Line Width</translation>
+      <translation>Ширина ліній штрихування</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="215"/>
       <source>Bar width</source>
-      <translation type="unfinished">Bar width</translation>
+      <translation>Ширина стовпця</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="40"/>
@@ -8090,7 +8080,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="84"/>
       <source>Scale</source>
-      <translation>Масштабування</translation>
+      <translation>Масштаб</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
@@ -8108,12 +8098,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2595"/>
       <source>Calculator Filter</source>
-      <translation type="unfinished">Calculator Filter</translation>
+      <translation>Фільтр-калькулятор</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2596"/>
       <source>Creates a new field from current data</source>
-      <translation type="unfinished">Creates a new field from current data</translation>
+      <translation>Створює нове поле з поточних даних</translation>
     </message>
   </context>
   <context>
@@ -8126,12 +8116,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="3037"/>
       <source>Pipeline Branch</source>
-      <translation type="unfinished">Pipeline Branch</translation>
+      <translation>Гілка конвеєра</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3038"/>
       <source>Branches the pipeline into a new path</source>
-      <translation type="unfinished">Branches the pipeline into a new path</translation>
+      <translation>Розгалужує конвеєр на новий шлях</translation>
     </message>
   </context>
   <context>
@@ -8139,7 +8129,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="565"/>
       <source>Result Frames</source>
-      <translation type="unfinished">Result Frames</translation>
+      <translation>Кадри результату</translation>
     </message>
   </context>
   <context>
@@ -8147,7 +8137,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="2259"/>
       <source>Calculator options</source>
-      <translation type="unfinished">Calculator options</translation>
+      <translation>Параметри калькулятора</translation>
     </message>
   </context>
   <context>
@@ -8155,12 +8145,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="104"/>
       <source>Clipping Plane on Face</source>
-      <translation type="unfinished">Clipping Plane on Face</translation>
+      <translation>Площина відсікання на грані</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="107"/>
       <source>Adds a clipping plane on a selected face</source>
-      <translation type="unfinished">Adds a clipping plane on a selected face</translation>
+      <translation>Додає площину відсікання на вибраній грані</translation>
     </message>
   </context>
   <context>
@@ -8168,12 +8158,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="194"/>
       <source>Constant Vacuum Permittivity</source>
-      <translation type="unfinished">Constant Vacuum Permittivity</translation>
+      <translation>Стала діелектрична проникність вакууму</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Створює сталу діелектричної проникності вакууму, що перевизначає стандартне значення</translation>
     </message>
   </context>
   <context>
@@ -8181,12 +8171,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="254"/>
       <source>Electric Charge Density</source>
-      <translation type="unfinished">Electric Charge Density</translation>
+      <translation>Густина електричного заряду</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="257"/>
       <source>Creates an electric charge density</source>
-      <translation type="unfinished">Creates an electric charge density</translation>
+      <translation>Створює густину електричного заряду</translation>
     </message>
   </context>
   <context>
@@ -8194,12 +8184,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="301"/>
       <source>Initial Flow Velocity Condition</source>
-      <translation type="unfinished">Initial Flow Velocity Condition</translation>
+      <translation>Початкова умова швидкості течії</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Creates an initial flow velocity condition</source>
-      <translation type="unfinished">Creates an initial flow velocity condition</translation>
+      <translation>Створює початкову умову швидкості течії</translation>
     </message>
   </context>
   <context>
@@ -8207,12 +8197,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="380"/>
       <source>Fluid Section for 1D Flow</source>
-      <translation type="unfinished">Fluid Section for 1D Flow</translation>
+      <translation>Переріз потоку для 1D-течії</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="383"/>
       <source>Creates a fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a fluid section for 1D flow</translation>
+      <translation>Створює переріз потоку для 1D-течії</translation>
     </message>
   </context>
   <context>
@@ -8220,12 +8210,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
       <source>Beam Cross Section</source>
-      <translation type="unfinished">Beam Cross Section</translation>
+      <translation>Поперечний переріз балки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="394"/>
       <source>Creates a beam cross section</source>
-      <translation type="unfinished">Creates a beam cross section</translation>
+      <translation>Створює поперечний переріз балки</translation>
     </message>
   </context>
   <context>
@@ -8233,12 +8223,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="404"/>
       <source>Shell Plate Thickness</source>
-      <translation type="unfinished">Shell Plate Thickness</translation>
+      <translation>Товщина оболонки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Creates a shell plate thickness</source>
-      <translation type="unfinished">Creates a shell plate thickness</translation>
+      <translation>Створює товщину оболонки</translation>
     </message>
   </context>
   <context>
@@ -8246,12 +8236,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="417"/>
       <source>Beam Rotation</source>
-      <translation type="unfinished">Beam Rotation</translation>
+      <translation>Поворот балки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="418"/>
       <source>Creates a beam rotation</source>
-      <translation type="unfinished">Creates a beam rotation</translation>
+      <translation>Створює поворот балки</translation>
     </message>
   </context>
   <context>
@@ -8259,12 +8249,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="428"/>
       <source>Deformation Equation</source>
-      <translation type="unfinished">Deformation Equation</translation>
+      <translation>Рівняння деформації</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="432"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates an equation for deformation (nonlinear elasticity)</translation>
+      <translation>Створює рівняння деформації (нелінійна пружність)</translation>
     </message>
   </context>
   <context>
@@ -8272,12 +8262,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="442"/>
       <source>Elasticity Equation</source>
-      <translation type="unfinished">Elasticity Equation</translation>
+      <translation>Рівняння пружності</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="445"/>
       <source>Creates an equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates an equation for elasticity (stress)</translation>
+      <translation>Створює рівняння пружності (напруження)</translation>
     </message>
   </context>
   <context>
@@ -8285,12 +8275,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="455"/>
       <source>Electricforce Equation</source>
-      <translation type="unfinished">Electricforce Equation</translation>
+      <translation>Рівняння електричної сили</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates an equation for electric forces</source>
-      <translation type="unfinished">Creates an equation for electric forces</translation>
+      <translation>Створює рівняння електричних сил</translation>
     </message>
   </context>
   <context>
@@ -8298,12 +8288,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="468"/>
       <source>Electrostatic Equation</source>
-      <translation type="unfinished">Electrostatic Equation</translation>
+      <translation>Електростатичне рівняння</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Creates an equation for electrostatic</source>
-      <translation type="unfinished">Creates an equation for electrostatic</translation>
+      <translation>Створює електростатичне рівняння</translation>
     </message>
   </context>
   <context>
@@ -8311,12 +8301,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Flow Equation</source>
-      <translation type="unfinished">Flow Equation</translation>
+      <translation>Рівняння течії</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="482"/>
       <source>Creates an equation for flow</source>
-      <translation type="unfinished">Creates an equation for flow</translation>
+      <translation>Створює рівняння течії</translation>
     </message>
   </context>
   <context>
@@ -8324,12 +8314,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Flux Equation</source>
-      <translation type="unfinished">Flux Equation</translation>
+      <translation>Рівняння потоку</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="493"/>
       <source>Creates an equation for flux</source>
-      <translation type="unfinished">Creates an equation for flux</translation>
+      <translation>Створює рівняння потоку</translation>
     </message>
   </context>
   <context>
@@ -8337,12 +8327,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="503"/>
       <source>Heat Equation</source>
-      <translation type="unfinished">Heat Equation</translation>
+      <translation>Рівняння теплопровідності</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="504"/>
       <source>Creates an equation for heat</source>
-      <translation type="unfinished">Creates an equation for heat</translation>
+      <translation>Створює рівняння теплопровідності</translation>
     </message>
   </context>
   <context>
@@ -8350,12 +8340,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="516"/>
       <source>Magnetodynamic Equation</source>
-      <translation type="unfinished">Magnetodynamic Equation</translation>
+      <translation>Магнітодинамічне рівняння</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for magnetodynamic forces</translation>
+      <translation>Створює рівняння магнітодинамічних сил</translation>
     </message>
   </context>
   <context>
@@ -8363,12 +8353,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="532"/>
       <source>Magnetodynamic 2D Equation</source>
-      <translation type="unfinished">Magnetodynamic 2D Equation</translation>
+      <translation>Магнітодинамічне 2D-рівняння</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="536"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for 2D magnetodynamic forces</translation>
+      <translation>Створює рівняння 2D магнітодинамічних сил</translation>
     </message>
   </context>
   <context>
@@ -8376,12 +8366,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="546"/>
       <source>Static Current Equation</source>
-      <translation type="unfinished">Static Current Equation</translation>
+      <translation>Рівняння постійного струму</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="549"/>
       <source>Creates an equation for static current</source>
-      <translation type="unfinished">Creates an equation for static current</translation>
+      <translation>Створює рівняння постійного струму</translation>
     </message>
   </context>
   <context>
@@ -8389,12 +8379,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="591"/>
       <source>Fluid Material</source>
-      <translation type="unfinished">Fluid Material</translation>
+      <translation>Матеріал рідини</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Creates a fluid material</source>
-      <translation type="unfinished">Creates a fluid material</translation>
+      <translation>Створює матеріал рідини</translation>
     </message>
   </context>
   <context>
@@ -8402,12 +8392,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="604"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation type="unfinished">Non-Linear Mechanical Material</translation>
+      <translation>Нелінійний механічний матеріал</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="608"/>
       <source>Add non-linear mechanical properties to material</source>
-      <translation type="unfinished">Add non-linear mechanical properties to material</translation>
+      <translation>Додає до матеріалу нелінійні механічні властивості</translation>
     </message>
   </context>
   <context>
@@ -8415,12 +8405,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>Матеріал твердого тіла</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="651"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
+      <translation>Створює матеріал твердого тіла</translation>
     </message>
   </context>
   <context>
@@ -8428,12 +8418,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="717"/>
       <source>Clear FEM Mesh</source>
-      <translation type="unfinished">Clear FEM Mesh</translation>
+      <translation>Очистити сітку МСЕ</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="718"/>
       <source>Clears the mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clears the mesh of a FEM mesh object</translation>
+      <translation>Очищає сітку об'єкта сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -8441,12 +8431,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Mesh Group</source>
-      <translation type="unfinished">Mesh Group</translation>
+      <translation>Група сітки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="835"/>
       <source>Creates a mesh group</source>
-      <translation type="unfinished">Creates a mesh group</translation>
+      <translation>Створює групу сітки</translation>
     </message>
   </context>
   <context>
@@ -8454,12 +8444,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1046"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Показати результат</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1050"/>
       <source>Shows and visualizes the selected result data</source>
-      <translation type="unfinished">Shows and visualizes the selected result data</translation>
+      <translation>Показує й візуалізує вибрані дані результату</translation>
     </message>
   </context>
   <context>
@@ -8467,12 +8457,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1062"/>
       <source>Purge Results</source>
-      <translation type="unfinished">Purge Results</translation>
+      <translation>Очистити результати</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Purges all results from the active analysis</source>
-      <translation type="unfinished">Purges all results from the active analysis</translation>
+      <translation>Видаляє всі результати з активного аналізу</translation>
     </message>
   </context>
   <context>
@@ -8480,12 +8470,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1346"/>
       <source>Glyph Filter</source>
-      <translation type="unfinished">Glyph Filter</translation>
+      <translation>Фільтр гліфів</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1351"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>Додає фільтр постобробки, що розміщує гліфи у вершинах сітки для візуалізації даних вершин</translation>
     </message>
   </context>
   <context>
@@ -8500,28 +8490,28 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
       <location filename="../ui/TaskPostExtraction.ui" line="37"/>
       <source>Data Summary</source>
-      <translation type="unfinished">Data Summary</translation>
+      <translation>Зведення даних</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="29"/>
       <location filename="../ui/TaskPostExtraction.ui" line="44"/>
       <source>Show Data</source>
-      <translation type="unfinished">Show Data</translation>
+      <translation>Показати дані</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="62"/>
       <source>Data used in</source>
-      <translation type="unfinished">Data used in</translation>
+      <translation>Дані використано в</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="92"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Додати дані до</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation type="unfinished">Create and add</translation>
+      <translation>Створити й додати</translation>
     </message>
   </context>
   <context>
@@ -8537,7 +8527,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
-      <translation type="unfinished">Outline draw style (None does not draw outlines)</translation>
+      <translation>Стиль контуру (None — без контурів)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
@@ -8551,13 +8541,13 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
-      <translation type="unfinished">Width of all lines (outline and hatch)</translation>
+      <translation>Ширина всіх ліній (контуру й штрихування)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
-      <translation type="unfinished">Hatch pattern</translation>
+      <translation>Візерунок штрихування</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -8567,34 +8557,34 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
       <source>Density of hatch pattern</source>
-      <translation type="unfinished">Density of hatch pattern</translation>
+      <translation>Щільність візерунка штрихування</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>
       <source>Bars</source>
-      <translation type="unfinished">Bars</translation>
+      <translation>Стовпці</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Легенда</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
       <source>Color of all lines (bar outline and hatches)</source>
-      <translation type="unfinished">Color of all lines (bar outline and hatches)</translation>
+      <translation>Колір усіх ліній (контурів стовпців і штрихування)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
-      <translation type="unfinished">Color of the bars in histogram</translation>
+      <translation>Колір стовпців гістограми</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
       <source>Marker</source>
-      <translation>Позначка</translation>
+      <translation>Маркер</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="87"/>
@@ -8612,7 +8602,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="464"/>
       <source>Result Display Options</source>
-      <translation type="unfinished">Result Display Options</translation>
+      <translation>Параметри показу результату</translation>
     </message>
   </context>
   <context>
@@ -8620,7 +8610,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="634"/>
       <source>Branch Behaviour</source>
-      <translation type="unfinished">Branch Behaviour</translation>
+      <translation>Поведінка гілки</translation>
     </message>
   </context>
   <context>
@@ -8628,7 +8618,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1506"/>
       <source>Clip Region, Choose Implicit Function</source>
-      <translation type="unfinished">Clip Region, Choose Implicit Function</translation>
+      <translation>Відсікання області, виберіть неявну функцію</translation>
     </message>
   </context>
   <context>
@@ -8636,7 +8626,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1657"/>
       <source>Contours Filter Options</source>
-      <translation type="unfinished">Contours Filter Options</translation>
+      <translation>Параметри фільтра контурів</translation>
     </message>
   </context>
   <context>
@@ -8644,7 +8634,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1821"/>
       <source>Function Cut, Choose Implicit Function</source>
-      <translation type="unfinished">Function Cut, Choose Implicit Function</translation>
+      <translation>Розріз функцією, виберіть неявну функцію</translation>
     </message>
   </context>
   <context>
@@ -8652,7 +8642,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1954"/>
       <source>Scalar Clip Options</source>
-      <translation type="unfinished">Scalar Clip Options</translation>
+      <translation>Параметри відсікання за скаляром</translation>
     </message>
   </context>
   <context>
@@ -8660,7 +8650,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="2078"/>
       <source>Warp Options</source>
-      <translation type="unfinished">Warp Options</translation>
+      <translation>Параметри деформування</translation>
     </message>
   </context>
   <context>
@@ -8668,7 +8658,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.cpp" line="52"/>
       <source>Data and Extractions</source>
-      <translation type="unfinished">Data and Extractions</translation>
+      <translation>Дані та видобування</translation>
     </message>
   </context>
   <context>
@@ -8676,7 +8666,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="170"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>Активувати аналіз</translation>
     </message>
   </context>
   <context>
@@ -8684,7 +8674,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskObjectName.cpp" line="41"/>
       <source>Name of the object</source>
-      <translation type="unfinished">Name of the object</translation>
+      <translation>Назва об'єкта</translation>
     </message>
   </context>
   <context>
@@ -8692,7 +8682,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Виконуваний файл '{}' не знайдено</translation>
     </message>
   </context>
   <context>
@@ -8700,7 +8690,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="69"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Вибір опорної осі</translation>
     </message>
   </context>
   <context>
@@ -8708,42 +8698,42 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../Init.py" line="64"/>
       <source>FEM mesh Python</source>
-      <translation type="unfinished">FEM mesh Python</translation>
+      <translation>Сітка МСЕ Python</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="68"/>
       <source>FEM mesh TetGen</source>
-      <translation type="unfinished">FEM mesh TetGen</translation>
+      <translation>Сітка МСЕ TetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="77"/>
       <source>FEM mesh formats</source>
-      <translation type="unfinished">FEM mesh formats</translation>
+      <translation>Формати сіток МСЕ</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="83"/>
       <source>FEM mesh Nastran</source>
-      <translation type="unfinished">FEM mesh Nastran</translation>
+      <translation>Сітка МСЕ Nastran</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="90"/>
       <source>FEM mesh Fenics</source>
-      <translation type="unfinished">FEM mesh Fenics</translation>
+      <translation>Сітка МСЕ Fenics</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="98"/>
       <source>FEM mesh YAML/JSON</source>
-      <translation type="unfinished">FEM mesh YAML/JSON</translation>
+      <translation>Сітка МСЕ YAML/JSON</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="105"/>
       <source>FEM mesh Z88</source>
-      <translation type="unfinished">FEM mesh Z88</translation>
+      <translation>Сітка МСЕ Z88</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="116"/>
       <source>FEM result VTK</source>
-      <translation type="unfinished">FEM result VTK</translation>
+      <translation>Результат МСЕ VTK</translation>
     </message>
   </context>
   <context>
@@ -8751,12 +8741,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="270"/>
       <source>Electromagnetic Boundary Condition</source>
-      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
+      <translation>Електромагнітна гранична умова</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
+      <translation>Створює електромагнітну граничну умову</translation>
     </message>
   </context>
   <context>
@@ -8764,12 +8754,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="703"/>
       <source>2D Boundary Layer</source>
-      <translation type="unfinished">2D Boundary Layer</translation>
+      <translation>2D примежовий шар</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="707"/>
       <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
+      <translation>Додає структурований шар елементів сітки на межах 2D-моделі</translation>
     </message>
   </context>
   <context>
@@ -8777,12 +8767,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="737"/>
       <source>Clear Mesh Groups</source>
-      <translation type="unfinished">Clear Mesh Groups</translation>
+      <translation>Очистити групи сітки</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="738"/>
       <source>Remove groups from FEM mesh</source>
-      <translation type="unfinished">Remove groups from FEM mesh</translation>
+      <translation>Видаляє групи із сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -8790,12 +8780,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Distance-Based Refinement</source>
-      <translation type="unfinished">Distance-Based Refinement</translation>
+      <translation>Уточнення за відстанню</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+      <translation>Задає розмір сітки залежно від відстані до вершин, ребер і граней</translation>
     </message>
   </context>
   <context>
@@ -8803,12 +8793,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="923"/>
       <source>Manipulate Refinement</source>
-      <translation type="unfinished">Manipulate Refinement</translation>
+      <translation>Маніпулювання уточненням</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
+      <translation>Дає змогу різними способами змінювати вихід уточнення</translation>
     </message>
   </context>
   <context>
@@ -8816,12 +8806,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="936"/>
       <source>Advanced Refinement Types</source>
-      <translation type="unfinished">Advanced Refinement Types</translation>
+      <translation>Розширені типи уточнення</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="939"/>
       <source>Allows to define the mesh size by various advanced means</source>
-      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
+      <translation>Дає змогу задавати розмір сітки різними розширеними способами</translation>
     </message>
   </context>
   <context>
@@ -8829,15 +8819,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="949"/>
       <source>Shape-Based Refinement</source>
-      <translation type="unfinished">Shape-Based Refinement</translation>
+      <translation>Уточнення за формою</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
+      <translation>Задає розмір сітки всередині й поза геометричною формою (паралелепіпед, сфера, циліндр)</translation>
     </message>
   </context>
   <context>
@@ -8845,12 +8832,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="965"/>
       <source>Structured Transfinite Curve</source>
-      <translation type="unfinished">Structured Transfinite Curve</translation>
+      <translation>Структурована трансфінітна крива</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="969"/>
       <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
-      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
+      <translation>Створює задану кількість вузлів на ребрі структурованим алгоритмом</translation>
     </message>
   </context>
   <context>
@@ -8858,12 +8845,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="981"/>
       <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
+      <translation>Структурована трансфінітна поверхня</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="984"/>
       <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
+      <translation>Створює структуровану сітку на грані</translation>
     </message>
   </context>
   <context>
@@ -8871,12 +8858,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="996"/>
       <source>Structured Transfinite Volume</source>
-      <translation type="unfinished">Structured Transfinite Volume</translation>
+      <translation>Структурований трансфінітний об'єм</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
+      <translation>Створює структуровану сітку в чотири- або п'ятибічному об'ємі, обмеженому трансфінітними поверхнями</translation>
     </message>
   </context>
   <context>
@@ -8884,12 +8871,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1360"/>
       <source>Solvers</source>
-      <translation type="unfinished">Solvers</translation>
+      <translation>Розв'язувачі</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1361"/>
       <source>Creates a FEM solver</source>
-      <translation type="unfinished">Creates a FEM solver</translation>
+      <translation>Створює розв'язувач МСЕ</translation>
     </message>
   </context>
   <context>
@@ -8917,7 +8904,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Шлях до робочого каталогу. Залиште порожнім, щоб використати налаштування користувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
@@ -8945,7 +8932,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverZ88.ui" line="14"/>
       <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
+      <translation>Керування розв'язувачем Z88</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="20"/>
@@ -8965,17 +8952,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverZ88.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>Шлях до робочого каталогу. Залиште порожнім, щоб використати налаштування користувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="74"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>Параметри розв'язувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="82"/>
       <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
+      <translation>Тип розв'язувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="122"/>
@@ -8985,7 +8972,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverZ88.ui" line="129"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>Версія розв'язувача</translation>
     </message>
   </context>
   <context>
@@ -8993,7 +8980,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
       <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
+      <translation>Вибір основної геометрії</translation>
     </message>
   </context>
   <context>
@@ -9001,7 +8988,20 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+      <translation>Вибір підпорядкованої геометрії</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>Візуалізації даних</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Різні візуалізації для показу даних постобробки</translation>
     </message>
   </context>
   <context>
@@ -9009,22 +9009,22 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="423"/>
       <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <translation>Виконуваний файл CalculiX ccx відсутній або неправильний</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="457"/>
       <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
+      <translation>МСЕ: неправильний виконуваний файл ccx</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="470"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+      <translation>МСЕ: виконуваний файл CalculiX ccx '{}' не знайдено. Вкажіть шлях до виконуваного файлу CalculiX ccx в налаштуваннях МСЕ на вкладці CalculiX.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="482"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <translation>МСЕ: вивід CalculiX ccx '{}' '{}' не містить очікуваної фрази '{}'. Під час запуску ccx виникли проблеми. Перевірте, чи ccx запускається окремо, без FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -9117,7 +9117,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="80"/>
       <source>Highest</source>
-      <translation>Найвищий</translation>
+      <translation>Найвищі</translation>
     </message>
   </context>
   <context>

@@ -286,7 +286,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
       <source>Custom Color</source>
-      <translation>Колір, який встановлюється користувачем</translation>
+      <translation>Власний колір</translation>
     </message>
   </context>
   <context>
@@ -299,37 +299,37 @@
     <message>
       <location filename="../../Command.cpp" line="145"/>
       <source>Sp&amp;lit cell</source>
-      <translation>&amp;Роз'єднати комірку</translation>
+      <translation>Розд&amp;ілити комірку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Left-align cell</source>
-      <translation>Вирівнювання ліворуч</translation>
+      <translation>Вирівняти комірку ліворуч</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="370"/>
       <source>Center cell</source>
-      <translation>Вирівнювання по центру</translation>
+      <translation>Вирівняти комірку по центру</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>Right-align cell</source>
-      <translation>Вирівнювання праворуч</translation>
+      <translation>Вирівняти комірку праворуч</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Top-align cell</source>
-      <translation>Вирівнювання по верхньому краю</translation>
+      <translation>Вирівняти комірку по верху</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="544"/>
       <source>Bottom-align cell</source>
-      <translation>Вирівнювання по нижньому краю</translation>
+      <translation>Вирівняти комірку по низу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="602"/>
       <source>Vertically center cells</source>
-      <translation>Вирівнювання вертикально по центру</translation>
+      <translation>Вирівняти комірки по вертикальному центру</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="678"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../PropertiesDialog.cpp" line="387"/>
       <source>Set cell properties</source>
-      <translation>Зміна властивостей комірок</translation>
+      <translation>Змінити властивості комірок</translation>
     </message>
     <message>
       <location filename="../../SheetModel.cpp" line="623"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
       <source>Set background color</source>
-      <translation>Вибір кольору фону</translation>
+      <translation>Встановити колір фону</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="283"/>
@@ -415,22 +415,22 @@
     <message>
       <location filename="../../DlgSheetConf.cpp" line="228"/>
       <source>Setup conf table</source>
-      <translation>Налаштувати таблицю конфігурації</translation>
+      <translation>Налаштувати таблицю конфігурацій</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
-      <translation>Скасувати налаштування таблиці конфігурації</translation>
+      <translation>Скасувати налаштування таблиці конфігурацій</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
-      <translation>Звʼязати комірки</translation>
+      <translation>Прив'язати комірки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation>Від'єднати комірки</translation>
+      <translation>Відв'язати комірки</translation>
     </message>
   </context>
   <context>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Звʼязування комірок таблиці</translation>
+      <translation>Прив'язування комірок таблиці</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
@@ -453,26 +453,26 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation>Початкові адреси комірок</translation>
+      <translation>Адреса початкової комірки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation>Кінцеві адреси комірок</translation>
+      <translation>Адреса кінцевої комірки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Початкова адреса комірки для прив'язки.
-Введіть '=', якщо хочете використовувати вираз.
-Вираз повинен обчислювати рядок якоїсь адреси комірки.</translation>
+      <translation>Адреса початкової комірки для прив'язки.
+Введіть '=', щоб використати вираз.
+Вираз має повертати рядок з адресою комірки.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells</source>
-      <translation>Звʼязати комірки</translation>
+      <translation>Прив'язати комірки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
@@ -485,13 +485,13 @@ The expression must evaluate to a string of some cell address.</source>
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Адреса кінцевої комірки для прив'язки.
-Введіть '=' для використання виразу.
-Вираз має повертати рядок адреси комірки.</translation>
+Введіть '=', щоб використати вираз.
+Вираз має повертати рядок з адресою комірки.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation>Яку Таблицю привʼязувати</translation>
+      <translation>Таблиця, до якої прив'язати</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
@@ -503,18 +503,19 @@ The expression must evaluate to a string of some cell address.</source>
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>Залежність із повʼязаною таблицею буде прихована при перевірці залежностей.
-Корисно для запобігання циклічним залежностям, але використовуйте з обережністю!</translation>
+      <translation>Залежність від пов'язаної таблиці буде
+прихована від перевірки залежностей.
+Допомагає уникнути циклічних залежностей, але використовуйте обережно!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation>Приховати залежність від привʼязки</translation>
+      <translation>Приховати залежність прив'язки</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation>Відвʼязати</translation>
+      <translation>Відв'язати</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -532,7 +533,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation>Створення Таблиці Конфігурацій</translation>
+      <translation>Налаштування таблиці конфігурацій</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -545,14 +546,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>Початкова адреса комірки.
+      <translation>Адреса початкової комірки.
 
-Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї 
-властивості, щоб користувач міг динамічно перемикати конфігурації.
+Вважається, що перший стовпець діапазону містить список назв конфігурацій,
+з якого буде створено список рядків і прив'язано до вказаної
+властивості, щоб користувач міг динамічно перемикати конфігурацію.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
-обраного за допомогою цієї властивості.
+Перший рядок діапазону буде прив'язано до того рядка, який (опосередковано)
+вибрано цією властивістю.
 </translation>
     </message>
     <message>
@@ -566,22 +567,22 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation>Кінцева адреса комірки.
+      <translation>Адреса кінцевої комірки.
 
-Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї 
-властивості, щоб користувач міг динамічно перемикати конфігурації.
+Вважається, що перший стовпець діапазону містить список назв конфігурацій,
+з якого буде створено список рядків і прив'язано до вказаної
+властивості, щоб користувач міг динамічно перемикати конфігурацію.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
-обраного за допомогою цієї властивості.
+Перший рядок діапазону буде прив'язано до того рядка, який (опосередковано)
+вибрано цією властивістю.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Введіть вираз, щоб вказати назву обʼєкта та властивості, щоб динамічно 
-змінювати конфігурацію проєкту. Якщо властивість не існує, вона буде створена.</translation>
+      <translation>Введіть вираз, що задає об'єкт і назву властивості для динамічного
+перемикання конфігурації моделі. Якщо властивості не існує, її буде створено.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -669,18 +670,18 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation>Зліва</translation>
+      <translation>Ліворуч</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>Центр</translation>
+      <translation>По центру</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation>Справа</translation>
+      <translation>Праворуч</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -690,7 +691,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation>Зверху</translation>
+      <translation>Згори</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
@@ -741,8 +742,8 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.cpp" line="47"/>
       <source>Allows referring to a cell by an alias name, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Allows referring to a cell by an alias name, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Дає змогу звертатися до комірки за псевдонімом, наприклад
+Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -750,7 +751,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Import file</source>
-      <translation>Імпорт файлу</translation>
+      <translation>Імпортувати файл</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="477"/>
@@ -761,7 +762,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
       <location filename="../../SpreadsheetView.cpp" line="483"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Зверніться до комірки за псевдонімом, наприклад
+      <translation>Дає змогу звертатися до комірки за псевдонімом, наприклад
 Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
     <message>
@@ -804,7 +805,7 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="720"/>
       <source>Copy &amp; Paste Failed</source>
-      <translation>Копіювання та вставка не вдались</translation>
+      <translation>Не вдалося скопіювати та вставити</translation>
     </message>
   </context>
   <context>
@@ -903,7 +904,7 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="494"/>
       <source>Custom Color</source>
-      <translation>Колір, який встановлюється користувачем</translation>
+      <translation>Власний колір</translation>
     </message>
   </context>
   <context>
@@ -922,13 +923,13 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Зверніться до комірки за псевдонімом, наприклад
+      <translation>Дає змогу звертатися до комірки за псевдонімом, наприклад
 Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="131"/>
       <source>Zoom</source>
-      <translation>Збільшення</translation>
+      <translation>Масштаб</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
@@ -960,7 +961,7 @@ Continue?</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="283"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation>Звʼязування комірок таблиці</translation>
+      <translation>Прив'язування комірок таблиці</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="284"/>
@@ -972,7 +973,7 @@ Continue?</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="311"/>
       <source>Unbind Cells</source>
-      <translation>Від'єднати комірки</translation>
+      <translation>Відв'язати комірки</translation>
     </message>
   </context>
   <context>
@@ -985,17 +986,17 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Комірки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Максимальна кількість стовпців</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Максимальна кількість рядків</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -1005,17 +1006,17 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Displays the cell alias using the custom format.</source>
-      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+      <translation>Показує псевдонім комірки у власному форматі.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="194"/>
       <source>Show alias in cell with format</source>
-      <translation>Показати псевдонім у комірці з форматуванням</translation>
+      <translation>Показувати псевдонім у комірці за форматом</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="207"/>
       <source>Sets the table view zoom level from 60% to 160%.</source>
-      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+      <translation>Задає масштаб таблиці від 60% до 160%.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="210"/>
@@ -1029,21 +1030,21 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation>Формат комірки з індивідуальним представленням.
+      <translation>Формат власного текстового подання комірки.
 Типово: %V = %A
 
-%A - псевдонім
-%V - значення комірки</translation>
+%A — псевдонім
+%V — значення комірки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
-      <translation>Параметри Імпорту/Експорту</translation>
+      <translation>Параметри імпорту/експорту</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="235"/>
       <source>Default zoom level</source>
-      <translation>Рівень масштабування за замовчуванням</translation>
+      <translation>Типовий рівень масштабування</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="38"/>
@@ -1053,7 +1054,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ для позначення роздільника полів. Типово це символ табулювання, але також часто використовуються коми (,) і крапка з комою (;). Виберіть зі списку або введіть свій власний у поле. Має бути один символ або слова &lt;span style=" font-style:italic;"&gt;табуляція&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;кома&lt;/span&gt;, або &lt;span style=" font-style:italic;"&gt;крапка з комою&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ-роздільник полів. Типово це табуляція, але часто також використовують кому (,) і крапку з комою (;). Виберіть зі списку або введіть власний. Має бути один символ або одне зі слів &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt; чи &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
@@ -1068,7 +1069,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ, що використовується для розділення рядків, зазвичай це одинарні лапки (') або подвійні лапки (&amp;quot;). Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ, яким обрамлюють рядки, зазвичай одинарні (') або подвійні лапки (&amp;quot;). Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
@@ -1078,7 +1079,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ "Escape", як правило, зворотний слеш (\), який використовується для позначення спеціальних символів, які не друкуються, напр. \t = вкладка. Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ екранування, зазвичай зворотна скісна риска (\), позначає спеціальні недруковані символи, напр. \t — табуляція. Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1087,16 +1088,16 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="188"/>
       <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
-      <translation>Переобчислити</translation>
+      <translation>Перерахувати</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="149"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
-        <numerusform>Вставити %n рядок</numerusform>
-        <numerusform>Вставити %n рядки</numerusform>
-        <numerusform>Вставити %n рядків</numerusform>
-        <numerusform>Вставити %n рядків</numerusform>
+        <numerusform>Вставити %n несуміжний рядок</numerusform>
+        <numerusform>Вставити %n несуміжні рядки</numerusform>
+        <numerusform>Вставити %n несуміжних рядків</numerusform>
+        <numerusform>Вставити %n несуміжних рядків</numerusform>
       </translation>
     </message>
     <message>
@@ -1108,10 +1109,10 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
-        <numerusform>Вставити %n стовпець</numerusform>
-        <numerusform>Вставити %n стовпці</numerusform>
-        <numerusform>Вставити %n стовпців</numerusform>
-        <numerusform>Вставити %n стовпців</numerusform>
+        <numerusform>Вставити %n несуміжний стовпець</numerusform>
+        <numerusform>Вставити %n несуміжні стовпці</numerusform>
+        <numerusform>Вставити %n несуміжних стовпців</numerusform>
+        <numerusform>Вставити %n несуміжних стовпців</numerusform>
       </translation>
     </message>
     <message>
@@ -1128,7 +1129,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Configuration Table…</source>
-      <translation>Таблиця конфігурації…</translation>
+      <translation>Таблиця конфігурацій…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="194"/>
@@ -1189,7 +1190,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration Table</source>
-      <translation>Таблиця конфігурації</translation>
+      <translation>Таблиця конфігурацій</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
@@ -1227,7 +1228,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="284"/>
       <source>Export PDF</source>
-      <translation>Експорт у PDF</translation>
+      <translation>Експортувати в PDF</translation>
     </message>
   </context>
   <context>
@@ -1280,12 +1281,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="363"/>
       <source>Setup Configuration Table</source>
-      <translation>Створення Таблиці Конфігурацій</translation>
+      <translation>Налаштування таблиці конфігурацій</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="430"/>
       <source>Unsetup Configuration Table</source>
-      <translation>Скасувати налаштування таблиці конфігурації</translation>
+      <translation>Скасувати налаштування таблиці конфігурацій</translation>
     </message>
   </context>
   <context>
@@ -1293,62 +1294,62 @@ Defaults to: %V = %A
     <message>
       <location filename="../../PropertiesDialog.cpp" line="342"/>
       <source>Alias conflicts with a reserved unit token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved unit token used by expressions</translation>
+      <translation>Псевдонім збігається із зарезервованим позначенням одиниці у виразах</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="343"/>
       <source>Invalid: reserved unit token</source>
-      <translation type="unfinished">Invalid: reserved unit token</translation>
+      <translation>Некоректно: зарезервоване позначення одиниці</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="346"/>
       <source>Alias conflicts with a reserved constant token used by expressions</source>
-      <translation type="unfinished">Alias conflicts with a reserved constant token used by expressions</translation>
+      <translation>Псевдонім збігається із зарезервованим позначенням константи у виразах</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="347"/>
       <source>Invalid: reserved constant token</source>
-      <translation type="unfinished">Invalid: reserved constant token</translation>
+      <translation>Некоректно: зарезервоване позначення константи</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="350"/>
       <source>Alias already defined</source>
-      <translation type="unfinished">Alias already defined</translation>
+      <translation>Псевдонім уже визначено</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="351"/>
       <source>Invalid: alias already exists</source>
-      <translation type="unfinished">Invalid: alias already exists</translation>
+      <translation>Некоректно: псевдонім уже існує</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="354"/>
       <source>Alias cannot look like a cell address such as A1 or C12</source>
-      <translation type="unfinished">Alias cannot look like a cell address such as A1 or C12</translation>
+      <translation>Псевдонім не може мати вигляд адреси комірки, як-от A1 чи C12</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="355"/>
       <source>Invalid: alias matches cell address pattern</source>
-      <translation type="unfinished">Invalid: alias matches cell address pattern</translation>
+      <translation>Некоректно: псевдонім схожий на адресу комірки</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="358"/>
       <source>Alias conflicts with an existing spreadsheet property name</source>
-      <translation type="unfinished">Alias conflicts with an existing spreadsheet property name</translation>
+      <translation>Псевдонім збігається з назвою наявної властивості таблиці</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="359"/>
       <source>Invalid: conflicts with existing property name</source>
-      <translation type="unfinished">Invalid: conflicts with existing property name</translation>
+      <translation>Некоректно: збігається з назвою наявної властивості</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="362"/>
       <source>Alias must start with a letter and contain only letters, digits, and '_'</source>
-      <translation type="unfinished">Alias must start with a letter and contain only letters, digits, and '_'</translation>
+      <translation>Псевдонім має починатися з літери й містити лише літери, цифри та '_'</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.cpp" line="363"/>
       <source>Invalid: bad alias syntax</source>
-      <translation type="unfinished">Invalid: bad alias syntax</translation>
+      <translation>Некоректно: неправильний синтаксис псевдоніма</translation>
     </message>
   </context>
 </TS>

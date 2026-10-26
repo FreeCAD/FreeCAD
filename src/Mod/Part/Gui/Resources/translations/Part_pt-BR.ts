@@ -1524,7 +1524,7 @@ A ligação opcional de vértice define a posição.</translation>
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Cuts 2 selected shapes</source>
-      <translation>Subtrai a segunda forma selecionada da primeira</translation>
+      <translation>Corta 2 formas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1844,7 +1844,7 @@ A ligação opcional de vértice define a posição.</translation>
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Primitive</source>
-      <translation>Primitivo(a)</translation>
+      <translation>Primitiva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="226"/>
@@ -1870,8 +1870,10 @@ A ligação opcional de vértice define a posição.</translation>
 onto a face of another shape.
 The camera view determines the direction
 of the projection.</source>
-      <translation>Projeta arestas, arames ou faces de uma forma na face de outra forma.
-A visão da câmera determina a direção da projeção.</translation>
+      <translation>Projeta arestas, arames ou faces de uma forma
+sobre uma face de outra forma.
+A vista da câmera determina a direção
+da projeção.</translation>
     </message>
   </context>
   <context>
@@ -2201,12 +2203,12 @@ A visão da câmera determina a direção da projeção.</translation>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
       <source>Path Link Array</source>
-      <translation>Matriz de Vínculos de Caminho</translation>
+      <translation>Matriz de vínculos em caminho</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2721"/>
       <source>Point Link Array</source>
-      <translation>Matriz de vínculos de ponto</translation>
+      <translation>Matriz de vínculos em pontos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
@@ -2699,7 +2701,9 @@ um único objeto. Ao reimportar o arquivo STEP, o posicionamento será codificad
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation>Ative este parâmetro se quiser que, no arquivo STEP, sejam criadas curvas NURBS a partir das superfícies NURBS. Desative o parâmetro se quiser um arquivo STEP de menor tamanho.</translation>
+      <translation>Este parâmetro indica se as curvas paramétricas (curvas no espaço paramétrico da superfície)
+devem ser gravadas no arquivo STEP. Ele pode ser desativado para minimizar
+o tamanho do arquivo STEP resultante.</translation>
     </message>
   </context>
   <context>
@@ -2731,7 +2735,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="318"/>
+      <location filename="../../DlgExtrusion.cpp" line="331"/>
       <source>Select</source>
       <translation>Selecione</translation>
     </message>
@@ -2819,7 +2823,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="277"/>
       <source>Taper angle along</source>
-      <translation/>
+      <translation>Ângulo de inclinação ao longo</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
@@ -2849,7 +2853,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
       <source>Select shape(s) that should be extruded</source>
-      <translation>Selecione a(s) forma(s) que devem ser extrudadas</translation>
+      <translation>Selecione as forma(s) que devem ser extrudadas</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="373"/>
@@ -2857,48 +2861,48 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="288"/>
+      <location filename="../../DlgExtrusion.cpp" line="301"/>
       <source>Selecting…</source>
       <translation>Selecionando…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="570"/>
+      <location filename="../../DlgExtrusion.cpp" line="583"/>
       <source>The document '%1' doesn't exist.</source>
       <translation>O documento '%1' não existe.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="585"/>
+      <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
       <translation>Falha ao criar extrusão.
 Nenhuma forma pôde ser extrudada.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="610"/>
+      <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>Falha ao criar a extrusão.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="618"/>
+      <location filename="../../DlgExtrusion.cpp" line="635"/>
       <source>Creating Extrusion failed.
 %1</source>
-      <translation>Falha ao criar a extrusão
+      <translation>Falha ao criar a extrusão.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="709"/>
       <source>Object not found: %1</source>
       <translation>Objeto não encontrado: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="757"/>
+      <location filename="../../DlgExtrusion.cpp" line="776"/>
       <source>No shapes selected for extrusion.</source>
       <translation>Nenhuma forma selecionada para extrusão.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="824"/>
+      <location filename="../../DlgExtrusion.cpp" line="843"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2907,12 +2911,12 @@ Nenhuma forma pôde ser extrudada.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="777"/>
+      <location filename="../../DlgExtrusion.cpp" line="796"/>
       <source>Unknown error</source>
       <translation>Erro desconhecido</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="784"/>
+      <location filename="../../DlgExtrusion.cpp" line="803"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2921,17 +2925,17 @@ Nenhuma forma pôde ser extrudada.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="791"/>
+      <location filename="../../DlgExtrusion.cpp" line="810"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>O modo de direção é usar uma aresta, mas nenhuma aresta está vinculada.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="839"/>
+      <location filename="../../DlgExtrusion.cpp" line="858"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>O vetor de direção de extrusão tem comprimento zero. Deve ser diferente de zero.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="857"/>
+      <location filename="../../DlgExtrusion.cpp" line="876"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>O comprimento total da extrusão é zero (dist1 == -dist2). Deve ser outro valor que zero.</translation>
     </message>
@@ -3311,7 +3315,7 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="209"/>
       <source>Assembly per document in sub-directory</source>
-      <translation>Montagem por documento no sub-diretório</translation>
+      <translation>Montagem por documento em subdiretório</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="214"/>
@@ -3858,7 +3862,7 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1848"/>
       <source>Pitch</source>
-      <translation>Passo do dente</translation>
+      <translation>Passo</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1855"/>
@@ -4305,7 +4309,9 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>O link para o eixo de revolução é inválido %1</translation>
+      <translation>O link do eixo de revolução é inválido.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="324"/>
@@ -4328,7 +4334,9 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Criar Revolução falhou. %1</translation>
+      <translation>Falha ao criar a revolução.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="538"/>
@@ -4796,8 +4804,10 @@ Marque primeiro uma ou mais entidades de aresta.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>A face inferior da superfície será renderizada do mesmo modo que a superior.
-Se não estiver marcada, dependerá da opção escolhida na seção Preferências Mostrar -&gt; Vista 3D -&gt; Cor de fundo: Será usado ou preto, ou a cor de fundo</translation>
+      <translation>O lado inferior da superfície será renderizado da mesma forma que o superior.
+Se não estiver marcado, depende da opção "Cor da luz de fundo"
+(seção de preferências Exibição -&gt; Vista 3D); será usada a cor da luz de fundo
+ou preto.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4952,12 +4962,12 @@ o vetor normal ao plano de esboço será usado</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="188"/>
       <source>Too Few Elements</source>
-      <translation>Poucos elementos   </translation>
+      <translation>Poucos elementos</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="189"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
-      <translation>São necessários pelo menos 2 vértices, arestas, arames ou faces.   </translation>
+      <translation>São necessários pelo menos 2 vértices, arestas, arames ou faces.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="228"/>
@@ -5853,7 +5863,7 @@ Verificações de operações booleanas individuais:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1543"/>
       <source>Attachment</source>
-      <translation>Fixação</translation>
+      <translation>Anexação</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1564"/>
@@ -6054,7 +6064,8 @@ Verificações de operações booleanas individuais:</translation>
       <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Selecione pelo menos 1 perfil e uma aresta ou arame\nna visualização 3D para o caminho da varredura.</translation>
+      <translation>Selecione pelo menos 1 perfil e uma aresta ou arame
+na vista 3D para o caminho da varredura.</translation>
     </message>
   </context>
   <context>
@@ -6169,7 +6180,8 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="532"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation>O uso de não sólidos para operações booleanas pode levar a resultados inesperados.\nDeseja continuar?</translation>
+      <translation>O uso de não sólidos para operações booleanas pode levar a resultados inesperados.
+Deseja continuar?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="415"/>
@@ -6880,7 +6892,7 @@ para filtragem por colisão ou distância.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="266"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="283"/>
       <source>Attachment</source>
-      <translation>Fixação</translation>
+      <translation>Anexação</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
@@ -7124,7 +7136,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform scaling</source>
-      <translation>Dimensionamento uniforme</translation>
+      <translation>Escala uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
@@ -7445,7 +7457,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="90"/>
       <source>Attachment</source>
-      <translation>Fixação</translation>
+      <translation>Anexação</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
@@ -7851,7 +7863,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="65"/>
       <source>Tangential distance</source>
-      <translation>Distância Tangencial</translation>
+      <translation>Distância tangencial</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="82"/>
@@ -7866,17 +7878,17 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="108"/>
       <source>Start at selected shape</source>
-      <translation type="unfinished">Start at selected shape</translation>
+      <translation>Iniciar na forma selecionada</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="115"/>
       <source>Binormal axis</source>
-      <translation type="unfinished">Binormal axis</translation>
+      <translation>Eixo binormal</translation>
     </message>
     <message>
       <location filename="../../PatternCircularParametersWidget.ui" line="125"/>
       <source>Flip binormal direction</source>
-      <translation type="unfinished">Flip binormal direction</translation>
+      <translation>Inverter a direção binormal</translation>
     </message>
   </context>
   <context>
@@ -7957,19 +7969,19 @@ Volumes sobrepostos das formas serão removidos.</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="29"/>
-      <location filename="../../PatternPointParametersWidget.cpp" line="74"/>
+      <location filename="../../PatternPointParametersWidget.cpp" line="85"/>
       <source>Select Point Object</source>
       <translation>Selecionar objeto de pontos</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="36"/>
       <source>Relative to first</source>
-      <translation type="unfinished">Relative to first</translation>
+      <translation>Relativo ao primeiro</translation>
     </message>
     <message>
       <location filename="../../PatternPointParametersWidget.ui" line="46"/>
       <source>Origin point index</source>
-      <translation type="unfinished">Origin point index</translation>
+      <translation>Índice do ponto de origem</translation>
     </message>
   </context>
   <context>
@@ -8000,7 +8012,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2672"/>
       <source>Path Link Array</source>
-      <translation>Matriz de Vínculos de Caminho</translation>
+      <translation>Matriz de vínculos em caminho</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2673"/>
@@ -8018,7 +8030,7 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../Command.cpp" line="2707"/>
       <source>Point Link Array</source>
-      <translation>Matriz de vínculos de ponto</translation>
+      <translation>Matriz de vínculos em pontos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2708"/>
@@ -8111,12 +8123,12 @@ Volumes sobrepostos das formas serão removidos.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
       <source>Path Link Array</source>
-      <translation>Matriz de Vínculos de Caminho</translation>
+      <translation>Matriz de vínculos em caminho</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
       <source>Point Link Array</source>
-      <translation>Matriz de vínculos de ponto</translation>
+      <translation>Matriz de vínculos em pontos</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>

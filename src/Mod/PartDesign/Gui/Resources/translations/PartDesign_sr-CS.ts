@@ -979,17 +979,17 @@ vrednost za korak na osnovu graničnog okvira oko profila.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Kružno umnožavanje</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Umnožavanje po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>Umnožavanje po tačkama</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
@@ -2455,17 +2455,17 @@ nula, onda je jednak poluprečniku 2</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
       <source>Add Circular Pattern</source>
-      <translation type="unfinished">Add Circular Pattern</translation>
+      <translation>Dodaj kružno umnožavanje</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
       <source>Add Path Pattern</source>
-      <translation type="unfinished">Add Path Pattern</translation>
+      <translation>Dodaj umnožavanje po vodilji</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
       <source>Add Point Pattern</source>
-      <translation type="unfinished">Add Point Pattern</translation>
+      <translation>Dodaj umnožavanje po tačkama</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
@@ -2794,7 +2794,7 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvilinear equivalence</source>
-      <translation type="unfinished">Curvilinear equivalence</translation>
+      <translation>Krivolinijska jednakost</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2839,12 +2839,12 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="83"/>
       <source>Subtractive Pipe Section Orientation</source>
-      <translation type="unfinished">Subtractive Pipe Section Orientation</translation>
+      <translation>Orijentacija preseka</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Additive Pipe Section Orientation</source>
-      <translation type="unfinished">Additive Pipe Section Orientation</translation>
+      <translation>Orijentacija preseka</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="666"/>
@@ -2982,12 +2982,12 @@ merena duž zadatog pravca</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="89"/>
       <source>Subtractive Pipe Section Transformation</source>
-      <translation type="unfinished">Subtractive Pipe Section Transformation</translation>
+      <translation>Pomeranje preseka</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="90"/>
       <source>Additive Pipe Section Transformation</source>
-      <translation type="unfinished">Additive Pipe Section Transformation</translation>
+      <translation>Pomeranje preseka</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="956"/>
@@ -4975,7 +4975,7 @@ iznad 90: veći poluprečnik rupe na dnu</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
       <source>Tool shape is null</source>
-      <translation type="unfinished">Tool shape is null</translation>
+      <translation>Oblik koji primenjujete nema geometriju</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="248"/>
@@ -5982,12 +5982,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../Command.cpp" line="2490"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Kružno umnožavanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2491"/>
       <source>Duplicates the selected features or the active body in concentric circular patterns</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in concentric circular patterns</translation>
+      <translation>Kružno u koncentričnim krugovima umnoži izabrani tipski oblik ili aktivno telo</translation>
     </message>
   </context>
   <context>
@@ -6000,12 +6000,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Umnožavanje po vodilji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
-      <translation type="unfinished">Duplicates the selected features or the active body along a path</translation>
+      <translation>Umnoži izabrani tipski oblik ili aktivno telo duž putanje vodilje</translation>
     </message>
   </context>
   <context>
@@ -6018,12 +6018,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>Umnožavanje po tačkama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
-      <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
+      <translation>Umnoži izabrani tipski oblik ili aktivno telo po tačkama</translation>
     </message>
   </context>
   <context>
@@ -6039,12 +6039,12 @@ Nije dozvoljeno ukrštanje elemenata ili više stranica u skici.</translation>
     <message>
       <location filename="../../ViewProviderPathPattern.h" line="18"/>
       <source>Path Pattern Parameters</source>
-      <translation type="unfinished">Path Pattern Parameters</translation>
+      <translation>Parametri umnožavanja po vodilji</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
       <source>Edit Path Pattern</source>
-      <translation type="unfinished">Edit Path Pattern</translation>
+      <translation>Uredi umnožavanje po vodilji</translation>
     </message>
   </context>
   <context>
@@ -6085,12 +6085,12 @@ Zadaj drugačije parametre i pokušaj ponovo.</translation>
     <message>
       <location filename="../../ViewProviderCircularPattern.h" line="18"/>
       <source>Circular Pattern Parameters</source>
-      <translation type="unfinished">Circular Pattern Parameters</translation>
+      <translation>Parametri kružnog umnožavanja</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
       <source>Edit Circular Pattern</source>
-      <translation type="unfinished">Edit Circular Pattern</translation>
+      <translation>Uredi kružno umnožavanje</translation>
     </message>
   </context>
   <context>
@@ -6106,12 +6106,12 @@ Zadaj drugačije parametre i pokušaj ponovo.</translation>
     <message>
       <location filename="../../ViewProviderPointPattern.h" line="18"/>
       <source>Point Pattern Parameters</source>
-      <translation type="unfinished">Point Pattern Parameters</translation>
+      <translation>Parametri umnožavanja po tačkama</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
       <source>Edit Point Pattern</source>
-      <translation type="unfinished">Edit Point Pattern</translation>
+      <translation>Uredi umnožavanje po tačkama</translation>
     </message>
   </context>
 </TS>

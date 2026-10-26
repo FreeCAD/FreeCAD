@@ -225,11 +225,6 @@
       <translation>OpenSCAD 要素を追加</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="141"/>
-      <source>Converts edges to faces</source>
-      <translation>エッジを面に変換</translation>
-    </message>
-    <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
       <translation>最初に3つのオブジェクトを選択してください</translation>
@@ -432,6 +427,11 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
+      <translation>エッジを面に変換</translation>
+    </message>
+    <message>
+      <location filename="../../OpenSCADCommands.py" line="141"/>
+      <source>Converts edges to faces</source>
       <translation>エッジを面に変換</translation>
     </message>
   </context>

@@ -1036,7 +1036,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1910"/>
       <source>Over-constrained:</source>
-      <translation>Превише ограничена скица:</translation>
+      <translation>Прекомерно ограничена скица:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1918"/>
@@ -1634,7 +1634,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_Snapshot</name>
+    <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
@@ -1645,6 +1645,9 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
       <translation>Снима тренутно стање склопа (положаје и видљивост). Двоструки клик на објекат Снимак врац́а склоп у стање снимљено на том снимку.</translation>
     </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
@@ -1738,7 +1741,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select Malformed Constraints</source>
-      <translation>Изабери оштећена ограничења</translation>
+      <translation>Изабери неисправна ограничења</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>

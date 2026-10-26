@@ -979,17 +979,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Кружно умножавање</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Умножавање по водиљи</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>Умножавање по тачкама</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
@@ -2455,17 +2455,17 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="96"/>
       <source>Add Circular Pattern</source>
-      <translation type="unfinished">Add Circular Pattern</translation>
+      <translation>Додај кружно умножавање</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
       <source>Add Path Pattern</source>
-      <translation type="unfinished">Add Path Pattern</translation>
+      <translation>Додај умножавање по водиљи</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="112"/>
       <source>Add Point Pattern</source>
-      <translation type="unfinished">Add Point Pattern</translation>
+      <translation>Додај умножавање по тачкама</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="120"/>
@@ -2794,7 +2794,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvilinear equivalence</source>
-      <translation type="unfinished">Curvilinear equivalence</translation>
+      <translation>Криволинијска једнакост</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2839,12 +2839,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="83"/>
       <source>Subtractive Pipe Section Orientation</source>
-      <translation>Orijentacija preseka</translation>
+      <translation>Оријентација пресека</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Additive Pipe Section Orientation</source>
-      <translation>Orijentacija preseka</translation>
+      <translation>Оријентација пресека</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="666"/>
@@ -2982,12 +2982,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="89"/>
       <source>Subtractive Pipe Section Transformation</source>
-      <translation>Pomeranje preseka</translation>
+      <translation>Померање пресека</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="90"/>
       <source>Additive Pipe Section Transformation</source>
-      <translation>Pomeranje preseka</translation>
+      <translation>Померање пресека</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="956"/>
@@ -4975,7 +4975,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="221"/>
       <source>Tool shape is null</source>
-      <translation type="unfinished">Tool shape is null</translation>
+      <translation>Облик који примењујете нема геометрију</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="248"/>
@@ -5982,12 +5982,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../Command.cpp" line="2490"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Кружно умножавање</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2491"/>
       <source>Duplicates the selected features or the active body in concentric circular patterns</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in concentric circular patterns</translation>
+      <translation>Кружно у концентричним круговима умножи изабрани типски облик или активно тело</translation>
     </message>
   </context>
   <context>
@@ -6000,12 +6000,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Умножавање по водиљи</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
       <source>Duplicates the selected features or the active body along a path</source>
-      <translation type="unfinished">Duplicates the selected features or the active body along a path</translation>
+      <translation>Умножи изабрани типски облик или активно тело дуж путање водиље</translation>
     </message>
   </context>
   <context>
@@ -6018,12 +6018,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../Command.cpp" line="2595"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>Умножавање по тачкама</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2596"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
-      <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
+      <translation>Умножи изабрани типски облик или активно тело по тачкама</translation>
     </message>
   </context>
   <context>
@@ -6039,12 +6039,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../ViewProviderPathPattern.h" line="18"/>
       <source>Path Pattern Parameters</source>
-      <translation type="unfinished">Path Pattern Parameters</translation>
+      <translation>Параметри умножавања по водиљи</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
       <source>Edit Path Pattern</source>
-      <translation type="unfinished">Edit Path Pattern</translation>
+      <translation>Уреди умножавање по водиљи</translation>
     </message>
   </context>
   <context>
@@ -6085,12 +6085,12 @@ Adjust the parameters and try again.</source>
     <message>
       <location filename="../../ViewProviderCircularPattern.h" line="18"/>
       <source>Circular Pattern Parameters</source>
-      <translation type="unfinished">Circular Pattern Parameters</translation>
+      <translation>Параметри кружног умножавања</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
       <source>Edit Circular Pattern</source>
-      <translation type="unfinished">Edit Circular Pattern</translation>
+      <translation>Уреди кружно умножавање</translation>
     </message>
   </context>
   <context>
@@ -6106,12 +6106,12 @@ Adjust the parameters and try again.</source>
     <message>
       <location filename="../../ViewProviderPointPattern.h" line="18"/>
       <source>Point Pattern Parameters</source>
-      <translation type="unfinished">Point Pattern Parameters</translation>
+      <translation>Параметри умножавања по тачкама</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
       <source>Edit Point Pattern</source>
-      <translation type="unfinished">Edit Point Pattern</translation>
+      <translation>Уреди умножавање по тачкама</translation>
     </message>
   </context>
 </TS>

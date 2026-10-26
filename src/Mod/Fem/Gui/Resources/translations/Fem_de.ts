@@ -6657,16 +6657,6 @@ Im aktuellen Python-Pfad wurde kein passendes Modul gefunden.</translation>
       <translation>Daten hinzufügen von</translation>
     </message>
     <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
-      <source>Data Visualizations</source>
-      <translation>Datenvisualisierung</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiutils/post_visualization.py" line="113"/>
-      <source>Different visualizations to show post processing data in</source>
-      <translation>Verschiedene Visualisierungen zur Darstellung von Nachbearbeitungsdaten in</translation>
-    </message>
-    <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="177"/>
       <source>Export to CSV</source>
       <translation>Als CSV exportieren</translation>
@@ -8825,9 +8815,6 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
       <source>Shape-Based Refinement</source>
       <translation>Formbasierte Verfeinerung</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="953"/>
       <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
@@ -8996,6 +8983,19 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
       <translation>Slave Geometrie-Referenzauswahl</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_PostVisualization</name>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="110"/>
+      <source>Data Visualizations</source>
+      <translation>Datenvisualisierung</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiutils/post_visualization.py" line="114"/>
+      <source>Different visualizations to show post processing data in</source>
+      <translation>Verschiedene Visualisierungen zur Darstellung von Nachbearbeitungsdaten in</translation>
     </message>
   </context>
   <context>

@@ -931,12 +931,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="26"/>
       <source>Work plane</source>
-      <translation type="unfinished">Work plane</translation>
+      <translation>Робоча площина</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="33"/>
       <source>The frame this operation works in. Heights and depths are measured in it, so changing it makes manually entered values stale.</source>
-      <translation type="unfinished">The frame this operation works in. Heights and depths are measured in it, so changing it makes manually entered values stale.</translation>
+      <translation>Система координат, у якій працює ця операція. Висоти й глибини вимірюються в ній, тож після її зміни введені вручну значення стають неактуальними.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="119"/>
@@ -981,12 +981,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="320"/>
       <source>Recompute all heights and depths from this operation&apos;s work plane, stock and model. Discards manual edits to these fields.</source>
-      <translation type="unfinished">Recompute all heights and depths from this operation&apos;s work plane, stock and model. Discards manual edits to these fields.</translation>
+      <translation>Перерахувати всі висоти й глибини з робочої площини, заготовки й моделі цієї операції. Відкидає ручні зміни в цих полях.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="323"/>
       <source>Reset to defaults</source>
-      <translation type="unfinished">Reset to defaults</translation>
+      <translation>Скинути до типових</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="332"/>
@@ -1574,42 +1574,42 @@ Does not affect the toolpath point spacing (Sample Interval).</source>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="150"/>
       <source>Radial stock to leave (inner)</source>
-      <translation type="unfinished">Radial stock to leave (inner)</translation>
+      <translation>Радіальний залишковий припуск (внутрішній)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="173"/>
       <source>Define cone angle if all base geometry is Part.Cone and all surfaces has identical angle</source>
-      <translation type="unfinished">Define cone angle if all base geometry is Part.Cone and all surfaces has identical angle</translation>
+      <translation>Задати кут конуса, якщо вся базова геометрія — Part.Cone і всі поверхні мають однаковий кут</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="185"/>
       <source>Starting angle</source>
-      <translation type="unfinished">Starting angle</translation>
+      <translation>Початковий кут</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="195"/>
       <source>Spiral mill</source>
-      <translation type="unfinished">Spiral mill</translation>
+      <translation>Спіральне фрезерування</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="202"/>
       <source>Single helix</source>
-      <translation type="unfinished">Single helix</translation>
+      <translation>Одна гвинтова лінія</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="209"/>
       <source>Override arc feed rate</source>
-      <translation type="unfinished">Override arc feed rate</translation>
+      <translation>Перевизначити подачу на дугах</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="216"/>
       <source>Start from bottom</source>
-      <translation type="unfinished">Start from bottom</translation>
+      <translation>Починати знизу</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="223"/>
       <source>Retract from wall</source>
-      <translation type="unfinished">Retract from wall</translation>
+      <translation>Відводити від стінки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="58"/>
@@ -3191,7 +3191,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="61"/>
       <source>Sanity report output file</source>
-      <translation type="unfinished">Sanity report output file</translation>
+      <translation>Файл виводу звіту перевірки</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="96"/>
@@ -5071,7 +5071,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Geom.py" line="933"/>
       <source>combineHorizontalFaces: Zero working area to process</source>
-      <translation type="unfinished">combineHorizontalFaces: Zero working area to process</translation>
+      <translation>combineHorizontalFaces: нульова робоча область для обробки</translation>
     </message>
     <message>
       <location filename="../../../Path/Geom.py" line="955"/>
@@ -5291,8 +5291,8 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="142"/>
       <source>The centre of rotation.
 Affects only to Path repesentation in 3d view.</source>
-      <translation type="unfinished">The centre of rotation.
-Affects only to Path repesentation in 3d view.</translation>
+      <translation>Центр обертання.
+Впливає лише на відображення траєкторії в 3D-виді.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
@@ -5332,12 +5332,12 @@ Affects only to Path repesentation in 3d view.</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="55"/>
       <source>Shape to limit toolpath</source>
-      <translation type="unfinished">Shape to limit toolpath</translation>
+      <translation>Форма, що обмежує траєкторію</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="61"/>
       <source>Keep path inside or outside the shape</source>
-      <translation type="unfinished">Keep path inside or outside the shape</translation>
+      <translation>Утримувати траєкторію всередині чи ззовні форми</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="70"/>
@@ -5351,13 +5351,13 @@ Affects only to Path repesentation in 3d view.</translation>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="81"/>
       <source>Apply boundary to Rest Machining
 Does not affects to current path, but can be used by other operations with Rest Machining feature</source>
-      <translation type="unfinished">Apply boundary to Rest Machining
-Does not affects to current path, but can be used by other operations with Rest Machining feature</translation>
+      <translation>Застосувати межу до доробки залишків
+Не впливає на поточну траєкторію, але може використовуватися іншими операціями з доробкою залишків</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="87"/>
       <source>Apply offset to boundary shape</source>
-      <translation type="unfinished">Apply offset to boundary shape</translation>
+      <translation>Застосувати зміщення до форми межі</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="100"/>
@@ -5463,13 +5463,13 @@ Ramp Method 1: Ramp down at rampangle along the path and move backwards to the o
 Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
 Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.
 Ramp Method 4: Ramp down at rampangle along the path, continue with the original path, extend and close the path on the final loop</source>
-      <translation type="unfinished">Select ramping method.
+      <translation>Виберіть метод похилого входу.
 
-Ramp Method 0: Helix like path.
-Ramp Method 1: Ramp down at rampangle along the path and move backwards to the original plunge end point.
-Ramp Method 2: Travel at start depth along the path and Ramp backwards at rampangle along the path to the original plunge end point.
-Ramp Method 3: Ramp down along the path until traveled half of the Z distance, change direction and ramp backwards to the original plunge end point.
-Ramp Method 4: Ramp down at rampangle along the path, continue with the original path, extend and close the path on the final loop</translation>
+Метод 0: траєкторія, подібна до гвинтової.
+Метод 1: спуск під кутом rampangle уздовж траєкторії й рух назад до вихідної кінцевої точки врізання.
+Метод 2: рух на початковій глибині вздовж траєкторії й спуск назад під кутом rampangle уздовж траєкторії до вихідної кінцевої точки врізання.
+Метод 3: спуск уздовж траєкторії, доки не пройдено половину відстані по Z, потім зміна напрямку й спуск назад до вихідної кінцевої точки врізання.
+Метод 4: спуск під кутом rampangle уздовж траєкторії, продовження вихідною траєкторією, подовження й замикання траєкторії на останньому витку</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="93"/>
@@ -5590,7 +5590,7 @@ Above this depth ramps are not generated, but motion commands are passed through
     <message>
       <location filename="../../../Path/Main/Job.py" line="508"/>
       <source>Group of named work planes the Operations can share</source>
-      <translation type="unfinished">Group of named work planes the Operations can share</translation>
+      <translation>Група іменованих робочих площин, спільних для операцій</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="544"/>
@@ -5610,7 +5610,7 @@ Above this depth ramps are not generated, but motion commands are passed through
     <message>
       <location filename="../../../Path/Main/Job.py" line="653"/>
       <source>The links to models taken out of the Job, for when they are added back</source>
-      <translation type="unfinished">The links to models taken out of the Job, for when they are added back</translation>
+      <translation>Посилання на моделі, вилучені із завдання, — на випадок їх повернення</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="313"/>
@@ -6120,7 +6120,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
     <message>
       <location filename="../../../Path/Op/Base.py" line="538"/>
       <source>The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</source>
-      <translation type="unfinished">The named work plane this operation works in, shared with other operations of the Job. Its local +Z is the tool axis. Empty means the Job&apos;s own XY, which is ordinary Z-up milling.</translation>
+      <translation>Іменована робоча площина, у якій працює ця операція, спільна з іншими операціями завдання. Її локальна +Z — вісь інструмента. Порожньо — власна площина XY завдання, тобто звичайне фрезерування з віссю Z угору.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="652"/>
@@ -6418,13 +6418,13 @@ Automatic — сортування поліліній методом найбл�
       <location filename="../../../Path/Op/PocketBase.py" line="251"/>
       <location filename="../../../Path/Op/PocketBase.py" line="408"/>
       <source>Finishing pass will processing with one step down at final depth</source>
-      <translation type="unfinished">Finishing pass will processing with one step down at final depth</translation>
+      <translation>Чистовий прохід виконуватиметься одним кроком по глибині на кінцевій глибині</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="260"/>
       <location filename="../../../Path/Op/PocketBase.py" line="432"/>
       <source>Create helix ramp for finishing pass</source>
-      <translation type="unfinished">Create helix ramp for finishing pass</translation>
+      <translation>Створювати гвинтовий вхід для чистового проходу</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="185"/>
@@ -6534,31 +6534,31 @@ Manual: порядок вибору форм</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="232"/>
       <location filename="../../../Path/Op/PocketBase.py" line="396"/>
       <source>Distance between roughing and finishing passes</source>
-      <translation type="unfinished">Distance between roughing and finishing passes</translation>
+      <translation>Відстань між чорновими й чистовими проходами</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="222"/>
       <source>Finish pass will processing with one step down at final depth</source>
-      <translation type="unfinished">Finish pass will processing with one step down at final depth</translation>
+      <translation>Чистовий прохід виконуватиметься одним кроком по глибині на кінцевій глибині</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="231"/>
       <source>Start multiple profile from edge or out of edge</source>
-      <translation type="unfinished">Start multiple profile from edge or out of edge</translation>
+      <translation>Починати кілька профілів від ребра або за межами ребра</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="240"/>
       <source>Create helix ramp for closed path
 Helix pitch limits by &apos;Step Down&apos;</source>
-      <translation type="unfinished">Create helix ramp for closed path
-Helix pitch limits by &apos;Step Down&apos;</translation>
+      <translation>Створювати гвинтовий вхід для замкненої траєкторії
+Крок гвинта обмежується 'Step Down'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="259"/>
       <location filename="../../../Path/Op/PocketBase.py" line="242"/>
       <location filename="../../../Path/Op/PocketBase.py" line="419"/>
       <source>Adds an additional finishing pass that clears the stock left over from tool deflection</source>
-      <translation type="unfinished">Adds an additional finishing pass that clears the stock left over from tool deflection</translation>
+      <translation>Додає ще один чистовий прохід, що знімає залишок заготовки через відтискання інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="128"/>
@@ -7838,7 +7838,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
     <message>
       <location filename="../../../Path/Main/Workplane.py" line="180"/>
       <source>Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on this plane run. Empty: the Job&apos;s own fixture.</source>
-      <translation type="unfinished">Work coordinate system (G54-G59.9, G54.1 Pn) selected while operations on this plane run. Empty: the Job&apos;s own fixture.</translation>
+      <translation>Робоча система координат (G54-G59.9, G54.1 Pn), що вибирається під час виконання операцій на цій площині. Порожньо — власна система координат завдання.</translation>
     </message>
   </context>
   <context>
@@ -7907,7 +7907,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
     <message>
       <location filename="../../../Path/Op/Area.py" line="294"/>
       <source>%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</source>
-      <translation type="unfinished">%s: ramp method &apos;%s&apos; needs a ramp angle, plunging</translation>
+      <translation>%s: метод похилого входу '%s' потребує кута похилого входу, виконується пряме врізання</translation>
     </message>
   </context>
   <context>
@@ -7975,7 +7975,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
     <message>
       <location filename="../../../Path/Op/Profile.py" line="293"/>
       <source>OutOfEdge</source>
-      <translation type="unfinished">OutOfEdge</translation>
+      <translation>За межами ребра</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="294"/>
@@ -7995,17 +7995,17 @@ Larger values will calculate faster; Smaller values will result in more accurate
     <message>
       <location filename="../../../Path/Op/Profile.py" line="299"/>
       <source>Method 1</source>
-      <translation type="unfinished">Method 1</translation>
+      <translation>Метод 1</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="300"/>
       <source>Method 2</source>
-      <translation type="unfinished">Method 2</translation>
+      <translation>Метод 2</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="301"/>
       <source>Method 3</source>
-      <translation type="unfinished">Method 3</translation>
+      <translation>Метод 3</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="488"/>
@@ -8369,9 +8369,39 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>Вимкніть, щоб операція не генерувала код</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
+      <source>Operation Deleted</source>
+      <translation>Операцію видалено</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
       <source>Edit</source>
       <translation>Редагувати</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
+      <source>Set Work Plane from Face</source>
+      <translation>Задати робочу площину з грані</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="351"/>
+      <source>Select a planar face to set a work plane from.</source>
+      <translation>Виберіть пласку грань, щоб задати з неї робочу площину.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="365"/>
+      <source>Set %s to work plane %s</source>
+      <translation>Встановити для %s робочу площину %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="378"/>
+      <source>Click on a planar face to set the work plane for %s</source>
+      <translation>Клацніть пласку грань, щоб задати робочу площину для %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="402"/>
+      <source>u26a0 Deprecated: {}</source>
+      <translation>u26a0 Застаріло: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="850"/>
@@ -8394,46 +8424,16 @@ Larger values will calculate faster; Smaller values will result in more accurate
       <translation>Висоти</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
+      <source>Tool Controller</source>
+      <translation>Контролер інструмента</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1189"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Для цієї операції FinalDepth змінити не можна.
 Якщо FinalDepth потрібно задати вручну, виберіть іншу операцію.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="215"/>
-      <source>Operation Deleted</source>
-      <translation type="unfinished">Operation Deleted</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="324"/>
-      <source>Set Work Plane from Face</source>
-      <translation type="unfinished">Set Work Plane from Face</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="351"/>
-      <source>Select a planar face to set a work plane from.</source>
-      <translation type="unfinished">Select a planar face to set a work plane from.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="365"/>
-      <source>Set %s to work plane %s</source>
-      <translation type="unfinished">Set %s to work plane %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="378"/>
-      <source>Click on a planar face to set the work plane for %s</source>
-      <translation type="unfinished">Click on a planar face to set the work plane for %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="402"/>
-      <source>u26a0 Deprecated: {}</source>
-      <translation type="unfinished">u26a0 Deprecated: {}</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1435"/>
-      <source>Tool Controller</source>
-      <translation>Контролер інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1472"/>
@@ -8456,16 +8456,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation>Скасувати операцію AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
-      <source>Start Point Selection</source>
-      <translation>Вибір початкової точки</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
-      <source>Selects the start point</source>
-      <translation>Вибирає початкову точку</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1882"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
@@ -8480,22 +8470,22 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Base.py" line="75"/>
       <source>{} has been deleted and no longer generates a toolpath. It is replaced by {}.</source>
-      <translation type="unfinished">{} has been deleted and no longer generates a toolpath. It is replaced by {}.</translation>
+      <translation>{} — видалено, траєкторія більше не створюється. Замінено на: {}.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="81"/>
       <source>{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</source>
-      <translation type="unfinished">{} is deprecated and will be deleted in the next release. It is replaced by {}. Existing operations still work, but new ones cannot be created.</translation>
+      <translation>{} — застаріло й буде видалено в наступному випуску. Замінено на: {}. Наявні операції працюють, але створити нові не можна.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="86"/>
       <source>{} is deprecated and will be hidden in the next release. It is replaced by {}.</source>
-      <translation type="unfinished">{} is deprecated and will be hidden in the next release. It is replaced by {}.</translation>
+      <translation>{} — застаріло й буде приховано в наступному випуску. Замінено на: {}.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1585"/>
       <source>This operation has been deleted and no longer generates a toolpath.</source>
-      <translation type="unfinished">This operation has been deleted and no longer generates a toolpath.</translation>
+      <translation>Цю операцію видалено, і вона більше не створює траєкторію.</translation>
     </message>
   </context>
   <context>
@@ -8904,12 +8894,12 @@ Without sub selection:
   <context>
     <name>CAM_DressupDragKnife</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="594"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
       <source>Drag Knife</source>
       <translation>Волочний ніж</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="598"/>
+      <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="603"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
       <translation>Змінює траєкторію, додаючи дії волочного ножа в кутах</translation>
     </message>
@@ -8942,7 +8932,7 @@ Without sub selection:
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="129"/>
       <source>RampMethod4</source>
-      <translation type="unfinished">RampMethod4</translation>
+      <translation>Метод похилого входу 4</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="327"/>
@@ -9028,7 +9018,7 @@ Without sub selection:
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="210"/>
       <source>Z correction needs a work plane parallel to the table; path left unchanged</source>
-      <translation type="unfinished">Z correction needs a work plane parallel to the table; path left unchanged</translation>
+      <translation>Корекція Z потребує робочої площини, паралельної столу; траєкторію залишено без змін</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="263"/>
@@ -9185,7 +9175,7 @@ Without sub selection:
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</source>
-      <translation type="unfinished">The models did not move together, so the operations&apos; points and heights were left where they were. Check them.</translation>
+      <translation>Моделі не перемістилися разом, тому точки й висоти операцій залишено на місці. Перевірте їх.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="2121"/>
@@ -9212,14 +9202,14 @@ Without sub selection:
       <source>Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
 
 Take it out?</source>
-      <translation type="unfinished">Taking {model} out of the Job unlinks what is made from it: the base geometry of {ops} operations, the attachments of {planes} work planes and {others} other links. They are linked again if {model} is added back to this Job.
+      <translation>Вилучення {model} із завдання розриває зв'язки з усім, що з неї створено: базову геометрію операцій ({ops}), прикріплення робочих площин ({planes}) та інші посилання ({others}). Їх буде відновлено, якщо {model} знову додати до цього завдання.
 
-Take it out?</translation>
+Вилучити її?</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1912"/>
       <source>Take the model out</source>
-      <translation type="unfinished">Take the model out</translation>
+      <translation>Вилучити модель</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="2120"/>
@@ -9330,7 +9320,7 @@ Take it out?</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="130"/>
       <source>Raw shows the commands exactly as the operation stored them: no rounding, no unit conversion, and no Placement applied. An operation on a work plane stores its path in the plane&apos;s own frame.</source>
-      <translation type="unfinished">Raw shows the commands exactly as the operation stored them: no rounding, no unit conversion, and no Placement applied. An operation on a work plane stores its path in the plane&apos;s own frame.</translation>
+      <translation>Режим Raw показує команди точно так, як їх зберегла операція: без округлення, перетворення одиниць і застосування Placement. Операція на робочій площині зберігає траєкторію в системі координат цієї площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="137"/>
@@ -9353,7 +9343,7 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="339"/>
       <source>&lt;br&gt;&lt;b&gt;Raw&lt;/b&gt;: as stored, in the operation&apos;s own frame; the frame&apos;s origin (%.3f, %.3f, %.3f) and rotation are not applied.</source>
-      <translation type="unfinished">&lt;br&gt;&lt;b&gt;Raw&lt;/b&gt;: as stored, in the operation&apos;s own frame; the frame&apos;s origin (%.3f, %.3f, %.3f) and rotation are not applied.</translation>
+      <translation>&lt;br&gt;&lt;b&gt;Raw&lt;/b&gt;: як збережено, у власній системі координат операції; початок цієї системи (%.3f, %.3f, %.3f) і поворот не застосовано.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="368"/>
@@ -9663,12 +9653,12 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="310"/>
       <source>Operation &apos;{}&apos; is missing from the output: {}</source>
-      <translation type="unfinished">Operation &apos;{}&apos; is missing from the output: {}</translation>
+      <translation>Операція '{}' відсутня у виводі: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="318"/>
       <source>Operation &apos;{}&apos; is deprecated: {}</source>
-      <translation type="unfinished">Operation &apos;{}&apos; is deprecated: {}</translation>
+      <translation>Операція '{}' застаріла: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="456"/>
@@ -9719,7 +9709,7 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="204"/>
       <source>Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</source>
-      <translation type="unfinished">Document unit schema &apos;{}&apos; expresses velocity per second. Feed rates will not match what the G-code emits. Use a schema with velocity per minute.</translation>
+      <translation>Схема одиниць документа '{}' виражає швидкість за секунду. Подачі не збігатимуться з тими, що виводяться в G-код. Використовуйте схему зі швидкістю за хвилину.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="260"/>
@@ -9735,16 +9725,6 @@ G-code under the cursor defines tool shape placement</source>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="58"/>
       <source>Checks the CAM job for common errors</source>
       <translation>Перевіряє завдання CAM на типові помилки</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
-      <source>Quick Validate</source>
-      <translation>Швидка перевірка</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
-      <source>Validates the CAM job for common issues without generating a full report</source>
-      <translation>Перевіряє завдання CAM без генерації повного звіту</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="155"/>
@@ -9771,11 +9751,6 @@ G-code under the cursor defines tool shape placement</source>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
-      <source>CAM Simulator</source>
-      <translation>Симулятор CAM</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>Високий</translation>
@@ -9797,7 +9772,6 @@ G-code under the cursor defines tool shape placement</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="630"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>Симулює G-код на заготовці</translation>
     </message>
@@ -9855,37 +9829,37 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1031"/>
       <source>No parent job found for operation</source>
-      <translation type="unfinished">No parent job found for operation</translation>
+      <translation>Для операції не знайдено батьківського завдання</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1037"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
-      <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
+      <translation>Батьківське завдання %s не має базового об'єкта</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1181"/>
       <source>%s: Final depth is above start depth</source>
-      <translation type="unfinished">%s: Final depth is above start depth</translation>
+      <translation>%s: кінцева глибина вища за початкову</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1190"/>
       <source>%s: Start depth is above safe height</source>
-      <translation type="unfinished">%s: Start depth is above safe height</translation>
+      <translation>%s: початкова глибина вища за безпечну висоту</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1197"/>
       <source>%s: Safe height is above clearance height</source>
-      <translation type="unfinished">%s: Safe height is above clearance height</translation>
+      <translation>%s: безпечна висота вища за висоту переходу</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1528"/>
       <source>Base object %s.%s already in the list</source>
-      <translation type="unfinished">Base object %s.%s already in the list</translation>
+      <translation>Базовий об'єкт %s.%s вже в списку</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1538"/>
       <source>Base object %s.%s rejected by operation</source>
-      <translation type="unfinished">Base object %s.%s rejected by operation</translation>
+      <translation>Базовий об'єкт %s.%s відхилено операцією</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="657"/>
@@ -9910,7 +9884,7 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1243"/>
       <source>None (Job XY)</source>
-      <translation type="unfinished">None (Job XY)</translation>
+      <translation>Немає (XY завдання)</translation>
     </message>
   </context>
   <context>
@@ -9918,7 +9892,7 @@ G-code under the cursor defines tool shape placement</source>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1023"/>
       <source>%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</source>
-      <translation type="unfinished">%s: FinalDepth (%.3f) is outside the stock in this work plane (%.3f to %.3f). Heights and depths set before the work plane was assigned do not carry over - use Reset to defaults on the Heights page.</translation>
+      <translation>%s: FinalDepth (%.3f) лежить поза заготовкою в цій робочій площині (від %.3f до %.3f). Висоти й глибини, задані до призначення робочої площини, не переносяться — скористайтеся 'Скинути до типових' на сторінці 'Висоти'.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="1370"/>
@@ -10491,7 +10465,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="615"/>
       <source>G-code commands inserted before the rotary axes move: before a rotary positioning move, and before a tilted work plane is declared when the control positions the axes itself. Put the moves that bring the tool clear of the part here, in machine coordinates (for example G53 G0 Z0); an operation&apos;s clearance height is measured in its own work plane and says nothing about the tool while the table turns.</source>
-      <translation type="unfinished">G-code commands inserted before the rotary axes move: before a rotary positioning move, and before a tilted work plane is declared when the control positions the axes itself. Put the moves that bring the tool clear of the part here, in machine coordinates (for example G53 G0 Z0); an operation&apos;s clearance height is measured in its own work plane and says nothing about the tool while the table turns.</translation>
+      <translation>Команди G-коду, що вставляються перед рухом поворотних осей: перед поворотним позиціюванням і перед оголошенням нахиленої робочої площини, коли система ЧПК позиціює осі сама. Розмістіть тут переміщення, що виводять інструмент від деталі, у координатах верстата (наприклад, G53 G0 Z0); висота переходу операції вимірюється в її власній робочій площині й нічого не каже про інструмент під час повороту столу.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="621"/>
@@ -10501,47 +10475,47 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="627"/>
       <source>G-code commands inserted after the rotary axes have moved, and after a tilted work plane has been declared and aligned to.</source>
-      <translation type="unfinished">G-code commands inserted after the rotary axes have moved, and after a tilted work plane has been declared and aligned to.</translation>
+      <translation>Команди G-коду, що вставляються після руху поворотних осей, а також після оголошення нахиленої робочої площини й вирівнювання за нею.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="633"/>
       <source>Tilted work plane: control positions the rotaries</source>
-      <translation type="unfinished">Tilted work plane: control positions the rotaries</translation>
+      <translation>Нахилена робоча площина: ЧПК позиціює поворотні осі</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="639"/>
       <source>The plane command positions the rotary axes itself (G53.1, TURN). Off, the program commands them with a rotary move before declaring the plane.</source>
-      <translation type="unfinished">The plane command positions the rotary axes itself (G53.1, TURN). Off, the program commands them with a rotary move before declaring the plane.</translation>
+      <translation>Команда площини сама позиціює поворотні осі (G53.1, TURN). Якщо вимкнено, програма повертає їх поворотним переміщенням перед оголошенням площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="645"/>
       <source>Tilted work plane: declare</source>
-      <translation type="unfinished">Tilted work plane: declare</translation>
+      <translation>Нахилена робоча площина: оголошення</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="652"/>
       <source>The line that declares a tilted work plane, with {x} {y} {z} the plane&apos;s origin and {a1} {a2} {a3} the plane command&apos;s angles. Empty uses the plane command&apos;s own form.</source>
-      <translation type="unfinished">The line that declares a tilted work plane, with {x} {y} {z} the plane&apos;s origin and {a1} {a2} {a3} the plane command&apos;s angles. Empty uses the plane command&apos;s own form.</translation>
+      <translation>Рядок, що оголошує нахилену робочу площину, де {x} {y} {z} — початок площини, а {a1} {a2} {a3} — кути команди площини. Порожньо — використовується власна форма команди площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="658"/>
       <source>Tilted work plane: align</source>
-      <translation type="unfinished">Tilted work plane: align</translation>
+      <translation>Нахилена робоча площина: вирівнювання</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="664"/>
       <source>The line that points the tool along a declared plane when the control positions the rotary axes itself. Empty uses the plane command&apos;s own form.</source>
-      <translation type="unfinished">The line that points the tool along a declared plane when the control positions the rotary axes itself. Empty uses the plane command&apos;s own form.</translation>
+      <translation>Рядок, що спрямовує інструмент уздовж оголошеної площини, коли ЧПК позиціює поворотні осі сама. Порожньо — використовується власна форма команди площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="670"/>
       <source>Tilted work plane: cancel</source>
-      <translation type="unfinished">Tilted work plane: cancel</translation>
+      <translation>Нахилена робоча площина: скасування</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="676"/>
       <source>The line that cancels a declared plane. Empty uses the plane command&apos;s own form.</source>
-      <translation type="unfinished">The line that cancels a declared plane. Empty uses the plane command&apos;s own form.</translation>
+      <translation>Рядок, що скасовує оголошену площину. Порожньо — використовується власна форма команди площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="682"/>
@@ -10636,52 +10610,52 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="1939"/>
       <source>{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</source>
-      <translation type="unfinished">{op} is on a tilted work plane, and {machine} has no rotary axes to point the tool along it. Without rotary axes a work plane must be parallel to the table.</translation>
+      <translation>{op} лежить на нахиленій робочій площині, а {machine} не має поворотних осей, щоб спрямувати інструмент уздовж неї. Без поворотних осей робоча площина має бути паралельною столу.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="1941"/>
       <source>the Job</source>
-      <translation type="unfinished">the Job</translation>
+      <translation>завдання</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="1960"/>
       <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</source>
-      <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; does not say how it handles rotation. Set its Rotation strategy in the Machine Editor: DWO for a control with dynamic work offsets, TWP for one with a tilted work plane command.</translation>
+      <translation>{op} лежить на нахиленій робочій площині, а верстат '{machine}' не вказує, як він обробляє поворот. Задайте його стратегію повороту в редакторі верстата: DWO для ЧПК з динамічними робочими зміщеннями, TWP — для ЧПК з командою нахиленої робочої площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="1970"/>
       <source>{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</source>
-      <translation type="unfinished">{op} is on a tilted work plane, and machine &apos;{machine}&apos; declares the post-transform strategy, which is not available yet.</translation>
+      <translation>{op} лежить на нахиленій робочій площині, а верстат '{machine}' оголошує стратегію пост-перетворення, яка ще недоступна.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="1980"/>
       <source>{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</source>
-      <translation type="unfinished">{op} is on a tilted work plane, and this post-processor cannot emit the {strategy} strategy machine &apos;{machine}&apos; declares.</translation>
+      <translation>{op} лежить на нахиленій робочій площині, а цей постпроцесор не може виводити стратегію {strategy}, оголошену верстатом '{machine}'.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="2121"/>
       <source>{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</source>
-      <translation type="unfinished">{op} is on work plane &apos;{plane}&apos;, which machine &apos;{machine}&apos; cannot index to: {reason}. Its rotary limits are {limits}.</translation>
+      <translation>{op} лежить на робочій площині '{plane}', до якої верстат '{machine}' не може повернутися: {reason}. Межі його поворотних осей: {limits}.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="2164"/>
       <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</source>
-      <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn).</translation>
+      <translation>Робоча площина '{plane}' називає своєю системою координат '{fixture}', яка не є робочою системою координат (G54-G59.9 або G54.1 Pn).</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3306"/>
       <source>The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</source>
-      <translation type="unfinished">The rotary axes move between operations and the Pre-Rotary Move property of machine &apos;{machine}&apos; is empty. Put the moves that bring the tool clear of the part there, in machine coordinates (for example G53 G0 Z0).</translation>
+      <translation>Поворотні осі рухаються між операціями, а властивість Pre-Rotary Move верстата '{machine}' порожня. Розмістіть там переміщення, що виводять інструмент від деталі, у координатах верстата (наприклад, G53 G0 Z0).</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3331"/>
       <source>Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</source>
-      <translation type="unfinished">Work plane &apos;{plane}&apos; names &apos;{fixture}&apos; as its fixture, which is not a work coordinate system (G54-G59.9, or G54.1 Pn). The post will refuse it.</translation>
+      <translation>Робоча площина '{plane}' називає своєю системою координат '{fixture}', яка не є робочою системою координат (G54-G59.9 або G54.1 Pn). Постпроцесор її не прийме.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3343"/>
       <source>Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</source>
-      <translation type="unfinished">Work plane &apos;{plane}&apos; selects {fixture}, which is also one of the fixtures the Job repeats its program for. Inside each repetition the plane&apos;s selection wins.</translation>
+      <translation>Робоча площина '{plane}' вибирає {fixture}, яка також є однією з робочих систем координат, для яких завдання повторює програму. Усередині кожного повторення діє вибір площини.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3488"/>
@@ -10701,102 +10675,103 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="4026"/>
       <source>{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</source>
-      <translation type="unfinished">{op} is on a tilted work plane. Legacy post-processor &apos;{post}&apos; cannot position a rotary machine; select a post-processor of the current kind.</translation>
+      <translation>{op} лежить на нахиленій робочій площині. Застарілий постпроцесор '{post}' не вміє позиціювати поворотний верстат; виберіть постпроцесор поточного типу.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="180"/>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="156"/>
       <source>Program Name</source>
-      <translation type="unfinished">Program Name</translation>
+      <translation>Назва програми</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="187"/>
       <source>Name written in the BEGIN PGM and END PGM blocks. Leave empty to derive it from the job label. Characters other than letters, digits and underscore are replaced.</source>
-      <translation type="unfinished">Name written in the BEGIN PGM and END PGM blocks. Leave empty to derive it from the job label. Characters other than letters, digits and underscore are replaced.</translation>
+      <translation>Назва, що записується в блоки BEGIN PGM і END PGM. Залиште порожнім, щоб утворити її з мітки завдання. Символи, крім літер, цифр і підкреслення, замінюються.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="193"/>
       <source>Tool Axis</source>
-      <translation type="unfinished">Tool Axis</translation>
+      <translation>Вісь інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="200"/>
       <source>Spindle axis written in TOOL CALL and BLK FORM. Arcs are always output in the XY plane.</source>
-      <translation type="unfinished">Spindle axis written in TOOL CALL and BLK FORM. Arcs are always output in the XY plane.</translation>
+      <translation>Вісь шпинделя, що записується в TOOL CALL і BLK FORM. Дуги завжди виводяться в площині XY.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="206"/>
       <source>Rapid Feed Rate (0 = FMAX)</source>
-      <translation type="unfinished">Rapid Feed Rate (0 = FMAX)</translation>
+      <translation>Прискорена подача (0 = FMAX)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="215"/>
       <source>Feed rate in mm/min written on rapid blocks instead of FMAX. Older controls do not accept FMAX. 0 writes FMAX.</source>
-      <translation type="unfinished">Feed rate in mm/min written on rapid blocks instead of FMAX. Older controls do not accept FMAX. 0 writes FMAX.</translation>
+      <translation>Подача в мм/хв, що записується в блоках прискореного переміщення замість FMAX. Старіші ЧПК не приймають FMAX. 0 — записувати FMAX.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="221"/>
       <source>Drill Cycle Format</source>
-      <translation type="unfinished">Drill Cycle Format</translation>
+      <translation>Формат циклів свердління</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="230"/>
       <source>q_parameter: CYCL DEF 200/202/203/207 with Q parameters (TNC 4xx and newer). legacy: CYCL DEF 1.x PECKING and 17.x RIGID TAPPING for controls without Q-parameter cycles.</source>
-      <translation type="unfinished">q_parameter: CYCL DEF 200/202/203/207 with Q parameters (TNC 4xx and newer). legacy: CYCL DEF 1.x PECKING and 17.x RIGID TAPPING for controls without Q-parameter cycles.</translation>
+      <translation>q_parameter: CYCL DEF 200/202/203/207 з Q-параметрами (TNC 4xx і новіші). legacy: CYCL DEF 1.x PECKING і 17.x RIGID TAPPING для ЧПК без циклів з Q-параметрами.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="236"/>
       <source>Drill Cycle Set-Up Clearance</source>
-      <translation type="unfinished">Drill Cycle Set-Up Clearance</translation>
+      <translation>Безпечна відстань циклу свердління</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="246"/>
       <source>Set-up clearance (Q200) in mm. The cycle&apos;s surface coordinate is placed this far below the operation&apos;s retract height so that feed motion starts at the retract height, as in the G-code cycle.</source>
-      <translation type="unfinished">Set-up clearance (Q200) in mm. The cycle&apos;s surface coordinate is placed this far below the operation&apos;s retract height so that feed motion starts at the retract height, as in the G-code cycle.</translation>
+      <translation>Безпечна відстань (Q200) у мм. Координата поверхні циклу розміщується на цю відстань нижче висоти відведення операції, щоб робоча подача починалася з висоти відведення, як у циклі G-коду.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="252"/>
       <source>Chip Breaking Retract</source>
-      <translation type="unfinished">Chip Breaking Retract</translation>
+      <translation>Відведення для ламання стружки</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="261"/>
       <source>Retraction distance (Q256) in mm used for G73 chip breaking in CYCL DEF 203.</source>
-      <translation type="unfinished">Retraction distance (Q256) in mm used for G73 chip breaking in CYCL DEF 203.</translation>
+      <translation>Відстань відведення (Q256) у мм для ламання стружки G73 у CYCL DEF 203.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="267"/>
       <source>Fixture Output</source>
-      <translation type="unfinished">Fixture Output</translation>
+      <translation>Вивід робочих систем координат</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="275"/>
       <source>preset: CYCL DEF 247 PRESETTING selects a preset table entry. datum: CYCL DEF 7 DATUM SHIFT selects a datum table entry. none: fixture commands are not output.</source>
-      <translation type="unfinished">preset: CYCL DEF 247 PRESETTING selects a preset table entry. datum: CYCL DEF 7 DATUM SHIFT selects a datum table entry. none: fixture commands are not output.</translation>
+      <translation>preset: CYCL DEF 247 PRESETTING вибирає запис таблиці предустановок. datum: CYCL DEF 7 DATUM SHIFT вибирає запис таблиці нулів. none: команди робочих систем координат не виводяться.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="281"/>
       <source>Fixture Number for G54</source>
-      <translation type="unfinished">Fixture Number for G54</translation>
+      <translation>Номер для G54</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="288"/>
       <source>Preset or datum number selected for G54. G55 selects the next one, and so on.</source>
-      <translation type="unfinished">Preset or datum number selected for G54. G55 selects the next one, and so on.</translation>
+      <translation>Номер предустановки або нуля, що вибирається для G54. G55 вибирає наступний і так далі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="294"/>
       <source>Output BLK FORM</source>
-      <translation type="unfinished">Output BLK FORM</translation>
+      <translation>Виводити BLK FORM</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="300"/>
       <source>Write the stock bounding box as BLK FORM 0.1 / 0.2 blocks after BEGIN PGM for graphic simulation on the control.</source>
-      <translation type="unfinished">Write the stock bounding box as BLK FORM 0.1 / 0.2 blocks after BEGIN PGM for graphic simulation on the control.</translation>
+      <translation>Записувати габаритний прямокутник заготовки блоками BLK FORM 0.1 / 0.2 після BEGIN PGM для графічної симуляції на ЧПК.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/heidenhain_post.py" line="311"/>
       <source>Heidenhain Klartext post processor</source>
-      <translation type="unfinished">Heidenhain Klartext post processor</translation>
+      <translation>Постпроцесор Heidenhain Klartext</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
@@ -10920,12 +10895,12 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="108"/>
       <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
-      <translation type="unfinished">G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool tip to machine Z zero; on the kinematics of LinuxCNC pull request #4374, G53.5 G0 Z0 parks the Z slide whatever the head is doing. Left empty, nothing clears the part before the table turns, and the sanity check says so.</translation>
+      <translation>G-код, що вставляється перед рухом поворотних осей і перед вирівнюванням за нахиленою робочою площиною командою G53.1. Розмістіть тут переміщення, що виводять інструмент від деталі, у координатах верстата: G53 G0 Z0 піднімає вершину інструмента до нуля Z верстата; з кінематикою з pull request LinuxCNC #4374 G53.5 G0 Z0 паркує повзун Z незалежно від положення головки. Якщо порожньо, перед поворотом столу ніщо не відводить інструмент від деталі, про що повідомляє перевірка завдання.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="117"/>
       <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</source>
-      <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which moves the rotaries alone and lets the tool tip swing: G53.1 P1 or P2 names which of the two poses, Q1 lets the table take part. G53.6 keeps the tool center point where it is instead.</translation>
+      <translation>Рядок, що спрямовує інструмент уздовж нормалі оголошеної площини. Порожньо — G53.1, що рухає лише поворотні осі й дає вершині інструмента відхилятися: G53.1 P1 або P2 вибирає одну з двох поз, Q1 дозволяє брати участь столу. G53.6 натомість утримує центральну точку інструмента на місці.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="127"/>
@@ -10950,12 +10925,12 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="155"/>
       <source>Tilted work plane: kinematics select</source>
-      <translation type="unfinished">Tilted work plane: kinematics select</translation>
+      <translation>Нахилена робоча площина: вибір кінематики</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="163"/>
       <source>A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</source>
-      <translation type="unfinished">A line emitted after the preamble when the job has an operation on a tilted work plane. G53.1 needs a kinematics type whose frames describe the machine; on a switchable module that starts in identity kinematics this is where G12.1 P1 goes.</translation>
+      <translation>Рядок, що виводиться після преамбули, коли завдання має операцію на нахиленій робочій площині. G53.1 потребує типу кінематики, системи координат якого описують верстат; на перемикному модулі, що запускається з тотожною кінематикою, сюди ставиться G12.1 P1.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="170"/>
@@ -10970,112 +10945,112 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="138"/>
       <source>G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool to machine Z zero; G91 G28 Z0 followed by G90 references it. Left empty, nothing clears the part before the table turns, and the sanity check says so.</source>
-      <translation type="unfinished">G-code inserted before the rotary axes move, and before a tilted work plane is aligned to with G53.1. Put the moves that bring the tool clear of the part here, in machine coordinates: G53 G0 Z0 lifts the tool to machine Z zero; G91 G28 Z0 followed by G90 references it. Left empty, nothing clears the part before the table turns, and the sanity check says so.</translation>
+      <translation>G-код, що вставляється перед рухом поворотних осей і перед вирівнюванням за нахиленою робочою площиною командою G53.1. Розмістіть тут переміщення, що виводять інструмент від деталі, у координатах верстата: G53 G0 Z0 піднімає інструмент до нуля Z верстата; G91 G28 Z0 з подальшим G90 виводить його в референтну точку. Якщо порожньо, перед поворотом столу ніщо не відводить інструмент від деталі, про що повідомляє перевірка завдання.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="146"/>
       <source>G-code inserted after the rotary axes have moved. Under the DWO rotation strategy this is where the control&apos;s dynamic fixture offset is selected: G54.2 P1 on a Fanuc with that option. Under TWP the plane command handles the rotation and this block is usually empty.</source>
-      <translation type="unfinished">G-code inserted after the rotary axes have moved. Under the DWO rotation strategy this is where the control&apos;s dynamic fixture offset is selected: G54.2 P1 on a Fanuc with that option. Under TWP the plane command handles the rotation and this block is usually empty.</translation>
+      <translation>G-код, що вставляється після руху поворотних осей. За стратегії повороту DWO тут вибирається динамічне зміщення робочої системи координат ЧПК: G54.2 P1 на Fanuc з цією опцією. За TWP поворот виконує команда площини, і цей блок зазвичай порожній.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="155"/>
       <source>The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</source>
-      <translation type="unfinished">The line that points the tool along a declared plane&apos;s normal. Empty is G53.1, which positions the rotary axes for the plane declared by G68.2. 30i-class controls with the option accept G53.6 to keep the tool tip in place while the rotaries move.</translation>
+      <translation>Рядок, що спрямовує інструмент уздовж нормалі оголошеної площини. Порожньо — G53.1, що позиціює поворотні осі для площини, оголошеної G68.2. ЧПК класу 30i з відповідною опцією приймають G53.6, щоб утримувати вершину інструмента на місці під час руху поворотних осей.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="165"/>
       <source>Program Number</source>
-      <translation type="unfinished">Program Number</translation>
+      <translation>Номер програми</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="174"/>
       <source>The O number written after the leading % mark, zero-padded to four digits. 0 writes no O line. The control files the program under this number when it is loaded.</source>
-      <translation type="unfinished">The O number written after the leading % mark, zero-padded to four digits. 0 writes no O line. The control files the program under this number when it is loaded.</translation>
+      <translation>Номер O, що записується після початкового знака %, доповнений нулями до чотирьох цифр. 0 — рядок O не записується. ЧПК зберігає програму під цим номером під час завантаження.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="180"/>
       <source>Tape Marks (%)</source>
-      <translation type="unfinished">Tape Marks (%)</translation>
+      <translation>Мітки стрічки (%)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="185"/>
       <source>Write % as the first and last line, as tape-format DNC expects.</source>
-      <translation type="unfinished">Write % as the first and last line, as tape-format DNC expects.</translation>
+      <translation>Записувати % першим і останнім рядком, як очікує DNC у стрічковому форматі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="191"/>
       <source>Upper-Case Output</source>
-      <translation type="unfinished">Upper-Case Output</translation>
+      <translation>Вивід великими літерами</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="197"/>
       <source>Write the whole program in upper case, comments included. Older controls read nothing else.</source>
-      <translation type="unfinished">Write the whole program in upper case, comments included. Older controls read nothing else.</translation>
+      <translation>Записувати всю програму, включно з коментарями, великими літерами. Старіші ЧПК інакше не читають.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="203"/>
       <source>Dwell in Milliseconds</source>
-      <translation type="unfinished">Dwell in Milliseconds</translation>
+      <translation>Витримка в мілісекундах</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="210"/>
       <source>Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</source>
-      <translation type="unfinished">Write the P word of G4 and of the dwelling canned cycles as an integer number of milliseconds, the Fanuc default (parameter DWL = 0). Off, P is written in seconds with decimals, for a control set to read it that way.</translation>
+      <translation>Записувати слово P у G4 і в циклах із витримкою як ціле число мілісекунд — типово для Fanuc (параметр DWL = 0). Якщо вимкнено, P записується в секундах з дробовою частиною — для ЧПК, налаштованої читати його так.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="216"/>
       <source>Rigid Tapping (M29)</source>
-      <translation type="unfinished">Rigid Tapping (M29)</translation>
+      <translation>Жорстке нарізання різьби (M29)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="224"/>
       <source>Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</source>
-      <translation type="unfinished">Write M29 S&lt;rpm&gt; immediately before every G84 or G74 block, so the control synchronises the spindle with the feed. Off, the cycle runs with a floating tap holder. The feed is pitch times spindle speed in either case.</translation>
+      <translation>Записувати M29 S&lt;rpm&gt; безпосередньо перед кожним блоком G84 або G74, щоб ЧПК синхронізувала шпиндель з подачею. Якщо вимкнено, цикл виконується з плаваючим патроном. Подача в обох випадках дорівнює кроку, помноженому на частоту обертання шпинделя.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="230"/>
       <source>Parametric Tool Length Offset</source>
-      <translation type="unfinished">Parametric Tool Length Offset</translation>
+      <translation>Параметричне зміщення довжини інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="237"/>
       <source>After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</source>
-      <translation type="unfinished">After a tool change write G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 and G90 instead of G43 H&lt;n&gt;. For shops whose offset table keeps the negated length of tool n in #[2000+n]; #4120 is the active T code.</translation>
+      <translation>Після зміни інструмента записувати G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 і G90 замість G43 H&lt;n&gt;. Для цехів, у таблиці зміщень яких від'ємна довжина інструмента n зберігається в #[2000+n]; #4120 — активний код T.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="243"/>
       <source>Park Empty Spindle at End</source>
-      <translation type="unfinished">Park Empty Spindle at End</translation>
+      <translation>Паркувати порожній шпиндель наприкінці</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="250"/>
       <source>Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</source>
-      <translation type="unfinished">Before the postamble stop the spindle, retract, and write M6 T0 so the last tool goes back to the magazine. Not every control accepts T0; leave this off unless yours does.</translation>
+      <translation>Перед закінченням програми зупинити шпиндель, відвести інструмент і записати M6 T0, щоб останній інструмент повернувся в магазин. Не кожна ЧПК приймає T0; не вмикайте, якщо ваша не підтримує.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="256"/>
       <source>Empty-Spindle Retract</source>
-      <translation type="unfinished">Empty-Spindle Retract</translation>
+      <translation>Відведення порожнього шпинделя</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="262"/>
       <source>The retract written between M05 and M6 T0 when the empty-spindle park is on.</source>
-      <translation type="unfinished">The retract written between M05 and M6 T0 when the empty-spindle park is on.</translation>
+      <translation>Відведення, що записується між M05 і M6 T0, коли ввімкнено паркування порожнього шпинделя.</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="273"/>
       <source>Fanuc post processor</source>
-      <translation type="unfinished">Fanuc post processor</translation>
+      <translation>Постпроцесор Fanuc</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="347"/>
       <source>Rigid tapping needs a spindle speed: {op} taps with {cmd} and no S has been commanded</source>
-      <translation type="unfinished">Rigid tapping needs a spindle speed: {op} taps with {cmd} and no S has been commanded</translation>
+      <translation>Жорстке нарізання різьби потребує частоти обертання шпинделя: {op} нарізає різьбу командою {cmd}, а S не задано</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/fanuc_post.py" line="508"/>
       <source>&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</source>
-      <translation type="unfinished">&apos;{op}&apos; taps with {cmd} but commands no spindle speed; rigid tapping (M29) needs one</translation>
+      <translation>'{op}' нарізає різьбу командою {cmd}, але не задає частоту обертання шпинделя; для жорсткого нарізання (M29) вона потрібна</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
@@ -11093,6 +11068,21 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
       <translation>Постпроцесор Masso G3</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="81"/>
+      <source>Use Alternative Tool Change</source>
+      <translation>Використовувати альтернативну зміну інструмента</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="83"/>
+      <source>Use M0 instead of M6 for tool changes</source>
+      <translation>Використовувати M0 замість M6 для зміни інструмента</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/estlcam_post.py" line="90"/>
+      <source>Estlcam post processor</source>
+      <translation>Постпроцесор Estlcam</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
       <source>Centroid post processor</source>
       <translation>Постпроцесор Centroid</translation>
@@ -11101,6 +11091,76 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
       <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
       <source>Grbl post processor</source>
       <translation>Постпроцесор Grbl</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="139"/>
+      <source>Write G43 H&lt;tool&gt; after every tool change. A Delta applies the tool table&apos;s length with the T word; enable this only on a control set up for separate T and H codes.</source>
+      <translation>Записувати G43 H&lt;tool&gt; після кожної зміни інструмента. Delta застосовує довжину з таблиці інструментів за словом T; вмикайте лише на ЧПК, налаштованій на окремі коди T і H.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="163"/>
+      <source>The name written in parentheses on the first line, which the control files the program under. Eight characters at most, letters and digits; empty takes the document&apos;s name.</source>
+      <translation>Назва в дужках у першому рядку, під якою ЧПК зберігає програму. Не більше восьми символів, літери й цифри; якщо порожньо, береться назва документа.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="169"/>
+      <source>Upper-Case Comments</source>
+      <translation>Коментарі великими літерами</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="175"/>
+      <source>Write the program name and every text event in upper case, as the control displays them.</source>
+      <translation>Записувати назву програми й усі текстові події великими літерами, як їх показує ЧПК.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="181"/>
+      <source>Absolute Arc Centers</source>
+      <translation>Абсолютні центри дуг</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="187"/>
+      <source>Write I and J as the absolute coordinates of the arc center, which is how a Delta reads them. Off, I and J are offsets from the start point.</source>
+      <translation>Записувати I та J як абсолютні координати центру дуги — так їх читає Delta. Якщо вимкнено, I та J — зміщення від початкової точки.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="193"/>
+      <source>Second Reference Plane (O)</source>
+      <translation>Друга опорна площина (O)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="201"/>
+      <source>Write the operation&apos;s clearance height as the O word of every quill cycle: the absolute Z the tool returns to before the rapid to the next hole, so it clears a clamp the R plane would not. Off, the cycle retracts to R between holes.</source>
+      <translation>Записувати висоту переходу операції як слово O кожного циклу пінолі: абсолютну Z, на яку повертається інструмент перед прискореним переміщенням до наступного отвору, щоб оминути прихват, який площина R не оминула б. Якщо вимкнено, цикл відводить інструмент до R між отворами.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="207"/>
+      <source>XYZ Move After Tool Change</source>
+      <translation>Переміщення XYZ після зміни інструмента</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="214"/>
+      <source>A Delta refuses a program whose first move after M6 does not command all three axes. The first rapid with a Z after a tool change gets X0 Y0 when it carries no XY of its own.</source>
+      <translation>Delta відхиляє програму, у якій перше переміщення після M6 не задає всі три осі. Перше прискорене переміщення із Z після зміни інструмента отримує X0 Y0, якщо не має власних XY.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="220"/>
+      <source>End-of-File Marker (E)</source>
+      <translation>Маркер кінця файлу (E)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="226"/>
+      <source>Write E on the last line. The control reads it as end of file when loading from external media and strips it from the stored program.</source>
+      <translation>Записувати E в останньому рядку. ЧПК сприймає його як кінець файлу під час завантаження із зовнішнього носія й вилучає зі збереженої програми.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="237"/>
+      <source>Dynapath post processor</source>
+      <translation>Постпроцесор Dynapath</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/dynapath_post.py" line="542"/>
+      <source>Sequence numbers would reach N{last}; a Dynapath stops at N{max}. Turn line numbers off, lower the increment, or split the output.</source>
+      <translation>Номери кадрів досягли б N{last}; Dynapath зупиняється на N{max}. Вимкніть номери рядків, зменште крок або розділіть вивід.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Generator/leadinout.py" line="950"/>
@@ -11125,12 +11185,12 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="106"/>
       <source>No Job found to add a work plane to.</source>
-      <translation type="unfinished">No Job found to add a work plane to.</translation>
+      <translation>Не знайдено завдання, до якого можна додати робочу площину.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="137"/>
       <source>Created %s at the Job origin. Select a planar face before the command to derive one from the model.</source>
-      <translation type="unfinished">Created %s at the Job origin. Select a planar face before the command to derive one from the model.</translation>
+      <translation>Створено %s у початку координат завдання. Щоб отримати площину з моделі, перед командою виберіть пласку грань.</translation>
     </message>
   </context>
   <context>
@@ -11312,7 +11372,7 @@ Spindle_Control: усі команди M3/M5 виводяться без змі�
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="76"/>
       <source>No clearing</source>
-      <translation type="unfinished">No clearing</translation>
+      <translation>Без вибирання</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="79"/>
@@ -11719,12 +11779,12 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="591"/>
       <source>The Rotational scan type</source>
-      <translation type="unfinished">The Rotational scan type</translation>
+      <translation>Тип сканування Rotational</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="592"/>
       <source>the Rotary Surface operation</source>
-      <translation type="unfinished">the Rotary Surface operation</translation>
+      <translation>операція 'Ротаційна поверхня'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
@@ -11963,12 +12023,12 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="96"/>
       <source>The Face operation</source>
-      <translation type="unfinished">The Face operation</translation>
+      <translation>Операція 'Грань'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="97"/>
       <source>the Mill Facing operation</source>
-      <translation type="unfinished">the Mill Facing operation</translation>
+      <translation>операція 'Торцювання'</translation>
     </message>
   </context>
   <context>
@@ -12040,12 +12100,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="582"/>
       <source>The Waterline operation</source>
-      <translation type="unfinished">The Waterline operation</translation>
+      <translation>Операція 'Ватерлінія'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="585"/>
       <source>the Planar Surface operation with Strategy set to &apos;Waterline&apos;</source>
-      <translation type="unfinished">the Planar Surface operation with Strategy set to &apos;Waterline&apos;</translation>
+      <translation>операція 'Плоска поверхня' зі стратегією 'Waterline'</translation>
     </message>
   </context>
   <context>
@@ -12061,36 +12121,26 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>Виконує постобробку вибраного завдання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="356"/>
-      <source>Post Process Selected</source>
-      <translation>Постобробка вибраного</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Command.py" line="358"/>
-      <source>Post Processes the selected operations</source>
-      <translation>Виконує постобробку вибраних операцій</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Post/Utils.py" line="197"/>
       <source>The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
 </source>
-      <translation type="unfinished">The %T, %t, %W and %O substitutions name the section of a split output. The job is not splitting its output, so they are ignored.
+      <translation>Підстановки %T, %t, %W і %O позначають розділ розділеного виводу. Завдання не розділяє вивід, тому їх проігноровано.
 </translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3212"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</source>
-      <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, below the machine minimum of {} rpm</translation>
+      <translation>'{}' задає частоту обертання шпинделя {} об/хв, нижчу за мінімум верстата {} об/хв</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3224"/>
       <source>&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</source>
-      <translation type="unfinished">&apos;{}&apos; commands spindle speed {} rpm, above the machine maximum of {} rpm</translation>
+      <translation>'{}' задає частоту обертання шпинделя {} об/хв, вищу за максимум верстата {} об/хв</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="3248"/>
       <source>Machine defines {} toolheads; spindle speed was not checked against their limits</source>
-      <translation type="unfinished">Machine defines {} toolheads; spindle speed was not checked against their limits</translation>
+      <translation>Верстат визначає {} головок; частоту обертання шпинделя не перевірено щодо їхніх меж</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="127"/>
@@ -12112,7 +12162,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="176"/>
       <location filename="../../../Path/Main/Gui/Job.py" line="1542"/>
       <source>(Legacy post-processor)</source>
-      <translation type="unfinished">(Legacy post-processor)</translation>
+      <translation>(Застарілий постпроцесор)</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="338"/>
@@ -12264,12 +12314,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolBitSave</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="80"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="83"/>
       <source>Save Tool</source>
       <translation>Зберегти інструмент</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="85"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="86"/>
       <source>Saves an existing toolbit object to a file</source>
       <translation>Зберігає наявний інструмент у файл</translation>
     </message>
@@ -12277,12 +12327,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolBitLoad</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="125"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="129"/>
       <source>Load Tool</source>
       <translation>Завантажити інструмент</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="128"/>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="132"/>
       <source>Loads an existing toolbit object from a file</source>
       <translation>Завантажує наявний інструмент з файлу</translation>
     </message>
@@ -12411,12 +12461,12 @@ Tool number for {}:</source>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="297"/>
       <source>The Tapping operation</source>
-      <translation type="unfinished">The Tapping operation</translation>
+      <translation>Операція 'Нарізання різьби мітчиком'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="298"/>
       <source>the Drilling operation with Strategy set to &apos;Tapping&apos;</source>
-      <translation type="unfinished">the Drilling operation with Strategy set to &apos;Tapping&apos;</translation>
+      <translation>операція 'Свердління' зі стратегією 'Tapping'</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Tapping.py" line="172"/>
@@ -12553,67 +12603,61 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="88"/>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Machines</source>
       <translation>Верстати</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
-      <source>Warning: Machine definition is an experimental feature. Changes made here will not affect any CAM functionality</source>
-      <translation>Попередження: визначення верстата — експериментальна функція. Зміни, внесені тут, не впливають на функціональність CAM</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="113"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="96"/>
       <source>Add</source>
       <translation>Додати</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="97"/>
       <source>Import...</source>
       <translation>Імпортувати...</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="103"/>
       <source>Create a machine from the probe document of an MTConnect agent</source>
       <translation>Створити верстат з документа probe агента MTConnect</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="121"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="104"/>
       <source>Edit</source>
       <translation>Редагувати</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="105"/>
       <source>Delete</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="139"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
       <source>Check for tool updates from the library when opening a document</source>
       <translation>Перевіряти оновлення інструментів з бібліотеки під час відкриття документа</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="160"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="143"/>
       <source>Select Asset Directory</source>
       <translation>Вибрати теку ресурсів</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="179"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
       <source>Warning</source>
       <translation>Попередження</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="180"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
       <source>The selected asset path is not writable.</source>
       <translation>Вибраний шлях до ресурсів недоступний для запису.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="259"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="242"/>
       <source>Delete Machine</source>
       <translation>Видалити верстат</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="262"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="245"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>Ви справді хочете видалити цей файл верстата?</translation>
     </message>
@@ -12621,12 +12665,12 @@ Tool number for {}:</source>
   <context>
     <name>CAM_ToolBitLibraryOpen</name>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="78"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="76"/>
       <source>Toolbit Library Manager</source>
       <translation>Менеджер бібліотек інструментів</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="81"/>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="79"/>
       <source>Opens an editor to manage toolbit libraries</source>
       <translation>Відкриває редактор для керування бібліотеками інструментів</translation>
     </message>
@@ -12938,6 +12982,11 @@ Tool number for {}:</source>
       <source>Save Tool As…</source>
       <translation>Зберегти інструмент як…</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="81"/>
+      <source>Saves an existing toolbit object to a file</source>
+      <translation>Зберігає наявний інструмент у файл</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Toolbit</name>
@@ -13008,19 +13057,6 @@ Tool number for {}:</source>
       <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>Зворотний</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_ToolBitSelection</name>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
-      <source>Add Toolbit…</source>
-      <translation>Додати інструмент…</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/library/ui/cmd.py" line="54"/>
-      <source>Opens the toolbit selection dialog</source>
-      <translation>Відкриває діалог вибору інструмента</translation>
     </message>
   </context>
   <context>
@@ -13236,707 +13272,722 @@ Tool number for {}:</source>
   <context>
     <name>CAM_MachineEditor</name>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
       <source>Include Blank Lines</source>
       <translation>Включати порожні рядки</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
       <source>Path Labels</source>
       <translation>Мітки траєкторій</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
       <source>Include Machine Name</source>
       <translation>Включати назву верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
       <source>Output Duplicate Axis Values</source>
       <translation>Виводити дублікати значень осей</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
       <source>Adaptive Output</source>
       <translation>Адаптивний вивід</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
       <source>Axis Precision</source>
       <translation>Точність осей</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="188"/>
       <source>Feed Precision</source>
       <translation>Точність подачі</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
       <source>Toolhead Decimals</source>
       <translation>Знаки після коми для головки</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
       <source>Comment Symbol</source>
       <translation>Символ коментаря</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
       <source>Modal Output (Suppress Repeats)</source>
       <translation>Модальний вивід (придушення повторів)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
       <source>Translate Drill Cycles</source>
       <translation>Перетворювати цикли свердління</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
       <source>Translate Rapid Moves</source>
       <translation>Перетворювати прискорені переміщення</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
       <source>Split Arcs</source>
       <translation>Розбивати дуги</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
       <source>XY Before Z After Tool Change</source>
       <translation>XY перед Z після зміни інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
       <source>Show Editor After Generation</source>
       <translation>Показувати редактор після генерації</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
       <source>List Tools in Preamble</source>
       <translation>Перераховувати інструменти в преамбулі</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
       <source>Show Machine Units</source>
       <translation>Показувати одиниці верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
       <source>Show Operation Labels</source>
       <translation>Показувати мітки операцій</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
       <source>Output T Before M6</source>
       <translation>Виводити T перед M6</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
       <source>Chipbreaking Amount (mm)</source>
       <translation>Величина стружколомання (мм)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Toolhead Wait Time (seconds)</source>
       <translation>Час очікування головки (с)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
       <source>Post Processor</source>
       <translation>Постпроцесор</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="121"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
       <source>Post Processor Arguments</source>
       <translation>Аргументи постпроцесора</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
       <source>Use Tool Length Offset</source>
       <translation>Використовувати зміщення довжини інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="125"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
       <source>Output Tool Length Offset (G43)</source>
       <translation>Виводити зміщення довжини інструмента (G43)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Enable Remote Posting</source>
       <translation>Увімкнути дистанційну постобробку</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
       <source>Stop Toolhead for Tool Change</source>
       <translation>Зупиняти головку при зміні інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
       <source>Enable Coolant</source>
       <translation>Увімкнути охолодження</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
       <source>Enable Machine-Specific Commands</source>
       <translation>Увімкнути команди верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
       <source>Output Units</source>
       <translation>Одиниці виводу</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
       <source>Header Options</source>
       <translation>Параметри заголовка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
       <source>Comment Options</source>
       <translation>Параметри коментарів</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
       <source>Formatting Options</source>
       <translation>Параметри форматування</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
       <source>Precision Options</source>
       <translation>Параметри точності</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
       <source>Duplicate Output Options</source>
       <translation>Параметри дублювання виводу</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
       <source>Output Header</source>
       <translation>Заголовок виводу</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
       <source>Include Date</source>
       <translation>Включати дату</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
       <source>Include Description</source>
       <translation>Включати опис</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
       <source>Include Document Name</source>
       <translation>Включати назву документа</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
       <source>Include Project File</source>
       <translation>Включати файл проєкту</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
       <source>Include Units</source>
       <translation>Включати одиниці</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
       <source>Include Tool List</source>
       <translation>Включати список інструментів</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
       <source>Include Fixture List</source>
       <translation>Включати список робочих систем координат</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
       <source>Enable Comments</source>
       <translation>Увімкнути коментарі</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
       <source>Include Operation Labels</source>
       <translation>Включати мітки операцій</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
       <source>Output bCNC Comments</source>
       <translation>Виводити коментарі bCNC</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
       <source>Line Numbers</source>
       <translation>Номери рядків</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
       <source>Line Number Start</source>
       <translation>Початковий номер рядка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
       <source>Line Number Prefix</source>
       <translation>Префікс номера рядка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
       <source>Line Increment</source>
       <translation>Крок нумерації</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
       <source>Command Space</source>
       <translation>Пробіл між командами</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
       <source>End of Line Chars</source>
       <translation>Символи кінця рядка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="189"/>
       <source>Toolhead Precision</source>
       <translation>Точність головки</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="191"/>
       <source>Duplicate Commands</source>
       <translation>Дублювати команди</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="192"/>
       <source>Duplicate Parameters</source>
       <translation>Дублювати параметри</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="194"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1144"/>
       <source>Kinematics</source>
       <translation>Кінематика</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="195"/>
       <source>Base Frame</source>
       <translation>Базова система координат</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="196"/>
       <source>Origin</source>
       <translation>Початок координат</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="197"/>
       <source>Orientation Quaternion</source>
       <translation>Кватерніон орієнтації</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1007"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="198"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1153"/>
       <source>TCP Supported</source>
       <translation>Підтримка TCP</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1038"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="199"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1184"/>
       <source>Rotation Strategy</source>
-      <translation type="unfinished">Rotation Strategy</translation>
+      <translation>Стратегія повороту</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="200"/>
       <source>Kinematics Notes</source>
       <translation>Примітки до кінематики</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="202"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1487"/>
       <source>Role</source>
       <translation>Роль</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="203"/>
       <source>Parent Axis</source>
       <translation>Батьківська вісь</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1216"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="204"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1362"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1511"/>
       <source>Sequence</source>
       <translation>Послідовність</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1303"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1445"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="205"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1449"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1591"/>
       <source>Joint Origin</source>
       <translation>Початок шарніра</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="206"/>
       <source>Joint Axis</source>
       <translation>Вісь шарніра</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="207"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1604"/>
       <source>Solution Preference</source>
       <translation>Перевага розв'язку</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="186"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1466"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="208"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1612"/>
       <source>Allow Flip</source>
       <translation>Дозволити перевертання</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="187"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1488"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="209"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1634"/>
       <source>Wrap Strategy</source>
       <translation>Стратегія згортання</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="338"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="376"/>
       <source>Custom Machine</source>
       <translation>Власний верстат</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="343"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="381"/>
       <source>2-Axis Lathe (X, Z)</source>
       <translation>2-осьовий токарний (X, Z)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="348"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="386"/>
       <source>3-Axis Mill (XYZ)</source>
       <translation>3-осьовий фрезерний (XYZ)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="391"/>
       <source>4-Axis Mill (XYZ + A)</source>
       <translation>4-осьовий фрезерний (XYZ + A)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="358"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="396"/>
       <source>4-Axis Mill (XYZ + B)</source>
       <translation>4-осьовий фрезерний (XYZ + B)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="363"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="401"/>
       <source>5-Axis Mill (XYZ + A, C)</source>
       <translation>5-осьовий фрезерний (XYZ + A, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="368"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="406"/>
       <source>5-Axis Mill (XYZ + B, C)</source>
       <translation>5-осьовий фрезерний (XYZ + B, C)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="405"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="620"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="662"/>
       <source>Machine Editor</source>
       <translation>Редактор верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="421"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
       <source>Machine</source>
       <translation>Верстат</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="426"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="468"/>
       <source>Toolheads</source>
       <translation>Головки</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="431"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="473"/>
       <source>Postprocessor</source>
       <translation>Постпроцесор</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="436"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="478"/>
       <source>Options</source>
       <translation>Параметри</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="463"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2279"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="505"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2428"/>
       <source>Edit as Text</source>
       <translation>Редагувати як текст</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="509"/>
       <source>Validate</source>
       <translation>Перевірити</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="474"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="516"/>
       <source>Check this machine for problems that would stop it loading or would silently drop settings</source>
       <translation>Перевірити цей верстат на проблеми, через які він не завантажиться або непомітно втратить налаштування</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="484"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="526"/>
       <source>Save</source>
       <translation>Зберегти</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="487"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="529"/>
       <source>Close</source>
       <translation>Закрити</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="789"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="831"/>
       <source>Remove Toolhead</source>
       <translation>Видалити головку</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="832"/>
       <source>Remove toolhead? This action cannot be undone.</source>
       <translation>Видалити головку? Цю дію не можна скасувати.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="863"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="891"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1025"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1108"/>
       <source>Custom</source>
       <translation>Власний</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="871"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="939"/>
+      <source>Community-maintained machine definitions are available in the Machines addon.</source>
+      <translation>Визначення верстатів, які підтримує спільнота, доступні в доповненні Machines.</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="940"/>
+      <source>Open Addon Manager</source>
+      <translation>Відкрити менеджер доповнень</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="941"/>
+      <source>Do not show again</source>
+      <translation>Більше не показувати</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1033"/>
       <source>Template Load Error</source>
       <translation>Помилка завантаження шаблону</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="872"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1034"/>
       <source>Could not load template</source>
       <translation>Не вдалося завантажити шаблон</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="921"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1091"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1114"/>
       <source>Load settings from an existing machine template</source>
       <translation>Завантажити налаштування з наявного шаблону верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="975"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1115"/>
       <source>Template</source>
       <translation>Шаблон</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="979"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1125"/>
       <source>Manufacturer</source>
       <translation>Виробник</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="983"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1129"/>
       <source>Description</source>
       <translation>Опис</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1132"/>
       <source>Metric</source>
       <translation>Метричні</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="987"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1133"/>
       <source>Imperial</source>
       <translation>Дюймові</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1135"/>
       <source>Units</source>
       <translation>Одиниці</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="995"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1141"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1013"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1159"/>
       <source>Not declared</source>
-      <translation type="unfinished">Not declared</translation>
+      <translation>Не оголошено</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1160"/>
       <source>Dynamic work offset (DWO)</source>
-      <translation type="unfinished">Dynamic work offset (DWO)</translation>
+      <translation>Динамічне робоче зміщення (DWO)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1161"/>
       <source>Tilted work plane (TWP)</source>
-      <translation type="unfinished">Tilted work plane (TWP)</translation>
+      <translation>Нахилена робоча площина (TWP)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1018"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1164"/>
       <source>Post transform (not available yet)</source>
-      <translation type="unfinished">Post transform (not available yet)</translation>
+      <translation>Пост-перетворення (ще недоступне)</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1031"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1177"/>
       <source>How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</source>
-      <translation type="unfinished">How the control runs an operation on a tilted work plane. DWO: the post commands the rotary axes and the control applies its pivot offsets. TWP: the post declares the plane and the control positions the rotary axes. A machine with rotary axes and no strategy cannot post such an operation. The command the plane is declared with comes from the post-processor.</translation>
+      <translation>Як ЧПК виконує операцію на нахиленій робочій площині. DWO: постпроцесор задає поворотні осі, а ЧПК застосовує зміщення точки повороту. TWP: постпроцесор оголошує площину, а ЧПК позиціює поворотні осі. Верстат з поворотними осями без стратегії не може виконати постобробку такої операції. Команда оголошення площини визначається постпроцесором.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1047"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1193"/>
       <source>Notes</source>
       <translation>Примітки</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1053"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1199"/>
       <source>Axes</source>
       <translation>Осі</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1081"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1082"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1227"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1228"/>
       <source>Add Toolhead</source>
       <translation>Додати головку</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1207"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1353"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1502"/>
       <source>Parent</source>
       <translation>Батьківський</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1234"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
       <source>Direction</source>
       <translation>Напрямок</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1245"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1373"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1391"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1519"/>
       <source>Min Limit</source>
       <translation>Мін. межа</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1255"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1401"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1526"/>
       <source>Max Limit</source>
       <translation>Макс. межа</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1265"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1389"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1411"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1535"/>
       <source>Max Velocity</source>
       <translation>Макс. швидкість</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1407"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1553"/>
       <source>Rotation Axis</source>
       <translation>Вісь обертання</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1476"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1622"/>
       <source>Prefer Positive</source>
       <translation>Перевага додатних</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1853"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2002"/>
       <source>Postprocessor Selection</source>
       <translation>Вибір постпроцесора</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2012"/>
       <source>Select the postprocessor file for this machine</source>
       <translation>Виберіть файл постпроцесора для цього верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1889"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2038"/>
       <source>Post Processor:</source>
       <translation>Постпроцесор:</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1895"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2044"/>
       <source>Postprocessor Configuration</source>
       <translation>Конфігурація постпроцесора</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2446"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2433"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2595"/>
       <source>JSON Error</source>
       <translation>Помилка JSON</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2285"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2342"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2447"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2434"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2491"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2596"/>
       <source>Invalid JSON: {}</source>
       <translation>Некоректний JSON: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2290"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2309"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2439"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2458"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2602"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2291"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2440"/>
       <source>Failed to parse data: {}</source>
       <translation>Не вдалося розібрати дані: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2304"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2453"/>
       <source>Edit as Form</source>
       <translation>Редагувати як форму</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2310"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2459"/>
       <source>Failed to generate JSON: {}</source>
       <translation>Не вдалося згенерувати JSON: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2364"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2380"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2490"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2497"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2513"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2529"/>
       <source>Validation</source>
       <translation>Перевірка</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2498"/>
       <source>This machine does not load: {}</source>
       <translation>Цей верстат не завантажується: {}</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2365"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2514"/>
       <source>No problems found.</source>
       <translation>Проблем не знайдено.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2371"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2520"/>
       <source>{} error(s) and {} warning(s) found.</source>
       <translation>Знайдено помилок: {}, попереджень: {}.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2376"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2525"/>
       <source>{} warning(s) found.</source>
       <translation>Знайдено попереджень: {}.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2420"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2569"/>
       <source>Duplicate Machine Name</source>
       <translation>Дублікат назви верстата</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2424"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2573"/>
       <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
       <translation>Верстат з назвою '{}' уже існує. Виберіть іншу назву.</translation>
     </message>
     <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2454"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2603"/>
       <source>Failed to save: {}</source>
       <translation>Не вдалося зберегти: {}</translation>
     </message>
@@ -14213,8 +14264,8 @@ Tool number for {}:</source>
       <location filename="../panels/DlgPostProcess.ui" line="414"/>
       <source>Filename template. Substitutions: %j=job name, %d=document, %S=sequence number.
 %T=tool number, %t=tool controller, %W=fixture and %O=operation name a section of a split output and are ignored when the output is not split.</source>
-      <translation type="unfinished">Filename template. Substitutions: %j=job name, %d=document, %S=sequence number.
-%T=tool number, %t=tool controller, %W=fixture and %O=operation name a section of a split output and are ignored when the output is not split.</translation>
+      <translation>Шаблон імені файлу. Підстановки: %j — назва завдання, %d — документ, %S — порядковий номер.
+%T — номер інструмента, %t — контролер інструмента, %W — робоча система координат і %O — назва операції позначають розділ розділеного виводу й ігноруються, коли вивід не розділено.</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="418"/>
@@ -14278,6 +14329,19 @@ Tool number for {}:</source>
     </message>
   </context>
   <context>
+    <name>CAM_PostSelected</name>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="356"/>
+      <source>Post Process Selected</source>
+      <translation>Постобробка вибраного</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Command.py" line="360"/>
+      <source>Post Processes the selected operations</source>
+      <translation>Виконує постобробку вибраних операцій</translation>
+    </message>
+  </context>
+  <context>
     <name>MirrorDressup</name>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
@@ -14323,22 +14387,22 @@ Tool number for {}:</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="118"/>
       <source>Boundary model missing</source>
-      <translation type="unfinished">Boundary model missing</translation>
+      <translation>Модель межі відсутня</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="122"/>
       <source>Boundary has no shape</source>
-      <translation type="unfinished">Boundary has no shape</translation>
+      <translation>Межа не має форми</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="126"/>
       <source>Boundary shape is not a solid</source>
-      <translation type="unfinished">Boundary shape is not a solid</translation>
+      <translation>Форма межі не є тілом</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="172"/>
       <source>No path with such boundary</source>
-      <translation type="unfinished">No path with such boundary</translation>
+      <translation>Немає траєкторії з такою межею</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="281"/>
@@ -14353,7 +14417,7 @@ Tool number for {}:</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="305"/>
       <source>Boundary2</source>
-      <translation type="unfinished">Boundary2</translation>
+      <translation>Межа2</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary2.py" line="309"/>
@@ -14582,6 +14646,19 @@ Tool number for {}:</source>
       <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
       <source>Choose material</source>
       <translation>Вибрати матеріал</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_ToolBitDock</name>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
+      <source>Add Toolbit…</source>
+      <translation>Додати інструмент…</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
+      <source>Opens the toolbit selection dialog</source>
+      <translation>Відкриває діалог вибору інструмента</translation>
     </message>
   </context>
   <context>
@@ -15002,17 +15079,17 @@ Supported tool types: flat, bull-nose, V-bit.</source>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="222"/>
       <source>Spiral Circular</source>
-      <translation type="unfinished">Spiral Circular</translation>
+      <translation>Спіраль кругова</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="223"/>
       <source>Spiral Rectangular</source>
-      <translation type="unfinished">Spiral Rectangular</translation>
+      <translation>Спіраль прямокутна</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="443"/>
       <source>%s: Generating empty toolpath. Take attention to extensions and tool diameter.</source>
-      <translation type="unfinished">%s: Generating empty toolpath. Take attention to extensions and tool diameter.</translation>
+      <translation>%s: створюється порожня траєкторія. Зверніть увагу на подовження й діаметр інструмента.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFacing.py" line="181"/>
@@ -15031,6 +15108,19 @@ Supported tool types: flat, bull-nose, V-bit.</source>
       <location filename="../../../Path/Op/Waterline.py" line="1399"/>
       <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
       <translation>: оброблятимуться лише кроки нижче верхньої грані моделі.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_SetStartPoint</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1831"/>
+      <source>Start Point Selection</source>
+      <translation>Вибір початкової точки</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1832"/>
+      <source>Selects the start point</source>
+      <translation>Вибирає початкову точку</translation>
     </message>
   </context>
   <context>
@@ -15055,22 +15145,48 @@ Supported tool types: flat, bull-nose, V-bit.</source>
     </message>
   </context>
   <context>
+    <name>CAM_QuickValidate</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="127"/>
+      <source>Quick Validate</source>
+      <translation>Швидка перевірка</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="132"/>
+      <source>Validates the CAM job for common issues without generating a full report</source>
+      <translation>Перевіряє завдання CAM без генерації повного звіту</translation>
+    </message>
+  </context>
+  <context>
     <name>CAM_Workplane</name>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="80"/>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="121"/>
       <source>Work Plane</source>
-      <translation type="unfinished">Work Plane</translation>
+      <translation>Робоча площина</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="85"/>
       <source>Create a named work plane on the Job, from a selected planar face or at the Job origin. Operations can share one work plane.</source>
-      <translation type="unfinished">Create a named work plane on the Job, from a selected planar face or at the Job origin. Operations can share one work plane.</translation>
+      <translation>Створює іменовану робочу площину в завданні — з вибраної пласкої грані або в початку координат завдання. Кілька операцій можуть використовувати одну робочу площину.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/WorkplaneCmd.py" line="122"/>
       <source>Name</source>
       <translation>Назва</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_SimulatorGL</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
+      <source>CAM Simulator</source>
+      <translation>Симулятор CAM</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <source>Simulates G-code on stock</source>
+      <translation>Симулює G-код на заготовці</translation>
     </message>
   </context>
   <context>

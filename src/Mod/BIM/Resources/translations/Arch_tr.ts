@@ -12138,16 +12138,6 @@ FreeCAD kurulumunuzu kontrol edin veya Tercihler → İçe/Dışa Aktar → WebG
       <source>Converts any object to a BIM component</source>
       <translation>Herhangi bir nesneyi bir BIM bileşenine dönüştürür</translation>
     </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
-      <source>Remove From Group</source>
-      <translation>Gruptan Kaldır</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
-      <source>Removes this object from its parent group</source>
-      <translation>Bu nesneyi üst grubundan kaldırır</translation>
-    </message>
   </context>
   <context>
     <name>BIM_Copy</name>
@@ -13759,6 +13749,19 @@ Do you want to proceed?</source>
       <translation type="unfinished">Removing the base of this complex wall will alter its shape and reset its position.
 
 Do you want to proceed?</translation>
+    </message>
+  </context>
+  <context>
+    <name>BIM_Ungroup</name>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
+      <source>Remove From Group</source>
+      <translation type="unfinished">Remove From Group</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <source>Removes this object from its parent group</source>
+      <translation type="unfinished">Removes this object from its parent group</translation>
     </message>
   </context>
   <context>

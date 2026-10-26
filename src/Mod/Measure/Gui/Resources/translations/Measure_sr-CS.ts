@@ -213,7 +213,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation>Ako je označeno, novi izabrani element će biti dodat merenju. Ako nije označeno, mora biti pritisnuta tipka Ctrl da bi se izabrani element dodao trenutnom merenju, u suprotnom će biti započeto novo merenje</translation>
+      <translation>Ako je označeno, novi izabrani element će biti dodat merenju. Ako nije označeno, mora biti pritisnut taster Ctrl da bi se izabrani element dodao trenutnom merenju, u suprotnom će biti započeto novo merenje</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="175"/>
