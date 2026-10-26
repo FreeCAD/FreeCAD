@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from Metadata import export
+from Metadata import export, typing_only
 from PyObjectBase import PyObjectBase
 from Quantity import Quantity
 from typing import Final, overload
@@ -49,8 +47,17 @@ class Unit(PyObjectBase):
     @overload
     def __init__(self, string: str, /) -> None: ...
 
-    Type: Final[str] = ...
+    Type: Final[str]
     """holds the unit type as a string, e.g. 'Area'."""
 
-    Signature: Final[tuple[int, ...]] = ...
+    Signature: Final[tuple[int, ...]]
     """Returns the signature."""
+
+    @typing_only
+    def __add__(self, other: Unit, /) -> Unit: ...
+
+    @typing_only
+    def __sub__(self, other: Unit, /) -> Unit: ...
+
+    @typing_only
+    def __mul__(self, other: Unit, /) -> Unit: ...

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import constmethod
 from BaseClass import BaseClass
 from typing import Final
@@ -16,14 +14,14 @@ class Persistence(BaseClass):
     Licence: LGPL
     """
 
-    Content: Final[str] = ""
+    Content: Final[str]
     """Content of the object in XML representation."""
 
-    MemSize: Final[int] = 0
+    MemSize: Final[int]
     """Memory size of the object in bytes."""
 
     @constmethod
-    def dumpContent(self, Compression: int = 3) -> bytearray:
+    def dumpContent(self, /, Compression: int = 3) -> bytearray:
         """
         Dumps the content of the object, both the XML representation and the additional
         data files required, into a byte representation.
@@ -31,7 +29,6 @@ class Persistence(BaseClass):
         Compression : int
             Set the data compression level in the range [0,9]. Set to 0 for no compression.
         """
-        ...
 
     def restoreContent(self, obj: object, /) -> None:
         # TODO: Starting with Python 3.12, collections.abc.Buffer can be used for type hinting
@@ -42,4 +39,3 @@ class Persistence(BaseClass):
         obj : buffer
             Object with buffer protocol support.
         """
-        ...

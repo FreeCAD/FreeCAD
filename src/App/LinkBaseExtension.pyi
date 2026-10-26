@@ -20,7 +20,7 @@ class LinkBaseExtension(DocumentObjectExtension):
     LinkedChildren: Final[list[DocumentObject]]
     """Return a flattened (in case grouped by plain group) list of linked children"""
 
-    def configLinkProperty(self, *args, **kwargs) -> None:
+    def configLinkProperty(self, /, *args: Any, **kwargs: Any) -> None:
         """
         Examples:
             Called with default names:
