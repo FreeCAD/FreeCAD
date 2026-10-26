@@ -150,9 +150,9 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Fill combobox with the axis from the sketch and the own bodys origin axis
-    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch, bool allowEmpty = false);
     /// Fill combobox with the planes from the sketch and the own bodys origin planes
-    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch, bool allowEmpty = false);
 
     /**
      * Returns the base transformed objectfromStdString
