@@ -5597,7 +5597,8 @@ CmdSketcherConstrainCoincidentUnified::validateCoincidentSelection(SketchObject*
         return CoincidentSelectionResult::AlreadyCoincident;
     }
 
-    if (obj->arePointsOnSameObject(GeoId1, PosId1, GeoId2, PosId2)) {
+    const auto sameObject = obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+    if (!sameObject.empty()) {
         return CoincidentSelectionResult::RemovePointOnObject;
     }
 

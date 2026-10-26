@@ -205,7 +205,7 @@ std::string PythonConverter::convert(
     return constraintlist;
 }
 
-std::string PythonConverter::convertDelConstraints(
+std::string PythonConverter::makeDelConstraintCommandString(
     const std::string& doc,
     const std::vector<int>& constraints
 )

@@ -1601,7 +1601,7 @@ void DrawSketchHandler::addGeneratedAutoConstraints(
 
     Gui::Command::doCommand(
         Gui::Command::Doc,
-        Sketcher::PythonConverter::convertDelConstraints(
+        Sketcher::PythonConverter::makeDelConstraintCommandString(
             Gui::Command::getObjectCmd(sketchgui->getObject()),
             removeConstraints
         )
