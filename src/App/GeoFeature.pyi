@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from PropertyPythonContracts import Base  # because 'Placement' is shadowed by auto-generated property from cpp
 from App.ComplexGeoData import ComplexGeoData
 from DocumentObject import DocumentObject
 from Base.Metadata import deprecated
-from Base.Placement import Placement
 from typing import Any, Final
 
 
@@ -33,7 +33,7 @@ class GeoFeature(DocumentObject):
         replacement="getGlobalPlacementOf",
         details="This method does not handle Links correctly.",
     )
-    def getGlobalPlacement(self) -> Placement:
+    def getGlobalPlacement(self) -> Base.Placement:
         """
         Deprecated: This function does not handle Links correctly. Use getGlobalPlacementOf instead.
 
@@ -44,7 +44,7 @@ class GeoFeature(DocumentObject):
         """
 
     @staticmethod
-    def getGlobalPlacementOf(targetObj: DocumentObject, rootObj: DocumentObject, subname: str, /) -> Placement:
+    def getGlobalPlacementOf(targetObj: DocumentObject, rootObj: DocumentObject, subname: str, /) -> Base.Placement:
         """
         Examples:
             obj = "part1"

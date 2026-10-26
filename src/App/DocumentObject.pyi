@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD  # because `from Document import Document` would overwrite "Document" property
+from PropertyPythonContracts import _Document  # because 'Document' is shadowed by same-named property
 from App.GeoFeatureGroupExtension import GeoFeatureGroupExtension
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
@@ -43,7 +43,7 @@ class DocumentObject(ExtensionContainer):
     Name: Final[str | None]
     """Return the internal name of this object"""
 
-    Document: Final[FreeCAD.Document | None]
+    Document: Final[_Document | None]
     """Return the document this object is part of"""
 
     State: Final[list[str]]

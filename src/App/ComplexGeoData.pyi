@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD  # BoundBox, Placement (because of same-name property)
+from PropertyPythonContracts import Base  # because 'Placement' and 'BoundBox' are shadowed by same-named properties
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
 from Base.Vector import Vector
@@ -153,13 +153,13 @@ class ComplexGeoData(Persistence):
         Return the mapped element name
         """
 
-    BoundBox: Final[FreeCAD.BoundBox]
+    BoundBox: Final[Base.BoundBox]
     """Get the bounding box (BoundBox) of the complex geometric data."""
 
     CenterOfGravity: Final[Vector]
     """Get the center of gravity"""
 
-    Placement: FreeCAD.Placement
+    Placement: Base.Placement
     """Get the current transformation of the object as placement"""
 
     Tag: int
