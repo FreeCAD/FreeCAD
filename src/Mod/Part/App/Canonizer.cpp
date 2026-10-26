@@ -33,6 +33,8 @@ Handle(Geom_Curve) Canonizer::getSimplestCurve(const TopoDS_Edge& shape, float t
         return {};
     }
 
+// Canonical recognition is not available before OCC 7.7.0
+#if OCC_VERSION_HEX >= 0x070700
     ShapeAnalysis_CanonicalRecognition canonRecon(shape);
 
     gp_Lin line;
@@ -47,6 +49,8 @@ Handle(Geom_Curve) Canonizer::getSimplestCurve(const TopoDS_Edge& shape, float t
     if (canonRecon.IsEllipse(tol, ellipse)) {
         return new Geom_Ellipse(ellipse);
     }
+#endif
+
     BRepAdaptor_Curve adapt(shape);
     return adapt.Curve().Curve();
 }
@@ -57,6 +61,8 @@ Handle(Geom_Surface) Canonizer::getSimplestSurface(const TopoDS_Face& shape, flo
         return {};
     }
 
+// Canonical recognition is not available before OCC 7.7.0
+#if OCC_VERSION_HEX >= 0x070700
     ShapeAnalysis_CanonicalRecognition canonRecon(shape);
 
     gp_Pln plane;
@@ -75,6 +81,8 @@ Handle(Geom_Surface) Canonizer::getSimplestSurface(const TopoDS_Face& shape, flo
     if (canonRecon.IsSphere(tol, sphere)) {
         return new Geom_SphericalSurface(sphere);
     }
+#endif
+
     BRepAdaptor_Surface adapt(shape);
     return adapt.Surface().Surface();
 }
@@ -90,6 +98,8 @@ TopoDS_Edge Canonizer::canonize(const TopoDS_Edge& edge, float tol)
         return edge;
     }
 
+// Canonical recognition is not available before OCC 7.7.0
+#if OCC_VERSION_HEX >= 0x070700
     BRepAdaptor_Curve initialCurve(edge);
     auto simplestCurve = getSimplestCurve(edge, tol);
     if (!simplestCurve || simplestCurve->IsInstance("Geom_BSplineCurve")) {
@@ -108,6 +118,8 @@ TopoDS_Edge Canonizer::canonize(const TopoDS_Edge& edge, float tol)
         result.Orientation(edge.Orientation());
         return result;
     }
+#endif
+
     return edge;
 }
 

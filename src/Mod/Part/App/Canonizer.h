@@ -47,11 +47,17 @@
 #include <Geom_Line.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_SphericalSurface.hxx>
-#include <ShapeAnalysis_CanonicalRecognition.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shell.hxx>
 #include <Precision.hxx>
+
+#include <Standard_Version.hxx>
+
+// Canonical recognition is not available before OCC 7.7.0
+#if OCC_VERSION_HEX >= 0x070700
+# include <ShapeAnalysis_CanonicalRecognition.hxx>
+#endif
 
 namespace Part
 {
