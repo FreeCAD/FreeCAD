@@ -101,6 +101,11 @@ protected:
      */
     void setupUI();
 
+    /// Place the next widget after all parameter controls, including those added at runtime.
+    /// Defaults to placing Recompute on Change after the main parameter panel.
+    void updateTabOrder();
+    static void updateTabOrder(QWidget* parameterWidget, QWidget* nextWidget);
+
     /**
      * Returns the base transformation
      * For standalone features it will be object associated with the view provider

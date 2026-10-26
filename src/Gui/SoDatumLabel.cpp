@@ -1549,25 +1549,25 @@ void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
         }
     }
 
-    if (!lineVertices.empty()) {
-        m_LineVertexProperty->vertex
-            .setValues(0, static_cast<int>(lineVertices.size()), lineVertices.data());
-        m_LineSet->numVertices.setValues(0, static_cast<int>(lineCounts.size()), lineCounts.data());
-    }
-    else {
-        m_LineVertexProperty->vertex.setNum(0);
-        m_LineSet->numVertices.setNum(0);
+    // setValues() only overwrites the leading entries and never shrinks a multi-field,
+    // so set the exact size first; otherwise stale geometry from a previous, larger
+    // update (e.g. a shrinking arc helper) is still rendered.
+    const int lineVertexCount = static_cast<int>(lineVertices.size());
+    const int lineCount = static_cast<int>(lineCounts.size());
+    m_LineVertexProperty->vertex.setNum(lineVertexCount);
+    m_LineSet->numVertices.setNum(lineCount);
+    if (lineVertexCount > 0) {
+        m_LineVertexProperty->vertex.setValues(0, lineVertexCount, lineVertices.data());
+        m_LineSet->numVertices.setValues(0, lineCount, lineCounts.data());
     }
 
-    if (!triangleVertices.empty()) {
-        m_TriangleVertexProperty->vertex
-            .setValues(0, static_cast<int>(triangleVertices.size()), triangleVertices.data());
-        m_TriangleFaceSet->numVertices
-            .setValues(0, static_cast<int>(triangleCounts.size()), triangleCounts.data());
-    }
-    else {
-        m_TriangleVertexProperty->vertex.setNum(0);
-        m_TriangleFaceSet->numVertices.setNum(0);
+    const int triangleVertexCount = static_cast<int>(triangleVertices.size());
+    const int triangleCount = static_cast<int>(triangleCounts.size());
+    m_TriangleVertexProperty->vertex.setNum(triangleVertexCount);
+    m_TriangleFaceSet->numVertices.setNum(triangleCount);
+    if (triangleVertexCount > 0) {
+        m_TriangleVertexProperty->vertex.setValues(0, triangleVertexCount, triangleVertices.data());
+        m_TriangleFaceSet->numVertices.setValues(0, triangleCount, triangleCounts.data());
     }
 }
 

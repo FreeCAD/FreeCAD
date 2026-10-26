@@ -391,6 +391,15 @@ void PatternParametersWidget::addSpacingRow(double value)
     fieldLayout->addWidget(removeButton);
 
     ui->formLayout->insertRow(insertPos, label, fieldWidget);
+
+    QWidget* previousWidget = ui->addSpacingButton;
+    if (!dynamicSpacingRows.isEmpty()) {
+        previousWidget = dynamicSpacingRows.last()->findChild<QToolButton*>();
+    }
+    QWidget::setTabOrder(previousWidget, spinBox);
+    QWidget::setTabOrder(spinBox, removeButton);
+    QWidget::setTabOrder(removeButton, ui->spinOccurrences);
+
     dynamicSpacingRows.append(fieldWidget);
     dynamicSpacingSpinBoxes.append(spinBox);
 

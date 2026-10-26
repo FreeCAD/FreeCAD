@@ -2520,7 +2520,7 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 hasDirection = true;
             }
         }
-        FCMD_OBJ_CMD(feat, "StartAtShape = False");
+        FCMD_OBJ_CMD(feat, "StartAtShape = True");
         if (!hasDirection) {
             FCMD_OBJ_CMD(
                 feat,
@@ -2571,7 +2571,40 @@ void CmdPartDesignPathPattern::activated(int iMsg)
     }
 
     auto worker =
-        [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+        [cmd = this,
+         pcActiveBody](App::DocumentObject* feat, std::vector<App::DocumentObject*> features) {
+            bool hasDirection = false;
+            auto* profile = features.empty()
+                ? nullptr
+                : freecad_cast<PartDesign::ProfileBased*>(features.front());
+            if (profile) {
+                if (auto* sketch = profile->getVerifiedSketch(/* silent =*/true)) {
+                    FCMD_OBJ_CMD(
+                        feat,
+                        "VerticalAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])"
+                    );
+                    FCMD_OBJ_CMD(
+                        feat,
+                        "TangentAxis = (" << Gui::Command::getObjectCmd(sketch) << ",['H_Axis'])"
+                    );
+                    hasDirection = true;
+                }
+            }
+
+            FCMD_OBJ_CMD(feat, "RelativeToFirst = True");
+            if (!hasDirection) {
+                FCMD_OBJ_CMD(
+                    feat,
+                    "VerticalAxis = ("
+                        << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
+                );
+                FCMD_OBJ_CMD(
+                    feat,
+                    "TangentAxis = ("
+                        << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX()) << ",[''])"
+                );
+            }
+
             finishTransformed(cmd, feat);
         };
     prepareTransformed(pcActiveBody, this, "PathPattern", worker);
