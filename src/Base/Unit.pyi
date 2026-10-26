@@ -55,9 +55,7 @@ class Unit(PyObjectBase):
 
     @typing_only
     def __add__(self, other: Unit, /) -> Unit: ...
-
     @typing_only
     def __sub__(self, other: Unit, /) -> Unit: ...
-
     @typing_only
     def __mul__(self, other: Unit, /) -> Unit: ...

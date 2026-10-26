@@ -84,47 +84,34 @@ class Vector(PyObjectBase):
 
     @typing_only
     def __add__(self, vector2: Vector, /) -> Vector: ...
-
     @typing_only
     def __sub__(self, vector2: Vector, /) -> Vector: ...
-
     @typing_only
     @overload
     def __mul__(self, factor: float, /) -> Vector: ...
-
     @typing_only
     @overload
     def __mul__(self, vector2: Vector, /) -> float: ...
-
     @typing_only
     def __rmul__(self, factor: float, /) -> Vector: ...
-
     @typing_only
     def __truediv__(self, factor: float, /) -> Vector: ...
-
     @typing_only
     def __mod__(self, vector2: Vector, /) -> Vector: ...
-
     @typing_only
     def __neg__(self) -> Vector: ...
-
     @typing_only
     def __pos__(self) -> Vector: ...
-
     @typing_only
     def __abs__(self) -> Vector: ...
-
     @typing_only
     @overload
     def __getitem__(self, index: int, /) -> float: ...
-
     @typing_only
     @overload
     def __getitem__(self, index: slice[int | None], /) -> tuple[float, ...]: ...
-
     @typing_only
     def __setitem__(self, index: int, value: float, /) -> None: ...
-
     @constmethod
     def __reduce__(self) -> tuple[Any, tuple[float, float, float]]:
         """

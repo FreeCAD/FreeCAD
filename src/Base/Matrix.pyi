@@ -10,7 +10,6 @@ from Placement import Placement
 from typing import Any, overload
 from collections.abc import Sequence
 
-
 class ScaleType(IntEnum):
     Other = -1
     NoScaling = 0
@@ -76,7 +75,6 @@ class Matrix(PyObjectBase):
         """
         Empty constructor.
         """
-
     # fmt: off
     @overload
     def __init__(
@@ -113,7 +111,6 @@ class Matrix(PyObjectBase):
         v4 : Base.Vector
             Default to (0,0,0). Optional.
         """
-
     A11: float
     """The (1,1) matrix element."""
     A12: float
@@ -149,22 +146,31 @@ class Matrix(PyObjectBase):
 
     @property
     def A(self) -> tuple[
-            float, float, float, float,
-            float, float, float, float,
-            float, float, float, float,
-            float, float, float, float,
-        ]:
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+    ]:
         """The matrix elements."""
 
     @A.setter
     def A(self, value: Sequence[float], /) -> None: ...
-
     @overload
     def move(self, vector: Vector | tuple[float, float, float], /) -> None: ...
-
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-
     @overload
     def move(self, /, *args: Any) -> None:
         """
@@ -182,13 +188,10 @@ class Matrix(PyObjectBase):
 
     @overload
     def scale(self, vector: Vector | tuple[float, float, float], /) -> None: ...
-
     @overload
     def scale(self, x: float, y: float, z: float, /) -> None: ...
-
     @overload
     def scale(self, factor: float, /) -> None: ...
-
     @overload
     def scale(self, /, *args: Any) -> None:
         """
@@ -340,11 +343,9 @@ class Matrix(PyObjectBase):
     @overload
     @constmethod
     def multiply(self, matrix: Matrix, /) -> Matrix: ...
-
     @overload
     @constmethod
     def multiply(self, vector: Vector, /) -> Vector: ...
-
     @overload
     @constmethod
     def multiply(self, obj: Matrix | Vector, /) -> Matrix | Vector:
@@ -427,23 +428,17 @@ class Matrix(PyObjectBase):
 
     @typing_only
     def __add__(self, other: Matrix, /) -> Matrix: ...
-
     @typing_only
     def __sub__(self, other: Matrix, /) -> Matrix: ...
-
     @overload
     @typing_only
     def __mul__(self, other: Vector, /) -> Vector: ...
-
     @overload
     @typing_only
     def __mul__(self, other: Rotation | Placement | Matrix | float, /) -> Matrix: ...
-
     @typing_only
     def __pow__(self, other: int, /) -> Matrix: ...
-
     @typing_only
     def __neg__(self) -> Matrix: ...
-
     @typing_only
     def __pos__(self) -> Matrix: ...

@@ -64,7 +64,6 @@ class Placement(PyObjectBase):
 
     @Base.setter
     def Base(self, value: Vector | Sequence[float], /) -> None: ...
-
     @property
     def Rotation(self) -> RotationPy:
         """Orientation of the placement expressed as rotation."""
@@ -93,22 +92,17 @@ class Placement(PyObjectBase):
     @typing_only
     @overload
     def __mul__(self, vector: Vector, /) -> Vector: ...
-
     @typing_only
     @overload
     def __mul__(self, rotation: RotationPy, /) -> Placement: ...
-
     @typing_only
     @overload
     def __mul__(self, matrix: MatrixPy, /) -> MatrixPy: ...
-
     @typing_only
     @overload
     def __mul__(self, placement: Placement, /) -> Placement: ...
-
     @typing_only
     def __pow__(self, other: float, /) -> Placement: ...
-
     @constmethod
     def copy(self) -> Placement:
         """
@@ -133,13 +127,18 @@ class Placement(PyObjectBase):
 
     @overload
     def rotate(
-        self, /, center: Sequence[float], axis: Sequence[float], angle: float, *, comp: bool = False,
+        self,
+        /,
+        center: Sequence[float],
+        axis: Sequence[float],
+        angle: float,
+        *,
+        comp: bool = False,
     ) -> None: ...
-
     @overload
-    def rotate(self, /, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:
-        ...
-
+    def rotate(
+        self, /, center: Vector, axis: Vector, angle: float, *, comp: bool = False
+    ) -> None: ...
     @overload
     def rotate(self, /, *args: Any, **kwargs: Any) -> None:
         """

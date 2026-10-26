@@ -21,7 +21,11 @@ module(
 
 # Translation helpers
 def translate(
-    context: str, sourcetext: str, disambiguation: str | None = None, n: int = -1, /,
+    context: str,
+    sourcetext: str,
+    disambiguation: str | None = None,
+    n: int = -1,
+    /,
 ) -> str:
     """Translate one source string in a Qt translation context.
 

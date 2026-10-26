@@ -77,7 +77,6 @@ class Quantity(PyObjectBase):
 
     @overload
     def getValueAs(self, unit: str, /) -> float: ...
-
     @overload
     @constmethod
     def getValueAs(
@@ -93,19 +92,15 @@ class Quantity(PyObjectBase):
         i8: int = 0,
         /,
     ) -> float: ...
-
     @overload
     @constmethod
     def getValueAs(self, translation: float, unit: UnitPy, /) -> float: ...
-
     @overload
     @constmethod
     def getValueAs(self, unit: UnitPy, /) -> float: ...
-
     @overload
     @constmethod
     def getValueAs(self, quantity: Quantity, /) -> float: ...
-
     @overload
     @constmethod
     def getValueAs(self, /, *args: Any) -> float:
@@ -123,11 +118,9 @@ class Quantity(PyObjectBase):
     @overload
     @constmethod
     def __round__(self, /) -> int: ...
-
     @overload
     @constmethod
     def __round__(self, ndigits: int, /) -> float: ...
-
     @overload
     @constmethod
     def __round__(self, ndigits: int = ..., /) -> int | float:

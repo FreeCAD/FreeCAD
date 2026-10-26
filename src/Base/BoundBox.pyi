@@ -138,16 +138,12 @@ class BoundBox(PyObjectBase):
 
     @overload
     def add(self, minMax: BoundBox, /) -> None: ...
-
     @overload
     def add(self, minMax: Vector, /) -> None: ...
-
     @overload
     def add(self, minMax: tuple[float, float, float], /) -> None: ...
-
     @overload
     def add(self, x: float, y: float, z: float, /) -> None: ...
-
     @overload
     def add(self, /, *args: Any) -> None:
         """
@@ -186,11 +182,9 @@ class BoundBox(PyObjectBase):
     @overload
     @constmethod
     def closestPoint(self, point: Vector | tuple[float, float, float], /) -> Vector: ...
-
     @overload
     @constmethod
     def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
-
     @overload
     @constmethod
     def closestPoint(self, /, *args: Any) -> Vector:
@@ -209,10 +203,8 @@ class BoundBox(PyObjectBase):
 
     @overload
     def intersect(self, boundBox2: BoundBox, /) -> bool: ...
-
     @overload
     def intersect(self, base: Vector, dir: Vector, /) -> bool: ...
-
     @overload
     def intersect(self, /, *args: Any) -> bool:
         """
@@ -261,13 +253,10 @@ class BoundBox(PyObjectBase):
 
     @overload
     def move(self, displacement: Vector, /) -> None: ...
-
     @overload
     def move(self, displacement: tuple[float, float, float], /) -> None: ...
-
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-
     @overload
     def move(self, /, *args: Any) -> None:
         """
@@ -285,13 +274,10 @@ class BoundBox(PyObjectBase):
 
     @overload
     def scale(self, factor: Vector, /) -> None: ...
-
     @overload
     def scale(self, factor: tuple[float, float, float], /) -> None: ...
-
     @overload
     def scale(self, x: float, y: float, z: float, /) -> None: ...
-
     @overload
     def scale(self, /, *args: Any) -> None:
         """
@@ -327,13 +313,10 @@ class BoundBox(PyObjectBase):
 
     @overload
     def isInside(self, object: Vector | tuple[float, float, float], /) -> bool: ...
-
     @overload
     def isInside(self, object: BoundBox, /) -> bool: ...
-
     @overload
     def isInside(self, x: float, y: float, z: float, /) -> bool: ...
-
     @overload
     def isInside(self, /, *args: Any) -> bool:
         """

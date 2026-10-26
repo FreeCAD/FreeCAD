@@ -8,7 +8,6 @@ from Placement import Placement
 from typing import Final, TypeAlias, Literal, overload
 from collections.abc import Sequence
 
-
 _RotationSeq: TypeAlias = Literal["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]
 
 @export(
@@ -181,7 +180,6 @@ class Rotation(PyObjectBase):
         rotation : Base.Rotation
             Rotation by which to multiply this rotation.
         """
-
     # fmt: off
     @typing_only
     @overload
@@ -240,7 +238,9 @@ class Rotation(PyObjectBase):
         The angles are given in degrees.
         """
 
-    def setEulerAngles(self, seq: _RotationSeq, angle1: float, angle2: float, angle3: float, /) -> None:
+    def setEulerAngles(
+        self, seq: _RotationSeq, angle1: float, angle2: float, angle3: float, /
+    ) -> None:
         """
         Set the Euler angles in a given sequence for this rotation.
         The angles must be given in degrees.
