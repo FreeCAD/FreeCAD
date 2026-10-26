@@ -262,6 +262,37 @@ class TestPocket(unittest.TestCase):
             self.Doc.recompute()
         self.assertAlmostEqual(self.Pocket001.Shape.Volume, 50.0)
 
+    def testPocketCoincidentBoundaries(self):
+        body = self.Doc.addObject("PartDesign::Body", "BodyCoincident")
+        padSketch = self.Doc.addObject("Sketcher::SketchObject", "PadSketchCoincident")
+        body.addObject(padSketch)
+        TestSketcherApp.CreateRectangleSketch(padSketch, (0, 0), (20, 20))
+        self.Doc.recompute()
+
+        pad = self.Doc.addObject("PartDesign::Pad", "PadCoincident")
+        body.addObject(pad)
+        pad.Profile = padSketch
+        pad.Length = 10.0
+        self.Doc.recompute()
+
+        pocketSketch = self.Doc.addObject("Sketcher::SketchObject", "PocketSketchCoincident")
+        body.addObject(pocketSketch)
+        pocketSketch.MapMode = "FlatFace"
+        pocketSketch.AttachmentSupport = (pad, ["Face6"])
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(pocketSketch, (0, 0), (20, 20))
+        self.Doc.recompute()
+
+        pocket = self.Doc.addObject("PartDesign::Pocket", "PocketCoincident")
+        body.addObject(pocket)
+        pocket.Profile = pocketSketch
+        pocket.Length = 2.0
+        self.Doc.recompute()
+
+        self.assertFalse(pocket.Shape.isNull())
+        self.assertEqual(len(pocket.Shape.Solids), 1)
+        self.assertAlmostEqual(pocket.Shape.Volume, 3200.0, places=3)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestPocket")

@@ -804,8 +804,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         if (base.shapeType(true) <= TopAbs_SOLID && fuse) {
             prism.Tag = -this->getID();
 
-            // Let's call algorithm computing a fuse operation:
+            // Let's call algorithm computing a boolean operation (fuse / cut):
             TopoShape result(0, getDocument()->getStringHasher());
+            bool booleanSuccess = false;
             try {
                 result.makeElementBoolean(
                     getBooleanMaker(),
@@ -813,16 +814,54 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     nullptr,
                     FuzzyTolerance.getValue()
                 );
+                auto sol = this->getSolid(result);
+                if (!sol.isNull()) {
+                    booleanSuccess = true;
+                }
             }
-            catch (Standard_Failure&) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed")
-                );
+            catch (const Standard_Failure&) {
             }
+            catch (const Base::Exception&) {
+            }
+
+            // If boolean failed or produced a non-solid, and the user hasn't explicitly set
+            // a positive fuzzy tolerance, try progressive fallback fuzzy tolerances to resolve
+            // coincident / coplanar boundary precision failures.
+            if (!booleanSuccess && FuzzyTolerance.getValue() <= 0.0) {
+                const double fallbackTolerances[] = {-1.0, 1e-5, 1e-4, 1e-3, 1e-2};
+                for (double fbTol : fallbackTolerances) {
+                    try {
+                        TopoShape fallbackResult(0, getDocument()->getStringHasher());
+                        fallbackResult.makeElementBoolean(
+                            getBooleanMaker(),
+                            {base, prism},
+                            nullptr,
+                            fbTol
+                        );
+                        auto fbSol = this->getSolid(fallbackResult);
+                        if (!fbSol.isNull() && isSingleSolidRuleSatisfied(fbSol.getShape())) {
+                            result = fallbackResult;
+                            booleanSuccess = true;
+                            FC_LOG("Boolean operation recovered using fallback fuzzy tolerance: " << fbTol);
+                            break;
+                        }
+                    }
+                    catch (const Standard_Failure&) {
+                    }
+                    catch (const Base::Exception&) {
+                    }
+                }
+            }
+
             // we have to get the solids (fuse sometimes creates compounds)
             auto solRes = this->getSolid(result);
             // lets check if the result is a solid
-            if (solRes.isNull()) {
+            if (!booleanSuccess || solRes.isNull()) {
+                if (result.isNull()) {
+                    return new App::DocumentObjectExecReturn(
+                        QT_TRANSLATE_NOOP("Exception", "Fusion with base feature failed")
+                    );
+                }
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
                 );
