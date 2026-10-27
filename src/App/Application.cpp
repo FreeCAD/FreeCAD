@@ -2844,6 +2844,16 @@ void Application::initConfig(int argc, char ** argv)
         // init python
         PyImport_AppendInittab ("FreeCAD", init_freecad_module);
         PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+
+        // Keep bytecode out of the installation, it breaks the signature of a macOS app bundle
+        const auto pycachePrefix = _appDirs->getUserCachePath() / "pycache";
+#   ifdef FC_OS_WIN32
+        if (!_wgetenv(L"PYTHONPYCACHEPREFIX")) {
+            _wputenv_s(L"PYTHONPYCACHEPREFIX", pycachePrefix.c_str());
+        }
+#   else
+        setenv("PYTHONPYCACHEPREFIX", pycachePrefix.c_str(), 0);
+#   endif
     }
     else {
         // "import FreeCAD" in a normal Python 3.12 interpreter would raise

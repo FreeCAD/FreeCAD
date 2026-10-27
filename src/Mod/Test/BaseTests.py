@@ -678,3 +678,7 @@ class MatrixTestCase(unittest.TestCase):
 class FileSystem(unittest.TestCase):
     def testEncoding(self):
         self.assertEqual(sys.getfilesystemencoding(), "utf-8")
+
+    def testPycachePrefix(self):
+        self.assertTrue(sys.pycache_prefix)
+        self.assertEqual(sys.pycache_prefix, os.environ.get("PYTHONPYCACHEPREFIX"))
