@@ -8,7 +8,6 @@ from Placement import Placement
 from typing import Final, TypeAlias, Literal, overload, TYPE_CHECKING
 from collections.abc import Sequence
 
-
 @export(
     Constructor=True,
     Delete=True,
@@ -91,6 +90,7 @@ class Rotation(PyObjectBase):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
     if TYPE_CHECKING:
         _Seq: TypeAlias = Literal["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]
 
