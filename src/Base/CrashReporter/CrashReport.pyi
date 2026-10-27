@@ -2,7 +2,7 @@
 
 from Base.Metadata import export, forward_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import Final, Literal
+from typing import Final
 
 from CrashFrame import CrashFrame
 
@@ -34,9 +34,11 @@ class CrashReport(PyObjectBase):
     capture_was_signal_safe: Final[bool]
     build_id: Final[str | None]
     minidump_path: Final[str | None]
-    os: Final[Literal["linux", "macos", "windows", "bsd", "unknown"]]
+    os: Final[str]
+    """one of: 'linux', 'macos', 'windows', 'bsd', 'unknown'."""
     os_version: Final[str | None]
-    architecture: Final[Literal["x86_64", "aarch64", "unknown"]]
+    architecture: Final[str]
+    """one of: 'x86_64', 'aarch64', 'unknown'."""
     freecad_version: Final[tuple[int, int, int, str]]
     symbolicated: Final[bool]
     stack_frames: Final[list[CrashFrame]]

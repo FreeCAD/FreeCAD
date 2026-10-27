@@ -144,19 +144,13 @@ class Matrix(PyObjectBase):
     A44: float
     """The (4,4) matrix element."""
 
-    # fmt: off
     @property
-    def A(self) -> tuple[
-        float, float, float, float,
-        float, float, float, float,
-        float, float, float, float,
-        float, float, float, float,
-    ]:
+    def A(self) -> tuple[float, ...]:
         """The matrix elements."""
-    # fmt: on
 
+    # no posonly ("/") because otherwise it won't match cpp definition
     @A.setter
-    def A(self, value: Sequence[float], /) -> None: ...
+    def A(self, value: Sequence[float]) -> None: ...
     @overload
     def move(self, vector: Vector | tuple[float, float, float], /) -> None: ...
     @overload
