@@ -678,3 +678,8 @@ class MatrixTestCase(unittest.TestCase):
 class FileSystem(unittest.TestCase):
     def testEncoding(self):
         self.assertEqual(sys.getfilesystemencoding(), "utf-8")
+
+    @unittest.skipUnless(sys.platform == "darwin", "macOS only")
+    def testPycachePrefix(self):
+        prefix = os.path.join(FreeCAD.getUserCachePath(), "pycache")
+        self.assertEqual(sys.pycache_prefix, prefix)

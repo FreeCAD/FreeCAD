@@ -2843,7 +2843,12 @@ void Application::initConfig(int argc, char ** argv)
         Py_DECREF(pyModule);
     }
 
-    std::string pythonpath = Base::Interpreter().init(argc,argv);
+    std::string pycachePrefix;
+#   ifdef FC_OS_MACOSX
+    // Writing .pyc files into the signed app bundle invalidates its signature
+    pycachePrefix = Base::FileInfo::pathToString(_appDirs->getUserCachePath() / "pycache");
+#   endif
+    std::string pythonpath = Base::Interpreter().init(argc,argv,pycachePrefix);
     if (!pythonpath.empty())
         mConfig["PythonSearchPath"] = pythonpath;
     else

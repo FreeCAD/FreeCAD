@@ -605,7 +605,7 @@ std::string InterpreterSingleton::getPythonPath()
 }
 
 #if PY_VERSION_HEX < 0x030b0000
-std::string InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[], const std::string& /*pycachePrefix*/)
 {
     if (!Py_IsInitialized()) {
         Py_SetProgramName(Py_DecodeLocale(argv[0], nullptr));
@@ -648,7 +648,7 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
 #else
 namespace
 {
-void initInterpreter(int argc, char* argv[])
+void initInterpreter(int argc, char* argv[], const std::string& pycachePrefix)
 {
     PyStatus status;
     PyConfig config;
@@ -659,6 +659,13 @@ void initInterpreter(int argc, char* argv[])
     status = PyConfig_SetBytesArgv(&config, argc, argv);
     if (PyStatus_Exception(status)) {
         throw Base::RuntimeError("Failed to set config");
+    }
+
+    if (!pycachePrefix.empty()) {
+        status = PyConfig_SetBytesString(&config, &config.pycache_prefix, pycachePrefix.c_str());
+        if (PyStatus_Exception(status)) {
+            throw Base::RuntimeError("Failed to set pycache prefix");
+        }
     }
 
     status = Py_InitializeFromConfig(&config);
@@ -684,11 +691,11 @@ void initInterpreter(int argc, char* argv[])
     Py_Initialize();
 }
 }  // namespace
-std::string InterpreterSingleton::init(int argc, char* argv[])
+std::string InterpreterSingleton::init(int argc, char* argv[], const std::string& pycachePrefix)
 {
     try {
         if (!Py_IsInitialized()) {
-            initInterpreter(argc, argv);
+            initInterpreter(argc, argv, pycachePrefix);
 
             PythonStdOutput::init_type();
             this->_global = PyEval_SaveThread();

@@ -347,7 +347,7 @@ public:
      */
     //@{
     /// init the interpreter and returns the module search path
-    std::string init(int argc, char* argv[]);
+    std::string init(int argc, char* argv[], const std::string& pycachePrefix = {});
     int runCommandLine(const char* prompt);
     void replaceStdOutput();
     static InterpreterSingleton& Instance();
