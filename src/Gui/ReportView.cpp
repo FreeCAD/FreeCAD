@@ -728,7 +728,7 @@ void ReportOutput::contextMenuEvent(QContextMenuEvent* e)
     QAction* select = menu->addAction(selectStr, this, &ReportOutput::selectAll);
     select->setShortcut(QKeySequence(QKeySequence::SelectAll));
 
-    menu->addAction(tr("Clear"), this, &ReportOutput::clear);
+    menu->addAction(QIcon(QStringLiteral(":/icons/edit-delete.svg")), tr("Clear"), this, &ReportOutput::clear);
     menu->addSeparator();
     menu->addAction(tr("Save As…"), this, &ReportOutput::onSaveAs);
 
