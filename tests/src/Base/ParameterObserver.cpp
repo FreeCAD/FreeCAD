@@ -103,11 +103,6 @@ private:
 class ParameterObserverTest: public ::testing::Test
 {
 protected:
-    static void SetUpTestSuite()
-    {
-        ParameterManager::Init();
-    }
-
     void SetUp() override
     {
         config = ParameterManager::Create();
