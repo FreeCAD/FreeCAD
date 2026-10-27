@@ -40,7 +40,8 @@ using namespace TechDrawGui;
 
 QGIVertex::QGIVertex(int index) :
     projIndex(index),
-    m_radius(2)
+    m_radius(2),
+    m_vertexFuzzBase(PreferencesGui::markFuzz())
 {
     QColor vertexColor = PreferencesGui::vertexQColor();
     setFill(vertexColor, Qt::SolidPattern);
@@ -50,14 +51,22 @@ QGIVertex::QGIVertex(int index) :
 
 void QGIVertex::setRadius(double r)
 {
+    prepareGeometryChange();
     m_radius = r;
     makePoint();
 }
 
 void QGIVertex::setScreenScale(double scale)
 {
+    prepareGeometryChange();
     ScreenScalable::setScreenScale(scale);
     makePoint();
+}
+
+void QGIVertex::setSelectionScale(double scale)
+{
+    prepareGeometryChange();
+    ScreenScalable::setSelectionScale(scale);
 }
 
 void QGIVertex::makePoint()
@@ -66,6 +75,19 @@ void QGIVertex::makePoint()
     QPainterPath p;
     p.addEllipse(-r/2.0, -r/2.0, r, r);
     setPath(p);
+}
+
+QRectF QGIVertex::boundingRect() const
+{
+    return shape().controlPointRect();
+}
+
+QPainterPath QGIVertex::shape() const
+{
+    double r = m_radius * m_screenScale + 2.0 * m_vertexFuzzBase * m_selectionScale;
+    QPainterPath p;
+    p.addEllipse(-r/2.0, -r/2.0, r, r);
+    return p;
 }
 
 void QGIVertex::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

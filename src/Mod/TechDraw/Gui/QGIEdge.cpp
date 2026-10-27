@@ -94,7 +94,7 @@ QPainterPath QGIEdge::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(this->m_edgeFuzz);
+    stroker.setWidth(m_pen.widthF() + 2.0 * m_edgeFuzz);
     outline = stroker.createStroke(path());
     return outline;
 }
@@ -113,6 +113,7 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void QGIEdge::setLinePen(const QPen& linePen)
 {
+    prepareGeometryChange();
     m_pen = linePen;
 }
 
@@ -127,6 +128,12 @@ void QGIEdge::setScreenScale(double scale)
 {
     ScreenScalable::setScreenScale(scale);
     QGIPrimPath::setWidth(m_width * m_screenScale);
-    setEdgeFuzzScale(m_screenScale);
+}
+
+void QGIEdge::setSelectionScale(double scale)
+{
+    prepareGeometryChange();
+    ScreenScalable::setSelectionScale(scale);
+    setEdgeFuzzScale(m_selectionScale);
 }
 

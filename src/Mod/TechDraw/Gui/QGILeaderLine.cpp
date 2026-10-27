@@ -111,23 +111,29 @@ QPainterPath QGILeaderLine::shape() const
     QPainterPath path;
 
     if (m_line) {
+        // painted line plus Edge fuzz (constant in screen pixels) on each side
         QPainterPathStroker stroker;
-        stroker.setWidth(PreferencesGui::edgeFuzz() * 2.0);
+        stroker.setWidth(m_line->getWidth()
+                         + 2.0 * PreferencesGui::edgeFuzz() * m_selectionScale);
         stroker.setCapStyle(Qt::RoundCap);
         stroker.setJoinStyle(Qt::RoundJoin);
         QPainterPath stroked = stroker.createStroke(m_line->path());
-        path.addPath(mapFromItem(m_line, stroked));
+        path = path.united(mapFromItem(m_line, stroked));
     }
     if (m_arrow1 && m_arrow1->isVisible()) {
-        QPainterPath ap = mapFromItem(m_arrow1, m_arrow1->path());
-        path.addPath(ap);
+        path = path.united(mapFromItem(m_arrow1, m_arrow1->path()));
     }
     if (m_arrow2 && m_arrow2->isVisible()) {
-        QPainterPath ap = mapFromItem(m_arrow2, m_arrow2->path());
-        path.addPath(ap);
+        path = path.united(mapFromItem(m_arrow2, m_arrow2->path()));
     }
 
     return path;
+}
+
+void QGILeaderLine::setSelectionScale(double scale)
+{
+    prepareGeometryChange();
+    ScreenScalable::setSelectionScale(scale);
 }
 
 void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)

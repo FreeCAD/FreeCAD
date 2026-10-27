@@ -367,9 +367,16 @@ QPainterPath QGEPath::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(this->m_edgeFuzz * 2.0);
+    stroker.setWidth(m_pen.widthF() + 2.0 * m_edgeFuzz);
     outline = stroker.createStroke(path()).simplified();
     return outline;
+}
+
+void QGEPath::setSelectionScale(double scale)
+{
+    prepareGeometryChange();
+    ScreenScalable::setSelectionScale(scale);
+    setEdgeFuzzScale(m_selectionScale);
 }
 
 

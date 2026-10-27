@@ -49,9 +49,16 @@ QPainterPath QGIDimLines::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(this->m_edgeFuzz);
+    stroker.setWidth(m_pen.widthF() + 2.0 * m_edgeFuzz);
     outline = stroker.createStroke(path());
     return outline;
+}
+
+void QGIDimLines::setSelectionScale(double scale)
+{
+    prepareGeometryChange();
+    ScreenScalable::setSelectionScale(scale);
+    setEdgeFuzzScale(m_selectionScale);
 }
 
 QRectF QGIDimLines::boundingRect() const

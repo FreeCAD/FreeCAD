@@ -33,6 +33,7 @@
 #include "QGIPrimPath.h"
 #include "QGIUserTypes.h"
 #include "QGIVertex.h"
+#include "ScreenScalable.h"
 
 namespace TechDrawGui
 {
@@ -78,7 +79,7 @@ private:
 
 
 
-class TechDrawGuiExport QGEPath : public QObject, public QGIPrimPath
+class TechDrawGuiExport QGEPath : public QObject, public QGIPrimPath, public ScreenScalable
 {
     Q_OBJECT
 
@@ -90,6 +91,7 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+    void setSelectionScale(double scale) override;
 
     void inEdit(bool isInEdit) { m_inEdit = isInEdit; }
     bool inEdit() const { return m_inEdit; }

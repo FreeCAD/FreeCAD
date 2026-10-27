@@ -46,8 +46,9 @@ QGICaption::QGICaption()
 {
 //    setCacheMode(QGraphicsItem::NoCache);
 //    setAcceptHoverEvents(false);
-    setFlag(QGraphicsItem::ItemIsSelectable, true);
-    setFlag(QGraphicsItem::ItemIsMovable, true);
+    // empty captions not clickable by default
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setTextInteractionFlags(Qt::NoTextInteraction);
 

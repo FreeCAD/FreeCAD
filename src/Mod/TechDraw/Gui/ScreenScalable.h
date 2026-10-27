@@ -25,9 +25,13 @@
 class ScreenScalable
 {
 public:
+    //! rendering scale: 1/zoom in Screen Mode, otherwise 1
     virtual void setScreenScale(double scale) { m_screenScale = scale; }
+    //! hit-test scale: always 1/zoom, so selection tolerance stays constant in screen pixels
+    virtual void setSelectionScale(double scale) { m_selectionScale = scale; }
 
 protected:
     ~ScreenScalable() = default;
     double m_screenScale = 1.0;
+    double m_selectionScale = 1.0;
 };

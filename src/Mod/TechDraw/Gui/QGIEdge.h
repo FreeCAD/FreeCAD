@@ -58,6 +58,7 @@ public:
 
     void setWidth(double width) override;
     void setScreenScale(double scale) override;
+    void setSelectionScale(double scale) override;
 
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}

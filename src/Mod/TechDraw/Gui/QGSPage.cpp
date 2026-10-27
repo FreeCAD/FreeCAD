@@ -858,21 +858,19 @@ void QGSPage::refreshViews()
 
 void QGSPage::updateScreenScale()
 {
-    double scale = 1.0;
-    if (PreferencesGui::screenMode()) {
-        const QList<QGraphicsView*> allViews = views();
-        
-        if (!allViews.empty()) {
-            double zoom = allViews.first()->transform().m11();
-            scale = 1.0 / zoom;
-        }
+    double zoomScale = 1.0;
+    const QList<QGraphicsView*> allViews = views();
+    if (!allViews.empty()) {
+        zoomScale = 1.0 / allViews.first()->transform().m11();
     }
+    double scale = PreferencesGui::screenMode() ? zoomScale : 1.0;
 
     const QList<QGraphicsItem*> allItems = items();
 
     for (auto* item : allItems) {
         if (auto* scalable = dynamic_cast<ScreenScalable*>(item)) {
             scalable->setScreenScale(scale);
+            scalable->setSelectionScale(zoomScale);
         }
     }
 }

@@ -28,6 +28,7 @@
 
 #include "QGIPrimPath.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -37,7 +38,7 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIDimLines : public QGIPrimPath
+class TechDrawGuiExport QGIDimLines : public QGIPrimPath, public ScreenScalable
 {
 public:
     explicit QGIDimLines();
@@ -47,6 +48,7 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+    void setSelectionScale(double scale) override;
 
 public:
     void draw();

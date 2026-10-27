@@ -36,6 +36,7 @@
 
 #include "QGIView.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 namespace TechDraw
 {
@@ -52,7 +53,7 @@ class QGEPath;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGILeaderLine: public QGIView
+class TechDrawGuiExport QGILeaderLine: public QGIView, public ScreenScalable
 {
     Q_OBJECT
 
@@ -70,6 +71,7 @@ public:
                QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+    void setSelectionScale(double scale) override;
 
     void drawBorder() override;
     void updateView(bool update = false) override;

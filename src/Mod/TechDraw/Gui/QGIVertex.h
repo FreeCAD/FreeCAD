@@ -52,6 +52,10 @@ public:
     double getRadius() const { return m_radius; }
     virtual void setRadius(double r);
     void setScreenScale(double scale) override;
+    void setSelectionScale(double scale) override;
+
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     Base::Vector2d toVector2d() const;
     Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
@@ -63,6 +67,7 @@ protected:
 
     int projIndex;
     double m_radius;
+    double m_vertexFuzzBase;
 };
 
 }

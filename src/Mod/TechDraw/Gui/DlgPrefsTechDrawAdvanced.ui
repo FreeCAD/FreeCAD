@@ -429,8 +429,8 @@ when hatching a face with a PAT pattern</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Selection area around center marks
-Each unit is approx. 0.1 mm wide</string>
+           <string>Size of selection area around vertices and center marks,
+in screen pixels</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -477,8 +477,8 @@ Each unit is approx. 0.1 mm wide</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of selection area around edges
-Each unit is approximately 0.1mm wide</string>
+           <string>Size of selection area around edges,
+in screen pixels</string>
           </property>
           <property name="statusTip">
            <string/>

@@ -59,7 +59,7 @@ QGIPrimPath::QGIPrimPath():
 
     multiselectActivated = false;
 
-    m_edgeFuzzBase = PreferencesGui::screenMode() ? PreferencesGui::screenEdgeWidth() : PreferencesGui::edgeFuzz();
+    m_edgeFuzzBase = PreferencesGui::edgeFuzz();
     m_edgeFuzz = m_edgeFuzzBase;
 
     m_colNormal = getNormalColor();
@@ -177,6 +177,7 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
+    prepareGeometryChange();
     m_pen.setWidthF(w);
 }
 

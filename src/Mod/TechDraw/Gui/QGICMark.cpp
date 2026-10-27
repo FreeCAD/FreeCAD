@@ -41,7 +41,6 @@ using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
-    m_markFuzz = DrawGuiUtil::screenWidth(PreferencesGui::markFuzz());
     setThick(0.75);
     draw();
 }
@@ -103,7 +102,7 @@ QPainterPath QGICMark::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(m_markFuzz * m_screenScale);
+    stroker.setWidth(m_pen.widthF() + 2.0 * m_vertexFuzzBase * m_selectionScale);
     outline = stroker.createStroke(path());
     return outline;
 }

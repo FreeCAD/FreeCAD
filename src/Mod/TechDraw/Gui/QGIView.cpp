@@ -629,10 +629,8 @@ void QGIView::updateView(bool forceUpdate)
 
     QGIView::draw();
 
-    if (PreferencesGui::screenMode()) {
-        if (auto* scenePage = dynamic_cast<QGSPage*>(scene())) {
-            scenePage->updateScreenScale();
-        }
+    if (auto* scenePage = dynamic_cast<QGSPage*>(scene())) {
+        scenePage->updateScreenScale();
     }
 }
 
@@ -720,6 +718,12 @@ void QGIView::prepareCaption()
 
     QString captionStr = QString::fromUtf8(captionText.c_str());
     m_caption->setPlainText(captionStr);
+
+    // An empty caption is invisible and parked at the view origin; keep it from
+    // intercepting clicks meant for the geometry underneath.
+    bool hasCaption = !captionStr.isEmpty();
+    m_caption->setFlag(QGraphicsItem::ItemIsSelectable, hasCaption);
+    m_caption->setFlag(QGraphicsItem::ItemIsMovable, hasCaption);
 }
 
 void QGIView::layoutDecorations(const QRectF& contentArea,
