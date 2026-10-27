@@ -463,11 +463,11 @@ def exercise(
     assert_type(
         parameters.GetContents(),
         list[
-            tuple[
-                Literal["String", "Integer", "Float", "Boolean", "Unsigned Long"],
-                str,
-                str | int | float | bool,
-            ]
+            tuple[Literal["String"], str, str]
+            | tuple[Literal["Integer"], str, int]
+            | tuple[Literal["Float"], str, float]
+            | tuple[Literal["Boolean"], str, bool]
+            | tuple[Literal["Unsigned Long"], str, int]
         ]
         | None,
     )
