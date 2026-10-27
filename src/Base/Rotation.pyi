@@ -5,10 +5,9 @@ from PyObjectBase import PyObjectBase
 from Vector import Vector
 from Matrix import Matrix
 from Placement import Placement
-from typing import Final, TypeAlias, Literal, overload
+from typing import Final, TypeAlias, Literal, overload, TYPE_CHECKING
 from collections.abc import Sequence
 
-_RotationSeq: TypeAlias = Literal["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]
 
 @export(
     Constructor=True,
@@ -92,6 +91,8 @@ class Rotation(PyObjectBase):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+    if TYPE_CHECKING:
+        _Seq: TypeAlias = Literal["XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]
 
     Q: tuple[float, float, float, float]
     """The rotation elements (as quaternion)."""
@@ -122,11 +123,11 @@ class Rotation(PyObjectBase):
     @overload
     def __init__(self, yaw: float, pitch: float, roll: float, /) -> None: ...
     @overload
-    def __init__(self, seq: _RotationSeq, angle1: float, angle2: float, angle3: float, /) -> None: ...
+    def __init__(self, seq: _Seq, angle1: float, angle2: float, angle3: float, /) -> None: ...
     @overload
     def __init__(self, x: float, y: float, z: float, w: float, /) -> None: ...
     @overload
-    def __init__(self, xdir: Vector, ydir: Vector, zdir: Vector, seq: _RotationSeq = "ZXY", /) -> None: ...
+    def __init__(self, xdir: Vector, ydir: Vector, zdir: Vector, seq: _Seq = "ZXY", /) -> None: ...
     @overload
     def __init__(self, matrix: Matrix, /) -> None: ...
     @overload
@@ -238,9 +239,7 @@ class Rotation(PyObjectBase):
         The angles are given in degrees.
         """
 
-    def setEulerAngles(
-        self, seq: _RotationSeq, angle1: float, angle2: float, angle3: float, /
-    ) -> None:
+    def setEulerAngles(self, seq: _Seq, angle1: float, angle2: float, angle3: float, /) -> None:
         """
         Set the Euler angles in a given sequence for this rotation.
         The angles must be given in degrees.
@@ -261,7 +260,7 @@ class Rotation(PyObjectBase):
 
     @overload
     @constmethod
-    def toEulerAngles(self, seq: _RotationSeq, /) -> tuple[float, float, float]:
+    def toEulerAngles(self, seq: _Seq, /) -> tuple[float, float, float]:
         """
         Get the Euler angles in a given sequence for this rotation.
 
