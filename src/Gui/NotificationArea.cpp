@@ -24,6 +24,7 @@
 #include <QAction>
 #include <QActionEvent>
 #include <QApplication>
+#include <QClipboard>
 #include <QEvent>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -700,6 +701,17 @@ protected:
             auto selectedItems = tableWidget->selectedItems();
 
             QMenu menu;
+
+            QAction* copy = menu.addAction(tr("Copy"), this, [&]() {
+                QStringList messages;
+                for (auto it : std::as_const(selectedItems)) {
+                    // NOLINTNEXTLINE
+                    messages << static_cast<NotificationItem*>(it)->getMessage();
+                }
+                QApplication::clipboard()->setText(messages.join(QLatin1Char('\n')));
+            });
+
+            copy->setEnabled(!selectedItems.isEmpty());
 
             QAction* del = menu.addAction(tr("Delete"), this, [&]() {
                 for (auto it : std::as_const(selectedItems)) {
