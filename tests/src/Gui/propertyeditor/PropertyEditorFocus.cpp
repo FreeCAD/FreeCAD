@@ -171,7 +171,7 @@ private Q_SLOTS:
         TestDocument fixture;
         auto* object = fixture.object;
         auto* property = static_cast<App::PropertyInteger*>(
-            object->addDynamicProperty("App::PropertyInteger", "Size", "Values")
+            object->addDynamicProperty("App::PropertyInteger", "Size", "ConstraintTemperature")
         );
         property->setValue(3);
 

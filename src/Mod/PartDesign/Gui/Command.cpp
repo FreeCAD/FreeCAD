@@ -2520,7 +2520,7 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 hasDirection = true;
             }
         }
-        FCMD_OBJ_CMD(feat, "StartAtShape = False");
+        FCMD_OBJ_CMD(feat, "StartAtShape = True");
         if (!hasDirection) {
             FCMD_OBJ_CMD(
                 feat,
@@ -2572,6 +2572,8 @@ void CmdPartDesignPathPattern::activated(int iMsg)
 
     auto worker =
         [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            FCMD_OBJ_CMD(feat, "RelativeToFirst = True");
+
             finishTransformed(cmd, feat);
         };
     prepareTransformed(pcActiveBody, this, "PathPattern", worker);
