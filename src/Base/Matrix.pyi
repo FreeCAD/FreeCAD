@@ -147,7 +147,6 @@ class Matrix(PyObjectBase):
     @property
     def A(self) -> tuple[float, ...]:
         """The matrix elements."""
-
     # no posonly ("/") because otherwise it won't match cpp definition
     @A.setter
     def A(self, value: Sequence[float]) -> None: ...
