@@ -332,13 +332,14 @@ class TestCoincidentCommandGui(SketcherGuiTestCase):
         )
 
         constraints_before = self.constraint_signature(sketch)
-        self.assertEqual(len(sketch.Constraints), 3)
+        constraint_count = len(sketch.Constraints)
+        self.assertEqual(constraint_count, 3)
         self.apply_coincident_command(sketch, "Vertex2", "Vertex3")
 
         self.assertEqual(self.selected_sub_elements(), [])
-        self.assertEqual(len(sketch.Constraints), 3)
+        self.assertEqual(len(sketch.Constraints), constraint_count)
         self.assertNotEqual(self.constraint_signature(sketch), constraints_before)
-        self.assertEqual(sketch.solve(), 0)
+        self.assertNotEqual(sketch.solve(), 0, "The original redundancy should remain.")
 
     def make_point_on_object_sketch(self, targets, initial_coincidences=()):
         """Three independent line starts at the origin, plus three reference edges.
