@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from PropertyPythonContracts import _Document  # because 'Document' is shadowed by same-named property
 from App.GeoFeatureGroupExtension import GeoFeatureGroupExtension
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
 from Base.Placement import Placement
 from DepEdge import DepEdge
+from Document import Document as DocumentPy
 from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
@@ -43,7 +43,7 @@ class DocumentObject(ExtensionContainer):
     Name: Final[str | None]
     """Return the internal name of this object"""
 
-    Document: Final[_Document | None]
+    Document: Final[DocumentPy | None]
     """Return the document this object is part of"""
 
     State: Final[list[str]]

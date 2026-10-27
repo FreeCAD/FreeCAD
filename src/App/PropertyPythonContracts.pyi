@@ -13,9 +13,9 @@ from collections.abc import Sequence
 from io import IOBase
 from typing import TypeAlias
 
-from FreeCAD import Base as Base, Document, DocumentObject
+from FreeCAD import Base
+from FreeCAD import DocumentObject
 
-_Document: TypeAlias = Document  # used for same-name properties
 _DocumentObjectSubLinkPairInput: TypeAlias = (
     tuple[DocumentObject, str | Sequence[str]]
     | list[DocumentObject | str | Sequence[str]]

@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from PropertyPythonContracts import Base  # because 'Placement' is shadowed by auto-generated property from cpp
+# 'Placement' will be shadowed by auto-generated property from cpp.
+# Using "PlacementPy" won't help because replace happens before cpp insert.
+from FreeCAD import Base
 from App.ComplexGeoData import ComplexGeoData
 from DocumentObject import DocumentObject
 from Base.Metadata import deprecated

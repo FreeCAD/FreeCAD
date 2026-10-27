@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from PropertyPythonContracts import Base  # because 'Placement' and 'BoundBox' are shadowed by same-named properties
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
+from Base.BoundBox import BoundBox as BoundBoxPy
 from Base.Vector import Vector
+from Base.Placement import Placement as PlacementPy
 from Base.Rotation import Rotation
 from Base.Matrix import Matrix
 from StringHasher import StringHasher
@@ -153,13 +154,13 @@ class ComplexGeoData(Persistence):
         Return the mapped element name
         """
 
-    BoundBox: Final[Base.BoundBox]
+    BoundBox: Final[BoundBoxPy]
     """Get the bounding box (BoundBox) of the complex geometric data."""
 
     CenterOfGravity: Final[Vector]
     """Get the center of gravity"""
 
-    Placement: Base.Placement
+    Placement: PlacementPy
     """Get the current transformation of the object as placement"""
 
     Tag: int
