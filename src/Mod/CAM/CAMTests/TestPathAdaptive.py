@@ -363,6 +363,26 @@ class TestPathAdaptive(PathTestBase):
             msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
         )
 
+    def test_regression_33705_path_crosses_stock(self):
+        """Regression test from PR #33705: the boundary path crosses in and out of the stock.
+
+        The square's corners stick out past the round stock, so the open-path intersection
+        splits the boundary into pieces that share an end point. That shared point must only be
+        collected once, or reassembly fails with map::at."""
+        stockPath2d = [
+            [
+                [25.0 + 25.0 * math.cos(math.radians(a)), 25.0 + 25.0 * math.sin(math.radians(a))]
+                for a in range(0, 360, 10)
+            ]
+        ]
+        path2d = [[[5.0, 5.0], [45.0, 5.0], [45.0, 45.0], [5.0, 45.0]]]
+
+        total_cleared, _, _ = self._executeAdaptive(
+            area.AdaptiveOperationType.ClearingInside, stockPath2d, path2d
+        )
+
+        self.assertGreater(total_cleared, 0.0)
+
     def testProfilingInside(self):
         """testProfilingInside() Test C++ Adaptive2d profiling inside a rectangle."""
         # Create geometry
