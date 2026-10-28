@@ -215,7 +215,7 @@ PyObject* LinkViewPy::setChildren(PyObject* args)
     PyObject* pyObj;
     PyObject* pyVis = Py_None;
     short type = 0;
-    if (!PyArg_ParseTuple(args, "O|Os", &pyObj, &pyVis, &type)) {
+    if (!PyArg_ParseTuple(args, "O|Oh", &pyObj, &pyVis, &type)) {
         return nullptr;
     }
 
