@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
-from typing import Any, Final, Tuple, Dict
+from typing import TYPE_CHECKING, Any, Final, TypeAlias
+
 
 @export(
     Constructor=True,
@@ -20,17 +19,23 @@ class AxisOrigin(BaseClass):
     Licence: LGPL
     """
 
+    if TYPE_CHECKING:
+        # these are currently untyped, but this will make typing them later easier.
+        _CoinSoPickedPoint: TypeAlias = Any
+        _CoinSoPath: TypeAlias = Any
+        _CoinSoDetail: TypeAlias = Any
+        _CoinSoGroup: TypeAlias = Any
+
     @constmethod
-    def getElementPicked(self, pickedPoint: Any, /) -> str | None:
+    def getElementPicked(self, pickedPoint: _CoinSoPickedPoint, /) -> str | None:
         """
         Returns the picked element name.
 
         pickedPoint : coin.SoPickedPoint
         """
-        ...
 
     @constmethod
-    def getDetailPath(self, subname: str, path: Any, /) -> Any:
+    def getDetailPath(self, subname: str, path: _CoinSoPath, /) -> _CoinSoDetail | None:
         """
         Returns Coin detail of a subelement.
         Note: Not fully implemented. Currently only returns None.
@@ -40,23 +45,23 @@ class AxisOrigin(BaseClass):
         path: coin.SoPath
             Output Coin path leading to the returned element detail.
         """
-        ...
-    AxisLength: float = 0.0
+
+    AxisLength: float
     """Get/set the axis length."""
 
-    LineWidth: float = 0.0
+    LineWidth: float
     """Get/set the axis line width for rendering."""
 
-    PointSize: float = 0.0
+    PointSize: float
     """Get/set the origin point size for rendering."""
 
-    Scale: float = 0.0
+    Scale: float
     """Get/set auto scaling factor, 0 to disable."""
 
-    Plane: Tuple[Any, ...] = ()
+    Plane: tuple[float, float]
     """Get/set axis plane size and distance to axis line."""
 
-    Labels: Dict[str, str] = {}
+    Labels: dict[str, str]
     """
     Get/set axis component names as a dictionary.
     Available keys are:
@@ -69,5 +74,5 @@ class AxisOrigin(BaseClass):
     'YZ': yz plane
     """
 
-    Node: Final[Any] = ...
+    Node: Final[_CoinSoGroup]
     """Get the Coin3D node."""

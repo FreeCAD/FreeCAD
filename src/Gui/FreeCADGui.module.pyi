@@ -6,8 +6,7 @@ This source-adjacent stub file keeps the callable GUI module surface together
 with the helper aliases, workbench support classes, and module globals those
 signatures use.
 """
-
-from __future__ import annotations
+# source: `Gui/ApplicationPy.cpp`, `Gui/Application.cpp`, `Gui/FreeCADGuiInit.py`, `Gui/WorkbenchPyImp.cpp`
 
 import FreeCAD as App
 from collections.abc import Sequence
@@ -20,8 +19,8 @@ from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
 _IconContent: TypeAlias = str | bytes | bytearray | memoryview
-_WorkbenchMenu: TypeAlias = str | Sequence[str]
-_WorkbenchCommands: TypeAlias = str | Sequence[str]
+_WorkbenchMenu: TypeAlias = str | list[str]
+_WorkbenchCommands: TypeAlias = str | list[str]
 
 module(
     Name="FreeCADGui",
@@ -184,60 +183,47 @@ class _WorkbenchBackend(Protocol):
 
     def appendToolbar(self, name: str, cmds: Sequence[str], /) -> None:
         """Add one toolbar definition to the workbench."""
-        ...
 
     def removeToolbar(self, name: str, /) -> None:
         """Remove one toolbar definition from the workbench."""
-        ...
 
     def listToolbars(self) -> list[str]:
         """Return the toolbar names registered on the workbench."""
-        ...
 
     def getToolbarItems(self) -> dict[str, list[str]]:
         """Return toolbar contents keyed by toolbar name."""
-        ...
 
     def appendCommandbar(self, name: str, cmds: Sequence[str], /) -> None:
         """Add one command bar definition to the workbench."""
-        ...
 
     def removeCommandbar(self, name: str, /) -> None:
         """Remove one command bar definition from the workbench."""
-        ...
 
     def listCommandbars(self) -> list[str]:
         """Return the command bar names registered on the workbench."""
-        ...
 
     def appendMenu(self, name: _WorkbenchMenu, cmds: _WorkbenchCommands, /) -> None:
         """Add one menu definition to the workbench."""
-        ...
 
     def removeMenu(self, name: _WorkbenchMenu, /) -> None:
         """Remove one menu definition from the workbench."""
-        ...
 
     def listMenus(self) -> list[str]:
         """Return the menu labels registered on the workbench."""
-        ...
 
     def appendContextMenu(self, name: str, cmds: _WorkbenchCommands, /) -> None:
         """Add one context-menu definition to the workbench."""
-        ...
 
     def removeContextMenu(self, name: str, /) -> None:
         """Remove one context-menu definition from the workbench."""
-        ...
 
     def reloadActive(self) -> None:
         """Reload the active workbench presentation."""
-        ...
 
     def name(self) -> str:
         """Return the internal backend name of the workbench."""
-        ...
 
+# source: `Gui/FreeCADGuiInit.py` + `Gui/PythonWorkbench.pyi`
 class Workbench:
     """Base class for Python-defined GUI workbenches."""
 
@@ -248,72 +234,56 @@ class Workbench:
 
     def Initialize(self) -> None:
         """Initialize the workbench after registration."""
-        ...
 
     def ContextMenu(self, recipient: object, /) -> None:
         """Populate the context menu for one recipient object."""
-        ...
 
     def appendToolbar(self, name: str, cmds: Sequence[str], /) -> None:
         """Add one toolbar definition to the workbench."""
-        ...
 
     def removeToolbar(self, name: str, /) -> None:
         """Remove one toolbar definition from the workbench."""
-        ...
 
     def listToolbars(self) -> list[str]:
         """Return the toolbar names registered on the workbench."""
-        ...
 
     def getToolbarItems(self) -> dict[str, list[str]]:
         """Return toolbar contents keyed by toolbar name."""
-        ...
 
     def appendCommandbar(self, name: str, cmds: Sequence[str], /) -> None:
         """Add one command bar definition to the workbench."""
-        ...
 
     def removeCommandbar(self, name: str, /) -> None:
         """Remove one command bar definition from the workbench."""
-        ...
 
     def listCommandbars(self) -> list[str]:
         """Return the command bar names registered on the workbench."""
-        ...
 
     def appendMenu(self, name: _WorkbenchMenu, cmds: _WorkbenchCommands, /) -> None:
         """Add one menu definition to the workbench."""
-        ...
 
     def removeMenu(self, name: _WorkbenchMenu, /) -> None:
         """Remove one menu definition from the workbench."""
-        ...
 
     def listMenus(self) -> list[str]:
         """Return the menu labels registered on the workbench."""
-        ...
 
     def appendContextMenu(self, name: str, cmds: _WorkbenchCommands, /) -> None:
         """Add one context-menu definition to the workbench."""
-        ...
 
     def removeContextMenu(self, name: str, /) -> None:
         """Remove one context-menu definition from the workbench."""
-        ...
 
     def reloadActive(self) -> None:
         """Reload the active workbench presentation."""
-        ...
 
     def name(self) -> str:
         """Return the exposed name of the workbench."""
-        ...
 
     def GetClassName(self) -> str:
         """Return the wrapped runtime class name."""
-        ...
 
+# source: `Gui/FreeCADGuiInit.py`
 class InputHint:
     """One user-facing message together with the input sequence that triggers it."""
 
@@ -323,18 +293,16 @@ class InputHint:
 
     def __init__(self, message: str, *sequences: _InputSequence) -> None:
         """Create one input hint with one or more accepted input sequences."""
-        ...
 
+# source: `Gui/FreeCADGuiInit.py`
 class _HintManager:
     """Controller for transient GUI input-hint overlays."""
 
     def show(self, *hints: InputHint) -> None:
         """Display one or more input hints."""
-        ...
 
     def hide(self) -> None:
         """Hide the currently displayed input hints."""
-        ...
 
 HintManager: _HintManager
 ActiveDocument: Document | None
@@ -342,117 +310,90 @@ ActiveDocument: Document | None
 # Scene graph and workbenches
 def subgraphFromObject(obj: DocumentObject, /) -> object | None:
     """Return the Coin/Inventor scene subgraph that represents one document object."""
-    ...
 
 def exportSubgraph(node: object, output: object, format: str = "VRML", /) -> None:
     """Serialize one Coin scene subgraph to an output target as VRML or Inventor."""
-    ...
 
 def getSoDBVersion() -> str:
     """Return the linked Coin SoDB version string."""
-    ...
 
 def activateWorkbench(name: str, /) -> bool:
     """Activate one registered workbench by name; return False if it is already active."""
-    ...
 
 def addWorkbench(workbench: Workbench | type[Workbench], /) -> None:
     """Register one Python workbench implementation."""
-    ...
 
 def removeWorkbench(name: str, /) -> None:
     """Unregister one workbench by name."""
-    ...
 
 def getWorkbench(name: str, /) -> Workbench:
     """Return one registered workbench by name."""
-    ...
 
 def listWorkbenches() -> dict[str, Workbench]:
     """Return all registered workbenches keyed by name."""
-    ...
 
 def activeWorkbench() -> Workbench:
     """Return the currently active workbench."""
-    ...
 
 # Resources, icons, and locale
 def addResourcePath(path: _Pathish, /) -> None:
     """Register an additional GUI resource search path."""
-    ...
 
 def addLanguagePath(path: _Pathish, /) -> None:
     """Register an additional translation search path."""
-    ...
 
 def addIconPath(path: _Pathish, /) -> None:
     """Register an additional icon search path."""
-    ...
 
 def addIcon(name: str, content: _IconContent, format: str = "XPM", /) -> None:
     """Register one icon payload under a symbolic name."""
-    ...
 
 def getIcon(name: str, /) -> object | None:
     """Return the cached icon object for one symbolic name, or None for a null icon."""
-    ...
 
 def isIconCached(name: str, /) -> bool:
     """Return whether one icon name is already cached."""
-    ...
 
 def updateGui() -> None:
     """Process pending GUI updates."""
-    ...
 
 def updateLocale() -> None:
     """Reload GUI translation state after locale changes."""
-    ...
 
 def getLocale() -> str:
     """Return the current GUI locale name."""
-    ...
 
 def setLocale(name: str, /) -> None:
     """Set the GUI locale by language name or top-level domain code."""
-    ...
 
 def supportedLocales() -> dict[str, str]:
     """Return supported GUI locales, mapping language names to domain codes."""
-    ...
 
 # Dialogs, preferences, and commands
 def createDialog(path: str, /) -> _PyResource:
     """Load one Qt Designer UI resource and return its wrapper."""
-    ...
 
 @overload
 def addPreferencePage(path: str, group: str, /) -> None:
     """Register a preference page from a `.ui` file path."""
-    ...
 
 @overload
 def addPreferencePage(dialog: type[object], group: str, /) -> None:
     """Register a preference page from a Python dialog class."""
-    ...
 
 def addCommand(name: str, cmd: object, activation: str = "", /) -> None:
     """Register one GUI command object under a command name."""
-    ...
 
 def runCommand(name: str, index: int = 0, /) -> None:
     """Run one registered GUI command."""
-    ...
 
 @typing_only
 def listCommands() -> list[str]:
     """Return the registered GUI command names."""
-    ...
 
 @typing_only
 def isCommandActive(name: str, /) -> bool:
     """Return whether one command is active in the current GUI context."""
-    ...
 
 @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="View")
 def SendMsgToActiveView(name: str, suppress: bool = False, /) -> None:
@@ -460,97 +401,75 @@ def SendMsgToActiveView(name: str, suppress: bool = False, /) -> None:
 
     ``suppress`` controls whether failure warnings are emitted.
     """
-    ...
 
 def sendMsgToFocusView(name: str, suppress: bool = False, /) -> None:
     """Send one named message to the focused view, optionally suppressing failure warnings."""
-    ...
 
 def doCommand(cmd: str, /) -> None:
     """Print, record, and execute one Python command in the main console context."""
-    ...
 
 def doCommandGui(cmd: str, /) -> None:
     """Print, record as GUI-scoped, and execute one Python command."""
-    ...
 
 def doCommandEval(cmd: str, /) -> Any:
     """Evaluate one Python expression without printing or recording it, and return the result."""
-    ...
 
 def doCommandSkip(cmd: str, /) -> None:
     """Record one command in the macro stream without executing it."""
-    ...
 
 def addModule(mod: str, /) -> None:
     """Record one module import in GUI command macros, emitting it only once."""
-    ...
 
 def showDownloads() -> None:
     """Open the downloads manager window."""
-    ...
 
 def showPreferences(grp: str = "", index: int = 0, /) -> None:
     """Open the preferences dialog to one group and page index."""
-    ...
 
 def showPreferencesByName(grp: str, pagename: str = "", /) -> None:
     """Open the preferences dialog to one group and page name."""
-    ...
 
 # Document visibility and file I/O
 @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="hideObject")
 def hide(name: str, /) -> None:
     """Hide one named object in the active GUI document. Deprecated."""
-    ...
 
 @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="showObject")
 def show(name: str, /) -> None:
     """Show one named object in the active GUI document. Deprecated."""
-    ...
 
 def hideObject(obj: DocumentObject, /) -> None:
     """Hide one document object in the GUI."""
-    ...
 
 def showObject(obj: DocumentObject, /) -> None:
     """Show one document object in the GUI."""
-    ...
 
 def open(fileName: _Pathish, /) -> None:
     """Open a macro, Inventor, VRML, or other GUI-supported file."""
-    ...
 
-def insert(fileName: _Pathish, docName: str = "", /) -> None:
+def insert(fileName: _Pathish, docName: str = ..., /) -> None:
     """Insert a macro, Inventor, VRML, or GUI-supported file into a document.
 
     When ``docName`` is omitted, the active document is used.
     """
-    ...
 
 def export(objs: Sequence[DocumentObject], fileName: _Pathish, /) -> None:
     """Export GUI document objects to a scene file such as Inventor or VRML."""
-    ...
 
 def activeDocument() -> Document | None:
     """Return the active GUI document, if any."""
-    ...
 
 def setActiveDocument(doc: str | App.Document, /) -> None:
     """Make one GUI document active."""
-    ...
 
 def editDocument() -> Document | None:
     """Return the document currently being edited in the GUI."""
-    ...
 
 def getDocument(doc: str | App.Document, /) -> Document:
     """Return one GUI document by name or application document."""
-    ...
 
 def reload(name: str, /) -> App.Document | None:
     """Reload a partially opened document by name, or return None when it is not open."""
-    ...
 
 def loadFile(fileName: str, module: str = "", /) -> None:
     """Load one file through the GUI import pipeline.
@@ -559,112 +478,87 @@ def loadFile(fileName: str, module: str = "", /) -> None:
     If several importers match, the first registered importer is used; if none
     matches, an exception is raised.
     """
-    ...
 
 # Main window and view helpers
 def getMainWindow() -> _MainWindow:
     """Return the main application window wrapper."""
-    ...
 
 @overload
-def activeView() -> object | None:
+def activeView() -> _MDIView | None:
     """Return the current active view, creating the default 3D view when needed."""
-    ...
 
 @overload
-def activeView(typeName: str, /) -> object | None:
+def activeView(typeName: str, /) -> _MDIView | None:
     """Return the active view constrained to a specific FreeCAD view type name."""
-    ...
 
 def activateView(typeName: str, create: bool, /) -> None:
     """Activate one view type, optionally creating it first."""
-    ...
 
 @overload
 def createViewer() -> _View3DInventor:
     """Create the default single 3D viewer."""
-    ...
 
 @overload
 def createViewer(views: Literal[1], name: str = ..., /) -> _View3DInventor:
     """Create one named 3D viewer explicitly."""
-    ...
 
 @overload
-def createViewer(views: int, name: str = ..., /) -> _View3DInventor | _AbstractSplitView:
+def createViewer(views: int, name: str = ..., /) -> _AbstractSplitView:
     """Create a split-view layout when more than one view is requested."""
-    ...
 
 def getMarkerIndex(marker: str, size: int = 9, /) -> int:
     """Return the Coin marker index for one named marker and size."""
-    ...
 
 # Observers and edit mode
 def addDocumentObserver(obj: object, /) -> None:
     """Register one GUI document observer."""
-    ...
 
 def removeDocumentObserver(obj: object, /) -> None:
     """Unregister one GUI document observer."""
-    ...
 
 def addWorkbenchManipulator(obj: object, /) -> None:
     """Register one workbench manipulator helper."""
-    ...
 
 def removeWorkbenchManipulator(obj: object, /) -> None:
     """Unregister one workbench manipulator helper."""
-    ...
 
 def listUserEditModes() -> list[str]:
     """Return the available user edit-mode names."""
-    ...
 
 def getUserEditMode() -> str:
     """Return the current user edit-mode name."""
-    ...
 
 def setUserEditMode(mode: str, /) -> bool:
     """Set the current user edit-mode by name."""
-    ...
 
 # GUI lifecycle helpers
 def coinRemoveAllChildren(node: object, /) -> None:
     """Remove all Coin child nodes from one parent node."""
-    ...
 
 def applyElementColorOverride(target: object, colors: dict[str, object], /) -> None:
     """Apply secondary element color overrides to one Coin node or path."""
-    ...
 
 def clearElementColorOverride(target: object, /) -> None:
     """Clear secondary element color overrides from one Coin node or path."""
-    ...
 
 def suspendWaitCursor() -> None:
     """Temporarily suspend the application's wait cursor and event filter."""
-    ...
 
 def resumeWaitCursor() -> None:
     """Resume the application's wait cursor and event filter."""
-    ...
 
 @bootstrap_export
 def showMainWindow(inThread: bool = False, /) -> None:
     """Create the main application window if needed, then show it."""
-    ...
 
 @bootstrap_export
 def exec_loop() -> None:
     """Enter the GUI event loop and block until it terminates."""
-    ...
 
 @bootstrap_export
 def setupWithoutGUI() -> None:
     """Initialize GUI services without showing the main window or running the event loop."""
-    ...
 
 @bootstrap_export
 def embedToWindow(pointer: str, /) -> None:
     """Embed the GUI into an existing native window handle."""
-    ...
