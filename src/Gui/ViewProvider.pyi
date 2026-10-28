@@ -234,7 +234,9 @@ class ViewProvider(ExtensionContainer):
         """
 
     def getElementColors(
-        self, elementName: str = ..., /,
+        self,
+        elementName: str = ...,
+        /,
     ) -> dict[str, tuple[float, float, float, float]]:
         """
         Get a dictionary of the form {elementName : (r,g,b,a)}.
@@ -262,7 +264,11 @@ class ViewProvider(ExtensionContainer):
 
     @constmethod
     def getDetailPath(
-        self, subelement: str, path: _CoinSoPath, append: bool = True, /,
+        self,
+        subelement: str,
+        path: _CoinSoPath,
+        append: bool = True,
+        /,
     ) -> _CoinSoDetail:
         """
         Return Coin detail and path of an subelement.

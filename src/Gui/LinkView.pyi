@@ -36,8 +36,7 @@ class LinkView(BaseClass):
 
     def setMaterial(
         self,
-        material: Material | dict[int,
-        Material] | Sequence[Material] | None,
+        material: Material | dict[int, Material] | Sequence[Material] | None,
         /,
     ) -> None:
         """
