@@ -33,6 +33,8 @@ using namespace Fem;
 PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
 static const char* ConstraintTypes[] = {"Flux", "Convection", "Radiation", nullptr};
+static const char* FluxDistributions[] = {"Uniform", "Table", nullptr};
+static const char* TableSources[] = {"Spreadsheet", "Property", "File", nullptr};
 
 ConstraintHeatflux::ConstraintHeatflux()
 {
@@ -77,6 +79,43 @@ ConstraintHeatflux::ConstraintHeatflux()
         "ConstraintHeatflux",
         (App::PropertyType)(App::Prop_None),
         "Amplitude values"
+    );
+    ADD_PROPERTY_TYPE(
+        FluxDistribution,
+        (0L),
+        "Heat Flux Table",
+        App::Prop_None,
+        "Uniform heat flux, or interpolated on the faces from a table of points"
+    );
+    FluxDistribution.setEnums(FluxDistributions);
+    ADD_PROPERTY_TYPE(
+        TableSource,
+        (0L),
+        "Heat Flux Table",
+        App::Prop_None,
+        "Where the table of points is read: a spreadsheet, the TableRows property or a CSV file"
+    );
+    TableSource.setEnums(TableSources);
+    ADD_PROPERTY_TYPE(
+        TableSheet,
+        (nullptr),
+        "Heat Flux Table",
+        App::Prop_None,
+        "Spreadsheet with columns x, y, z, flux, units in the header row like x [mm]"
+    );
+    ADD_PROPERTY_TYPE(
+        TableRows,
+        (std::vector<std::string> {}),
+        "Heat Flux Table",
+        App::Prop_None,
+        "Rows x, y, z, flux, each value with its unit"
+    );
+    ADD_PROPERTY_TYPE(
+        TableFile,
+        (""),
+        "Heat Flux Table",
+        App::Prop_None,
+        "CSV file with columns x, y, z, flux, units in the header row like x [mm]"
     );
 }
 
