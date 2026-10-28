@@ -6,6 +6,7 @@ This source-adjacent stub file keeps the callable GUI module surface together
 with the helper aliases, workbench support classes, and module globals those
 signatures use.
 """
+
 # source: `Gui/ApplicationPy.cpp`, `Gui/Application.cpp`, `Gui/FreeCADGuiInit.py`, `Gui/WorkbenchPyImp.cpp`
 
 import FreeCAD as App

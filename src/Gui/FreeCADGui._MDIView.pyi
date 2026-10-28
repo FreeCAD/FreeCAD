@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._MDIView`` PyCXX type."""
+
 # source: `Gui/MDIViewPy.cpp`
 
 from typing import Literal, TypeAlias, overload
@@ -53,9 +54,11 @@ class _MDIView:
 
     @overload
     def getActiveObject(
-        self, name: str, resolve: Literal[False], /,
-    ) -> _ActiveObjectReference | _EmptyActiveObjectReference:
-        ...
+        self,
+        name: str,
+        resolve: Literal[False],
+        /,
+    ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
     @overload
     def getActiveObject(self, name: str, resolve: bool = True, /) -> DocumentObject | None:
         """Return the resolved active object for one slot name."""

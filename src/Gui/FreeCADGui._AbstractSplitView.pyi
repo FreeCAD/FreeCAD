@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._AbstractSplitView`` PyCXX type."""
+
 # source: `Gui/SplitView3DInventor.cpp`
 
 from FreeCADGui import _MDIView, _View3DInventorViewer

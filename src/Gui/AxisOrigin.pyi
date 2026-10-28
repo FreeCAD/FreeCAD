@@ -4,7 +4,6 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import TYPE_CHECKING, Any, Final, TypeAlias
 
-
 @export(
     Constructor=True,
     Delete=True,
@@ -45,7 +44,6 @@ class AxisOrigin(BaseClass):
         path: coin.SoPath
             Output Coin path leading to the returned element detail.
         """
-
     AxisLength: float
     """Get/set the axis length."""
 

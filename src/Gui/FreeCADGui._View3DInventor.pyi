@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._View3DInventor`` PyCXX type."""
+
 # source: `Gui/View3DPy.cpp`
 
 from collections.abc import Callable
@@ -119,7 +120,10 @@ class _View3DInventor:
         """Orient the camera trimetrically."""
 
     def viewDefaultOrientation(
-        self, view: _ViewOrientation | str | None = None, scale: float = -1.0, /,
+        self,
+        view: _ViewOrientation | str | None = None,
+        scale: float = -1.0,
+        /,
     ) -> None:
         """Restore the default camera orientation."""
 
@@ -136,7 +140,11 @@ class _View3DInventor:
         """Zoom the camera out."""
 
     def viewPosition(
-        self, placement: Placement = ..., steps: int = 0, duration: int = -1, /,
+        self,
+        placement: Placement = ...,
+        steps: int = 0,
+        duration: int = -1,
+        /,
     ) -> Placement | None:
         """Return or animate the current view placement."""
 
@@ -177,7 +185,11 @@ class _View3DInventor:
         """Save the current view as a raster image."""
 
     def saveVectorGraphic(
-        self, filename: str, page_size: int = 4, background: str = "white", /,
+        self,
+        filename: str,
+        page_size: int = 4,
+        background: str = "white",
+        /,
     ) -> None:
         """Save the current view as a vector graphic."""
 
@@ -226,7 +238,10 @@ class _View3DInventor:
         """Return hit-test information for one point."""
 
     def getObjectsInfo(
-        self, point: _Point2, radius: float = ..., /,
+        self,
+        point: _Point2,
+        radius: float = ...,
+        /,
     ) -> list[_View3DObjectInfo] | None:
         """Return hit-test information for all objects near one point."""
 
@@ -248,7 +263,6 @@ class _View3DInventor:
         direction_z: float,
         /,
     ) -> _View3DRayInfo | None: ...
-
     @overload
     def getPoint(self, x: int, y: int, /) -> Vector: ...
     @overload
@@ -280,7 +294,10 @@ class _View3DInventor:
         """Project one screen-space point to a world-space line."""
 
     def addEventCallback(
-        self, event_type: str, callback: _View3DEventCallback, /,
+        self,
+        event_type: str,
+        callback: _View3DEventCallback,
+        /,
     ) -> _View3DEventCallback:
         """Register one event callback."""
 
@@ -300,12 +317,20 @@ class _View3DInventor:
         """Return the low-level viewer wrapper."""
 
     def addEventCallbackPivy(
-        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /,
+        self,
+        event_type: object,
+        callback: _View3DProxyCallback,
+        extended: bool | int = 1,
+        /,
     ) -> _View3DProxyCallback:
         """Register one Pivy event callback."""
 
     def removeEventCallbackPivy(
-        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /,
+        self,
+        event_type: object,
+        callback: _View3DProxyCallback,
+        extended: bool | int = 1,
+        /,
     ) -> _View3DProxyCallback:
         """Remove one Pivy event callback."""
 
@@ -315,7 +340,11 @@ class _View3DInventor:
         replacement="addEventCallbackPivy",
     )
     def addEventCallbackSWIG(
-        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /,
+        self,
+        event_type: object,
+        callback: _View3DProxyCallback,
+        extended: bool | int = 1,
+        /,
     ) -> _View3DProxyCallback:
         """Register one SWIG event callback."""
 
@@ -325,7 +354,11 @@ class _View3DInventor:
         replacement="removeEventCallbackPivy",
     )
     def removeEventCallbackSWIG(
-        self, event_type: object, callback: _View3DProxyCallback, extended: bool | int = 1, /,
+        self,
+        event_type: object,
+        callback: _View3DProxyCallback,
+        extended: bool | int = 1,
+        /,
     ) -> _View3DProxyCallback:
         """Remove one SWIG event callback."""
 

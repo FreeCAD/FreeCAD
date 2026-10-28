@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._Control`` PyCXX type."""
+
 # source: `Gui/TaskView/TaskDialogPython.cpp`
 
 from collections.abc import Sequence

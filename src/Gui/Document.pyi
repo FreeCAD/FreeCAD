@@ -46,7 +46,11 @@ class Document(Persistence):
         """
 
     def setEdit(
-        self, obj: str | DocumentObject | ViewProvider, mode: int = 0, subname: str = ..., /,
+        self,
+        obj: str | DocumentObject | ViewProvider,
+        mode: int = 0,
+        subname: str = ...,
+        /,
     ) -> bool:
         """
         Set an object in edit mode.
@@ -194,7 +198,6 @@ class Document(Persistence):
 
         Aborts the current transaction of the document
         """
-
     ActiveObject: ViewProvider | None
     """The active object of the document."""
 

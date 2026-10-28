@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._PyResource`` PyCXX type."""
+
 # source: `Gui/WidgetFactory.cpp`
 
 from collections.abc import Callable

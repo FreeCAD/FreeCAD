@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._MainWindow`` PyCXX type."""
+
 # source: `Gui/MainWindowPy.cpp`
 
 from FreeCAD import Base

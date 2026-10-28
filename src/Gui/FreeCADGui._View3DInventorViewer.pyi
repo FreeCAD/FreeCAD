@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 """Typed public method signatures for the ``FreeCADGui._View3DInventorViewer`` PyCXX type."""
+
 # source: `Gui/View3DViewerPy.cpp`
 
 from typing import Any, TypeAlias, Literal, overload
@@ -19,6 +20,7 @@ _CoinSoNode: TypeAlias = object
 
 class _View3DInventorViewer:
     """Low-level Coin viewer wrapper behind the 3D view."""
+
     _BackgroundGradient: TypeAlias = Literal["LINEAR", "RADIAL", ""]
 
     def getSoRenderManager(self) -> _CoinSoRenderManager:
