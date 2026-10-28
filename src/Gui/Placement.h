@@ -54,6 +54,7 @@ public:
     void openTransactionIfNeeded();
     void setPropertyName(const std::string&);
     void setIgnoreTransactions(bool value);
+    bool isChangingProperty() const;
     void setSelection(const std::vector<SelectionObject>&);
     void reselectObjects();
     const App::DocumentObject* getFirstOfSelection() const;
@@ -132,6 +133,7 @@ public:
     void bindObject();
     void setPlacementAndBindObject(const App::DocumentObject* obj, const std::string& propertyName);
     void setIgnoreTransactions(bool value);
+    bool isChangingProperty() const;
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -214,10 +216,7 @@ public:
     void clicked(int id) override;
 
     void open() override;
-    bool isAllowedAlterDocument() const override
-    {
-        return true;
-    }
+    bool isAllowedAlterDocument() const override;
     bool isAllowedAlterView() const override
     {
         return true;

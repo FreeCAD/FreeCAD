@@ -143,6 +143,11 @@ void PlacementHandler::setIgnoreTransactions(bool value)
     ignoreTransaction = value;
 }
 
+bool PlacementHandler::isChangingProperty() const
+{
+    return changeProperty;
+}
+
 void PlacementHandler::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     selectionObjects = selection;
@@ -928,6 +933,11 @@ void Placement::setIgnoreTransactions(bool value)
     handler.setIgnoreTransactions(value);
 }
 
+bool Placement::isChangingProperty() const
+{
+    return handler.isChangingProperty();
+}
+
 /*!
  * \brief Placement::bindObject
  * Binds the spin boxes to the placement components of the first object of the selection.
@@ -1241,6 +1251,11 @@ void TaskPlacement::open()
     widget->open();
 }
 
+bool TaskPlacement::isAllowedAlterDocument() const
+{
+    return !widget->isChangingProperty();
+}
+
 void TaskPlacement::setPropertyName(const QString& name)
 {
     widget->setPropertyName(name.toStdString());
@@ -1516,7 +1531,7 @@ Py::Object TaskPlacementPy::isAllowedAlterDocument(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    return Py::Boolean(true);
+    return Py::Boolean(!widget || !widget->isChangingProperty());
 }
 
 Py::Object TaskPlacementPy::isAllowedAlterView(const Py::Tuple& args)
