@@ -28,7 +28,7 @@ class ViewProvider(ExtensionContainer):
         _CoinSoSeparator: TypeAlias = Any
         _CoinSoSwitch: TypeAlias = Any
 
-        class ToggleVisibilityMode(Enum):
+        class _ToggleVisibilityMode(Enum):
             CanToggleVisibility = "CanToggleVisibility"
             NoToggleVisibility = "NoToggleVisibility"
 
@@ -329,6 +329,6 @@ class ViewProvider(ExtensionContainer):
     DropPrefix: Final[str]
     """Subname referencing the sub-object for holding dropped object."""
 
-    ToggleVisibility: ToggleVisibilityMode | str
+    ToggleVisibility: _ToggleVisibilityMode | str
     """Get/set whether the viewprovider can toggle the visibility of
     the object."""
