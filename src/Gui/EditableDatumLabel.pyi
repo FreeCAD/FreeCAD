@@ -2,6 +2,7 @@
 
 from FreeCADGui import _View3DInventor, _View3DInventorViewer
 from PySide import QtCore
+from typing import overload
 from collections.abc import Callable
 
 from Base.Metadata import class_declarations, export
@@ -27,9 +28,10 @@ class EditableDatumLabel(PyObjectBase):
     dimension and positioning workflows.
     """
 
-    # no posonly "/" or it will break Ubuntu build
+    @overload  # overload required, or else ubuntu build will fail
     def __init__(
         self,
+        /,
         viewer: _View3DInventor | _View3DInventorViewer,
         placement: Placement,
         color: tuple[float, float, float] | None = None,
