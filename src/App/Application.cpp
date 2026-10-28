@@ -2426,6 +2426,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     ("get-config", boost::program_options::value<std::string>(), "Prints the value of the requested configuration key")
     ("set-config", boost::program_options::value< std::vector<std::string> >()->multitoken(), "Sets the value of a configuration key")
     ("keep-deprecated-paths", "If set then config files are kept on the old location")
+    ("desktop-file", boost::program_options::value<std::vector<std::string>>(), "Base name of the desktop file to use for launching the application (without the .desktop extension). On Linux, the file must reside in ~/.local/share/applications")
     ;
 
     // Declare a group of options that will be
@@ -2733,6 +2734,15 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
             }
         }
     }
+    
+    if (vm.contains("desktop-file")) {
+        auto desktopFileArgs = vm["desktop-file"].as<std::vector<std::string>>();
+        if (!desktopFileArgs.empty()) {
+            mConfig["DesktopFileName"] = desktopFileArgs.front();
+        }
+    }
+
+
 }
 
 }

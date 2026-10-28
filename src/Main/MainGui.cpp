@@ -219,8 +219,10 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
     App::Application::Config()["SplashInfoColor"] = "#212529";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
-    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
-
+    auto& config = App::Application::Config();
+    if (config.find("DesktopFileName") == config.end() || config["DesktopFileName"].empty()) {
+        App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
+    }
     try {
         // Init phase ===========================================================
         // sets the default run mode for FC, starts with gui if not overridden in InitConfig...
