@@ -27,9 +27,9 @@ class EditableDatumLabel(PyObjectBase):
     dimension and positioning workflows.
     """
 
+    # no posonly "/" or it will break Ubuntu build
     def __init__(
         self,
-        /,
         viewer: _View3DInventor | _View3DInventorViewer,
         placement: Placement,
         color: tuple[float, float, float] | None = None,
