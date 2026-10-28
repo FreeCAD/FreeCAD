@@ -513,13 +513,14 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
             std::vector<std::string> value = prop->getEnumVector();
             if (it == views.begin()) {
                 for (const auto& jt : value) {
-                    commonModes << QLatin1String(jt.c_str());
+                    commonModes << QString::fromStdString(jt);
                 }
             }
             else {
                 for (const auto& jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
-                        modes << QLatin1String(jt.c_str());
+                    const QString mode = QString::fromStdString(jt);
+                    if (commonModes.contains(mode)) {
+                        modes << mode;
                     }
                 }
 

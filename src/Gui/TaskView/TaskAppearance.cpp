@@ -228,13 +228,14 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
             std::vector<std::string> value = display->getEnumVector();
             if (it == views.begin()) {
                 for (const auto& jt : value) {
-                    commonModes << QLatin1String(jt.c_str());
+                    commonModes << QString::fromStdString(jt);
                 }
             }
             else {
                 for (const auto& jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
-                        modes << QLatin1String(jt.c_str());
+                    const QString mode = QString::fromStdString(jt);
+                    if (commonModes.contains(mode)) {
+                        modes << mode;
                     }
                 }
 

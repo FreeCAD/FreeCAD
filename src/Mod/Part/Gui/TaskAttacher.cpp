@@ -1437,7 +1437,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                                "del(_tv_%1)"
             )
                                .arg(QString::fromStdString(postfix));
-            Gui::Command::runCommand(Gui::Command::Gui, code.toLatin1().constData());
+            Gui::Command::runCommand(Gui::Command::Gui, code.toUtf8().constData());
         }
     };
 
