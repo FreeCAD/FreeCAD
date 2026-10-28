@@ -93,8 +93,6 @@ private Q_SLOTS:
     void useCustomThreadClearanceChanged();
     void threadModelChanged();
     void customThreadClearanceChanged(double value);
-    void taperedCheckChanged();
-    void taperedAngleChanged(double value);
 
 private:
     class Observer: public App::DocumentObserver

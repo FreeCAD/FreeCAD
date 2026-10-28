@@ -73,8 +73,6 @@ public:
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
     App::PropertyBool IsInternal;
-    App::PropertyBool Tapered;
-    App::PropertyAngle TaperedAngle;
 
 
     /** @name methods override feature */
@@ -109,9 +107,12 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
     void updatePreviewShape() override;
 
 private:
+    void updateThreadDesignation();
+    void updateThreadClasses();
     ThreadExtent resolveThreadExtent(const Part::TopoShape& base);
     ThreadUtils threadUtils;
     Part::TopoShape reducedBasePreviewShape;

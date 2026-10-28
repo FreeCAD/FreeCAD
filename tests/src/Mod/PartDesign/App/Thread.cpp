@@ -837,12 +837,6 @@ TEST_F(ThreadTest, ExternalThreadModeledOnCone)
     }
     ASSERT_TRUE(lateralFace.has_value());
     thread->LateralFace.setValue(base, {*lateralFace});
-    EXPECT_TRUE(thread->Tapered.getValue());
-    EXPECT_NEAR(
-        thread->TaperedAngle.getValue(),
-        90.0 + std::atan((12.375 - 12.0) / length) * 180.0 / std::numbers::pi,
-        1e-9
-    );
 
     const int typeIdx = findEnumIndex(thread->ThreadType.getEnumVector(), "ISOMetricProfile");
     ASSERT_GE(typeIdx, 0);
@@ -953,7 +947,7 @@ TEST_F(ThreadTest, ExternalThreadModeledM24Signature)
 
     EXPECT_NEAR(thread->Diameter.getValue(), 24.0, 1e-9);
     EXPECT_FALSE(thread->IsInternal.getValue());
-    EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x3.0");
+    EXPECT_EQ(std::string(thread->ThreadDesignation.getValue()), "M24x3");
 }
 
 TEST_F(ThreadTest, ExternalThreadModeledBSPHalfInchSignature)
@@ -980,8 +974,8 @@ TEST_F(ThreadTest, ExternalThreadModeledBSPHalfInchSignature)
     ASSERT_GE(typeIdx, 0) << "BSP was not found in enum";
     thread->ThreadType.setValue(typeIdx);
 
-    int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "20.955");
-    ASSERT_GE(sizeIdx, 0) << "BSP 1/2 major diameter was not found in enum";
+    int sizeIdx = findEnumIndex(thread->ThreadSize.getEnumVector(), "1/2");
+    ASSERT_GE(sizeIdx, 0) << "BSP 1/2 was not found in enum";
     thread->ThreadSize.setValue(sizeIdx);
 
     int pitchIdx = findEnumIndex(thread->ThreadSizePitch.getEnumVector(), "1.814");

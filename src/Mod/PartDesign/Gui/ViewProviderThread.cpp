@@ -142,8 +142,8 @@ void ViewProviderThread::updateData(const App::Property* prop)
         return;
     }
 
-    if (prop == &thread->CosmeticThread || prop == &thread->ModelThread || prop == &thread->Tapered
-        || prop == &thread->TaperedAngle || prop == &thread->LateralFace
+    if (prop == &thread->CosmeticThread || prop == &thread->ModelThread
+        || prop == &thread->LateralFace
         || prop == &thread->StartPlane || prop == &thread->UpToGeometry
         || prop == &thread->DepthType || prop == &thread->Depth || prop == &thread->Diameter
         || prop == &thread->ThreadSize || prop == &thread->ThreadSizePitch

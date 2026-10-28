@@ -50,8 +50,7 @@ public:
         const int leftHanded,
         App::PropertyEnumeration& threadClass,
         const bool isInternalThread,
-        const bool tapered,
-        const double taperedAngle,
+        const double taperSlope,
         const bool useCustomThreadClearance,
         const double customThreadClearance,
         const double farEndTrim,
@@ -76,7 +75,8 @@ public:
     };
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
-    std::vector<std::string> getThreadDiameters(const int threadType) const;
+    std::vector<double> getThreadDiameterValues(const int threadType) const;
+    std::vector<std::string> getThreadDiameterLabels(const int threadType) const;
     std::vector<std::string> getThreadMinorDiameters(const int threadType);
     double getMinorDiameter(const int threadType, const int size, const int pitch) const;
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
@@ -88,9 +88,7 @@ public:
         double majorDiameter,
         double minorDiameter,
         double length,
-        const gp_Pnt& startPoint,
-        bool tapered,
-        double taperedAngle
+        const gp_Pnt& startPoint
     );
     gp_Pnt getPlaneLineIntersection(const gp_Pln& plane, const gp_Lin& line);
     std::vector<gp_Pnt> findLineCurveIntersections(const gp_Lin& line, const BRepAdaptor_Curve& curve);
@@ -119,8 +117,7 @@ public:
         bool isInternalThread,
         double supportDiameter,
         double usefulThreadLength,
-        bool tapered,
-        double taperedAngle,
+        double profileTaperSlope,
         bool useCustomThreadClearance,
         double customThreadClearance,
         App::PropertyEnumeration& threadClass,
@@ -131,7 +128,9 @@ public:
     std::string getThreadDesignations(
         const int threadType,
         const int threadDiameter,
-        const int threadPitch
+        const int threadPitch,
+        const bool isLeftHanded,
+        const std::string& threadClass
     );
 
     double getThroughAllLength(TopoShape base) const;
@@ -149,9 +148,7 @@ public:
         const bool isInternalThread,
         const bool useCustomThreadClearance,
         const double customThreadClearance,
-        App::PropertyEnumeration& threadClass,
-        const bool tapered,
-        const double taperedAngle
+        App::PropertyEnumeration& threadClass
     );
     gp_Pnt getThreadEndPoint(
         const App::PropertyLinkSub& lateralFace,
@@ -159,8 +156,6 @@ public:
         const gp_Pnt& startPoint
     );
     gp_Pnt getThreadFarPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir) const;
-    double getThreadProfileAngle();
-    bool isThreadConical(const int threadType) const;
     /// Signed semi-angle in radians relative to the lateral face axis; zero for cylinders.
     double getConicalAngle(const App::PropertyLinkSub& lateralFace);
     static const char* ThreadTypeEnums[];

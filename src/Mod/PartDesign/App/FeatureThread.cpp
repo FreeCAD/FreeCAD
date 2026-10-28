@@ -85,7 +85,7 @@ Thread::Thread()
         App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "Thread size")
     );
-    ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+    ThreadSize.setEnums(threadUtils.getThreadDiameterLabels(ThreadType.getValue()));
 
     ADD_PROPERTY_TYPE(
         ThreadSizePitch,
@@ -106,7 +106,6 @@ Thread::Thread()
         QT_TRANSLATE_NOOP("App::Property", "Thread direction")
     );
     ThreadDirection.setEnums(ThreadUtils::ThreadDirectionEnums);
-    ThreadDirection.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(
         DepthType,
@@ -199,23 +198,6 @@ Thread::Thread()
     );
 
     ADD_PROPERTY_TYPE(
-        Tapered,
-        (false),
-        "Thread",
-        App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "Tapered")
-    );
-
-    ADD_PROPERTY_TYPE(
-        TaperedAngle,
-        (90.0),
-        "Thread",
-        App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "Tapered angle")
-    );
-    TaperedAngle.setReadOnly(true);
-
-    ADD_PROPERTY_TYPE(
         Diameter,
         (0.0),
         "Thread",
@@ -230,6 +212,13 @@ Thread::Thread()
         App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "Thread is internal")
     );
+
+    try {
+        updateThreadClasses();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Thread: %s\n", e.what());
+    }
 }
 
 Thread::ThreadExtent Thread::resolveThreadExtent()
@@ -251,7 +240,9 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
     double length = 0.0;
 
     if (method == "Dimension") {
-        length = Depth.getValue();
+        const double projStart = gp_Vec(nearPoint, origin).Dot(gp_Vec(direction));
+        const double availableLength = cylinderHeight - projStart;
+        length = std::min(Depth.getValue(), availableLength);
     }
     else if (method == "UpToFirst") {
         length = threadUtils.getUpToFirstLength(
@@ -263,9 +254,7 @@ Thread::ThreadExtent Thread::resolveThreadExtent(const Part::TopoShape& base)
             IsInternal.getValue(),
             UseCustomThreadClearance.getValue(),
             CustomThreadClearance.getValue(),
-            ThreadClass,
-            Tapered.getValue(),
-            TaperedAngle.getValue()
+            ThreadClass
         );
     }
     else if (method == "ThroughAll") {
@@ -337,7 +326,7 @@ try {
     int nearestPitch = -1;
     double definedDiameter = 0.0;
     if (!IsInternal.getValue()) {
-        const std::vector<std::string> diameters = threadUtils.getThreadDiameters(
+        const std::vector<double> diameters = threadUtils.getThreadDiameterValues(
             ThreadType.getValue()
         );
         nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
@@ -346,7 +335,7 @@ try {
                 QT_TRANSLATE_NOOP("Exception", "Thread error: Thread size index out of definition range.")
             );
         }
-        definedDiameter = std::stod(diameters[nearestSize]);
+        definedDiameter = diameters[nearestSize];
     }
     else {
         const auto selection = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
@@ -410,12 +399,6 @@ try {
             ));
         }
 
-        if (length > cylinderHeight) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Thread error: Thread depth greater than cylinder height")
-            );
-        }
-
 
         if (ModelThread.getValue()) {
             const double selectedPitch = threadUtils.getThreadPitch(
@@ -440,9 +423,6 @@ try {
             std::optional<double> externalMinorDiameter;
             const bool conicalSupport = threadUtils.isConicalFace(LateralFace);
             const double faceSlope = conicalSupport ? std::tan(conicalAngle) : 0.0;
-            const double reductionSlope = conicalSupport && Tapered.getValue()
-                ? -std::tan(Base::toRadians(90.0 - TaperedAngle.getValue()))
-                : 0.0;
             const double supportEndRadius = diameter / 2.0 + length * faceSlope;
             if (!std::isfinite(supportEndRadius) || supportEndRadius <= Precision::Confusion()) {
                 throw Base::ValueError(
@@ -465,13 +445,12 @@ try {
                 IsInternal.getValue(),
                 supportDiameter,
                 usefulThreadLength,
-                Tapered.getValue(),
-                TaperedAngle.getValue(),
+                -faceSlope,
                 UseCustomThreadClearance.getValue(),
                 CustomThreadClearance.getValue(),
                 ThreadClass,
                 true,
-                IsInternal.getValue() ? faceSlope : reductionSlope
+                faceSlope
             );
             const std::string depthType(DepthType.getValueAsString());
             const bool limitInternalToolToFace = IsInternal.getValue()
@@ -499,7 +478,7 @@ try {
 
                 const double majorDiameter = diameter + 2.0 * trimmingStart * faceSlope;
                 const double minorDiameter = *externalMinorDiameter
-                    + 2.0 * trimmingStart * reductionSlope;
+                    + 2.0 * trimmingStart * faceSlope;
 
                 base = threadUtils.reduceExternalThreadBase(
                     base,
@@ -507,9 +486,7 @@ try {
                     majorDiameter,
                     minorDiameter,
                     trimmingEnd - trimmingStart,
-                    startPoint.Translated(zDir * trimmingStart),
-                    Tapered.getValue(),
-                    TaperedAngle.getValue()
+                    startPoint.Translated(zDir * trimmingStart)
                 );
             }
 
@@ -524,8 +501,7 @@ try {
                 ThreadDirection.getValue(),
                 ThreadClass,
                 IsInternal.getValue(),
-                Tapered.getValue(),
-                TaperedAngle.getValue(),
+                -faceSlope,
                 UseCustomThreadClearance.getValue(),
                 CustomThreadClearance.getValue(),
                 endTrims.farEnd,
@@ -700,6 +676,69 @@ void Thread::updatePreviewShape()
     FeatureAddSub::updatePreviewShape();
 }
 
+void Thread::onDocumentRestored()
+{
+    if (ThreadType.isValid() && ThreadSize.isValid()) {
+        try {
+            const auto labels = threadUtils.getThreadDiameterLabels(ThreadType.getValue());
+            const auto saved = ThreadSize.getEnumVector();
+            if (labels != saved && labels.size() == saved.size()) {
+                const long index = ThreadSize.getValue();
+                ThreadSize.setEnums(labels);
+                ThreadSize.setValue(index);
+            }
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Thread::onDocumentRestored: %s\n", e.what());
+        }
+    }
+
+    try {
+        updateThreadClasses();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("Thread::onDocumentRestored: %s\n", e.what());
+    }
+    updateThreadDesignation();
+    DressUp::onDocumentRestored();
+}
+
+void Thread::updateThreadClasses()
+{
+    std::vector<std::string> classes {"None"};
+    const bool isNone = !ThreadType.isValid()
+        || std::string(ThreadType.getValueAsString()) == "None";
+
+    if (!isNone) {
+        classes = threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue());
+    }
+
+    if (classes != ThreadClass.getEnumVector()) {
+        ThreadClass.setEnums(classes);
+    }
+    ThreadClass.setReadOnly(isNone);
+}
+
+void Thread::updateThreadDesignation()
+{
+    std::string designation = "---";
+    if (ThreadType.isValid() && ThreadSize.isValid() && ThreadSizePitch.isValid()) {
+        const std::string threadClass = ThreadClass.isValid() ? ThreadClass.getValueAsString()
+                                                              : "";
+        designation = threadUtils.getThreadDesignations(
+            ThreadType.getValue(),
+            ThreadSize.getValue(),
+            ThreadSizePitch.getValue(),
+            ThreadDirection.getValue() == 1,
+            threadClass
+        );
+    }
+
+    if (designation != ThreadDesignation.getValue()) {
+        ThreadDesignation.setValue(designation);
+    }
+}
+
 void Thread::onChanged(const App::Property* prop)
 try {
     if (prop == &ThreadType || prop == &IsInternal) {
@@ -708,7 +747,7 @@ try {
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             if (prop == &ThreadType) {
-                ThreadSize.setEnums(threadUtils.getThreadDiameters(ThreadType.getValue()));
+                ThreadSize.setEnums(threadUtils.getThreadDiameterLabels(ThreadType.getValue()));
                 if (!ThreadSize.isValid() && ThreadSize.hasEnums()) {
                     ThreadSize.setValue(0L);
                 }
@@ -731,25 +770,8 @@ try {
             return;
         }
 
-        if (type == "None" || type == "BSP" || type == "NPT" || type == "ISOTyre") {
-            ThreadClass.setEnums(ThreadUtils::ThreadClass_None_Enums);
-        }
-        else if (
-            type == "ISOMetricProfile" || type == "ISOMetricFineProfile" || type == "UNC"
-            || type == "UNF" || type == "UNEF" || type == "BSW" || type == "BSF"
-        ) {
-            ThreadClass.setEnums(
-                threadUtils.getThreadClasses(ThreadType.getValue(), IsInternal.getValue())
-            );
-        }
-
-        if (prop == &ThreadType) {
-            ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-                ThreadType.getValue(),
-                ThreadSize.getValue(),
-                ThreadSizePitch.getValue()
-            ));
-        }
+        updateThreadClasses();
+        updateThreadDesignation();
     }
     else if (prop == &ThreadSize) {
         if (!ThreadType.isValid() || !ThreadSize.isValid()) {
@@ -764,18 +786,10 @@ try {
         if (!ThreadSizePitch.isValid() && ThreadSizePitch.hasEnums()) {
             ThreadSizePitch.setValue(0L);
         }
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-            ThreadType.getValue(),
-            ThreadSize.getValue(),
-            ThreadSizePitch.getValue()
-        ));
+        updateThreadDesignation();
     }
-    else if (prop == &ThreadSizePitch) {
-        ThreadDesignation.setValue(threadUtils.getThreadDesignations(
-            ThreadType.getValue(),
-            ThreadSize.getValue(),
-            ThreadSizePitch.getValue()
-        ));
+    else if (prop == &ThreadSizePitch || prop == &ThreadDirection || prop == &ThreadClass) {
+        updateThreadDesignation();
     }
     else if (prop == &LateralFace || prop == &StartPlane) {
         if (this->testStatus(App::ObjectStatus::Restore)
@@ -806,11 +820,6 @@ try {
             auto* const res = threadUtils.validateParameters(LateralFace);
             if (res != App::DocumentObject::StdReturn) {
                 return;
-            }
-            if (prop == &LateralFace && threadUtils.isConicalFace(LateralFace)) {
-                const double angle = 90.0 + Base::toDegrees(threadUtils.getConicalAngle(LateralFace));
-                TaperedAngle.setValue(angle);
-                Tapered.setValue(true);
             }
             diameter = threadUtils.getLateralFaceDiameter(LateralFace, StartPlane);
         }
@@ -867,7 +876,7 @@ try {
             }
         }
 
-        const auto sizes = threadUtils.getThreadDiameters(ThreadType.getValue());
+        const auto sizes = threadUtils.getThreadDiameterValues(ThreadType.getValue());
         if (nearestSize >= 0 && static_cast<size_t>(nearestSize) < sizes.size()
             && nearestSize != ThreadSize.getValue()) {
             ThreadSize.setValue(nearestSize);
@@ -878,21 +887,6 @@ try {
             if (static_cast<size_t>(nearestPitch) < pitches.size()
                 && nearestPitch != ThreadSizePitch.getValue()) {
                 ThreadSizePitch.setValue(nearestPitch);
-            }
-        }
-    }
-    else if (prop == &Tapered) {
-        TaperedAngle.setReadOnly(!Tapered.getValue());
-        if (!this->testStatus(App::ObjectStatus::Restore)
-            && !this->testStatus(App::ObjectStatus::Remove) && !this->isRestoring()) {
-            if (Tapered.getValue()) {
-                const bool isConical = threadUtils.isThreadConical(ThreadType.getValue());
-                if (isConical && TaperedAngle.getValue() == 90) {
-                    TaperedAngle.setValue(threadUtils.getThreadProfileAngle());
-                }
-            }
-            else {
-                TaperedAngle.setValue(90);
             }
         }
     }
