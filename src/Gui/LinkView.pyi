@@ -35,7 +35,10 @@ class LinkView(BaseClass):
         """
 
     def setMaterial(
-        self, material: Material | dict[int, Material] | Sequence[Material] | None, /
+        self,
+        material: Material | dict[int,
+        Material] | Sequence[Material] | None,
+        /,
     ) -> None:
         """
         setMaterial(Material): set the override material of the entire linked object
@@ -77,7 +80,11 @@ class LinkView(BaseClass):
         """
 
     def setChildren(
-        self, children: list[DocumentObject], vis: list[bool | int] = [], type: int = 0, /
+        self,
+        children: list[DocumentObject],
+        vis: list[bool | int] = [],
+        type: int = 0,
+        /,
     ) -> None:
         """
         Group a list of children objects. Note, this mode of operation is incompatible
