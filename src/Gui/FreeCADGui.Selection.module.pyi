@@ -153,7 +153,10 @@ def clearPreselection() -> None:
     """Clear the current preselection target."""
 
 def countObjectsOfType(
-    type_name: str, doc_name: str = ..., resolve: ResolveMode | int = 1, /,
+    type_name: str,
+    doc_name: str = ...,
+    resolve: ResolveMode | int = 1,
+    /,
 ) -> int:
     """Count selected objects of one type, using the active document when omitted."""
 

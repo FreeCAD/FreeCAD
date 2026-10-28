@@ -233,7 +233,9 @@ class ViewProvider(ExtensionContainer):
             True to add, or False to remove the subelement(s) for rendering.
         """
 
-    def getElementColors(self, elementName: str = ..., /) -> dict[str, tuple[float, float, float, float]]:
+    def getElementColors(
+        self, elementName: str = ..., /
+    ) -> dict[str, tuple[float, float, float, float]]:
         """
         Get a dictionary of the form {elementName : (r,g,b,a)}.
         If no element name is given a dictionary with all the elements is returned.
@@ -259,7 +261,9 @@ class ViewProvider(ExtensionContainer):
         """
 
     @constmethod
-    def getDetailPath(self, subelement: str, path: _CoinSoPath, append: bool = True, /) -> _CoinSoDetail:
+    def getDetailPath(
+        self, subelement: str, path: _CoinSoPath, append: bool = True, /
+    ) -> _CoinSoDetail:
         """
         Return Coin detail and path of an subelement.
 
@@ -301,7 +305,6 @@ class ViewProvider(ExtensionContainer):
         depth: int
             Current recursion depth.
         """
-
     Annotation: _CoinSoSeparator
     """A pivy Separator to add a custom scenegraph to this ViewProvider."""
 

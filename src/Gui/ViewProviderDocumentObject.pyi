@@ -17,7 +17,6 @@ class ViewProviderDocumentObject(ViewProvider):
         """
         Update the view representation of the object
         """
-
     Object: DocumentObject
     """Set/Get the associated data object"""
 

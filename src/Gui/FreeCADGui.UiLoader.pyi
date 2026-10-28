@@ -19,7 +19,11 @@ class UiLoader:
         """Load one `.ui` source and return the created widget tree."""
 
     def createWidget(
-        self, class_name: str, parent: QtWidgets.QWidget | None = None, name: str = "", /,
+        self,
+        class_name: str,
+        parent: QtWidgets.QWidget | None = None,
+        name: str = "",
+        /,
     ) -> QtWidgets.QWidget | None:
         """Create one widget by Qt class name."""
 

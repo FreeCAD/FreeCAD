@@ -24,7 +24,10 @@ class TaskPlacement:
         """Bind the current placement to the selected object."""
 
     def setPlacementAndBindObject(
-        self, document_object: DocumentObject, property_name: str, /,
+        self,
+        document_object: DocumentObject,
+        property_name: str,
+        /,
     ) -> None:
         """Bind the dialog directly to one object and placement property."""
 

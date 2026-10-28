@@ -31,7 +31,6 @@ class SelectionObject(BaseClass):
         """
         Test for a certain father class.
         """
-
     ObjectName: Final[str]
     """Name of the selected object"""
 

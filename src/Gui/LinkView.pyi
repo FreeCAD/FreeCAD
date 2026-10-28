@@ -34,7 +34,9 @@ class LinkView(BaseClass):
         Reset the link view and clear the links
         """
 
-    def setMaterial(self, material: Material | dict[int, Material] | Sequence[Material] | None, /) -> None:
+    def setMaterial(
+        self, material: Material | dict[int, Material] | Sequence[Material] | None, /
+    ) -> None:
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -74,7 +76,9 @@ class LinkView(BaseClass):
                                           array/group by index
         """
 
-    def setChildren(self, children: list[DocumentObject], vis: list[bool | int] = [], type: int = 0, /) -> None:
+    def setChildren(
+        self, children: list[DocumentObject], vis: list[bool | int] = [], type: int = 0, /
+    ) -> None:
         """
         Group a list of children objects. Note, this mode of operation is incompatible
         with link array. Calling this function will deactivate link array. And calling
@@ -131,7 +135,6 @@ class LinkView(BaseClass):
         """
         Get children view objects
         """
-
     LinkedView: Final[ViewProviderDocumentObject | None]
     """The linked view object"""
 
