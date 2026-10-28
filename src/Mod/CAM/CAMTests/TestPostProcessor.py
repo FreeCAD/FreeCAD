@@ -386,13 +386,11 @@ class TestPostProcessorClassification(unittest.TestCase):
         machine_posts = [
             "generic",
             "linuxcnc",
-            # "grbl", # FIXME: why does this fail?
             "centroid",
             "mach3_mach4",
             "opensbp",
             "generic_sheet_cutting",
             "smoothie",
-            # "masso_g3", # FIXME: why does this fail?
         ]
         for post in machine_posts:
             result = Path.Preferences.classifyPostProcessor(post)
@@ -424,9 +422,6 @@ class TestPostProcessorClassification(unittest.TestCase):
         # Machine posts should not appear in legacy list
         for post in ["generic", "linuxcnc"]:
             self.assertNotIn(post, legacy, f"Machine post '{post}' found in legacy list")
-
-        self.skipTest("FIXME: should grbl fail here?")
-        self.assertNotIn(post, "grbl", f"Machine post '{post}' found in legacy list")
 
     def test050_machine_list_excludes_legacy(self):
         """allAvailableMachinePostProcessors excludes legacy-type posts."""
