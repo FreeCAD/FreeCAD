@@ -296,7 +296,7 @@
               <string>Toggles between selection and preview mode</string>
              </property>
              <property name="text">
-              <string>Select</string>
+              <string>Select Faces</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -525,7 +525,7 @@
               <string>Toggles between selection and preview mode</string>
              </property>
              <property name="text">
-              <string>Select</string>
+              <string>Select Faces</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
