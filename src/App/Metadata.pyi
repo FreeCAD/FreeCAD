@@ -50,6 +50,48 @@ class Metadata(PyObjectBase):
     DeveloperDocu: Metadata
     """
 
+    if TYPE_CHECKING:
+        class _MaintainerDict(TypedDict):
+            """A maintainer info object."""
+            name: str
+            email: str
+
+        class _AuthorDict(TypedDict):
+            """An author info object."""
+            name: str
+            email: str
+
+        class _LicenseDict(TypedDict):
+            """A license info object."""
+            name: str
+            file: str
+
+        class _UrlDict(TypedDict):
+            """An url info object."""
+            location: str
+            type: Literal["website", "repository", "bugtracker", "readme", "documentation", "discussion", "unknown"]
+            branch: NotRequired[str]
+            """Only set if type is 'repository'."""
+
+        class _DependencyDict(TypedDict):
+            """A dependency info object."""
+            package: str
+            """Required. Must exactly match the contents of the 'name' element in the referenced package's package.xml file."""
+            version_lt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less than the stated version number."""
+            version_lte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions less or equal than the stated version number."""
+            version_eq: NotRequired[str]
+            """Optional. The dependency to the package is restricted to a version equal than the stated version number."""
+            version_gt: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater than the stated version number."""
+            version_gte: NotRequired[str]
+            """Optional. The dependency to the package is restricted to versions greater or equal than the stated version number."""
+            condition: NotRequired[str]
+            """Optional. Conditional expression as documented in REP149."""
+            optional: NotRequired[bool]
+            type: NotRequired[Literal["automatic", "addon", "internal", "python"]]
+
     @overload
     def __init__(self) -> None:
         ...
@@ -337,45 +379,3 @@ class Metadata(PyObjectBase):
         """
         Write the metadata to the given file as XML data.
         """
-
-    if TYPE_CHECKING:
-        class _MaintainerDict(TypedDict):
-            """A maintainer info object."""
-            name: str
-            email: str
-
-        class _AuthorDict(TypedDict):
-            """An author info object."""
-            name: str
-            email: str
-
-        class _LicenseDict(TypedDict):
-            """A license info object."""
-            name: str
-            file: str
-
-        class _UrlDict(TypedDict):
-            """An url info object."""
-            location: str
-            type: Literal["website", "repository", "bugtracker", "readme", "documentation", "discussion", "unknown"]
-            branch: NotRequired[str]
-            """Only set if type is 'repository'."""
-
-        class _DependencyDict(TypedDict):
-            """A dependency info object."""
-            package: str
-            """Required. Must exactly match the contents of the 'name' element in the referenced package's package.xml file."""
-            version_lt: NotRequired[str]
-            """Optional. The dependency to the package is restricted to versions less than the stated version number."""
-            version_lte: NotRequired[str]
-            """Optional. The dependency to the package is restricted to versions less or equal than the stated version number."""
-            version_eq: NotRequired[str]
-            """Optional. The dependency to the package is restricted to a version equal than the stated version number."""
-            version_gt: NotRequired[str]
-            """Optional. The dependency to the package is restricted to versions greater than the stated version number."""
-            version_gte: NotRequired[str]
-            """Optional. The dependency to the package is restricted to versions greater or equal than the stated version number."""
-            condition: NotRequired[str]
-            """Optional. Conditional expression as documented in REP149."""
-            optional: NotRequired[bool]
-            type: NotRequired[Literal["automatic", "addon", "internal", "python"]]
