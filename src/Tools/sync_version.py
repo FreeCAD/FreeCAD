@@ -133,11 +133,13 @@ def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
 
     return updated, updated != content
 
+
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
     ("package/fedora/freecad.spec", sync_fedora_spec),
 ]
+
 
 def run(repo_root: Path, check_only: bool) -> bool:
     """Process all sync targets, either checking or applying updates.
