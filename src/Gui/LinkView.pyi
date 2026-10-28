@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
+from App.DocumentObject import DocumentObject
+from App.Material import Material
+from Base.Matrix import Matrix
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from Base.BoundBox import BoundBox
 from ViewProviderDocumentObject import ViewProviderDocumentObject
-from typing import Any, Final, List, Dict, Tuple, overload
+from typing import TYPE_CHECKING, Any, Final, TypeAlias
+from collections.abc import Sequence
 
 @export(
     Include="Gui/ViewProviderLink.h",
@@ -21,21 +23,18 @@ class LinkView(BaseClass):
     Licence: LGPL
     """
 
+    if TYPE_CHECKING:  # because generate deletes top-level declaration
+        _CoinSoPickedPoint: TypeAlias = Any
+        _CoinSoPath: TypeAlias = Any
+        _CoinSoDetail: TypeAlias = Any
+        _CoinSoSeparator: TypeAlias = Any
+
     def reset(self) -> None:
         """
         Reset the link view and clear the links
         """
-        ...
 
-    @overload
-    def setMaterial(self, material: None, /) -> None: ...
-    @overload
-    def setMaterial(self, material: Any, /) -> None: ...
-    @overload
-    def setMaterial(self, material: List[Any], /) -> None: ...
-    @overload
-    def setMaterial(self, material: Dict[int, Any], /) -> None: ...
-    def setMaterial(self, material: Any, /) -> None:
+    def setMaterial(self, material: Material | dict[int, Material] | Sequence[Material] | None, /) -> None:
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -49,12 +48,7 @@ class LinkView(BaseClass):
         is unset, it defaults to the override material of the linked object, if there
         is one
         """
-        ...
 
-    @overload
-    def setType(self, type: int, /) -> None: ...
-    @overload
-    def setType(self, type: int, sublink: bool, /) -> None: ...
     def setType(self, type: int, sublink: bool = True, /) -> None:
         """
         set the link type.
@@ -68,15 +62,8 @@ class LinkView(BaseClass):
         sublink: auto delegate to the sub-object references in the link, if there is
                  one and only one.
         """
-        ...
 
-    @overload
-    def setTransform(self, matrix: Any, /) -> None: ...
-    @overload
-    def setTransform(self, matrix: List[Any], /) -> None: ...
-    @overload
-    def setTransform(self, matrix: Dict[int, Any], /) -> None: ...
-    def setTransform(self, matrix: Any, /) -> None:
+    def setTransform(self, matrix: Matrix | dict[int, Matrix] | Sequence[Matrix], /) -> None:
         """
         set transformation of the linked object
 
@@ -86,9 +73,8 @@ class LinkView(BaseClass):
         set transformation for elements of the link
                                           array/group by index
         """
-        ...
 
-    def setChildren(self, children: List[Any], vis: List[Any] = [], type: int = 0, /) -> None:
+    def setChildren(self, children: list[DocumentObject], vis: list[bool | int] = [], type: int = 0, /) -> None:
         """
         Group a list of children objects. Note, this mode of operation is incompatible
         with link array. Calling this function will deactivate link array. And calling
@@ -101,15 +87,13 @@ class LinkView(BaseClass):
            1: override visibility,
            2: override none.
         """
-        ...
 
-    @overload
-    def setLink(self, obj: Any, /) -> None: ...
-    @overload
-    def setLink(self, obj: Any, subname: str, /) -> None: ...
-    @overload
-    def setLink(self, obj: Any, subname: List[str], /) -> None: ...
-    def setLink(self, obj: Any, subname: Any = None, /) -> None:
+    def setLink(
+        self,
+        obj: DocumentObject | ViewProviderDocumentObject | None,
+        subname: str | Sequence[str] | None = None,
+        /,
+    ) -> None:
         """
         Set the link
 
@@ -124,48 +108,44 @@ class LinkView(BaseClass):
                  The sub-name must end with a '.' if it is referencing an sub-object,
                  or else it is considered a sub-element reference.
         """
-        ...
 
-    def getDetailPath(self, sub: str, path: Any, /) -> Tuple[Any, Any]:
+    def getDetailPath(self, sub: str, path: _CoinSoPath, /) -> _CoinSoDetail | None:
         """
         get the 3d path an detail of an element.
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
         """
-        ...
 
-    def getElementPicked(self, pickPoint: Any, /) -> str | None:
+    def getElementPicked(self, pickPoint: _CoinSoPickedPoint, /) -> str | None:
         """
         get the element under a 3d pick point.
         """
-        ...
 
     def getBoundBox(self, vobj: ViewProviderDocumentObject, /) -> BoundBox:
         """
         get the bounding box.
         """
-        ...
 
     @constmethod
-    def getChildren(self) -> Tuple[ViewProviderDocumentObject, ...] | None:
+    def getChildren(self) -> tuple[ViewProviderDocumentObject, ...] | None:
         """
         Get children view objects
         """
-        ...
-    LinkedView: Final[Any] = ...
+
+    LinkedView: Final[ViewProviderDocumentObject | None]
     """The linked view object"""
 
-    SubNames: Final[Any] = ...
+    SubNames: Final[tuple[str, ...] | None]
     """The sub-object reference of the link"""
 
-    RootNode: Final[Any] = ...
+    RootNode: Final[_CoinSoSeparator]
     """A pivy node holding the cloned representation of the linked view object"""
 
-    Owner: Any = ...
+    Owner: ViewProviderDocumentObject | None
     """The owner view object of this link handle"""
 
-    Visibilities: Any = ...
+    Visibilities: tuple[bool, ...] | None
     """Get/set the child element visibility"""
 
-    Count: int = 0
+    Count: int
     """Set the element size to create an array of linked object"""
