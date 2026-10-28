@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Test whether all function definitions declare a positional-only arg.
 """
@@ -28,6 +27,8 @@ else:
 
 
 for path in files:
+    if path.suffix != ".pyi":
+        continue
     if path.name == "PropertyPythonContracts.pyi":
         print(f"ignored: {path.relative_to(relative_to)}")
         continue  # they are not re-exported, so we dont care
