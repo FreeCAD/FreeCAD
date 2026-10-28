@@ -253,11 +253,13 @@ void TaskPatternParameters::setupPathPatternParameterUI(
 
     fillDirectionCombo(
         pathParametersWidget->getTangentAxisWidget()->dirLinks,
-        Part::LinearPatternDirection::First
+        Part::LinearPatternDirection::First,
+        true
     );
     fillDirectionCombo(
         pathParametersWidget->getVerticalAxisWidget()->dirLinks,
-        Part::LinearPatternDirection::Second
+        Part::LinearPatternDirection::Second,
+        true
     );
 
     pathParametersWidget->bindProperties(
