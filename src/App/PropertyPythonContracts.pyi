@@ -44,7 +44,7 @@ _IntegerConstraintInput: TypeAlias = (
     int | dict[str, int] | tuple[int, int, int, int]
 )
 _FloatConstraintInput: TypeAlias = (
-    float | int | dict[str, float] | tuple[float, float, float, float]
+    float | dict[str, float] | tuple[float, float, float, float]
 )
 _VectorValue: TypeAlias = Base.Vector
 _VectorInput: TypeAlias = Base.Vector | tuple[float, float, float]
