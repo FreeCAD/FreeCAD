@@ -79,6 +79,14 @@ For more details see:
 - [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 
+Contributing Code
+-----------------
+
+Read the [contribution process](CONTRIBUTING.md) and the
+[contributor guidelines](contrib/guidelines/README.md) for practical advice on architecture,
+code reuse, implementation, UI design, testing, and review. The guides link to relevant
+sections of the [Developers Handbook](https://freecad.github.io/DevelopersHandbook/) and FEPs.
+
 > [!NOTE]
 The [FPA](https://fpa.freecad.org) offers developers the opportunity
 to apply for a grant to work on projects of their choosing. Check
