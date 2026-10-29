@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from FreeCADGui import _MDIView
+from FreeCADGui import _MDIView, _View3DInventor
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
@@ -103,7 +103,7 @@ class Document(Persistence):
         The active object of the document. Deprecated, use ActiveObject.
         """
 
-    def activeView(self) -> _MDIView | None:
+    def activeView(self) -> _MDIView | _View3DInventor | None:
         """
         The active view of the document. Deprecated, use ActiveView.
         """
@@ -201,7 +201,7 @@ class Document(Persistence):
     ActiveObject: ViewProvider | None
     """The active object of the document."""
 
-    ActiveView: _MDIView | None
+    ActiveView: _MDIView | _View3DInventor | None
     """The active view of the document."""
 
     EditingTransform: Matrix
