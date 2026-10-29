@@ -80,7 +80,7 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from
         }
         else {
             mStepAngRad = asinf(mResolution / mRadius);
-            mStepAngRad = std::min(std::fmax(mStepAngRad, MAX_SEG_DEG), MIN_SEG_DEG);
+            mStepAngRad = std::max(std::fmin(mStepAngRad, MAX_SEG_DEG), MIN_SEG_DEG);
         }
 
         MotionPosToVec(mCenter, from);
