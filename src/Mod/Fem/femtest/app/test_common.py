@@ -84,6 +84,26 @@ class TestFemCommon(unittest.TestCase):
         self.assertEqual(cf.References, expected_reflist, assert_err_message)
 
     # ********************************************************************************************
+    def test_constants(self):
+        # each constant has to be parsable by the unit system, have the expected unit
+        # and match the reference value (standard gravity, CODATA 2018) to 6 digits
+        from femtools import constants
+
+        for quantity_str, value, unit in (
+            (constants.gravity(), 9.80665, "m/s^2"),
+            (constants.stefan_boltzmann(), 5.670374419e-8, "W/(m^2*K^4)"),
+            (constants.vacuum_permeability(), 1.25663706212e-6, "N/A^2"),
+            (constants.vacuum_permittivity(), 8.8541878128e-12, "F/m"),
+            (constants.boltzmann_constant(), 1.380649e-23, "J/K"),
+        ):
+            quantity = FreeCAD.Units.Quantity(quantity_str)
+            msg = f"Unexpected constant {quantity_str}, expected {value} {unit}"
+            self.assertEqual(quantity.Unit, FreeCAD.Units.Unit(unit), msg)
+            self.assertAlmostEqual(
+                quantity.getValueAs(unit).Value / value, 1.0, delta=1e-6, msg=msg
+            )
+
+    # ********************************************************************************************
     def test_pyimport_all_FEM_modules(self):
         # we're going to try to import all python modules from FreeCAD FEM
         pymodules = []

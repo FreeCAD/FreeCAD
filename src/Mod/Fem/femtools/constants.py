@@ -65,5 +65,3 @@ from femtools import constants
 Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
 
 """
-
-# TODO: a unit test to be sure these values are returned!
