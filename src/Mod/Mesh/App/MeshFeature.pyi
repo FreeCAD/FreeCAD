@@ -28,19 +28,15 @@ class MeshFeature(GeoFeature):
 
     def countPoints(self) -> Any:
         """Return the number of vertices of the mesh object"""
-        ...
 
     def countFacets(self) -> Any:
         """Return the number of facets of the mesh object"""
-        ...
 
     def harmonizeNormals(self) -> Any:
         """Adjust wrong oriented facets"""
-        ...
 
     def smooth(self, iteration: int = 1, max_error: float = ..., /) -> None:
         """Smooth the mesh data"""
-        ...
 
     @overload
     def decimate(self, tolerance: float, reduction: float, /) -> None: ...
@@ -61,40 +57,30 @@ class MeshFeature(GeoFeature):
         decimate(targwt size(int))
         mesh.decimate(mesh.CountFacets/2)
         """
-        ...
 
     def removeNonManifolds(self) -> Any:
         """Remove non-manifolds"""
-        ...
 
     def removeNonManifoldPoints(self) -> Any:
         """Remove non-manifold points"""
-        ...
 
     def fixIndices(self) -> Any:
         """Repair any invalid indices"""
-        ...
 
     def fixDegenerations(self, epsilon: float = ..., /) -> None:
         """Remove degenerated facets"""
-        ...
 
     def removeDuplicatedFacets(self) -> Any:
         """Remove duplicated facets"""
-        ...
 
     def removeDuplicatedPoints(self) -> Any:
         """Remove duplicated points"""
-        ...
 
     def fixSelfIntersections(self) -> Any:
         """Repair self-intersections"""
-        ...
 
     def removeFoldsOnSurface(self) -> Any:
         """Remove folds on surfaces"""
-        ...
 
     def removeInvalidPoints(self) -> Any:
         """Remove points with invalid coordinates (NaN)"""
-        ...

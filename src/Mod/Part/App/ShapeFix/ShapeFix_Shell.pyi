@@ -34,43 +34,36 @@ class ShapeFix_Shell(ShapeFix_Root):
         """
         Initializes by shell
         """
-        ...
 
     def fixFaceTool(self) -> ShapeFix_Face:
         """
         Returns tool for fixing faces
         """
-        ...
 
     def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
-        ...
 
     def shell(self) -> TopoShape:
         """
         Returns fixed shell (or subset of oriented faces)
         """
-        ...
 
     def numberOfShells(self) -> int:
         """
         Returns the number of obtained shells
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         In case of multiconnexity returns compound of fixed shells and one shell otherwise
         """
-        ...
 
     def errorFaces(self) -> TopoShape:
         """
         Returns not oriented subset of faces
         """
-        ...
 
     def fixFaceOrientation(
         self, shell: TopoShapeShell, multi_conex: bool = ..., non_manifold: bool = ..., /
@@ -91,10 +84,8 @@ class ShapeFix_Shell(ShapeFix_Root):
         contains multishared edges. Else if this mode is equal to Standard_False only
         manifold shells will be created. By default - Standard_False.
         """
-        ...
 
     def setNonManifoldFlag(self, non_manifold: bool, /) -> None:
         """
         Sets NonManifold flag
         """
-        ...

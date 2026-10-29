@@ -25,12 +25,10 @@ class GeomFormat(PyObjectBase):
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this geomformat"""
-        ...
 
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this geomformat"""
-        ...
 
     Tag: Final[str]
     """Gives the tag of the GeomFormat as string."""

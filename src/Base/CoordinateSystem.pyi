@@ -51,7 +51,6 @@ class CoordinateSystem(PyObjectBase):
         axis : Base.Axis, Base.Vector
         xDir : Base.Vector
         """
-        ...
 
     @constmethod
     def displacement(self, coordSystem2: "CoordinateSystem", /) -> Placement:
@@ -60,7 +59,6 @@ class CoordinateSystem(PyObjectBase):
 
         coordSystem2 : Base.CoordinateSystem
         """
-        ...
 
     def transformTo(self, vector: Vector, /) -> Vector:
         """
@@ -68,7 +66,6 @@ class CoordinateSystem(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
     def transform(self, trans: Union[Rotation, Placement], /) -> None:
         """
@@ -76,7 +73,6 @@ class CoordinateSystem(PyObjectBase):
 
         trans : Base.Rotation, Base.Placement
         """
-        ...
 
     def setPlacement(self, placement: Placement, /) -> None:
         """
@@ -84,4 +80,3 @@ class CoordinateSystem(PyObjectBase):
 
         placement : Base.Placement
         """
-        ...

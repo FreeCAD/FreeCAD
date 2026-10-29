@@ -27,7 +27,6 @@ class AxisOrigin(BaseClass):
 
         pickedPoint : coin.SoPickedPoint
         """
-        ...
 
     @constmethod
     def getDetailPath(self, subname: str, path: Any, /) -> Any:
@@ -40,7 +39,6 @@ class AxisOrigin(BaseClass):
         path: coin.SoPath
             Output Coin path leading to the returned element detail.
         """
-        ...
     AxisLength: float = 0.0
     """Get/set the axis length."""
 

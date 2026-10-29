@@ -42,4 +42,3 @@ class ArcOfCircle2d(ArcOfConic2d):
         Circle : object
             The internal circle representation.
     """
-    ...

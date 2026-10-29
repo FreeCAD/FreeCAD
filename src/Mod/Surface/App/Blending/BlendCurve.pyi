@@ -26,7 +26,6 @@ class BlendCurve(PyObjectBase):
         """
         Return the BezierCurve that interpolate the input BlendPoints.
         """
-        ...
 
     def setSize(self, index: int, size: float, relative: bool, /) -> None:
         """
@@ -35,4 +34,3 @@ class BlendCurve(PyObjectBase):
         If relative is true, the size is considered relative to the distance between the two blendpoints.
         myBlendCurve.setSize(idx, size, relative)
         """
-        ...

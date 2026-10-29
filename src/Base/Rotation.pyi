@@ -97,7 +97,6 @@ class Rotation(PyObjectBase):
     @property
     def Axis(self) -> Vector:
         """The rotation axis of the quaternion."""
-        ...
 
     @Axis.setter
     def Axis(self, value: Vector | Sequence[float]) -> None: ...
@@ -136,14 +135,12 @@ class Rotation(PyObjectBase):
         """
         Sets the rotation to its inverse.
         """
-        ...
 
     @constmethod
     def inverted(self) -> "Rotation":
         """
         Returns the inverse of the rotation.
         """
-        ...
 
     @constmethod
     def isSame(self, rotation: "Rotation", tol: float = 0, /) -> bool:
@@ -155,7 +152,6 @@ class Rotation(PyObjectBase):
             Tolerance used to compare both rotations.
             If tol is negative or zero, no tolerance is used.
         """
-        ...
 
     @constmethod
     def multiply(self, rotation: "Rotation", /) -> "Rotation":
@@ -165,7 +161,6 @@ class Rotation(PyObjectBase):
         rotation : Base.Rotation
             Rotation by which to multiply this rotation.
         """
-        ...
     # fmt: off
     @typing_only
     @overload
@@ -189,7 +184,6 @@ class Rotation(PyObjectBase):
         vector : Base.Vector
             Vector to be transformed.
         """
-        ...
 
     @constmethod
     def slerp(self, rotation2: "Rotation", t: float, /) -> "Rotation":
@@ -199,7 +193,6 @@ class Rotation(PyObjectBase):
         t : float
             Parameter of the path. t=0 returns this rotation, t=1 returns `rotation2`.
         """
-        ...
 
     def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /) -> None:
         """
@@ -212,7 +205,6 @@ class Rotation(PyObjectBase):
         angle3 : float
             Angle around roll axis in degrees.
         """
-        ...
 
     @constmethod
     def getYawPitchRoll(self) -> Tuple[float, float, float]:
@@ -220,7 +212,6 @@ class Rotation(PyObjectBase):
         Get the Euler angles of this rotation as yaw-pitch-roll in XY'Z'' convention.
         The angles are given in degrees.
         """
-        ...
 
     def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /) -> None:
         """
@@ -233,7 +224,6 @@ class Rotation(PyObjectBase):
         angle2 : float
         angle3 : float
         """
-        ...
 
     @constmethod
     def toEulerAngles(self, seq: str = "", /) -> List[float]:
@@ -244,21 +234,18 @@ class Rotation(PyObjectBase):
             Euler sequence name. If not given, the function returns
             all possible values of `seq`. Optional.
         """
-        ...
 
     @constmethod
     def toMatrix(self) -> Matrix:
         """
         Convert the rotation to a 4D matrix representation.
         """
-        ...
 
     @constmethod
     def isNull(self) -> bool:
         """
         Returns True if all values in the quaternion representation are zero.
         """
-        ...
 
     @constmethod
     def isIdentity(self, tol: float = 0, /) -> bool:
@@ -268,4 +255,3 @@ class Rotation(PyObjectBase):
             Tolerance used to check for identity.
             If tol is negative or zero, no tolerance is used.
         """
-        ...

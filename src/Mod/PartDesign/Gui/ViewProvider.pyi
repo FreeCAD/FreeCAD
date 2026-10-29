@@ -25,7 +25,6 @@ class ViewProvider(ViewProviderPartExt):
         and that the body is used to set the visual properties, not the features. Hence
         setting body mode to true will hide most viewprovider properties.
         """
-        ...
 
     def makeTemporaryVisible(self, visible: bool, /) -> None:
         """
@@ -34,4 +33,3 @@ class ViewProvider(ViewProviderPartExt):
         the display mode. This can be used to show the shape of this viewprovider from
         other viewproviders without doing anything to the document and properties.
         """
-        ...

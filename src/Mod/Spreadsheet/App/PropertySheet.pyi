@@ -26,4 +26,3 @@ class PropertySheet(Persistence):
     @constmethod
     def keys(self) -> Any:
         """Get all cell names"""
-        ...

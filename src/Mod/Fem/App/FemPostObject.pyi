@@ -30,7 +30,6 @@ class FemPostObject(GeoFeature):
         filename: str
             File extension is automatically detected from data type.
         """
-        ...
 
     def getDataSet(self) -> vtkDataSet | None:
         """
@@ -44,4 +43,3 @@ class FemPostObject(GeoFeature):
 
         Note that the returned value could be None, if no data is set at all.
         """
-        ...

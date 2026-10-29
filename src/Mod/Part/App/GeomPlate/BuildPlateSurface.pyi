@@ -29,66 +29,56 @@ class BuildPlateSurface(PyObjectBase):
         """
         Resets all constraints
         """
-        ...
 
     def setNbBounds(self, count: int, /) -> None:
         """
         Sets the number of bounds
         """
-        ...
 
     def loadInitSurface(self, surface: GeometrySurface, /) -> None:
         """
         Loads the initial surface
         """
-        ...
 
     @constmethod
     def surfInit(self) -> GeometrySurface | None:
         """
         Returns the initial surface
         """
-        ...
 
     @constmethod
     def surface(self) -> GeometrySurface | None:
         """
         Returns the plate surface
         """
-        ...
 
     def add(self, constraint: PointConstraint | CurveConstraint, /) -> None:
         """
         Adds a linear or point constraint
         """
-        ...
 
     def perform(self) -> None:
         """
         Calls the algorithm and computes the plate surface
         """
-        ...
 
     @constmethod
     def isDone(self) -> bool:
         """
         Tests whether computation of the plate has been completed
         """
-        ...
 
     @constmethod
     def sense(self) -> object:
         """
         Returns the orientation of the curves in the array returned by curves2d
         """
-        ...
 
     @constmethod
     def order(self) -> int:
         """
         Returns the order of the curves in the array returned by curves2d
         """
-        ...
 
     @constmethod
     def curves2d(self) -> List[object]:
@@ -96,51 +86,43 @@ class BuildPlateSurface(PyObjectBase):
         Extracts the array of curves on the plate surface which
         correspond to the curve constraints set in add()
         """
-        ...
 
     @constmethod
     def curveConstraint(self, index: int, /) -> CurveConstraint | None:
         """
         Returns the curve constraint of order
         """
-        ...
 
     @constmethod
     def pointConstraint(self, index: int, /) -> PointConstraint | None:
         """
         Returns the point constraint of order
         """
-        ...
 
     def disc2dContour(self, index: int, /) -> list:
         """
         Returns the 2D contour of the plate surface
         """
-        ...
 
     def disc3dContour(self, index: int, order: int, /) -> list:
         """
         Returns the 3D contour of the plate surface
         """
-        ...
 
     @constmethod
     def G0Error(self, index: int = 0, /) -> float:
         """
         Returns the max distance between the result and the constraints
         """
-        ...
 
     @constmethod
     def G1Error(self, index: int = 0, /) -> float:
         """
         Returns the max angle between the result and the constraints
         """
-        ...
 
     @constmethod
     def G2Error(self, index: int = 0, /) -> float:
         """
         Returns the max difference of curvature between the result and the constraints
         """
-        ...

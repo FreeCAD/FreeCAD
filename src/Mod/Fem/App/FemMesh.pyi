@@ -31,23 +31,18 @@ class FemMesh(ComplexGeoData):
 
     def setShape(self, shape: TopoShape, /) -> None:
         """Set the Part shape to mesh"""
-        ...
 
     def compute(self) -> None:
         """Update the internal mesh structure"""
-        ...
 
     def addHypothesis(self, hypothesis: object, shape: TopoShape = ..., /) -> None:
         """Add hypothesis"""
-        ...
 
     def setStandardHypotheses(self) -> None:
         """Set some standard hypotheses for the whole shape"""
-        ...
 
     def addNode(self, x: float, y: float, z: float, elem_id: int | None = None, /) -> int:
         """Add a node by setting (x,y,z)."""
-        ...
 
     @overload
     def addEdge(self, n1: int, n2: int, /) -> int: ...
@@ -55,11 +50,9 @@ class FemMesh(ComplexGeoData):
     def addEdge(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
     def addEdge(self, *args) -> int:
         """Add an edge by setting two node indices."""
-        ...
 
     def addEdgeList(self, nodes: list[int], np: list[int], /) -> list[int]:
         """Add list of edges by list of node indices and list of nodes per edge."""
-        ...
 
     @overload
     def addFace(self, n1: int, n2: int, n3: int, /) -> int: ...
@@ -67,15 +60,12 @@ class FemMesh(ComplexGeoData):
     def addFace(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
     def addFace(self) -> Any:
         """Add a face by setting three node indices."""
-        ...
 
     def addFaceList(self, nodes: list[int], np: list[int], /) -> list[int]:
         """Add list of faces by list of node indices and list of nodes per face."""
-        ...
 
     def addQuad(self, n1: int, n2: int, n3: int, n4: int, /) -> int:
         """Add a quad by setting four node indices."""
-        ...
 
     @overload
     def addVolume(self, n1: int, n2: int, n3: int, n4: int, /) -> int: ...
@@ -83,11 +73,9 @@ class FemMesh(ComplexGeoData):
     def addVolume(self, nodes: list[int], elem_id: int | None = None, /) -> int: ...
     def addVolume(self, *args) -> int:
         """Add a volume by setting an arbitrary number of node indices."""
-        ...
 
     def addVolumeList(self, nodes: list[int], np: list[int], /) -> list[int]:
         """Add list of volumes by list of node indices and list of nodes per volume."""
-        ...
 
     def read(self, file_name: str, vtk_cell_group_array: str = ...) -> None:
         """
@@ -97,7 +85,6 @@ class FemMesh(ComplexGeoData):
 
         vtk_cell_group_array: If provided uses the given cell group array to create mesh groups.
         """
-        ...
 
     @constmethod
     def write(
@@ -125,7 +112,6 @@ class FemMesh(ComplexGeoData):
             2. Elements can only be in a single group, groups can not overlap
             3. Element IDs in the mesh need to be continuous and start with ID 1
         """
-        ...
 
     @constmethod
     def writeABAQUS(
@@ -179,86 +165,69 @@ class FemMesh(ComplexGeoData):
         elements are assigned to C3D10T and remain elements uses "standard".
         Axisymmetric, plane strain and plane stress elements expect nodes in the plane z=0.
         """
-        ...
 
     def setTransform(self, placement: Placement, /) -> None:
         """Use a Placement object to perform a translation or rotation"""
-        ...
 
     @constmethod
     def copy(self) -> FemMesh:
         """Make a copy of this FEM mesh."""
-        ...
 
     @constmethod
     def getFacesByFace(self, face: TopoShapeFace, /) -> list[int]:
         """Return a list of face IDs which belong to a TopoFace"""
-        ...
 
     @constmethod
     def getEdgesByEdge(self, edge: TopoShapeEdge, /) -> list[int]:
         """Return a list of edge IDs which belong to a TopoEdge"""
-        ...
 
     @constmethod
     def getVolumesByFace(self, face: TopoShapeFace, /) -> list[tuple[int, int]]:
         """Return a list of tuples of volume IDs and face IDs which belong to a TopoFace"""
-        ...
 
     @constmethod
     def getccxVolumesByFace(self, face: TopoShapeFace, /) -> list[tuple[int, int]]:
         """Return a list of tuples of volume IDs and ccx face numbers which belong to a TopoFace"""
-        ...
 
     @constmethod
     def getNodeById(self, node_id: int, /) -> Vector:
         """Get the node position vector by a Node-ID"""
-        ...
 
     @constmethod
     def getNodesBySolid(self, shape: TopoShapeSolid, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoSolid"""
-        ...
 
     @constmethod
     def getNodesByFace(self, face: TopoShapeFace, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoFace"""
-        ...
 
     @constmethod
     def getNodesByEdge(self, edge: TopoShapeEdge, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoEdge"""
-        ...
 
     @constmethod
     def getNodesByVertex(self, vertex: TopoShapeVertex, /) -> list[int]:
         """Return a list of node IDs which belong to a TopoVertex"""
-        ...
 
     @constmethod
     def getElementNodes(self, elem_id: int, /) -> tuple[int, ...]:
         """Return a tuple of node IDs to a given element ID"""
-        ...
 
     @constmethod
     def getNodeElements(self, elem_id: int, elem_type: str = "All", /) -> tuple[int, ...]:
         """Return a tuple of specific element IDs associated to a given node ID"""
-        ...
 
     @constmethod
     def getGroupName(self, elem_id: int, /) -> str:
         """Return a string of group name to a given group ID"""
-        ...
 
     @constmethod
     def getGroupElementType(self, elem_id: int, /) -> str:
         """Return a string of group element type to a given group ID"""
-        ...
 
     @constmethod
     def getGroupElements(self, elem_id: int, /) -> tuple[int, ...]:
         """Return a tuple of ElementIDs to a given group ID"""
-        ...
 
     @constmethod
     def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> int:
@@ -271,7 +240,6 @@ class FemMesh(ComplexGeoData):
             Optional group_id is used to force specific id for group, but does
             not work, yet.
         """
-        ...
 
     @constmethod
     def addGroupElements(self, group_id: int, elements: list[int], /) -> None:
@@ -282,7 +250,6 @@ class FemMesh(ComplexGeoData):
         elements: list of int
             Notice that the elements have to be in the mesh.
         """
-        ...
 
     @constmethod
     def removeGroup(self, group_id: int, /) -> bool:
@@ -291,7 +258,6 @@ class FemMesh(ComplexGeoData):
                             removeGroup(groupid)
                             groupid: int
                             Returns boolean."""
-        ...
 
     @constmethod
     def renameGroup(self, group_id: int, name: str, /) -> None:
@@ -299,17 +265,14 @@ class FemMesh(ComplexGeoData):
         renameGroup(id, name)
         groupid: int
         name: string"""
-        ...
 
     @constmethod
     def getElementType(self, elem_id: int, /) -> str:
         """Return the element type of a given ID"""
-        ...
 
     @constmethod
     def getIdByElementType(self, elem_type: str, /) -> tuple[int, ...]:
         """Return a tuple of IDs to a given element type"""
-        ...
     Nodes: Final[dict]
     """Dictionary of Nodes by ID (int ID:Vector())"""
 

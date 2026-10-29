@@ -23,12 +23,9 @@ class DrawViewClip(DrawView):
 
     def addView(self, view: DrawView, /) -> None:
         """addView(DrawView) - Add a View to this ClipView"""
-        ...
 
     def removeView(self, view: DrawView, /) -> None:
         """removeView(DrawView) - Remove specified View to this ClipView"""
-        ...
 
     def getChildViewNames(self) -> Any:
         """getChildViewNames() - get a list of the DrawViews in this ClipView"""
-        ...

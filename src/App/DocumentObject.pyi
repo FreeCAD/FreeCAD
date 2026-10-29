@@ -101,7 +101,6 @@ class DocumentObject(ExtensionContainer):
             locked: Whether the property is locked. Defaults to False.
             enum_vals: Initial values for an enumeration property. Defaults to None.
         """
-        ...
 
     def removeProperty(self, string: str, /) -> bool:
         """
@@ -109,13 +108,11 @@ class DocumentObject(ExtensionContainer):
 
         Note, you can only remove user-defined properties but not built-in ones.
         """
-        ...
 
     def supportedProperties(self) -> list:
         """
         A list of supported property types
         """
-        ...
 
     def touch(self, property_name: str = ..., /) -> None:
         """
@@ -125,19 +122,16 @@ class DocumentObject(ExtensionContainer):
         argument, this marks the object as touched *without* forcing a recompute. Finally, if a
         property name is passed, this only touches that property.
         """
-        ...
 
     def purgeTouched(self) -> None:
         """
         Mark the object as unchanged
         """
-        ...
 
     def enforceRecompute(self) -> None:
         """
         Mark the object for recompute
         """
-        ...
 
     def setExpression(self, name: str, expression: str | None, comment: str = ..., /) -> None:
         """
@@ -145,26 +139,22 @@ class DocumentObject(ExtensionContainer):
 
         Pass None as expression to clear an existing expression.
         """
-        ...
 
     def clearExpression(self, name: str, /) -> None:
         """
         Clear the expression for a property
         """
-        ...
 
     @classmethod
     def evalExpression(cls, expression: str, /) -> Any:
         """
         Evaluate an expression
         """
-        ...
 
     def recompute(self, recursive: bool = False, /) -> bool:
         """
         Recomputes this object
         """
-        ...
 
     @constmethod
     def getStatusString(self) -> str:
@@ -174,14 +164,12 @@ class DocumentObject(ExtensionContainer):
         If the object is valid but touched then 'Touched' will be returned,
         'Valid' otherwise.
         """
-        ...
 
     @constmethod
     def isValid(self) -> bool:
         """
         Returns True if the object is valid, False otherwise
         """
-        ...
 
     def getSubObject(
         self,
@@ -217,19 +205,16 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
     def getSubObjectList(self, subname: str, /) -> list:
         """
         Return a list of objects referenced by a given subname including this object
         """
-        ...
 
     def getSubObjects(self, reason: int = 0, /) -> list:
         """
         Return subname reference of all sub-objects
         """
-        ...
 
     def getLinkedObject(
         self,
@@ -252,27 +237,23 @@ class DocumentObject(ExtensionContainer):
 
         * depth: current recursive depth
         """
-        ...
 
     def setElementVisible(self, element: str, visible: bool = True, /) -> int:
         """
         Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
-        ...
 
     def isElementVisible(self, element: str, /) -> int:
         """
         Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
         """
-        ...
 
     def hasChildElement(self) -> bool:
         """
         Return true to indicate the object having child elements
         """
-        ...
 
     def getParentGroup(self) -> DocumentObjectGroup | None:
         """
@@ -280,7 +261,6 @@ class DocumentObject(ExtensionContainer):
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
     def getParentGeoFeatureGroup(self) -> Any:
         """
@@ -289,7 +269,6 @@ class DocumentObject(ExtensionContainer):
 
         Note that an object can only be in a single group, hence only a single return value.
         """
-        ...
 
     def getParent(self) -> Any:
         """
@@ -299,13 +278,11 @@ class DocumentObject(ExtensionContainer):
         The parent can be a simple group as with getParentGroup() or a GeoFeature group as
         with getParentGeoFeatureGroup().
         """
-        ...
 
     def getPathsByOutList(self, target: DocumentObject, /) -> list[list[DocumentObject]]:
         """
         Get all paths from this object to another object following the OutList.
         """
-        ...
 
     @constmethod
     def resolve(self, subname: str, /) -> tuple:
@@ -318,7 +295,6 @@ class DocumentObject(ExtensionContainer):
         to call parent.isElementVisible/setElementVisible(). 'subElement' is the
         non-object sub-element name if any.
         """
-        ...
 
     @constmethod
     def resolveSubElement(self, subname: str, append: bool = False, type: int = 0, /) -> tuple:
@@ -331,34 +307,29 @@ class DocumentObject(ExtensionContainer):
 
         Return tuple(obj,newElementName,oldElementName)
         """
-        ...
 
     def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True, /) -> bool:
         """
         auto correct potential cyclic dependencies
         """
-        ...
 
     @constmethod
     def getElementMapVersion(self, property_name: str, restored: bool = False, /) -> str:
         """
         return element map version of a given geometry property
         """
-        ...
 
     @constmethod
     def isAttachedToDocument(self) -> bool:
         """
         Return true if the object is part of a document, false otherwise.
         """
-        ...
 
     def getPlacementOf(self, subname: str, target: DocumentObject | None = None, /) -> Any:
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement
         """
-        ...
 
     @constmethod
     def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
@@ -372,4 +343,3 @@ class DocumentObject(ExtensionContainer):
         targetObj : DocumentObject
             The target object to move the property to.
         """
-        ...

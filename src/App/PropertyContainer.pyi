@@ -28,7 +28,6 @@ class PropertyContainer(Persistence):
             1: raise exception if not found or the property does not belong to this container.
             2: return a tuple (owner, propertyValue).
         """
-        ...
 
     def getPropertyTouchList(self, name: str, /) -> tuple:
         """
@@ -37,7 +36,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def getTypeOfProperty(self, name: str, /) -> list:
         """
@@ -47,7 +45,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def getTypeIdOfProperty(self, name: str, /) -> str:
         """
@@ -56,7 +53,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def setEditorMode(self, name: str, type: Union[int, List[str]], /) -> None:
         """
@@ -69,7 +65,6 @@ class PropertyContainer(Persistence):
             0: default behaviour. 1: item is ready-only. 2: item is hidden. 3: item is hidden and read-only.
             If sequence, the available items are 'ReadOnly' and 'Hidden'.
         """
-        ...
 
     def getEditorMode(self, name: str, /) -> list:
         """
@@ -83,7 +78,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def getGroupOfProperty(self, name: str, /) -> str:
         """
@@ -93,7 +87,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def setGroupOfProperty(self, name: str, group: str, /) -> None:
         """
@@ -104,7 +97,6 @@ class PropertyContainer(Persistence):
         group : str
             Group name.
         """
-        ...
 
     def setPropertyStatus(self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
         """
@@ -116,7 +108,6 @@ class PropertyContainer(Persistence):
             Call getPropertyStatus() to get a list of supported text value.
             If the text start with '-' or the integer value is negative, then the status is cleared.
         """
-        ...
 
     def getPropertyStatus(self, name: str = "", /) -> list:
         """
@@ -125,7 +116,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name. If empty, returns a list of supported text names of the status.
         """
-        ...
 
     def getDocumentationOfProperty(self, name: str, /) -> str:
         """
@@ -134,7 +124,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     def setDocumentationOfProperty(self, name: str, docstring: str, /) -> None:
         """
@@ -145,7 +134,6 @@ class PropertyContainer(Persistence):
         docstring : str
             Documentation string.
         """
-        ...
 
     def getEnumerationsOfProperty(self, name: str, /) -> Optional[list]:
         """
@@ -155,7 +143,6 @@ class PropertyContainer(Persistence):
         name : str
             Property name.
         """
-        ...
 
     @constmethod
     def dumpPropertyContent(self, Property: str, *, Compression: int = 3) -> bytearray:
@@ -168,7 +155,6 @@ class PropertyContainer(Persistence):
         Compression : int
             Set the data compression level in the range [0, 9]. Set to 0 for no compression.
         """
-        ...
 
     def restorePropertyContent(self, name: str, obj: object, /) -> None:
         """
@@ -180,7 +166,6 @@ class PropertyContainer(Persistence):
         obj : buffer
             Object with buffer protocol support.
         """
-        ...
 
     @constmethod
     def renameProperty(self, oldName: str, newName: str, /) -> None:
@@ -192,4 +177,3 @@ class PropertyContainer(Persistence):
         newName : str
             New property name.
         """
-        ...

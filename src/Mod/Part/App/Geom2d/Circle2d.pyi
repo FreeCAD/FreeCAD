@@ -72,11 +72,9 @@ class Circle2d(Conic2d):
         Part.Geom2d.Circle2d(Point1,Point2,Point3)
             Creates a circle defined by three non-linear points
         """
-        ...
 
     @staticmethod
     def getCircleCenter(p1: Any, p2: Any, p3: Any, /) -> Any:
         """
         Get the circle center defined by three points
         """
-        ...

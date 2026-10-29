@@ -69,7 +69,6 @@ class BSplineCurve(BoundedCurve):
         __reduce__()
         Serialization of Part.BSplineCurve objects
         """
-        ...
 
     @constmethod
     def isRational(self) -> bool:
@@ -78,14 +77,12 @@ class BSplineCurve(BoundedCurve):
         A B-Spline curve is rational if, at the time of construction,
         the weight table has been initialized.
         """
-        ...
 
     @constmethod
     def isPeriodic(self) -> bool:
         """
         Returns true if this BSpline curve is periodic.
         """
-        ...
 
     @constmethod
     def isClosed(self) -> bool:
@@ -93,7 +90,6 @@ class BSplineCurve(BoundedCurve):
         Returns true if the distance between the start point and end point of
         this B-Spline curve is less than or equal to gp::Resolution().
         """
-        ...
 
     def increaseDegree(self, degree: int, /) -> None:
         """
@@ -103,7 +99,6 @@ class BSplineCurve(BoundedCurve):
         are modified; the knots table is not changed. Nothing is
         done if degree is less than or equal to the current degree.
         """
-        ...
 
     @overload
     def increaseMultiplicity(self, index: int, mult: int, /) -> None: ...
@@ -120,7 +115,6 @@ class BSplineCurve(BoundedCurve):
         If mult is lower or equal to the current multiplicity nothing is done.
         If mult is higher than the degree the degree is used.
         """
-        ...
 
     def incrementMultiplicity(self, start: int, end: int, mult: int, /) -> None:
         """
@@ -130,7 +124,6 @@ class BSplineCurve(BoundedCurve):
 
         start, end: index range of knots to modify.
         """
-        ...
 
     def insertKnot(self, u: float, mult: int = 1, tol: float = 0.0, add: bool = ..., /) -> None:
         """
@@ -139,7 +132,6 @@ class BSplineCurve(BoundedCurve):
         Inserts a knot value in the sequence of knots. If u is an existing knot the
         multiplicity is increased by mult.
         """
-        ...
 
     def insertKnots(
         self,
@@ -166,7 +158,6 @@ class BSplineCurve(BoundedCurve):
 
         The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
         """
-        ...
 
     def removeKnot(self, index: int, mult: int, tol: float, /) -> bool:
         """
@@ -185,7 +176,6 @@ class BSplineCurve(BoundedCurve):
         A low tolerance is used to prevent modification of the curve.
         A high tolerance is used to 'smooth' the curve.
         """
-        ...
 
     def segment(self, u1: float, u2: float, /) -> None:
         """
@@ -193,7 +183,6 @@ class BSplineCurve(BoundedCurve):
 
         Modifies this B-Spline curve by segmenting it.
         """
-        ...
 
     @constmethod
     def split(self, u: float, tolerance: float = 0.0, /) -> tuple[BSplineCurve, BSplineCurve]:
@@ -202,81 +191,69 @@ class BSplineCurve(BoundedCurve):
 
         Splits this B-Spline curve at parameter u and returns the two resulting curves.
         """
-        ...
 
     def setKnot(self, index: int, knot: float, mult: int = ..., /) -> None:
         """
         Set a knot of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getKnot(self, index: int, /) -> float:
         """
         Get a knot of the B-Spline curve.
         """
-        ...
 
     def setKnots(self, knots: List[float], /) -> None:
         """
         Set knots of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getKnots(self) -> List[float]:
         """
         Get all knots of the B-Spline curve.
         """
-        ...
 
     def setPole(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Modifies this B-Spline curve by assigning `pole`
         to the pole of index `index` in the poles table.
         """
-        ...
 
     @constmethod
     def getPole(self, index: int, /) -> Vector:
         """
         Get a pole of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getPoles(self) -> List[Vector]:
         """
         Get all poles of the B-Spline curve.
         """
-        ...
 
     def setWeight(self, index: int, weight: float, /) -> None:
         """
         Set a weight of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getWeights(self) -> List[float]:
         """
         Get all weights of the B-Spline curve.
         """
-        ...
 
     @constmethod
     def getPolesAndWeights(self) -> List[float]:
         """
         Returns the table of poles and weights in homogeneous coordinates.
         """
-        ...
 
     @constmethod
     def getResolution(self, tolerance_3d: float, /) -> float:
@@ -287,7 +264,6 @@ class BSplineCurve(BoundedCurve):
         ensures that:
         |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < tolerance_3d
         """
-        ...
 
     def movePoint(self, u: float, pole: Vector, index1: int, index2: int, /) -> tuple[int, int]:
         """
@@ -300,20 +276,17 @@ class BSplineCurve(BoundedCurve):
         Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
         first and last poles which are effectively modified.
         """
-        ...
 
     def setNotPeriodic(self) -> None:
         """
         Changes this B-Spline curve into a non-periodic curve.
         If this curve is already non-periodic, it is not modified.
         """
-        ...
 
     def setPeriodic(self) -> None:
         """
         Changes this B-Spline curve into a periodic curve.
         """
-        ...
 
     def setOrigin(self, index: int, /) -> None:
         """
@@ -321,7 +294,6 @@ class BSplineCurve(BoundedCurve):
         as the origin of this periodic B-Spline curve. As a consequence,
         the knots and poles tables are modified.
         """
-        ...
 
     @constmethod
     def getMultiplicity(self, index: int, /) -> int:
@@ -329,14 +301,12 @@ class BSplineCurve(BoundedCurve):
         Returns the multiplicity of the knot of index
         from the knots table of this B-Spline curve.
         """
-        ...
 
     @constmethod
     def getMultiplicities(self) -> List[int]:
         """
         Returns the multiplicities table M of the knots of this B-Spline curve.
         """
-        ...
 
     @overload
     def approximate(
@@ -392,7 +362,6 @@ class BSplineCurve(BoundedCurve):
         Note : Continuity of the spline defaults to C2. However, it may not be applied if
         it conflicts with other parameters ( especially DegMax ).
         """
-        ...
 
     @overload
     @constmethod
@@ -407,7 +376,6 @@ class BSplineCurve(BoundedCurve):
         """
         Compute the tangents for a Cardinal spline
         """
-        ...
 
     @overload
     def interpolate(
@@ -456,7 +424,6 @@ class BSplineCurve(BoundedCurve):
         Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
         are supplied, the continuity will drop to C1.
         """
-        ...
 
     def buildFromPoles(
         self,
@@ -486,7 +453,6 @@ class BSplineCurve(BoundedCurve):
         n.buildFromPoles(poles, True)
         Part.show(n.toShape())
         """
-        ...
 
     @overload
     def buildFromPolesMultsKnots(
@@ -525,14 +491,12 @@ class BSplineCurve(BoundedCurve):
         r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
         Part.show(r.toShape())
         """
-        ...
 
     @constmethod
     def toBezier(self) -> List[BezierCurve]:
         """
         Build a list of Bezier splines.
         """
-        ...
 
     @constmethod
     def toBiArcs(self, tolerance: float, /) -> List[Arc]:
@@ -540,13 +504,11 @@ class BSplineCurve(BoundedCurve):
         Build a list of arcs and lines to approximate the B-spline.
         toBiArcs(tolerance) -> list.
         """
-        ...
 
     def join(self, other: "BSplineCurve", /) -> bool:
         """
         Build a new spline by joining this and a second spline.
         """
-        ...
 
     def makeC1Continuous(self, tol: float = 1e-6, ang_tol: float = 1e-7, /) -> None:
         """
@@ -558,7 +520,6 @@ class BSplineCurve(BoundedCurve):
         of the tangents on the left and on the right to decide if the curve is G1 or
         not at a given point.
         """
-        ...
 
     def scaleKnotsToBounds(self, u0: float = 0.0, u1: float = 1.0, /) -> None:
         """
@@ -567,4 +528,3 @@ class BSplineCurve(BoundedCurve):
         bspline_curve.scaleKnotsToBounds(u0, u1)
         Default arguments are (0.0, 1.0)
         """
-        ...

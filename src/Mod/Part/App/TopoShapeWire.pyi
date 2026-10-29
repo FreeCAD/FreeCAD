@@ -96,14 +96,12 @@ class TopoShapeWire(TopoShape):
         """
         Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.
         """
-        ...
 
     def add(self, edge: object, /) -> None:
         """
         Add an edge to the wire
         add(edge)
         """
-        ...
 
     def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
@@ -112,7 +110,6 @@ class TopoShapeWire(TopoShape):
         --
         A face and a tolerance can optionally be supplied to the algorithm:
         """
-        ...
 
     @constmethod
     def makeHomogenousWires(self, wire: object, /) -> object:
@@ -120,7 +117,6 @@ class TopoShapeWire(TopoShape):
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
         """
-        ...
 
     @constmethod
     def makePipe(self, profile: object, /) -> object:
@@ -128,7 +124,6 @@ class TopoShapeWire(TopoShape):
         Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
         """
-        ...
 
     @constmethod
     def makePipeShell(
@@ -145,7 +140,6 @@ class TopoShapeWire(TopoShape):
         --
         Transition can be 0 (default), 1 (right corners) or 2 (rounded corners).
         """
-        ...
 
     @constmethod
     def makeEvolved(
@@ -160,7 +154,6 @@ class TopoShapeWire(TopoShape):
         """
         Profile along the spine
         """
-        ...
 
     @constmethod
     def approximate(
@@ -174,7 +167,6 @@ class TopoShapeWire(TopoShape):
         Approximate B-Spline-curve from this wire
         approximate([Tol2d,Tol3d=1e-4,MaxSegments=10,MaxDegree=3]) -> BSpline
         """
-        ...
 
     @overload
     @constmethod
@@ -182,7 +174,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(Number=n) -> list
         """
-        ...
 
     @overload
     @constmethod
@@ -190,7 +181,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(QuasiNumber=n) -> list
         """
-        ...
 
     @overload
     @constmethod
@@ -198,7 +188,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(Distance=d) -> list
         """
-        ...
 
     @overload
     @constmethod
@@ -208,7 +197,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(Deflection=d) -> list
         """
-        ...
 
     @overload
     @constmethod
@@ -218,7 +206,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(QuasiDeflection=d) -> list
         """
-        ...
 
     @overload
     @constmethod
@@ -233,7 +220,6 @@ class TopoShapeWire(TopoShape):
         """
         discretize(Angular=a,Curvature=c,[Minimum=m]) -> list
         """
-        ...
 
     @constmethod
     def discretize(self, **kwargs) -> List[object]:
@@ -276,4 +262,3 @@ class TopoShapeWire(TopoShape):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...

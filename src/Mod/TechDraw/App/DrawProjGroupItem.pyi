@@ -23,4 +23,3 @@ class DrawProjGroupItem(DrawViewPart):
 
     def autoPosition(self) -> Any:
         """autoPosition() - Move to AutoDistribute/Unlocked position on Page. Returns none."""
-        ...

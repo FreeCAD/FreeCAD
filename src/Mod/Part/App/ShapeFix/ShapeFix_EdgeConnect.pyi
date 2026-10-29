@@ -36,16 +36,13 @@ class ShapeFix_EdgeConnect(PyObjectBase):
         add(shape)
         Adds connectivity information for the whole shape.
         """
-        ...
 
     def build(self) -> None:
         """
         Builds shared vertices, updates their positions and tolerances
         """
-        ...
 
     def clear(self) -> None:
         """
         Clears internal data structure
         """
-        ...

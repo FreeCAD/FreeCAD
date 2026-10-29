@@ -55,7 +55,6 @@ class ViewProvider(ExtensionContainer):
         enum_vals : list[str] | None
             Initial values for an enumeration property. Defaults to None.
         """
-        ...
 
     def removeProperty(self, name: str, /) -> bool:
         """
@@ -65,31 +64,26 @@ class ViewProvider(ExtensionContainer):
         name : str
             Property name.
         """
-        ...
 
     def supportedProperties(self) -> list:
         """
         A list of supported property types.
         """
-        ...
 
     def show(self) -> None:
         """
         Show the object.
         """
-        ...
 
     def hide(self) -> None:
         """
         Hide the object.
         """
-        ...
 
     def isVisible(self) -> bool:
         """
         Check if the object is visible.
         """
-        ...
 
     def canDragObject(self, obj: Any = None, /) -> bool:
         """
@@ -99,7 +93,6 @@ class ViewProvider(ExtensionContainer):
         obj : App.DocumentObject
             Object to be dragged.
         """
-        ...
 
     def dragObject(self, obj: Any, /) -> None:
         """
@@ -108,7 +101,6 @@ class ViewProvider(ExtensionContainer):
         obj : App.DocumentObject
             Object to be dragged.
         """
-        ...
 
     def canDropObject(
         self,
@@ -131,7 +123,6 @@ class ViewProvider(ExtensionContainer):
             Non-objects subelements selected when the object is
             being dropped.
         """
-        ...
 
     def dropObject(
         self,
@@ -153,7 +144,6 @@ class ViewProvider(ExtensionContainer):
             Non-objects subelements selected when the object is
             being dropped.
         """
-        ...
 
     def canDragAndDropObject(self, obj: Any, /) -> bool:
         """
@@ -163,7 +153,6 @@ class ViewProvider(ExtensionContainer):
         obj : App.DocumentObject
             Object to be dragged and dropped.
         """
-        ...
 
     def replaceObject(self, oldObj: Any, newObj: Any, /) -> int:
         """
@@ -175,7 +164,6 @@ class ViewProvider(ExtensionContainer):
         newObj : App.DocumentObject
             New object.
         """
-        ...
 
     @overload
     def doubleClicked(self) -> bool: ...
@@ -184,7 +172,6 @@ class ViewProvider(ExtensionContainer):
         """
         Trigger double clicking this view object, optionally specifying its root and subobject path.
         """
-        ...
 
     def addDisplayMode(self, obj: Any, mode: str, /) -> None:
         """
@@ -195,19 +182,16 @@ class ViewProvider(ExtensionContainer):
         mode : str
             Name of the display mode.
         """
-        ...
 
     def listDisplayModes(self) -> list:
         """
         Show a list of all display modes.
         """
-        ...
 
     def toString(self) -> str:
         """
         Return a string representation of the Inventor node.
         """
-        ...
 
     def setTransformation(self, trans: Any, /) -> None:
         """
@@ -215,21 +199,18 @@ class ViewProvider(ExtensionContainer):
 
         trans : Base.Placement, Base.Matrix
         """
-        ...
 
     @constmethod
     def claimChildren(self) -> list:
         """
         Returns list of objects that are to be grouped in tree under this object.
         """
-        ...
 
     @constmethod
     def claimChildrenRecursive(self) -> list:
         """
         Returns list of objects that are to be grouped in tree under this object recursively.
         """
-        ...
 
     def partialRender(self, sub: Any = None, clear: bool = False, /) -> int:
         """
@@ -240,7 +221,6 @@ class ViewProvider(ExtensionContainer):
         clear: bool
             True to add, or False to remove the subelement(s) for rendering.
         """
-        ...
 
     def getElementColors(self, elementName: Optional[str] = None, /) -> dict:
         """
@@ -250,7 +230,6 @@ class ViewProvider(ExtensionContainer):
         elementName : str
             Name of the element. Optional.
         """
-        ...
 
     def setElementColors(self, colors: dict, /) -> None:
         """
@@ -259,7 +238,6 @@ class ViewProvider(ExtensionContainer):
         colors: dict
             Color dictionary of the form {elementName:(r,g,b,a)}.
         """
-        ...
 
     @constmethod
     def getElementPicked(self, pickPoint: Any, /) -> str | None:
@@ -268,7 +246,6 @@ class ViewProvider(ExtensionContainer):
 
         pickPoint : coin.SoPickedPoint
         """
-        ...
 
     @constmethod
     def getDetailPath(self, subelement: str, path: Any, append: bool = True, /) -> Any:
@@ -283,14 +260,12 @@ class ViewProvider(ExtensionContainer):
             If True, path will be first appended with the root node and the mode
             switch node of this view provider.
         """
-        ...
 
     @constmethod
     def signalChangeIcon(self) -> None:
         """
         Trigger icon changed signal.
         """
-        ...
 
     def getBoundingBox(
         self,
@@ -314,7 +289,6 @@ class ViewProvider(ExtensionContainer):
         depth: int
             Current recursion depth.
         """
-        ...
     Annotation: Any = ...
     """A pivy Separator to add a custom scenegraph to this ViewProvider."""
 

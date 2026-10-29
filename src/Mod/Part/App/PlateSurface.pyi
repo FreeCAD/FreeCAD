@@ -33,4 +33,3 @@ class PlateSurface(GeometrySurface):
         """
         Approximate the plate surface to a B-Spline surface
         """
-        ...

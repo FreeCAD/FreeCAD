@@ -23,4 +23,3 @@ class GeometryExtension(PyObjectBase):
     @constmethod
     def copy(self) -> "GeometryExtension":
         """Create a copy of this geometry extension."""
-        ...
