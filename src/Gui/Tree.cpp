@@ -3393,7 +3393,6 @@ void TreeWidget::onOpenFileLocation()
         return;
     }
 
-    const QString filePath = fileInfo.canonicalPath();
     bool success = false;
 
 #if defined(Q_OS_MAC)
@@ -3401,16 +3400,17 @@ void TreeWidget::onOpenFileLocation()
     if (!fileInfo.isDir()) {
         param += QStringLiteral("-R");
     }
-    param += filePath;
+    param += fileInfo.canonicalFilePath();
     success = QProcess::startDetached(QStringLiteral("open"), param);
 #elif defined(Q_OS_WIN)
     QStringList param;
     if (!fileInfo.isDir()) {
         param += QStringLiteral("/select,");
     }
-    param += QDir::toNativeSeparators(filePath);
+    param += QDir::toNativeSeparators(fileInfo.canonicalFilePath());
     success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
 #else
+    const QString filePath = fileInfo.canonicalPath();
     success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
 #endif
 
