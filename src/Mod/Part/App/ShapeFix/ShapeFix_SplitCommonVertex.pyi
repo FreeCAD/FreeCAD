@@ -24,16 +24,13 @@ class ShapeFix_SplitCommonVertex(ShapeFix_Root):
         """
         Initializes by shape
         """
-        ...
 
     def perform(self) -> None:
         """
         Iterates on sub- shape and performs fixes
         """
-        ...
 
     def shape(self) -> object:
         """
         Returns resulting shape
         """
-        ...

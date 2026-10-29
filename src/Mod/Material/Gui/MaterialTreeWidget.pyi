@@ -47,10 +47,8 @@ class MaterialTreeWidget(BaseClass):
         """
         Set the material filter or list of filters.
         """
-        ...
 
     def selectFilter(self, name: str, /) -> None:
         """
         Set the current material filter. Currently has no effect.
         """
-        ...

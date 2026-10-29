@@ -41,35 +41,29 @@ class ShapeFix_Solid(ShapeFix_Root):
         """
         Initializes by solid
         """
-        ...
 
     def perform(self) -> bool:
         """
         Iterates on subshapes and performs fixes
         """
-        ...
 
     def solidFromShell(self, shell: TopoShapeShell, /) -> TopoShape:
         """
         Calls MakeSolid and orients the solid to be not infinite
         """
-        ...
 
     def solid(self) -> TopoShape:
         """
         Returns resulting solid
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         In case of multiconnexity returns compound of fixed solids
         else returns one solid
         """
-        ...
 
     def fixShellTool(self) -> ShapeFix_Shell:
         """
         Returns tool for fixing shells
         """
-        ...

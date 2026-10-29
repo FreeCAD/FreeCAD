@@ -62,14 +62,12 @@ class Placement(PyObjectBase):
     @property
     def Base(self) -> Vector:
         """Vector to the Base Position of the Placement."""
-        ...
 
     @Base.setter
     def Base(self, value: Vector | Sequence[float]) -> None: ...
     @property
     def Rotation(self) -> RotationPy:
         """Orientation of the placement expressed as rotation."""
-        ...
 
     @Rotation.setter
     def Rotation(self, value: RotationPy | tuple[float, float, float, float]) -> None: ...
@@ -109,7 +107,6 @@ class Placement(PyObjectBase):
         """
         Returns a copy of this placement.
         """
-        ...
 
     def move(self, vector: Vector, /) -> None:
         """
@@ -118,7 +115,6 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     def translate(self, vector: Vector, /) -> None:
         """
@@ -127,7 +123,6 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     @overload
     def rotate(
@@ -161,7 +156,6 @@ class Placement(PyObjectBase):
         placement : Base.Placement
             Placement by which to multiply this placement.
         """
-        ...
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
@@ -171,21 +165,18 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector to be transformed.
         """
-        ...
 
     @constmethod
     def toMatrix(self) -> Matrix:
         """
         Compute the matrix representation of the placement.
         """
-        ...
 
     @constmethod
     def inverse(self) -> "Placement":
         """
         Compute the inverse placement.
         """
-        ...
 
     @constmethod
     def pow(self, t: float, shorten: bool = True, /) -> "Placement":
@@ -199,7 +190,6 @@ class Placement(PyObjectBase):
             If True, ensures rotation quaternion is net positive to make
             the path shorter.
         """
-        ...
 
     @constmethod
     def sclerp(self, placement2: "Placement", t: float, shorten: bool = True, /) -> "Placement":
@@ -218,7 +208,6 @@ class Placement(PyObjectBase):
             If True, the signs are harmonized before interpolation and the interpolation
             takes the shorter path.
         """
-        ...
 
     @constmethod
     def slerp(self, placement2: "Placement", t: float, /) -> "Placement":
@@ -233,7 +222,6 @@ class Placement(PyObjectBase):
         t : float
             Parameter of the path. t=0 returns this placement, t=1 returns `placement2`.
         """
-        ...
 
     @constmethod
     def isIdentity(self, tol: float = 0.0, /) -> bool:
@@ -244,7 +232,6 @@ class Placement(PyObjectBase):
             Tolerance used to check for identity.
             If tol is negative or zero, no tolerance is used.
         """
-        ...
 
     @constmethod
     def isSame(self, other: "Placement", tol: float = 0.0, /) -> bool:
@@ -252,4 +239,3 @@ class Placement(PyObjectBase):
         Checks whether this and the given placement are the same.
         The default tolerance is set to 0.0
         """
-        ...

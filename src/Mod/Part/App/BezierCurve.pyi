@@ -60,14 +60,12 @@ class BezierCurve(BoundedCurve):
         """
         Returns false if the weights of all the poles of this Bezier curve are equal.
         """
-        ...
 
     @constmethod
     def isPeriodic(self) -> bool:
         """
         Returns false.
         """
-        ...
 
     @constmethod
     def isClosed(self) -> bool:
@@ -75,59 +73,50 @@ class BezierCurve(BoundedCurve):
         Returns true if the distance between the start point and end point of
         this Bezier curve is less than or equal to gp::Resolution().
         """
-        ...
 
     def increase(self, degree: int, /) -> None:
         """
         Increases the degree of this Bezier curve to degree.
         As a result, the poles and weights tables are modified.
         """
-        ...
 
     def insertPoleAfter(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Inserts a pole after the pole of the given index.
         """
-        ...
 
     def insertPoleBefore(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Inserts a pole before the pole of the given index.
         """
-        ...
 
     def removePole(self, index: int, /) -> None:
         """
         Removes the pole at the given index from the table of poles of this Bezier curve.
         If this Bezier curve is rational, it can become non-rational.
         """
-        ...
 
     def segment(self, u1: float, u2: float, /) -> None:
         """
         Modifies this Bezier curve by segmenting it between u1 and u2.
         """
-        ...
 
     def setPole(self, index: int, pole: Vector, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getPole(self, index: int, /) -> Vector:
         """
         Get a pole of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getPoles(self) -> List[Vector]:
         """
         Get all poles of the Bezier curve.
         """
-        ...
 
     def setPoles(self, poles: List[Vector], /) -> None:
         """
@@ -135,27 +124,23 @@ class BezierCurve(BoundedCurve):
 
         Takes a list of 3D Base.Vector objects.
         """
-        ...
 
     def setWeight(self, index: int, weight: float, /) -> None:
         """
         (index, weight) Set a weight of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getWeights(self) -> List[float]:
         """
         Get all weights of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getResolution(self, tolerance_3d: float, /) -> float:
@@ -166,7 +151,6 @@ class BezierCurve(BoundedCurve):
         ensures that:
         |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < tolerance_3d
         """
-        ...
 
     def interpolate(self, constraints: List[List], parameters: List[float] = ..., /) -> None:
         """
@@ -177,4 +161,3 @@ class BezierCurve(BoundedCurve):
         Example :
         bezier.interpolate([[pt1, deriv11, deriv12], [pt2,], [pt3, deriv31]], [0, 0.4, 1.0])
         """
-        ...

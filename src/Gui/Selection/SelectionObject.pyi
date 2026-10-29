@@ -23,13 +23,11 @@ class SelectionObject(BaseClass):
         --
         This object becomes invalid.
         """
-        ...
 
     def isObjectTypeOf(self, type: Any, /) -> bool:
         """
         Test for a certain father class.
         """
-        ...
     ObjectName: Final[str] = ""
     """Name of the selected object"""
 

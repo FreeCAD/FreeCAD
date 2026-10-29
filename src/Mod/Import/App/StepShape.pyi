@@ -26,4 +26,3 @@ class StepShape(PyObjectBase):
         """
         Read a STEP file into memory and make it accessible
         """
-        ...

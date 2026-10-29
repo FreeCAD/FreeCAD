@@ -22,21 +22,18 @@ class Command(PyObjectBase):
         name : str
             Command name.
         """
-        ...
 
     @staticmethod
     def update() -> None:
         """
         Update active status of all commands.
         """
-        ...
 
     @staticmethod
     def listAll() -> List[str]:
         """
         Returns the name of all commands.
         """
-        ...
 
     @staticmethod
     def listByShortcut(string: str, useRegExp: bool = False, /) -> List[str]:
@@ -50,7 +47,6 @@ class Command(PyObjectBase):
         useRegExp : bool
             Filter using regular expression.
         """
-        ...
 
     def run(self, item: int = 0, /) -> None:
         """
@@ -59,20 +55,17 @@ class Command(PyObjectBase):
         item : int
             Item to be run.
         """
-        ...
 
     @constmethod
     def isActive(self) -> bool:
         """
         Returns True if the command is active, False otherwise.
         """
-        ...
 
     def getShortcut(self) -> str:
         """
         Returns string representing shortcut key accelerator for command.
         """
-        ...
 
     def setShortcut(self, string: str, /) -> bool:
         """
@@ -81,25 +74,21 @@ class Command(PyObjectBase):
         string : str
             Shortcut to be set.
         """
-        ...
 
     def resetShortcut(self) -> bool:
         """
         Resets shortcut for given command back to the default, returns True for success.
         """
-        ...
 
     def getInfo(self) -> Dict[Any, Any]:
         """
         Return information about this command.
         """
-        ...
 
     def getAction(self) -> List[Any]:
         """
         Return the associated QAction object.
         """
-        ...
 
     @staticmethod
     def createCustomCommand(
@@ -129,7 +118,6 @@ class Command(PyObjectBase):
         shortcut : str
             Shortcut key sequence. Optional.
         """
-        ...
 
     @staticmethod
     def removeCustomCommand(name: str, /) -> bool:
@@ -143,7 +131,6 @@ class Command(PyObjectBase):
         name : str
             Command name.
         """
-        ...
 
     @staticmethod
     def findCustomCommand(name: str, /) -> Optional[str]:
@@ -154,4 +141,3 @@ class Command(PyObjectBase):
         name : str
             Macro name.
         """
-        ...

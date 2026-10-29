@@ -30,10 +30,8 @@ class ModelManager(BaseClass):
         """
         Get a model object by specifying its UUID
         """
-        ...
 
     def getModelByPath(self, path: str, library: str = "", /) -> Model:
         """
         Get a model object by specifying its path and optional library name
         """
-        ...

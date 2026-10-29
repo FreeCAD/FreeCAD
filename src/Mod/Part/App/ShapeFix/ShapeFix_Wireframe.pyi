@@ -32,24 +32,20 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         Clears all statuses
         """
-        ...
 
     def load(self, shape: TopoShape, /) -> None:
         """
         Loads a shape, resets statuses
         """
-        ...
 
     def fixWireGaps(self) -> bool:
         """
         Fixes gaps between ends of curves of adjacent edges
         """
-        ...
 
     def fixSmallEdges(self) -> bool:
         """
         Fixes small edges in shape by merging adjacent edges
         """
-        ...
 
     def shape(self) -> TopoShape: ...

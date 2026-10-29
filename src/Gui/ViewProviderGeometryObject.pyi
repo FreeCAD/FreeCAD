@@ -19,4 +19,3 @@ class ViewProviderGeometryObject(ViewProviderDocumentObject):
         """
         Get a material object with the user-defined colors.
         """
-        ...

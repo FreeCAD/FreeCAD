@@ -28,7 +28,6 @@ class StringID(BaseClass):
         """
         Check if two StringIDs are the same
         """
-        ...
 
     Value: Final[int] = 0
     """Return the integer value of this ID"""

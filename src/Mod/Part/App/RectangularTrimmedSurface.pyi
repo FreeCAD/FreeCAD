@@ -41,4 +41,3 @@ class RectangularTrimmedSurface(GeometrySurface):
 
         Modifies this patch by changing the trim values applied to the original surface
         """
-        ...
