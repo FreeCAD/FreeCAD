@@ -328,14 +328,14 @@ class PublicClassStubTransformer(ast.NodeTransformer):
         node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
-        node.body = [self.visit(item) for item in node.body]
+        node.body = [self.visit(node.body[0])]  # drop Ellipsis
         return node
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> ast.AsyncFunctionDef:
         node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
-        node.body = [self.visit(item) for item in node.body]
+        node.body = [self.visit(node.body[0])]  # drop Ellipsis
         return node
 
     def visit_arg(self, node: ast.arg) -> ast.arg:
