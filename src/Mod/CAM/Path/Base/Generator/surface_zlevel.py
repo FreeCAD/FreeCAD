@@ -186,7 +186,7 @@ def _get_selected_faces(base_property):
                     extracted_faces.append(shape)
             except Exception as e:
                 Path.Log.debug(
-                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {str(e)}"
+                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {e!s}"
                 )
     return extracted_faces
 
@@ -291,6 +291,8 @@ def _process_isolated_face(face, z_level):
             if cap_face and not cap_face.isNull():
                 cap_face.translate(FreeCAD.Vector(0, 0, -cap_face.BoundBox.ZMin))
                 masks.append((z_level, cap_face))
+            else:
+                Path.Log.warning(f"Failed to process isolated face at Z={z_level}")
         else:
             # Flat face with inner holes (Scenario A)
             masks.extend(_cap_flat_face_holes(face, z_level))
@@ -420,9 +422,7 @@ def getTrimFace(border_face, bbFace, wpc):
         if hasattr(trim_face, "removeSplitter"):
             trim_face = trim_face.removeSplitter()
     except Exception as e:
-        Path.Log.debug(
-            f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {str(e)}"
-        )
+        Path.Log.debug(f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {e!s}")
         return None
 
     return trim_face
@@ -433,7 +433,9 @@ def getTrimFace(border_face, bbFace, wpc):
 # ---------------------------------------------------------------------------
 
 
-def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only, tolerance=0.0001):
+def categorize_floor_steps(
+    shape, start_z, final_z, step_down, clear_planar_only, is_triangulated=False, tolerance=0.0001
+):
     """Reconciles physical model floors with calculated step-down heights.
 
     This function generates a top-down list of Z-depths starting from start_z
@@ -446,6 +448,8 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
         start_z: The absolute Z-height where machining begins (mm).
         final_z: The absolute target Z-depth (mm).
         step_down: The desired vertical distance between passes (mm).
+        clear_planar_only: If True, only clears floors detected as Mixed or Extra.
+        is_triangulated (bool): True if the model is a triangulated (mesh-derived) shape.
 
     Returns:
         A list of tuples: (z_height, status, floor_geometry_at_Z0).
@@ -464,7 +468,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
     z_heights.append(round(final_z, 5))
 
     # 2. Get physical floors from model geometry
-    fused_geometry = _get_fused_floor_geometry(shape, start_z, final_z)
+    fused_geometry = _get_fused_floor_geometry(shape, start_z, final_z, is_triangulated)
 
     final_depth_logic = []
     accounted_floors = set()
@@ -500,7 +504,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
     return final_depth_logic
 
 
-def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
+def _get_fused_floor_geometry(shape, start_z, final_z, is_triangulated, tolerance=0.001):
     """Identifies and fuses horizontal faces within the machining range.
 
     Iterates through all faces of the shape, filtering for planar surfaces
@@ -511,6 +515,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
         shape: The Part.Shape to analyze.
         start_z: Upper vertical bound for floor detection (mm).
         final_z: Lower vertical bound for floor detection (mm).
+        is_triangulated: True if the model is a triangulated (mesh-derived) shape.
         tolerance: Distance threshold for considering faces coplanar (mm).
 
     Returns:
@@ -523,7 +528,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
             fuse_engine.add(faces[i])
         try:
             result = fuse_engine.getShape()
-        except:
+        except Exception:
             result = faces[0].multiFuse(faces[1:])
         return result
 
@@ -551,13 +556,10 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
 
             # If the intersection with the model is empty, path is clear
             return not shape.common(projection).Vertexes
-        except:
+        except Exception:
             return False
 
-    # Detect pre-triangulated models and skip floor detection
-    from . import surface_common
-
-    is_triangulated = surface_common._is_triangulated_mesh(shape.Faces)
+    # Pre-triangulated model - skip floor detection
     if is_triangulated:
         Path.Log.warning(
             "Pre-triangulated model detected. Automatic floor detection disabled for performance. 'Clear Planar Only' disabled."
@@ -572,14 +574,17 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     for face in shape.Faces:
         if _is_planar(face):
             z = round(face.Vertexes[0].Z, 5)
-            if (z >= z_min - tolerance) and (z < z_max):
-                if _is_accessible_from_top(face, shape, abs_top):
-                    f_copy = face.copy()
-                    f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
+            if (
+                (z >= z_min - tolerance)
+                and (z < z_max)
+                and _is_accessible_from_top(face, shape, abs_top)
+            ):
+                f_copy = face.copy()
+                f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
 
-                    if z not in floor_accumulator:
-                        floor_accumulator[z] = []
-                    floor_accumulator[z].append(f_copy)
+                if z not in floor_accumulator:
+                    floor_accumulator[z] = []
+                floor_accumulator[z].append(f_copy)
 
     fused = {}
 
@@ -736,7 +741,7 @@ def zlevel_hybrid_stack(
             # current_silhouette is the union of all 3D contact points at this depth
             current_silhouette = fusion.getShape()
         except Exception as e:
-            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {e!s}")
             continue
 
         # E. Process and apply active fill hole masks
@@ -1084,7 +1089,7 @@ def _calculate_cut_area(
     try:
         cut_area = layer_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {e!s}")
         cut_area = None
 
     return cut_area
@@ -1130,7 +1135,7 @@ def _update_machining_mask(wpc, all_prev_comp, current_silhouette, status, floor
     try:
         all_prev_comp = mask_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Machining mask update failed: {str(e)}")
+        Path.Log.error(f"Machining mask update failed: {e!s}")
 
     return all_prev_comp
 
@@ -1394,11 +1399,15 @@ def _setup_adaptive_geofence(
         # Irregular Stock Check
         try:
             intersection = cut_area.common(bb_face)
-            if intersection and not intersection.isNull():
-                if abs(cut_area.Area - intersection.Area) > 0.01:
-                    is_open = True
-                elif abs(intersection.Length - cut_area.Length) > 0.01:
-                    is_open = True
+            if (
+                intersection
+                and not intersection.isNull()
+                and (
+                    abs(cut_area.Area - intersection.Area) > 0.01
+                    or abs(intersection.Length - cut_area.Length) > 0.01
+                )
+            ):
+                is_open = True
         except Exception:
             is_open = True
 
@@ -1574,7 +1583,7 @@ def _generate_wire_path(
     try:
         pp = Path.fromShapes(**path_params)
     except Exception as e:
-        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {str(e)}")
+        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {e!s}")
         return []
 
     # Extend Commands list
@@ -1688,7 +1697,7 @@ def _generatePattern(
             engine.makePocket()
             res_area = engine.getShape()
         except Exception as e:
-            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {str(e)}")
+            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {e!s}")
             continue
 
         if not res_area or res_area.isNull():

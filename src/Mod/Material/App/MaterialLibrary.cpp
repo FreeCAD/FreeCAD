@@ -160,8 +160,8 @@ void MaterialLibraryLocal::createFolder(const QString& path)
     QDir fileDir(filePath);
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(filePath)) {
-            Base::Console().error("Unable to create directory path '%s'\n",
-                                  filePath.toStdString().c_str());
+            Base::Console().error("Unable to create directory path '{}'\n",
+                                  filePath.toStdString());
         }
     }
 }
@@ -174,8 +174,8 @@ void MaterialLibraryLocal::renameFolder(const QString& oldPath, const QString& n
     QDir fileDir(filePath);
     if (fileDir.exists()) {
         if (!fileDir.rename(filePath, newFilePath)) {
-            Base::Console().error("Unable to rename directory path '%s'\n",
-                                  filePath.toStdString().c_str());
+            Base::Console().error("Unable to rename directory path '{}'\n",
+                                  filePath.toStdString());
         }
     }
 
@@ -235,7 +235,7 @@ void MaterialLibraryLocal::deleteDir(MaterialManager& manager, const QString& pa
     // Finally, remove ourself
     QDir dir;
     if (!dir.rmdir(path)) {
-        throw DeleteError(path);
+        throw DeleteError(path.toStdString());
     }
 }
 
@@ -255,8 +255,7 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
         _materialPathMap->erase(rPath);
     }
     else {
-        QString error = QStringLiteral("DeleteError: Unable to delete ") + path;
-        throw DeleteError(error);
+        throw DeleteError("DeleteError: Unable to delete " + path.toStdString());
     }
 }
 
@@ -293,14 +292,14 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
     QDir fileDir(info.path());
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(info.path())) {
-            Base::Console().error("Unable to create directory path '%s'\n",
-                                  info.path().toStdString().c_str());
+            Base::Console().error("Unable to create directory path '{}'\n",
+                                  info.path().toStdString());
         }
     }
 
     if (info.exists()) {
         if (!overwrite) {
-            Base::Console().error("File already exists '%s'\n", info.path().toStdString().c_str());
+            Base::Console().error("File already exists '{}'\n", info.path().toStdString());
             throw MaterialExists();
         }
     }

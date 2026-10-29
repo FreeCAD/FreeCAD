@@ -29,6 +29,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawTileWeld.h"
 #include "DrawTileWeldPy.h"  // generated from DrawTileWeldPy.xml
 #include "DrawUtil.h"
@@ -78,7 +79,7 @@ void DrawTileWeld::onChanged(const App::Property* prop)
 
 void DrawTileWeld::replaceFileIncluded(std::string newSymbolFile)
 {
-//    Base::Console().message("DTW::replaceFileIncluded(%s)\n", newSymbolFile.c_str());
+//    Base::Console().message("DTW::replaceFileIncluded({})\n", newSymbolFile);
     if (newSymbolFile.empty()) {
         return;
     }
@@ -123,6 +124,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawTileWeldPython, TechDraw::DrawTileWeld)
 template<> const char* TechDraw::DrawTileWeldPython::getViewProviderName() const {
     return "TechDrawGui::ViewProviderTile";
+}
+template<>
+PyObject* TechDraw::DrawTileWeldPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawTileWeldPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

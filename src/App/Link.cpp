@@ -1535,7 +1535,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject*& ret,
                 return true;
             }
             if (isSuppressedLinkElement(elements[idx])) {
-                if (!subname || !subname[0]) {
+                if (Base::Tools::isNullOrEmpty(subname)) {
                     ret = elements[idx]->getSubObject(subname, nullptr, mat, true, depth + 1);
                     if (!ret) {
                         ret = elements[idx];

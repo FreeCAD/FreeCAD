@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Sammanställning</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Sammanställningsleder</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="125"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Sammanställning</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2061"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -185,22 +185,22 @@
       <translation>Uppdatera lagrade positioner</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1869"/>
+      <location filename="../../../JointObject.py" line="1875"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Välj 2 element från 2 separata delar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2063"/>
+      <location filename="../../../JointObject.py" line="2069"/>
       <source>Radius 1</source>
       <translation>Radie 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2065"/>
+      <location filename="../../../JointObject.py" line="2071"/>
       <source>Thread pitch</source>
       <translation>Gängstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2073"/>
       <source>Pitch radius</source>
       <translation>Stigningsradie</translation>
     </message>
@@ -532,37 +532,37 @@ SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring t
       <translation>Okänt format för videoexport</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="169"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Skapa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Aktivera</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="219"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Infoga</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Fixering</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="257"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Begränsningar</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Verktyg</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Simulering</translation>
     </message>
@@ -1203,7 +1203,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Leder</translation>
     </message>

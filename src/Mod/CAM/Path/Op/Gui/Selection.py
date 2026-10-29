@@ -57,26 +57,10 @@ class VCARVEGate:
         except Exception:
             return False
 
-        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+        if not sub and math.fabs(shape.Volume) < 1e-9 and shape.Edges:
             return True
 
-        if shape.ShapeType == "Face":
-            return True
-
-        elif shape.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
-                return True
-
-        elif shape.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
-                return True
-
-        if sub:
-            subShape = shape.getElement(sub)
-            if subShape.ShapeType == "Edge":
-                return False
-
-        return False
+        return sub and sub[0:4] in ("Edge", "Face")
 
 
 class ENGRAVEGate(PathBaseGate):
@@ -86,18 +70,10 @@ class ENGRAVEGate(PathBaseGate):
         except Exception:
             return False
 
-        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+        if not sub and math.fabs(shape.Volume) < 1e-9 and shape.Edges:
             return True
 
-        if shape.ShapeType == "Edge":
-            return True
-
-        if sub:
-            subShape = shape.getElement(sub)
-            if subShape.ShapeType == "Edge":
-                return True
-
-        return False
+        return sub and sub[0:4] in ("Edge", "Face")
 
 
 class CHAMFERGate(PathBaseGate):
@@ -107,20 +83,10 @@ class CHAMFERGate(PathBaseGate):
         except Exception:
             return False
 
-        if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
+        if not sub and math.fabs(shape.Volume) < 1e-9 and shape.Edges:
             return True
 
-        if "Edge" == shape.ShapeType or "Face" == shape.ShapeType:
-            return True
-
-        if sub:
-            subShape = shape.getElement(sub)
-            if subShape.ShapeType == "Edge":
-                return True
-            elif subShape.ShapeType == "Face":
-                return True
-
-        return False
+        return sub and sub[0:4] in ("Edge", "Face")
 
 
 class DRILLGate(PathBaseGate):

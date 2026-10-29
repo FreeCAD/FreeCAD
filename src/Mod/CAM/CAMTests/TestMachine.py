@@ -429,9 +429,9 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         # List configurations
         configs = MachineFactory.list_configuration_files()
 
-        # Should include <any> plus our two machines
-        self.assertGreaterEqual(len(configs), 3)
-        self.assertEqual(configs[0][0], "<any>")
+        # Only real machine files, no placeholder entry
+        self.assertGreaterEqual(len(configs), 2)
+        self.assertTrue(all(path is not None for name, path in configs))
 
         # Check that our machines are in the list (by display name, not filename)
         names = [name for name, path in configs]
@@ -446,7 +446,6 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         configs = MachineFactory.list_configurations()
 
         self.assertIsInstance(configs, list)
-        self.assertIn("<any>", configs)
         # Returns display name from JSON, not filename
         self.assertIn("Test Machine", configs)
 
@@ -599,3 +598,43 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
             MachineFactory._addon_machine_dirs[:] = [
                 (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != p
             ]
+
+    def test_rescan_addon_dirs(self):
+        """rescan_addon_dirs() makes the next tree request scan the Mod directories again.
+
+        Given: the addon directories were scanned
+        When: rescan_addon_dirs() is called
+        Then: the scan flag is cleared, and get_addon_machine_tree() sets it again
+        """
+        MachineFactory.get_addon_machine_tree()
+        self.assertTrue(MachineFactory._addon_dirs_scanned)
+        MachineFactory.rescan_addon_dirs()
+        self.assertFalse(MachineFactory._addon_dirs_scanned)
+        MachineFactory.get_addon_machine_tree()
+        self.assertTrue(MachineFactory._addon_dirs_scanned)
+
+
+class TestMachinesAddonHint(PathTestUtils.PathTestBase):
+    """The machine editor hint that points to the Machines addon."""
+
+    def setUp(self):
+        from Machine.ui.editor.machine_editor import machines_addon_hint_wanted
+
+        self.wanted = machines_addon_hint_wanted
+
+    def test_shown_without_addons(self):
+        """The hint shows when no addon supplies machines."""
+        self.assertTrue(self.wanted([], True))
+
+    def test_shown_with_other_addon(self):
+        """A different machine addon does not hide the hint."""
+        self.assertTrue(self.wanted([("VendorMachines", [])], True))
+
+    def test_hidden_when_installed(self):
+        """The hint hides when the Machines addon is in the addon tree."""
+        tree = [("VendorMachines", []), ("Machines", [("file", "Mill", "/m.fcm")])]
+        self.assertFalse(self.wanted(tree, True))
+
+    def test_hidden_when_dismissed(self):
+        """The hint stays hidden after the user dismissed it."""
+        self.assertFalse(self.wanted([], False))

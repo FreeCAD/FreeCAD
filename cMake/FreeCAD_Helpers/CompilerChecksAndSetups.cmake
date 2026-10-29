@@ -29,10 +29,6 @@ macro(CompilerChecksAndSetups)
 
     # Enabled C++23 for Freecad 26.3 and later
     add_definitions(-DMINIMUM_CPLUSPLUS_VERSION=202302L)
-    set(BUILD_ENABLE_CXX_STD "C++23"  CACHE STRING  "Enable C++ standard")
-    set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
-                 "C++23"
-    )
 
     if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 13.3)
         message(FATAL_ERROR "FreeCAD 26.3 and later requires C++23.  G++ must be 13.3 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
@@ -40,12 +36,7 @@ macro(CompilerChecksAndSetups)
         message(FATAL_ERROR "FreeCAD 26.3 and later requires C++23.  Clang must be 18.0 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
     endif()
 
-    # Escape the two plus chars as otherwise cmake complains about invalid regex
-    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+23")
-        set(CMAKE_CXX_STANDARD 23)
-    else()
-        set(CMAKE_CXX_STANDARD 20)
-    endif()
+    set(CMAKE_CXX_STANDARD 23)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)
 

@@ -52,22 +52,6 @@
     </message>
   </context>
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="61"/>
-      <source>Element to measure</source>
-      <translation>ອົງປະກອບທີ່ຈະວັດແທກ</translation>
-    </message>
-  </context>
-  <context>
-    <name>App::PropertyVector</name>
-    <message>
-      <location filename="../../../MeasureCOM.py" line="68"/>
-      <source>The result location</source>
-      <translation>ຕຳແໜ່ງຜົນລັດ</translation>
-    </message>
-  </context>
-  <context>
     <name>MeasureGui::QuickMeasure</name>
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
@@ -202,92 +186,92 @@
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="137"/>
+      <location filename="../../TaskMeasure.cpp" line="138"/>
       <source>Measurement</source>
       <translation>ການວັດແທກ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
-      <source>Show Delta</source>
-      <translation>ສະແດງຄ່າຜິດດ່ຽງ (Delta)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMeasure.cpp" line="159"/>
+      <location filename="../../TaskMeasure.cpp" line="149"/>
       <source>Auto Save</source>
       <translation>ບັນທຶກອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="163"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>ບັນທຶກການວັດແທກຄັ້ງລ່າສຸດໂດຍອັດຕະໂນມັດເມື່ອເລີ່ມການວັດແທກໃໝ່. ໃຊ້ປຸ່ມ Shift ເພື່ອສະຫຼັບການເຮັດວຽກຊົ່ວຄາວ.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="168"/>
+      <location filename="../../TaskMeasure.cpp" line="158"/>
       <source>Additive Selection</source>
       <translation>ການເລືອກແບບເພີ່ມເຕີມ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="174"/>
+      <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>ຫາກໝາຍເອົາ, ການເລືອກໃໝ່ຈະຖືກເພີ່ມເຂົ້າໃນການວັດແທກ. ຫາກບໍ່ໝາຍເອົາ, ຕ້ອງກົດປຸ່ມ Ctrl ຄ້າງໄວ້ເພື່ອເພີ່ມການເລືອກເຂົ້າໃນການວັດແທກປັດຈຸບັນ ຖ້າບໍ່ດັ່ງນັ້ນຈະເປັນການເລີ່ມການວັດແທກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="187"/>
+      <location filename="../../TaskMeasure.cpp" line="175"/>
       <source>Settings</source>
       <translation>ການຕັ້ງຄ່າ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="199"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Auto</source>
       <translation>ອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="231"/>
+      <location filename="../../TaskMeasure.cpp" line="222"/>
       <source>Mode</source>
       <translation>ໂໝດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="245"/>
+      <location filename="../../TaskMeasure.cpp" line="228"/>
       <source>Result</source>
       <translation>ຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="551"/>
+      <location filename="../../TaskMeasure.cpp" line="530"/>
       <source>%1 auto-save</source>
       <translation>%1 ບັນທຶກອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 start new measurement</source>
       <translation>%1 ເລີ່ມການວັດແທກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="555"/>
+      <location filename="../../TaskMeasure.cpp" line="534"/>
       <source>%1 add to measurement</source>
       <translation>%1 ເພີ່ມເຂົ້າໃນການວັດແທກ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="780"/>
+      <location filename="../../TaskMeasure.cpp" line="740"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 ວັດແທກໃໝ່, %2 ສະຫຼັບການບັນທຶກອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="785"/>
+      <location filename="../../TaskMeasure.cpp" line="745"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 ເພີ່ມເຂົ້າໃນການວັດແທກ, %2 ສະຫຼັບການບັນທຶກອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="281"/>
+      <location filename="../../TaskMeasure.cpp" line="820"/>
+      <source>Show Delta</source>
+      <translation>ສະແດງຄ່າຜິດດ່ຽງ (Delta)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMeasure.cpp" line="263"/>
       <source>Saves the measurement in the active document</source>
       <translation>ບັນທຶກການວັດແທກລົງໃນເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="287"/>
+      <location filename="../../TaskMeasure.cpp" line="269"/>
       <source>Close</source>
       <translation>ປິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="288"/>
+      <location filename="../../TaskMeasure.cpp" line="270"/>
       <source>Close the measurement task.</source>
       <translation>ປິດໜ້າວຽກການວັດແທກ.</translation>
     </message>
@@ -295,57 +279,9 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="280"/>
+      <location filename="../../TaskMeasure.cpp" line="262"/>
       <source>Save</source>
       <translation>ບັນທຶກ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskMeasure</name>
-    <message>
-      <location filename="../../../InitGui.py" line="44"/>
-      <source>Center of mass</source>
-      <translation>ຈຸດສູນກາງມວນສານ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="119"/>
-      <source>Distance</source>
-      <translation>ໄລຍະຫ່າງ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="127"/>
-      <source>Distance Free</source>
-      <translation>ໄລຍະຫ່າງແບບອິດສະຫຼະ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="135"/>
-      <source>Angle</source>
-      <translation>ມຸມ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="143"/>
-      <source>Length</source>
-      <translation>ຄວາມຍາວ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="151"/>
-      <source>Position</source>
-      <translation>ຕຳແໜ່ງ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="159"/>
-      <source>Area</source>
-      <translation>ເນື້ອທີ່</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="167"/>
-      <source>Diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/AppMeasure.cpp" line="175"/>
-      <source>Radius</source>
-      <translation>ລັດສະໝີ</translation>
     </message>
   </context>
   <context>
@@ -503,6 +439,54 @@
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
       <translation>ຄວາມເສື່ອຍອ້ອມແກນ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="121"/>
+      <source>Distance</source>
+      <translation>ໄລຍະຫ່າງ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="129"/>
+      <source>Distance Free</source>
+      <translation>ໄລຍະຫ່າງແບບອິດສະຫຼະ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="137"/>
+      <source>Angle</source>
+      <translation>ມຸມ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="145"/>
+      <source>Length</source>
+      <translation>ຄວາມຍາວ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="153"/>
+      <source>Position</source>
+      <translation>ຕຳແໜ່ງ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="161"/>
+      <source>Area</source>
+      <translation>ເນື້ອທີ່</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="169"/>
+      <source>Diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="177"/>
+      <source>Radius</source>
+      <translation>ລັດສະໝີ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="185"/>
+      <source>Geometric Center</source>
+      <translation type="unfinished">Geometric Center</translation>
     </message>
   </context>
   <context>

@@ -21,6 +21,7 @@ public:
     static constexpr int DefaultDirectionUserData = -2;
     static constexpr int SelectReferenceUserData = -3;
     static constexpr int ObjectDirectionUserData = -4;
+    static constexpr int NoDirectionUserData = -5;
 
     explicit PatternReferenceWidget(QWidget* parent = nullptr);
 
@@ -40,6 +41,15 @@ public:
 
     Gui::ComboLinks dirLinks;
 
+    inline int getSelectionIndex() const
+    {
+        return selectionIndex;
+    }
+    inline void setSelectionIndex(int index)
+    {
+        selectionIndex = index;
+    }
+
 Q_SIGNALS:
     void requestReferenceSelection();
     void parametersChanged();
@@ -49,6 +59,7 @@ private:
 
     App::PropertyLinkSub* referenceProperty = nullptr;
     bool blockReferenceUpdate = false;
+    int selectionIndex = 0;
 };
 
 }  // namespace PartGui

@@ -87,8 +87,8 @@ public:
         std::optional<QLocale> qtLocale;
         if (config.qtLocale) {
             qtLocale = detail::toQtLocale(*config.qtLocale);
-            QLocale::setDefault(*qtLocale);
         }
+        QLocale::setDefault(qtLocale.value_or(QLocale::c()));
 
         if (config.icuLocale) {
             UErrorCode status = U_ZERO_ERROR;

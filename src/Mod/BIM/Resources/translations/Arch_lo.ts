@@ -3793,14 +3793,14 @@ The default template is located at:
       <translation>ສ້າງໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="204"/>
+      <location filename="../../bimcommands/BimWall.py" line="201"/>
       <source>Next point</source>
       <translation>ຈຸດຖັດໄປ</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
       <location filename="../../ArchCommands.py" line="1728"/>
-      <location filename="../../bimcommands/BimProfile.py" line="99"/>
+      <location filename="../../bimcommands/BimProfile.py" line="96"/>
       <source>Category</source>
       <translation>ໝວດໝູ່</translation>
     </message>
@@ -3889,7 +3889,7 @@ The default template is located at:
       <location filename="../../ArchCoveringGui.py" line="672"/>
       <location filename="../../ArchCoveringGui.py" line="683"/>
       <location filename="../../ArchCoveringGui.py" line="742"/>
-      <location filename="../../bimtests/TestArchCoveringGui.py" line="159"/>
+      <location filename="../../bimtests/TestArchCoveringGui.py" line="173"/>
       <source>No selection</source>
       <translation>ບໍ່ມີການເລືອກ</translation>
     </message>
@@ -3972,9 +3972,9 @@ The default template is located at:
     <message>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../ArchStructure.py" line="467"/>
-      <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimPanel.py" line="204"/>
-      <location filename="../../bimcommands/BimWindow.py" line="450"/>
+      <location filename="../../bimcommands/BimProfile.py" line="103"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
+      <location filename="../../bimcommands/BimWindow.py" line="447"/>
       <source>Preset</source>
       <translation>ຄ່າທີ່ກຳນົດໄວ້ລ່ວງໜ້າ</translation>
     </message>
@@ -4062,13 +4062,13 @@ The default template is located at:
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
       <location filename="../../ArchStructure.py" line="476"/>
-      <location filename="../../ArchStructure.py" line="1604"/>
+      <location filename="../../ArchStructure.py" line="1624"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
       <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchPanel.py" line="576"/>
-      <location filename="../../bimcommands/BimPanel.py" line="214"/>
-      <location filename="../../bimcommands/BimWall.py" line="507"/>
+      <location filename="../../bimcommands/BimPanel.py" line="211"/>
+      <location filename="../../bimcommands/BimWall.py" line="504"/>
       <source>Length</source>
       <translation>ຄວາມຍາວ</translation>
     </message>
@@ -4081,13 +4081,13 @@ The default template is located at:
       <location filename="../../ArchCoveringGui.py" line="1002"/>
       <location filename="../../ArchCoveringGui.py" line="1078"/>
       <location filename="../../ArchStructure.py" line="483"/>
-      <location filename="../../ArchStructure.py" line="1605"/>
+      <location filename="../../ArchStructure.py" line="1625"/>
       <location filename="../../ArchWall.py" line="1863"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
       <location filename="../../ArchWindow.py" line="1196"/>
       <location filename="../../ArchPanel.py" line="577"/>
-      <location filename="../../bimcommands/BimPanel.py" line="221"/>
-      <location filename="../../bimcommands/BimWall.py" line="514"/>
+      <location filename="../../bimcommands/BimPanel.py" line="218"/>
+      <location filename="../../bimcommands/BimWall.py" line="511"/>
       <source>Width</source>
       <translation>ຄວາມກວ້າງ</translation>
     </message>
@@ -4239,12 +4239,12 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
-      <location filename="../../ArchStructure.py" line="1606"/>
+      <location filename="../../ArchStructure.py" line="1626"/>
       <location filename="../../ArchWall.py" line="1869"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1086"/>
       <location filename="../../ArchWindow.py" line="1199"/>
-      <location filename="../../bimcommands/BimWall.py" line="521"/>
+      <location filename="../../bimcommands/BimWall.py" line="518"/>
       <source>Height</source>
       <translation>ຄວາມສູງ</translation>
     </message>
@@ -4264,39 +4264,39 @@ The default template is located at:
       <translation>ສະຫຼັບ ຄວາມຍາວ/ຄວາມກວ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1070"/>
+      <location filename="../../ArchStructure.py" line="1090"/>
       <location filename="../../ArchWall.py" line="617"/>
       <source>This mesh is an invalid solid</source>
       <translation>ເມັດ (mesh) ນີ້ ບໍ່ແມ່ນຮູບຊົງແຂງທີ່ສົມບູນ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1189"/>
+      <location filename="../../ArchStructure.py" line="1209"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker ແຈ້ງຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1616"/>
+      <location filename="../../ArchStructure.py" line="1636"/>
       <source>Node Tools</source>
       <translation>ເຄື່ອງມືໂນດ (Node)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1640"/>
+      <location filename="../../ArchStructure.py" line="1660"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>ຍືດໂນດຂອງອົງປະກອບນີ້ ໃຫ້ໄປຮອດໂນດຂອງອົງປະກອບອື່ນ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1651"/>
+      <location filename="../../ArchStructure.py" line="1671"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>ເຊື່ອມຕໍ່ໂນດຂອງອົງປະກອບນີ້ ເຂົ້າກັບໂນດຂອງອົງປະກອບອື່ນ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1662"/>
+      <location filename="../../ArchStructure.py" line="1682"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>ເປີດ/ປິດ ໂນດໂຄງສ້າງທັງໝົດໃນເອກະສານ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1669"/>
+      <location filename="../../ArchStructure.py" line="1689"/>
       <source>Extrusion Tools</source>
       <translation>ເຄື່ອງມືດຶງຂຶ້ນຮູບ (Extrusion)</translation>
     </message>
@@ -4322,17 +4322,17 @@ The default template is located at:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="294"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
-      <location filename="../../bimcommands/BimTruss.py" line="83"/>
-      <location filename="../../bimcommands/BimWall.py" line="157"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="91"/>
+      <location filename="../../bimcommands/BimTruss.py" line="80"/>
+      <location filename="../../bimcommands/BimWall.py" line="154"/>
       <source>%1 pick first point</source>
       <translation>%1 ເລືອກຈຸດທຳອິດ</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="96"/>
-      <location filename="../../bimcommands/BimTruss.py" line="85"/>
-      <location filename="../../bimcommands/BimWall.py" line="159"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="93"/>
+      <location filename="../../bimcommands/BimTruss.py" line="82"/>
+      <location filename="../../bimcommands/BimWall.py" line="156"/>
       <source>%1 pick next point</source>
       <translation>%1 ເລືອກຈຸດຖັດໄປ</translation>
     </message>
@@ -4352,90 +4352,90 @@ The default template is located at:
       <translation>ຕົວເລືອກໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1042"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
       <translation>ຂໍ້ຜິດພາດ: ຮູບຊົງພື້ນຖານບໍ່ສາມາດດຶງຂຶ້ນຮູບຕາມວັດຖຸເຄື່ອງມືນີ້ໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1621"/>
+      <location filename="../../ArchStructure.py" line="1641"/>
       <source>Reset Nodes</source>
       <translation>ຕັ້ງຄ່າໂນດໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1627"/>
+      <location filename="../../ArchStructure.py" line="1647"/>
       <source>Edit Nodes</source>
       <translation>ແກ້ໄຂໂນດ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1633"/>
+      <location filename="../../ArchStructure.py" line="1653"/>
       <source>Extend Nodes</source>
       <translation>ຍືດໂນດ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1646"/>
+      <location filename="../../ArchStructure.py" line="1666"/>
       <source>Connect Nodes</source>
       <translation>ເຊື່ອມຕໍ່ໂນດ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1657"/>
+      <location filename="../../ArchStructure.py" line="1677"/>
       <source>Toggle All Nodes</source>
       <translation>ເປີດ/ປິດ ໂນດທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1674"/>
-      <location filename="../../ArchStructure.py" line="1875"/>
+      <location filename="../../ArchStructure.py" line="1694"/>
+      <location filename="../../ArchStructure.py" line="1895"/>
       <source>Select Tool</source>
       <translation>ເລືອກເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1679"/>
+      <location filename="../../ArchStructure.py" line="1699"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>ເລືອກວັດຖຸ ຫຼື ຂອບເພື່ອໃຊ້ເປັນເຄື່ອງມື (ເສັ້ນທາງການດຶງຍືດ)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1703"/>
-      <location filename="../../ArchStructure.py" line="1753"/>
+      <location filename="../../ArchStructure.py" line="1723"/>
+      <location filename="../../ArchStructure.py" line="1773"/>
       <source>Choose another Structure object:</source>
       <translation>ເລືອກວັດຖຸໂຄງສ້າງອື່ນ:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1709"/>
-      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1729"/>
+      <location filename="../../ArchStructure.py" line="1779"/>
       <source>The chosen object is not a Structure</source>
       <translation>ວັດຖຸທີ່ເລືອກບໍ່ແມ່ນໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1714"/>
-      <location filename="../../ArchStructure.py" line="1764"/>
+      <location filename="../../ArchStructure.py" line="1734"/>
+      <location filename="../../ArchStructure.py" line="1784"/>
       <source>The chosen object has no structural nodes</source>
       <translation>ວັດຖຸທີ່ເລືອກບໍ່ມີຈຸດເຊື່ອມຕໍ່ໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1719"/>
-      <location filename="../../ArchStructure.py" line="1769"/>
+      <location filename="../../ArchStructure.py" line="1739"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>ຫນຶ່ງໃນວັດຖຸເຫຼົ່ານີ້ມີຫຼາຍກວ່າ 2 ຈຸດເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
-      <location filename="../../ArchStructure.py" line="1782"/>
+      <location filename="../../ArchStructure.py" line="1752"/>
+      <location filename="../../ArchStructure.py" line="1802"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>ບໍ່ສາມາດຊອກຫາຈຸດຕັດທີ່ເໝາະສົມໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1736"/>
+      <location filename="../../ArchStructure.py" line="1756"/>
       <source>Intersection found.
 </source>
       <translation>ພົບຈຸດຕັດແລ້ວ.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1787"/>
+      <location filename="../../ArchStructure.py" line="1807"/>
       <source>Intersection found.</source>
       <translation>ພົບຈຸດຕັດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1860"/>
       <source>Done</source>
       <translation>ສຳເລັດ</translation>
     </message>
@@ -4445,12 +4445,12 @@ The default template is located at:
       <translation>ອຸປະກອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="61"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="58"/>
       <source>Select a base shape object and optionally a mesh object</source>
       <translation>ເລືອກວັດຖຸຮູບຮ່າງພື້ນຖານ ແລະ ວັດຖຸຕາໜ່າງ (ຖ້າມີ)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="81"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="78"/>
       <source>Create Equipment</source>
       <translation>ສ້າງອຸປະກອນ</translation>
     </message>
@@ -4465,19 +4465,19 @@ The default template is located at:
       <translation>ຊັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="68"/>
-      <location filename="../../bimcommands/BimProfile.py" line="152"/>
+      <location filename="../../bimcommands/BimProfile.py" line="65"/>
+      <location filename="../../bimcommands/BimProfile.py" line="149"/>
       <source>Create Profile</source>
       <translation>ສ້າງໂປຣໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="79"/>
-      <location filename="../../bimcommands/BimPanel.py" line="129"/>
+      <location filename="../../bimcommands/BimProfile.py" line="76"/>
+      <location filename="../../bimcommands/BimPanel.py" line="126"/>
       <source>%1 pick point</source>
       <translation>%1 ເລືອກຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="95"/>
+      <location filename="../../bimcommands/BimProfile.py" line="92"/>
       <source>Profile Settings</source>
       <translation>ການຕັ້ງຄ່າໂປຣໄຟລ໌</translation>
     </message>
@@ -4492,25 +4492,25 @@ The default template is located at:
       <translation>ສະຖານທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="58"/>
+      <location filename="../../bimcommands/BimSite.py" line="55"/>
       <source>Create Site</source>
       <translation>ສ້າງສະຖານທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="65"/>
-      <location filename="../../bimcommands/BimRoof.py" line="81"/>
+      <location filename="../../bimcommands/BimRoof.py" line="62"/>
+      <location filename="../../bimcommands/BimRoof.py" line="78"/>
       <source>Create Roof</source>
       <translation>ສ້າງຫຼັງຄາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="97"/>
-      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <source>%1 select a base object</source>
       <translation>%1 ເລືອກວັດຖຸພື້ນຖານ</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="92"/>
+      <location filename="../../bimcommands/BimRoof.py" line="89"/>
       <source>Unable to create a roof</source>
       <translation>ບໍ່ສາມາດສ້າງຫຼັງຄາໄດ້</translation>
     </message>
@@ -4577,47 +4577,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ຊ່ອງເປີດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="64"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="61"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
       <translation>ເລືອກວັດຖຸສອງຢ່າງ, ວັດຖຸທີ່ຈະຕັດ ແລະ ວັດຖຸທີ່ກຳນົດລະນາບການຕັດ, ຕາມລຳດັບນັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="69"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="66"/>
       <source>The first object does not have a shape</source>
       <translation>ວັດຖຸທຳອິດບໍ່ມີຮູບຮ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="74"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="71"/>
       <source>The second object does not define a plane</source>
       <translation>ວັດຖຸທີສອງບໍ່ໄດ້ກຳນົດລະນາບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="118"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="115"/>
       <source>Cutting</source>
       <translation>ການຕັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="144"/>
       <source>Cut Plane</source>
       <translation>ລະນາບການຕັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="148"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="145"/>
       <source>Cut Plane Options</source>
       <translation>ຕົວເລືອກລະນາບການຕັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="149"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="146"/>
       <source>Which side to cut</source>
       <translation>ຈະຕັດດ້ານໃດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Behind</source>
       <translation>ດ້ານຫຼັງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="150"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="147"/>
       <source>Front</source>
       <translation>ດ້ານໜ້າ</translation>
     </message>
@@ -4719,7 +4719,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ໄຟລ໌ອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="56"/>
+      <location filename="../../bimcommands/BimReference.py" line="53"/>
       <source>Create external reference</source>
       <translation>ສ້າງການອ້າງອີງພາຍນອກ</translation>
     </message>
@@ -4729,7 +4729,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ໂຄງຮ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="60"/>
+      <location filename="../../bimcommands/BimFrame.py" line="57"/>
       <source>Create Frame</source>
       <translation>ສ້າງໂຄງຮ່າງ</translation>
     </message>
@@ -4789,44 +4789,44 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ໜ້າຕ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="109"/>
-      <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="213"/>
+      <location filename="../../bimcommands/BimWindow.py" line="106"/>
+      <location filename="../../bimcommands/BimWindow.py" line="133"/>
+      <location filename="../../bimcommands/BimWindow.py" line="210"/>
       <source>Create Window</source>
       <translation>ສ້າງໜ້າຕ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="154"/>
+      <location filename="../../bimcommands/BimWindow.py" line="151"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>ເລືອກໜ້າຂອງວັດຖຸທີ່ມີຢູ່ ຫຼື ເລືອກຄ່າທີ່ຕັ້ງໄວ້ລ່ວງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="171"/>
+      <location filename="../../bimcommands/BimWindow.py" line="168"/>
       <source>%1 pick point on host</source>
       <translation>%1 ເລືອກຈຸດເທິງວັດຖຸຫຼັກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="260"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>ໜ້າຕ່າງບໍ່ໄດ້ອີງໃສ່ສະເກັດ. ໜ້າຕ່າງຈະບໍ່ຖືກຈັດວາງ ຫຼື ປ່ຽນຂະໜາດ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="282"/>
+      <location filename="../../bimcommands/BimWindow.py" line="279"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>ບໍ່ມີການກຳນົດຂອບເຂດຄວາມກວ້າງ ແລະ/ຫຼື ຄວາມສູງໃນສະເກັດໜ້າຕ່າງ. ໜ້າຕ່າງຈະບໍ່ຖືກປ່ຽນຂະໜາດ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="285"/>
+      <location filename="../../bimcommands/BimWindow.py" line="282"/>
       <source>No window found. Cannot continue.</source>
       <translation>ບໍ່ພົບໜ້າຕ່າງ. ບໍ່ສາມາດດຳເນີນການຕໍ່ໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="400"/>
       <source>Auto include in host object</source>
       <translation>ລວມເຂົ້າໃນວັດຖຸຫຼັກໂດຍອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="412"/>
+      <location filename="../../bimcommands/BimWindow.py" line="409"/>
       <source>Sill height</source>
       <translation>ຄວາມສູງຂອງຂອບລຸ່ມໜ້າຕ່າງ</translation>
     </message>
@@ -4849,7 +4849,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="399"/>
+      <location filename="../../bimcommands/BimWindow.py" line="396"/>
       <source>Window Options</source>
       <translation>ຕົວເລືອກໜ້າຕ່າງ</translation>
     </message>
@@ -4920,7 +4920,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ດຶງຂໍ້ມູນຂອບທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <location filename="../../ArchAxis.py" line="999"/>
       <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchSpace.py" line="954"/>
@@ -5089,7 +5089,7 @@ The ladybug or pysolar Python module is required.</source>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1588"/>
-      <location filename="../../ArchSectionPlane.py" line="1593"/>
+      <location filename="../../ArchSectionPlane.py" line="1592"/>
       <location filename="../../ArchAxis.py" line="831"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchReference.py" line="717"/>
@@ -5131,25 +5131,25 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchWindow.py" line="1717"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="476"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="802"/>
-      <location filename="../../ArchStructure.py" line="1599"/>
+      <location filename="../../ArchStructure.py" line="1619"/>
       <location filename="../../ArchMaterial.py" line="897"/>
       <location filename="../../ArchMaterial.py" line="923"/>
       <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchPanel.py" line="578"/>
-      <location filename="../../bimcommands/BimPanel.py" line="228"/>
+      <location filename="../../bimcommands/BimPanel.py" line="225"/>
       <source>Thickness</source>
       <translation>ຄວາມໜາ</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1720"/>
-      <location filename="../../bimcommands/BimWall.py" line="537"/>
+      <location filename="../../bimcommands/BimWall.py" line="534"/>
       <source>Offset</source>
       <translation>ໄລຍະຫ່າງ (Offset)</translation>
     </message>
@@ -5179,17 +5179,17 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ລະບົບແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="85"/>
+      <location filename="../../bimcommands/BimAxis.py" line="82"/>
       <source>Only axes must be selected</source>
       <translation>ຕ້ອງເລືອກສະເພາະແກນເທົັ້ນັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="90"/>
+      <location filename="../../bimcommands/BimAxis.py" line="87"/>
       <source>Create Axis System</source>
       <translation>ສ້າງລະບົບແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="95"/>
+      <location filename="../../bimcommands/BimAxis.py" line="92"/>
       <source>Select at least one axis</source>
       <translation>ເລືອກຢ່າງໜ້ອຍໜຶ່ງແກນ</translation>
     </message>
@@ -5220,7 +5220,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ໂຄງຫຼັງຄາ (Truss)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="116"/>
+      <location filename="../../bimcommands/BimTruss.py" line="113"/>
       <source>Create Truss</source>
       <translation>ສ້າງໂຄງຫຼັງຄາ</translation>
     </message>
@@ -5300,17 +5300,17 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ວັດຖຸປົກຄຸມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="58"/>
+      <location filename="../../bimcommands/BimStairs.py" line="55"/>
       <source>Create Stairs</source>
       <translation>ສ້າງຂັ້ນໄດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="543"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="540"/>
       <source>Create material</source>
       <translation>ສ້າງວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="576"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="573"/>
       <source>Create multi-material</source>
       <translation>ສ້າງວັດສະດຸປະສົມ</translation>
     </message>
@@ -5358,7 +5358,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ຂໍ້ຜິດພາດ: ພື້ນທີ່ '%s' ບໍ່ມີໂຊນ (Zone). ກຳລັງຍົກເລີກ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="117"/>
+      <location filename="../../bimcommands/BimAxis.py" line="114"/>
       <source>Create Grid</source>
       <translation>ສ້າງຕາຕະລາງ</translation>
     </message>
@@ -5581,28 +5581,28 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ແຜ່ນງານ (PanelSheet)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="87"/>
-      <location filename="../../bimcommands/BimPanel.py" line="148"/>
+      <location filename="../../bimcommands/BimPanel.py" line="84"/>
+      <location filename="../../bimcommands/BimPanel.py" line="145"/>
       <source>Create Panel</source>
       <translation>ສ້າງແຜ່ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="200"/>
+      <location filename="../../bimcommands/BimPanel.py" line="197"/>
       <source>Panel Options</source>
       <translation>ທາງເລືອກແຜ່ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="237"/>
+      <location filename="../../bimcommands/BimPanel.py" line="234"/>
       <source>Rotate</source>
       <translation>ໝູນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="322"/>
+      <location filename="../../bimcommands/BimPanel.py" line="319"/>
       <source>Create Panel Cut</source>
       <translation>ສ້າງການຕັດແຜ່ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="354"/>
+      <location filename="../../bimcommands/BimPanel.py" line="351"/>
       <source>Create Panel Sheet</source>
       <translation>ສ້າງແຜ່ນງານ (Panel Sheet)</translation>
     </message>
@@ -5612,7 +5612,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ເກີດຂໍ້ຜິດພາດໃນການຄຳນວນຮູບຊົງຂອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1988"/>
+      <location filename="../../ArchStructure.py" line="2008"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
       <translation>ບໍ່ສາມາດຄຳນວນຮູບຊົງໄດ້</translation>
@@ -5653,7 +5653,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ແກ້ໄຂຕຳແໜ່ງມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="455"/>
+      <location filename="../../bimcommands/BimPanel.py" line="452"/>
       <source>This object has no face</source>
       <translation>ວັດຖຸນີ້ບໍ່ມີໜ້າ</translation>
     </message>
@@ -5663,14 +5663,14 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ຝາແກ້ວ (Curtain Wall)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
-      <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="59"/>
+      <location filename="../../bimcommands/BimTruss.py" line="58"/>
       <source>Select only one base object or none</source>
       <translation>ເລືອກວັດຖຸພື້ນຖານພຽງອັນດຽວ ຫຼື ບໍ່ເລືອກເລີຍ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="122"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="64"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="119"/>
       <source>Create Curtain Wall</source>
       <translation>ສ້າງຝາແກ້ວ</translation>
     </message>
@@ -6207,23 +6207,23 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ຕົວເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="62"/>
-      <location filename="../../bimcommands/BimPipe.py" line="71"/>
+      <location filename="../../bimcommands/BimPipe.py" line="59"/>
+      <location filename="../../bimcommands/BimPipe.py" line="68"/>
       <source>Create Pipe</source>
       <translation>ສ້າງທໍ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="106"/>
+      <location filename="../../bimcommands/BimPipe.py" line="103"/>
       <source>Select exactly 2 or 3 pipe objects</source>
       <translation>ເລືອກວັດຖຸທໍ່ໃຫ້ຄົບ 2 ຫຼື 3 ອັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="112"/>
+      <location filename="../../bimcommands/BimPipe.py" line="109"/>
       <source>Select only pipe objects</source>
       <translation>ເລືອກສະເພາະວັດຖຸທໍ່ເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="116"/>
+      <location filename="../../bimcommands/BimPipe.py" line="113"/>
       <source>Create Connector</source>
       <translation>ສ້າງຕົວເຊື່ອມຕໍ່</translation>
     </message>
@@ -6351,7 +6351,7 @@ The ladybug or pysolar Python module is required.</source>
       <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="480"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Value</source>
       <translation>ຄ່າ (Value)</translation>
     </message>
@@ -6399,7 +6399,7 @@ Floor creation aborted.</source>
       <translation>ສ້າງຊັ້ນ (Floor)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="50"/>
+      <location filename="../../bimcommands/BimAxis.py" line="47"/>
       <source>Create Axis</source>
       <translation>ສ້າງແກນ</translation>
     </message>
@@ -6506,8 +6506,8 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimRoof.py" line="94"/>
-      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimSpace.py" line="68"/>
       <source>Select a base object</source>
       <translation>ເລືອກວັດຖຸພື້ນຖານ</translation>
     </message>
@@ -6576,7 +6576,7 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2538"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="475"/>
       <source>Property</source>
       <translation>ຄຸນລັກສະນະ</translation>
     </message>
@@ -6607,13 +6607,13 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2700"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="635"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
       <translation>ຄຸນສົມບັດໃໝ່</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2737"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>New property set</source>
       <translation>ຊຸດຄຸນສົມບັດໃໝ່</translation>
     </message>
@@ -6623,13 +6623,13 @@ Floor creation aborted.</source>
       <translation>ເຫຼັກເສີມ (Rebar)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="72"/>
-      <location filename="../../bimcommands/BimRebar.py" line="106"/>
+      <location filename="../../bimcommands/BimRebar.py" line="69"/>
+      <location filename="../../bimcommands/BimRebar.py" line="103"/>
       <source>Create Rebar</source>
       <translation>ສ້າງເຫຼັກເສີມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="116"/>
+      <location filename="../../bimcommands/BimRebar.py" line="113"/>
       <source>Select a base face on a structural object</source>
       <translation>ເລືອກໜ້າພື້ນຖານເທິງວັດຖຸໂຄງສ້າງ</translation>
     </message>
@@ -6639,114 +6639,114 @@ Floor creation aborted.</source>
       <translation>ໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="65"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="62"/>
       <source>Create Section Plane</source>
       <translation>ສ້າງລະນາບໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1799"/>
+      <location filename="../../ArchSectionPlane.py" line="1798"/>
       <source>Scope</source>
       <translation>ຂອບເຂດ (Scope)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Placement and Visuals</source>
       <translation>ການວາງຕຳແໜ່ງ ແລະ ການສະແດງຜົນ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1805"/>
+      <location filename="../../ArchSectionPlane.py" line="1804"/>
       <source>Objects seen by this section plane</source>
       <translation>ວັດຖຸທີ່ເຫັນໂດຍລະນາບໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>ລົບວັດຖຸທີ່ເນັ້ນອອກຈາກລາຍການດ້ານເທິງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1812"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Add Selected</source>
       <translation>ເພີ່ມອັນທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1817"/>
+      <location filename="../../ArchSectionPlane.py" line="1816"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>ເພີ່ມວັດຖຸທີ່ເລືອກເຂົ້າໃນຂອບເຂດຂອງລະນາບໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1818"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Cut View</source>
       <translation>ມຸມມອງໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1825"/>
+      <location filename="../../ArchSectionPlane.py" line="1824"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>ສ້າງໜ້າຕັດສົດໃນມຸມມອງ 3 ມິຕິ, ເຊື່ອງເລຂາຄະນິດດ້ານໃດດ້ານໜຶ່ງຂອງລະນາບເພື່ອເບິ່ງພາຍໃນໂມເດວຂອງທ່ານ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Rotate by 90°</source>
       <translation>ໝູນ 90 ອົງສາ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1830"/>
+      <location filename="../../ArchSectionPlane.py" line="1829"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ X ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1834"/>
+      <location filename="../../ArchSectionPlane.py" line="1833"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ Y ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1838"/>
+      <location filename="../../ArchSectionPlane.py" line="1837"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ Z ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1839"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Resize to Fit</source>
       <translation>ປັບຂະໜາດໃຫ້ພໍດີ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1845"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Recenter Plane</source>
       <translation>ຈັດລະນາບໄວ້ກາງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1827"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate X</source>
       <translation>ໝູນແກນ X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1598"/>
+      <location filename="../../ArchSectionPlane.py" line="1597"/>
       <source>Toggle Cut View</source>
       <translation>ສະຫຼັບມຸມມອງໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1831"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotate Y</source>
       <translation>ໝູນແກນ Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1835"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotate Z</source>
       <translation>ໝູນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1844"/>
+      <location filename="../../ArchSectionPlane.py" line="1843"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>ປັບຂະໜາດລະນາບໃຫ້ພໍດີກັບວັດຖຸໃນລາຍການດ້ານເທິງ</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="530"/>
       <location filename="../../ArchWall.py" line="1873"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Center</source>
       <translation>ກາງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1850"/>
+      <location filename="../../ArchSectionPlane.py" line="1849"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>ຈັດລະນາບໄວ້ກາງວັດຖຸໃນລາຍການດ້ານເທິງ</translation>
     </message>
@@ -6784,7 +6784,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="281"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="90"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="87"/>
       <source>Create Building</source>
       <translation>ສ້າງອາຄານ</translation>
     </message>
@@ -6794,7 +6794,7 @@ Building creation aborted.</source>
       <translation>ພື້ນທີ່ (Space)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="59"/>
+      <location filename="../../bimcommands/BimSpace.py" line="56"/>
       <source>Create Space</source>
       <translation>ສ້າງພື້ນທີ່</translation>
     </message>
@@ -6849,69 +6849,69 @@ Building creation aborted.</source>
       <translation>ຝາສາມາດສ້າງຂຶ້ນຈາກວັດຖຸ Part ຫຼື Mesh ເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="110"/>
-      <location filename="../../bimcommands/BimWall.py" line="410"/>
-      <location filename="../../bimcommands/BimWall.py" line="658"/>
+      <location filename="../../bimcommands/BimWall.py" line="107"/>
+      <location filename="../../bimcommands/BimWall.py" line="407"/>
+      <location filename="../../bimcommands/BimWall.py" line="655"/>
       <source>Create Wall</source>
       <translation>ສ້າງຝາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="146"/>
+      <location filename="../../bimcommands/BimWall.py" line="143"/>
       <source>First Point of Wall</source>
       <translation>ຈຸດທຳອິດຂອງຝາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="486"/>
+      <location filename="../../bimcommands/BimWall.py" line="483"/>
       <source>Wall Presets</source>
       <translation>ຄ່າຝາທີ່ກຳນົດໄວ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="492"/>
+      <location filename="../../bimcommands/BimWall.py" line="489"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
       <translation>ລາຍການນີ້ສະແດງວັດຖຸ MultiMaterials ທັງໝົດຂອງເອກະສານນີ້. ສ້າງບາງອັນເພື່ອລະບຸປະເພດຂອງຝາ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="544"/>
+      <location filename="../../bimcommands/BimWall.py" line="541"/>
       <source>Baseline</source>
       <translation>ເສັ້ນພື້ນຖານ (Baseline)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="550"/>
+      <location filename="../../bimcommands/BimWall.py" line="547"/>
       <source>No baseline</source>
       <translation>ບໍ່ມີເສັ້ນພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="551"/>
+      <location filename="../../bimcommands/BimWall.py" line="548"/>
       <source>Draft line</source>
       <translation>ເສັ້ນຮ່າງ (Draft line)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="552"/>
+      <location filename="../../bimcommands/BimWall.py" line="549"/>
       <source>Sketch</source>
       <translation>ສະເກັດ (Sketch)</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="837"/>
       <location filename="../../ArchWall.py" line="1893"/>
-      <location filename="../../bimcommands/BimWall.py" line="528"/>
+      <location filename="../../bimcommands/BimWall.py" line="525"/>
       <source>Alignment</source>
       <translation>ການຈັດວາງ (Alignment)</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1872"/>
-      <location filename="../../bimcommands/BimWall.py" line="530"/>
+      <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Left</source>
       <translation>ດ້ານຊ້າຍ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
-      <location filename="../../bimcommands/BimWall.py" line="531"/>
+      <location filename="../../bimcommands/BimWall.py" line="528"/>
       <source>Right</source>
       <translation>ດ້ານຂວາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="584"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="609"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="581"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="606"/>
       <source>Merge Walls</source>
       <translation>ລວມຝາເຂົ້າກັນ</translation>
     </message>
@@ -6937,7 +6937,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1848"/>
-      <location filename="../../bimcommands/BimWall.py" line="481"/>
+      <location filename="../../bimcommands/BimWall.py" line="478"/>
       <source>Wall Options</source>
       <translation>ທາງເລືອກຝາ</translation>
     </message>
@@ -7048,64 +7048,64 @@ Building creation aborted.</source>
       <translation>ເປີດການໃຊ້ງານ B-rep force flag ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="55"/>
       <source>Add space boundary</source>
       <translation>ເພີ່ມຂອບເຂດພື້ນທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="73"/>
       <source>Grouping</source>
       <translation>ການຈັດກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="112"/>
       <source>Remove space boundary</source>
       <translation>ລົບຂອບເຂດພື້ນທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="130"/>
       <source>Ungrouping</source>
       <translation>ການຍົກເລີກການຈັດກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="173"/>
       <source>Split Mesh</source>
       <translation>ແຍກ Mesh</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="221"/>
       <source>Mesh to shape</source>
       <translation>ປ່ຽນ Mesh ເປັນຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="291"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="288"/>
       <source>Remove shape</source>
       <translation>ລົບຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="340"/>
       <source>No problems found!</source>
       <translation>ບໍ່ພົບບັນຫາໃດໆ!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <source>The selected wall contains no subwalls to merge</source>
       <translation>ຝາທີ່ເລືອກບໍ່ມີຝາຍ່ອຍທີ່ຈະລວມເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="595"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="599"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="592"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="596"/>
       <source>Select only wall objects</source>
       <translation>ເລືອກສະເພາະວັດຖຸຝາເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="607"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="604"/>
       <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
       <translation>ຝາທີ່ມີຄຸນສົມບັດ 'ຄວາມກວ້າງ', 'ຄວາມສູງ' ແລະ 'ການຈັດວາງ' ທີ່ແຕກຕ່າງກັນ ບໍ່ສາມາດລວມເຂົ້າກັນໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="415"/>
-      <location filename="../../bimcommands/BimArchUtils.py" line="448"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="412"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="445"/>
       <source>Create Component</source>
       <translation>ສ້າງສ່ວນປະກອບ</translation>
     </message>
@@ -7115,27 +7115,27 @@ Building creation aborted.</source>
       <translation>ຄີ (Key)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="482"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="479"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>ສ້າງສະເປຣດຊີດຄຸນສົມບັດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="57"/>
       <source>Create Level</source>
       <translation>ສ້າງລະດັບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="63"/>
+      <location filename="../../bimcommands/BimFence.py" line="60"/>
       <source>Create Fence</source>
       <translation>ສ້າງຮົ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="303"/>
+      <location filename="../../bimcommands/BimBox.py" line="299"/>
       <source>Create Box</source>
       <translation>ສ້າງກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="65"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="62"/>
       <source>Create 2D View</source>
       <translation>ສ້າງມຸມມອງ 2 ມິຕິ</translation>
     </message>
@@ -7320,7 +7320,7 @@ Building creation aborted.</source>
       <translation>ປັບປຸງໃຫ້ລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <location filename="../../bimcommands/BimSketch.py" line="54"/>
       <source>Create Sketch</source>
       <translation>ສ້າງສະເກັດ</translation>
     </message>
@@ -7355,7 +7355,7 @@ Building creation aborted.</source>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="683"/>
-      <location filename="../../ArchStructure.py" line="1865"/>
+      <location filename="../../ArchStructure.py" line="1885"/>
       <source>An optional extrusion path for this element</source>
       <translation>ເສັ້ນທາງການດຶງຂຶ້ນ (extrusion) ທາງເລືອກສຳລັບອົງປະກອບນີ້</translation>
     </message>
@@ -7458,42 +7458,42 @@ Building creation aborted.</source>
       <translation>ເລືອກ PropertySet ທີ່ຜູ້ໃຊ້ກຳນົດເອງ ເພື່ອໃຊ້ໃນການສ້າງຮູບຮ່າງທີ່ຫຼາກຫຼາຍ ໂດຍໃຊ້ ArchSketch ດຽວກັນ </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1432"/>
+      <location filename="../../ArchStructure.py" line="1452"/>
       <source>If the nodes are visible or not</source>
       <translation>ກຳນົດວ່າຈະໃຫ້ເຫັນຈຸດເຊື່ອມຕໍ່ (nodes) ຫຼື ບໍ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1440"/>
+      <location filename="../../ArchStructure.py" line="1460"/>
       <source>The width of the nodes line</source>
       <translation>ຄວາມກວ້າງຂອງເສັ້ນຈຸດເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1448"/>
+      <location filename="../../ArchStructure.py" line="1468"/>
       <source>The size of the node points</source>
       <translation>ຂະໜາດຂອງຈຸດເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1457"/>
+      <location filename="../../ArchStructure.py" line="1477"/>
       <source>The color of the nodes line</source>
       <translation>ສີຂອງເສັ້ນຈຸດເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1466"/>
+      <location filename="../../ArchStructure.py" line="1486"/>
       <source>The type of structural node</source>
       <translation>ປະເພດຂອງຈຸດເຊື່ອມຕໍ່ໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1912"/>
+      <location filename="../../ArchStructure.py" line="1932"/>
       <source>Axes systems this structure is built on</source>
       <translation>ລະບົບແກນທີ່ໂຄງສ້າງນີ້ຖືກສ້າງຂຶ້ນ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1922"/>
+      <location filename="../../ArchStructure.py" line="1942"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>ໝາຍເລກອົງປະກອບທີ່ຈະລະເວັ້ນ ເມື່ອໂຄງສ້າງນີ້ອີງຕາມແກນ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1929"/>
+      <location filename="../../ArchStructure.py" line="1949"/>
       <source>If true the element are aligned with axes</source>
       <translation>ຖ້າເປັນ True ອົງປະກອບຈະຖືກຈັດວາງໃຫ້ກົງກັບແກນ</translation>
     </message>
@@ -8623,7 +8623,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="98"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="412"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="409"/>
       <source>IFC properties of this object</source>
       <translation>ຄຸນສົມບັດ IFC ຂອງວັດຖຸນີ້</translation>
     </message>
@@ -9407,34 +9407,33 @@ Building creation aborted.</source>
       <translation>ຄວາມໂປ່ງໃສຂອງວັດຖຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1230"/>
-      <location filename="../../ArchSectionPlane.py" line="1247"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <source>Show the cut in the 3D view</source>
       <translation>ສະແດງສ່ວນຕັດໃນມຸມມອງ 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1238"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <source>The color of this object</source>
       <translation>ສີຂອງວັດຖຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1258"/>
+      <location filename="../../ArchSectionPlane.py" line="1250"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>ໄລຍະຫ່າງລະຫວ່າງໜ້າຕັດ ແລະ ສ່ວນຕັດມຸມມອງຕົວຈິງ (ຄວນຮັກສາໃຫ້ເປັນຄ່າທີ່ນ້ອຍຫຼາຍແຕ່ບໍ່ແມ່ນສູນ)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1259"/>
       <source>Show the label in the 3D view</source>
       <translation>ສະແດງປ້າຍຊື່ໃນມຸມມອງ 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1275"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>ຊື່ຂອງຟອນ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1284"/>
+      <location filename="../../ArchSectionPlane.py" line="1276"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>ຂະໜາດຂອງຟອນຂໍ້ຄວາມ</translation>
@@ -9837,12 +9836,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2050"/>
+      <location filename="../../ArchStructure.py" line="2070"/>
       <source>Structure Tools</source>
       <translation>ເຄື່ອງມືໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2051"/>
+      <location filename="../../ArchStructure.py" line="2071"/>
       <source>Structure tools</source>
       <translation>ເຄື່ອງມືໂຄງສ້າງ</translation>
     </message>
@@ -9850,12 +9849,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="43"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="40"/>
       <source>Equipment</source>
       <translation>ອຸປະກອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEquipment.py" line="47"/>
+      <location filename="../../bimcommands/BimEquipment.py" line="44"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
       <translation>ສ້າງອຸປະກອນຈາກວັດຖຸທີ່ເລືອກ (Part ຫຼື Mesh)</translation>
     </message>
@@ -9974,12 +9973,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Profile</name>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="43"/>
+      <location filename="../../bimcommands/BimProfile.py" line="40"/>
       <source>Profile</source>
       <translation>ໂປຣໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProfile.py" line="45"/>
+      <location filename="../../bimcommands/BimProfile.py" line="42"/>
       <source>Creates a profile</source>
       <translation>ສ້າງໂປຣໄຟລ໌</translation>
     </message>
@@ -9987,12 +9986,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="46"/>
+      <location filename="../../bimcommands/BimSite.py" line="43"/>
       <source>Site</source>
       <translation>ສະຖານທີ່ (Site)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSite.py" line="48"/>
+      <location filename="../../bimcommands/BimSite.py" line="45"/>
       <source>Creates a site including selected objects</source>
       <translation>ສ້າງສະຖານທີ່ໂດຍລວມເອົາວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -10000,12 +9999,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="42"/>
+      <location filename="../../bimcommands/BimRoof.py" line="39"/>
       <source>Roof</source>
       <translation>ຫຼັງຄາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="46"/>
+      <location filename="../../bimcommands/BimRoof.py" line="43"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>ສ້າງວັດຖຸຫຼັງຄາຈາກ wire ທີ່ເລືອກ.</translation>
     </message>
@@ -10013,12 +10012,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="41"/>
       <source>Cut With Plane</source>
       <translation>ຕັດດ້ວຍໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
+      <location filename="../../bimcommands/BimCutPlane.py" line="42"/>
       <source>Cuts an object with a plane</source>
       <translation>ຕັດວັດຖຸດ້ວຍໜ້າພຽງ</translation>
     </message>
@@ -10026,12 +10025,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="43"/>
+      <location filename="../../bimcommands/BimReference.py" line="40"/>
       <source>External Reference</source>
       <translation>ການອ້າງອີງພາຍນອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReference.py" line="45"/>
+      <location filename="../../bimcommands/BimReference.py" line="42"/>
       <source>Creates an external reference object</source>
       <translation>ສ້າງວັດຖຸການອ້າງອີງພາຍນອກ</translation>
     </message>
@@ -10039,12 +10038,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="43"/>
+      <location filename="../../bimcommands/BimFrame.py" line="40"/>
       <source>Frame</source>
       <translation>ໂຄງ (Frame)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFrame.py" line="48"/>
+      <location filename="../../bimcommands/BimFrame.py" line="45"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>ສ້າງວັດຖຸໂຄງຈາກວັດຖຸ 2D ທີ່ຮາບພຽງ (ເສັ້ນທາງການດຶງຍືດ) ແລະ ໂປຣໄຟລ໌. ກະລຸນາກວດສອບວ່າໄດ້ເລືອກວັດຖຸຕາມລຳດັບນັ້ນ.</translation>
     </message>
@@ -10052,12 +10051,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="50"/>
+      <location filename="../../bimcommands/BimWindow.py" line="47"/>
       <source>Window</source>
       <translation>ໜ້າຕ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="55"/>
+      <location filename="../../bimcommands/BimWindow.py" line="52"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>ສ້າງວັດຖຸໜ້າຕ່າງຈາກວັດຖຸທີ່ເລືອກ (wire, ສີ່ຫຼ່ຽມ ຫຼື ສະເກັດ)</translation>
     </message>
@@ -10065,12 +10064,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="69"/>
+      <location filename="../../bimcommands/BimAxis.py" line="66"/>
       <source>Axis System</source>
       <translation>ລະບົບແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="73"/>
+      <location filename="../../bimcommands/BimAxis.py" line="70"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>ສ້າງລະບົບແກນຈາກຊຸດຂອງແກນ</translation>
     </message>
@@ -10078,12 +10077,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Truss</name>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="43"/>
+      <location filename="../../bimcommands/BimTruss.py" line="40"/>
       <source>Truss</source>
       <translation>ໂຄງຊັດ (Truss)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTruss.py" line="47"/>
+      <location filename="../../bimcommands/BimTruss.py" line="44"/>
       <source>Creates a truss object from the selected line or from scratch</source>
       <translation>ສ້າງວັດຖຸໂຄງຊັດຈາກເສັ້ນທີ່ເລືອກ ຫຼື ເລີ່ມສ້າງໃໝ່</translation>
     </message>
@@ -10091,12 +10090,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="43"/>
+      <location filename="../../bimcommands/BimStairs.py" line="40"/>
       <source>Stairs</source>
       <translation>ຂັ້ນໄດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimStairs.py" line="45"/>
+      <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Creates a flight of stairs</source>
       <translation>ສ້າງຊຸດຂັ້ນໄດ</translation>
     </message>
@@ -10104,12 +10103,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="43"/>
+      <location filename="../../bimcommands/BimSpace.py" line="40"/>
       <source>Space</source>
       <translation>ພື້ນທີ່ (Space)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSpace.py" line="47"/>
+      <location filename="../../bimcommands/BimSpace.py" line="44"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>ສ້າງວັດຖຸພື້ນທີ່ຈາກວັດຖຸຂອບເຂດທີ່ເລືອກ</translation>
     </message>
@@ -10117,12 +10116,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="42"/>
+      <location filename="../../bimcommands/BimFence.py" line="39"/>
       <source>Fence</source>
       <translation>ຮົ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="45"/>
+      <location filename="../../bimcommands/BimFence.py" line="42"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>ສ້າງວັດຖຸຮົ້ວຈາກໜ້າຕັດ, ເສົາ ແລະ ເສັ້ນທາງທີ່ເລືອກ</translation>
     </message>
@@ -10130,12 +10129,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="533"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="530"/>
       <source>Material</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="537"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="534"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>ສ້າງ ຫຼື ແກ້ໄຂການກຳນົດວັດສະດຸຂອງວັດຖຸທີ່ເລືອກ.</translation>
     </message>
@@ -10143,12 +10142,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="568"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="565"/>
       <source>Multi-Material</source>
       <translation>ວັດສະດຸປະສົມ (Multi-Material)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="570"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="567"/>
       <source>Creates or edits multi-materials</source>
       <translation>ສ້າງ ຫຼື ແກ້ໄຂວັດສະດຸປະສົມ</translation>
     </message>
@@ -10156,12 +10155,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="600"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="597"/>
       <source>Material Tools</source>
       <translation>ເຄື່ອງມືວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="601"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="598"/>
       <source>Material tools</source>
       <translation>ເຄື່ອງມືວັດສະດຸ</translation>
     </message>
@@ -10169,12 +10168,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="110"/>
+      <location filename="../../bimcommands/BimAxis.py" line="107"/>
       <source>Grid</source>
       <translation>ຕາຕະລາງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="112"/>
+      <location filename="../../bimcommands/BimAxis.py" line="109"/>
       <source>Creates a customizable grid object</source>
       <translation>ສ້າງວັດຖຸຕາຕະລາງທີ່ປັບແຕ່ງໄດ້</translation>
     </message>
@@ -10242,12 +10241,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="55"/>
+      <location filename="../../bimcommands/BimPanel.py" line="52"/>
       <source>Panel</source>
       <translation>ແຜ່ນ (Panel)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="60"/>
+      <location filename="../../bimcommands/BimPanel.py" line="57"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
       <translation>ສ້າງວັດຖຸແຜ່ນຈາກການເລີ່ມໃໝ່ ຫຼື ຈາກວັດຖຸທີ່ເລືອກ (ສະເກັດ, wire, ໜ້າ ຫຼື ວັດຖຸແຂງ)</translation>
     </message>
@@ -10255,12 +10254,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="307"/>
+      <location filename="../../bimcommands/BimPanel.py" line="304"/>
       <source>Panel Cut</source>
       <translation>ການຕັດແຜ່ນ (Panel Cut)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="309"/>
+      <location filename="../../bimcommands/BimPanel.py" line="306"/>
       <source>Creates 2D views of selected panels</source>
       <translation>ສ້າງມຸມມອງ 2D ຂອງແຜ່ນທີ່ເລືອກ</translation>
     </message>
@@ -10268,12 +10267,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="340"/>
+      <location filename="../../bimcommands/BimPanel.py" line="337"/>
       <source>Panel Sheet</source>
       <translation>ແຜ່ນງານ (Panel Sheet)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="344"/>
+      <location filename="../../bimcommands/BimPanel.py" line="341"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>ສ້າງແຜ່ນງານ 2D ເຊິ່ງສາມາດບັນຈຸການຕັດແຜ່ນໄດ້</translation>
     </message>
@@ -10281,12 +10280,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="379"/>
+      <location filename="../../bimcommands/BimPanel.py" line="376"/>
       <source>Nest</source>
       <translation>ການຈັດວາງ (Nest)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="383"/>
+      <location filename="../../bimcommands/BimPanel.py" line="380"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>ຈັດວາງຊຸດຂອງຮູບຮ່າງທີ່ເລືອກໄວ້ໃນພາຊະນະບັນຈຸ</translation>
     </message>
@@ -10294,12 +10293,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="555"/>
+      <location filename="../../bimcommands/BimPanel.py" line="552"/>
       <source>Panel Tools</source>
       <translation>ເຄື່ອງມືແຜ່ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPanel.py" line="556"/>
+      <location filename="../../bimcommands/BimPanel.py" line="553"/>
       <source>Panel tools</source>
       <translation>ເຄື່ອງມືແຜ່ນ</translation>
     </message>
@@ -10307,12 +10306,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CurtainWall</name>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="40"/>
       <source>Curtain Wall</source>
       <translation>ຝາຜ້າມ່ານ (Curtain Wall)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="45"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>ສ້າງວັດຖຸຝາຜ້າມ່ານຈາກເສັ້ນທີ່ເລືອກ ຫຼື ເລີ່ມສ້າງໃໝ່</translation>
     </message>
@@ -10320,12 +10319,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="43"/>
+      <location filename="../../bimcommands/BimPipe.py" line="40"/>
       <source>Pipe</source>
       <translation>ທໍ່ (Pipe)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="47"/>
+      <location filename="../../bimcommands/BimPipe.py" line="44"/>
       <source>Creates a pipe object from a given wire or line</source>
       <translation>ສ້າງວັດຖຸທໍ່ຈາກ wire ຫຼື ເສັ້ນທີ່ກຳນົດໃຫ້</translation>
     </message>
@@ -10333,12 +10332,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="87"/>
+      <location filename="../../bimcommands/BimPipe.py" line="84"/>
       <source>Connector</source>
       <translation>ຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="91"/>
+      <location filename="../../bimcommands/BimPipe.py" line="88"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>ສ້າງຂໍ້ຕໍ່ລະຫວ່າງທໍ່ 2 ຫຼື 3 ເສັ້ນທີ່ເລືອກ</translation>
     </message>
@@ -10346,12 +10345,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="132"/>
+      <location filename="../../bimcommands/BimPipe.py" line="129"/>
       <source>Pipe Tools</source>
       <translation>ເຄື່ອງມືທໍ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPipe.py" line="133"/>
+      <location filename="../../bimcommands/BimPipe.py" line="130"/>
       <source>Pipe tools</source>
       <translation>ເຄື່ອງມືທໍ່</translation>
     </message>
@@ -10359,12 +10358,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="39"/>
       <source>Schedule</source>
       <translation>ຕາຕະລາງ (Schedule)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSchedule.py" line="45"/>
+      <location filename="../../bimcommands/BimSchedule.py" line="42"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>ສ້າງຕາຕະລາງເພື່ອເກັບກຳຂໍ້ມູນຈາກແບບຈຳລອງ</translation>
     </message>
@@ -10385,12 +10384,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="43"/>
+      <location filename="../../bimcommands/BimAxis.py" line="40"/>
       <source>Axis</source>
       <translation>ແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="45"/>
+      <location filename="../../bimcommands/BimAxis.py" line="42"/>
       <source>Creates a set of axes</source>
       <translation>ສ້າງຊຸດຂອງແກນ</translation>
     </message>
@@ -10398,12 +10397,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="137"/>
+      <location filename="../../bimcommands/BimAxis.py" line="134"/>
       <source>Axis Tools</source>
       <translation>ເຄື່ອງມືແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimAxis.py" line="138"/>
+      <location filename="../../bimcommands/BimAxis.py" line="135"/>
       <source>Axis tools</source>
       <translation>ເຄື່ອງມືແກນ</translation>
     </message>
@@ -10411,12 +10410,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="43"/>
+      <location filename="../../bimcommands/BimRebar.py" line="40"/>
       <source>Custom Rebar</source>
       <translation>ເຫຼັກເສີມແບບກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRebar.py" line="48"/>
+      <location filename="../../bimcommands/BimRebar.py" line="45"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
       <translation>ສ້າງເຫຼັກເສີມຈາກໜ້າທີ່ເລືອກຂອງວັດຖຸແຂງ ແລະ/ຫຼື ຈາກສະເກັດ</translation>
     </message>
@@ -10424,12 +10423,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="41"/>
       <source>Section Plane</source>
       <translation>ໜ້າຕັດ (Section Plane)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
+      <location filename="../../bimcommands/BimSectionPlane.py" line="45"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>ສ້າງວັດຖຸໜ້າຕັດ ໂດຍລວມເອົາວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -10438,7 +10437,7 @@ Building creation aborted.</source>
     <name>Arch_Building</name>
     <message>
       <location filename="../../ArchBuilding.py" line="229"/>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="75"/>
       <source>Building</source>
       <translation>ອາຄານ</translation>
     </message>
@@ -10448,7 +10447,7 @@ Building creation aborted.</source>
       <translation>ສ້າງວັດຖຸອາຄານໂດຍລວມເອົາວັດຖຸທີ່ເລືອກ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="77"/>
       <source>Creates a building object</source>
       <translation>ສ້າງວັດຖຸອາຄານ</translation>
     </message>
@@ -10456,12 +10455,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="59"/>
+      <location filename="../../bimcommands/BimWall.py" line="56"/>
       <source>Wall</source>
       <translation>ຝາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="64"/>
+      <location filename="../../bimcommands/BimWall.py" line="61"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
       <translation>ສ້າງວັດຖຸຝາຈາກການເລີ່ມໃໝ່ ຫຼື ຈາກວັດຖຸທີ່ເລືອກ (wire, ໜ້າ ຫຼື ວັດຖຸແຂງ)</translation>
     </message>
@@ -10469,12 +10468,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merge Walls</source>
       <translation>ລວມຝາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="549"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="546"/>
       <source>Merges the selected walls, if possible</source>
       <translation>ລວມຝາທີ່ເລືອກເຂົ້າກັນ, ຖ້າເປັນໄປໄດ້</translation>
     </message>
@@ -10482,12 +10481,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="39"/>
       <source>Add Component</source>
       <translation>ເພີ່ມສ່ວນປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Adds the selected components to the active object</source>
       <translation>ເພີ່ມສ່ວນປະກອບທີ່ເລືອກເຂົ້າໃນວັດຖຸທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
@@ -10495,12 +10494,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="158"/>
       <source>Split Mesh</source>
       <translation>ແຍກເມັດຊ໌ (Split Mesh)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Splits selected meshes into independent components</source>
       <translation>ແຍກເມັດຊ໌ທີ່ເລືອກອອກເປັນສ່ວນປະກອບທີ່ເປັນເອກະລາດ</translation>
     </message>
@@ -10508,12 +10507,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="191"/>
       <source>Mesh to Shape</source>
       <translation>ປ່ຽນເມັດຊ໌ເປັນຮູບຮ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
       <source>Turns selected meshes into Part shape objects</source>
       <translation>ປ່ຽນເມັດຊ໌ທີ່ເລືອກໃຫ້ເປັນວັດຖຸຮູບຮ່າງ Part</translation>
     </message>
@@ -10521,12 +10520,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="237"/>
       <source>Select Non-Manifold Meshes</source>
       <translation>ເລືອກເມັດຊ໌ທີ່ບໍ່ແມ່ນ Manifold</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>ເລືອກທຸກເມັດຊ໌ທີ່ບໍ່ແມ່ນ manifold ຈາກເອກະສານ ຫຼື ຈາກກຸ່ມທີ່ເລືອກ</translation>
     </message>
@@ -10534,12 +10533,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Close Holes</source>
       <translation>ປິດຮູ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="305"/>
       <source>Closes holes in open shapes, turning them into solids</source>
       <translation>ປິດຮູໃນຮູບຮ່າງທີ່ເປີດຢູ່, ເພື່ອປ່ຽນໃຫ້ເປັນວັດຖຸແຂງ (solids)</translation>
     </message>
@@ -10547,12 +10546,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="330"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="327"/>
       <source>Check</source>
       <translation>ກວດສອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="331"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="328"/>
       <source>Checks the selected objects for problems</source>
       <translation>ກວດສອບວັດຖຸທີ່ເລືອກວ່າຄາບັນຫາຫຼືບໍ່</translation>
     </message>
@@ -10560,12 +10559,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="359"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="356"/>
       <source>Survey</source>
       <translation>ການສຳຫຼວດ (Survey)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="360"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="357"/>
       <source>Starts survey</source>
       <translation>ເລີ່ມການສຳຫຼວດ</translation>
     </message>
@@ -10573,12 +10572,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Component</source>
       <translation>ສ່ວນປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="405"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="402"/>
       <source>Creates an undefined architectural component</source>
       <translation>ສ້າງສ່ວນປະກອບທາງສະຖາປັດຕະຍະກຳທີ່ບໍ່ໄດ້ກຳນົດປະເພດ</translation>
     </message>
@@ -10586,12 +10585,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="434"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
       <source>Clone Component</source>
       <translation>ເຮັດສຳເນົາສ່ວນປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="438"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="435"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>ເຮັດສຳເນົາວັດຖຸໃຫ້ເປັນສ່ວນປະກອບທາງສະຖາປັດຕະຍະກຳທີ່ບໍ່ໄດ້ກຳນົດປະເພດ</translation>
     </message>
@@ -10599,12 +10598,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Toggle Subcomponents</source>
       <translation>ເປີດ-ປິດ ສ່ວນປະກອບຍ່ອຍ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="506"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="503"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>ສະແດງ ຫຼື ຊ່ອນ ສ່ວນປະກອບຍ່ອຍຂອງວັດຖຸນີ້</translation>
     </message>
@@ -10638,8 +10637,8 @@ Building creation aborted.</source>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
       <location filename="../../BimStatus.py" line="63"/>
-      <location filename="../../bimcommands/BimNudge.py" line="76"/>
-      <location filename="../../bimcommands/BimNudge.py" line="146"/>
+      <location filename="../../bimcommands/BimNudge.py" line="73"/>
+      <location filename="../../bimcommands/BimNudge.py" line="143"/>
       <source>Auto</source>
       <translation>ອັດຕະໂນມັດ</translation>
     </message>
@@ -10678,1196 +10677,1196 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ການດຶງດູດ (Snapping)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
-      <location filename="../../bimcommands/BimBox.py" line="174"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="45"/>
+      <location filename="../../bimcommands/BimBox.py" line="170"/>
       <source>Length</source>
       <translation>ຄວາມຍາວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
-      <location filename="../../bimcommands/BimBox.py" line="183"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="46"/>
+      <location filename="../../bimcommands/BimBox.py" line="179"/>
       <source>Width</source>
       <translation>ຄວາມກວ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
-      <location filename="../../bimcommands/BimBox.py" line="192"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="47"/>
+      <location filename="../../bimcommands/BimBox.py" line="188"/>
       <source>Height</source>
       <translation>ຄວາມສູງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="90"/>
+      <location filename="../../bimcommands/BimClassification.py" line="87"/>
       <source>Search…</source>
       <translation>ຄົ້ນຫາ…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="91"/>
+      <location filename="../../bimcommands/BimClassification.py" line="88"/>
       <source>Searches classes</source>
       <translation>ຄົ້ນຫາຊັ້ນ (classes)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="110"/>
+      <location filename="../../bimcommands/BimClassification.py" line="107"/>
       <source>Editing</source>
       <translation>ກຳນົດແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="69"/>
+      <location filename="../../bimcommands/BimDiff.py" line="66"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
       <translation>ເອກະສານປັດຈຸບັນຕ້ອງເປັນເອກະສານຫຼັກ. ສ່ວນອີກເອກະສານໜຶ່ງຕ້ອງບັນຈຸວັດຖຸທີ່ໃໝ່ກວ່າເພື່ອລວມເຂົ້າກັນ. ກະລຸນາກວດສອບວ່າສະເພາະວັດຖຸທີ່ຈະປຽບທຽບເທົ່ານັ້ນທີ່ສະແດງໃຫ້ເຫັນໃນທັງສອງເອກະສານ. ດໍາເນີນການຕໍ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="328"/>
+      <location filename="../../bimcommands/BimDiff.py" line="325"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
       <translation>ວັດຖຸຍັງມີຮູບຮ່າງຄືເກົ່າ ແຕ່ມີວັດສະດຸທີ່ຕ່າງກັນ. ຕ້ອງການອັບເດດພວກມັນໃນເອກະສານຫຼັກຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="383"/>
+      <location filename="../../bimcommands/BimDiff.py" line="380"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
       <translation>ວັດຖຸບໍ່ມີ IFC ID ໃນເອກະສານຫຼັກ, ແຕ່ວັດຖຸທີ່ຄືກັນທີ່ມີ ID ຊ້ຳພັດມີຢູ່ໃນເອກະສານໃໝ່. ຕ້ອງການໂອນ ID ເຫຼົ່ານີ້ໄປຫາວັດຖຸເດີມຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="400"/>
+      <location filename="../../bimcommands/BimDiff.py" line="397"/>
       <source>objects had their name changed. Rename them?</source>
       <translation>ວັດຖຸຖືກປ່ຽນຊື່. ຕ້ອງການປ່ຽນຊື່ພວກມັນຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="417"/>
+      <location filename="../../bimcommands/BimDiff.py" line="414"/>
       <source>objects had their properties changed. Update?</source>
       <translation>ວັດຖຸມີການປ່ຽນແປງຄຸນສົມບັດ. ຕ້ອງການອັບເດດຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="436"/>
+      <location filename="../../bimcommands/BimDiff.py" line="433"/>
       <source>objects have their location changed. Move them to their new position?</source>
       <translation>ວັດຖຸມີການປ່ຽນແປງຕຳແໜ່ງ. ຕ້ອງການຍ້າຍພວກມັນໄປຫາຕຳແໜ່ງໃໝ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="455"/>
+      <location filename="../../bimcommands/BimDiff.py" line="452"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
       <translation>ປ່ຽນສີວັດຖຸທີ່ຖືກຍ້າຍໃຫ້ເປັນສີເຫຼືອງໃນອີກໄຟລ໌ໜຶ່ງ (ເພື່ອສະແດງຄວາມແຕກຕ່າງ) ຫຼື ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="476"/>
+      <location filename="../../bimcommands/BimDiff.py" line="473"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
       <translation>ປ່ຽນສີວັດຖຸທີ່ຖືກແກ້ໄຂໃຫ້ເປັນສີສົ້ມໃນອີກໄຟລ໌ໜຶ່ງ (ເພື່ອສະແດງຄວາມແຕກຕ່າງ) ຫຼື ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="499"/>
+      <location filename="../../bimcommands/BimDiff.py" line="496"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
       <translation>ວັດຖຸບໍ່ມີຢູ່ໃນເອກະສານໃໝ່ແລ້ວ. ຕ້ອງການຍ້າຍພວກມັນໄປໄວ້ໃນກຸ່ມ 'ເພື່ອລຶບ' ຫຼື ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="514"/>
+      <location filename="../../bimcommands/BimDiff.py" line="511"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
       <translation>ປ່ຽນສີວັດຖຸທີ່ຖືກລຶບອອກໃຫ້ເປັນສີແດງໃນອີກໄຟລ໌ໜຶ່ງ (ເພື່ອສະແດງຄວາມແຕກຕ່າງ) ຫຼື ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="534"/>
+      <location filename="../../bimcommands/BimDiff.py" line="531"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
       <translation>ປ່ຽນສີວັດຖຸທີ່ຖືກເພີ່ມໃໝ່ໃຫ້ເປັນສີຂຽວໃນອີກໄຟລ໌ໜຶ່ງ (ເພື່ອສະແດງຄວາມແຕກຕ່າງ) ຫຼື ບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="555"/>
+      <location filename="../../bimcommands/BimDiff.py" line="552"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
       <translation>ຕ້ອງເປີດເອກະສານສອງສະບັບເພື່ອໃຊ້ເຄື່ອງມືນີ້. ສະບັບໜຶ່ງແມ່ນເອກະສານຫຼັກ, ແລະ ອີກສະບັບໜຶ່ງບັນຈຸວັດຖຸໃໝ່ເພື່ອປຽບທຽບກັບວັດຖຸທີ່ມີຢູ່ແລ້ວ. ກະລຸນາກວດສອບວ່າສະເພາະວັດຖຸທີ່ຈະປຽບທຽບໃນທັງສອງເອກະສານເທົ່ານັ້ນທີ່ສະແດງໃຫ້ເຫັນ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="88"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="457"/>
       <source>Create new material</source>
       <translation>ສ້າງວັດສະດຸໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="89"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
       <source>Create new multi-material</source>
       <translation>ສ້າງວັດສະດຸປະສົມໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="136"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="244"/>
       <source>Label</source>
       <translation>ປ້າຍຊື່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="204"/>
       <source>IFC type</source>
       <translation>ປະເພດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
       <source>Material</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/__init__.py" line="42"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/__init__.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="57"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>ບໍ່ພົບ IfcOpenShell ໃນລະບົບນີ້. ການຮອງຮັບ IFC ຖືກປິດໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="79"/>
       <source>Objects structure</source>
       <translation>ໂຄງສ້າງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="89"/>
       <source>Attribute</source>
       <translation>ຄຸນລັກສະນະ (Attribute)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="104"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
       <translation>ຄ່າ (Value)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="103"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>
       <source>Property</source>
       <translation>ຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="125"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="122"/>
       <source>Open</source>
       <translation>ເປີດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="128"/>
       <source>Back</source>
       <translation>ກັບຄືນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="129"/>
       <source>Go back to last item selected</source>
       <translation>ກັບຄືນຫາລາຍການຫຼ້າສຸດທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="134"/>
       <source>Insert</source>
       <translation>ແຊກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="140"/>
       <source>Inserts the selected object and its children in the active document</source>
       <translation>ແຊກວັດຖຸທີ່ເລືອກ ແລະ ວັດຖຸລູກຂອງມັນເຂົ້າໃນເອກະສານທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="146"/>
       <source>Mesh</source>
       <translation>ເມັດຊ໌ (Mesh)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="147"/>
       <source>Turn mesh display on/off</source>
       <translation>ເປີດ-ປິດ ການສະແດງຜົນເມັດຊ໌</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="185"/>
       <source>IFC files (*.ifc)</source>
       <translation>ໄຟລ໌ IFC (*.ifc)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="193"/>
       <source>File not found</source>
       <translation>ບໍ່ພົບໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="106"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="200"/>
       <source>IFC Explorer</source>
       <translation>ຕົວສຳຫຼວດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="123"/>
       <source>Open another IFC file</source>
       <translation>ເປີດໄຟລ໌ IFC ອື່ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="183"/>
       <source>Select an IFC File</source>
       <translation>ເລືອກໄຟລ໌ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="225"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
       <translation>ບໍ່ພົບອົງປະກອບ IfcSite ໃນ %s. ບໍ່ສາມາດສຳຫຼວດໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="482"/>
       <source>Error in entity</source>
       <translation>ເກີດຂໍ້ຜິດພາດໃນ entity</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="124"/>
       <source>Custom property sets can be defined in</source>
       <translation>ຊຸດຄຸນສົມບັດແບບກຳນົດເອງສາມາດກຳນົດໄດ້ໃນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="129"/>
       <source>Add property</source>
       <translation>ເພີ່ມຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>Add property set</source>
       <translation>ເພີ່ມຊຸດຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="131"/>
       <source>New</source>
       <translation>ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>Search results</source>
       <translation>ຜົນການຄົ້ນຫາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="377"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
       <translation>ຄໍາເຕືອນ: ວັດຖຸ %1 ມີ IfcProperties ແບບເກົ່າ ແລະ ບໍ່ສາມາດອັບເດດໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="671"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="668"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
       <translation>ກະລຸນາເລືອກ ຫຼື ສ້າງຊຸດຄຸນສົມບັດກ່ອນ ເພື່ອທີ່ຈະວາງຄຸນສົມບັດໃໝ່ລົງໄປ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New Property Set</source>
       <translation>ຊຸດຄຸນສົມບັດໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="687"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
       <source>Property set name:</source>
       <translation>ຊື່ຊຸດຄຸນສົມບັດ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
       <source>Area</source>
       <translation>ເນື້ອທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
       <source>Horizontal Area</source>
       <translation>ເນື້ອທີ່ແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
       <source>Vertical Area</source>
       <translation>ເນື້ອທີ່ແນວຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
       <source>Volume</source>
       <translation>ບໍລິມາດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="183"/>
       <source>Add quantity set…</source>
       <translation>ເພີ່ມຊຸດປະລິມານ…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="200"/>
       <source>Adding quantity set</source>
       <translation>ກຳນົດເພີ່ມຊຸດປະລິມານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="435"/>
       <source>Cannot save quantities settings for object %1</source>
       <translation>ບໍ່ສາມາດບັນທຶກການກຳນົດຄ່າປະລິມານສຳລັບວັດຖຸ %1</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="54"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="51"/>
       <source>Select Image</source>
       <translation>ເລືອກຮູບພາບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="53"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
       <translation>ໄຟລ໌ຮູບພາບ (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
-      <location filename="../../bimcommands/BimBox.py" line="81"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="78"/>
+      <location filename="../../bimcommands/BimBox.py" line="77"/>
       <source>%1 pick first point</source>
       <translation>%1 ເລືອກຈຸດທຳອິດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="83"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="80"/>
       <source>%1 pick opposite point</source>
       <translation>%1 ເລືອກຈຸດກົງກັນຂ້າມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="203"/>
+      <location filename="../../bimcommands/BimLayers.py" line="200"/>
       <source>Warning: The new layer was added to the project</source>
       <translation>ຄໍາເຕືອນ: ເລເຍີ (layer) ໃໝ່ຖືກເພີ່ມເຂົ້າໃນໂຄງການແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="209"/>
+      <location filename="../../bimcommands/BimLayers.py" line="206"/>
       <source>There is no IFC project in this document</source>
       <translation>ບໍ່ມີໂຄງການ IFC ໃນເອກະສານນີ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="312"/>
+      <location filename="../../bimcommands/BimLayers.py" line="309"/>
       <source>On</source>
       <translation>ເປີດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="313"/>
+      <location filename="../../bimcommands/BimLayers.py" line="310"/>
       <source>Name</source>
       <translation>ຊື່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="314"/>
+      <location filename="../../bimcommands/BimLayers.py" line="311"/>
       <source>Line width</source>
       <translation>ຄວາມກວ້າງຂອງເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="315"/>
+      <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Draw style</source>
       <translation>ຮູບແບບການແຕ້ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="316"/>
+      <location filename="../../bimcommands/BimLayers.py" line="313"/>
       <source>Line color</source>
       <translation>ສີເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="317"/>
+      <location filename="../../bimcommands/BimLayers.py" line="314"/>
       <source>Face color</source>
       <translation>ສີໜ້າຜິວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="318"/>
+      <location filename="../../bimcommands/BimLayers.py" line="315"/>
       <source>Transparency</source>
       <translation>ຄວາມໂປ່ງໃສ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="319"/>
+      <location filename="../../bimcommands/BimLayers.py" line="316"/>
       <source>Line print color</source>
       <translation>ສີເສັ້ນເວລາພິມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="341"/>
+      <location filename="../../bimcommands/BimLayers.py" line="338"/>
       <source>New Layer</source>
       <translation>ຊັ້ນງານໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="52"/>
+      <location filename="../../bimcommands/BimLeader.py" line="49"/>
       <source>Leader</source>
       <translation>ເສັ້ນຊີ້ແນະ (Leader)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="77"/>
+      <location filename="../../bimcommands/BimLeader.py" line="74"/>
       <source>Create Leader</source>
       <translation>ສ້າງເສັ້ນຊີ້ບອກ</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimLibrary.py" line="184"/>
       <location filename="../../bimcommands/BimLibrary.py" line="187"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="937"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="941"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="934"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="938"/>
       <source>Preview</source>
       <translation>ສະແດງຕົວຢ່າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="924"/>
       <location filename="../../bimcommands/BimLibrary.py" line="927"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="930"/>
       <source>Options</source>
       <translation>ທາງເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="344"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation>ບໍ່ສາມາດເຊື່ອມຕໍ່ໄດ້ ເພາະວ່າເອກະສານຫຼັກຖືກປິດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="304"/>
       <source>Save the working file before linking.</source>
       <translation>ບັນທຶກໄຟລ໌ທີ່ກຳລັງເຮັດວຽກກ່ອນທີ່ຈະເຊື່ອມຕໍ່.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="497"/>
       <source>No structure in cache. Refresh required.</source>
       <translation>ບໍ່ມີໂຄງສ້າງໃນແຄຊ໌ (cache). ຈໍາເປັນຕ້ອງຣີເຟຣຊ (Refresh).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="559"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>ບໍ່ສາມາດແຊກວັດຖຸນີ້ໄດ້ ເພາະວ່າເອກະສານຖືກປິດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="605"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation>ຂໍ້ຜິດພາດ: ບໍ່ສາມາດນຳເຂົ້າໄຟລ໌ SAT ໄດ້ - ຕ້ອງຕິດຕັ້ງສ່ວນເສີມ InventorLoader ຫຼື CadExchanger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="631"/>
       <source>Error: Unable to download</source>
       <translation>ຂໍ້ຜິດພາດ: ບໍ່ສາມາດດາວໂຫຼດໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="678"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>%1 pick insertion point</source>
       <translation>%1 ເລືອກຈຸດແຊກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Insertion Point</source>
       <translation>ຈຸດແຊກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
       <source>Origin</source>
       <translation>ຈຸດກຳເນີດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
       <source>Top left</source>
       <translation>ຊ້າຍເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Top center</source>
       <translation>ກາງເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
       <source>Top right</source>
       <translation>ຂວາເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Middle left</source>
       <translation>ກາງຊ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="704"/>
       <source>Middle center</source>
       <translation>ກາງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="705"/>
       <source>Middle right</source>
       <translation>ກາງຂວາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="709"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="706"/>
       <source>Bottom left</source>
       <translation>ຊ້າຍລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="710"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="707"/>
       <source>Bottom center</source>
       <translation>ກາງລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="711"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="708"/>
       <source>Bottom right</source>
       <translation>ຂວະລຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="817"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="814"/>
       <source>Could not fetch library contents</source>
       <translation>ບໍ່ສາມາດດຶງຂໍ້ມູນເນື້ອໃນຈາກຄັງໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="821"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="818"/>
       <source>No results fetched from online library</source>
       <translation>ບໍ່ມີຜົນການຄົ້ນຫາຈາກຄັງອອນລາຍ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="879"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="876"/>
       <source>Warning, this can take several minutes!</source>
       <translation>ຄຳເຕືອນ, ນີ້ອາດໃຊ້ເວລາຫຼາຍນາທີ!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="122"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="119"/>
       <source>Clears the search field</source>
       <translation>ລ້າງຊ່ອງຄົ້ນຫາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="129"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="126"/>
       <source> Material Operations</source>
       <translation> ການດຳເນີນງານກ່ຽວກັບວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="135"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="132"/>
       <source>New Material</source>
       <translation>ວັດສະດຸໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="148"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge Duplicates</source>
       <translation>ຮວມສິ່ງທີ່ຊໍ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="157"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="154"/>
       <source>Delete Unused</source>
       <translation>ລົບສິ່ງທີ່ບໍ່ໄດ້ໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="172"/>
       <source>Rename</source>
       <translation>ປ່ຽນຊື່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="177"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="174"/>
       <source>Duplicate</source>
       <translation>ສຳເນົາຊ້ຳ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="179"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="176"/>
       <source>Merge To…</source>
       <translation>ຮວມໄປທີ່...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="103"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="178"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="88"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="85"/>
       <source>Select Material</source>
       <translation>ເລືອກວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="107"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="104"/>
       <source>Search materials</source>
       <translation>ຄົ້ນຫາວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="108"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="105"/>
       <source>Searches for materials in the list</source>
       <translation>ຄົ້ນຫາວັດສະດຸໃນລາຍການ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="141"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="138"/>
       <source>New Multi-Material</source>
       <translation>ວັດສະດຸປະສົມໃໝ່ (Multi-Material)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="237"/>
-      <location filename="../../bimcommands/BimMaterial.py" line="247"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="234"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="244"/>
       <source>Merging duplicate material</source>
       <translation>ກຳລັງຮວມວັດສະດຸທີ່ຊໍ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="256"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="253"/>
       <source>Unable to delete material</source>
       <translation>ບໍ່ສາມາດລົບວັດສະດຸໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="260"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="257"/>
       <source>InList not empty</source>
       <translation>InList ບໍ່ວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="287"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="284"/>
       <source>Deleting unused material</source>
       <translation>ກຳລັງລົບວັດສະດຸທີ່ບໍ່ໄດ້ໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="337"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="334"/>
       <source>Select Material to Merge To</source>
       <translation>ເລືອກວັດສະດຸທີ່ຈະຮວມໄປຫາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="382"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="379"/>
       <source>This material is used by:</source>
       <translation>ວັດສະດຸນີ້ຖືກໃຊ້ໂດຍ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="164"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="161"/>
       <source>Passed</source>
       <translation>ຜ່ານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="165"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="162"/>
       <source>This test has succeeded.</source>
       <translation>ການທົດສອບນີ້ສຳເລັດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="176"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="173"/>
       <source>This test has failed. Press the button to know more</source>
       <translation>ການທົດສອບນີ້ຫຼົ້ມເຫຼວ. ກົດປຸ່ມເພື່ອເບິ່ງລາຍລະອຽດເພີ່ມເຕີມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="184"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="181"/>
       <source>Test</source>
       <translation>ການທົດສອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="297"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="294"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
       <translation>ifcopenshell ບໍ່ໄດ້ຖືກຕິດຕັ້ງໃນລະບົບ ຫຼື ບໍ່ພ້ອມໃຊ້ງານສຳລັບ FreeCAD. ຄັງ (library) ນີ້ເຮັດໜ້າທີ່ຮອງຮັບ IFC ໃນ FreeCAD, ດັ່ງນັ້ນການຮອງຮັບ IFC ຈຶ່ງຖືກປິດໄວ້ໃນຕອນນີ້. ກະລຸນາກວດສອບ %1 ເພື່ອເບິ່ງຂໍ້ມູນເພີ່ມເຕີມ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="328"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="325"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
       <translation>ບໍ່ສາມາດກວດສອບເວີຊັນຂອງ Ifcopenshell ທີ່ຕິດຕັ້ງໃນລະບົບໄດ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="340"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="337"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
       <translation>ເວີຊັນຂອງ Ifcopenshell ທີ່ຕິດຕັ້ງໃນລະບົບຈະສ້າງໄຟລ໌ດ້ວຍເວີຊັນໂຄງສ້າງ (schema) ນີ້:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="441"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="438"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
       <translation>ພົບວັດຖຸສິ່ງກໍ່ສ້າງຕໍ່ໄປນີ້ບໍ່ໄດ້ຢູ່ໃນພື້ນທີ່ (Site) ໃດໆ. ທ່ານສາມາດແກ້ໄຂໄດ້ໂດຍການສ້າງວັດຖຸພື້ນທີ່ (Site), ຖ້າຍັງບໍ່ມີໃນໂມເດວຂອງທ່ານ, ແລ້ວລາກວັດຖຸສິ່ງກໍ່ສ້າງໄປໃສ່ໃນມຸມມອງຕົ້ນໄມ້ (tree view):</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="487"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="484"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
       <translation>ພົບວັດຖຸຊັ້ນອາຄານຕໍ່ໄປນີ້ບໍ່ໄດ້ຢູ່ໃນອາຄານໃດໆ. ແກ້ໄຂໄດ້ໂດຍການສ້າງວັດຖຸອາຄານ, ຖ້າຍັງບໍ່ມີໃນໂມເດວ, ແລ້ວລາກວັດຖຸຊັ້ນອາຄານເຫຼົ່ານັ້ນໄປໃສ່ໃນມຸມມອງຕົ້ນໄມ້:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="548"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="545"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
       <translation>ພົບວັດຖຸ BIM ຕໍ່ໄປນີ້ບໍ່ໄດ້ຢູ່ໃນຊັ້ນອາຄານໃດໆ. ແກ້ໄຂໄດ້ໂດຍການສ້າງວັດຖຸຊັ້ນອາຄານ, ຖ້າຍັງບໍ່ມີໃນໂມເດວ, ແລ້ວລາກວັດຖຸເຫຼົ່ານີ້ໄປໃສ່ໃນມຸມມອງຕົ້ນໄມ້:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="685"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="682"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
       <translation>ວັດຖຸລຸ່ມນີ້ມີຄຸນສົມບັດ ຄວາມຍາວ, ຄວາມກວ້າງ ຫຼື ຄວາມສູງ, ແຕ່ຄຸນສົມບັດເຫຼົ່ານີ້ຈະບໍ່ຖືກສົ່ງອອກໄປຫາ IFC ໂດຍກົງ. ນີ້ບໍ່ແມ່ນບັນຫາໃຫຍ່, ຍົກເວັ້ນແຕ່ທ່ານຕ້ອງການສົ່ງອອກຄ່າເຫຼົ່ານັ້ນ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="693"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="690"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
       <translation>ເພື່ອເປີດການສົ່ງອອກຄ່າເຫຼົ່ານີ້, ໃຫ້ໃຊ້ເຄື່ອງມືຈັດການຄ່າ IFC ທີ່ຢູ່ໃນເມນູ ຈັດການ (Manage) -&gt; ຈັດການຄ່າ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="765"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="762"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>ເພື່ອເພີ່ມຊຸດຄຸນສົມບັດທົ່ວໄປໃຫ້ກັບວັດຖຸເຫຼົ່ານີ້, ໃຫ້ໃຊ້ເຄື່ອງມືຈັດການຄຸນສົມບັດ IFC ທີ່ຢູ່ໃນເມນູ ຈັດການ (Manage) -&gt; ຈັດການຄຸນສົມບັດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="858"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="855"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
       <translation>ເພື່ອແກ້ໄຂຊຸດຄຸນສົມບັດຂອງວັດຖຸເຫຼົ່ານີ້, ໃຫ້ໃຊ້ເຄື່ອງມືຈັດການຄຸນສົມບັດ IFC ທີ່ຢູ່ໃນເມນູ ຈັດການ (Manage) -&gt; ຈັດການຄຸນສົມບັດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1071"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
       <translation>ວັດຖຸເພີ່ມເຕີມທີ່ຊື່ວ່າ "TinyLinesResult" ໄດ້ຖືກເພີ່ມເຂົ້າໃນໂມເດວນີ້ ແລະ ຖືກເລືອກໄວ້. ມັນປະກອບມີເສັ້ນນ້ອຍໆທັງໝົດທີ່ກວດພົບເພື່ອໃຫ້ກວດສອບ. ຢ່າລືມລົບວັດຖຸ TinyLinesResult ນີ້ອອກເມື່ອກວດສອບແລ້ວ!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="386"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="383"/>
       <source>The following types were not found in the project:</source>
       <translation>ບໍ່ພົບປະເພດ (types) ຕໍ່ໄປນີ້ໃນໂຄງການ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="92"/>
-      <location filename="../../bimcommands/BimPreflight.py" line="185"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="89"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="182"/>
       <source>Performs the test</source>
       <translation>ດຳເນີນການທົດສອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="595"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="592"/>
       <source>The following BIM objects have the "Undefined" type:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ມີປະເພດເປັນ "Undefined" (ບໍ່ໄດ້ກຳນົດ):</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="600"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="597"/>
       <source>The following objects are not BIM objects:</source>
       <translation>ວັດຖຸຕໍ່ໄປນີ້ບໍ່ແມ່ນວັດຖຸ BIM:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="607"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="604"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
       <translation>ທ່ານສາມາດປ່ຽນວັດຖຸເຫຼົ່ານີ້ໃຫ້ເປັນວັດຖຸ BIM ໄດ້ໂດຍການໃຊ້ເຄື່ອງມື ແກ້ໄຂ (Modify) -&gt; ເພີ່ມສ່ວນປະກອບ (Add Component).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="642"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="639"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ມີຮູບຊົງທີ່ບໍ່ຖືກຕ້ອງ ຫຼື ບໍ່ແມ່ນຮູບຊົງຕັນ (non-solid):</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="757"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="754"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
       <translation>ວັດຖຸລຸ່ມນີ້ໄດ້ກຳນົດປະເພດ IFC ແລ້ວ ແຕ່ຍັງບໍ່ມີຊຸດຄຸນສົມບັດທົ່ວໄປທີ່ກ່ຽວຂ້ອງ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="839"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="836"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
       <translation>ວັດຖຸລຸ່ມນີ້ມີຊຸດຄຸນສົມບັດທົ່ວໄປແລ້ວ ແຕ່ຊຸດຄຸນສົມບັດນັ້ນບໍ່ມີຄຸນສົມບັດທີ່ຈຳເປັນທັງໝົດ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="848"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="845"/>
       <source>Verify which properties a certain property set must contain on %1</source>
       <translation>ກວດສອບວ່າຊຸດຄຸນສົມບັດໃດໜຶ່ງຕ້ອງມີຄຸນສົມບັດຫຍັງແດ່ຢູ່ທີ່ %1</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="887"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="884"/>
       <source>The following BIM objects have no material attributed:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ບໍ່ໄດ້ມີການກຳນົດວັດສະດຸ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="928"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="925"/>
       <source>The following BIM objects have no defined standard code:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ບໍ່ໄດ້ກຳນົດລະຫັດມາດຕະຖານ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="978"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="975"/>
       <source>The following BIM objects are not extrusions:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ບໍ່ແມ່ນຮູບຊົງຍືດ (extrusions):</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1012"/>
       <source>The following BIM objects are not standard cases:</source>
       <translation>ວັດຖຸ BIM ຕໍ່ໄປນີ້ບໍ່ແມ່ນກໍລະນີມາດຕະຖານ (standard cases):</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1061"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
       <translation>ວັດຖຸລຸ່ມນີ້ມີເສັ້ນທີ່ນ້ອຍກວ່າ 1/32 ນິ້ວ ຫຼື 0.79 ມມ, ເຊິ່ງເປັນຂະໜາດເສັ້ນທີ່ນ້ອຍທີ່ສຸດທີ່ Revit ຮອງຮັບ. ວັດຖຸເຫຼົ່ານີ້ຈະຖືກຍົກເລີກເມື່ອນຳເຂົ້າສູ່ Revit:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="1077"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
       <translation>ຄຳແນະນຳ: ການເບິ່ງຜົນລັດຈະດີທີ່ສຸດໃນໂໝດ Wireframe (ເມນູ ມຸມມອງ (Views) -&gt; ຮູບແບບການແຕ້ມ -&gt; Wireframe)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="302"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="299"/>
       <source>Building Layout</source>
       <translation>ການວາງຜັງສິ່ງກໍ່ສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="315"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="312"/>
       <source>Building Outline</source>
       <translation>ຂອບນອກສິ່ງກໍ່ສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="331"/>
       <source>Building Label</source>
       <translation>ປ້າຍຊື່ສິ່ງກໍ່ສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="344"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="341"/>
       <source>Vertical Axes</source>
       <translation>ແກນຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="355"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="352"/>
       <source>Horizontal Axes</source>
       <translation>ແກນນອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="365"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="362"/>
       <source>Axes</source>
       <translation>ແກນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="376"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="373"/>
       <source>Zero Level Height</source>
       <translation>ລະດັບຄວາມສູງສູນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="374"/>
       <source>Level height is zero. No levels will be created.</source>
       <translation>ລະດັບຄວາມສູງເປັນສູນ. ຈະບໍ່ມີການສ້າງລະດັບຊັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="380"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="377"/>
       <source>Set the level height to a non-zero value.</source>
       <translation>ຕັ້ງຄ່າຄວາມສູງລະດັບໃຫ້ເປັນຄ່າທີ່ບໍ່ແມ່ນສູນ.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="390"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="387"/>
       <source>Level</source>
       <translation>ລະດັບຊັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="451"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="448"/>
       <source>Save Preset</source>
       <translation>ບັນທຶກຄ່າທີ່ຕັ້ງໄວ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="452"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="449"/>
       <source>Preset name</source>
       <translation>ຊື່ຄ່າທີ່ຕັ້ງໄວ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="507"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="504"/>
       <source>User preset</source>
       <translation>ຄ່າທີ່ຜູ້ໃຊ້ຕັ້ງໄວ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="661"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
       <source>Save Template File</source>
       <translation>ບັນທຶກໄຟລ໌ແມ່ແບບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="682"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="679"/>
       <source>Open Template File</source>
       <translation>ເປີດໄຟລ໌ແມ່ແບບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="796"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="793"/>
       <source>Template successfully loaded into the current document</source>
       <translation>ໂຫຼດແມ່ແບບເຂົ້າສູ່ເອກະສານປັດຈຸບັນສຳເລັດແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="153"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="433"/>
       <source>New Group</source>
       <translation>ກຸ່ມໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="670"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="667"/>
       <source>Template saved successfully</source>
       <translation>ບັນທຶກແມ່ແບບສຳເລັດແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="52"/>
+      <location filename="../../bimcommands/BimReorder.py" line="49"/>
       <source>You must choose a group object before using this command</source>
       <translation>ທ່ານຕ້ອງເລືອກວັດຖຸກຸ່ມກ່ອນທີ່ຈະໃຊ້ຄຳສັ່ງນີ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="138"/>
+      <location filename="../../bimcommands/BimSetup.py" line="135"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
       <translation>ບາງສະພາບແວດລ້ອມການເຮັດວຽກ (workbenches) ເພີ່ມເຕີມທີ່ຊ່ວຍຂະຫຍາຍຄວາມສາມາດຂອງ BIM ຍັງບໍ່ໄດ້ຖືກຕິດຕັ້ງ:</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="142"/>
+      <location filename="../../bimcommands/BimSetup.py" line="139"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
       <translation>ຕິດຕັ້ງພວກມັນໄດ້ຈາກເມນູ ເຄື່ອງມື (Tools) -&gt; ຕົວຈັດການສ່ວນເສີມ (Addon Manager).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="181"/>
+      <location filename="../../bimcommands/BimSetup.py" line="178"/>
       <source>Unit system updated for active document</source>
       <translation>ອັບເດດລະບົບຫົວໜ່ວຍສຳລັບເອກະສານທີ່ໃຊ້ງານຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="185"/>
+      <location filename="../../bimcommands/BimSetup.py" line="182"/>
       <source>Unit system updated for all opened documents</source>
       <translation>ອັບເດດລະບົບຫົວໜ່ວຍສຳລັບທຸກເອກະສານທີ່ເປີດຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="631"/>
+      <location filename="../../bimcommands/BimSetup.py" line="628"/>
       <source>IfcOpenShell Not Found</source>
       <translation>ບໍ່ພົບ IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="635"/>
+      <location filename="../../bimcommands/BimSetup.py" line="632"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
       <translation>ຈຳເປັນຕ້ອງມີ IfcOpenShell ເພື່ອນຳເຂົ້າ ແລະ ສົ່ງອອກໄຟລ໌ IFC. ເບິ່ງຄືວ່າມັນຍັງບໍ່ມີໃນລະບົບ. ດາວໂຫຼດ ແລະ ຕິດຕັ້ງດຽວນີ້ເລີຍບໍ່? ມັນຈະຖືກຕິດຕັ້ງໃນໂຟນເດີ macros ຂອງ FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="59"/>
+      <location filename="../../bimcommands/BimSlab.py" line="56"/>
       <source>Select a planar object</source>
       <translation>ເລືອກວັດຖຸໃນລະນັບ (planar)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="62"/>
+      <location filename="../../bimcommands/BimSlab.py" line="59"/>
       <source>%1 select a planar object</source>
       <translation>%1 ເລືອກວັດຖຸລະນາບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="85"/>
+      <location filename="../../bimcommands/BimSlab.py" line="82"/>
       <source>Slab</source>
       <translation>ແຜ່ນພື້ນ (Slab)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="61"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="58"/>
       <source>Select Page Template</source>
       <translation>ເລືອກແມ່ແບບໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="73"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="70"/>
       <source>Template</source>
       <translation>ແມ່ແບບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="52"/>
+      <location filename="../../bimcommands/BimTrash.py" line="49"/>
       <source>Trash</source>
       <translation>ຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="130"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="127"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
       <translation>ບໍ່ສາມາດເຂົ້າເຖິງບົດຮຽນໄດ້. ກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດ (ຈຳເປັນຕ້ອງໃຊ້ພຽງຄັ້ງດຽວ).</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="160"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="157"/>
       <source>Downloading images…</source>
       <translation>ກຳລັງດາວໂຫຼດຮູບພາບ...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="244"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="241"/>
       <source>BIM Tutorial - Step</source>
       <translation>ບົດຮຽນ BIM - ຂັ້ນຕອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="138"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="135"/>
       <source>Draft clones are not supported yet!</source>
       <translation>ຍັງບໍ່ຮອງຮັບການເຮັດ Draft clones ໃນຕອນນີ້!</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="139"/>
       <source>The selected object is not a clone</source>
       <translation>ວັດຖຸທີ່ເລືອກບໍ່ແມ່ນຕົວໂຄນ (clone)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="145"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="142"/>
       <source>Select exactly one object</source>
       <translation>ເລືອກພຽງແຕ່ວັດຖຸດຽວເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="105"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>Isolate</source>
       <translation>ແຍກດ່ຽວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="137"/>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Creates a new working plane proxy</source>
       <translation>ສ້າງຕົວແທນລະນັບການເຮັດວຽກ (working plane proxy) ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Deletes the selected item</source>
       <translation>ລົບລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="100"/>
-      <location filename="../../bimcommands/BimViews.py" line="701"/>
+      <location filename="../../bimcommands/BimViews.py" line="97"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>ໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="102"/>
+      <location filename="../../bimcommands/BimViews.py" line="99"/>
       <source>New Working Plane Proxy</source>
       <translation>ສ້າງຕົວແທນລະນັບການເຮັດວຽກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="104"/>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
       <source>Toggle Visibility</source>
       <translation>ສະຫຼັບການເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="141"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Toggles the visibility of selected items</source>
       <translation>ສະຫຼັບການເບິ່ງເຫັນຂອງລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="144"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Turns all items off except the selected ones</source>
       <translation>ປິດທຸກລາຍການ ຍົກເວັ້ນແຕ່ລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <location filename="../../bimcommands/BimViews.py" line="98"/>
       <source>New Level Above</source>
       <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <source>Save Camera View</source>
       <translation>ບັນທຶກມຸມມອງກ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Save Visibility of Objects</source>
       <translation>ບັນທຶກການເບິ່ງເຫັນຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="131"/>
       <source>Creates a new level above the highest existing one</source>
       <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງລະດັບທີ່ສູງທີ່ສຸດທີ່ມີຢູ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Saves the current camera view to the selected items</source>
       <translation>ບັນທຶກມຸມມອງກ້ອງປັດຈຸບັນໄວ້ໃນລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="148"/>
+      <location filename="../../bimcommands/BimViews.py" line="145"/>
       <source>Renames the selected item</source>
       <translation>ປ່ຽນຊື່ລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="149"/>
-      <location filename="../../bimcommands/BimViews.py" line="704"/>
+      <location filename="../../bimcommands/BimViews.py" line="146"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>ເປີດໃຊ້ງານລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="176"/>
+      <location filename="../../bimcommands/BimViews.py" line="173"/>
       <source>BIM Views Manager</source>
       <translation>ຕົວຈັດການມຸມມອງ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="327"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>ມຸມມອງ 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="340"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>ແຜ່ນງານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="712"/>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
       <source>Set Working Plane</source>
       <translation>ກຳນົດລະນາບເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="716"/>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
       <translation>ກຳນົດລາຍການທີ່ເລືອກໃຫ້ເປັນໜ້າພຽງວຽກປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="225"/>
+      <location filename="../../bimcommands/BimWindows.py" line="222"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="127"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="124"/>
       <source>The active document is already an IFC document</source>
       <translation>ເອກະສານທີ່ໃຊ້ງານຢູ່ນີ້ແມ່ນເອກະສານ IFC ຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="76"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="73"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
       <translation>ໄຟລ໌ IFC ຍັງບໍ່ໄດ້ຖືກບັນທຶກ. ບັນທຶກກ່ອນຄັ້ງໜຶ່ງເພື່ອໃຫ້ມີໄຟລ໌ IFC ໄວ້ປຽບທຽບ. ຈາກນັ້ນຈຶ່ງໃຊ້ຄຳສັ່ງນີ້ອີກຄັ້ງ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_diff.py" line="88"/>
+      <location filename="../../nativeifc/ifc_diff.py" line="85"/>
       <source>No changes to display.</source>
       <translation>ບໍ່ມີການປ່ຽນແປງທີ່ຈະສະແດງ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="75"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="72"/>
       <source>IfcOpenShell Update</source>
       <translation>ອັບເດດ IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="76"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
       <translation>ການອັບເດດຈະຖືກຕິດຕັ້ງໃນໂຟນເດີຜູ້ໃຊ້ຂອງ FreeCAD ແລະ ຈະບໍ່ສົ່ງຜົນກະທົບຕໍ່ລະບົບສ່ວນອື່ນໆຂອງທ່ານ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="78"/>
       <source>An update to your installed IfcOpenShell version is available</source>
       <translation>ມີການອັບເດດສຳລັບ IfcOpenShell ເວີຊັນທີ່ທ່ານຕິດຕັ້ງໄວ້</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="83"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="80"/>
       <source>Would you like to install that update?</source>
       <translation>ທ່ານຕ້ອງການຕິດຕັ້ງການອັບເດດນັ້ນບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="84"/>
       <source>Your version of IfcOpenShell is already up to date</source>
       <translation>IfcOpenShell ເວີຊັນຂອງທ່ານເປັນເວີຊັນຫຼ້າສຸດແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="87"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
       <translation>ບໍ່ພົບການຕິດຕັ້ງ IfcOpenShell ໃນລະບົບນີ້.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="92"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>Would you like to install the most recent version?</source>
       <translation>ທ່ານຕ້ອງການຕິດຕັ້ງເວີຊັນຫຼ້າສຸດບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="99"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
       <translation>IfcOpenShell ບໍ່ໄດ້ຖືກຕິດຕັ້ງ ແລະ FreeCAD ບໍ່ສາມາດຊອກຫາເວີຊັນທີ່ເໝາະສົມເພື່ອຕິດຕັ້ງໄດ້. ທ່ານຍັງສາມາດຕິດຕັ້ງ IfcOpenShell ດ້ວຍຕົນເອງໄດ້, ໃຫ້ໄປທີ່ https://wiki.freecad.org/IfcOpenShell ເພື່ອເບິ່ງຄຳແນະນຳເພີ່ມເຕີມ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="107"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="104"/>
       <source>IfcOpenShell update successfully installed.</source>
       <translation>ຕິດຕັ້ງການອັບເດດ IfcOpenShell ສຳເລັດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="155"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="152"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
       <translation>ບໍ່ສາມາດລັນ pip ໄດ້. ກະລຸນາກວດສອບໃຫ້ແນ່ໃຈວ່າ pip ໄດ້ຖືກຕິດຕັ້ງໃນລະບົບຂອງທ່ານແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="36"/>
+      <location filename="../../nativeifc/ifc_status.py" line="33"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
       <translation>ໂໝດ Strict IFC ຖືກເປີດຢູ່ (ທຸກວັດຖຸແມ່ນ IFC)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="39"/>
+      <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
       <translation>ໂໝດ Strict IFC ຖືກປິດຢູ່ (ອະນຸຍາດໃຫ້ມີທັງວັດຖຸ IFC ແລະ ບໍ່ແມ່ນ IFC)</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="78"/>
+      <location filename="../../nativeifc/ifc_status.py" line="75"/>
       <source>Add IFC property…</source>
       <translation>ເພີ່ມຄຸນສົມບັດ IFC...</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="83"/>
+      <location filename="../../nativeifc/ifc_status.py" line="80"/>
       <source>Add standard IFC Property Set…</source>
       <translation>ເພີ່ມຊຸດຄຸນສົມບັດມາດຕະຖານ IFC...</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="140"/>
+      <location filename="../../nativeifc/ifc_status.py" line="137"/>
       <source>No Property set provided</source>
       <translation>ບໍ່ມີຊຸດຄຸນສົມບັດໃຫ້</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="151"/>
+      <location filename="../../nativeifc/ifc_status.py" line="148"/>
       <source>add property</source>
       <translation>ເພີ່ມຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="214"/>
+      <location filename="../../nativeifc/ifc_status.py" line="211"/>
       <source>Property set already exists</source>
       <translation>ມີຊຸດຄຸນສົມບັດນີ້ຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="218"/>
+      <location filename="../../nativeifc/ifc_status.py" line="215"/>
       <source>add property set</source>
       <translation>ເພີ່ມຊຸດຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_status.py" line="226"/>
+      <location filename="../../nativeifc/ifc_status.py" line="223"/>
       <source>Property already exists</source>
       <translation>ມີຄຸນສົມບັດນີ້ຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
       <source>Viewed lines</source>
       <translation>ເສັ້ນທີ່ເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="82"/>
       <source>Cut lines</source>
       <translation>ເສັ້ນຕັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="374"/>
       <source>Removing property</source>
       <translation>ກຳລັງລົບຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="379"/>
       <source>Removing property set</source>
       <translation>ກຳລັງລົບຊຸດຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_types.py" line="167"/>
+      <location filename="../../nativeifc/ifc_types.py" line="164"/>
       <source>Error: Incompatible type</source>
       <translation>ຂໍ້ຜິດພາດ: ປະເພດທີ່ບໍ່ເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="160"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="157"/>
       <source>Error: Select exactly one base face</source>
       <translation>ຂໍ້ຜິດພາດ: ເລືອກພຽງໜ້າພື້ນຖານດຽວເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="81"/>
+      <location filename="../../bimcommands/BimTDView.py" line="78"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
       <translation>ບໍ່ພົບ ຫຼື ບໍ່ໄດ້ເລືອກມຸມມອງໜ້າຕັດ, ວັດຖຸ Draft ຫຼື ໜ້າງານໃນເອກະສານ</translation>
     </message>
@@ -11915,93 +11914,93 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>ຂໍ້ຜິດພາດຂອງແມ່ແບບການສົ່ງອອກ WebGL</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="102"/>
       <source>Deactivate Container</source>
       <translation>ປິດການໃຊ້ງານ Container</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="104"/>
       <source>Make Active Container</source>
       <translation>ຕັ້ງໃຫ້ເປັນ Container ທີ່ໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="108"/>
       <source>Expand Children</source>
       <translation>ຂະຫຍາຍລາຍການຍ່ອຍ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="112"/>
       <source>Collapse Children</source>
       <translation>ພັບລາຍການຍ່ອຍ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="117"/>
       <source>Remove Shape</source>
       <translation>ລົບຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="119"/>
       <source>Load Shape</source>
       <translation>ໂຫຼດຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="123"/>
       <source>Load Representation</source>
       <translation>ໂຫຼດການສະແດງຜົນ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="127"/>
       <source>Add Geometry Properties</source>
       <translation>ເພີ່ມຄຸນສົມບັດເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Show Geometry Tree</source>
       <translation>ສະແດງໂຄງສ້າງເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="134"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="601"/>
       <source>Expand Property Sets</source>
       <translation>ຂະຫຍາຍຊຸດຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="138"/>
       <source>Load Material</source>
       <translation>ໂຫຼດວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="142"/>
       <source>Convert to Type</source>
       <translation>ປ່ຽນເປັນປະເພດ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="426"/>
       <source>View Diff</source>
       <translation>ເບິ່ງຄວາມແຕກຕ່າງ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="430"/>
       <source>Save IFC File</source>
       <translation>ບັນທຶກໄຟລ໌ IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
+      <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File As…</source>
       <translation>ບັນທຶກໄຟລ໌ IFC ເປັນ...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="30"/>
+      <location filename="../../bimcommands/BimLink.py" line="31"/>
       <source>Select an object to link</source>
       <translation>ເລືອກວັດຖຸທີ່ຈະເຊື່ອມຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="83"/>
+      <location filename="../../bimcommands/BimBox.py" line="79"/>
       <source>%1 pick next point</source>
       <translation>%1 ເລືອກຈຸດຖັດໄປ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="171"/>
+      <location filename="../../bimcommands/BimBox.py" line="167"/>
       <source>Box Dimensions</source>
       <translation>ຂະໜາດຂອງກ່ອງ</translation>
     </message>
@@ -12022,12 +12021,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Background</name>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="38"/>
+      <location filename="../../bimcommands/BimBackground.py" line="35"/>
       <source>Toggle Background</source>
       <translation>ສະຫຼັບພື້ນຫຼັງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBackground.py" line="42"/>
+      <location filename="../../bimcommands/BimBackground.py" line="39"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation>ສະຫຼັບພື້ນຫຼັງຂອງມຸມມອງ 3D ລະຫວ່າງສີດຽວ ແລະ ສີໄລ່ລະດັບ</translation>
     </message>
@@ -12035,12 +12034,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Beam</name>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="49"/>
+      <location filename="../../bimcommands/BimBeam.py" line="46"/>
       <source>Beam</source>
       <translation>ຄານ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBeam.py" line="50"/>
+      <location filename="../../bimcommands/BimBeam.py" line="47"/>
       <source>Creates a beam between two points</source>
       <translation>ສ້າງຄານລະຫວ່າງສອງຈຸດ</translation>
     </message>
@@ -12048,12 +12047,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Box</name>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="39"/>
+      <location filename="../../bimcommands/BimBox.py" line="35"/>
       <source>Box</source>
       <translation>ກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBox.py" line="42"/>
+      <location filename="../../bimcommands/BimBox.py" line="38"/>
       <source>Graphically creates a generic box in the current document</source>
       <translation>ສ້າງກ່ອງທົ່ວໄປດ້ວຍຮູບພາບໃນເອກະສານປັດຈຸບັນ</translation>
     </message>
@@ -12061,12 +12060,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Part_Builder</name>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="38"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="35"/>
       <source>Shape Builder</source>
       <translation>ຕົວສ້າງຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuilder.py" line="39"/>
+      <location filename="../../bimcommands/BimBuilder.py" line="36"/>
       <source>Advanced utility to create shapes</source>
       <translation>ເຄື່ອງມືຂັ້ນສູງສຳລັບການສ້າງຮູບຊົງ</translation>
     </message>
@@ -12074,12 +12073,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_Level</name>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="46"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="43"/>
       <source>Level</source>
       <translation>ລະດັບຊັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
+      <location filename="../../bimcommands/BimBuildingPart.py" line="47"/>
       <source>Creates a building part object that represents a level</source>
       <translation>ສ້າງວັດຖຸສ່ວນຂອງອາຄານທີ່ສະແດງເຖິງລະດັບຊັ້ນ</translation>
     </message>
@@ -12087,12 +12086,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="43"/>
       <source>Clone</source>
       <translation>ໂໂຄນ (Clone)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="49"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
       <translation>ໂຄນວັດຖຸທີ່ເລືອກໄປຍັງຕຳແໜ່ງອື່ນ</translation>
     </message>
@@ -12100,12 +12099,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Column</name>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="49"/>
+      <location filename="../../bimcommands/BimColumn.py" line="46"/>
       <source>Column</source>
       <translation>ເສົາ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimColumn.py" line="50"/>
+      <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Creates a column at a specified location</source>
       <translation>ສ້າງເສົາໃນຕຳແໜ່ງທີ່ກຳນົດ</translation>
     </message>
@@ -12113,12 +12112,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Part_Common</name>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="38"/>
+      <location filename="../../bimcommands/BimCommon.py" line="35"/>
       <source>Intersection</source>
       <translation>ສ່ວນຕັດ (Intersection)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCommon.py" line="39"/>
+      <location filename="../../bimcommands/BimCommon.py" line="36"/>
       <source>Creates an intersection of two shapes</source>
       <translation>ສ້າງສ່ວນທີ່ຕັດກັນຂອງສອງຮູບຊົງ</translation>
     </message>
@@ -12126,22 +12125,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Convert</name>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="38"/>
+      <location filename="../../bimcommands/BimConvert.py" line="35"/>
       <source>Convert to BIM</source>
       <translation>ປ່ຽນເປັນ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimConvert.py" line="39"/>
+      <location filename="../../bimcommands/BimConvert.py" line="36"/>
       <source>Converts any object to a BIM component</source>
       <translation>ປ່ຽນວັດຖຸໃດໆໃຫ້ເປັນສ່ວນປະກອບ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
       <translation>ເອົາອອກຈາກກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUngroup.py" line="41"/>
+      <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
       <translation>ເອົາວັດຖຸນີ້ອອກຈາກກຸ່ມຫຼັກຂອງມັນ</translation>
     </message>
@@ -12149,12 +12148,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Copy</name>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="43"/>
+      <location filename="../../bimcommands/BimCopy.py" line="40"/>
       <source>Copy</source>
       <translation>ກັອບປີ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCopy.py" line="44"/>
+      <location filename="../../bimcommands/BimCopy.py" line="41"/>
       <source>Copies selected objects to another location</source>
       <translation>ສຳເນົາວັດຖຸທີ່ເລືອກໄປຍັງຕຳແໜ່ງອື່ນ</translation>
     </message>
@@ -12162,12 +12161,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Cut</name>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="37"/>
+      <location filename="../../bimcommands/BimCut.py" line="34"/>
       <source>Difference</source>
       <translation>ສ່ວນຕ່າງ (Difference)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCut.py" line="38"/>
+      <location filename="../../bimcommands/BimCut.py" line="35"/>
       <source>Creates a difference between two shapes</source>
       <translation>ສ້າງສ່ວນຕ່າງລະຫວ່າງສອງຮູບຊົງ</translation>
     </message>
@@ -12175,12 +12174,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Diff</name>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="38"/>
+      <location filename="../../bimcommands/BimDiff.py" line="35"/>
       <source>IFC Shape Diff</source>
       <translation>ຄວາມແຕກຕ່າງຂອງຮູບຊົງ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDiff.py" line="41"/>
+      <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>Shows the difference between two IFC-based documents</source>
       <translation>ສະແດງຄວາມແຕກຕ່າງລະຫວ່າງສອງເອກະສານທີ່ອີງໃສ່ IFC</translation>
     </message>
@@ -12188,12 +12187,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Door</name>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="43"/>
+      <location filename="../../bimcommands/BimDoor.py" line="40"/>
       <source>Door</source>
       <translation>ປະຕູ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDoor.py" line="44"/>
+      <location filename="../../bimcommands/BimDoor.py" line="41"/>
       <source>Places a door at a given location</source>
       <translation>ວາງປະຕູໄວ້ໃນຕຳແໜ່ງທີ່ກຳນົດ</translation>
     </message>
@@ -12201,18 +12200,18 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_EmptyTrash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="82"/>
+      <location filename="../../bimcommands/BimTrash.py" line="79"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
       <translation>ລົບວັດຖຸທັງໝົດທີ່ບໍ່ໄດ້ຖືກໃຊ້ງານອອກຈາກຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
-      <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="35"/>
+      <location filename="../../bimcommands/BimTrash.py" line="75"/>
       <source>Empty Trash</source>
       <translation>ລ້າງຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="39"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
       <translation>ລົບວັດຖຸທັງໝົດທີ່ບໍ່ໄດ້ຖືກໃຊ້ງານອອກຈາກຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
@@ -12220,12 +12219,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Examples</name>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="38"/>
+      <location filename="../../bimcommands/BimExamples.py" line="35"/>
       <source>BIM Examples</source>
       <translation>ຕົວຢ່າງ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExamples.py" line="42"/>
+      <location filename="../../bimcommands/BimExamples.py" line="39"/>
       <source>Download examples of BIM files made with FreeCAD</source>
       <translation>ດາວໂຫຼດຕົວຢ່າງໄຟລ໌ BIM ທີ່ສ້າງດ້ວຍ FreeCAD</translation>
     </message>
@@ -12233,12 +12232,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Extrude</name>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="38"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="35"/>
       <source>Extrude</source>
       <translation>ການຍືດອອກ (Extrude)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrude.py" line="39"/>
+      <location filename="../../bimcommands/BimExtrude.py" line="36"/>
       <source>Extrudes a selected 2D shape</source>
       <translation>ຍືດຮູບຊົງ 2D ທີ່ເລືອກອອກມາ</translation>
     </message>
@@ -12246,7 +12245,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch Fence selection</name>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="59"/>
+      <location filename="../../bimcommands/BimFence.py" line="56"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
       <translation>ເລືອກສ່ວນ (section), ເສົາ (post) ແລະ ເສັ້ນທາງ (path) ຕາມລຳດັບນີ້ເພື່ອສ້າງຮົ້ວ.</translation>
     </message>
@@ -12254,12 +12253,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Part_Fuse</name>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="37"/>
+      <location filename="../../bimcommands/BimFuse.py" line="34"/>
       <source>Union</source>
       <translation>ການຮວມ (Union)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFuse.py" line="38"/>
+      <location filename="../../bimcommands/BimFuse.py" line="35"/>
       <source>Creates a union of several shapes</source>
       <translation>ສ້າງການຮວມກັນຂອງຫຼາຍໆຮູບຊົງ</translation>
     </message>
@@ -12267,12 +12266,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Glue</name>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="38"/>
+      <location filename="../../bimcommands/BimGlue.py" line="35"/>
       <source>Glue</source>
       <translation>ຕິດ (Glue)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimGlue.py" line="41"/>
+      <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Joins selected shapes into one non-parametric shape</source>
       <translation>ຮວມຮູບຊົງທີ່ເລືອກໃຫ້ເປັນຮູບຊົງດຽວທີ່ບໍ່ແມ່ນ parametric</translation>
     </message>
@@ -12280,12 +12279,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Help</name>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="38"/>
+      <location filename="../../bimcommands/BimHelp.py" line="35"/>
       <source>BIM Help</source>
       <translation>ຊ່ວຍເຫຼືອ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimHelp.py" line="42"/>
+      <location filename="../../bimcommands/BimHelp.py" line="39"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
       <translation>ເປີດໜ້າຊ່ວຍເຫຼືອ BIM ຢູ່ທີ່ເວັບໄຊເອກະສານຂອງ FreeCAD</translation>
     </message>
@@ -12293,12 +12292,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_ImagePlane</name>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="35"/>
       <source>Image Plane</source>
       <translation>ລະນັບຮູບພາບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
+      <location filename="../../bimcommands/BimImagePlane.py" line="36"/>
       <source>Creates a plane from an image</source>
       <translation>ສ້າງລະນັບຈາກຮູບພາບ</translation>
     </message>
@@ -12306,12 +12305,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Leader</name>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="45"/>
+      <location filename="../../bimcommands/BimLeader.py" line="42"/>
       <source>Leader</source>
       <translation>ເສັ້ນຊີ້ແນະ (Leader)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLeader.py" line="48"/>
+      <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
       <translation>ສ້າງເສັ້ນຫຼາຍທ່ອນ (polyline) ພ້ອມລູກສອນຢູ່ທີ່ປາຍເສັ້ນ</translation>
     </message>
@@ -12319,12 +12318,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Library</name>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="86"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="83"/>
       <source>Objects Library</source>
       <translation>ຄັງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="87"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="84"/>
       <source>Opens the objects library</source>
       <translation>ເປີດຄັງວັດຖຸ</translation>
     </message>
@@ -12332,12 +12331,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Material</name>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="61"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="58"/>
       <source>Material</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMaterial.py" line="65"/>
+      <location filename="../../bimcommands/BimMaterial.py" line="62"/>
       <source>Sets or creates a material for selected objects</source>
       <translation>ຕັ້ງຄ່າ ຫຼື ສ້າງວັດສະດຸສຳລັບວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -12345,12 +12344,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_MoveView</name>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="38"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="35"/>
       <source>Move View</source>
       <translation>ຍ້າຍມຸມມອງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimMoveView.py" line="39"/>
+      <location filename="../../bimcommands/BimMoveView.py" line="36"/>
       <source>Moves this view to an existing page</source>
       <translation>ຍ້າຍມຸມມອງນີ້ໄປຍັງໜ້າທີ່ມີຢູ່ແລ້ວ</translation>
     </message>
@@ -12358,7 +12357,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Switch</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="127"/>
+      <location filename="../../bimcommands/BimNudge.py" line="124"/>
       <source>Nudge Switch</source>
       <translation>ສະຫຼັບການຂຍັບ (Nudge Switch)</translation>
     </message>
@@ -12366,7 +12365,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Up</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="153"/>
+      <location filename="../../bimcommands/BimNudge.py" line="150"/>
       <source>Nudge Up</source>
       <translation>ຂຍັບຂຶ້ນ</translation>
     </message>
@@ -12374,7 +12373,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Down</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="173"/>
+      <location filename="../../bimcommands/BimNudge.py" line="170"/>
       <source>Nudge Down</source>
       <translation>ຂຍັບລົງ</translation>
     </message>
@@ -12382,7 +12381,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Left</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="193"/>
+      <location filename="../../bimcommands/BimNudge.py" line="190"/>
       <source>Nudge Left</source>
       <translation>ຂຍັບຊ້າຍ</translation>
     </message>
@@ -12390,7 +12389,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Right</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="213"/>
+      <location filename="../../bimcommands/BimNudge.py" line="210"/>
       <source>Nudge Right</source>
       <translation>ຂຍັບຂວາ</translation>
     </message>
@@ -12398,7 +12397,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Extend</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="233"/>
+      <location filename="../../bimcommands/BimNudge.py" line="230"/>
       <source>Nudge Extend</source>
       <translation>ຂຍັບເພື່ອຍືດ</translation>
     </message>
@@ -12406,7 +12405,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_Shrink</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="257"/>
+      <location filename="../../bimcommands/BimNudge.py" line="254"/>
       <source>Nudge Shrink</source>
       <translation>ຂຍັບເພື່ອຫຍໍ້</translation>
     </message>
@@ -12414,7 +12413,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_RotateLeft</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="281"/>
+      <location filename="../../bimcommands/BimNudge.py" line="278"/>
       <source>Nudge Rotate Left</source>
       <translation>ຂຍັບໝູນຊ້າຍ</translation>
     </message>
@@ -12422,7 +12421,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Nudge_RotateRight</name>
     <message>
-      <location filename="../../bimcommands/BimNudge.py" line="310"/>
+      <location filename="../../bimcommands/BimNudge.py" line="307"/>
       <source>Nudge Rotate Right</source>
       <translation>ຂຍັບໝູນຂວາ</translation>
     </message>
@@ -12430,12 +12429,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Part_Offset2D</name>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="38"/>
+      <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
       <translation>ໄລຍະຫ່າງ 2D (2D Offset)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimOffset.py" line="39"/>
+      <location filename="../../bimcommands/BimOffset.py" line="36"/>
       <source>Utility to offset planar shapes</source>
       <translation>ເຄື່ອງມືສຳລັບເຮັດໄລຍະຫ່າງ (offset) ໃຫ້ກັບຮູບຊົງໃນລະນັບ</translation>
     </message>
@@ -12443,12 +12442,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Preflight</name>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="64"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="61"/>
       <source>Preflight Checks</source>
       <translation>ກວດສອບຄວາມພ້ອມກ່ອນ (Preflight Checks)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimPreflight.py" line="68"/>
+      <location filename="../../bimcommands/BimPreflight.py" line="65"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
       <translation>ກວດສອບຄຸນລັກສະນະຕ່າງໆຂອງໂມເດວນີ້ກ່ອນທີ່ຈະສົ່ງອອກໄປຫາ IFC</translation>
     </message>
@@ -12456,12 +12455,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Project</name>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="38"/>
+      <location filename="../../bimcommands/BimProject.py" line="35"/>
       <source>IFC Project</source>
       <translation>ໂຄງການ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProject.py" line="39"/>
+      <location filename="../../bimcommands/BimProject.py" line="36"/>
       <source>Creates an empty NativeIFC project</source>
       <translation>ສ້າງໂຄງການ NativeIFC ທີ່ວ່າງເປົ່າ</translation>
     </message>
@@ -12469,12 +12468,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_ResetCloneColors</name>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="35"/>
       <source>Reset Colors</source>
       <translation>ຕັ້ງຄ່າສີໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
+      <location filename="../../bimcommands/BimResetCloneColors.py" line="39"/>
       <source>Resets the colors of this object from its cloned original</source>
       <translation>ຕັ້ງຄ່າສີຂອງວັດຖຸນີ້ໃໝ່ຕາມຕົ້ນສະບັບທີ່ຖືກໂຄນມາ</translation>
     </message>
@@ -12482,12 +12481,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Rewire</name>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="38"/>
+      <location filename="../../bimcommands/BimRewire.py" line="35"/>
       <source>Rewire</source>
       <translation>ສ້າງເສັ້ນໃໝ່ (Rewire)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRewire.py" line="39"/>
+      <location filename="../../bimcommands/BimRewire.py" line="36"/>
       <source>Recreates wires from selected objects</source>
       <translation>ສ້າງເສັ້ນ (wires) ຄືນໃໝ່ຈາກວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -12495,12 +12494,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="51"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="48"/>
       <source>Create 2D view</source>
       <translation>ສ້າງມຸມມອງ 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="132"/>
       <source>Create 2D Cut</source>
       <translation>ສ້າງຮອຍຕັດ 2D</translation>
     </message>
@@ -12508,12 +12507,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="38"/>
+      <location filename="../../bimcommands/BimSketch.py" line="35"/>
       <source>New Sketch</source>
       <translation>ຮູບຮ່າງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="41"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>ສ້າງແບບຮ່າງ (sketch) ໃໝ່ໃນລະນັບການເຮັດວຽກປັດຈຸບັນ</translation>
     </message>
@@ -12521,12 +12520,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Slab</name>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="42"/>
+      <location filename="../../bimcommands/BimSlab.py" line="39"/>
       <source>Slab</source>
       <translation>ແຜ່ນພື້ນ (Slab)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="43"/>
+      <location filename="../../bimcommands/BimSlab.py" line="40"/>
       <source>Creates a slab from a planar shape</source>
       <translation>ສ້າງແຜ່ນພື້ນຈາກຮູບຊົງໃນລະນັບ</translation>
     </message>
@@ -12534,12 +12533,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_TDPage</name>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="37"/>
       <source>New Page</source>
       <translation>ໜ້າໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDPage.py" line="43"/>
+      <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Creates a new TechDraw page from a template</source>
       <translation>ສ້າງໜ້າ TechDraw ໃໝ່ຈາກແມ່ແບບ</translation>
     </message>
@@ -12547,12 +12546,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Text</name>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="37"/>
+      <location filename="../../bimcommands/BimText.py" line="34"/>
       <source>Text</source>
       <translation>ຂໍ້ຄວາມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimText.py" line="40"/>
+      <location filename="../../bimcommands/BimText.py" line="37"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
       <translation>ສ້າງຂໍ້ຄວາມໃນມຸມເບິ່ງ 3D ປັດຈຸບັນ ຫຼື ໃນໜ້າ TechDraw</translation>
     </message>
@@ -12560,12 +12559,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Trash</name>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="39"/>
+      <location filename="../../bimcommands/BimTrash.py" line="36"/>
       <source>Move to Trash</source>
       <translation>ຍ້າຍໄປຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTrash.py" line="42"/>
+      <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Moves the selected objects to the trash folder</source>
       <translation>ຍ້າຍວັດຖຸທີ່ເລືອກໄປໄວ້ໃນໂຟນເດີຖັງຂີ້ເຫຍື້ອ</translation>
     </message>
@@ -12573,12 +12572,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Tutorial</name>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="48"/>
       <source>BIM Tutorial</source>
       <translation>ບົດຮຽນ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTutorial.py" line="54"/>
+      <location filename="../../bimcommands/BimTutorial.py" line="51"/>
       <source>Starts or continues the BIM in-game tutorial</source>
       <translation>ເລີ່ມ ຫຼື ສືບຕໍ່ບົດຮຽນ BIM ໃນລະບົບ</translation>
     </message>
@@ -12586,12 +12585,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Unclone</name>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="39"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="36"/>
       <source>Unclone</source>
       <translation>ແຍກຕົວໂຄນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimUnclone.py" line="43"/>
+      <location filename="../../bimcommands/BimUnclone.py" line="40"/>
       <source>Creates a selected clone object independent from its original</source>
       <translation>ເຮັດໃຫ້ວັດຖຸໂຄນທີ່ເລືອກເປັນອິດສະຫຼະຈາກຕົ້ນສະບັບ</translation>
     </message>
@@ -12599,12 +12598,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="55"/>
+      <location filename="../../bimcommands/BimViews.py" line="52"/>
       <source>Views Manager</source>
       <translation>ຕົວຈັດການມຸມເບິ່ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="56"/>
+      <location filename="../../bimcommands/BimViews.py" line="53"/>
       <source>Shows or hides the views manager</source>
       <translation>ສະແດງ ຫຼື ຊ່ອນຕົວຈັດການມຸມເບິ່ງ</translation>
     </message>
@@ -12612,12 +12611,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_SetWPFront</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="35"/>
       <source>Working Plane Front</source>
       <translation>ໜ້າພຽງເຮັດວຽກດ້ານໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="36"/>
       <source>Sets the working plane to Front</source>
       <translation>ຕັ້ງໜ້າພຽງເຮັດວຽກໃຫ້ເປັນດ້ານໜ້າ</translation>
     </message>
@@ -12625,12 +12624,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_SetWPSide</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="50"/>
       <source>Working Plane Side</source>
       <translation>ໜ້າພຽງເຮັດວຽກດ້ານຂ້າງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="51"/>
       <source>Sets the working plane to Side</source>
       <translation>ຕັ້ງໜ້າພຽງເຮັດວຽກໃຫ້ເປັນດ້ານຂ້າງ</translation>
     </message>
@@ -12638,12 +12637,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_SetWPTop</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="65"/>
       <source>Working Plane Top</source>
       <translation>ໜ້າພຽງເຮັດວຽກດ້ານເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="66"/>
       <source>Sets the working plane to Top</source>
       <translation>ຕັ້ງໜ້າພຽງເຮັດວຽກໃຫ້ເປັນດ້ານເທິງ</translation>
     </message>
@@ -12651,12 +12650,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_WPView</name>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="80"/>
       <source>Working Plane View</source>
       <translation>ມຸມເບິ່ງໜ້າພຽງເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
+      <location filename="../../bimcommands/BimWPCommands.py" line="84"/>
       <source>Aligns the view to the current item in BIM Views Manager or to the current working plane</source>
       <translation>ປັບມຸມເບິ່ງໃຫ້ຕົງກັບລາຍການປັດຈຸບັນໃນຕົວຈັດການມຸມເບິ່ງ BIM ຫຼື ຕາມໜ້າພຽງເຮັດວຽກປັດຈຸບັນ</translation>
     </message>
@@ -12664,12 +12663,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_Diff</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="52"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="49"/>
       <source>Shows the current unsaved changes in the IFC file</source>
       <translation>ສະແດງການປ່ຽນແປງທີ່ຍັງບໍ່ທັນໄດ້ບັນທຶກໃນໄຟລ໌ IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="54"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="51"/>
       <source>IFC File Diff</source>
       <translation>ຄວາມແຕກຕ່າງຂອງໄຟລ໌ IFC</translation>
     </message>
@@ -12677,12 +12676,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_Expand</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="75"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="72"/>
       <source>Expands the children of the selected objects or document</source>
       <translation>ຂະຫຍາຍລາຍການຍ່ອຍຂອງວັດຖຸ ຫຼື ເອກະສານທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="77"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="74"/>
       <source>IFC Expand</source>
       <translation>ຂະຫຍາຍ IFC</translation>
     </message>
@@ -12690,12 +12689,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_ConvertDocument</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="115"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="112"/>
       <source>Converts the active document to an IFC document</source>
       <translation>ແປງເອກະສານທີ່ກຳລັງໃຊ້ໃຫ້ເປັນເອກະສານ IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="117"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="114"/>
       <source>Convert Document</source>
       <translation>ແປງເອກະສານ</translation>
     </message>
@@ -12703,12 +12702,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_MakeProject</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="141"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="138"/>
       <source>Converts the current selection to an IFC project</source>
       <translation>ແປງສ່ວນທີ່ເລືອກໃຫ້ເປັນໂຄງການ IFC</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="143"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="140"/>
       <source>Convert to IFC Project</source>
       <translation>ແປງເປັນໂຄງການ IFC</translation>
     </message>
@@ -12716,12 +12715,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_Save</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="179"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="176"/>
       <source>Saves the current IFC document</source>
       <translation>ບັນທຶກເອກະສານ IFC ປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="181"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="178"/>
       <source>Save IFC File</source>
       <translation>ບັນທຶກໄຟລ໌ IFC</translation>
     </message>
@@ -12729,12 +12728,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="212"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="209"/>
       <source>Saves the current IFC document as another file</source>
       <translation>ບັນທຶກເອກະສານ IFC ປັດຈຸບັນເປັນໄຟລ໌ອື່ນ</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="214"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="211"/>
       <source>Save IFC File As…</source>
       <translation>ບັນທຶກໄຟລ໌ IFC ເປັນ...</translation>
     </message>
@@ -12742,12 +12741,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>IFC_UpdateIOS</name>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="41"/>
       <source>Shows a dialog to update IfcOpenShell</source>
       <translation>ສະແດງໜ້າຕ່າງເພື່ອອັບເດດ IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_openshell.py" line="46"/>
+      <location filename="../../nativeifc/ifc_openshell.py" line="43"/>
       <source>IfcOpenShell Update</source>
       <translation>ອັບເດດ IfcOpenShell</translation>
     </message>
@@ -13149,12 +13148,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="273"/>
       <source>Remove Shape From BIM</source>
       <translation>ລົບຮູບຊົງອອກຈາກ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Removes cubic shapes from BIM components</source>
       <translation>ລົບຮູບຊົງສີ່ລ່ຽມອອກຈາກສ່ວນປະກອບ BIM</translation>
     </message>
@@ -13162,12 +13161,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_DrawingView</name>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="45"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="42"/>
       <source>2D Drawing</source>
       <translation>ແຕ້ມ 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="49"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="46"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
       <translation>ສ້າງຊຸດເກັບການແຕ້ມເພື່ອບັນຈຸອົງປະກອບຂອງມຸມເບິ່ງ 2D</translation>
     </message>
@@ -13191,12 +13190,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="96"/>
       <source>Remove Component</source>
       <translation>ລົບສ່ວນປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="100"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
       <translation>ລົບສ່ວນປະກອບທີ່ເລືອກອອກຈາກວັດຖຸແມ່, ຫຼື ສ້າງຮູໃນສ່ວນປະກອບ</translation>
     </message>
@@ -13204,12 +13203,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Toggle IFC B-Rep Flag</source>
       <translation>ສະຫຼັບເຄື່ອງໝາຍ IFC B-Rep</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="381"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="378"/>
       <source>Forces an object to be exported as B-rep or not</source>
       <translation>ບັງຄັບໃຫ້ວັດຖຸຖືກສົ່ງອອກເປັນ B-rep ຫຼື ບໍ່</translation>
     </message>
@@ -13217,12 +13216,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="464"/>
       <source>New IFC Spreadsheet</source>
       <translation>ສະເປຣດຊີດ IFC ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimArchUtils.py" line="471"/>
+      <location filename="../../bimcommands/BimArchUtils.py" line="468"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
       <translation>ສ້າງສະເປຣດຊີດເພື່ອເກັບຄຸນສົມບັດ IFC ຂອງວັດຖຸ</translation>
     </message>
@@ -13230,12 +13229,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Classification</name>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="43"/>
+      <location filename="../../bimcommands/BimClassification.py" line="40"/>
       <source>Manage Classification</source>
       <translation>ຈັດການການຈັດໝວດໝູ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClassification.py" line="47"/>
+      <location filename="../../bimcommands/BimClassification.py" line="44"/>
       <source>Manages classification systems and apply classification to objects</source>
       <translation>ຈັດການລະບົບການຈັດໝວດໝູ່ ແລະ ນຳໃຊ້ການຈັດໝວດໝູ່ກັບວັດຖຸ</translation>
     </message>
@@ -13243,12 +13242,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_DimensionAligned</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="43"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="40"/>
       <source>Aligned Dimension</source>
       <translation>ຂະໜາດແບບຂະໜານ (Aligned)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="44"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="41"/>
       <source>Creates an aligned dimension</source>
       <translation>ສ້າງການບອກຂະໜາດແບບຂະໜານ</translation>
     </message>
@@ -13256,12 +13255,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_DimensionHorizontal</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="54"/>
       <source>Horizontal Dimension</source>
       <translation>ຂະໜາດທາງນອນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="60"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Creates an horizontal dimension</source>
       <translation>ສ້າງການບອກຂະໜາດທາງນອນ</translation>
     </message>
@@ -13269,12 +13268,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_DimensionVertical</name>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="79"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="76"/>
       <source>Vertical Dimension</source>
       <translation>ຂະໜາດທາງຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDimensions.py" line="80"/>
+      <location filename="../../bimcommands/BimDimensions.py" line="77"/>
       <source>Creates a vertical dimension</source>
       <translation>ສ້າງການບອກຂະໜາດທາງຕັ້ງ</translation>
     </message>
@@ -13282,12 +13281,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_IfcElements</name>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="36"/>
       <source>Manage IFC Elements</source>
       <translation>ຈັດການອົງປະກອບ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="40"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
       <translation>ຈັດການວ່າອົງປະກອບຕ່າງໆຂອງໂຄງການ BIM ຈະຖືກສົ່ງອອກໄປເປັນ IFC ແນວໃດ</translation>
     </message>
@@ -13295,12 +13294,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_IfcExplorer</name>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="41"/>
       <source>IFC Explorer</source>
       <translation>ຕົວສຳຫຼວດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="42"/>
       <source>Opens the IFC explorer utility</source>
       <translation>ເປີດເຄື່ອງມືສຳຫຼວດ IFC</translation>
     </message>
@@ -13308,12 +13307,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_IfcProperties</name>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="41"/>
       <source>Manage IFC Properties</source>
       <translation>ຈັດການຄຸນສົມບັດ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="45"/>
       <source>Manages the different IFC properties of the BIM objects</source>
       <translation>ຈັດການຄຸນສົມບັດ IFC ຕ່າງໆຂອງວັດຖຸ BIM</translation>
     </message>
@@ -13321,12 +13320,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_IfcQuantities</name>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="69"/>
       <source>Manage IFC Quantities</source>
       <translation>ຈັດການປະລິມານ IFC</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="73"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
       <translation>ຈັດການວ່າປະລິມານຂອງອົງປະກອບຕ່າງໆໃນໂຄງການ BIM ຈະຖືກສົ່ງອອກໄປເປັນ IFC ແນວໃດ</translation>
     </message>
@@ -13334,12 +13333,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Layers</name>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="57"/>
+      <location filename="../../bimcommands/BimLayers.py" line="54"/>
       <source>Manage Layers</source>
       <translation>ຈັດການຊັ້ນ (Layers)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLayers.py" line="60"/>
+      <location filename="../../bimcommands/BimLayers.py" line="57"/>
       <source>Sets/modifies the different layers of your BIM project</source>
       <translation>ຕັ້ງຄ່າ/ປ່ຽນແປງຊັ້ນຕ່າງໆຂອງໂຄງການ BIM ຂອງທ່ານ</translation>
     </message>
@@ -13347,12 +13346,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_ProjectManager</name>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="53"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="50"/>
       <source>Setup Project</source>
       <translation>ຕັ້ງຄ່າໂຄງການ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="54"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="51"/>
       <source>Creates or manages a BIM project</source>
       <translation>ສ້າງ ຫຼື ຈັດການໂຄງການ BIM</translation>
     </message>
@@ -13360,12 +13359,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Reextrude</name>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="35"/>
       <source>Re-Extrude</source>
       <translation>ຢືດອອກໃໝ່ (Re-Extrude)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReextrude.py" line="41"/>
+      <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Recreates an extruded structure from a selected face</source>
       <translation>ສ້າງໂຄງສ້າງທີ່ຢືດອອກໃໝ່ຈາກໜ້າພຽງທີ່ເລືອກ</translation>
     </message>
@@ -13373,12 +13372,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Reorder</name>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="39"/>
+      <location filename="../../bimcommands/BimReorder.py" line="36"/>
       <source>Reorder Children</source>
       <translation>ຈັດລຽງລຳດັບລູກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimReorder.py" line="41"/>
+      <location filename="../../bimcommands/BimReorder.py" line="38"/>
       <source>Reorders children of the selected object</source>
       <translation>ຈັດລຽງລຳດັບວັດຖຸຍ່ອຍຂອງວັດຖຸທີ່ເລືອກໃໝ່</translation>
     </message>
@@ -13386,12 +13385,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Setup</name>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="42"/>
+      <location filename="../../bimcommands/BimSetup.py" line="39"/>
       <source>BIM Setup</source>
       <translation>ການຕັ້ງຄ່າ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="45"/>
+      <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
       <translation>ຕັ້ງຄ່າ FreeCAD ທົ່ວໄປສຳລັບຂະບວນການເຮັດວຽກ BIM</translation>
     </message>
@@ -13399,12 +13398,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Shape2DView</name>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="39"/>
       <source>Section View</source>
       <translation>ມຸມເບິ່ງໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
+      <location filename="../../bimcommands/BimShape2DView.py" line="111"/>
       <source>Section Cut</source>
       <translation>ການຕັດໜ້າຕັດ</translation>
     </message>
@@ -13412,12 +13411,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_SimpleCopy</name>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="35"/>
       <source>Simple Copy</source>
       <translation>ກັອບປີ້ແບບງ່າຍ (Simple Copy)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
+      <location filename="../../bimcommands/BimSimpleCopy.py" line="36"/>
       <source>Creates a simple non-parametric copy</source>
       <translation>ສ້າງການກັອບປີ້ແບບງ່າຍທີ່ບໍ່ມີພາຣາມີເຕີ</translation>
     </message>
@@ -13425,12 +13424,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_TDView</name>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="38"/>
+      <location filename="../../bimcommands/BimTDView.py" line="35"/>
       <source>New View</source>
       <translation>ມຸມເບິ່ງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimTDView.py" line="44"/>
+      <location filename="../../bimcommands/BimTDView.py" line="41"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
@@ -13440,12 +13439,12 @@ select both the view and the page before executing the command.</source>
   <context>
     <name>BIM_Welcome</name>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="39"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="36"/>
       <source>BIM Welcome Screen</source>
       <translation>ໜ້າຈໍຕ້ອນຮັບ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWelcome.py" line="40"/>
+      <location filename="../../bimcommands/BimWelcome.py" line="37"/>
       <source>Shows the BIM workbench welcome screen</source>
       <translation>ສະແດງໜ້າຈໍຕ້ອນຮັບຂອງຊຸດເຄື່ອງມື BIM</translation>
     </message>
@@ -13453,12 +13452,12 @@ select both the view and the page before executing the command.</source>
   <context>
     <name>BIM_Windows</name>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="38"/>
+      <location filename="../../bimcommands/BimWindows.py" line="35"/>
       <source>Manage Doors and Windows</source>
       <translation>ຈັດການປະຕູ ແລະ ປ່ອງຢ້ຽມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindows.py" line="42"/>
+      <location filename="../../bimcommands/BimWindows.py" line="39"/>
       <source>Manages the different doors and windows of the BIM project</source>
       <translation>ຈັດການປະຕູ ແລະ ປ່ອງຢ້ຽມຕ່າງໆຂອງໂຄງການ BIM</translation>
     </message>
@@ -13664,7 +13663,7 @@ select both the view and the page before executing the command.</source>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1758"/>
-      <location filename="../../bimcommands/BimCovering.py" line="83"/>
+      <location filename="../../bimcommands/BimCovering.py" line="97"/>
       <source>Create Covering</source>
       <translation>ສ້າງສິ່ງປົກຄຸມ</translation>
     </message>
@@ -13773,12 +13772,12 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_ExtrudeFace</name>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="17"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="18"/>
       <source>Extrude Face</source>
       <translation type="unfinished">Extrude Face</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimExtrudeFace.py" line="20"/>
+      <location filename="../../bimcommands/BimExtrudeFace.py" line="21"/>
       <source>Extrudes a selected face into a solid</source>
       <translation type="unfinished">Extrudes a selected face into a solid</translation>
     </message>
@@ -13786,12 +13785,12 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_Covering</name>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="44"/>
+      <location filename="../../bimcommands/BimCovering.py" line="58"/>
       <source>Covering</source>
       <translation>ສິ່ງປົກຄຸມ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCovering.py" line="47"/>
+      <location filename="../../bimcommands/BimCovering.py" line="61"/>
       <source>Creates a covering (floor finish, cladding) on a selected face</source>
       <translation>ສ້າງສິ່ງປົກຄຸມ (ວັດສະດຸປູພື້ນ, ວັດສະດຸຫຸ້ມຝາ) ເທິງໜ້າພຽງທີ່ເລືອກ</translation>
     </message>
@@ -13799,12 +13798,12 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_Compound</name>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="38"/>
+      <location filename="../../bimcommands/BimCompound.py" line="35"/>
       <source>Compound</source>
       <translation>ວັດຖຸປະສົມ (Compound)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCompound.py" line="39"/>
+      <location filename="../../bimcommands/BimCompound.py" line="36"/>
       <source>Creates a compound of several shapes</source>
       <translation>ສ້າງວັດຖຸປະສົມຈາກຫຼາຍໆຮູບຊົງ</translation>
     </message>
@@ -13812,7 +13811,7 @@ Do you want to proceed?</source>
   <context>
     <name>BimWall</name>
     <message>
-      <location filename="../../bimcommands/BimWall.py" line="308"/>
+      <location filename="../../bimcommands/BimWall.py" line="305"/>
       <source>Wall Trace</source>
       <translation>ຮອຍຝາ (Wall Trace)</translation>
     </message>
@@ -13820,12 +13819,12 @@ Do you want to proceed?</source>
   <context>
     <name>BIM_LinkMake</name>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="14"/>
+      <location filename="../../bimcommands/BimLink.py" line="15"/>
       <source>Make Link</source>
       <translation>ສ້າງລິ້ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLink.py" line="18"/>
+      <location filename="../../bimcommands/BimLink.py" line="19"/>
       <source>Creates a Link to the selected object and immediately enables moving it</source>
       <translation>ສ້າງລິ້ງໄປຫາວັດຖຸທີ່ເລືອກ ແລະ ເປີດໃຫ້ຍ້າຍມັນໄດ້ທັນທີ</translation>
     </message>

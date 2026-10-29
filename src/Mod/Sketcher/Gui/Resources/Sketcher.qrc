@@ -208,17 +208,6 @@
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
     <qresource>
-        <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainDistance_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainHorizontal_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainParallel_old.svg</file>
-        <file>icons/obsolete/Sketcher_ConstrainVertical_old.svg</file>
-        <file>icons/obsolete/Sketcher_DraftLine.svg</file>
-        <file>icons/obsolete/Sketcher_ProfilesHexagon1.svg</file>
-        <file>icons/obsolete/Sketcher_ToggleConstruction_old.svg</file>
-        <file>icons/obsolete/Sketcher_ToggleNormal.svg</file>
-    </qresource>
-    <qresource>
         <file>icons/pointers/Sketcher_Pointer_CarbonCopy.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_3PointArc.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_3PointCircle.svg</file>

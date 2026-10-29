@@ -40,6 +40,10 @@
           "CMAKE_BUILD_TYPE": {
             "type": "STRING",
             "value": "Debug"
+          },
+          "FREECAD_VERSION_INCLUDE_GIT": {
+            "type": "BOOL",
+            "value": "OFF"
           }
         }
       },
@@ -55,6 +59,10 @@
           "CMAKE_BUILD_TYPE": {
             "type": "STRING",
             "value": "RelWithDebInfo"
+          },
+          "FREECAD_VERSION_INCLUDE_GIT": {
+            "type": "BOOL",
+            "value": "OFF"
           }
         }
       },

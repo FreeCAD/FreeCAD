@@ -36,6 +36,7 @@
 #include <Base/Quantity.h>
 
 #include "DrawPage.h"
+#include <App/FeaturePythonPyImp.h>
 #include "DrawSVGTemplate.h"
 #include "DrawSVGTemplatePy.h"
 #include "DrawUtil.h"
@@ -206,12 +207,12 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     }
     QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template %s!\n", PageResult.getValue());
+        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template {}!\n", PageResult.getValue());
         return false;
     }
 
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: %s\n",
+        Base::Console().error("DrawSVGTemplate::processTemplate - failed to parse file: {}\n",
             PageResult.getValue());
         return false;
     }
@@ -300,7 +301,16 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawSVGTemplatePython, TechDraw::DrawSVGTemplate)
 template<> const char* TechDraw::DrawSVGTemplatePython::getViewProviderName() const {
-    return "TechDrawGui::ViewProviderPython";
+    return "TechDrawGui::ViewProviderTemplate";
+}
+template<>
+PyObject* TechDraw::DrawSVGTemplatePython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawSVGTemplatePy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

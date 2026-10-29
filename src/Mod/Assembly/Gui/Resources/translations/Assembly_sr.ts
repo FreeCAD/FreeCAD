@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly</source>
       <translation>Склопови</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="123"/>
       <source>Assembly Joints</source>
       <translation>Спојеви у склопу</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="125"/>
+      <location filename="../../../InitGui.py" line="126"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Склопови</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="2061"/>
+      <location filename="../../../JointObject.py" line="2067"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
@@ -185,22 +185,22 @@
       <translation type="unfinished">Update Stored Positions</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1869"/>
+      <location filename="../../../JointObject.py" line="1875"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Потребно је изабрати 2 елемента са 2 различита дела</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2063"/>
+      <location filename="../../../JointObject.py" line="2069"/>
       <source>Radius 1</source>
       <translation>Полупречник 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2065"/>
+      <location filename="../../../JointObject.py" line="2071"/>
       <source>Thread pitch</source>
       <translation>Корак навоја</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="2067"/>
+      <location filename="../../../JointObject.py" line="2073"/>
       <source>Pitch radius</source>
       <translation>Подеони полупречник</translation>
     </message>
@@ -532,37 +532,37 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation type="unfinished">Unknown video export format</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="169"/>
+      <location filename="../../../InitGui.py" line="170"/>
       <source>Create</source>
       <translation>Спакуј</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="185"/>
+      <location filename="../../../InitGui.py" line="186"/>
       <source>Activate</source>
       <translation>Активирати</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="219"/>
+      <location filename="../../../InitGui.py" line="220"/>
       <source>Insert</source>
       <translation>Убаци</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="231"/>
       <source>Grounding</source>
       <translation>Направи непокретним</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="257"/>
+      <location filename="../../../InitGui.py" line="258"/>
       <source>Constraints</source>
       <translation>Ограничења</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="273"/>
+      <location filename="../../../InitGui.py" line="274"/>
       <source>Tools</source>
       <translation>Алати</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../InitGui.py" line="287"/>
       <source>Simulation</source>
       <translation>Симулација</translation>
     </message>
@@ -1203,7 +1203,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="704"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="777"/>
       <source>Joints</source>
       <translation>Спојеви</translation>
     </message>

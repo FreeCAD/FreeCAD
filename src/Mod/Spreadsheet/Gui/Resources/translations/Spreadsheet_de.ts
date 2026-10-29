@@ -1085,7 +1085,7 @@ Standard: %V = %A
       <location filename="../../SheetTableView.cpp" line="188"/>
       <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Recompute</source>
-      <translation>Neuberechnen</translation>
+      <translation>Neu berechnen</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="149"/>

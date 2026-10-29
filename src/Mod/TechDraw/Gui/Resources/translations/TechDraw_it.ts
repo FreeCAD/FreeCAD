@@ -2442,7 +2442,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
       <translation>Crea immagine</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="527"/>
+      <location filename="../../QGIViewBalloon.cpp" line="621"/>
       <source>Drag Balloon</source>
       <translation>Trascina pallinatura</translation>
     </message>
@@ -2452,7 +2452,7 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
       <translation>Trascina quota</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="587"/>
+      <location filename="../../QGSPage.cpp" line="592"/>
       <source>Create Balloon</source>
       <translation>Crea pallinatura</translation>
     </message>
@@ -3775,47 +3775,47 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
       <translation>Nessuna faccia da tratteggiare in questa selezione</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="312"/>
       <source>No page found</source>
       <translation>Nessuna pagina trovata</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="312"/>
+      <location filename="../../DrawGuiUtil.cpp" line="313"/>
       <source>No Drawing Pages available.</source>
       <translation>Nessuna Pagina di Disegno disponibile.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <location filename="../../DrawGuiUtil.cpp" line="418"/>
       <source>No page selected</source>
       <translation>Nessuna pagina selezionata</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="418"/>
+      <location filename="../../DrawGuiUtil.cpp" line="419"/>
       <source>This function needs a page.</source>
       <translation>Questa funzione ha bisogno di una pagina.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="840"/>
+      <location filename="../../MDIViewPage.cpp" line="870"/>
       <source>Export Page as PDF</source>
       <translation>Esporta la pagina come PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="759"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>Esporta pagina in SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="806"/>
       <source>Export page as DXF</source>
       <translation>Esporta la pagina in DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="823"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Unable to Write File</source>
       <translation>Impossibile scrivere il file</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="854"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD non è in grado di aprire il file %1 per la scrittura. Il file può essere aperto in un altro programma.</translation>
     </message>
@@ -6301,7 +6301,48 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>Moltiplicatore per la dimensione dei simboli di saldatura</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
+      <source>Screen Mode</source>
+      <translation>Modalità schermo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
+      <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
+      <translation>Disegna vertici e bordi a dimensioni costanti sullo schermo invece di ridimensionarli con la pagina. Può anche essere disabilitato dal menu contestuale della pagina.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <source>Screen mode</source>
+      <translation>Modalità schermo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
+      <source>Vertex size</source>
+      <translation>Dimensione vertice</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
+      <source>Size of vertex dots on screen. Only used in screen mode.</source>
+      <translation>Dimensione dei punti di vertice sullo schermo. Usato solo in modalità schermo.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="563"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
+      <source>Edge width</source>
+      <translation>Larghezza bordo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
+      <source>Width of edges on screen. Only used in screen mode.</source>
+      <translation>Larghezza dei bordi sullo schermo. Usato solo in modalità schermo.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Gli elementi in &lt;span style=&quot; font-style:italic;&quot;&gt;corsivo&lt;/span&gt; sono valori predefiniti per i nuovi oggetti. Non hanno alcun effetto sugli oggetti esistenti.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6309,64 +6350,69 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
       <translation>&amp;Mantieni aggiornato</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
       <translation>Mostra la struttura</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="107"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
       <translation>Mostra &amp;griglia</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="110"/>
+      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Screen &amp;Mode</source>
+      <translation>Modalità scher&amp;mo</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="114"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Esporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>Export DXF</source>
       <translation>Esporta DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="122"/>
       <source>Export PDF</source>
       <translation>Esporta PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="126"/>
       <source>Print All Pages</source>
       <translation>Stampa tutte le Pagine</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="444"/>
+      <location filename="../../MDIViewPage.cpp" line="448"/>
       <source>Different orientation</source>
       <translation>Orientamento diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un orientamento diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="454"/>
+      <location filename="../../MDIViewPage.cpp" line="458"/>
       <source>Different paper size</source>
       <translation>Formato carta diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un formato di carta diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1403"/>
+      <location filename="../../MDIViewPage.cpp" line="1433"/>
       <source>Selected:</source>
       <translation>Selezionato:</translation>
     </message>
@@ -10461,7 +10507,7 @@ c'è una finestra di dialogo Azioni aperta.</translation>
     <message>
       <location filename="../../Command.cpp" line="1951"/>
       <source>Exports the current page as a PDF</source>
-      <translation type="unfinished">Exports the current page as a PDF</translation>
+      <translation>Esporta la pagina corrente in formato PDF</translation>
     </message>
   </context>
   <context>

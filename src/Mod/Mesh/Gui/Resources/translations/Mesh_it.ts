@@ -2270,7 +2270,7 @@ Visitare https://openscad.org/ per installarlo.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>
       <source>Mesh: %1</source>
-      <translation type="unfinished">Mesh: %1</translation>
+      <translation>Mesh: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>

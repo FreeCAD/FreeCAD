@@ -21,6 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
+#include <format>
+
 #include <QDir>
 #include <QMetaType>
 #include <QUuid>
@@ -323,9 +325,9 @@ void MaterialProperty::setValue(const QString& value)
             setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
-            Base::Console().log("MaterialProperty::setValue Error '%s' - '%s'\n",
+            Base::Console().log("MaterialProperty::setValue Error '{}' - '{}'\n",
                                 e.what(),
-                                value.toStdString().c_str());
+                                value.toStdString());
             // Save as a string
             setString(value);
         }
@@ -580,20 +582,15 @@ QString Material::getFilePath() const
 
 QString Material::getAuthorAndLicense() const
 {
-    QString authorAndLicense;
-
     // Combine the author and license field for backwards compatibility
-    if (!_author.isNull()) {
-        authorAndLicense = _author;
-        if (!_license.isNull()) {
-            authorAndLicense += QStringLiteral(" ") + _license;
-        }
+    if (_author.isEmpty()) {
+        return _license;
     }
-    else if (!_license.isNull()) {
-        authorAndLicense = _license;
+    if (_license.isEmpty()) {
+        return _author;
     }
 
-    return _license;
+    return _author + QStringLiteral(" ") + _license;
 }
 
 void Material::addModel(const QString& uuid)
@@ -744,9 +741,9 @@ void Material::addPhysical(const QString& uuid)
                     _physical[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
                 }
                 catch (const UnknownValueType&) {
-                    Base::Console().error("Property '%s' has unknown type '%s'. Ignoring\n",
-                                          property.getName().toStdString().c_str(),
-                                          property.getPropertyType().toStdString().c_str());
+                    Base::Console().error("Property '{}' has unknown type '{}'. Ignoring\n",
+                                          property.getName().toStdString(),
+                                          property.getPropertyType().toStdString());
                 }
             }
         }
@@ -786,7 +783,7 @@ void Material::removePhysical(const QString& uuid)
         setEditStateAlter();
     }
     catch (ModelNotFound const&) {
-        Base::Console().log("Physical model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Physical model not found '{}'\n", uuid.toStdString());
     }
 }
 
@@ -822,7 +819,7 @@ void Material::addAppearance(const QString& uuid)
         }
     }
     catch (ModelNotFound const&) {
-        Base::Console().log("Appearance model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Appearance model not found '{}'\n", uuid.toStdString());
     }
 }
 
@@ -1446,8 +1443,8 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
                     }
                 }
                 catch (const PropertyNotFound&) {
-                    Base::Console().log("Material::saveModels Property not found '%s'\n",
-                                        propertyName.toStdString().c_str());
+                    Base::Console().log("Material::saveModels Property not found '{}'\n",
+                                        propertyName.toStdString());
                 }
 
                 if (!inherited || !parentProperty || (*property != *parentProperty)) {
@@ -1843,36 +1840,40 @@ void Material::validate(Material& other) const
     }
 
     if (_tags.size() != other._tags.size()) {
-        Base::Console().log("Local tags count %d\n", _tags.size());
-        Base::Console().log("Remote tags count %d\n", other._tags.size());
-        throw InvalidMaterial("Material tags counts don't match");
+        throw InvalidMaterial(
+            std::format("Material tags counts don't match (local {}, remote {})",
+                        _tags.size(),
+                        other._tags.size()));
     }
     if (!other._tags.contains(_tags)) {
         throw InvalidMaterial("Material tags don't match");
     }
 
     if (_physicalUuids.size() != other._physicalUuids.size()) {
-        Base::Console().log("Local physical model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote physical model count %d\n", other._physicalUuids.size());
-        throw InvalidMaterial("Material physical model counts don't match");
+        throw InvalidMaterial(
+            std::format("Material physical model counts don't match (local {}, remote {})",
+                        _physicalUuids.size(),
+                        other._physicalUuids.size()));
     }
     if (!other._physicalUuids.contains(_physicalUuids)) {
         throw InvalidMaterial("Material physical models don't match");
     }
 
-    if (_physicalUuids.size() != other._physicalUuids.size()) {
-        Base::Console().log("Local appearance model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote appearance model count %d\n", other._physicalUuids.size());
-        throw InvalidMaterial("Material appearance model counts don't match");
+    if (_appearanceUuids.size() != other._appearanceUuids.size()) {
+        throw InvalidMaterial(
+            std::format("Material appearance model counts don't match (local {}, remote {})",
+                        _appearanceUuids.size(),
+                        other._appearanceUuids.size()));
     }
-    if (!other._physicalUuids.contains(_physicalUuids)) {
+    if (!other._appearanceUuids.contains(_appearanceUuids)) {
         throw InvalidMaterial("Material appearance models don't match");
     }
 
     if (_allUuids.size() != other._allUuids.size()) {
-        Base::Console().log("Local model count %d\n", _allUuids.size());
-        Base::Console().log("Remote model count %d\n", other._allUuids.size());
-        throw InvalidMaterial("Material model counts don't match");
+        throw InvalidMaterial(
+            std::format("Material model counts don't match (local {}, remote {})",
+                        _allUuids.size(),
+                        other._allUuids.size()));
     }
     if (!other._allUuids.contains(_allUuids)) {
         throw InvalidMaterial("Material models don't match");
@@ -1883,15 +1884,25 @@ void Material::validate(Material& other) const
         throw InvalidMaterial("Material physical property counts don't match");
     }
     for (auto& property : _physical) {
-        auto& remote = other._physical[property.first];
-        property.second->validate(*remote);
+        const auto remote = other._physical.find(property.first);
+        if (remote == other._physical.end()) {
+            throw InvalidMaterial(
+                std::format("Material physical property '{}' not found in remote",
+                            property.first.toStdString()));
+        }
+        property.second->validate(*remote->second);
     }
 
     if (_appearance.size() != other._appearance.size()) {
         throw InvalidMaterial("Material appearance property counts don't match");
     }
     for (auto& property : _appearance) {
-        auto& remote = other._appearance[property.first];
-        property.second->validate(*remote);
+        const auto remote = other._appearance.find(property.first);
+        if (remote == other._appearance.end()) {
+            throw InvalidMaterial(
+                std::format("Material appearance property '{}' not found in remote",
+                            property.first.toStdString()));
+        }
+        property.second->validate(*remote->second);
     }
 }

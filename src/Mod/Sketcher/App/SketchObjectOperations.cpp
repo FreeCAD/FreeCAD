@@ -219,7 +219,7 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
-        Base::Console().error("Invalid GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -232,7 +232,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
-        Base::Console().error("Invalid number of edges connected to GeoId: %d\n", GeoId);
+        Base::Console().error("Invalid number of edges connected to GeoId: {}\n", GeoId);
         return -1;
     }
 
@@ -460,30 +460,16 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         coinc2->addElement(GeoElementId(lineGeoId, filletPosId2));
 #endif
 
-        if (trim) {
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = GeoId1;
-            coinc1->SecondPos = PosId1;
+        coinc1->Second = filletId;
+        coinc1->SecondPos = PointPos::start;
 
-            coinc2->Second = GeoId2;
-            coinc2->SecondPos = PosId2;
+        coinc2->Second = filletId;
+        coinc2->SecondPos = PointPos::end;
 #else
-            coinc1->addElement(GeoElementId(GeoId1, PosId1));
-            coinc2->addElement(GeoElementId(GeoId2, PosId2));
+        coinc1->addElement(GeoElementId(filletId, PointPos::start));
+        coinc2->addElement(GeoElementId(filletId, PointPos::end));
 #endif
-        }
-        else {
-#ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-            coinc1->Second = filletId;
-            coinc1->SecondPos = PointPos::start;
-
-            coinc2->Second = filletId;
-            coinc2->SecondPos = PointPos::end;
-#else
-            coinc1->addElement(GeoElementId(filletId, PointPos::start));
-            coinc2->addElement(GeoElementId(filletId, PointPos::end));
-#endif
-        }
 
         addConstraint(std::move(coinc1));
         addConstraint(std::move(coinc2));
@@ -2834,7 +2820,7 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         // revert to original values
         return false;
     }
@@ -2916,7 +2902,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
         bspline->increaseDegree(cdegree + degreeincrement);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -2962,7 +2948,7 @@ bool SketchObject::decreaseBSplineDegree(int GeoId, int degreedecrement /*= 1*/)
         bspline->approximate(Precision::Confusion(), 20, maxdegree, GeomAbs_C0);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3077,7 +3063,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 
@@ -3225,7 +3211,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         bspline->insertKnot(param, multiplicity);
     }
     catch (const Base::Exception& e) {
-        Base::Console().error("%s\n", e.what());
+        Base::Console().error("{}\n", e.what());
         return false;
     }
 

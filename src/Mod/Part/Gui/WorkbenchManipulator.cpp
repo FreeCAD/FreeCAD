@@ -28,8 +28,21 @@
 
 using namespace PartGui;
 
-void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar)
-{}
+void WorkbenchManipulator::modifyMenuBar(Gui::MenuItem* menuBar)
+{
+    if (auto edit = menuBar->findItem("&Edit")) {
+        if (auto create = edit->findItem("Create")) {
+            auto add = new Gui::MenuItem();  // NOLINT
+            add->setCommand("Part_Datums");
+            if (auto item = create->findItem("Std_LinkActions")) {
+                create->insertItem(item, add);
+            }
+            else {
+                create->appendItem(add);
+            }
+        }
+    }
+}
 
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 {

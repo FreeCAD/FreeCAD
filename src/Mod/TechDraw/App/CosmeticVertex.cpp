@@ -79,6 +79,15 @@ CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc
     cosmeticTag = getTagAsString();
 }
 
+CosmeticVertex::~CosmeticVertex()
+{
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
+}
+
 void CosmeticVertex::move(const Base::Vector3d& newPos)
 {
     point(newPos);
@@ -242,6 +251,6 @@ PyObject* CosmeticVertex::getPyObject()
 // To do: make const
 void CosmeticVertex::dump(const char* title)
 {
-    Base::Console().message("CV::dump - %s \n", title);
-    Base::Console().message("CV::dump - %s \n", toString().c_str());
+    Base::Console().message("CV::dump - {} \n", title);
+    Base::Console().message("CV::dump - {} \n", toString());
 }

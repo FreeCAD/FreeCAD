@@ -1148,7 +1148,7 @@ void ToolBarManager::addToMenu(QLayout* layout, QWidget* area, QMenu* menu)
 
 void ToolBarManager::onToggleStatusBarWidget(QWidget* widget, bool visible)
 {
-    Base::ConnectionBlocker block(connParam);
+    fastsignals::shared_connection_block blocker(connParam);
     widget->setVisible(visible);
     hStatusBar->SetBool(widget->objectName().toUtf8().constData(), widget->isVisible());
 }
@@ -1341,7 +1341,8 @@ void ToolBarManager::setState(const QString& name, State state)
             tb->toggleViewAction()->setVisible(false);  // not visible in context menus
             tb->hide();                                 // toolbar not visible
         }
-        else if (state == State::SaveState) {
+        else if (state == State::SaveState && tb->toggleViewAction()->isVisible()) {
+            // Unavailable toolbars are hidden by the context, not by the user.
             auto show = tb->isVisible();
             saveVisibility(show, policy);
         }

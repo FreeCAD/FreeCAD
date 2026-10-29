@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="519"/>
       <source>Open File</source>
       <translation>Открыть файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="237"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Assembly</source>
       <translation>Сборка</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="525"/>
       <source>2D Draft</source>
       <translation>Двухмерный набросок</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="242"/>
+      <location filename="../../StartView.cpp" line="526"/>
       <source>Creates a 2D Draft document</source>
       <translation>Создать двухмерный документ верстака Набросок</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="245"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Архитектура</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="517"/>
       <source>Empty File</source>
       <translation>Пустой файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="518"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Создать новый пустой файл FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Открыть существующий CAD файл или 3D модель</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Parametric Body</source>
       <translation>Параметрическая деталь</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="233"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Создать деталь в верстаке Проектирование детали</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="238"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Creates an assembly project</source>
       <translation>Создать проект сборки деталей</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="246"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Creates an architectural project</source>
       <translation>Создаёт архитектурный проект</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="538"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>New File</source>
       <translation>Новый файл</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Примеры</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="542"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Недавние файлы</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="557"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>Открыть настройку первого запуска</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="558"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Больше не показывать эту начальную страницу (начать с пустого экрана)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Start</source>
       <translation>Начало</translation>
     </message>

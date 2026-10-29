@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <sstream>
 # include <QDomDocument>
 
 
@@ -33,6 +32,8 @@
 #include "DrawPage.h"
 #include "DrawUtil.h"
 #include "XMLQuery.h"
+
+#include <App/FeaturePythonPyImp.h>
 
 
 using namespace TechDraw;
@@ -196,9 +197,9 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     bool rc = symbolDocument.setContent(qba, nsProcess, &errorMsg, &errorLine, &errorCol);
     if (!rc) {
         //invalid SVG message
-        Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+        Base::Console().warning("DrawViewSymbol - {} - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().log("DrawViewSymbol - %s - len: %d rc: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - {} - len: {} rc: {} error: {} line: {} col: {}\n",
                             getNameInDocument(), strlen(symbol), rc, qPrintable(errorMsg),
                             errorLine, errorCol);
     }
@@ -207,9 +208,9 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     QDomDocument::ParseResult rc = symbolDocument.setContent(qba); // Use the default ParseOptions
     if (!rc) {
         //invalid SVG message
-        Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+        Base::Console().warning("DrawViewSymbol - {} - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - {} - len: {} error: {} line: {} col: {}\n",
                             getNameInDocument(), strlen(symbol), qPrintable(rc.errorMessage),
                             rc.errorLine, rc.errorColumn);
     }
@@ -235,6 +236,15 @@ PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewSymbolPython, TechDraw::DrawViewSymbo
 template<> const char* TechDraw::DrawViewSymbolPython::getViewProviderName() const
 {
     return "TechDrawGui::ViewProviderSymbol";
+}
+template<>
+PyObject* TechDraw::DrawViewSymbolPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawViewSymbolPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

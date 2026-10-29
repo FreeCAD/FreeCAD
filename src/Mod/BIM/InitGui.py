@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """The BIM workbench"""
 
@@ -156,8 +153,7 @@ class BIMWorkbench(Workbench):
         self.modify_3d = [
             "BIM_ArrayTools",
             "Arch_CutPlane",
-            "BIM_Extrude",
-            "BIM_ExtrudeFace",
+            "BIM_ExtrudeTools",
             "BIM_BooleanTools",
         ]
 
@@ -311,6 +307,19 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
 
+        class BIM_ExtrudeTools:
+            def GetCommands(self):
+                # default: face extrusion (BIM_ExtrudeFace)
+                return ("BIM_ExtrudeFace", "BIM_Extrude")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_ExtrudeTools", "Extrude Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_ExtrudeFace"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
         class BIM_IfcManageTools:
             def GetCommands(self):
                 return (
@@ -398,6 +407,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_OffsetTools", BIM_OffsetTools())
         FreeCADGui.addCommand("BIM_ArrayTools", BIM_ArrayTools())
         FreeCADGui.addCommand("BIM_BooleanTools", BIM_BooleanTools())
+        FreeCADGui.addCommand("BIM_ExtrudeTools", BIM_ExtrudeTools())
         FreeCADGui.addCommand("BIM_IfcManageTools", BIM_IfcManageTools())
         FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools())
@@ -576,6 +586,7 @@ class BIMWorkbench(Workbench):
             ("BIM_BooleanTools", BIM_BooleanTools),
             ("BIM_CloneTools", BIM_CloneTools),
             ("BIM_Create2DViews", BIM_Create2DViews),
+            ("BIM_ExtrudeTools", BIM_ExtrudeTools),
             ("BIM_GenericTools", BIM_GenericTools),
             ("BIM_IfcManageTools", BIM_IfcManageTools),
             ("BIM_OffsetTools", BIM_OffsetTools),
@@ -632,6 +643,8 @@ class BIMWorkbench(Workbench):
         from nativeifc import ifc_observer
         from draftutils import grid_observer
 
+        translate = FreeCAD.Qt.translate
+
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -676,9 +689,11 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
-                BimWatcher(self.bimtools, "3D/BIM Geometry"),
-                BimWatcher(self.modify, "Modify", invert=True),
+                BimWatcher(
+                    self.draftingtools + self.annotationtools, translate("BIM", "2D Drafting")
+                ),
+                BimWatcher(self.bimtools, translate("BIM", "3D/BIM Geometry")),
+                BimWatcher(self.modify, translate("BIM", "Modify"), invert=True),
             ]
         )
 

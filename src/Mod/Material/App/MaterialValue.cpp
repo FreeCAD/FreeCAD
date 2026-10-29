@@ -21,6 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
+#include <format>
+
 #include <QMetaType>
 #include <QRegularExpression>
 
@@ -404,12 +406,16 @@ void Array2D::validateColumn(int column) const
 void Array2D::validate(const Array2D& other) const
 {
     if (rows() != other.rows()) {
-        Base::Console().log("Local row count %d, remote %d\n", rows(), other.rows());
-        throw InvalidProperty("Material property value row counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value row counts don't match (local {}, remote {})",
+                        rows(),
+                        other.rows()));
     }
     if (columns() != other.columns()) {
-        Base::Console().log("Local column count %d, remote %d\n", columns(), other.columns());
-        throw InvalidProperty("Material property value column counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value column counts don't match (local {}, remote {})",
+                        columns(),
+                        other.columns()));
     }
     try {
         for (int i = 0; i < rows(); i++) {
@@ -509,7 +515,7 @@ void Array2D::dumpRow(const std::shared_ptr<QList<QVariant>>& row)
 {
     Base::Console().log("row: ");
     for (auto& column : *row) {
-        Base::Console().log("'%s' ", column.toString().toStdString().c_str());
+        Base::Console().log("'{}' ", column.toString().toStdString());
     }
     Base::Console().log("\n");
 }

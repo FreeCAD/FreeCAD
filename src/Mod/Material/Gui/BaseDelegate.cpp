@@ -280,7 +280,6 @@ void BaseDelegate::paint(QPainter* painter,
 
 QSize BaseDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    Q_UNUSED(option)
     Q_UNUSED(index)
 
     auto type = getType(index);
@@ -297,7 +296,8 @@ QSize BaseDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
         return {23, 23};
     }
 
-    return QStyledItemDelegate::sizeHint(option, index);
+    QSize size = QStyledItemDelegate::sizeHint(option, index);
+    return {size.width(), qMax(size.height(), option.fontMetrics.height() + 8)};
 }
 
 void BaseDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const

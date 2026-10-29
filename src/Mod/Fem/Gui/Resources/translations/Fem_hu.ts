@@ -2506,27 +2506,27 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>Csak egy lap (él a 2D modellben) a téglalap alakú helyi koordináta rendszerhez!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>Csak egy lap (él a 2D modellben) a helyi koordináta rendszerhez!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="377"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>Csak lapok (élek 2D modellben) választhatók ki</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
       <source>Only cylindrical faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+      <translation>Csak hengeres lapok (2D modellben élek) választhatók ki</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="439"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>Csak az átalakítható lapok (élek 2D modellben) választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelési feltételt, majd alkalmazza a helyi koordináta rendszert.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -3966,7 +3966,7 @@ görbéket és a felületeket pontsorozattal helyettesítik</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
+      <translation>Válassz ki több, 3 vagy 4 élből álló síkot, opcionálisan 3 oldalú síkok sarokcsúcsaival együtt.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
@@ -4097,7 +4097,7 @@ Megjegyzések:
     <message>
       <location filename="../ui/MeshDistance.ui" line="304"/>
       <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
+      <translation>A görbék és felületek finomításához használt mintavételi pontok száma. Lapok esetében ez az irányonkénti mintavételi sűrűséget jelenti.</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
@@ -4230,12 +4230,12 @@ Use strategically placed transfinite curve and surface definitions to guide the 
 Notes:
 1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+      <translation>Ha ez bekapcsolt, a kijelölt térfogatokhoz tartozó összes olyan él és lap, amelynek még nincs átmenet meghatározása, automatikusan átmenetivé válik.
+Stratégiailag elhelyezett átmeneti görbe- és lapmeghatározások segítségével irányíthatja az automatikus algoritmust.
 
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
+Megjegyzések:
+1. A felhasználó által definiált görbék a kijelölt lapok mindegyikén átterjednek a lapok szemközti éleire.
+2. Bármilyen számú térfogattal működik, függetlenül attól, hogy azok összekapcsolódnak-e vagy sem </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
@@ -8793,7 +8793,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../../femcommands/commands.py" line="913"/>
       <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
+      <translation>A háló méretét a csúcsoktól, élektől és lapoktól való távolság alapján állítja be</translation>
     </message>
   </context>
   <context>
@@ -8856,12 +8856,12 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../../femcommands/commands.py" line="981"/>
       <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
+      <translation>Strukturált átmeneti felszín</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="984"/>
       <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
+      <translation>Szerkezeti hálót hoz létre egy lapon</translation>
     </message>
   </context>
   <context>
@@ -8874,7 +8874,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
+      <translation>Létrehoz egy szerkezeti hálót egy 4- vagy 5 oldalú térfogatban, amelyet annak átmeneti felületei határoznak meg</translation>
     </message>
   </context>
   <context>

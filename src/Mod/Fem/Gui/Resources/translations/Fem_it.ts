@@ -432,7 +432,7 @@
     <message>
       <location filename="../../Command.cpp" line="2631"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Funzioni di Filtro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2632"/>
@@ -1144,7 +1144,7 @@ ha effetto solo se 'Pipeline only' è abilitato</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save geometry IDs</source>
-      <translation type="unfinished">Save geometry IDs</translation>
+      <translation>Salva gli ID della geometria</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="125"/>
@@ -3036,7 +3036,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
-      <translation type="unfinished">Potential constant</translation>
+      <translation>Costante di Potenziale</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="373"/>
@@ -3260,7 +3260,7 @@ Nota: non ha effetto se è stato selezionato un solido</translation>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>Dimensione interna</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
@@ -3663,7 +3663,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Tipo</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
@@ -3951,7 +3951,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
@@ -4102,7 +4102,7 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>Lineare</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
@@ -5588,7 +5588,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../TaskFemConstraintTransform.ui" line="190"/>
       <location filename="../../TaskFemConstraintTransform.ui" line="209"/>
       <source>Transformable Surfaces</source>
-      <translation type="unfinished">Transformable Surfaces</translation>
+      <translation>Superfici Trasformabili</translation>
     </message>
   </context>
   <context>
@@ -6054,7 +6054,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Funzioni di Filtro</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
@@ -6141,7 +6141,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Nuova Analisi</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="64"/>
@@ -6664,7 +6664,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="110"/>
       <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
+      <translation>Visualizzazione dei dati</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="113"/>
@@ -6989,7 +6989,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>Filtro Contorni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2559"/>
@@ -7755,7 +7755,7 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="41"/>
       <source>Resonant frequencies</source>
-      <translation type="unfinished">Resonant frequencies</translation>
+      <translation>Frequenze di risonanza</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="84"/>
@@ -8520,7 +8520,7 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation type="unfinished">Create and add</translation>
+      <translation>Crea e aggiungi</translation>
     </message>
   </context>
   <context>
@@ -8883,7 +8883,7 @@ Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1360"/>
       <source>Solvers</source>
-      <translation type="unfinished">Solvers</translation>
+      <translation>Risolutori</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1361"/>

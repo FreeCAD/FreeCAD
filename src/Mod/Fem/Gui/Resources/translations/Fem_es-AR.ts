@@ -891,7 +891,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
       <source>3D output, unchecked for 2D output</source>
-      <translation type="unfinished">3D output, unchecked for 2D output</translation>
+      <translation>Salida 3D; sin marcar para salida 2D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
       <source>Geometrical nonlinearity</source>
-      <translation type="unfinished">Geometrical nonlinearity</translation>
+      <translation>No linealidad geométrica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
@@ -911,7 +911,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
       <source>Advanced solver controls</source>
-      <translation type="unfinished">Advanced solver controls</translation>
+      <translation>Controles avanzados del solucionador</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
@@ -926,12 +926,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
       <source>Use geometrical nonlinearity</source>
-      <translation type="unfinished">Use geometrical nonlinearity</translation>
+      <translation>Usar no linealidad geométrica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
       <source>1D and 2D element output format</source>
-      <translation type="unfinished">1D and 2D element output format</translation>
+      <translation>Formato de salida de elementos 1D y 2D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
@@ -941,7 +941,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
       <source>No legacy results (use enhanced solver)</source>
-      <translation type="unfinished">No legacy results (use enhanced solver)</translation>
+      <translation>Sin resultados heredados (usar solucionador mejorado)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
@@ -956,17 +956,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
       <source>Upper frequency bound</source>
-      <translation type="unfinished">Upper frequency bound</translation>
+      <translation>Límite superior de frecuencia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
       <source>Number of eigenmodes</source>
-      <translation type="unfinished">Number of eigenmodes</translation>
+      <translation>Número de modos propios</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
       <source>Lower frequency bound</source>
-      <translation type="unfinished">Lower frequency bound</translation>
+      <translation>Límite inferior de frecuencia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
@@ -1159,12 +1159,12 @@ Solo surte efecto si la opción "Solo canalización" está habilitada</translati
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
       <source>MPI path</source>
-      <translation type="unfinished">MPI path</translation>
+      <translation>Ruta de MPI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Leave blank to use default MPI binary file</source>
-      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+      <translation>Déjelo en blanco para usar el archivo binario MPI predeterminado</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
@@ -1665,7 +1665,7 @@ que indica que es necesario aumentar "MAXGS".</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Successive over-relaxation (SOR)</source>
-      <translation type="unfinished">Successive over-relaxation (SOR)</translation>
+      <translation>Sobrerrelajación sucesiva (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="89"/>
@@ -2499,17 +2499,17 @@ que indica que es necesario aumentar "MAXGS".</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
       <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+      <translation>¡Solo una cara (arista en modelo 2D) para el sistema de coordenadas local rectangular!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Only one face (edge in 2D model) for local coordinate system!</source>
-      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+      <translation>¡Solo una cara (arista en modelo 2D) para el sistema de coordenadas local!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="377"/>
       <source>Only faces (edges in 2D model) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+      <translation>Solo se pueden elegir caras (aristas en modelo 2D)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="395"/>
@@ -2519,7 +2519,7 @@ que indica que es necesario aumentar "MAXGS".</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="439"/>
       <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
-      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+      <translation>¡Solo se pueden seleccionar caras transformables (aristas en modelo 2D)! Aplique primero una condición de contorno de desplazamiento o una carga de fuerza a un contorno y después aplique el sistema de coordenadas local.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="312"/>
@@ -2876,12 +2876,12 @@ que indica que es necesario aumentar "MAXGS".</translation>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="70"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Invertir maestro</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Invertir esclavo</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -3560,7 +3560,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
       <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>Distancia a la que el tamaño de malla será SizeMaximum</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
@@ -3606,7 +3606,7 @@ with harmonic/oscillating driving current</source>
       <location filename="../ui/MeshManipulate.ui" line="462"/>
       <location filename="../ui/MeshDistance.ui" line="326"/>
       <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <translation>Define si la interpolación del tamaño de malla entre SizeMinimum y SizeMaximum debe ser una función lineal o sigmoide</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
@@ -3652,7 +3652,7 @@ F = (G(Tipo + Delta/2) - G(Tipo - Delta/2)) / Delta</translation>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Tipo</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
@@ -3867,11 +3867,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+      <translation>Están disponibles las 3 coordenadas x,y,z (en minúsculas) y las funciones matemáticas
+habituales como Sin, Log (en mayúsculas). Además, todos los refinamientos hijos se
+pueden usar mediante la variable F, p. ej., F1, F2, etc. Los operadores admitidos son +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Ejemplo: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="576"/>
@@ -3911,11 +3911,11 @@ functions like Sin, Log (upper case). Additionally all child refinements are
 usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
 
 Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+      <translation>Están disponibles las 3 coordenadas x,y,z (en minúsculas) y las funciones matemáticas
+habituales como Sin, Log (en mayúsculas). Además, todos los refinamientos hijos se
+pueden usar mediante la variable F, p. ej., F1, F2, etc.  Los operadores admitidos son +, -, *, /, ^.
 
-Example: "F2 + Sin(z)"</translation>
+Ejemplo: "F2 + Sin(z)"</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
@@ -4042,7 +4042,7 @@ Notas:
       <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
+      <translation>Bump</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
@@ -4096,7 +4096,7 @@ Notas:
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
       <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
+      <translation>Configuración global de la previsualización de refinamiento</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
@@ -4128,7 +4128,7 @@ Notas:
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>Mín</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
@@ -4144,7 +4144,7 @@ Notas:
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>Máx</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
@@ -4664,7 +4664,7 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>esfuerzo principal máximo: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
@@ -4679,7 +4679,7 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>minimum princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>vector de esfuerzo princ. mínimo: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
@@ -5010,12 +5010,12 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Seleccione la geometría maestra de tipo: arista, cara; haga clic en Añadir o Quitar</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Seleccione la geometría esclava de tipo: arista, cara; haga clic en Añadir o Quitar</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5050,12 +5050,12 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="255"/>
       <source>Reverse master</source>
-      <translation type="unfinished">Reverse master</translation>
+      <translation>Invertir maestro</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>Invertir esclavo</translation>
     </message>
   </context>
   <context>
@@ -6981,7 +6981,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="2559"/>
       <source>Defines a contours filter that displays iso contours</source>
-      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
+      <translation>Define un filtro de contornos que muestra isocontornos</translation>
     </message>
   </context>
   <context>
@@ -7422,12 +7422,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="247"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
+      <translation>No se puede copiar ResultMesh a ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="258"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation type="unfinished">Mesh must be a ResultMesh</translation>
+      <translation>La malla debe ser un ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="615"/>
@@ -8699,7 +8699,7 @@ Deje en blanco para usar el ejecutable de Python predeterminado</translation>
     <message>
       <location filename="../../../Init.py" line="68"/>
       <source>FEM mesh TetGen</source>
-      <translation type="unfinished">FEM mesh TetGen</translation>
+      <translation>Malla FEM TetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="77"/>
@@ -8883,7 +8883,7 @@ Deje en blanco para usar el ejecutable de Python predeterminado</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="81"/>
       <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
+      <translation>Selector de referencias de geometría maestra</translation>
     </message>
   </context>
   <context>
@@ -8891,7 +8891,7 @@ Deje en blanco para usar el ejecutable de Python predeterminado</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="86"/>
       <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+      <translation>Selector de referencias de geometría esclava</translation>
     </message>
   </context>
   <context>

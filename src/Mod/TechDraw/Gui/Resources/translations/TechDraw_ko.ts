@@ -2442,7 +2442,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>이미지 생성</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="527"/>
+      <location filename="../../QGIViewBalloon.cpp" line="621"/>
       <source>Drag Balloon</source>
       <translation>풍선 끌기</translation>
     </message>
@@ -2452,7 +2452,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>치수 끌기</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="587"/>
+      <location filename="../../QGSPage.cpp" line="592"/>
       <source>Create Balloon</source>
       <translation>풍선 생성</translation>
     </message>
@@ -3775,47 +3775,47 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>이 선택 항목에 해칭할 면이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="312"/>
       <source>No page found</source>
       <translation>페이지를 찾을 수 없음</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="312"/>
+      <location filename="../../DrawGuiUtil.cpp" line="313"/>
       <source>No Drawing Pages available.</source>
       <translation>사용 가능한 도면 페이지가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <location filename="../../DrawGuiUtil.cpp" line="418"/>
       <source>No page selected</source>
       <translation>페이지가 선택되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="418"/>
+      <location filename="../../DrawGuiUtil.cpp" line="419"/>
       <source>This function needs a page.</source>
       <translation>이 기능은 페이지가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="840"/>
+      <location filename="../../MDIViewPage.cpp" line="870"/>
       <source>Export Page as PDF</source>
       <translation>페이지를 PDF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="759"/>
+      <location filename="../../MDIViewPage.cpp" line="777"/>
       <source>Export page as SVG</source>
       <translation>페이지를 SVG로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="806"/>
       <source>Export page as DXF</source>
       <translation>페이지를 DXF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="823"/>
+      <location filename="../../MDIViewPage.cpp" line="853"/>
       <source>Unable to Write File</source>
       <translation>파일을 쓸 수 없음</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="854"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD가 쓰기 위해 파일 %1을(를) 열 수 없습니다. 다른 프로그램에서 파일이 열려 있을 수 있습니다.</translation>
     </message>
@@ -6301,7 +6301,48 @@ Fast, but result is a collection of short straight lines.</source>
       <translation>용접 기호 크기 배수</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="451"/>
+      <source>Screen Mode</source>
+      <translation type="unfinished">Screen Mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="459"/>
+      <source>Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</source>
+      <translation type="unfinished">Draws vertices and edges at a constant size on screen instead of scaling them with the page. Can also be toggled from the page context menu.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="462"/>
+      <source>Screen mode</source>
+      <translation type="unfinished">Screen mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="478"/>
+      <source>Vertex size</source>
+      <translation>꼭짓점 크기</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="510"/>
+      <source>Size of vertex dots on screen. Only used in screen mode.</source>
+      <translation type="unfinished">Size of vertex dots on screen. Only used in screen mode.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="516"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="563"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="538"/>
+      <source>Edge width</source>
+      <translation type="unfinished">Edge width</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="557"/>
+      <source>Width of edges on screen. Only used in screen mode.</source>
+      <translation type="unfinished">Width of edges on screen. Only used in screen mode.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="596"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;참고:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;기울임꼴&lt;/span&gt; 항목은 새 객체의 기본값입니다. 기존 객체에는 영향을 주지 않습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6309,66 +6350,71 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>&amp;Keep Updated</source>
       <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Frames</source>
       <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="107"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Show &amp;Grid</source>
       <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="110"/>
+      <location filename="../../MDIViewPage.cpp" line="111"/>
+      <source>Screen &amp;Mode</source>
+      <translation type="unfinished">Screen &amp;Mode</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="114"/>
       <source>&amp;Export SVG</source>
       <translation>SVG로 내보내기(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="114"/>
+      <location filename="../../MDIViewPage.cpp" line="118"/>
       <source>Export DXF</source>
       <translation>DXF 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="118"/>
+      <location filename="../../MDIViewPage.cpp" line="122"/>
       <source>Export PDF</source>
       <translation>PDF 내보내기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="122"/>
+      <location filename="../../MDIViewPage.cpp" line="126"/>
       <source>Print All Pages</source>
       <translation>모든 페이지 출력</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="444"/>
+      <location filename="../../MDIViewPage.cpp" line="448"/>
       <source>Different orientation</source>
       <translation>다른 방향</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="449"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>프린터가 드로잉과 다른 방향을 사용합니다.
 계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="454"/>
+      <location filename="../../MDIViewPage.cpp" line="458"/>
       <source>Different paper size</source>
       <translation>다른 용지 크기</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="459"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>프린터가 드로잉과 다른 용지 크기를 사용합니다.
 계속하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1403"/>
+      <location filename="../../MDIViewPage.cpp" line="1433"/>
       <source>Selected:</source>
       <translation>선택됨:</translation>
     </message>

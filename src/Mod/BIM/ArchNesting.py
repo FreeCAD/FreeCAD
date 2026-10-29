@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Yorik van Havre
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import math
 from datetime import datetime
@@ -266,8 +263,8 @@ class Nester:
                     rotface.rotate(rotface.CenterOfMass, normal, rotation)
                 bof = rotface.BoundBox
                 rotverts = self.order(rotface)
-                # for i,v in enumerate(rotverts):
-                #    Draft.makeText([str(i)],point=v)
+                # for i, v in enumerate(rotverts):
+                #    Draft.make_text([str(i)], point=v)
                 basepoint = rotverts[0]  # leftmost point of the rotated face
                 basecorner = boc.getPoint(0)  # lower left corner of the container
 
@@ -362,7 +359,7 @@ class Nester:
 
                                 if outside:
                                     fpts.append([faceverts[0], i])
-                                    # Draft.makeText([str(i)],point=faceverts[0])
+                                    # Draft.make_text([str(i)], point=faceverts[0])
 
                             # reorder available solutions around a same point if needed
                             # ensure they are in the correct order
@@ -449,8 +446,8 @@ class Nester:
                             for p in sheet:
                                 Part.show(p[1])
                             Part.show(facecopy)
-                            # for i,p in enumerate(faceverts):
-                            #    Draft.makeText([str(i)],point=p)
+                            # for i, p in enumerate(faceverts):
+                            #    Draft.make_text([str(i)], point=p)
                             return
 
                         if pol.isValid():

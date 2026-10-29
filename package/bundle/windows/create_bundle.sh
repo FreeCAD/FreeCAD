@@ -35,6 +35,9 @@ cp -a ${conda_env}/Library/Mod ${copy_dir}/Mod
 mkdir -p ${copy_dir}/doc
 cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
 
+# Generate graphviz config
+${copy_dir}/bin/dot.exe -c
+
 # delete unnecessary stuff
 find ${copy_dir} -name \*.a -delete
 find ${copy_dir} -name \*.lib -delete
@@ -53,23 +56,11 @@ rm -rf ${copy_dir}/share/cmake
 rm -rf ${copy_dir}/share/cmake-*
 rm -rf ${copy_dir}/share/man
 
-# Apply Patches
-mv ${copy_dir}/bin/Lib/ssl.py .ssl-orig.py
-cp ssl-patch.py ${copy_dir}/bin/Lib/ssl.py
-
 # Turn off the echo before we start actually calling "echo"
 set +x
 
 echo '[Paths]' >> ${copy_dir}/bin/qt6.conf
 echo 'Prefix = ../lib/qt6' >> ${copy_dir}/bin/qt6.conf
-
-# convenient shortcuts to run the binaries
-if [ -x /c/ProgramData/chocolatey/tools/shimgen.exe ]; then
-    pushd ${copy_dir}
-    /c/ProgramData/chocolatey/tools/shimgen.exe -p bin/freecadcmd.exe -i "$(pwd)/../../../WindowsInstaller/icons/FreeCAD.ico" -o "$(pwd)/FreeCADCmd.exe"
-    /c/ProgramData/chocolatey/tools/shimgen.exe --gui -p bin/freecad.exe -i "$(pwd)/../../../WindowsInstaller/icons/FreeCAD.ico" -o "$(pwd)/FreeCAD.exe"
-    popd
-fi
 
 version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)"
 
@@ -104,7 +95,6 @@ if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]]; then
     shopt -s nullglob
 
     FILES=(
-      "$SIGN_DIR"/*.exe
       "$SIGN_DIR"/bin/*.exe
       "$SIGN_DIR"/bin/*.dll
       "$SIGN_DIR"/bin/*.pyd
@@ -153,8 +143,6 @@ if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --console "import pivy; from piv
 fi
 
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb
-# create hash
-sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 
 if [ "${MAKE_INSTALLER}" == "true" ]; then
     FILES_FREECAD="$(cygpath -w $(pwd))\\${version_name}"
@@ -185,14 +173,13 @@ if [ "${MAKE_INSTALLER}" == "true" ]; then
     else
       echo "No code signing available, leaving the installer unsigned"
     fi
-    sha256sum ${version_name}-installer.exe > ${version_name}-installer.exe-SHA256.txt
 fi
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
     echo "Uploading the release..."
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.7z" "${version_name}.7z-SHA256.txt"
+    gh release upload --clobber ${BUILD_TAG} "${version_name}.7z"
     if [ "${MAKE_INSTALLER}" == "true" ]; then
-        gh release upload --clobber ${BUILD_TAG} "${version_name}-installer.exe" "${version_name}-installer.exe-SHA256.txt"
+        gh release upload --clobber ${BUILD_TAG} "${version_name}-installer.exe"
     fi
     echo "Done uploading"
 fi

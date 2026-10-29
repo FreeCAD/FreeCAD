@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
@@ -38,8 +39,6 @@
 # include <GL/glext.h>
 # include <GL/glu.h>
 #endif
-
-#include <fmt/format.h>
 
 #include <algorithm>
 #include <array>
@@ -224,7 +223,7 @@ QString dimensionText(const View3DInventorViewer& viewer)
         auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
+        dim = std::format("{} x {}", wStr, hStr);
     }
 
     return QString::fromStdString(dim);
@@ -267,6 +266,7 @@ void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer
 
     if (auto* glra = viewer->getSoRenderManager()->getGLRenderAction()) {
         action.setCacheContext(glra->getCacheContext());
+        action.setSmoothing(glra->isSmoothing());
     }
 }
 
@@ -1306,7 +1306,7 @@ void View3DInventorViewer::init()
 #endif
     }
     catch (Base::Exception& e) {
-        Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());
+        Base::Console().warning("Failed to set up gestures. Error: {}\n", e.what());
     }
     catch (...) {
         Base::Console().warning("Failed to set up gestures. Unknown error.\n");
@@ -2062,7 +2062,7 @@ void View3DInventorViewer::updateFPSLabel()
 
     fpsCounter->setText(
         QString::fromStdString(
-            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+            std::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
         )
     );
 
@@ -2870,7 +2870,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
 void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
 {
     Q_UNUSED(ud)
-    Base::Console().log("%s\n", action->getTypeId().getName().getString());
+    Base::Console().log("{}\n", action->getTypeId().getName().getString());
 }
 
 void View3DInventorViewer::addGraphicsItem(GLGraphicsItem* item)
@@ -3080,7 +3080,7 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     QOpenGLFramebufferObject fbo(width, height, fboFormat);
     if (!fbo.isValid()) {
         Base::Console().warning(
-            "renderToImage failed to create a %dx%d framebuffer with %d samples\n",
+            "renderToImage failed to create a {}x{} framebuffer with {} samples\n",
             width,
             height,
             samples
@@ -3193,7 +3193,6 @@ bool View3DInventorViewer::renderToFramebuffer(
     int height = fbo->size().height();
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LINE_SMOOTH);
 
     const QColor col = this->backgroundColor();
     glViewport(0, 0, width, height);
@@ -3203,8 +3202,9 @@ bool View3DInventorViewer::renderToFramebuffer(
     SoBoxSelectionRenderAction gl(SbViewportRegion(width, height));
     // When creating a new GL render action we have to copy over the cache context id
     // For further details see init().
-    uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
-    gl.setCacheContext(id);
+    auto* glra = this->getSoRenderManager()->getGLRenderAction();
+    gl.setCacheContext(glra->getCacheContext());
+    gl.setSmoothing(glra->isSmoothing());
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
 
     if (!this->shading) {
@@ -4485,7 +4485,7 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f& box, int steps, int ms
 
         SbVec3f curpos = campos * (1.0F - par) + pos * par;
         cam->position.setValue(curpos);
-        timer.start(Base::clamp<int>(ms, 0, 5000));  // NOLINT
+        timer.start(std::clamp<int>(ms, 0, 5000));  // NOLINT
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
 }

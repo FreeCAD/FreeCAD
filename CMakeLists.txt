@@ -87,7 +87,6 @@ SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
 SetupClipper2()
-find_package(fmt REQUIRED)
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
 set(FREECAD_QT_MAJOR_VERSION 6)

@@ -38,7 +38,10 @@ import Path.Log
 import Path.Main.Sanity.ImageBuilder as ImageBuilder
 import Path.Main.Sanity.ReportGenerator as ReportGenerator
 import os
+import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
+import Path.Op.Base as PathOp
+import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -176,7 +179,32 @@ class CAMSanity:
         data["Sequence"] = "{} of {}".format(n, m)
         data["JobType"] = "2.5D Milling"  # improve after job types added
 
+        data["squawkData"].extend(self._unitSchemaSquawks(obj.Document))
+
         return data
+
+    def _unitSchemaSquawks(self, doc):
+        """Warn when the document's unit schema expresses velocity per second.
+
+        G-code feed rates are per minute. Under a per-second schema the feed
+        the user sees in the UI is not the feed the post-processor emits, so
+        the job creation dialog marks such schemas unsafe. Repeat that here so
+        a job created or edited under one is caught before machining."""
+        schema = PathUtil.documentUnitSchema(doc)
+        if schema is None or PathUtil.schemaUsesMinutes(schema):
+            return []
+        return [
+            self.squawk(
+                "CAMSanity",
+                translate(
+                    "CAM_Sanity",
+                    "Document unit schema '{}' expresses velocity per second. "
+                    "Feed rates will not match what the G-code emits. "
+                    "Use a schema with velocity per minute.",
+                ).format(doc.UnitSystem),
+                squawkType="WARNING",
+            )
+        ]
 
     def _fixtureData(self):
         obj = self.job
@@ -221,6 +249,8 @@ class CAMSanity:
             if "Stop" in op.Name and hasattr(op, "Stop") and op.Stop is True:
                 data["optionalstops"] = "True"
 
+        data["squawkData"].extend(self._deprecationSquawks())
+
         if obj.LastPostProcessOutput == "":
             data["filesize"] = str(0.0)
             data["linecount"] = str(0)
@@ -250,6 +280,48 @@ class CAMSanity:
 
         return data
 
+    def _deprecationSquawks(self):
+        """One squawk per operation that carries a deprecation notice.
+
+        Ops declare notices through opDeprecationNotice(obj) on their proxy (see
+        Path.Op.Base). Dressups are unwrapped so a deprecated op inside one is
+        still reported. A deprecated op keeps working, so its squawk is a NOTE. A
+        deleted op (Path.Op.Base.RemovedOp) generates no toolpath, so the program is
+        missing its moves and the squawk is a CAUTION."""
+        squawks = []
+        for op in self.job.Operations.Group:
+            base_op = PathDressup.baseOp(op)
+            proxy = getattr(base_op, "Proxy", None)
+            if not hasattr(proxy, "opDeprecationNotice"):
+                continue
+            try:
+                notice = proxy.opDeprecationNotice(base_op)
+            except Exception as e:
+                Path.Log.debug(f"opDeprecationNotice failed for {base_op.Label}: {e}")
+                continue
+            if not isinstance(notice, str) or not notice:
+                continue
+            if isinstance(proxy, PathOp.RemovedOp):
+                squawks.append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate(
+                            "CAM_Sanity", "Operation '{}' is missing from the output: {}"
+                        ).format(base_op.Label, notice),
+                        squawkType="CAUTION",
+                    )
+                )
+                continue
+            squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "Operation '{}' is deprecated: {}").format(
+                        base_op.Label, notice
+                    ),
+                )
+            )
+        return squawks
+
     def _runData(self):
         obj = self.job
         data = {
@@ -262,12 +334,20 @@ class CAMSanity:
         }
 
         data["cycletotal"] = str(obj.CycleTime)
-        data["jobMinZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
-        ).UserString
-        data["jobMaxZ"] = FreeCAD.Units.Quantity(
-            obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
-        ).UserString
+        # Z in Job coordinates: an operation on a work plane stores its path
+        # in the plane's frame, so the placed path is the one that says where
+        # the tool goes. The Job's own Path is empty; its range is its
+        # operations'.
+        placed = {}
+        for op in obj.Operations.Group:
+            path = PathUtils.getPathWithPlacement(op)
+            if path.BoundBox.isValid():
+                placed[op.Name] = path.BoundBox
+        if placed:
+            zmin = min(bb.ZMin for bb in placed.values())
+            zmax = max(bb.ZMax for bb in placed.values())
+            data["jobMinZ"] = FreeCAD.Units.Quantity(zmin, FreeCAD.Units.Length).UserString
+            data["jobMaxZ"] = FreeCAD.Units.Quantity(zmax, FreeCAD.Units.Length).UserString
         data["jobDescription"] = obj.Description
 
         data["operations"] = []
@@ -289,13 +369,9 @@ class CAMSanity:
                 oplabel = "{} (INACTIVE)".format(oplabel)
                 ctime = "00:00:00"
 
-            if op.Path.BoundBox.isValid():
-                zmin = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMin, FreeCAD.Units.Length
-                ).UserString
-                zmax = FreeCAD.Units.Quantity(
-                    op.Path.BoundBox.ZMax, FreeCAD.Units.Length
-                ).UserString
+            if op.Name in placed:
+                zmin = FreeCAD.Units.Quantity(placed[op.Name].ZMin, FreeCAD.Units.Length).UserString
+                zmax = FreeCAD.Units.Quantity(placed[op.Name].ZMax, FreeCAD.Units.Length).UserString
             else:
                 zmin = ""
                 zmax = ""

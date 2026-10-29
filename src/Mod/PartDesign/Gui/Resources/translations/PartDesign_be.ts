@@ -135,17 +135,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Additive Helix</source>
       <translation>Выцягнуць па спіралі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па спіралі і дадае яго да цела</translation>
     </message>
@@ -153,17 +153,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Additive Loft</source>
       <translation>Выцягнуць па профілю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па адным ці некалькіх перасеках, і дадае яго да цела</translation>
     </message>
@@ -171,17 +171,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Additive Pipe</source>
       <translation>Выцягнуць па траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па траекторыі і дадае яго да цела</translation>
     </message>
@@ -207,17 +207,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2710"/>
+      <location filename="../../Command.cpp" line="2716"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2711"/>
+      <location filename="../../Command.cpp" line="2717"/>
       <source>Boolean Operation</source>
       <translation>Лагічная аперацыя</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2712"/>
+      <location filename="../../Command.cpp" line="2718"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Прымяняе лагічныя аперацыі з абранымі аб'ектамі і бягучым целам</translation>
     </message>
@@ -243,17 +243,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>Chamfer</source>
       <translation>Фаска</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2036"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>Прымяняе фаску да абраным рэбрах ці гранях</translation>
     </message>
@@ -261,17 +261,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Clone</source>
       <translation>Дублікат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation>Параметрычна капіруе суцэльны аб'ект у якасці асноўнай характарыстыкі новага цела</translation>
     </message>
@@ -279,17 +279,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2152"/>
       <source>Draft</source>
       <translation>Чарнавік</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2147"/>
+      <location filename="../../Command.cpp" line="2153"/>
       <source>Applies a draft to the selected faces</source>
       <translation>Прымяняе чарнавік да абраных гранях</translation>
     </message>
@@ -315,17 +315,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2007"/>
       <source>Fillet</source>
       <translation>Акругленне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2002"/>
+      <location filename="../../Command.cpp" line="2008"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>Прымяняе акругленне да абраных рэбрах ці гранях</translation>
     </message>
@@ -333,17 +333,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Groove</source>
       <translation>Паз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>Паварочвае эскіз ці профіль вакол лініі ці восі і выдаляе яго з цела</translation>
     </message>
@@ -351,17 +351,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Hole</source>
       <translation>Адтуліна</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>Стварае адтуліны ў бягучым целе ў цэнтральных кропках акружнасцяў, альбо дуг абранага эскіза ці профілю</translation>
     </message>
@@ -387,17 +387,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2406"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2407"/>
       <source>Linear Pattern</source>
       <translation>Лінейны шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2408"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>Паўтарае абраныя аб'екты ці бягучае цела ў выглядзе лінейнага шаблону</translation>
     </message>
@@ -423,17 +423,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2343"/>
+      <location filename="../../Command.cpp" line="2349"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Mirror</source>
       <translation>Сіметрычна</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Mirrors the selected features or active body</source>
       <translation>Сіметрычна адлюстроўвае абраныя характарыстыкі ці бягучага цела</translation>
     </message>
@@ -495,17 +495,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2579"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2586"/>
       <source>Multi-Transform</source>
       <translation>Множнае пераўтварэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2581"/>
+      <location filename="../../Command.cpp" line="2587"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Прымяняе множныя пераўтварэнні да абраных характарыстык ці бягучага цела</translation>
     </message>
@@ -513,17 +513,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="603"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>New Sketch</source>
       <translation>Новы эскіз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Creates a new sketch</source>
       <translation>Стварае новы эскіз</translation>
     </message>
@@ -531,17 +531,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1274"/>
       <source>Pad</source>
       <translation>Выцягванне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1269"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>Выцягвае абраны эскіз ці профіль, і дадае яго да цела</translation>
     </message>
@@ -567,17 +567,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>Pocket</source>
       <translation>Кішэнь</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1298"/>
+      <location filename="../../Command.cpp" line="1304"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>Выцягвае абраны эскіз ці профіль, і выдаляе яго з цела</translation>
     </message>
@@ -603,17 +603,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2474"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2475"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Polar Pattern</source>
       <translation>Палярны шаблон</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2476"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Паўтарае абраныя характарыстыкі ці бягучае цела ў выглядзе круглага шаблону</translation>
     </message>
@@ -621,17 +621,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>Вярчэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>Паварочвае абраны эскіз ці профіль вакол лініі ці восі, і выдаляе яго з цела</translation>
     </message>
@@ -639,17 +639,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2542"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2537"/>
+      <location filename="../../Command.cpp" line="2543"/>
       <source>Scale</source>
       <translation>Маштаб</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2544"/>
       <source>Scales the selected features or the active body</source>
       <translation>Маштабуе абраныя характарыстыкі ці бягучае цела</translation>
     </message>
@@ -694,17 +694,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Subtractive Helix</source>
       <translation>Адняць па спіралі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па спіралі і выдаляе яго з цела</translation>
     </message>
@@ -712,17 +712,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1659"/>
       <source>Subtractive Loft</source>
       <translation>Адняць па профілю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па адным ці некалькіх перасеках, і выдаляе яго з цела</translation>
     </message>
@@ -730,17 +730,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Subtractive Pipe</source>
       <translation>Адняць па траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1560"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>Выцягвае абраны эскіз ці профіль па траекторыі і выдаляе яго з цела</translation>
     </message>
@@ -748,17 +748,17 @@ False = унутраная шасцярня</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2222"/>
       <source>Thickness</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2223"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>Прымяняе таўшчыню і выдаляе выбраныя грані</translation>
     </message>
@@ -892,22 +892,22 @@ False = унутраная шасцярня</translation>
       <translation>Стварыць злучную фігуру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Create Sub-Shape Binder</source>
       <translation>Стварыць злучную ўкладзеную фігуру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Create Clone</source>
       <translation>Стварыць дублікат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1157"/>
       <source>Make Copy</source>
       <translation>Зрабіць копію</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2634"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Пераўтварыць характарыстыку множнага пераўтварэння</translation>
     </message>
@@ -928,7 +928,7 @@ False = унутраная шасцярня</translation>
       <translation>Новы эскіз</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Create Boolean</source>
       <translation>Стварыць лагічную аперацыю</translation>
     </message>
@@ -3542,7 +3542,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
@@ -3550,17 +3550,17 @@ measured along the specified direction</source>
       <translation>На панэлі задач дыялогавае акно ўжо адчыненае</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1039"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Не атрымалася ўжыць каманду, бо адсутнічае суцэльнае цела для адымання.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
+      <location filename="../../Command.cpp" line="1042"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Пераканайцеся ў тым, што цела змяшчае характарыстыку, перад спробай каманды адымання.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Не атрымалася ўжыць абраны аб'ект. Абраны аб'ект павінен належыць да бягучага цела</translation>
     </message>
@@ -3576,60 +3576,60 @@ measured along the specified direction</source>
       <translation>Хібны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Sub-shape binder</source>
       <translation>Злучнае рэчыва ўкладзенай фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>No sketch to work on</source>
       <translation>Без эскізу для працы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1093"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>No sketch is available in the document</source>
       <translation>Эскіз у дакуменце адсутнічае</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2104"/>
       <source>Wrong Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2071"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Select faces from a single body</source>
       <translation>Абраць грані з адзінкавага цела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2078"/>
+      <location filename="../../Command.cpp" line="2084"/>
       <source>Selection Outside Active Body</source>
       <translation>Выбар па-за бягучым целе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Select faces from the active body</source>
       <translation>Абраць грані з бягучага цела</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2093"/>
       <source>Wrong Object Type</source>
       <translation>Няправільны тып аб'екта</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Defeaturing works only on faces</source>
       <translation>Выдаленне элементаў дзейнічае толькі на грані</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Select only one feature in an active body.</source>
       <translation>Абраць толькі адну характарыстыку ў бягучым целе.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
@@ -3637,44 +3637,44 @@ measured along the specified direction</source>
       <translation>Ці зачыніць дыялогавае акно?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1902"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Абраць рабро, грань ці цела з аднаго цела.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Selection is not in the active body</source>
       <translation>Выбар не знаходзіцца ў бягучы целе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1903"/>
       <source>Shape of the selected part is empty</source>
       <translation>Фігура абранай дэталі пустая</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Абраць рабро, грань ці цела з бягучага цела.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1069"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Разглядзіце магчымасць ужыць злучную фігуру ці асноўную характарыстыку для спасылкі на вонкавую геаметрыю ў целе</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Wrong object type</source>
       <translation>Няправільны тып аб'екта</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1890"/>
       <source>%1 works only on parts.</source>
       <translation>%1 працуе толькі з дэталямі.</translation>
     </message>
@@ -3882,12 +3882,12 @@ This may lead to unexpected results.</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="209"/>
+      <location filename="../../Utils.cpp" line="203"/>
       <source>Active Body Required</source>
       <translation>Неабходна бягучае Цела</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="151"/>
+      <location filename="../../Utils.cpp" line="145"/>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
@@ -3897,33 +3897,33 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
 Для састарэлых дакументаў, у якіх аб'екты праектавання дэталі не маюць асноўнай часткі, ужывайце функцыю пераносу ў праектаванне дэталі, каб змясціць іх у цела.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="210"/>
+      <location filename="../../Utils.cpp" line="204"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
       <translation>Для стварэння новага аб'екта праектавання дэталі ў дакуменце патрабуецца бягучае цела.
 Актывуйце існае цела (падвоеная пстрычка) ці стварыце новае цела.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="272"/>
+      <location filename="../../Utils.cpp" line="266"/>
       <source>Feature is not in a body</source>
       <translation>Характарыстыка не знаходзіцца ў целе</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="273"/>
+      <location filename="../../Utils.cpp" line="267"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Каб ужыць характарыстыку, яна павінна належыць да аб'екту цела ў дакуменце.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="319"/>
+      <location filename="../../Utils.cpp" line="313"/>
       <source>Feature is not in a part</source>
       <translation>Характарыстыка не знаходзіцца ў дэталі</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="320"/>
+      <location filename="../../Utils.cpp" line="314"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Каб ужыць характарыстыку, яна павінна належыць да аб'екту дэталі ў дакуменце.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
@@ -3964,12 +3964,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Змяніць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="93"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
       <source>Feature error</source>
       <translation>Памылка характарыстыкі</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation>%1 не мае асноўнай характарыстыкі.
@@ -5612,12 +5612,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Create Datum</source>
       <translation>Стварыць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2779"/>
+      <location filename="../../Command.cpp" line="2785"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Стварае аб'ект кропкі адліку ці лакальную сістэму каардынат</translation>
     </message>
@@ -5625,12 +5625,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2813"/>
+      <location filename="../../Command.cpp" line="2819"/>
       <source>Create Datum</source>
       <translation>Стварыць кропку адліку</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2814"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Стварае аб'ект кропкі адліку ці лакальную сістэму каардынат</translation>
     </message>
@@ -5917,17 +5917,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>PartDesign</source>
       <translation>Праектаванне дэталі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2124"/>
       <source>Defeaturing</source>
       <translation>Выдаленне элемента</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2125"/>
       <source>Removes selected faces from a solid</source>
       <translation>Выдаляе абраныя грані з суцэльнага цела</translation>
     </message>

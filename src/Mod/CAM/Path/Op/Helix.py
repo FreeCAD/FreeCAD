@@ -595,7 +595,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
     # Automatic calculation angle of direction
     def getDirAngle(self, obj, holes, i):
         p1 = FreeCAD.Vector(holes[i]["x"], holes[i]["y"], 0)
-        p2 = Path.Geom.xy(obj.StartPoint)
+        p2 = Path.Geom.xy(self.startPoint(obj))
 
         if obj.StartAt == "Inside":
             if i < len(holes) - 1:
@@ -646,7 +646,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         singleHelix = obj.SingleHelix or obj.SpiralMill
 
         # Prepare linking parameters
-        solids = [base.Shape for base in self.job.Model.Group]
+        # self.model: the model in the frame the path is made in, its work plane's
+        solids = [base.Shape for base in self.model]
         linkingArgs = {
             "start_position": None,
             "target_position": None,

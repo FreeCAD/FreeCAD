@@ -186,6 +186,22 @@ class DrawViewPart(DrawView):
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
         ...
 
+    def refreshCosmeticEdges(self) -> Any:
+        """refreshCosmeticEdges() - update display of all cosmetic edges. Returns None."""
+        ...
+
+    def refreshCosmeticVertexes(self) -> Any:
+        """refreshCosmeticVertexes() -  supdate display of all cosmetic Vertexes. Returns None."""
+        ...
+
+    def refreshCenterlines(self) -> Any:
+        """refreshCenterlines - update display of all centerlines. Returns None."""
+        ...
+
+    def refreshAllCosmetic(self) -> Any:
+        """refreshAllCosmetic - update display of all cosmetic elements (vertexes, edge, centerlines). Returns None."""
+        ...
+
     def clearCenterLines(self) -> Any:
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
         ...
@@ -197,8 +213,21 @@ class DrawViewPart(DrawView):
     def formatGeometricEdge(
         self, index: int, style: int, weight: float, color: tuple, visible: int, /
     ) -> None:
-        """formatGeometricEdge(index, style, weight, color, visible). Returns None."""
+        """
+        Applies appearance attributes to a geometric edge.
+        Style parameter is from Qt::PenStyle and is converted to closest standard line number style.
+        """
         ...
+
+    def decorateLine(
+        self, edgeName: str, lineNumber: int, weight: float, color: tuple, visible: int, /
+    ) -> None:
+        """
+        Applies appearance attributes to geometric edge edgeName ("Edge1").  Handles standard line
+        numbers (0-15 (ISO) or 1-17 (ASME)).
+        """
+        ...
+
 
     def getEdgeByIndex(self, index: int, /) -> TopoShapeEdge:
         """getEdgeByIndex(edgeIndex). Returns Part.TopoShape."""

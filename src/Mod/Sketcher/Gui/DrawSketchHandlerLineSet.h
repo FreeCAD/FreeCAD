@@ -24,11 +24,14 @@
 
 #pragma once
 
+#include <algorithm>
+#include <sstream>
 #include <QApplication>
 
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 
+#include <Base/Precision.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -1141,7 +1144,8 @@ private:
                 Base::Vector3d refPnt1, refPnt2;
                 getFilletData(refPnt1, refPnt2, radius, newGeo, prevGeo, newGeoPos, prevGeoPos);
 
-                obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
+                bool filletOk = obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true)
+                    >= 0;
 
                 if (!obj->noRecomputes) {
                     // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
@@ -1150,10 +1154,31 @@ private:
                     obj->solve();
                 }
 
+                if (filletOk) {
+                    // A fillet trims both lines at the corner, joins them with an arc,
+                    // and leaves the trimmed ends as construction scraps.
+
+                    // Record the ids for undo
+                    int h = obj->getHighestCurveIndex();
+                    polySteps.push_back({.arcId = h - 2, .scrap1 = geoId1, .scrap2 = geoId2});
+
+                    // re-point to the surviving continuation.
+                    geoEltIds.back().GeoId = h - 1;
+                    geoEltIds[geoEltIds.size() - 2].GeoId = h;
+                }
+                else {
+                    // Fillet created no geometry; only the edge itself was added.
+                    polySteps.emplace_back();
+                }
+
                 if (isConstructionMode()) {
                     int filletGeoId = geoId + 1;
                     Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
                 }
+            }
+            else {
+                // No fillet: this step only added one edge.
+                polySteps.emplace_back();
             }
 
             Base::Vector3d p3d = obj->getPoint(geoEltIds.back().GeoId, geoEltIds.back().Pos);
@@ -1272,6 +1297,7 @@ private:
 
         geoEltIds.clear();
         points.clear();
+        polySteps.clear();
 
         previousDirectionAngle = 0.0;
         dirChangeAngle = 0.0;
@@ -1302,73 +1328,75 @@ private:
         // reverse the steps of press/release button
         try {
             auto* obj = sketchgui->getSketchObject();
-            int delGeoId = geoEltIds.back().GeoId;
-            int lastGeoId = getHighestCurveIndex();
-            // 3 cases :
-            // - no fillet, then delGeoId == lastGeoId
-            // - fillet between 2 lines, then delGeoId + 2 == lastGeoId
-            // - fillet other, then delGeoId + 1 == lastGeoId (no points are created)
-            bool filletWasCreated = delGeoId < lastGeoId;
-            bool pointWasCreated = delGeoId + 2 == lastGeoId;
 
-            geoEltIds.pop_back();
+            PolylineStep step = polySteps.back();
+            polySteps.pop_back();
+
+            // Drop the far vertex of the undone edge
+            // the corner it was attached to is the new last point
             points.pop_back();
+            Base::Vector3d corner(points.back().x, points.back().y, 0.0);
 
-            // Start by removing last edge and fillet arc if any
-            if (filletWasCreated) {
-                Gui::cmdAppObjectArgs(obj, "delGeometries([%d, %d])", delGeoId, delGeoId + 1);
+            // Save current Ids before mutation
+            std::vector<GeoElementId> savedGeoEltIds = geoEltIds;
+            geoEltIds.clear();
 
-                if (!geoEltIds.empty()) {
-                    if (!obj->noRecomputes) {
-                        // delGeometries do not call solve if !obj->noRecomputes (AutoRecompute =
-                        // True) But we need to call solve before trying to moveGeometry or it cause
-                        // the deleted geometry to reappear. See
-                        // https://github.com/FreeCAD/FreeCAD/issues/30626
-                        obj->solve();
-                    }
+            std::vector<int> toDelete;
+            if (step.arcId >= 0) {
+                toDelete.push_back(step.arcId);
+            }
+            if (step.scrap1 >= 0) {
+                toDelete.push_back(step.scrap1);
+            }
+            if (step.scrap2 >= 0) {
+                toDelete.push_back(step.scrap2);
+            }
+            if (!savedGeoEltIds.empty() && savedGeoEltIds.back().GeoId >= 0) {
+                toDelete.push_back(savedGeoEltIds.back().GeoId);
+            }
+            std::ranges::sort(toDelete);
+            toDelete.erase(std::ranges::unique(toDelete).begin(), toDelete.end());
 
-                    // Move back the previous edge point
-                    int prevGeoId = geoEltIds.back().GeoId;
-                    PointPos prevPos = geoEltIds.back().Pos;
-                    Gui::cmdAppObjectArgs(
-                        obj,
-                        "moveGeometry(%d,%d,App.Vector(%f,%f,0.0),0)",
-                        prevGeoId,
-                        static_cast<int>(prevPos),
-                        points.back().x,
-                        points.back().y
-                    );
-
-                    // Then transfer back the constraints
-                    if (pointWasCreated) {
-                        int pointGeoId = getHighestCurveIndex();
-                        // We must first remove the point on object constraint.
-                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
-                        for (int i = constraints.size() - 1; i >= 0; --i) {
-                            if (constraints[i]->Type != PointOnObject) {
-                                continue;
-                            }
-                            int first = constraints[i]->getGeoId(0);
-                            int second = constraints[i]->getGeoId(1);
-                            bool case1 = first == pointGeoId && second == prevGeoId;
-                            bool case2 = first == prevGeoId && second == pointGeoId;
-                            if (case1 || case2) {
-                                Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", i);
-                                break;
-                            }
-                        }
-
-                        obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
-
-                        // Delete the point
-                        Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
-                    }
+            std::ostringstream delArgs;
+            for (size_t i = 0; i < toDelete.size(); ++i) {
+                if (i != 0) {
+                    delArgs << ',';
                 }
+                delArgs << toDelete[i];
             }
-            else {
-                Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
+            Gui::cmdAppObjectArgs(obj, "delGeometries([%s])", delArgs.str().c_str());
+
+            // AutoRecompute may replay deleted geometry; solve before moveGeometry so the
+            // deletion sticks. See https://github.com/FreeCAD/FreeCAD/issues/30626
+            if (step.arcId >= 0 && !obj->noRecomputes) {
+                obj->solve();
             }
 
+            // Deleting geometry renumbers the remaining IDs. Skip deleted entries and
+            // shift each surviving ID down by the number of deleted IDs before it.
+            // Since toDelete is sorted, lower_bound() gives both pieces of information.
+            for (const GeoElementId& e : savedGeoEltIds) {
+                const auto it = std::ranges::lower_bound(toDelete, e.GeoId);
+
+                if (it != toDelete.end() && *it == e.GeoId) {
+                    continue;
+                }
+
+                const int shift = static_cast<int>(it - toDelete.begin());
+                geoEltIds.emplace_back(e.GeoId - shift, e.Pos);
+            }
+
+            // Extend the surviving prev edge out to the corner the fillet trimmed away
+            if (step.arcId >= 0 && !geoEltIds.empty()) {
+                Gui::cmdAppObjectArgs(
+                    obj,
+                    "moveGeometry(%d,%d,App.Vector(%f,%f,0.0),0)",
+                    geoEltIds.back().GeoId,
+                    static_cast<int>(geoEltIds.back().Pos),
+                    corner.x,
+                    corner.y
+                );
+            }
             obj->solve();
 
             calculatePreviousDirectionAngle();
@@ -1404,11 +1432,20 @@ private:
         return false;
     }
 
+    // Geometry one polyline step created, recorded at build time so undo can reverse it.
+    struct PolylineStep
+    {
+        int arcId = -1;   // fillet arc, if any
+        int scrap1 = -1;  // construction scrap of the new edge, if any
+        int scrap2 = -1;  // construction scrap of the prev edge, if any
+    };
+
 private:
     Base::Vector2d prevCursorPos, center;
 
     std::vector<Base::Vector2d> points;
     std::vector<GeoElementId> geoEltIds;
+    std::vector<PolylineStep> polySteps;
     bool resetSeekSecond;
     bool resetEdge;
     bool fillet;

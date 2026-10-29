@@ -642,6 +642,14 @@ public:
         if (active && !active->getSplitter()->isVisible()) {
             active = nullptr;
         }
+
+        if (OverlayParams::getDockOverlayAutoView()) {
+            auto view = getMainWindow()->activeWindow();
+            if (!view || !view->onHasMsg("AllowsOverlayOnHover")) {
+                active = nullptr;
+            }
+        }
+
         OverlayTabWidget* reveal = nullptr;
 
         bool updateFocus = false;

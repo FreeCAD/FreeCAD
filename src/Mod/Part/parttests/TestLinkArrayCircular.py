@@ -21,6 +21,8 @@
 #   Suite 330, Boston, MA 02111-1307, USA
 # ***************************************************************************
 
+import os
+import tempfile
 import unittest
 
 import FreeCAD as App
@@ -45,9 +47,14 @@ class TestLinkArrayCircular(unittest.TestCase):
     def testSuppressionProtectsGeneratedElements(self):
         source = self.doc.addObject("Part::Box", "SuppressionSource")
         for kind in ("Polar", "Circular", "Path", "Point"):
+            print(f"Doing: {kind}")
             with self.subTest(kind=kind):
                 array = self.doc.addObject("Part::LinkArray" + kind, "SuppressionArray")
                 array.LinkedObject = source
+                array.ShowElement = True
+                if kind == "Circular":
+                    array.Axis = (None, ["Z_Axis"])
+                    array.BinormalAxis = (None, ["Y_Axis"])
                 if kind in ("Path", "Point"):
                     path = self.doc.addObject("Part::Feature", "SuppressionPath")
                     path.Shape = Part.makePolygon([App.Vector(), App.Vector(20, 0, 0)])
@@ -64,6 +71,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.array.NumberCircles = 2
         self.array.RadialDistance = 1000000
         self.array.TangentialDistance = 0.001
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
         self.assertIn("10000", self.array.getStatusString())
 
@@ -72,20 +80,23 @@ class TestLinkArrayCircular(unittest.TestCase):
         self.assertEqual(
             self.array.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength"
         )
+        self.array.BinormalAxis = (None, ["Y_Axis"])
         self.doc.recompute()
 
         self.assertEqual(self.array.getStatusString(), "Valid")
-        # floor(2*pi*10/10) -> 6 -> 4, floor(2*pi*20/10) -> 12.
-        self.assertEqual(self.array.ElementCount, 1 + 4 + 12)
+        self.assertEqual(self.array.ElementCount, 33)
         self.assertEqual(len(self.array.PlacementList), self.array.ElementCount)
-        self.assertEqual(self.array.PlacementList[0], App.Placement())
         self.assertAlmostEqual(self.array.PlacementList[1].Base.Length, 10)
         self.assertAlmostEqual(self.array.PlacementList[5].Base.Length, 20)
 
     def testAxisReferenceOrientsTheCircles(self):
         axis = self.doc.addObject("Part::Feature", "Axis")
         axis.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(5, 10, 0))
+        axis2 = self.doc.addObject("Part::Feature", "Axis")
+        axis2.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(6, 0, 0))
         self.array.Axis = (axis, ["Edge1"])
+        self.array.BinormalAxis = (axis2, ["Edge1"])
+        self.array.StartAtShape = False
 
         self.doc.recompute()
 
@@ -94,4 +105,67 @@ class TestLinkArrayCircular(unittest.TestCase):
             self.assertAlmostEqual(placement.Base.y, 0)
 
         # The selected edge supplies the center as well as the axis direction.
-        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, -5)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 5)
+
+    def testSketchEdgeOrientsTheCircles(self):
+        # Part2DObject is the base of Sketcher::SketchObject; it must not force
+        # an explicit edge reference to use the sketch normal.
+        sketch = self.doc.addObject("Part::Part2DObject", "Sketch")
+        sketch.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(5, 10, 0))
+        self.array.Axis = (sketch, ["Edge1"])
+        self.array.BinormalAxis = (sketch, ["N_Axis"])
+        self.doc.recompute()
+
+        self.assertEqual(self.array.getStatusString(), "Valid")
+        for placement in self.array.PlacementList:
+            self.assertAlmostEqual(placement.Base.y, 0)
+        self.assertAlmostEqual(self.array.PlacementList[2].Base.x, 15)
+
+    def testSketchNamedAxesStillOrientTheCircles(self):
+        sketch = self.doc.addObject("Part::Part2DObject", "Sketch")
+        for axis, coordinate, binormalAxis in (
+            ("H_Axis", "x", "V_Axis"),
+            ("V_Axis", "y", "N_Axis"),
+            ("N_Axis", "z", "H_Axis"),
+        ):
+            with self.subTest(axis=axis):
+                self.array.Axis = (sketch, [axis])
+                self.array.BinormalAxis = (sketch, [binormalAxis])
+                self.doc.recompute()
+                self.assertEqual(self.array.getStatusString(), "Valid")
+                for placement in self.array.PlacementList:
+                    self.assertAlmostEqual(getattr(placement.Base, coordinate), 0)
+
+    def testObjectAxesSurviveSaveRestore(self):
+        source = self.doc.getObject("Source")
+        linear = self.doc.addObject("Part::LinkArrayLinear", "Linear")
+        polar = self.doc.addObject("Part::LinkArrayPolar", "Polar")
+        linear.LinkedObject = source
+        polar.LinkedObject = source
+        linear.ShowElement = polar.ShowElement = False
+        linear.Direction = (None, ["Z_Axis"])
+        linear.Direction2 = (None, ["X_Axis"])
+        linear.Occurrences2 = 3
+        polar.Axis = (None, ["Y_Axis"])
+        self.array.Axis = (None, ["X_Axis"])
+        self.array.BinormalAxis = (None, ["Z_Axis"])
+        self.doc.recompute()
+        references = {
+            "Linear": {"Direction": linear.Direction, "Direction2": linear.Direction2},
+            "Polar": {"Axis": polar.Axis},
+            "Array": {"Axis": self.array.Axis},
+        }
+        placements = {name: list(self.doc.getObject(name).PlacementList) for name in references}
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "ObjectAxes.FCStd")
+            self.doc.saveAs(filename)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(filename)
+            self.doc.recompute()
+            for name, properties in references.items():
+                with self.subTest(array=name):
+                    array = self.doc.getObject(name)
+                    self.assertEqual(array.getStatusString(), "Valid")
+                    for prop, reference in properties.items():
+                        self.assertEqual(getattr(array, prop), reference)
+                    self.assertEqual(list(array.PlacementList), placements[name])

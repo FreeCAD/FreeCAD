@@ -134,17 +134,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>Additive Helix</source>
       <translation type="unfinished">Additive Helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>Vzdolži izbrani očrt ali presek po vijačnici in doda k telesu</translation>
     </message>
@@ -152,17 +152,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1602"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1603"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Additive Loft</source>
       <translation type="unfinished">Additive Loft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1610"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and adds it to the body</translation>
     </message>
@@ -170,17 +170,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1503"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Additive Pipe</source>
       <translation type="unfinished">Additive Pipe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
       <translation>Vzdolži izbrani očrt ali presek po poti in doda k telesu</translation>
     </message>
@@ -206,17 +206,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2710"/>
+      <location filename="../../Command.cpp" line="2716"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2711"/>
+      <location filename="../../Command.cpp" line="2717"/>
       <source>Boolean Operation</source>
       <translation>Logična operacija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2712"/>
+      <location filename="../../Command.cpp" line="2718"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
     </message>
@@ -242,17 +242,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2034"/>
       <source>PartDesign</source>
       <translation>Oblikovanje delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2035"/>
       <source>Chamfer</source>
       <translation>Posnemanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2036"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation type="unfinished">Applies a chamfer to the selected edges or faces</translation>
     </message>
@@ -260,17 +260,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="517"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Clone</source>
       <translation>Kloniraj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="518"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
       <translation type="unfinished">Copies a solid object parametrically as the base feature of a new body</translation>
     </message>
@@ -278,17 +278,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2145"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2152"/>
       <source>Draft</source>
       <translation>Nagib</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2147"/>
+      <location filename="../../Command.cpp" line="2153"/>
       <source>Applies a draft to the selected faces</source>
       <translation type="unfinished">Applies a draft to the selected faces</translation>
     </message>
@@ -314,17 +314,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2007"/>
       <source>Fillet</source>
       <translation>Zaokrožitev</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2002"/>
+      <location filename="../../Command.cpp" line="2008"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation type="unfinished">Applies a fillet to the selected edges or faces</translation>
     </message>
@@ -332,17 +332,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1438"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1439"/>
       <source>Groove</source>
       <translation>Odvzemna vrtenina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1440"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
       <translation>Zvrti očrt ali presek okoli črte oz. osi in ga odvzame od telesa</translation>
     </message>
@@ -350,17 +350,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1331"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1326"/>
+      <location filename="../../Command.cpp" line="1332"/>
       <source>Hole</source>
       <translation>Luknja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
       <translation>Ustvari v izbranem telesu izvrtine v središčih krogov ali lokov izbranega očrta oz. preseka</translation>
     </message>
@@ -386,17 +386,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2406"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2407"/>
       <source>Linear Pattern</source>
       <translation type="unfinished">Linear Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2408"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
     </message>
@@ -422,17 +422,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2343"/>
+      <location filename="../../Command.cpp" line="2349"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Mirror</source>
       <translation>Zrcali</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Mirrors the selected features or active body</source>
       <translation type="unfinished">Mirrors the selected features or active body</translation>
     </message>
@@ -494,17 +494,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2579"/>
+      <location filename="../../Command.cpp" line="2585"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2580"/>
+      <location filename="../../Command.cpp" line="2586"/>
       <source>Multi-Transform</source>
       <translation type="unfinished">Multi-Transform</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2581"/>
+      <location filename="../../Command.cpp" line="2587"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
     </message>
@@ -512,17 +512,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="603"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="598"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>New Sketch</source>
       <translation>Nov očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="599"/>
+      <location filename="../../Command.cpp" line="605"/>
       <source>Creates a new sketch</source>
       <translation>Ustvari nov očrt</translation>
     </message>
@@ -530,17 +530,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1274"/>
       <source>Pad</source>
       <translation>Izboklina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1269"/>
+      <location filename="../../Command.cpp" line="1275"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
       <translation>Izrine izbrani očrt ali presek in doda k telesu</translation>
     </message>
@@ -566,17 +566,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1296"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1297"/>
+      <location filename="../../Command.cpp" line="1303"/>
       <source>Pocket</source>
       <translation>Ugrez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1298"/>
+      <location filename="../../Command.cpp" line="1304"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
       <translation>Izrine izbrani očrt ali presek in odvzame od telesa</translation>
     </message>
@@ -602,17 +602,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2474"/>
+      <location filename="../../Command.cpp" line="2480"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2475"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Polar Pattern</source>
       <translation type="unfinished">Polar Pattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2476"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation type="unfinished">Duplicates the selected features or the active body in a circular pattern</translation>
     </message>
@@ -620,17 +620,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Revolve</source>
       <translation>Vrtenina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
       <translation>Zvrti izbrani očrt ali presek okoli črte oz. osi in doda k telesu</translation>
     </message>
@@ -638,17 +638,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2536"/>
+      <location filename="../../Command.cpp" line="2542"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2537"/>
+      <location filename="../../Command.cpp" line="2543"/>
       <source>Scale</source>
       <translation>Povečava</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2544"/>
       <source>Scales the selected features or the active body</source>
       <translation type="unfinished">Scales the selected features or the active body</translation>
     </message>
@@ -692,17 +692,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Subtractive Helix</source>
       <translation type="unfinished">Subtractive Helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>Vzdolži izbrani očrt ali presek po vijačnici in odvzame od telesa</translation>
     </message>
@@ -710,17 +710,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
+      <location filename="../../Command.cpp" line="1659"/>
       <source>Subtractive Loft</source>
       <translation type="unfinished">Subtractive Loft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1655"/>
+      <location filename="../../Command.cpp" line="1661"/>
       <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
       <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and removes it from the body</translation>
     </message>
@@ -728,17 +728,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1552"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1559"/>
       <source>Subtractive Pipe</source>
       <translation type="unfinished">Subtractive Pipe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1560"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
       <translation>Vzdolži izbrani očrt ali presek po poti in odvzame od telesa</translation>
     </message>
@@ -746,17 +746,17 @@ da se izogne samosečnosti.</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2221"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2222"/>
       <source>Thickness</source>
       <translation>Debelina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2223"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation type="unfinished">Applies thickness and removes the selected faces</translation>
     </message>
@@ -890,22 +890,22 @@ da se izogne samosečnosti.</translation>
       <translation type="unfinished">Create Shape Binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>Create Sub-Shape Binder</source>
       <translation type="unfinished">Create Sub-Shape Binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Create Clone</source>
       <translation>Ustvari dvojnika</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1157"/>
       <source>Make Copy</source>
       <translation type="unfinished">Make Copy</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2634"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Convert to Multi-Transform feature</source>
       <translation type="unfinished">Convert to Multi-Transform feature</translation>
     </message>
@@ -926,7 +926,7 @@ da se izogne samosečnosti.</translation>
       <translation>Nov očrt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2731"/>
+      <location filename="../../Command.cpp" line="2737"/>
       <source>Create Boolean</source>
       <translation>Ustvari logično vrednost</translation>
     </message>
@@ -3536,7 +3536,7 @@ merjena vzdolž določene smeri</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1185"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
@@ -3544,17 +3544,17 @@ merjena vzdolž določene smeri</translation>
       <translation>Pogovorno okno je že odprto v podoknu nalog</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1033"/>
+      <location filename="../../Command.cpp" line="1039"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation>Tega ukaza ni mogoče izvesti, ker ni telesa, od katerega bi odštevali.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1036"/>
+      <location filename="../../Command.cpp" line="1042"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1066"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation>Izbranega predmeta ni mogoče uporabiti. Izbrani predmet mora biti del dejavnega telesa</translation>
     </message>
@@ -3569,60 +3569,60 @@ merjena vzdolž določene smeri</translation>
       <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="500"/>
       <source>Sub-shape binder</source>
       <translation type="unfinished">Sub-shape binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1092"/>
+      <location filename="../../Command.cpp" line="1098"/>
       <source>No sketch to work on</source>
       <translation>Ni očrta za obravnavo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1093"/>
+      <location filename="../../Command.cpp" line="1099"/>
       <source>No sketch is available in the document</source>
       <translation>V dokumentu ni nobenega razpoložjivega očrta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
-      <location filename="../../Command.cpp" line="2098"/>
+      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2104"/>
       <source>Wrong Selection</source>
       <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2071"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Select faces from a single body</source>
       <translation type="unfinished">Select faces from a single body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2078"/>
+      <location filename="../../Command.cpp" line="2084"/>
       <source>Selection Outside Active Body</source>
       <translation type="unfinished">Selection Outside Active Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2079"/>
+      <location filename="../../Command.cpp" line="2085"/>
       <source>Select faces from the active body</source>
       <translation type="unfinished">Select faces from the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
+      <location filename="../../Command.cpp" line="2093"/>
       <source>Wrong Object Type</source>
       <translation type="unfinished">Wrong Object Type</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2105"/>
       <source>Defeaturing works only on faces</source>
       <translation type="unfinished">Defeaturing works only on faces</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2321"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Select only one feature in an active body.</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <location filename="../../ViewProvider.cpp" line="165"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
@@ -3630,44 +3630,44 @@ merjena vzdolž določene smeri</translation>
       <translation>Želite zapreti to pogovorno okno?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1902"/>
       <source>Wrong selection</source>
       <translation>Napačen izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Izberi rob, ploskev ali telo enega samega telesa.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="1875"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Selection is not in the active body</source>
       <translation type="unfinished">Selection is not in the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1903"/>
       <source>Shape of the selected part is empty</source>
       <translation type="unfinished">Shape of the selected part is empty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Izberi rob, ploskev ali telo iz dejavnega telesa.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1063"/>
+      <location filename="../../Command.cpp" line="1069"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation type="unfinished">Consider using a shape binder or a base feature to reference external geometry in a body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1889"/>
       <source>Wrong object type</source>
       <translation>Napačna vrsta objekta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1890"/>
       <source>%1 works only on parts.</source>
       <translation>%1 deluje samo na delih.</translation>
     </message>
@@ -3875,12 +3875,12 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
       <translation>Ploskev</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="209"/>
+      <location filename="../../Utils.cpp" line="203"/>
       <source>Active Body Required</source>
       <translation>Potrebno dejavno Telo</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="151"/>
+      <location filename="../../Utils.cpp" line="145"/>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
@@ -3889,32 +3889,32 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="210"/>
+      <location filename="../../Utils.cpp" line="204"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
       <translation type="unfinished">To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="272"/>
+      <location filename="../../Utils.cpp" line="266"/>
       <source>Feature is not in a body</source>
       <translation>Značilnost ni v telesu</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="273"/>
+      <location filename="../../Utils.cpp" line="267"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
       <translation>Če želite uporabiti to značilnost, mora pripradati telesu v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="319"/>
+      <location filename="../../Utils.cpp" line="313"/>
       <source>Feature is not in a part</source>
       <translation>Značilnost ni v delu</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="320"/>
+      <location filename="../../Utils.cpp" line="314"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Če želite uporabiti to značilnost, mora pripadati delu v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
@@ -3955,12 +3955,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation type="unfinished">Edit Datum</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="93"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="96"/>
       <source>Feature error</source>
       <translation>Napaka značilnosti</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="97"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
       <translation type="unfinished">%1 misses a base feature.
@@ -5598,12 +5598,12 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2778"/>
+      <location filename="../../Command.cpp" line="2784"/>
       <source>Create Datum</source>
       <translation type="unfinished">Create Datum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2779"/>
+      <location filename="../../Command.cpp" line="2785"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation type="unfinished">Creates a datum object or local coordinate system</translation>
     </message>
@@ -5611,12 +5611,12 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2813"/>
+      <location filename="../../Command.cpp" line="2819"/>
       <source>Create Datum</source>
       <translation>Ustvari sklicni predmet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2814"/>
+      <location filename="../../Command.cpp" line="2820"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Ustvari sklicni predmet ali krajevni koordinatni sistem</translation>
     </message>
@@ -5902,17 +5902,17 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
   <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2123"/>
       <source>PartDesign</source>
       <translation>Snovalnik delov</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2124"/>
       <source>Defeaturing</source>
       <translation>Odvzem značilnosti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2125"/>
       <source>Removes selected faces from a solid</source>
       <translation type="unfinished">Removes selected faces from a solid</translation>
     </message>

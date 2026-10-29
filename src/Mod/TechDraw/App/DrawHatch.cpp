@@ -33,6 +33,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 
+#include <App/FeaturePythonPyImp.h>
 #include "DrawHatch.h"
 #include "DrawHatchPy.h"  // generated from DrawHatchPy.xml
 #include "DrawUtil.h"
@@ -126,7 +127,7 @@ bool DrawHatch::affectsFace(int i)
 //remove a subElement(Face) from Source PropertyLinkSub
 bool DrawHatch::removeSub(std::string toRemove)
 {
-//    Base::Console().message("DH::removeSub(%s)\n", toRemove.c_str());
+//    Base::Console().message("DH::removeSub({})\n", toRemove);
     bool removed = false;
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     std::vector<std::string> newList;
@@ -146,7 +147,7 @@ bool DrawHatch::removeSub(std::string toRemove)
 
 bool DrawHatch::removeSub(int i)
 {
-//    Base::Console().message("DH::removeSub(%d)\n", i);
+//    Base::Console().message("DH::removeSub({})\n", i);
     std::stringstream ss;
     ss << "Face" << i;
     return removeSub(ss.str());
@@ -160,7 +161,7 @@ bool DrawHatch::empty(void)
 
 void DrawHatch::replaceFileIncluded(std::string newHatchFileName)
 {
-//    Base::Console().message("DH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+//    Base::Console().message("DH::replaceFileIncluded({})\n", newHatchFileName);
     if (newHatchFileName.empty()) {
         return;
     }
@@ -181,7 +182,7 @@ void DrawHatch::setupObject()
 
 void DrawHatch::unsetupObject(void)
 {
-//    Base::Console().message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+//    Base::Console().message("DH::unsetupObject() - status: {}  removing: {} \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
     DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {
@@ -229,6 +230,15 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawHatchPython, TechDraw::DrawHatch)
 template<> const char* TechDraw::DrawHatchPython::getViewProviderName(void) const {
     return "TechDrawGui::ViewProviderHatch";
+}
+template<>
+PyObject* TechDraw::DrawHatchPython::getPyObject()
+{
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::asObject(new FeaturePythonPyT<TechDraw::DrawHatchPy>(this));
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

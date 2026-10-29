@@ -135,7 +135,7 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
     catch (Base::Exception& e) {
         Base::Console().destructorError(
             "ViewProviderMeshCurvature",
-            "ViewProviderMeshCurvature::deleteColorBar() threw an exception: %s\n",
+            "ViewProviderMeshCurvature::deleteColorBar() threw an exception: {}\n",
             e.what()
         );
     }

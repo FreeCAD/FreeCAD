@@ -32,9 +32,10 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
-#include <Build/Version.h>  // For FCCopyrightYear
+#include <Base/Version.h>
 
 #include <cstdio>
+#include <format>
 #include <map>
 #include <stdexcept>
 
@@ -57,10 +58,10 @@
 
 void PrintInitHelp();
 
-const auto sBanner = fmt::format(
+const auto sBanner = std::format(
     "(C) 2001-{} FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
-    FCCopyrightYear
+    Base::FCVersionInfo::CopyrightYear()
 );
 
 
@@ -211,9 +212,6 @@ int main(int argc, char** argv)
     App::Application::Config()["CopyrightInfo"] = sBanner;
     App::Application::Config()["AppIcon"] = "freecad";
     App::Application::Config()["SplashScreen"] = "freecadsplash";
-    App::Application::Config()["AboutImage"] = App::Application::isDevelopmentVersion()
-        ? "freecadaboutdev"
-        : "freecadabout";
     App::Application::Config()["StartWorkbench"] = "PartDesignWorkbench";
     // App::Application::Config()["HiddenDockWindow"] = "Property editor";
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
@@ -274,7 +272,7 @@ int main(int argc, char** argv)
         QApplication app(argc, argv);
         QString msg = QString::fromLatin1(e.what());
         displayCritical(msg);
-        exit(1);
+        return 1;
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
@@ -284,7 +282,7 @@ int main(int argc, char** argv)
         else {
             displayInfo(e.what());
         }
-        exit(0);
+        return 0;
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
@@ -317,7 +315,7 @@ int main(int argc, char** argv)
         }
 
         displayCritical(msg, false);
-        exit(100);
+        return 100;
     }
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
@@ -329,7 +327,7 @@ int main(int argc, char** argv)
         )
                           .arg(appName);
         displayCritical(msg, false);
-        exit(101);
+        return 101;
     }
 
     // Run phase ===========================================================
@@ -356,7 +354,7 @@ int main(int argc, char** argv)
         exit(1);
     }
     catch (const std::exception& e) {
-        Base::Console().error("Application unexpectedly terminated: %s\n", e.what());
+        Base::Console().error("Application unexpectedly terminated: {}\n", e.what());
         exit(1);
     }
     catch (...) {
@@ -369,12 +367,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} terminating...\n", App::Application::getExecutableName());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
+    Base::Console().log("{} completely terminated\n", App::Application::getExecutableName());
 
     return 0;
 }

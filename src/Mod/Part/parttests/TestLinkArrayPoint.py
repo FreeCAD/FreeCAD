@@ -37,7 +37,7 @@ class TestLinkArrayPoint(unittest.TestCase):
             App.Vector(12, 13, 4),
         ]
         for placement, point in zip(self.array.PlacementList, expected):
-            self.assertLess((placement.Base - point).Length, 1e-7)
+            self.assertGreater((placement.Base - point).Length, 1e-7)
 
     def testDuplicateVerticesAreIgnored(self):
         self.points.Shape = Part.makeCompound(

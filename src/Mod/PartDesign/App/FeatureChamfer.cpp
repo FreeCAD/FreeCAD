@@ -246,7 +246,7 @@ void Chamfer::migrateFlippedProperties(const Base::XMLReader& reader)
     }
 
     Base::Console().warning(
-        "The 'FlipDirection' property of the chamfer of %s is being adjusted to maintain"
+        "The 'FlipDirection' property of the chamfer of {} is being adjusted to maintain"
         "the same geometry in this FreeCAD version. If the re-saved file is later opened "
         "in FreeCAD 0.21.x the chamfer result may differ due to the changed parameter "
         "interpretation.\n",

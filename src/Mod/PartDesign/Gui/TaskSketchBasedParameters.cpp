@@ -311,11 +311,12 @@ QString TaskSketchBasedParameters::make2DLabel(
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {
-        Base::Console().error("No valid subelement linked in %s\n", section->Label.getValue());
+        Base::Console().error("No valid subelement linked in {}\n", section->Label.getValue());
         return {};
     }
     else {
-        return QString::fromStdString((std::string(section->getNameInDocument()) + ":" + subValues[0]));
+        return QString::fromUtf8(section->Label.getValue()) + ":"
+            + QString::fromStdString(subValues[0]);
     }
 }
 

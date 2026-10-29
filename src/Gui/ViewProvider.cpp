@@ -305,8 +305,8 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
     catch (const Base::Exception& e) {
         Base::Console().error(
-            "Unhandled exception in ViewProvider::eventCallback: %s\n"
-            "(Event type: %s, object type: %s)\n",
+            "Unhandled exception in ViewProvider::eventCallback: {}\n"
+            "(Event type: {}, object type: {})\n",
             e.what(),
             ev->getTypeId().getName().getString(),
             self->getTypeId().getName()
@@ -314,8 +314,8 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
     catch (const std::exception& e) {
         Base::Console().error(
-            "Unhandled std exception in ViewProvider::eventCallback: %s\n"
-            "(Event type: %s, object type: %s)\n",
+            "Unhandled std exception in ViewProvider::eventCallback: {}\n"
+            "(Event type: {}, object type: {})\n",
             e.what(),
             ev->getTypeId().getName().getString(),
             self->getTypeId().getName()
@@ -324,7 +324,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     catch (...) {
         Base::Console().error(
             "Unhandled unknown C++ exception in ViewProvider::eventCallback"
-            " (Event type: %s, object type: %s)\n",
+            " (Event type: {}, object type: {})\n",
             ev->getTypeId().getName().getString(),
             self->getTypeId().getName()
         );
@@ -824,7 +824,7 @@ bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 #endif
     for (Gui::ViewProviderExtension* ext : vector) {
 #if FC_DEBUG
-        Base::Console().log("Check extensions %s\n", ext->name().c_str());
+        Base::Console().log("Check extensions {}\n", ext->name());
 #endif
         if (ext->extensionCanDropObject(obj)) {
             return true;

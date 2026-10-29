@@ -58,7 +58,7 @@ QGIGhostHighlight::~QGIGhostHighlight()
 
 void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().message("QGIGhostHighlight::mousePress() - %X\n", this);
+//    Base::Console().message("QGIGhostHighlight::mousePress() - {:X}\n", this);
     if ( (event->button() == Qt::LeftButton) &&
         (flags() & QGraphicsItem::ItemIsMovable) ) {
             m_dragging = true;
@@ -69,9 +69,9 @@ void QGIGhostHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIGhostHighlight::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().message("QGIGhostHighlight::mouseRelease() - pos: %s scenePos: %s\n",
-//                                 DrawUtil::formatVector(pos()).c_str(),
-//                                 DrawUtil::formatVector(mapToScene(pos())).c_str());
+//    Base::Console().message("QGIGhostHighlight::mouseRelease() - pos: {} scenePos: {}\n",
+//                                 DrawUtil::formatVector(pos()),
+//                                 DrawUtil::formatVector(mapToScene(pos())));
     if (m_dragging) {
         m_dragging = false;
         Q_EMIT positionChange(scenePos());

@@ -173,7 +173,7 @@ public:
     void checkpoint(const std::string& checkpoint = "")
     {
         Console().log(
-            "(%s) %s -> %s: %f (%f total)\n",
+            "({}) {} -> {}: {:f} ({:f} total)\n",
             name,
             lastCheckpoint,
             checkpoint,
