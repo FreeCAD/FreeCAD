@@ -502,8 +502,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     part->setCommand("Part Design Helper Features");
 
     *part << "PartDesign_Body"
-          << "PartDesign_CompSketches"
-          << "Sketcher_ValidateSketch"
           << "Part_CheckGeometry"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone";
@@ -511,7 +509,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Modeling Features");
 
-    *part << "PartDesign_Pad"
+    *part << "PartDesign_CompSketches"
+          << "Separator"
+          << "PartDesign_Pad"
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
           << "PartDesign_AdditivePipe"

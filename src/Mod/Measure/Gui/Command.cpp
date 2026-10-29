@@ -36,6 +36,25 @@
 #include "TaskMeasure.h"
 #include "TaskMassProperties.h"
 
+namespace
+{
+/// Whether the active 3D view has geometry to measure and is not in an edit mode.
+bool canMeasure()
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc || doc->countObjectsOfType<App::GeoFeature>() == 0) {
+        return false;
+    }
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+    return false;
+}
+}  // namespace
+
 //===========================================================================
 // Std_Measure
 // this is the Unified Measurement Facility Measure command
@@ -66,17 +85,7 @@ void StdCmdMeasure::activated(int iMsg)
 
 bool StdCmdMeasure::isActive()
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType<App::GeoFeature>() == 0) {
-        return false;
-    }
-
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        return !viewer->isEditing();
-    }
-    return false;
+    return canMeasure();
 }
 
 void CreateMeasureCommands()
@@ -112,18 +121,45 @@ void StdCmdMassProperties::activated(int iMsg)
 
 bool StdCmdMassProperties::isActive()
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc || doc->countObjectsOfType<App::GeoFeature>() == 0) {
-        return false;
+    return canMeasure();
+}
+
+//===========================================================================
+// Std_MeasureGroup
+// Measure button with Mass Properties in its drop-down
+//===========================================================================
+
+class StdCmdMeasureGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdMeasureGroup()
+        : GroupCommand("Std_MeasureGroup")
+    {
+        sGroup = "Measure";
+        sMenuText = QT_TR_NOOP("Measure");
+        sToolTipText = QT_TR_NOOP("Measures features or calculates mass properties");
+        sWhatsThis = "Std_MeasureGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "umf-measurement";
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_Measure");
+        addCommand("Std_MassProperties");
     }
 
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        return !viewer->isEditing();
+    const char* className() const override
+    {
+        return "StdCmdMeasureGroup";
     }
-    return false;
-}
+
+protected:
+    bool isActive() override
+    {
+        return canMeasure();
+    }
+};
 
 void CreateMassPropertiesCommands()
 {
@@ -132,4 +168,6 @@ void CreateMassPropertiesCommands()
     auto cmd = new StdCmdMassProperties();
     cmd->initAction();
     rcCmdMgr.addCommand(cmd);
+
+    rcCmdMgr.addCommand(new StdCmdMeasureGroup());
 }

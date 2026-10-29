@@ -852,6 +852,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
 {
     auto root = new ToolBarItem;
 
+    // Workbench switcher, first on the left
+    auto wb = new ToolBarItem(root);
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
+
     // Edit
     auto edit = new ToolBarItem(root);
     edit->setCommand("Edit");
@@ -871,9 +876,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     auto view = new ToolBarItem(root);
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Separator"
-          << "Std_Measure" << "Std_MassProperties";
+    *view << "Std_ViewOptions" << "Separator" << "Std_MeasureGroup";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
@@ -895,11 +898,6 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto help = new ToolBarItem(root);
     help->setCommand("Help");
     *help << "Std_WhatsThis";
-
-    // Workbench switcher, kept at the far right
-    auto wb = new ToolBarItem(root);
-    wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
 
     return root;
 }

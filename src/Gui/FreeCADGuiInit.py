@@ -569,6 +569,12 @@ FreeCAD.addTranslatableExportType(
 # FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
 # FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
 
+# Fusion-style grouped toolbar for Part Design and sketch editing, once the main window is up
+from PySide import QtCore as _QtCore
+
+_QtCore.QTimer.singleShot(0, lambda: __import__("freecad.gui.Ribbon", fromlist=["install"]).install())
+del _QtCore
+
 Log("Init: Running FreeCADGuiInit.py start script... done\n")
 
 # ┌────────────────────────────────────────────────┐

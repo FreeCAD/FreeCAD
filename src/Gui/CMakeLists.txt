@@ -1510,6 +1510,7 @@ endif(WIN32)
 set(FreeCADGui_Scripts
     RemoteDebugger.ui
     RemoteDebugger.py
+    Ribbon.py
 )
 
 set(FreeCADGui_Configs

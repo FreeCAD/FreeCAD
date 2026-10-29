@@ -59,9 +59,13 @@ void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
         auto add = new Gui::ToolBarItem();  // NOLINT
         add->setCommand("Part_SelectFilter");
         auto items = view->getItems();
-        auto drawStyleIdx = items.indexOf(view->findItem("Std_DrawStyle"));
-        if (drawStyleIdx >= 0 && drawStyleIdx + 1 < items.size()) {
-            view->insertItem(items.at(drawStyleIdx + 1), add);
+        auto anchor = view->findItem("Std_ViewOptions");
+        if (!anchor) {
+            anchor = view->findItem("Std_DrawStyle");
+        }
+        auto anchorIdx = items.indexOf(anchor);
+        if (anchorIdx >= 0 && anchorIdx + 1 < items.size()) {
+            view->insertItem(items.at(anchorIdx + 1), add);
         }
         else {
             view->appendItem(add);

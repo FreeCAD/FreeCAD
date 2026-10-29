@@ -2961,7 +2961,7 @@ public:
     }
 };
 
-// Command group for datums =============================================
+// Command group for sketches ===========================================
 
 class CmdPartDesignCompSketches: public Gui::GroupCommand
 {
@@ -2971,9 +2971,9 @@ public:
     {
         sAppModule = "PartDesign";
         sGroup = "PartDesign";
-        sMenuText = QT_TR_NOOP("Create Datum");
-        sToolTipText = QT_TR_NOOP("Creates a datum object or local coordinate system");
-        sWhatsThis = "PartDesign_CompDatums";
+        sMenuText = QT_TR_NOOP("Sketch");
+        sToolTipText = QT_TR_NOOP("Creates, attaches, edits, or validates a sketch");
+        sWhatsThis = "PartDesign_CompSketches";
         sStatusTip = sToolTipText;
         eType = ForEdit;
 
@@ -2983,6 +2983,7 @@ public:
         addCommand("PartDesign_NewSketch");
         addCommand("Sketcher_MapSketch");
         addCommand("Sketcher_EditSketch");
+        addCommand("Sketcher_ValidateSketch");
     }
 
     const char* className() const override

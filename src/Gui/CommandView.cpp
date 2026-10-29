@@ -22,7 +22,9 @@
 
 #include <cstddef>
 #include <sstream>
+#include <cstring>
 #include <string>
+#include <utility>
 #include <unordered_set>
 #include <vector>
 #include <tuple>
@@ -41,11 +43,13 @@
 #include <QFont>
 #include <QFontMetrics>
 #include <QImageReader>
+#include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
 #include <QPointer>
 #include <QSignalBlocker>
 #include <QTextStream>
+#include <QToolBar>
 #include <QToolButton>
 
 #include <App/ComplexGeoDataPy.h>
@@ -1832,6 +1836,108 @@ public:
     bool isActive() override
     {
         return hasActiveDocument();
+    }
+};
+
+//===========================================================================
+// Std_ViewOptions
+//===========================================================================
+
+namespace
+{
+/// Opens a menu of other commands on click instead of running a command itself.
+class MenuOnlyAction: public Action
+{
+public:
+    MenuOnlyAction(Command* cmd, std::vector<const char*> items, QObject* parent)
+        : Action(cmd, parent)
+        , items(std::move(items))
+    {}
+
+    void addTo(QWidget* widget) override
+    {
+        auto menu = new QMenu(widget);
+        CommandManager& rcCmdMgr = Application::Instance->commandManager();
+        for (const char* name : items) {
+            if (std::strcmp(name, "Separator") == 0) {
+                menu->addSeparator();
+            }
+            else if (Command* cmd = rcCmdMgr.getCommandByName(name)) {
+                cmd->addTo(menu);
+                // Sub-menus made by group commands have no icon of their own.
+                QAction* added = menu->actions().constLast();
+                if (added->icon().isNull() && cmd->getAction()) {
+                    added->setIcon(cmd->getAction()->icon());
+                }
+            }
+        }
+
+        if (auto toolbar = qobject_cast<QToolBar*>(widget)) {
+            toolbar->addAction(action());
+            if (auto button = qobject_cast<QToolButton*>(toolbar->widgetForAction(action()))) {
+                button->setMenu(menu);
+                button->setPopupMode(QToolButton::InstantPopup);
+            }
+        }
+        else if (auto parentMenu = qobject_cast<QMenu*>(widget)) {
+            menu->setTitle(action()->text());
+            menu->setIcon(action()->icon());
+            parentMenu->addMenu(menu);
+        }
+        else {
+            Action::addTo(widget);
+        }
+    }
+
+private:
+    std::vector<const char*> items;
+};
+}  // namespace
+
+class StdCmdViewOptions: public Command
+{
+public:
+    StdCmdViewOptions()
+        : Command("Std_ViewOptions")
+    {
+        sGroup = "View";
+        sMenuText = QT_TR_NOOP("View Options");
+        sToolTipText = QT_TR_NOOP("Fits, orients, and sets the display style of the 3D view");
+        sStatusTip = sToolTipText;
+        sWhatsThis = "Std_ViewOptions";
+        sPixmap = "preferences-display";
+        eType = Alter3DView;
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdViewOptions";
+    }
+
+protected:
+    void activated(int) override
+    {}
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+
+    Action* createAction() override
+    {
+        auto action = new MenuOnlyAction(
+            this,
+            {"Std_ViewFitAll",
+             "Std_ViewFitSelection",
+             "Std_AlignToSelection",
+             "Separator",
+             "Std_ViewGroup",
+             "Std_DrawStyle"},
+            getMainWindow()
+        );
+        applyCommandData(className(), action);
+        action->setIcon(BitmapFactory().iconFromTheme(sPixmap));
+        return action;
     }
 };
 
@@ -4245,6 +4351,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdStoreWorkingView());
     rcCmdMgr.addCommand(new StdRecallWorkingView());
     rcCmdMgr.addCommand(new StdCmdViewGroup());
+    rcCmdMgr.addCommand(new StdCmdViewOptions());
     rcCmdMgr.addCommand(new StdCmdAlignToSelection());
     rcCmdMgr.addCommand(new StdCmdClarifySelection());
 
