@@ -10,6 +10,7 @@ from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 from typing import Any, Final, Self, overload, Literal
+from _typeshed import MaybeNone
 
 
 class DocumentObject(ExtensionContainer):
@@ -43,8 +44,8 @@ class DocumentObject(ExtensionContainer):
     Name: Final[str | None]
     """Return the internal name of this object"""
 
-    Document: Final[DocumentPy | None]
-    """Return the document this object is part of"""
+    Document: Final[DocumentPy | MaybeNone]
+    """Return the document this object is part of (or None if not attached to any document)"""
 
     State: Final[list[str]]
     """State of the object in the document"""
