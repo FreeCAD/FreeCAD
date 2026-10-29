@@ -94,6 +94,56 @@ class TestPipe(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.SubtractivePipe.Shape.Volume, 100 - 3.14159265)
 
+    def createSquarePipe(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.ProfileSketch = self.Doc.addObject("Sketcher::SketchObject", "ProfileSketch")
+        self.Body.addObject(self.ProfileSketch)
+        TestSketcherApp.CreateRectangleSketch(self.ProfileSketch, (-1, -1), (2, 2))
+        self.SectionSketch = self.Doc.addObject("Sketcher::SketchObject", "SectionSketch")
+        self.Body.addObject(self.SectionSketch)
+        TestSketcherApp.CreateRectangleSketch(self.SectionSketch, (-0.5, -0.5), (1, 1))
+        self.SectionSketch.Placement = App.Placement(App.Vector(0, 0, 1), App.Rotation())
+        self.SpineSketch = self.Doc.addObject("Sketcher::SketchObject", "SpineSketch")
+        self.Body.addObject(self.SpineSketch)
+        self.SpineSketch.MapMode = "FlatFace"
+        self.SpineSketch.AttachmentSupport = (self.Doc.XZ_Plane, [""])
+        self.Doc.recompute()
+        self.SpineSketch.addGeometry(
+            Part.LineSegment(App.Vector(0.0, 0.0, 0), App.Vector(0, 1, 0)), False
+        )
+        self.Doc.recompute()
+        self.AdditivePipe = self.Doc.addObject("PartDesign::AdditivePipe", "AdditivePipe")
+        self.Body.addObject(self.AdditivePipe)
+        self.AdditivePipe.Spine = self.SpineSketch
+
+    def testPipeSketchEdgeProfile(self):
+        self.createSquarePipe()
+        self.AdditivePipe.Profile = (self.ProfileSketch, ["Edge1"])
+        self.Doc.recompute()
+        self.assertTrue(self.AdditivePipe.isValid())
+        self.assertAlmostEqual(self.AdditivePipe.Shape.Volume, 4.0)
+
+    def testMultisectionPipeSketchEdgeSection(self):
+        self.createSquarePipe()
+        self.AdditivePipe.Profile = self.ProfileSketch
+        self.AdditivePipe.Transformation = "Multisection"
+        self.AdditivePipe.Sections = [(self.SectionSketch, [""])]
+        self.Doc.recompute()
+        wholeVolume = self.AdditivePipe.Shape.Volume
+        self.AdditivePipe.Sections = [(self.SectionSketch, ["Edge2"])]
+        self.Doc.recompute()
+        self.assertTrue(self.AdditivePipe.isValid())
+        self.assertAlmostEqual(self.AdditivePipe.Shape.Volume, wholeVolume)
+
+    def testMultisectionPipeSketchVertexSection(self):
+        self.createSquarePipe()
+        self.AdditivePipe.Profile = self.ProfileSketch
+        self.AdditivePipe.Transformation = "Multisection"
+        self.AdditivePipe.Sections = [(self.SectionSketch, ["Vertex1"])]
+        self.Doc.recompute()
+        self.assertTrue(self.AdditivePipe.isValid())
+        self.assertAlmostEqual(self.AdditivePipe.Shape.Volume, 4.0 / 3.0)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestPipe")
