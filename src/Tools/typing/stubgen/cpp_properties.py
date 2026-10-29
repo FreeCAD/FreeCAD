@@ -532,15 +532,13 @@ def _localize_expression(expression: str, module_name: str) -> str:
     return re.sub(rf"\b{re.escape(module_name)}\.", "", expression)
 
 
-def _docstring(value: str | None) -> ast.Expr | None:
-    if not value:
-        return None
-    return ast.Expr(value=ast.Constant(value=value))
+def ellipsis_body(value: str | None = None) -> list[ast.stmt]:
+    if value:
+        return [ast.Expr(value=ast.Constant(value=value))]
+    return [ast.Expr(value=ast.Constant(value=Ellipsis))]
 
 
 def _property_nodes(property_: TypedCppProperty) -> list[ast.FunctionDef]:
-    getter_body = [node for node in [_docstring(property_.documentation)] if node]
-    getter_body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
     getter = ast.FunctionDef(
         name=property_.name,
         args=ast.arguments(
@@ -552,7 +550,7 @@ def _property_nodes(property_: TypedCppProperty) -> list[ast.FunctionDef]:
             kwarg=None,
             defaults=[],
         ),
-        body=getter_body,
+        body=ellipsis_body(property_.documentation),
         decorator_list=[ast.Name(id="property", ctx=ast.Load())],
         returns=_annotation(property_.getter),
         type_comment=None,
@@ -573,7 +571,7 @@ def _property_nodes(property_: TypedCppProperty) -> list[ast.FunctionDef]:
             kwarg=None,
             defaults=[],
         ),
-        body=[ast.Expr(value=ast.Constant(value=Ellipsis))],
+        body=ellipsis_body(),
         decorator_list=[
             ast.Attribute(
                 value=ast.Name(id=property_.name, ctx=ast.Load()),

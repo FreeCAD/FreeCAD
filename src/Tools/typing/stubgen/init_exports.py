@@ -152,9 +152,10 @@ def _render_function_stub(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
         and isinstance(stub.body[0].value.value, str)
     ):
         docstring = stub.body[0]
-    stub.body = ([docstring] if docstring is not None else []) + [
-        ast.Expr(value=ast.Constant(value=Ellipsis))
-    ]
+    if docstring is not None:
+        stub.body = [docstring]
+    else:
+        stub.body = [ast.Expr(value=ast.Constant(value=Ellipsis))]
     return ast.unparse(stub)
 
 

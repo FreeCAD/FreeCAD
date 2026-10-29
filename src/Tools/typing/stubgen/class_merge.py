@@ -153,11 +153,9 @@ class PublicClassStubTransformer(ast.NodeTransformer):
 
     @staticmethod
     def ellipsis_body(doc: str | None = None) -> list[ast.stmt]:
-        body: list[ast.stmt] = []
         if doc:
-            body.append(ast.Expr(value=ast.Constant(value=doc)))
-        body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
-        return body
+            return [ast.Expr(value=ast.Constant(value=doc))]
+        return [ast.Expr(value=ast.Constant(value=Ellipsis))]
 
     def deprecated_property_nodes(
         self,
