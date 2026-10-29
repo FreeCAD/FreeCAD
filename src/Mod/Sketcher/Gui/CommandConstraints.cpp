@@ -4076,7 +4076,7 @@ CmdSketcherDimension::CmdSketcherDimension()
     sWhatsThis = "Sketcher_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Dimension";
-    sAccel = "D";
+    sAccel = "";
     eType = ForEdit;
 }
 
@@ -4447,7 +4447,7 @@ CmdSketcherConstrainHorVer::CmdSketcherConstrainHorVer()
     sWhatsThis = "Sketcher_ConstrainHorVer";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_HorVer";
-    sAccel = "A";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = { {SelEdge}, {SelVertexOrRoot, SelVertexOrRoot} };
@@ -4493,7 +4493,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     sWhatsThis = "Sketcher_ConstrainHorizontal";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Horizontal";
-    sAccel = "H";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelVertexOrRoot, SelVertexOrRoot}};
@@ -4538,7 +4538,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
     sWhatsThis = "Sketcher_ConstrainVertical";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Vertical";
-    sAccel = "V";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {{SelEdge}, {SelVertexOrRoot, SelVertexOrRoot}};
@@ -5061,7 +5061,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C" :"C,O";
+    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "" : "C,O";
 
     eType = ForEdit;
 
@@ -5833,9 +5833,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sWhatsThis = "Sketcher_ConstrainCoincident";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_PointOnPoint";
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
-    sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C,C" : "C";
+    sAccel = "C,C";
     eType = ForEdit;
 
     allowedSelSequences = {{SelVertexOrRoot, SelVertexOrRoot},
@@ -5883,7 +5881,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     sWhatsThis = "Sketcher_ConstrainPointOnObject";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_PointOnObject";
-    sAccel = "O";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {{SelVertex, SelEdgeOrAxis},
@@ -6456,7 +6454,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     sWhatsThis = "Sketcher_ConstrainDistanceX";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_HorizontalDistance";
-    sAccel = "L";
+    sAccel = "";
     eType = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
@@ -6722,7 +6720,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     sWhatsThis = "Sketcher_ConstrainDistanceY";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_VerticalDistance";
-    sAccel = "I";
+    sAccel = "";
     eType = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
@@ -6775,7 +6773,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     sWhatsThis = "Sketcher_ConstrainParallel";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Parallel";
-    sAccel = "P";
+    sAccel = "";
     eType = ForEdit;
 
     // TODO: Also needed: ExternalEdges
@@ -6914,7 +6912,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     sWhatsThis = "Sketcher_ConstrainPerpendicular";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Perpendicular";
-    sAccel = "N";
+    sAccel = "";
     eType = ForEdit;
 
     // TODO: there are two more combos: endpoint then curve and endpoint then endpoint
@@ -7645,7 +7643,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";
-    sAccel = "T";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {
@@ -8961,7 +8959,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
     sToolTipText = QT_TR_NOOP("Constrains the radius or diameter of an arc or a circle");
     sWhatsThis = "Sketcher_CompConstrainRadDia";
     sStatusTip = sToolTipText;
-    sAccel = "R";
+    sAccel = "";
     eType = ForEdit;
 }
 
@@ -9528,7 +9526,7 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
     sWhatsThis = "Sketcher_ConstrainEqual";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_EqualLength";
-    sAccel = "E";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelEdge},
@@ -9753,7 +9751,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
     sWhatsThis = "Sketcher_ConstrainSymmetric";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Symmetric";
-    sAccel = "S";
+    sAccel = "";
     eType = ForEdit;
 
     allowedSelSequences = {{SelEdge, SelVertexOrRoot},

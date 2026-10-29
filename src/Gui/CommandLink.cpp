@@ -789,7 +789,7 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
     sStatusTip = sToolTipText;
     eType = AlterSelection;
     sPixmap = "LinkSelect";
-    sAccel = "S, G";
+    sAccel = "";
 }
 
 static App::DocumentObject* getSelectedLink(bool finalLink, std::string* subname = nullptr)
@@ -939,7 +939,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
     sStatusTip = sToolTipText;
     eType = AlterSelection;
     sPixmap = "LinkSelectFinal";
-    sAccel = "S, D";
+    sAccel = "";
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive()

@@ -29,6 +29,7 @@ set(Sketcher_TestScripts
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
+          SketcherCommandSearch.py
           TestSketcherGui.py
     )
     list (APPEND Sketcher_TestScripts

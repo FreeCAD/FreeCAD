@@ -2588,7 +2588,7 @@ CmdSketcherTranslate::CmdSketcherTranslate()
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Translate";
-    sAccel = "W";
+    sAccel = "";
     eType = ForEdit;
 }
 

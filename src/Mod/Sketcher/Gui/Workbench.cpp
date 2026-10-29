@@ -275,7 +275,8 @@ void SketcherAddWorkbenchSketchEditModeActions(T& sketch);
 template<>
 inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
 {
-    sketch << "Sketcher_LeaveSketch"
+    sketch << "Sketcher_CommandSearch"
+           << "Sketcher_LeaveSketch"
            << "Sketcher_CancelSketch"
            << "Sketcher_ViewSketch"
            << "Sketcher_ViewSection"

@@ -50,6 +50,8 @@ class SketcherWorkbench(Workbench):
         except ImportError:
             print("Error in Profiles module")
 
+        import SketcherCommandSearch
+
     def GetClassName(self):
         return "SketcherGui::Workbench"
 

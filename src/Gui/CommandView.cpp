@@ -3192,7 +3192,7 @@ StdCmdSelBack::StdCmdSelBack()
     sWhatsThis = "Std_SelBack";
     sStatusTip = sToolTipText;
     sPixmap = "sel-back";
-    sAccel = "S, B";
+    sAccel = "";
     eType = AlterSelection;
 }
 
@@ -3226,7 +3226,7 @@ StdCmdSelForward::StdCmdSelForward()
     sWhatsThis = "Std_SelForward";
     sStatusTip = sToolTipText;
     sPixmap = "sel-forward";
-    sAccel = "S, F";
+    sAccel = "";
     eType = AlterSelection;
 }
 
