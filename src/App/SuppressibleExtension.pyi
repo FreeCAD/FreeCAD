@@ -11,5 +11,3 @@ class SuppressibleExtension(DocumentObjectExtension):
     Licence: LGPL
     Extension class which allows suppressing of document objects
     """
-
-    ...

@@ -11,5 +11,3 @@ class OriginGroupExtension(GeoFeatureGroupExtension):
     Licence: LGPL
     This class handles placable group of document objects with an Origin
     """
-
-    ...
