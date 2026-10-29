@@ -852,26 +852,15 @@ ToolBarItem* StdWorkbench::setupToolBars() const
 {
     auto root = new ToolBarItem;
 
-    // File
-    auto file = new ToolBarItem(root);
-    file->setCommand("File");
-    *file << "Std_New" << "Std_Open" << "Std_Save";
-
     // Edit
     auto edit = new ToolBarItem(root);
     edit->setCommand("Edit");
-    *edit << "Std_Undo" << "Std_Redo"
-          << "Separator" << "Std_Refresh";
+    *edit << "Std_Refresh";
 
     // Clipboard
     auto clipboard = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     clipboard->setCommand("Clipboard");
     *clipboard << "Std_Cut" << "Std_Copy" << "Std_Paste";
-
-    // Workbench switcher
-    auto wb = new ToolBarItem(root);
-    wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
 
     // Macro
     auto macro = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
@@ -906,6 +895,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto help = new ToolBarItem(root);
     help->setCommand("Help");
     *help << "Std_WhatsThis";
+
+    // Workbench switcher, kept at the far right
+    auto wb = new ToolBarItem(root);
+    wb->setCommand("Workbench");
+    *wb << "Std_Workbench";
 
     return root;
 }
