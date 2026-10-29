@@ -339,7 +339,10 @@ int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const 
 {
     // Build a face using the known plane (avoids the expensive BRepLib_FindSurface).
     // Since the plane is supplied, the surface normal is always co-directional with plane.
-    BRepBuilderAPI_MakeFace mkFace(plane, wire, /*Inside=*/Standard_True);
+    // Deep-copy the wire so that BRepBuilderAPI_MakeFace does not attach temporary
+    // 2D curve representations or surface locations to the caller's shared wire/edges.
+    TopoDS_Wire wireCopy = TopoDS::Wire(BRepBuilderAPI_Copy(wire).Shape());
+    BRepBuilderAPI_MakeFace mkFace(plane, wireCopy, /*Inside=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
     if (tmpFace.IsNull()) {
         throw Standard_Failure("getWireDirection: Failed to create face from wire");

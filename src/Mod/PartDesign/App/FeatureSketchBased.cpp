@@ -328,11 +328,25 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                         }
                     }
                     if (!shape.isNull()) {
+                        gp_Pln pln;
+                        const gp_Pln* pPlane = nullptr;
+                        if (obj->isDerivedFrom<Part::Part2DObject>()) {
+                            Base::Placement SketchPos = obj->Placement.getValue();
+                            Base::Rotation SketchOrientation = SketchPos.getRotation();
+                            Base::Vector3d norm(0, 0, 1);
+                            SketchOrientation.multVec(norm, norm);
+                            Base::Vector3d pos = SketchPos.getPosition();
+                            pln = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(norm.x, norm.y, norm.z));
+                            pPlane = &pln;
+                        }
+
                         if (AllowMultiFace.getValue()) {
-                            shape = shape.makeElementFace();  // default to use FaceMakerBullseye
+                            shape = shape.makeElementFace(nullptr, nullptr, pPlane);  // default to
+                                                                                      // use
+                                                                                      // FaceMakerBullseye
                         }
                         else {
-                            shape = shape.makeElementFace(nullptr, "Part::FaceMakerCheese");
+                            shape = shape.makeElementFace(nullptr, "Part::FaceMakerCheese", pPlane);
                         }
                     }
                 }
