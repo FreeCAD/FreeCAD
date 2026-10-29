@@ -144,16 +144,13 @@ def _render_function_stub(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
     stub.decorator_list = [
         decorator for decorator in stub.decorator_list if keep_public_stub_decorator(decorator)
     ]
-    docstring = None
     if (
         stub.body
         and isinstance(stub.body[0], ast.Expr)
         and isinstance(stub.body[0].value, ast.Constant)
         and isinstance(stub.body[0].value.value, str)
     ):
-        docstring = stub.body[0]
-    if docstring is not None:
-        stub.body = [docstring]
+        stub.body = [stub.body[0]]
     else:
         stub.body = [ast.Expr(value=ast.Constant(value=Ellipsis))]
     return ast.unparse(stub)
