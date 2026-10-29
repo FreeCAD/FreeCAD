@@ -54,7 +54,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
     );
-    setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
+    setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", false));
     setAutoCloseOnResetEdit(true);
 
     Content.push_back(Messages);
