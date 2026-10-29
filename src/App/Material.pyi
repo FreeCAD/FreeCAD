@@ -24,9 +24,7 @@ class Material(PyObjectBase):
     """
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
     def __init__(
         self,
@@ -37,8 +35,7 @@ class Material(PyObjectBase):
         EmissiveColor: _ColorInput = ...,
         Shininess: float = ...,
         Transparency: float = ...,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def set(self, string: str, /) -> None:
         """

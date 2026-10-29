@@ -17,13 +17,9 @@ class PropertyContainer(Persistence):
     """A list of all property names."""
 
     @overload
-    def getPropertyByName(self, name: str, checkOwner: Literal[0, 1] = 0, /) -> Any:
-        ...
-
+    def getPropertyByName(self, name: str, checkOwner: Literal[0, 1] = 0, /) -> Any: ...
     @overload
-    def getPropertyByName(self, name: str, checkOwner: Literal[2] = 0, /) -> tuple[PropertyContainer, Any]:
-        ...
-
+    def getPropertyByName(self, name: str, checkOwner: Literal[2] = 0, /) -> tuple[PropertyContainer, Any]: ...
     @overload
     def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any | tuple[PropertyContainer, Any]:
         """

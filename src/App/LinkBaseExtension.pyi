@@ -58,17 +58,11 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
 
     @overload
-    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str], ...]:
-        ...
-
+    def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str], ...]: ...
     @overload
-    def getLinkPropertyInfo(self, index: int, /) -> tuple[str, str, str]:
-        ...
-
+    def getLinkPropertyInfo(self, index: int, /) -> tuple[str, str, str]: ...
     @overload
-    def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]:
-        ...
-
+    def getLinkPropertyInfo(self, name: str, /) -> tuple[str, str]: ...
     @overload
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
