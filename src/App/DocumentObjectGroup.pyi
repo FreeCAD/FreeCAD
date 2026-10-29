@@ -11,5 +11,3 @@ class DocumentObjectGroup(DocumentObject):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
-
-    ...

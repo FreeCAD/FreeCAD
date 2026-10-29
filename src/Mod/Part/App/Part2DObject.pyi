@@ -18,5 +18,3 @@ class Part2DObject(PartFeature):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
-
-    ...

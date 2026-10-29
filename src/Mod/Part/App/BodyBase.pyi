@@ -20,5 +20,3 @@ class BodyBase(PartFeature):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
-
-    ...
