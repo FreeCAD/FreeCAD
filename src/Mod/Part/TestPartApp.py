@@ -1002,6 +1002,47 @@ class PartBOPTestContainer(unittest.TestCase):
         fuse = bp.make_multi_common([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
 
+    def testSliceApartNestedCompound(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/30143
+        # A chain of Part booleans without refine gives Compound{Compound{Solid}}.
+        # Slice apart must still give one object per piece.
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = box.Width = box.Height = 10
+        tool1 = self.Doc.addObject("Part::Box", "Tool1")
+        tool1.Placement.Base = FreeCAD.Vector(5, 5, 5)
+        tool2 = self.Doc.addObject("Part::Box", "Tool2")
+        tool2.Placement.Base = FreeCAD.Vector(-5, -5, 5)
+        cut1 = self.Doc.addObject("Part::Cut", "Cut1")
+        cut1.Base = box
+        cut1.Tool = tool1
+        cut2 = self.Doc.addObject("Part::Cut", "Cut2")
+        cut2.Base = cut1
+        cut2.Tool = tool2
+        cut1.Refine = cut2.Refine = False
+        plane =self.Doc.addObject("Part::Plane", "Plane")
+        plane.Length = plane.Width = 20
+        plane.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(-5, 2, -5), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+        )
+        self.Doc.recompute()
+        self.assertEqual(cut2.Shape.childShapes()[0].ShapeType, "Compound")
+
+        from BOPTools import SplitFeatures
+        from CompoundTools import Explode
+
+        slc = SplitFeatures.makeSlice(name="Slice")
+        slc.Base = cut2
+        slc.Tools = [plane]
+        slc.Mode = "Split"
+        self.Doc.recompute()
+        self.assertEqual(len(slc.Shape.Solids), 2)
+
+        _group, children = Explode.explodeCompound(slc)
+        self.Doc.recompute()
+        self.assertEqual(len(children), 2)
+        for child in children:
+            self.assertEqual(len(child.Shape.Solids), 1)
+
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 
