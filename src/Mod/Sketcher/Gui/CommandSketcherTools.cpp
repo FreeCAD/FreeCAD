@@ -415,6 +415,8 @@ void CmdSketcherPaste::activated(int iMsg)
     }
     data = "objectStr = " + Gui::Command::getObjectCmd(obj) +"\n" + data;
 
+    const int firstPastedGeoId = obj->getHighestCurveIndex() + 1;
+
    openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
 
     Gui::Command::doCommand(Gui::Command::Doc, data.c_str());
@@ -423,6 +425,26 @@ void CmdSketcherPaste::activated(int iMsg)
     vp->draw(false, false);
 
     commitCommand();
+
+    // Select the pasted geometry so that it can be moved as a set.
+    std::vector<std::string> pastedSubNames;
+    for (int geoId = firstPastedGeoId; geoId <= obj->getHighestCurveIndex(); ++geoId) {
+        if (isPoint(*obj->getGeometry(geoId))) {
+            int vertex = obj->getVertexIndexGeoPos(geoId, PointPos::start);
+            if (vertex > -1) {
+                pastedSubNames.push_back("Vertex" + std::to_string(vertex + 1));
+            }
+        }
+        else {
+            pastedSubNames.push_back("Edge" + std::to_string(geoId + 1));
+        }
+    }
+    getSelection().clearSelection();
+    if (!pastedSubNames.empty()) {
+        getSelection().addSelections(obj->getDocument()->getName(),
+                                     obj->getNameInDocument(),
+                                     pastedSubNames);
+    }
 }
 
 bool CmdSketcherPaste::isActive()
