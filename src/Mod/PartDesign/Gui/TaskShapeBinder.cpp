@@ -454,8 +454,8 @@ bool TaskDlgShapeBinder::reject()
     if (!vp.expired()) {
         // roll back the done things (deletes 'vp')
         // Gui::Command::abortCommand();
-        vp->getDocument()->abortCommand();
         App::Document* doc = vp->getObject()->getDocument();
+        vp->getDocument()->abortCommand();
         Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::cmdAppDocument(doc, "recompute()");
     }
