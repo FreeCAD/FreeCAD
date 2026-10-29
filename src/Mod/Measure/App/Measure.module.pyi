@@ -13,4 +13,3 @@ from Part import Shape
 
 def getLocatedTopoShape(root_object: DocumentObject, subname: str, /) -> Shape | None:
     """Resolve one document object subshape with its accumulated placement applied."""
-    ...

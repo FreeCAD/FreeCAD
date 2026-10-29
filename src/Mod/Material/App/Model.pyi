@@ -62,10 +62,8 @@ class Model(BaseClass):
         """
         Add an inherited model.
         """
-        ...
 
     def addProperty(self, property: ModelProperty, /) -> None:
         """
         Add a model property.
         """
-        ...

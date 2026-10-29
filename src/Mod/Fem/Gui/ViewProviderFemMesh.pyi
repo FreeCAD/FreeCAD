@@ -23,29 +23,23 @@ class ViewProviderFemMesh(ViewProviderGeometryObject):
 
     def applyDisplacement(self, factor: float, /) -> None:
         """"""
-        ...
 
     def resetNodeColor(self) -> None:
         """Reset color set by method setNodeColorByScalars."""
-        ...
 
     def resetNodeDisplacement(self) -> None:
         """Reset displacements set by method setNodeDisplacementByVectors."""
-        ...
 
     def resetHighlightedNodes(self) -> None:
         """Reset highlighted nodes."""
-        ...
 
     def setNodeColorByScalars(self, node_ids: list[int], values: list[float], /) -> None:
         """Sets mesh node colors using element list and value list."""
-        ...
 
     def setNodeDisplacementByVectors(
         self, node_ids: list[int], vectors: list[Vector | tuple[float, float, float]], /
     ) -> None:
         """"""
-        ...
     NodeColor: dict
     """Postprocessing color of the nodes. The faces between the nodes get interpolated."""
 

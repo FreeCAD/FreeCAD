@@ -30,7 +30,6 @@ class TopoShapeCompound(TopoShape):
         Add a shape to the compound.
         add(shape)
         """
-        ...
 
     @constmethod
     def connectEdgesToWires(
@@ -43,10 +42,8 @@ class TopoShapeCompound(TopoShape):
         If Shared is True  connection is performed only when adjacent edges share the same vertex.
         If Shared is False connection is performed only when ends of adjacent edges are at distance less than Tolerance.
         """
-        ...
 
     def setFaces(self, data: tuple, accuracy: float = ..., /) -> None:
         """
         A shape is created from points and triangles and set to this object
         """
-        ...

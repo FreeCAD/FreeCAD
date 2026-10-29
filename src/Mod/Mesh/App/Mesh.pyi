@@ -55,7 +55,6 @@ class Mesh(ComplexGeoData):
         """Read in a mesh object from file.
         mesh.read(Filename='mymesh.stl')
         mesh.read(Stream=file,Format='STL')"""
-        ...
 
     @constmethod
     @overload
@@ -78,25 +77,20 @@ class Mesh(ComplexGeoData):
         """Write the mesh object into file.
         mesh.write(Filename='mymesh.stl',[Format='STL',Name='Object name',Material=colors])
         mesh.write(Stream=file,Format='STL',[Name='Object name',Material=colors])"""
-        ...
 
     @constmethod
     def writeInventor(self, creaseangle: float = 0.0, /) -> str:
         """Write the mesh in OpenInventor format to a string."""
-        ...
 
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this mesh"""
-        ...
 
     def offset(self, offset: float, /) -> None:
         """Move the point along their normals"""
-        ...
 
     def offsetSpecial(self, offset: float, zmin: float, zmax: float, /) -> None:
         """Move the point along their normals"""
-        ...
 
     @constmethod
     def crossSections(
@@ -107,59 +101,47 @@ class Mesh(ComplexGeoData):
         /,
     ) -> list:
         """Get cross-sections of the mesh through several planes"""
-        ...
 
     @constmethod
     def unite(self, mesh: Mesh, /) -> Mesh:
         """Union of this and the given mesh object."""
-        ...
 
     @constmethod
     def intersect(self, mesh: Mesh, /) -> Mesh:
         """Intersection of this and the given mesh object."""
-        ...
 
     @constmethod
     def difference(self, mesh: Mesh, /) -> Mesh:
         """Difference of this and the given mesh object."""
-        ...
 
     @constmethod
     def inner(self, mesh: Mesh, /) -> Mesh:
         """Get the part inside of the intersection"""
-        ...
 
     @constmethod
     def outer(self, mesh: Mesh, /) -> Mesh:
         """Get the part outside the intersection"""
-        ...
 
     @constmethod
     def section(self, Mesh: Mesh, ConnectLines: bool = True, MinDist: float = 0.0001) -> list:
         """Get the section curves of this and the given mesh object.
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])"""
-        ...
 
     def translate(self, x: float, y: float, z: float, /) -> None:
         """Apply a translation to the mesh"""
-        ...
 
     def rotate(self, x: float, y: float, z: float, /) -> None:
         """Apply a rotation to the mesh"""
-        ...
 
     def transform(self, matrix: Matrix, /) -> None:
         """Apply a transformation to the mesh"""
-        ...
 
     def transformToEigen(self) -> Any:
         """Transform the mesh to its eigenbase"""
-        ...
 
     @constmethod
     def getEigenSystem(self) -> Any:
         """Get Eigen base of the mesh"""
-        ...
 
     @overload
     def addFacet(
@@ -181,7 +163,6 @@ class Mesh(ComplexGeoData):
     def addFacet(self, facet: Facet, /) -> None: ...
     def addFacet(self, *args) -> None:
         """Add a facet to the mesh"""
-        ...
 
     @overload
     def addFacets(self, facets: list, /) -> None: ...
@@ -189,37 +170,29 @@ class Mesh(ComplexGeoData):
     def addFacets(self, mesh: tuple[list, list], check: bool = True, /) -> None: ...
     def addFacets(self, *args) -> None:
         """Add a list of facets to the mesh"""
-        ...
 
     def removeFacets(self, facets: list[int], /) -> None:
         """Remove a list of facet indices from the mesh"""
-        ...
 
     def removeNeedles(self, length: float, /) -> None:
         """Remove all edges that are smaller than a given length"""
-        ...
 
     def removeFullBoundaryFacets(self) -> Any:
         """Remove facets whose all three points are on the boundary"""
-        ...
 
     @constmethod
     def getInternalFacets(self) -> Any:
         """Builds a list of facet indices with triangles that are inside a volume mesh"""
-        ...
 
     def rebuildNeighbourHood(self) -> Any:
         """Repairs the neighbourhood which might be broken"""
-        ...
 
     def addMesh(self, mesh: Mesh, /) -> None:
         """Combine this mesh with another mesh."""
-        ...
 
     def setPoint(self, index: int, point: Vector, /) -> None:
         """setPoint(int, Vector)
         Sets the point at index."""
-        ...
 
     @overload
     def movePoint(self, index: int, x: float, y: float, z: float, /) -> None: ...
@@ -230,27 +203,22 @@ class Mesh(ComplexGeoData):
         This method moves the point in the mesh along the
         given vector. This affects the geometry of the mesh.
         Be aware that moving points may cause self-intersections."""
-        ...
 
     @constmethod
     def getPointNormals(self) -> Any:
         """getPointNormals()
         Get the normals of the points."""
-        ...
 
     def addSegment(self, indices: list[int], /) -> None:
         """Add a list of facet indices that describes a segment to the mesh"""
-        ...
 
     @constmethod
     def countSegments(self) -> Any:
         """Get the number of segments which may also be 0"""
-        ...
 
     @constmethod
     def getSegment(self, index: int, /) -> list[int]:
         """Get a list of facet indices that describes a segment"""
-        ...
 
     @constmethod
     def getSeparateComponents(self) -> Any:
@@ -260,239 +228,189 @@ class Mesh(ComplexGeoData):
         import Mesh
         for c in mesh.getSeparatecomponents():
         Mesh.show(c)"""
-        ...
 
     @constmethod
     def getFacetSelection(self) -> Any:
         """Get a list of the indices of selected facets"""
-        ...
 
     @constmethod
     def getPointSelection(self) -> Any:
         """Get a list of the indices of selected points"""
-        ...
 
     @constmethod
     def meshFromSegment(self, segment: list[int], /) -> Mesh:
         """Create a mesh from segment"""
-        ...
 
     def clear(self) -> Any:
         """Clear the mesh"""
-        ...
 
     @constmethod
     def isSolid(self) -> Any:
         """Check if the mesh is a solid"""
-        ...
 
     @constmethod
     def hasNonManifolds(self) -> Any:
         """Check if the mesh has non-manifolds"""
-        ...
 
     def removeNonManifolds(self) -> Any:
         """Remove non-manifolds"""
-        ...
 
     def removeNonManifoldPoints(self) -> Any:
         """Remove non-manifold points"""
-        ...
 
     @constmethod
     def hasSelfIntersections(self) -> Any:
         """Check if the mesh intersects itself"""
-        ...
 
     @constmethod
     def getSelfIntersections(self) -> Any:
         """Returns a tuple of indices of intersecting triangles"""
-        ...
 
     def fixSelfIntersections(self) -> Any:
         """Repair self-intersections"""
-        ...
 
     def removeFoldsOnSurface(self) -> Any:
         """Remove folds on surfaces"""
-        ...
 
     @constmethod
     def hasNonUniformOrientedFacets(self) -> Any:
         """Check if the mesh has facets with inconsistent orientation"""
-        ...
 
     @constmethod
     def countNonUniformOrientedFacets(self) -> Any:
         """Get the number of wrong oriented facets"""
-        ...
 
     @constmethod
     def getNonUniformOrientedFacets(self) -> Any:
         """Get a tuple of wrong oriented facets"""
-        ...
 
     @constmethod
     def hasInvalidPoints(self) -> Any:
         """Check if the mesh has points with invalid coordinates (NaN)"""
-        ...
 
     def removeInvalidPoints(self) -> Any:
         """Remove points with invalid coordinates (NaN)"""
-        ...
 
     @constmethod
     def hasPointsOnEdge(self) -> Any:
         """Check if points lie on edges"""
-        ...
 
     def removePointsOnEdge(self, FillBoundary: bool = False) -> None:
         """removePointsOnEdge(FillBoundary=False)
         Remove points that lie on edges.
         If FillBoundary is True then the holes by removing the affected facets
         will be re-filled."""
-        ...
 
     @constmethod
     def hasInvalidNeighbourhood(self) -> Any:
         """Check if the mesh has invalid neighbourhood indices"""
-        ...
 
     @constmethod
     def hasPointsOutOfRange(self) -> Any:
         """Check if the mesh has point indices that are out of range"""
-        ...
 
     @constmethod
     def hasFacetsOutOfRange(self) -> Any:
         """Check if the mesh has facet indices that are out of range"""
-        ...
 
     @constmethod
     def hasCorruptedFacets(self) -> Any:
         """Check if the mesh has corrupted facets"""
-        ...
 
     @constmethod
     def countComponents(self) -> Any:
         """Get the number of topologic independent areas"""
-        ...
 
     def removeComponents(self, count: int, /) -> None:
         """Remove components with less or equal to number of given facets"""
-        ...
 
     def fixIndices(self) -> Any:
         """Repair any invalid indices"""
-        ...
 
     def fixCaps(self, max_angle: float = ..., split_factor: float = ..., /) -> None:
         """Repair caps by swapping the edge"""
-        ...
 
     def fixDeformations(self, max_angle: float, epsilon: float = ..., /) -> None:
         """Repair deformed facets"""
-        ...
 
     def fixDegenerations(self, epsilon: float = ..., /) -> None:
         """Remove degenerated facets"""
-        ...
 
     def removeDuplicatedPoints(self) -> Any:
         """Remove duplicated points"""
-        ...
 
     def removeDuplicatedFacets(self) -> Any:
         """Remove duplicated facets"""
-        ...
 
     def refine(self) -> Any:
         """Refine the mesh"""
-        ...
 
     def splitEdges(self) -> Any:
         """Split all edges"""
-        ...
 
     def splitEdge(self, facet: int, neighbour: int, vertex: Vector, /) -> None:
         """Split edge"""
-        ...
 
     def splitFacet(self, facet: int, vertex1: Vector, vertex2: Vector, /) -> None:
         """Split facet"""
-        ...
 
     def swapEdge(self, facet: int, neighbour: int, /) -> None:
         """Swap the common edge with the neighbour"""
-        ...
 
     def collapseEdge(self, facet: int, neighbour: int, /) -> None:
         """Remove an edge and both facets that share this edge"""
-        ...
 
     def collapseFacet(self, facet: int, /) -> None:
         """Remove a facet"""
-        ...
 
     def collapseFacets(self, facets: list[int], /) -> None:
         """Remove a list of facets"""
-        ...
 
     def insertVertex(self, facet: int, vertex: Vector, /) -> None:
         """Insert a vertex into a facet"""
-        ...
 
     def snapVertex(self, facet: int, vertex: Vector, /) -> None:
         """Insert a new facet at the border"""
-        ...
 
     @constmethod
     def printInfo(self) -> Any:
         """Get detailed information about the mesh"""
-        ...
 
     @constmethod
     def foraminate(
         self, point: _VectorInput, direction: _VectorInput, max_angle: float = ..., /
     ) -> dict:
         """Get a list of facet indices and intersection points"""
-        ...
 
     def cut(self, polygon: list[_VectorInput], mode: int, /) -> None:
         """Cuts the mesh with a given closed polygon
         cut(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer"""
-        ...
 
     def trim(self, polygon: list[_VectorInput], mode: int, /) -> None:
         """Trims the mesh with a given closed polygon
         trim(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer"""
-        ...
 
     def trimByPlane(self, base: Vector, normal: Vector, /) -> None:
         """Trims the mesh with a given plane
         trimByPlane(Vector, Vector) -> None
         The plane is defined by a base and normal vector. Depending on the
         direction of the normal the part above or below will be kept."""
-        ...
 
     @constmethod
     def harmonizeNormals(self) -> Any:
         """Adjust wrong oriented facets"""
-        ...
 
     @constmethod
     def flipNormals(self) -> Any:
         """Flip the mesh normals"""
-        ...
 
     @constmethod
     def fillupHoles(self, length: int, level: int = ..., max_area: float = ..., /) -> None:
         """Fillup holes"""
-        ...
 
     @constmethod
     def smooth(
@@ -506,7 +424,6 @@ class Mesh(ComplexGeoData):
     ) -> None:
         """Smooth the mesh
         smooth([iteration=1,maxError=FLT_MAX])"""
-        ...
 
     @overload
     def decimate(self, tolerance: float, reduction: float, /) -> None: ...
@@ -520,21 +437,17 @@ class Mesh(ComplexGeoData):
         Example:
         mesh.decimate(0.5, 0.1) # reduction by up to 10 percent
         mesh.decimate(0.5, 0.9) # reduction by up to 90 percent"""
-        ...
 
     def mergeFacets(self) -> Any:
         """Merge facets to optimize topology"""
-        ...
 
     @constmethod
     def optimizeTopology(self, max_angle: float = ..., /) -> None:
         """Optimize the edges to get nicer facets"""
-        ...
 
     @constmethod
     def optimizeEdges(self) -> Any:
         """Optimize the edges to get nicer facets"""
-        ...
 
     @constmethod
     def nearestFacetOnRay(
@@ -546,7 +459,6 @@ class Mesh(ComplexGeoData):
         the second parameter is ut uple of three floats for the direction.
         The result is a dictionary with an index and the intersection point or
         an empty dictionary if there is no intersection."""
-        ...
 
     @constmethod
     def getPlanarSegments(self, deviation: float, min_facets: int = ..., /) -> list:
@@ -554,14 +466,12 @@ class Mesh(ComplexGeoData):
         Get all planes of the mesh as segment.
         In the worst case each triangle can be regarded as single
         plane if none of its neighbours is coplanar."""
-        ...
 
     @constmethod
     def getSegmentsOfType(self, type: str, deviation: float, min_facets: int = ..., /) -> list:
         """getSegmentsOfType(type, dev,[min faces=0]) -> list
         Get all segments of type.
         Type can be Plane, Cylinder or Sphere"""
-        ...
 
     @constmethod
     def getSegmentsByCurvature(
@@ -574,14 +484,12 @@ class Mesh(ComplexGeoData):
         c=(1.0, 0.0, 0.1, 0.1, 500) # search for a cylinder with radius 1.0
         p=(0.0, 0.0, 0.1, 0.1, 500) # search for a plane
         mesh.getSegmentsByCurvature([c,p])"""
-        ...
 
     @constmethod
     def getCurvaturePerVertex(self) -> Any:
         """getCurvaturePerVertex() -> list
         The items in the list contains minimum and maximum curvature with their directions
         """
-        ...
     Points: Final[list]
     """A collection of the mesh points
 With this attribute it is possible to get access to the points of the mesh

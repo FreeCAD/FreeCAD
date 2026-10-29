@@ -45,4 +45,3 @@ class Line2dSegment(Curve2d):
         """
         Set the parameter range of the underlying line segment geometry.
         """
-        ...

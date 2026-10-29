@@ -32,7 +32,6 @@ class MeshPoint(PyObjectBase):
         free and is more or less a simple vector/point.
         After calling unbound() no topological operation will
         work!"""
-        ...
     Index: Final[int]
     """The index of this point in the MeshObject"""
 

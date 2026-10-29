@@ -28,31 +28,26 @@ class MaterialManager(BaseClass):
         """
         Get a material object by specifying its UUID
         """
-        ...
 
     def getMaterialByPath(self, path: str, library: str = "", /) -> Material:
         """
         Get a material object by specifying its path and library name
         """
-        ...
 
     def inheritMaterial(self, uuid: str, /) -> Material:
         """
         Create a new material object by specifying the UUID of its parent
         """
-        ...
 
     def materialsWithModel(self, uuid: str, /) -> Dict[str, Material]:
         """
         Get a dictionary of materials implementing the specified model, keyed by material UUID
         """
-        ...
 
     def materialsWithModelComplete(self, uuid: str, /) -> Dict[str, Material]:
         """
         Get a dictionary of materials implementing the specified model, with values for all properties, keyed by material UUID
         """
-        ...
 
     def save(
         self,
@@ -66,16 +61,13 @@ class MaterialManager(BaseClass):
         """
         Save the material in the specified library
         """
-        ...
 
     def filterMaterials(self, filter: MaterialFilter, includeLegacy: bool = False) -> list:
         """
         Returns a filtered material list
         """
-        ...
 
     def refresh(self) -> None:
         """
         Refreshes the material tree. Use sparingly as this is an expensive operation.
         """
-        ...

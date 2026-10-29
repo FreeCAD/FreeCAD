@@ -49,7 +49,6 @@ class MakePrism(PyObjectBase):
         the type of operation. If it is inside the basis
         shape, a local operation such as glueing can be performed.
         """
-        ...
 
     def add(self, Edge: TopoShapeEdge, Face: TopoShapeFace) -> None:
         """
@@ -57,7 +56,6 @@ class MakePrism(PyObjectBase):
         Raises ConstructionError if the  face does not belong to the
         basis shape, or the edge to the prismed shape.
         """
-        ...
 
     @overload
     def perform(self, From: TopoShape, Until: TopoShape) -> None: ...
@@ -72,51 +70,43 @@ class MakePrism(PyObjectBase):
         2. to a face Until
         3. from a face From to a height Until. Reconstructs the feature topologically according to the semantic option chosen.
         """
-        ...
 
     def performUntilEnd(self) -> None:
         """
         Realizes a semi-infinite prism, limited by the
         position of the prism base. All other faces extend infinitely.
         """
-        ...
 
     def performFromEnd(self, until: TopoShape, /) -> None:
         """
         Realizes a semi-infinite prism, limited by the face Funtil.
         """
-        ...
 
     def performThruAll(self) -> None:
         """
         Builds an infinite prism. The infinite descendants will not be kept in the result.
         """
-        ...
 
     def performUntilHeight(self, until: TopoShape, length: float, /) -> None:
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.
         """
-        ...
 
     @constmethod
     def curves(self) -> List:
         """
         Returns the list of curves S parallel to the axis of the prism.
         """
-        ...
 
     @constmethod
     def barycCurve(self) -> GeometryCurve | None:
         """
         Generates a curve along the center of mass of the primitive.
         """
-        ...
 
     @constmethod
     def shape(self) -> object:
         """
         Returns a shape built by the shape construction algorithm.
         """
-        ...
