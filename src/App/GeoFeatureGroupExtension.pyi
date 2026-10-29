@@ -11,5 +11,3 @@ class GeoFeatureGroupExtension(GroupExtension):
     Licence: LGPL
     This class handles placeable group of document objects
     """
-
-    ...
