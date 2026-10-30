@@ -361,6 +361,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
     Path/Post/scripts/generic_sheet_cutting_post.py
+    Path/Post/scripts/generic_multi_axis_industrial_post.py
     Path/Post/scripts/grbl_post.py
     Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
@@ -589,6 +590,7 @@ SET(Tests_SRCS
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericSheetCutting.py
+    CAMTests/TestGenericMultiAxisIndustrial.py
     CAMTests/TestGrblPost.py
     CAMTests/TestHeidenhainPost.py
     CAMTests/TestEstlCamPost.py
