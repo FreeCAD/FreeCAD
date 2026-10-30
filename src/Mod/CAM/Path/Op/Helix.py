@@ -927,6 +927,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def overrideArcFeed(self, commandlist, tooldiameter, horizFeedTC, vertFeedTC, profileSide):
         source = PathLanguage.Maneuver.FromPath(Path.Path(commandlist)).instr
+        k = 10  # max feed multiplier (feed * 0.1 < new feed < feed * 10)
         for i, instr in enumerate(source):
             if instr.isMove() and instr.isArc():
                 vertCutterMoveLength = instr.positionBegin().z - instr.positionEnd().z
@@ -937,7 +938,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         instr.arcRadius() + tooldiameter / 2
                     )
                 else:
-                    horizCutterMoveLength = instr.arcAngle() * (
+                    horizCutterMoveLength = instr.arcAngle() * abs(
                         instr.arcRadius() - tooldiameter / 2
                     )
 
@@ -946,8 +947,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
                 # Calculate needed horizontal feed
                 factorH = abs(math.cos(angle))
-                # Do not increase feed by more than x10
-                factorH = max(factorH, 0.1)
+                factorH = max(factorH, 1 / k)
                 pathFeedH = horizFeedTC / factorH
 
                 # circular tool paths correction
@@ -960,12 +960,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     # external circular tool path
                     majorDiameter = 2 * instr.arcRadius() - tooldiameter
                     factorHoriz = (majorDiameter + tooldiameter) / majorDiameter
+                factorHoriz = min(max(factorHoriz, 1 / k), k)
                 pathFeedH *= factorHoriz
 
                 # Calculate needed vertical feed
                 factorV = abs(math.sin(angle))
-                # Do not increase feed by more than x10
-                factorV = max(factorV, 0.1)
+                factorV = max(factorV, 1 / k)
                 pathFeedV = vertFeedTC / factorV
 
                 # use minimal value from calculated vertical and horizontal feeds
