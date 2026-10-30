@@ -38,6 +38,7 @@ setup_qt_test(TranslatorLocale)
 setup_qt_test(InputField)
 setup_qt_test(QuantitySpinBox)
 setup_qt_test(NumericLocaleConsumers)
+setup_qt_test(LeftScrollBarController)
 
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main

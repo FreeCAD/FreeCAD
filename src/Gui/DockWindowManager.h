@@ -116,6 +116,9 @@ public:
 
     bool isOverlayActivated() const;
 
+    /// Re-evaluates on which side the vertical scroll bars of all docked windows are shown
+    void updateScrollBars();
+
 private Q_SLOTS:
     /**
      * \internal
@@ -130,6 +133,7 @@ private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
     void tabifyDockWidgets(DockWindowItems*);
     void setupOverlayManagement();
+    void updateScrollBars(QDockWidget* dw);
 
     DockWindowManager();
     ~DockWindowManager() override;

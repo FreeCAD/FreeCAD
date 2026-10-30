@@ -35,11 +35,39 @@
 #include <Base/Tools.h>
 
 #include "DockWindowManager.h"
+#include "LeftScrollBarController.h"
 #include "MainWindow.h"
 #include "OverlayManager.h"
+#include "OverlayWidgets.h"
 
 
 using namespace Gui;
+
+namespace
+{
+
+bool leftDockScrollBarEnabled()
+{
+    return App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/DockWindows")
+        ->GetBool("LeftDockScrollBarOnLeft", false);
+}
+
+bool isDockedOnLeft(QDockWidget* dock)
+{
+    if (dock->isFloating()) {
+        return false;
+    }
+    for (QWidget* w = dock->parentWidget(); w; w = w->parentWidget()) {
+        if (auto overlay = qobject_cast<OverlayTabWidget*>(w)) {
+            return overlay->getDockArea() == Qt::LeftDockWidgetArea;
+        }
+    }
+    return getMainWindow()->dockWidgetArea(dock) == Qt::LeftDockWidgetArea;
+}
+
+}  // namespace
 
 DockWindowItems::DockWindowItems() = default;
 
@@ -159,6 +187,7 @@ struct DockWindowManagerP
     DockWindowItems _dockWindowItems;
     ParameterGrp::handle _hPref;
     fastsignals::advanced_scoped_connection _connParam;
+    fastsignals::advanced_scoped_connection _connScrollBar;
     QTimer _timer;
     DockWidgetEventFilter _dockWidgetEventFilter;
     QPointer<OverlayManager> overlayManager;
@@ -187,6 +216,15 @@ DockWindowManager::DockWindowManager()
     d->_hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp/MainWindow/DockWindows");
 
     auto grp = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/DockWindows");
+    d->_connScrollBar = grp->Manager()->signalParamChanged.connect(
+        [this, grp](ParameterGrp* Param, ParameterGrp::ParamType Type, const char* name, const char*) {
+            if (Param == grp && Type == ParameterGrp::ParamType::FCBool && name
+                && boost::equals(name, "LeftDockScrollBarOnLeft")) {
+                updateScrollBars();
+            }
+        },
+        fastsignals::advanced_tag()
+    );
     if (grp->GetBool("ActivateOverlay", true)) {
         setupOverlayManagement();
     }
@@ -201,6 +239,29 @@ DockWindowManager::~DockWindowManager()
 bool DockWindowManager::isOverlayActivated() const
 {
     return (d->overlayManager != nullptr);
+}
+
+void DockWindowManager::updateScrollBars()
+{
+    for (auto dw : std::as_const(d->_dockedWindows)) {
+        updateScrollBars(dw);
+    }
+}
+
+void DockWindowManager::updateScrollBars(QDockWidget* dw)
+{
+    auto controller
+        = dw->findChild<LeftScrollBarController*>(QString(), Qt::FindDirectChildrenOnly);
+    if (!controller && leftDockScrollBarEnabled()) {
+        // The controller is a child of the dock, so it is destroyed with it. Docks only get one if
+        // the option has been enabled.
+        controller = new LeftScrollBarController(dw, [dw]() {
+            return leftDockScrollBarEnabled() && isDockedOnLeft(dw);
+        });
+    }
+    if (controller) {
+        controller->update();
+    }
 }
 
 void DockWindowManager::setupOverlayManagement()
@@ -295,6 +356,7 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     );
 
     d->_dockedWindows.push_back(dw);
+    updateScrollBars(dw);
 
     if (d->overlayManager) {
         d->overlayManager->initDockWidget(dw);

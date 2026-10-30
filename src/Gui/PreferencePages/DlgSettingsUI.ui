@@ -503,6 +503,22 @@
         </property>
        </widget>
       </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="leftDockScrollBarCheckBox">
+        <property name="toolTip">
+         <string>Show the scroll bars of windows docked on the left side on their left edge. Scroll bars hidden by the options above stay hidden.</string>
+        </property>
+        <property name="text">
+         <string>Scroll bar on left for left-docked windows</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LeftDockScrollBarOnLeft</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>DockWindows</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -584,6 +600,7 @@
   <tabstop>hideInternalNamesCheckBox</tabstop>
   <tabstop>hideTreeViewScrollBarCheckBox</tabstop>
   <tabstop>hideHeaderCheckBox</tabstop>
+  <tabstop>leftDockScrollBarCheckBox</tabstop>
   <tabstop>hideTabBarCheckBox</tabstop>
   <tabstop>hintShowTabBarCheckBox</tabstop>
   <tabstop>hidePropertyViewScrollBarCheckBox</tabstop>
