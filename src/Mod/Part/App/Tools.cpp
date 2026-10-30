@@ -67,6 +67,7 @@
 #include <TColStd_Array1OfInteger.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopoDS.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #if OCC_VERSION_HEX < 0x070600
 # include <Adaptor3d_HCurveOnSurface.hxx>
 # include <GeomAdaptor_HCurve.hxx>
