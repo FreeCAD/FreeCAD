@@ -72,6 +72,13 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
     aspectRatio = obj->XSize.getValue() / obj->YSize.getValue();
 
     connectSignals();
+
+    // NOLINTNEXTLINE
+    connectChangedObject = obj->getDocument()->signalChangedObject.connect(
+        [this](const App::DocumentObject& changedObj, const App::Property& changedProp) {
+            slotChangedObject(changedObj, changedProp);
+        }
+    );
 }
 
 TaskImage::~TaskImage()
@@ -350,6 +357,7 @@ void TaskImage::accept()
         App::Document* doc = feature->getDocument();
         doc->commitTransaction();
         doc->recompute();
+        resetEdit();
     }
 }
 
@@ -359,6 +367,33 @@ void TaskImage::reject()
         App::Document* doc = feature->getDocument();
         doc->abortTransaction();
         feature->purgeTouched();
+        resetEdit();
+    }
+}
+
+void TaskImage::resetEdit()
+{
+    // Leave the edit mode that shows the transform dragger
+    auto vp = Application::Instance->getViewProvider(feature.get());
+    auto guiDoc = vp ? static_cast<ViewProviderDocumentObject*>(vp)->getDocument() : nullptr;  // NOLINT
+    if (guiDoc && guiDoc->getInEdit() == vp) {
+        guiDoc->resetEdit();
+    }
+}
+
+void TaskImage::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (updatingPlacement || feature.expired() || &obj != feature.get()
+        || &prop != &feature->Placement) {
+        return;
+    }
+
+    // The dragger, an undo or a script moved the image: show the new values without
+    // writing them back, so the placement is kept exactly as it was set
+    restoreFromPlacement(feature->Placement.getValue());
+    updateIcon();
+    if (scale) {
+        scale->setPlacement(feature->globalPlacement());
     }
 }
 
@@ -460,6 +495,19 @@ void TaskImage::restore(const Base::Placement& plm)
     ui->spinBoxWidth->setValue(feature->XSize.getValue());
     ui->spinBoxHeight->setValue(feature->YSize.getValue());
 
+    restoreFromPlacement(plm);
+
+    onPreview();
+}
+
+void TaskImage::restoreFromPlacement(const Base::Placement& plm)
+{
+    // Only fill in the widgets; the caller decides whether the placement is written back
+    QSignalBlocker blockX(ui->spinBoxX);
+    QSignalBlocker blockY(ui->spinBoxY);
+    QSignalBlocker blockZ(ui->spinBoxZ);
+    QSignalBlocker blockRotation(ui->spinBoxRotation);
+
     Base::Rotation rot = plm.getRotation();  // NOLINT
     Base::Vector3d pos = plm.getPosition();
 
@@ -475,8 +523,6 @@ void TaskImage::restore(const Base::Placement& plm)
     ui->spinBoxX->setValue(pos.x);
     ui->spinBoxY->setValue(pos.y);
     ui->spinBoxZ->setValue(pos.z);
-
-    onPreview();
 }
 
 void TaskImage::updatePlacement()
@@ -514,7 +560,10 @@ void TaskImage::updatePlacement()
     Pos = Base::Placement(offset, rot);
 
     if (!feature.expired()) {
-        feature->Placement.setValue(Pos);
+        {
+            Base::StateLocker lock(updatingPlacement);
+            feature->Placement.setValue(Pos);
+        }
         if (scale) {
             scale->setPlacement(feature->globalPlacement());
         }
