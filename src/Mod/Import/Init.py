@@ -43,3 +43,4 @@ FreeCAD.addTranslatableExportType(
 FreeCAD.addExportType("glTF (*.gltf *.glb)", "ImportGui")
 
 FreeCAD.__unit_test__ += ["TestImport"]
+FreeCAD.__unit_test__ += ["TestImportApp"]

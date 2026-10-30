@@ -50,6 +50,7 @@ SET(DXF_Plate
 set(Import_Scripts
     Init.py
     stepZ.py
+    TestImportApp.py
 )
 
 if(BUILD_GUI)
