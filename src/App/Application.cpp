@@ -1696,10 +1696,17 @@ namespace {
     // entries so that their addition can be "replayed" when the language changes (after removing
     // the originals).
 
+    // Given a description string and a list of extensions, construct a type string that Qt's file
+    // dialogs will recognize
+    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
+        description = std::format("{} (*.{})", description, Base::Tools::joinFormatted(extensions, " *."));
+    }
+
     struct TranslatableTypeCacheEntry {
         std::string description;
         const std::vector<std::string> extensions;
         std::string moduleName;
+        std::string filter;  // the translated filter as it was registered
     };
 
     class TranslatableTypeCache {
@@ -1715,17 +1722,29 @@ namespace {
         {
             _cache.clear();
         }
+        // Change the module of the entry with the given filter, which may be either translated or
+        // untranslated, so that replaying the entry keeps the change. Returns the translated filter
+        // of the changed entry, or an empty string if there is no such entry.
+        std::string changeModule(const std::string &filter,
+                                 const std::string &oldModuleName,
+                                 const std::string &newModuleName)
+        {
+            for (auto &entry : _cache) {
+                std::string untranslatedFilter = entry.description;
+                appendTypeString(untranslatedFilter, entry.extensions);
+                if ((entry.filter == filter || untranslatedFilter == filter)
+                    && entry.moduleName == oldModuleName) {
+                    entry.moduleName = newModuleName;
+                    return entry.filter;
+                }
+            }
+            return {};
+        }
     private:
         std::vector<TranslatableTypeCacheEntry> _cache;
     };
 
     TranslatableTypeCache translatableExportTypeCache;
-
-    // Given a description string and a list of extensions, construct a type string that Qt's file
-    // dialogs will recognize
-    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
-        description = std::format("{} (*.{})", description, Base::Tools::joinFormatted(extensions, " *."));
-    }
 }
 
 void Application::addTranslatableExportType(const std::string &description,
@@ -1746,10 +1765,10 @@ void Application::addTranslatableExportType(const std::string &description,
         return false;  // Did NOT contain the app name
     };
 
-    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
     auto translatedDescription = QCoreApplication::translate("FileFormat", description.c_str()).toStdString();
     bool containsAppName = replaceFreeCAD(translatedDescription);  // Run *AFTER* translation
     appendTypeString(translatedDescription, extensions);
+    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName, translatedDescription});
 
     FileTypeItem item;
     item.filter = translatedDescription;
@@ -1780,8 +1799,13 @@ void Application::retranslateExportTypes()
 
 void Application::changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
+    // A translatable type is re-added from the cache when the language changes, so change the
+    // module there as well. This also finds the type by its untranslated filter, which callers pass
+    // regardless of the current language.
+    std::string translatedFilter = translatableExportTypeCache.changeModule(filter, oldModuleName, newModuleName);
     for (auto& it : _mExportTypes) {
-        if (it.filter == filter && it.module == oldModuleName) {
+        if ((it.filter == filter || (!translatedFilter.empty() && it.filter == translatedFilter))
+            && it.module == oldModuleName) {
             it.module = newModuleName;
             break;
         }
