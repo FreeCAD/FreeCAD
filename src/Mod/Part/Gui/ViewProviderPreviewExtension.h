@@ -28,7 +28,7 @@
 #include "SoBrepPointSet.h"
 #include "SoFCShapeObject.h"
 
-#include <QtCore>
+#include <QCoreApplication>
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
