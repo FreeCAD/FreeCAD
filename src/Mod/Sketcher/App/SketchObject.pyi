@@ -82,6 +82,30 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def addLayer(self, name: str, /) -> int:
+        """Create a named layer and return its stable ID."""
+        ...
+
+    def renameLayer(self, layerId: int, name: str, /) -> None:
+        """Rename a layer without changing its ID."""
+        ...
+
+    def removeLayer(self, layerId: int, /) -> None:
+        """Remove a layer, moving its geometry to layer zero."""
+        ...
+
+    def setActiveLayer(self, layerId: int, /) -> None:
+        """Select the layer for newly created geometry."""
+        ...
+
+    def getGeometryLayer(self, geoId: int, /) -> int:
+        """Return the named layer of internal or external geometry."""
+        ...
+
+    def setGeometryLayer(self, geoIds: List[int], layerId: int, /) -> None:
+        """Move geometry and its internal alignment geometry to a layer."""
+        ...
+
     @overload
     def addGeometry(self, geo: Geometry, is_construction: bool = False, /) -> int: ...
     @overload

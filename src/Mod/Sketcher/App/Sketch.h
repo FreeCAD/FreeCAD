@@ -80,7 +80,9 @@ public:
     int setUpSketch(
         const std::vector<Part::Geometry*>& GeoList,
         const std::vector<Constraint*>& ConstraintList,
-        int extGeoCount = 0
+        int extGeoCount = 0,
+        const std::set<int>& excludedGeometry = {},
+        const std::set<int>& lockedGeometry = {}
     );
     /// return the actual geometry of the sketch a TopoShape
     Part::TopoShape toShape() const;
@@ -606,6 +608,14 @@ private:
         double* secondvalue {};  ///< Needed for SnellsLaw
     };
 
+    std::set<int> excludedLayerGeometry;
+    std::set<int> lockedLayerGeometry;
+    std::map<int, std::shared_ptr<const Part::Geometry>> freeMoveOrigins;
+    void moveFreeGeometry(
+        const std::vector<GeoElementId>& elements,
+        const Base::Vector3d& target,
+        bool relative
+    );
     std::vector<GeoDef> Geoms;
     std::vector<ConstrDef> Constrs;
     GCS::System GCSsys;

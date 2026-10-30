@@ -134,6 +134,25 @@ void TaskSketcherMessages::createSettingsButtonActions()
 
     QMenu* myMenu = new QMenu(this);
     myMenu->addAction(autoUpdateAction);
+    auto* layersAction = new QWidgetAction(myMenu);
+    auto* layersWidget = new QWidget();
+    auto* layersLayout = new QGridLayout(layersWidget);
+    auto* layersCheckbox = new QCheckBox(tr("Show layers"));
+    layersCheckbox->setObjectName(QStringLiteral("showSketchLayersCheckbox"));
+    layersLayout->addWidget(layersCheckbox, 0, 0, 1, 2);
+    layersAction->setDefaultWidget(layersWidget);
+    myMenu->addAction(layersAction);
+    layersAction->setObjectName(QStringLiteral("showSketchLayers"));
+    layersAction->setCheckable(true);
+    connect(layersAction, &QAction::toggled, layersCheckbox, &QCheckBox::setChecked);
+    connect(layersCheckbox, &QCheckBox::toggled, layersAction, &QAction::setChecked);
+    layersAction->setChecked(hGrp->GetBool("ShowLayers", false));
+    connect(layersAction, &QAction::toggled, this, [hGrp](bool checked) {
+        hGrp->SetBool("ShowLayers", checked);
+    });
+    connect(myMenu, &QMenu::aboutToShow, this, [layersAction, hGrp]() {
+        layersAction->setChecked(hGrp->GetBool("ShowLayers", false));
+    });
     myMenu->addSeparator();
     myMenu->addAction(gridAction);
     myMenu->addSeparator();
