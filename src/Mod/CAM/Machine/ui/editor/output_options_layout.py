@@ -32,7 +32,7 @@ import FreeCAD
 translate = FreeCAD.Qt.translate
 
 
-def build_output_options(machine, layout, context="CAM_MachineEditor"):
+def build_output_options(machine, layout):
     """Build output-option and processing-option widgets into *layout*.
 
     Parameters
@@ -43,9 +43,6 @@ def build_output_options(machine, layout, context="CAM_MachineEditor"):
     layout : QBoxLayout
         The layout (typically a QVBoxLayout inside a scroll area) to which
         group boxes are added.
-    context : str
-        Translation context – callers may pass ``"CAM_Post"`` when
-        the widgets appear inside the post-processing dialog.
 
     Returns
     -------
@@ -63,12 +60,12 @@ def build_output_options(machine, layout, context="CAM_MachineEditor"):
     # ------------------------------------------------------------------
     # Main output options (units + top-level booleans)
     # ------------------------------------------------------------------
-    main_group = QtGui.QGroupBox(translate(context, "Main Options"))
+    main_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Main Options"))
     main_layout = QtGui.QFormLayout(main_group)
 
     units_combo = QtGui.QComboBox()
-    units_combo.addItem(translate(context, "Metric"), "metric")
-    units_combo.addItem(translate(context, "Imperial"), "imperial")
+    units_combo.addItem(translate("CAM_MachineEditor", "Metric"), "metric")
+    units_combo.addItem(translate("CAM_MachineEditor", "Imperial"), "imperial")
     try:
         units_val = machine.output.units.value
         idx = units_combo.findData(units_val)
@@ -77,15 +74,18 @@ def build_output_options(machine, layout, context="CAM_MachineEditor"):
     except Exception:
         # units_val might not be a valid enum value, just skip
         pass
-    main_layout.addRow(translate(context, "Units"), units_combo)
+    main_layout.addRow(translate("CAM_MachineEditor", "Units"), units_combo)
     units_combo.value_getter = lambda: units_combo.itemData(units_combo.currentIndex())
 
     main_widgets = {"units": units_combo}
 
     for field_name, label in [
-        ("output_header", translate(context, "Output Header")),
-        ("output_tool_length_offset", translate(context, "Output Tool Length Offset (G43)")),
-        ("remote_post", translate(context, "Enable Remote Posting")),
+        ("output_header", translate("CAM_MachineEditor", "Output Header")),
+        (
+            "output_tool_length_offset",
+            translate("CAM_MachineEditor", "Output Tool Length Offset (G43)"),
+        ),
+        ("remote_post", translate("CAM_MachineEditor", "Enable Remote Posting")),
     ]:
         cb = QtGui.QCheckBox()
         cb.setChecked(bool(getattr(getattr(machine, "output", None), field_name, False)))
@@ -102,11 +102,11 @@ def build_output_options(machine, layout, context="CAM_MachineEditor"):
     output = getattr(machine, "output", None)
     if output is not None:
         sub_sections = [
-            ("header", translate(context, "Header Options")),
-            ("comments", translate(context, "Comment Options")),
-            ("formatting", translate(context, "Formatting Options")),
-            ("precision", translate(context, "Precision Options")),
-            ("duplicates", translate(context, "Duplicate Output Options")),
+            ("header", translate("CAM_MachineEditor", "Header Options")),
+            ("comments", translate("CAM_MachineEditor", "Comment Options")),
+            ("formatting", translate("CAM_MachineEditor", "Formatting Options")),
+            ("precision", translate("CAM_MachineEditor", "Precision Options")),
+            ("duplicates", translate("CAM_MachineEditor", "Duplicate Output Options")),
         ]
         for attr_name, title in sub_sections:
             dc_instance = getattr(output, attr_name, None)
@@ -129,7 +129,7 @@ def build_output_options(machine, layout, context="CAM_MachineEditor"):
     if processing is not None:
         try:
             processing_group, processing_widgets = DataclassGUIGenerator.create_group_for_dataclass(
-                processing, translate(context, "Processing Options")
+                processing, translate("CAM_MachineEditor", "Processing Options")
             )
             layout.addWidget(processing_group)
             all_widgets["processing"] = processing_widgets
