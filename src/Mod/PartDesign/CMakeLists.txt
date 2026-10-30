@@ -70,6 +70,7 @@ if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
         PartDesignTests/TestSuppressed.py
+        PartDesignTests/TestHoleThreadClipGui.py
     )
 endif(BUILD_GUI)
 

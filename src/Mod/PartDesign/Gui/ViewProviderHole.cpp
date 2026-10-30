@@ -283,7 +283,7 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
         return;
     }
     std::string theadDepthType = pcHole->ThreadDepthType.getValueAsString();
-    if (theadDepthType == "Hole depth") {
+    if (theadDepthType == "Hole Depth") {
         m_endThreadClipper->on = FALSE;
         return;
     }
@@ -294,12 +294,25 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
         return;
     }
     gp_Dir holeNormalAxis = *holeNormalOpt;
-
-    auto holeOriginOpt = getHoleOrigin(pcHole);
-    if (!holeOriginOpt.has_value()) {
-        return;
+    // The hole is drilled against the profile normal, or along it when reversed
+    if (pcHole->Reversed.getValue()) {
+        holeNormalAxis.Reverse();
     }
-    gp_Pnt holeOriginPnt = *holeOriginOpt;
+
+    // The thread starts where the holes start, which is not the profile placement
+    // when the profile is an edge of another feature
+    std::vector<gp_Pnt> locations = getHoleLocations(pcHole);
+    gp_Pnt holeOriginPnt;
+    if (!locations.empty()) {
+        holeOriginPnt = locations.front();
+    }
+    else {
+        auto holeOriginOpt = getHoleOrigin(pcHole);
+        if (!holeOriginOpt.has_value()) {
+            return;
+        }
+        holeOriginPnt = *holeOriginOpt;
+    }
 
     // Compute clipping plane origin at the end of the threaded portion
     gp_Pnt endPlanePnt = holeOriginPnt.Translated(
