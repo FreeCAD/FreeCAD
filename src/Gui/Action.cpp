@@ -359,6 +359,20 @@ QString Action::createToolTip(
                 }
             }
         }
+        else if (dynamic_cast<const PythonGroupCommand*>(command)) {
+            if (auto group = qobject_cast<ActionGroup*>(command->getAction())) {
+                int idx = group->property("defaultAction").toInt();
+                QList<QAction*> acts = group->actions();
+                if (idx >= 0 && idx < acts.size()) {
+                    QByteArray name = acts[idx]->property("CommandName").toByteArray();
+                    if (!name.isEmpty()) {
+                        cmdName = QStringLiteral("%1 (%2:%3)")
+                                      .arg(QString::fromLatin1(name), cmdName)
+                                      .arg(idx);
+                    }
+                }
+            }
+        }
         cmdName = QStringLiteral("<p style='white-space:pre; margin-top:0.5em;'><i>%1</i></p>")
                       .arg(cmdName.toHtmlEscaped());
     }

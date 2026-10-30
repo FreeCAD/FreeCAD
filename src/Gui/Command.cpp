@@ -1925,17 +1925,16 @@ void PythonGroupCommand::languageChange()
             defaultAction->property("CommandName").toByteArray()
         );
         if (cmd) {
-            const char* context = cmd->getName();
-            QString tip = QApplication::translate(context, cmd->getToolTipText());
+            // Same as GroupCommand::setup(): the tooltip of the group is the one of the
+            // active tool. Action::setToolTip() builds the rich tooltip itself, so pass the
+            // plain help text and title instead of an already formatted tooltip.
+            const char* context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName()
+                                                                    : cmd->className();
             _pcAction->setShortcut(cmd->getShortcut());
-            QString newTip = Gui::Action::createToolTip(
-                tip,
-                _pcAction->text(),
-                _pcAction->action()->font(),
-                _pcAction->shortcut().toString(),
-                cmd
+            _pcAction->setToolTip(
+                QApplication::translate(context, cmd->getToolTipText()),
+                QApplication::translate(context, cmd->getMenuText())
             );
-            _pcAction->setToolTip(newTip);
         }
     }
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
