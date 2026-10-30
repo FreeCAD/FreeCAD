@@ -219,7 +219,47 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="lightThemeLabel">
+         <property name="text">
+          <string>Light theme</string>
+         </property>
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="lightThemeCombobox">
+         <property name="toolTip">
+          <string>Theme to use when system is using light theme.</string>
+         </property>
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="darkThemeLabel">
+         <property name="text">
+          <string>Dark theme</string>
+         </property>
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="darkThemeCombobox">
+         <property name="toolTip">
+          <string>Theme to use when system is using dark theme.</string>
+         </property>
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
         <widget class="QLabel" name="moreThemesLabel">
          <property name="font">
           <font>
@@ -234,28 +274,28 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="iconSizeLabel">
          <property name="text">
           <string>Size of toolbar icons</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="4" column="1">
         <widget class="QComboBox" name="toolbarIconSize">
          <property name="toolTip">
           <string>Icon size in the toolbar</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="treeModeLabel">
          <property name="text">
           <string>Tree View and Property View mode</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="5" column="1">
         <widget class="QComboBox" name="treeMode">
          <property name="toolTip">
           <string>Customize how the tree view is shown in the panel (restart required).
@@ -265,14 +305,14 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="recentFileListLabel">
          <property name="text">
           <string>Size of recent file list</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="6" column="1">
         <widget class="Gui::PrefSpinBox" name="RecentFiles">
          <property name="toolTip">
           <string>How many files should be listed in recent files list</string>
@@ -288,7 +328,7 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="7" column="0">
         <widget class="QCheckBox" name="tiledBackground">
          <property name="toolTip">
           <string>Background of the main window (when no document is opened) will consist of tiles of an image.</string>
@@ -298,7 +338,7 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="7" column="1">
         <widget class="Gui::PrefCheckBox" name="EnableCursorBlinking">
          <property name="toolTip">
           <string>The text cursor will be blinking</string>
@@ -317,7 +357,7 @@ dot/period will always be printed</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="8" column="0">
         <widget class="Gui::PrefCheckBox" name="SplashScreen">
          <property name="toolTip">
           <string>A splash screen is a small loading window that is shown
@@ -338,7 +378,7 @@ display the splash screen.</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="8" column="1">
         <widget class="Gui::PrefCheckBox" name="ActivateOverlay">
          <property name="toolTip">
           <string>Activate overlay handling of docked panels</string>
@@ -357,7 +397,7 @@ display the splash screen.</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1">
+       <item row="9" column="1">
         <widget class="Gui::PrefCheckBox" name="ComboBoxWheelEventFilter">
          <property name="toolTip">
           <string>Prevent the mouse wheel from changing the value of combo boxes,
@@ -377,7 +417,7 @@ and spin boxes with hover focus</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
+       <item row="9" column="0">
         <widget class="Gui::PrefCheckBox" name="FineGrainedRecompute">
          <property name="toolTip">
           <string>Activate fine-grained recomputation of documents</string>
