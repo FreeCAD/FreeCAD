@@ -7,10 +7,6 @@ if (SMESH_FOUND)
     endif()
 endif(SMESH_FOUND)
 
-if(BUILD_FEM_NETGEN)
-    add_definitions(-DHAVE_NETGEN)
-endif(BUILD_FEM_NETGEN)
-
 set(MeshPartGui_LIBS
     MeshPart
     PartGui
