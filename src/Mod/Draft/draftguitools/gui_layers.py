@@ -120,7 +120,12 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
             return
 
         self.ui = Gui.draftToolBar
-        objs = [obj for obj in App.ActiveDocument.Objects if utils.get_type(obj) == "Layer"]
+        sel = Gui.Selection.getSelection()
+        objs = [
+            obj
+            for obj in App.ActiveDocument.Objects
+            if utils.get_type(obj) == "Layer" and obj not in sel
+        ]
         objs.sort(key=lambda obj: obj.Label)
         self.objects = [None] + [None] + objs
         self.labels = (
