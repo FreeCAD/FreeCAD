@@ -195,7 +195,7 @@ PartCmdVertexSelection::PartCmdVertexSelection()
     sWhatsThis = "Part_VertexSelection";
     sStatusTip = sToolTipText;
     sPixmap = "vertex-selection";
-    sAccel = "X, S";
+    sAccel = "";  // TrutnaCAD: "X, S" made X (toggle construction in sketches) wait for a second key
     eType = Alter3DView;
 }
 

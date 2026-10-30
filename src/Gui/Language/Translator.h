@@ -107,6 +107,7 @@ private:
     void removeTranslators();
     QStringList directories() const;
     void installQMFiles(const QDir& dir, const char* locale);
+    void installBrandingTranslator();
     void updateLocaleChange() const;
 
 private:

@@ -367,7 +367,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Leave Sketch");
+    sMenuText = QT_TR_NOOP("Finish Sketch");
     sToolTipText = QT_TR_NOOP("Finishes editing the active sketch. Press Escape to exit.");
     sWhatsThis = "Sketcher_LeaveSketch";
     sStatusTip = sToolTipText;

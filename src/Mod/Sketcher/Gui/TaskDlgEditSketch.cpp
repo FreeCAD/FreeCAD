@@ -44,6 +44,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
 {
     assert(sketchView);
     roleOnEscape = QDialogButtonBox::ButtonRole::AcceptRole;
+    // Sketch tools take Return in the 3D view; it must not finish the sketch.
+    setProperty("ignoreReturnOutsidePanel", true);
 
     ToolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);

@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <cstring>
+#include <memory>
 #include <QApplication>
 #include <QDir>
 #include <QKeyEvent>
@@ -161,6 +163,62 @@ Translator* Translator::_pcSingleton = nullptr;
 
 namespace Gui
 {
+/**
+ * Shows the branded application name (the "Application" branding key) wherever
+ * user-visible text says "FreeCAD".
+ *
+ * It is installed after the language translators, so Qt asks it first; it looks up the
+ * language's own translation and renames within that. Text about the FreeCAD project
+ * itself (credits, its website and forum, version numbers) and code or paths
+ * (FreeCADGui, FreeCAD.Console, .../FreeCAD/...) are left alone.
+ */
+class BrandingTranslator: public QTranslator
+{
+public:
+    BrandingTranslator(const std::vector<QTranslator*>& languages, QString name)
+        : languages(languages)
+        , name(std::move(name))
+    {}
+
+    QString translate(
+        const char* context,
+        const char* sourceText,
+        const char* disambiguation = nullptr,
+        int n = -1
+    ) const override
+    {
+        if (!sourceText || !std::strstr(sourceText, "FreeCAD")) {
+            return {};  // let the language translators handle it as usual
+        }
+
+        QString text;
+        for (auto it = languages.rbegin(); it != languages.rend() && text.isEmpty(); ++it) {
+            text = (*it)->translate(context, sourceText, disambiguation, n);
+        }
+        if (text.isEmpty()) {
+            text = QString::fromUtf8(sourceText);
+        }
+
+        // "FreeCAD" as a word, but not in code or paths, and not where it names the
+        // FreeCAD project itself. "&" marks a menu mnemonic, as in "FreeCAD &Forum".
+        static const QRegularExpression productName(QStringLiteral(
+            R"re((?<![\w./\\])FreeCAD(?!\w|\.\w|::|/|\\))re"
+            R"re((?!\s+&?(?:contributors|developers|community|project|team|donation)))re"
+            R"re((?!\s+&?(?:[Ff]&?orum|[Ww]&?iki|[Ww]&?ebsite|[Bb]ug [Tt]racker|GitHub|\d)))re"
+        ));
+        return text.replace(productName, name);
+    }
+
+    bool isEmpty() const override
+    {
+        return false;
+    }
+
+private:
+    const std::vector<QTranslator*>& languages;
+    QString name;
+};
+
 class TranslatorP
 {
 public:
@@ -168,6 +226,7 @@ public:
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
     TStringMap mapSupportedLocales;
     std::vector<QTranslator*> translators; /**< A list of all created translators */
+    std::unique_ptr<BrandingTranslator> branding;
     QStringList paths;
 };
 }  // namespace Gui
@@ -350,6 +409,26 @@ void Translator::activateLanguage(const char* lang)
     if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
+    installBrandingTranslator();
+}
+
+void Translator::installBrandingTranslator()
+{
+    const auto& cfg = App::Application::Config();
+    auto app = cfg.find("Application");
+    if (app == cfg.end() || app->second.empty() || app->second == "FreeCAD") {
+        return;
+    }
+
+    if (!d->branding) {
+        d->branding = std::make_unique<BrandingTranslator>(
+            d->translators,
+            QString::fromStdString(app->second)
+        );
+    }
+    // Reinstalling moves it in front of any translator added since.
+    qApp->removeTranslator(d->branding.get());
+    qApp->installTranslator(d->branding.get());
 }
 
 std::string Translator::activeLanguage() const
@@ -466,6 +545,9 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
             if (translator->load(dir.filePath(it))) {
                 qApp->installTranslator(translator);
                 d->translators.push_back(translator);
+                if (d->branding) {
+                    installBrandingTranslator();
+                }
             }
             else {
                 delete translator;

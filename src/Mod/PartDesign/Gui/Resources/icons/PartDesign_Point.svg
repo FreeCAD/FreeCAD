@@ -197,14 +197,14 @@
   <g
      id="layer1">
     <ellipse
-       style="fill:none;stroke:#0c1522;stroke-width:6.61059;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-dashoffset:20.4;stroke-opacity:1"
+       style="fill:none;stroke:#0c1522;stroke-width:6.61059;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:3.5,2.5;stroke-dashoffset:20.4;stroke-opacity:1"
        id="path3024"
        cx="32"
        cy="32"
        rx="7.6357098"
        ry="7.6357083" />
     <ellipse
-       style="fill:url(#linearGradient2);stroke:url(#linearGradient3818);stroke-width:2.51326;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-dashoffset:20.4;stroke-opacity:1"
+       style="fill:url(#linearGradient2);stroke:url(#linearGradient3818);stroke-width:2.51326;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:3.5,2.5;stroke-dashoffset:20.4;stroke-opacity:1"
        id="path3024-3"
        cx="31.999998"
        cy="31.999998"

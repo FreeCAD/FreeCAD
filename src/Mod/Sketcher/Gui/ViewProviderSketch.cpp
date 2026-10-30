@@ -3923,6 +3923,8 @@ void ViewProviderSketch::slotConstraintAdded(Sketcher::Constraint* constraint)
         return;
     }
 
+    SketcherGui::noteConstraintAdded(getSketchObject());
+
     // Auto-scale label distance for dimensional constraints
     if (constraint->Type == Distance || constraint->Type == DistanceX || constraint->Type == DistanceY) {
         // If label distance is default (10.0), scale it based on view.

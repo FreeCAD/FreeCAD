@@ -221,6 +221,11 @@ private:
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     bool event(QEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
+    bool acceptFromOutside(QWidget* focus);
+    /// The task pane is only shown while a task dialog is open.
+    void scheduleDockVisibilityUpdate();
+    void updateDockVisibility();
 
     void addTaskWatcher(TaskIndex index);
     void removeActiveTaskWatcher();

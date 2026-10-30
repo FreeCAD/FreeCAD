@@ -182,9 +182,9 @@ StartView::StartView(QWidget* parent)
 
     setCentralWidget(_contents);
 
-    // Set startup widget according to the first start parameter
-    auto firstStart = hGrp->GetBool("FirstStart2024", true);
-    _contents->setCurrentWidget(firstStart ? firstStartScrollArea : documentsWidget);
+    // TrutnaCAD always opens on the documents page; the theme/units setup is reachable from
+    // the footer button.
+    _contents->setCurrentWidget(documentsWidget);
     if (customFolderListWidget) {
         configureCustomFolderListWidget(customFolderListWidget);
     }

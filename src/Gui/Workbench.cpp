@@ -790,6 +790,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Tools
     auto tool = new MenuItem(menuBar);
     tool->setCommand("&Tools");
+    *tool << "Std_CommandSearch"
+          << "Separator";
 #ifdef BUILD_ADDONMGR
     if (Application::Instance->commandManager().getCommandByName("Std_AddonMgr")) {
         *tool << "Std_AddonMgr"

@@ -2549,7 +2549,7 @@ CmdSketcherScale::CmdSketcherScale()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Scale");
+    sMenuText = QT_TR_NOOP("Sketch Scale");
     sToolTipText = QT_TR_NOOP("Scales the selected geometries");
     sWhatsThis = "Sketcher_Scale";
     sStatusTip = sToolTipText;
@@ -2583,7 +2583,7 @@ CmdSketcherTranslate::CmdSketcherTranslate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Move / Array Transform");
+    sMenuText = QT_TR_NOOP("Move/Copy");
     sToolTipText = QT_TR_NOOP("Translates the selected geometries and enables the creation of 'i' * 'j' total elements");
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;

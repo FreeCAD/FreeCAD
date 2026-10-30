@@ -182,7 +182,8 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
         aboutToShowDialog(dw);
         dw->setVisible(true);
         dw->toggleViewAction()->setVisible(true);
-        dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+        // The task pane stays docked; floating it made dialogs look like pop-ups.
+        dw->setFeatures(QDockWidget::DockWidgetMovable);
     }
 
     if (!addedDialog) {
@@ -263,10 +264,7 @@ void ControlSingleton::closedDialog(App::Document* /*attachedTo*/)
     auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
     if (dw) {
         aboutToHideDialog(dw);
-        dw->setFeatures(
-            QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable
-            | QDockWidget::DockWidgetFloatable
-        );
+        dw->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
     }
 }
 

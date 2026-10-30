@@ -51,6 +51,7 @@ class SketcherWorkbench(Workbench):
             print("Error in Profiles module")
 
         import SketcherCommandSearch
+        import SketcherSpiral
 
     def GetClassName(self):
         return "SketcherGui::Workbench"

@@ -98,32 +98,32 @@ QString primitiveTaskTitle(ViewProviderPrimitive* vp)
     switch (primitive->getPrimitiveType()) {
         case PartDesign::FeaturePrimitive::Box:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Box Parameters")
-                               : TaskBoxPrimitives::tr("Additive Box Parameters");
+                               : TaskBoxPrimitives::tr("Box");
         case PartDesign::FeaturePrimitive::Cylinder:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Cylinder Parameters")
-                               : TaskBoxPrimitives::tr("Additive Cylinder Parameters");
+                               : TaskBoxPrimitives::tr("Cylinder");
         case PartDesign::FeaturePrimitive::Sphere:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Sphere Parameters")
-                               : TaskBoxPrimitives::tr("Additive Sphere Parameters");
+                               : TaskBoxPrimitives::tr("Sphere");
         case PartDesign::FeaturePrimitive::Cone:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Cone Parameters")
-                               : TaskBoxPrimitives::tr("Additive Cone Parameters");
+                               : TaskBoxPrimitives::tr("Cone");
         case PartDesign::FeaturePrimitive::Ellipsoid:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Ellipsoid Parameters")
-                               : TaskBoxPrimitives::tr("Additive Ellipsoid Parameters");
+                               : TaskBoxPrimitives::tr("Ellipsoid");
         case PartDesign::FeaturePrimitive::Torus:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Torus Parameters")
-                               : TaskBoxPrimitives::tr("Additive Torus Parameters");
+                               : TaskBoxPrimitives::tr("Torus");
         case PartDesign::FeaturePrimitive::Prism:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Prism Parameters")
-                               : TaskBoxPrimitives::tr("Additive Prism Parameters");
+                               : TaskBoxPrimitives::tr("Prism");
         case PartDesign::FeaturePrimitive::Wedge:
             return subtractive ? TaskBoxPrimitives::tr("Subtractive Wedge Parameters")
-                               : TaskBoxPrimitives::tr("Additive Wedge Parameters");
+                               : TaskBoxPrimitives::tr("Wedge");
     }
 
     return subtractive ? TaskBoxPrimitives::tr("Subtractive Primitive Parameters")
-                       : TaskBoxPrimitives::tr("Additive Primitive Parameters");
+                       : TaskBoxPrimitives::tr("Primitive");
 }
 }  // namespace
 

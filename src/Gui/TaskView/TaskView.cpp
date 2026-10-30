@@ -21,14 +21,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QAbstractItemView>
 #include <QAbstractSpinBox>
 #include <QActionEvent>
 #include <QApplication>
+#include <QComboBox>
 #include <QCursor>
 #include <QDockWidget>
 #include <QLineEdit>
+#include <QPlainTextEdit>
 #include <QPointer>
 #include <QPushButton>
+#include <QTextEdit>
 #include <QTimer>
 #include <QVBoxLayout>
 
@@ -241,6 +245,9 @@ TaskView::TaskView(QWidget* parent)
 {
     Gui::Selection().Attach(this);
 
+    // Return confirms the dialog even when the focus is outside the task panel
+    qApp->installEventFilter(this);
+
     // NOLINTBEGIN
     connectApplicationActiveDocument = App::GetApplication().signalActiveDocument.connect(
         std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1)
@@ -279,6 +286,7 @@ TaskView::TaskView(QWidget* parent)
 }
 TaskView::~TaskView()
 {
+    qApp->removeEventFilter(this);
     connectApplicationActiveDocument.disconnect();
     connectApplicationDeleteDocument.disconnect();
     connectApplicationClosedView.disconnect();
@@ -348,6 +356,53 @@ bool TaskView::event(QEvent* event)
         }
     }
     return QWidget::event(event);
+}
+
+bool TaskView::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress && watched->isWidgetType()) {
+        auto ke = static_cast<QKeyEvent*>(event);
+        const bool enter = ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter;
+        const auto modifiers = ke->modifiers() & ~Qt::KeypadModifier;
+        if (enter && modifiers == Qt::NoModifier && acceptFromOutside(static_cast<QWidget*>(watched))) {
+            return true;
+        }
+    }
+    return QStackedWidget::eventFilter(watched, event);
+}
+
+/**
+ * Clicks the active task dialog's OK button for a Return pressed outside the task panel,
+ * e.g. in the 3D view. Widgets that use Return themselves keep it, and inside the panel
+ * keyPressEvent() handles it as before.
+ */
+bool TaskView::acceptFromOutside(QWidget* focus)
+{
+    if (!isIndexValid(currentIndex()) || !taskInfos[currentIndex()].ActiveCtrl
+        || !taskInfos[currentIndex()].ActiveDialog) {
+        return false;
+    }
+    // Dialogs whose tools use Return themselves (e.g. sketch editing) opt out.
+    if (taskInfos[currentIndex()].ActiveDialog->property("ignoreReturnOutsidePanel").toBool()) {
+        return false;
+    }
+    if (isAncestorOf(focus) || QApplication::activePopupWidget()
+        || QApplication::activeModalWidget()) {
+        return false;
+    }
+    if (qobject_cast<QLineEdit*>(focus) || qobject_cast<QAbstractSpinBox*>(focus)
+        || qobject_cast<QTextEdit*>(focus) || qobject_cast<QPlainTextEdit*>(focus)
+        || qobject_cast<QComboBox*>(focus) || qobject_cast<QAbstractItemView*>(focus)) {
+        return false;
+    }
+
+    QDialogButtonBox* box = taskInfos[currentIndex()].ActiveCtrl->standardButtons();
+    QPushButton* ok = box ? box->button(QDialogButtonBox::Ok) : nullptr;
+    if (!ok || !ok->isVisible() || !ok->isEnabled()) {
+        return false;
+    }
+    ok->click();
+    return true;
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
@@ -745,6 +800,7 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
 
     tryRestoreWidth();
     triggerMinimumSizeHint();
+    scheduleDockVisibilityUpdate();
 
     OverlayManager::instance()->refresh();
 }
@@ -951,6 +1007,27 @@ void TaskView::setShownTaskInfo(TaskIndex index)
     if (auto dialog = taskInfos[index].ActiveDialog) {
         dialog->activate();
     }
+    scheduleDockVisibilityUpdate();
+}
+
+void TaskView::scheduleDockVisibilityUpdate()
+{
+    // Deferred, so a dialog that closes and immediately opens another doesn't make the pane flicker.
+    QTimer::singleShot(0, this, &TaskView::updateDockVisibility);
+}
+
+void TaskView::updateDockVisibility()
+{
+    auto dock = qobject_cast<QDockWidget*>(parentWidget());
+    if (!dock) {
+        return;
+    }
+    bool active = isIndexValid(currentIndex())
+        && (taskInfos[currentIndex()].ActiveDialog
+            || !taskInfos[currentIndex()].taskPanel->contextualPanels.isEmpty());
+    if (dock->isVisible() != active) {
+        dock->setVisible(active);
+    }
 }
 
 void TaskView::removeActiveTaskWatcher()
@@ -1081,6 +1158,7 @@ void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
     foundTaskInfo->taskPanel->contextualPanels.append(panel);
     panel->show();
     triggerMinimumSizeHint();
+    scheduleDockVisibilityUpdate();
     Q_EMIT taskUpdate();
 }
 
@@ -1097,6 +1175,7 @@ void TaskView::removeContextualPanel(QWidget* panel, App::Document* doc)
     foundTaskInfo->taskPanel->contextualPanels.removeOne(panel);
     panel->deleteLater();
     triggerMinimumSizeHint();
+    scheduleDockVisibilityUpdate();
     Q_EMIT taskUpdate();
 }
 

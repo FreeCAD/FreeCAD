@@ -282,16 +282,11 @@ void Workbench::activated()
     const char* Sketch[] = {
         "PartDesign_NewSketch",
         "PartDesign_Pad",
-        "PartDesign_Pocket",
         "PartDesign_Hole",
         "PartDesign_Revolution",
-        "PartDesign_Groove",
         "PartDesign_AdditiveLoft",
-        "PartDesign_SubtractiveLoft",
         "PartDesign_AdditivePipe",
-        "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveHelix",
-        "PartDesign_SubtractiveHelix",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -303,9 +298,7 @@ void Workbench::activated()
 
     const char* Sketches[] = {
         "PartDesign_AdditiveLoft",
-        "PartDesign_SubtractiveLoft",
         "PartDesign_AdditivePipe",
-        "PartDesign_SubtractivePipe",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -317,13 +310,9 @@ void Workbench::activated()
 
     const char* ShapeBinder[] = {
         "PartDesign_Pad",
-        "PartDesign_Pocket",
         "PartDesign_Revolution",
-        "PartDesign_Groove",
         "PartDesign_AdditiveLoft",
-        "PartDesign_SubtractiveLoft",
         "PartDesign_AdditivePipe",
-        "PartDesign_SubtractivePipe",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -335,13 +324,9 @@ void Workbench::activated()
 
     const char* SubShapeBinder[] = {
         "PartDesign_Pad",
-        "PartDesign_Pocket",
         "PartDesign_Revolution",
-        "PartDesign_Groove",
         "PartDesign_AdditiveLoft",
-        "PartDesign_SubtractiveLoft",
         "PartDesign_AdditivePipe",
-        "PartDesign_SubtractivePipe",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -410,26 +395,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, part);
     part->setCommand("&Part Design");
 
-    // additives
-    Gui::MenuItem* additives = new Gui::MenuItem;
-    additives->setCommand("Additive Features");
+    // Sketch-based features; each one joins, cuts or intersects via its Operation setting
+    Gui::MenuItem* features = new Gui::MenuItem;
+    features->setCommand("Features");
 
-    *additives << "PartDesign_Pad"
-               << "PartDesign_Revolution"
-               << "PartDesign_AdditiveLoft"
-               << "PartDesign_AdditivePipe"
-               << "PartDesign_AdditiveHelix";
-
-    // subtractives
-    Gui::MenuItem* subtractives = new Gui::MenuItem;
-    subtractives->setCommand("Subtractive Features");
-
-    *subtractives << "PartDesign_Pocket"
-                  << "PartDesign_Hole"
-                  << "PartDesign_Groove"
-                  << "PartDesign_SubtractiveLoft"
-                  << "PartDesign_SubtractivePipe"
-                  << "PartDesign_SubtractiveHelix";
+    *features << "PartDesign_Pad"
+              << "PartDesign_Revolution"
+              << "PartDesign_AdditiveLoft"
+              << "PartDesign_AdditivePipe"
+              << "PartDesign_AdditiveHelix"
+              << "PartDesign_Hole";
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
@@ -458,8 +433,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_ShapeBinder"
           << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
-          << "Separator" << additives << "PartDesign_CompPrimitiveAdditive"
-          << "Separator" << subtractives << "PartDesign_CompPrimitiveSubtractive"
+          << "Separator" << features << "PartDesign_CompPrimitiveAdditive"
           << "Separator" << dressups << "Separator" << transformations << "Separator"
           << "PartDesign_Boolean"
           << "Separator"
@@ -517,14 +491,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_AdditivePipe"
           << "PartDesign_AdditiveHelix"
           << "PartDesign_CompPrimitiveAdditive"
-          << "Separator"
-          << "PartDesign_Pocket"
           << "PartDesign_Hole"
-          << "PartDesign_Groove"
-          << "PartDesign_SubtractiveLoft"
-          << "PartDesign_SubtractivePipe"
-          << "PartDesign_SubtractiveHelix"
-          << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
           << "PartDesign_Boolean";
 

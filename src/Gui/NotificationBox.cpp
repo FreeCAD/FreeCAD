@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QEvent>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QScreen>
 #include <QStyleOption>
@@ -265,6 +266,20 @@ bool NotificationLabel::eventFilter(QObject* o, QEvent* e)
                 hideNotificationImmediately();
             }
             break;
+
+        // TrutnaCAD: Esc dismisses the notification, and does nothing else (e.g. it doesn't also
+        // cancel the active tool). ShortcutOverride is accepted so no Esc shortcut fires either.
+        case QEvent::ShortcutOverride:
+        case QEvent::KeyPress: {
+            auto ke = static_cast<QKeyEvent*>(e);
+            if (ke->key() == Qt::Key_Escape && ke->modifiers() == Qt::NoModifier && isVisible()) {
+                ke->accept();
+                if (e->type() == QEvent::KeyPress) {
+                    hideNotificationImmediately();
+                }
+                return true;
+            }
+        } break;
 
         default:
             break;

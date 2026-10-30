@@ -437,6 +437,13 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
 
+    // A redundant dimension is rejected before its value is asked for.
+    if (rejectRedundantConstraints(sketch, cmd)) {
+        tryAutoRecompute(sketch);
+        cmd->getSelection().clearSelection();
+        return;
+    }
+
     // Ask for the value of the distance immediately
     if (show && isDriving) {
         EditDatumDialog editDatumDialog(cmd->transactionID(), sketch, ConStr.size() - 1);
@@ -4071,12 +4078,12 @@ CmdSketcherDimension::CmdSketcherDimension()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Dimension");
+    sMenuText = QT_TR_NOOP("Sketch Dimension");
     sToolTipText = QT_TR_NOOP("Constrains contextually based on the selection. The type can be changed with the M key.");
     sWhatsThis = "Sketcher_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Dimension";
-    sAccel = "";
+    sAccel = "D";  // TrutnaCAD: single-key sketch shortcut, as in Fusion
     eType = ForEdit;
 }
 
@@ -4125,7 +4132,7 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Horizontal/Vertical Constraint");
+        sMenuText = QT_TR_NOOP("Horizontal/Vertical");
         sToolTipText = QT_TR_NOOP("Constrains the selected elements either horizontally or vertically");
         sWhatsThis = "Sketcher_CompHorVer";
         sStatusTip = sToolTipText;
@@ -4442,7 +4449,7 @@ CmdSketcherConstrainHorVer::CmdSketcherConstrainHorVer()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Horizontal/Vertical Constraint");
+    sMenuText = QT_TR_NOOP("Horizontal/Vertical");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements either horizontally or vertically, based on their closest alignment");
     sWhatsThis = "Sketcher_ConstrainHorVer";
     sStatusTip = sToolTipText;
@@ -4488,7 +4495,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Horizontal Constraint");
+    sMenuText = QT_TR_NOOP("Horizontal");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements horizontally");
     sWhatsThis = "Sketcher_ConstrainHorizontal";
     sStatusTip = sToolTipText;
@@ -4533,7 +4540,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Vertical Constraint");
+    sMenuText = QT_TR_NOOP("Vertical");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements vertically");
     sWhatsThis = "Sketcher_ConstrainVertical";
     sStatusTip = sToolTipText;
@@ -4579,7 +4586,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Lock Position");
+    sMenuText = QT_TR_NOOP("Fix");
     sToolTipText = QT_TR_NOOP("Constrains the selected vertices by adding horizontal and vertical distance constraints");
     sWhatsThis = "Sketcher_ConstrainLock";
     sStatusTip = sToolTipText;
@@ -5053,7 +5060,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Coincident Constraint");
+    sMenuText = QT_TR_NOOP("Coincident");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements to be coincident");
     sWhatsThis = "Sketcher_ConstrainCoincidentUnified";
     sStatusTip = sToolTipText;
@@ -5828,7 +5835,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Coincident Constraint");
+    sMenuText = QT_TR_NOOP("Coincident");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements to be coincident");
     sWhatsThis = "Sketcher_ConstrainCoincident";
     sStatusTip = sToolTipText;
@@ -6768,7 +6775,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Parallel Constraint");
+    sMenuText = QT_TR_NOOP("Parallel");
     sToolTipText = QT_TR_NOOP("Constrains the selected lines to be parallel");
     sWhatsThis = "Sketcher_ConstrainParallel";
     sStatusTip = sToolTipText;
@@ -6907,7 +6914,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Perpendicular Constraint");
+    sMenuText = QT_TR_NOOP("Perpendicular");
     sToolTipText = QT_TR_NOOP("Constrains the selected lines to be perpendicular");
     sWhatsThis = "Sketcher_ConstrainPerpendicular";
     sStatusTip = sToolTipText;
@@ -7638,7 +7645,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Tangent/Collinear Constraint");
+    sMenuText = QT_TR_NOOP("Tangent/Collinear");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements to be tangent or collinear");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
@@ -9520,7 +9527,7 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Equal Constraint");
+    sMenuText = QT_TR_NOOP("Equal");
     sToolTipText =
         QT_TR_NOOP("Constrains the selected edges or circles to be equal");
     sWhatsThis = "Sketcher_ConstrainEqual";
@@ -9746,7 +9753,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Symmetric Constraint");
+    sMenuText = QT_TR_NOOP("Symmetry");
     sToolTipText = QT_TR_NOOP("Constrains the selected elements to be symmetric");
     sWhatsThis = "Sketcher_ConstrainSymmetric";
     sStatusTip = sToolTipText;

@@ -122,3 +122,10 @@ App::DocumentObjectExecReturn* Pad::execute()
 {
     return buildExtrusion(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse);
 }
+
+Base::Vector3d Pad::getProfileNormal() const
+{
+    auto res = FeatureExtrude::getProfileNormal();
+    // Like a pocket, a cutting or intersecting extrude goes into the material.
+    return addSubType == Type::Subtractive ? res * -1 : res;
+}

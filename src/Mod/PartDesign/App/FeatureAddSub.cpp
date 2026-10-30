@@ -67,15 +67,18 @@ FeatureAddSub::BooleanOperation FeatureAddSub::getBooleanOperation()
 
 void FeatureAddSub::defineAdditive()
 {
+    // Additive features can also cut or intersect, so one tool covers all three operations.
     addSubType = FeatureAddSub::Type::Additive;
-    Operation.setStatus(App::Property::Status::Hidden, true);
-    Operation.setEnums({"Union"});
+    nativeAddSubType = FeatureAddSub::Type::Additive;
+    Operation.setStatus(App::Property::Status::Hidden, false);
+    Operation.setEnums({"Union", "Subtraction", "Common"});
     Operation.setValue("Union");
 }
 
 void FeatureAddSub::defineSubtractive()
 {
     addSubType = FeatureAddSub::Type::Subtractive;
+    nativeAddSubType = FeatureAddSub::Type::Subtractive;
     Operation.setStatus(App::Property::Status::Hidden, false);
     Operation.setEnums({"Subtraction", "Common"});
     Operation.setValue("Subtraction");
@@ -112,6 +115,18 @@ void FeatureAddSub::onChanged(const App::Property* property)
     }
 
     Feature::onChanged(property);
+}
+
+void FeatureAddSub::onDocumentRestored()
+{
+    // Files from before additive features could cut saved a Union-only list; widen it again.
+    if (nativeAddSubType == Type::Additive && Operation.getEnum().maxValue() < 2) {
+        const std::string value = Operation.getValueAsString();
+        Operation.setEnums({"Union", "Subtraction", "Common"});
+        Operation.setValue(value.c_str());
+    }
+
+    FeatureRefine::onDocumentRestored();
 }
 
 short FeatureAddSub::mustExecute() const

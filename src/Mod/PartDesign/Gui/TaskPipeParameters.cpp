@@ -75,7 +75,7 @@ std::string pipeTaskIconName(ViewProviderPipe* view)
 QString pipeTaskTitle(ViewProviderPipe* view)
 {
     return isSubtractivePipe(view) ? TaskPipeParameters::tr("Subtractive Pipe Parameters")
-                                   : TaskPipeParameters::tr("Additive Pipe Parameters");
+                                   : TaskPipeParameters::tr("Sweep");
 }
 
 QString pipeOrientationTitle(ViewProviderPipe* view)

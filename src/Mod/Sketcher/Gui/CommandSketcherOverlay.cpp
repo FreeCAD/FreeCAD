@@ -51,7 +51,8 @@ void ShowRestoreInformationLayer(const char* visibleelementname)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
     );
-    bool status = hGrp->GetBool(visibleelementname, true);
+    // Same default as EditModeCoinManager: all information layers start hidden (TrutnaCAD).
+    bool status = hGrp->GetBool(visibleelementname, false);
     hGrp->SetBool(visibleelementname, !status);
 }
 

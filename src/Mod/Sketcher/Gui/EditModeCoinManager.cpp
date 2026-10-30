@@ -792,25 +792,28 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
     );
 
+    // TrutnaCAD: B-spline information overlays (degree, control polygon, curvature comb, knot
+    // multiplicity, pole weights) are off by default, keeping sketches clean as in Fusion. The
+    // Sketcher_BSpline* toggle commands still show them.
     if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree) {
-        Client.overlayParameters.bSplineDegreeVisible = hGrpsk->GetBool(parametername.c_str(), true);
+        Client.overlayParameters.bSplineDegreeVisible = hGrpsk->GetBool(parametername.c_str(), false);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
         Client.overlayParameters.bSplineControlPolygonVisible
-            = hGrpsk->GetBool(parametername.c_str(), true);
+            = hGrpsk->GetBool(parametername.c_str(), false);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible) {
-        Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), true);
+        Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), false);
     }
     else if constexpr (
         visibilityparameter == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible
     ) {
         Client.overlayParameters.bSplineKnotMultiplicityVisible
-            = hGrpsk->GetBool(parametername.c_str(), true);
+            = hGrpsk->GetBool(parametername.c_str(), false);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplinePoleWeightVisible) {
         Client.overlayParameters.bSplinePoleWeightVisible
-            = hGrpsk->GetBool(parametername.c_str(), true);
+            = hGrpsk->GetBool(parametername.c_str(), false);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::ArcCircleHelperVisible) {
         Client.overlayParameters.arcCircleHelperVisible = hGrpsk->GetBool(parametername.c_str(), false);

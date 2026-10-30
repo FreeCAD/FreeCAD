@@ -112,17 +112,17 @@ void ViewProviderDatum::attach(App::DocumentObject* obj)
     if (o->is<PartDesign::Plane>()) {
         datumType = QStringLiteral("Plane");
         datumText = QObject::tr("Plane");
-        datumMenuText = tr("Datum Plane Parameters");
+        datumMenuText = tr("Plane");
     }
     else if (o->is<PartDesign::Line>()) {
         datumType = QStringLiteral("Line");
         datumText = QObject::tr("Line");
-        datumMenuText = tr("Datum Line Parameters");
+        datumMenuText = tr("Axis");
     }
     else if (o->is<PartDesign::Point>()) {
         datumType = QStringLiteral("Point");
         datumText = QObject::tr("Point");
-        datumMenuText = tr("Datum Point Parameters");
+        datumMenuText = tr("Point");
     }
     else if (o->is<PartDesign::CoordinateSystem>()) {
         datumType = QStringLiteral("CoordinateSystem");

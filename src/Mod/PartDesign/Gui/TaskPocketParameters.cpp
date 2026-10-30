@@ -29,6 +29,7 @@
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPocketParameters.h"
+#include "TaskProfileParameters.h"
 
 
 using namespace PartDesignGui;
@@ -150,6 +151,7 @@ TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket* PocketView)
     : TaskDlgExtrudeParameters(PocketView)
     , parameters(new TaskPocketParameters(PocketView))
 {
+    Content.push_back(new TaskProfileParameters(PocketView));
     Content.push_back(parameters);
     Content.push_back(preview);
 }

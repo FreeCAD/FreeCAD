@@ -45,6 +45,7 @@
 #include "ReferenceSelection.h"
 #include "ui_TaskHelixParameters.h"
 #include "TaskHelixParameters.h"
+#include "TaskProfileParameters.h"
 
 using namespace PartDesignGui;
 using PartDesign::HelixMode;
@@ -69,7 +70,7 @@ std::string helixTaskIconName(PartDesignGui::ViewProviderHelix* view)
 QString helixTaskTitle(PartDesignGui::ViewProviderHelix* view)
 {
     return isSubtractiveHelix(view) ? TaskHelixParameters::tr("Subtractive Helix Parameters")
-                                    : TaskHelixParameters::tr("Additive Helix Parameters");
+                                    : TaskHelixParameters::tr("Coil");
 }
 }  // namespace
 
@@ -767,6 +768,7 @@ TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
     : TaskDlgSketchBasedParameters(HelixView)
 {
     assert(HelixView);
+    Content.push_back(new TaskProfileParameters(HelixView));
     Content.push_back(new TaskHelixParameters(HelixView));
     Content.push_back(preview);
 }

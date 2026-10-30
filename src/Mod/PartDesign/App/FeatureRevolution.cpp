@@ -112,11 +112,23 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
-    return executeRevolved(Part::RevolMode::FuseWithBase);
+    return executeRevolved(
+        addSubType == Type::Additive ? Part::RevolMode::FuseWithBase : Part::RevolMode::CutFromBase
+    );
 }
 
 TopoShape Revolution::makeShape(const TopoShape& base, const TopoShape& revolve) const
 {
+    if (booleanOperation != BooleanOperation::Union) {
+        TopoShape result;
+        return result.makeElementBoolean(
+            getBooleanMaker(),
+            {base, revolve},
+            nullptr,
+            FuzzyTolerance.getValue()
+        );
+    }
+
     // In 1.0 there was a bug that caused the order of operations to be reversed.
     // Changing the order may impact geometry order and the results of refine operation,
     // hence we need to support both ways to ensure compatibility.

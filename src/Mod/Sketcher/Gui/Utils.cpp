@@ -22,15 +22,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <array>
+#include <map>
+#include <memory>
+#include <set>
+
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
+#include <QTimer>
 
+#include <App/DocumentObserver.h>
 #include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/Notifications.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -117,6 +127,323 @@ std::tuple<double, Base::Vector3d> Sketcher::getRadiusCenterCircleArc(const Part
     THROWM(Base::TypeError, "getRadiusCenterCircleArc - Neither an arc nor a circle")
 };
 
+namespace
+{
+/// The sketch as it was before the constraints of the current command were added.
+struct BeforeNewConstraints
+{
+    int firstNew;  ///< index of the first added constraint
+    int dof;
+    size_t redundancies;  ///< fully and partially redundant constraints reported by the solver
+    std::shared_ptr<App::DocumentObjectWeakPtrT> sketch;  ///< to notice a deleted sketch
+};
+std::map<const Sketcher::SketchObject*, BeforeNewConstraints> beforeNewConstraints;
+
+/// Checks sketches whose command didn't check its constraints itself, once the command is over.
+void checkPendingConstraints()
+{
+    bool retry = false;
+    for (auto it = beforeNewConstraints.begin(); it != beforeNewConstraints.end();) {
+        auto sketch = it->second.sketch->get<Sketcher::SketchObject>();
+        ++it;  // the check below erases the entry
+        if (!sketch) {
+            std::erase_if(beforeNewConstraints, [](const auto& entry) {
+                return !entry.second.sketch->template get<Sketcher::SketchObject>();
+            });
+            break;
+        }
+        if (sketch->getDocument()->hasPendingTransaction()) {
+            retry = true;  // still inside the command, e.g. a dialog is open
+            continue;
+        }
+        SketcherGui::rejectRedundantConstraints(sketch);
+    }
+    if (retry) {
+        QTimer::singleShot(100, &checkPendingConstraints);
+    }
+}
+
+size_t countRedundancies(const Sketcher::SketchObject* obj)
+{
+    return obj->getLastRedundant().size() + obj->getLastPartiallyRedundant().size();
+}
+
+/// Constraint commands open transactions named "Add ... constraint"; the dimension tool's is
+/// "Dimension". Drawing, trimming etc. also add constraints, but are not checked.
+bool isConstraintCommand(const std::string& name)
+{
+    return (name.starts_with("Add ") && name.ends_with(" constraint")) || name == "Dimension";
+}
+
+QString constraintTypeName(const Sketcher::Constraint* c)
+{
+    switch (c->Type) {
+        case Sketcher::Coincident:
+            return QObject::tr("Coincident");
+        case Sketcher::Horizontal:
+            return QObject::tr("Horizontal");
+        case Sketcher::Vertical:
+            return QObject::tr("Vertical");
+        case Sketcher::Parallel:
+            return QObject::tr("Parallel");
+        case Sketcher::Tangent:
+            return QObject::tr("Tangent");
+        case Sketcher::Distance:
+            return QObject::tr("Distance dimension");
+        case Sketcher::DistanceX:
+            return QObject::tr("Horizontal dimension");
+        case Sketcher::DistanceY:
+            return QObject::tr("Vertical dimension");
+        case Sketcher::Angle:
+            return QObject::tr("Angle dimension");
+        case Sketcher::Perpendicular:
+            return QObject::tr("Perpendicular");
+        case Sketcher::Radius:
+            return QObject::tr("Radius dimension");
+        case Sketcher::Diameter:
+            return QObject::tr("Diameter dimension");
+        case Sketcher::Equal:
+            return QObject::tr("Equal");
+        case Sketcher::PointOnObject:
+            return QObject::tr("Point on curve");
+        case Sketcher::Symmetric:
+            return QObject::tr("Symmetry");
+        case Sketcher::Block:
+            return QObject::tr("Fix");
+        case Sketcher::SnellsLaw:
+            return QObject::tr("Refraction");
+        default:
+            return QObject::tr("Constraint");
+    }
+}
+
+/// "Line 2", "end of Arc 3", "X axis", "origin", ...
+QString geometryName(const Sketcher::SketchObject* obj, int geoId, Sketcher::PointPos pos)
+{
+    using Sketcher::GeoEnum;
+    using Sketcher::PointPos;
+    QString name;
+    if (geoId == GeoEnum::RtPnt && pos == PointPos::start) {
+        return QObject::tr("origin");
+    }
+    if (geoId == GeoEnum::HAxis) {
+        name = QObject::tr("X axis");
+    }
+    else if (geoId == GeoEnum::VAxis) {
+        name = QObject::tr("Y axis");
+    }
+    else if (geoId <= GeoEnum::RefExt) {
+        name = QObject::tr("projected geometry");
+    }
+    else if (const Part::Geometry* geo = obj->getGeometry(geoId)) {
+        const int number = geoId + 1;
+        if (Sketcher::isPoint(*geo)) {
+            return QObject::tr("Point %1").arg(number);
+        }
+        if (Sketcher::isLineSegment(*geo)) {
+            name = QObject::tr("Line %1").arg(number);
+        }
+        else if (Sketcher::isCircle(*geo)) {
+            name = QObject::tr("Circle %1").arg(number);
+        }
+        else if (Sketcher::isArcOfCircle(*geo)) {
+            name = QObject::tr("Arc %1").arg(number);
+        }
+        else if (Sketcher::isEllipse(*geo) || Sketcher::isArcOfEllipse(*geo)) {
+            name = QObject::tr("Ellipse %1").arg(number);
+        }
+        else if (Sketcher::isBSplineCurve(*geo)) {
+            name = QObject::tr("Spline %1").arg(number);
+        }
+        else {
+            name = QObject::tr("Curve %1").arg(number);
+        }
+    }
+    else {
+        return {};
+    }
+
+    switch (pos) {
+        case PointPos::start:
+            return QObject::tr("start of %1").arg(name);
+        case PointPos::end:
+            return QObject::tr("end of %1").arg(name);
+        case PointPos::mid:
+            return QObject::tr("center of %1").arg(name);
+        default:
+            return name;
+    }
+}
+
+/// "Perpendicular (Line 1, Line 2)"
+QString describeConstraint(const Sketcher::SketchObject* obj, const Sketcher::Constraint* c)
+{
+    QStringList parts;
+    const std::array<std::pair<int, Sketcher::PointPos>, 3> refs {
+        {{c->First, c->FirstPos}, {c->Second, c->SecondPos}, {c->Third, c->ThirdPos}}
+    };
+    for (const auto& [geoId, pos] : refs) {
+        if (geoId != Sketcher::GeoEnum::GeoUndef) {
+            QString name = geometryName(obj, geoId, pos);
+            if (!name.isEmpty()) {
+                parts << name;
+            }
+        }
+    }
+    QString text = constraintTypeName(c);
+    if (!parts.isEmpty()) {
+        text += QStringLiteral(" (") + parts.join(QStringLiteral(", ")) + QStringLiteral(")");
+    }
+    return text;
+}
+
+QString describeConstraints(const Sketcher::SketchObject* obj, const std::vector<int>& ids)
+{
+    const auto& constraints = obj->Constraints.getValues();
+    QStringList texts;
+    for (int id : ids) {
+        if (id >= 0 && id < static_cast<int>(constraints.size())) {
+            texts << describeConstraint(obj, constraints[id]);
+        }
+    }
+    return texts.join(QStringLiteral(", "));
+}
+
+/// Existing driving constraints on the same geometry as the new ones: what most likely makes them
+/// redundant (the solver doesn't say which constraints a redundant one duplicates).
+std::vector<int> relatedConstraints(const Sketcher::SketchObject* obj, int firstNew)
+{
+    const auto& constraints = obj->Constraints.getValues();
+    std::set<int> geoIds;
+    for (size_t i = firstNew; i < constraints.size(); ++i) {
+        for (int geoId : {constraints[i]->First, constraints[i]->Second, constraints[i]->Third}) {
+            if (geoId != Sketcher::GeoEnum::GeoUndef) {
+                geoIds.insert(geoId);
+            }
+        }
+    }
+    std::vector<int> related;
+    for (int i = 0; i < firstNew && i < static_cast<int>(constraints.size()); ++i) {
+        const Sketcher::Constraint* c = constraints[i];
+        if (!c->isDriving || c->Type == Sketcher::InternalAlignment) {
+            continue;
+        }
+        if (geoIds.contains(c->First) || geoIds.contains(c->Second) || geoIds.contains(c->Third)) {
+            related.push_back(i);
+        }
+    }
+    return related;
+}
+}  // namespace
+
+void SketcherGui::noteConstraintAdded(Sketcher::SketchObject* obj)
+{
+    // Called before the constraint is appended, so the size is its index and the last solve still
+    // describes the sketch without it. Later additions in the same command keep the first record.
+    auto [entry, inserted] = beforeNewConstraints.emplace(
+        obj,
+        BeforeNewConstraints {
+            obj->Constraints.getSize(),
+            obj->getLastDoF(),
+            countRedundancies(obj),
+            std::make_shared<App::DocumentObjectWeakPtrT>(obj)
+        }
+    );
+    if (inserted) {
+        // Commands that end in tryAutoRecompute are checked there; this catches the others.
+        QTimer::singleShot(0, &checkPendingConstraints);
+    }
+}
+
+bool SketcherGui::rejectRedundantConstraints(Sketcher::SketchObject* obj, Gui::Command* cmd)
+{
+    auto found = beforeNewConstraints.find(obj);
+    if (found == beforeNewConstraints.end()) {
+        return false;
+    }
+    App::Document* doc = obj->getDocument();
+    if (!cmd && doc->hasPendingTransaction()) {
+        return false;  // checked once the command's transaction is closed
+    }
+    const BeforeNewConstraints before = found->second;
+    beforeNewConstraints.erase(found);
+
+    const auto undoNames = doc->getAvailableUndoNames();
+    if (!cmd && (undoNames.empty() || !isConstraintCommand(undoNames.front()))) {
+        return false;
+    }
+    // Reference (non-driving) constraints never constrain anything, so they are never redundant.
+    const auto& constraints = obj->Constraints.getValues();
+    if (std::none_of(constraints.begin() + std::min<size_t>(before.firstNew, constraints.size()),
+                     constraints.end(),
+                     [](const Sketcher::Constraint* c) { return c->isDriving; })) {
+        return false;
+    }
+
+    obj->solve();
+    // Conflicts are reported by the solver messages as before.
+    if (obj->getLastHasConflicts() || obj->getLastDoF() < 0
+        || countRedundancies(obj) <= before.redundancies) {
+        return false;
+    }
+
+    // New redundancy appeared. The solver may blame the new constraint or an older equivalent one,
+    // so judge by the degrees of freedom: if none were removed, the new constraint adds nothing.
+    // Old constraints the solver now flags as redundant (0-based).
+    std::vector<int> nowRedundant;
+    for (int id : obj->getLastRedundant()) {
+        if (id - 1 < before.firstNew) {
+            nowRedundant.push_back(id - 1);
+        }
+    }
+    // Described now: taking the command back below removes the new constraints.
+    const QString added = describeConstraint(obj, constraints[before.firstNew]);
+    const QString addedType = constraintTypeName(constraints[before.firstNew]);
+
+    if (obj->getLastDoF() >= before.dof) {
+        std::vector<int> causes = relatedConstraints(obj, before.firstNew);
+        for (int id : nowRedundant) {
+            if (std::ranges::find(causes, id) == causes.end()) {
+                causes.push_back(id);
+            }
+        }
+        const QString causeText = describeConstraints(obj, causes);
+
+        // Take back the whole command, so no empty step is left in the undo history.
+        if (cmd) {
+            cmd->abortCommand();
+        }
+        else if (auto guiDoc = Gui::Application::Instance->getDocument(doc)) {
+            guiDoc->undo(1);
+        }
+        obj->solve();
+        Gui::TranslatedUserError(
+            obj,
+            QObject::tr("%1 not added").arg(addedType),
+            causeText.isEmpty()
+                ? QObject::tr("%1 is already true because of the sketch's other constraints, so it "
+                              "would only duplicate them.")
+                      .arg(added)
+                : QObject::tr("%1 is already true because of: %2. It would only duplicate them.")
+                      .arg(added, causeText)
+        );
+        return true;
+    }
+
+    const QString overlap = describeConstraints(obj, nowRedundant);
+    Gui::TranslatedUserWarning(
+        obj,
+        QObject::tr("%1 partly redundant").arg(addedType),
+        overlap.isEmpty()
+            ? QObject::tr("%1 was added, but part of it was already set by other constraints.")
+                  .arg(added)
+            : QObject::tr("%1 was added, but now %2 is redundant. Delete it to keep the sketch "
+                          "valid.")
+                  .arg(added, overlap)
+    );
+    return false;
+}
+
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -124,6 +451,8 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremove
     );
     bool autoRecompute = hGrp->GetBool("AutoRecompute", false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", false);
+
+    rejectRedundantConstraints(obj);
 
     // We need to make sure the solver has right redundancy information before trying to remove the
     // redundants. for example if a non-driving constraint has been added.

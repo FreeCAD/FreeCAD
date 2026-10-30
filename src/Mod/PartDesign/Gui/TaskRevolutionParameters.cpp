@@ -46,6 +46,7 @@
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ui_TaskRevolutionParameters.h"
+#include "TaskProfileParameters.h"
 #include "TaskRevolutionParameters.h"
 #include "ViewProviderGroove.h"
 #include "ViewProviderRevolution.h"
@@ -1112,8 +1113,9 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution*
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
+    Content.push_back(new TaskProfileParameters(RevolutionView));
     Content.push_back(
-        new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution Parameters"))
+        new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolve"))
     );
     Content.push_back(preview);
 }
@@ -1122,6 +1124,7 @@ TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove* GrooveView)
     : TaskDlgSketchBasedParameters(GrooveView)
 {
     assert(GrooveView);
+    Content.push_back(new TaskProfileParameters(GrooveView));
     Content.push_back(
         new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters"))
     );

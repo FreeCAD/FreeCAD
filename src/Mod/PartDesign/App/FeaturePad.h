@@ -56,6 +56,8 @@ public:
     {
         return "PartDesignGui::ViewProviderPad";
     }
+
+    Base::Vector3d getProfileNormal() const override;
     //@}
 
 private:

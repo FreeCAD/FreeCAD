@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<!-- TrutnaCAD application icon: an extruded "T" on a navy tile. -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22457a"/>
+      <stop offset="1" stop-color="#0f2140"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3fd6c6"/>
+      <stop offset="1" stop-color="#139488"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="url(#tile)"/>
+  <!-- Extrusion depth seen from the front-left: undersides darker, right faces lighter -->
+  <path fill="#0e6f66" d="M 124 206 L 148 230 L 240 230 L 216 206 Z M 296 206 L 320 230 L 412 230 L 388 206 Z M 216 388 L 240 412 L 320 412 L 296 388 Z"/>
+  <path fill="url(#side)" d="M 388 132 L 412 156 L 412 230 L 388 206 Z M 296 206 L 320 230 L 320 412 L 296 388 Z"/>
+  <!-- Front face of the T -->
+  <path fill="#ffffff" d="M 124 132 H 388 V 206 H 296 V 388 H 216 V 206 H 124 Z"/>
+  <!-- Sketch-style construction line through the stem -->
+  <line x1="256" y1="96" x2="256" y2="428" stroke="#3fd6c6" stroke-width="6"
+        stroke-dasharray="18 12" stroke-linecap="round" opacity="0.85"/>
+</svg>

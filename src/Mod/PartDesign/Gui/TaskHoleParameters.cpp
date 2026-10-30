@@ -62,7 +62,7 @@ namespace sp = std::placeholders;
 #endif
 
 TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* parent)
-    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole Parameters"))
+    : TaskSketchBasedParameters(HoleView, parent, "PartDesign_Hole", tr("Hole"))
     , observer(new Observer(this, getObject<PartDesign::Hole>()))
     , ui(new Ui_TaskHoleParameters)
 {

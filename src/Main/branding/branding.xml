@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<!-- TrutnaCAD branding, read by App::Application from the bin directory.
+     ExeName/ExeVendor are left alone so user settings stay in the FreeCAD folder.
+     Relative paths resolve against the installation home directory. -->
+<Branding>
+  <Application>TrutnaCAD</Application>
+  <WindowTitle>TrutnaCAD</WindowTitle>
+  <WindowIcon>share/branding/trutnacad.svg</WindowIcon>
+  <SplashScreen>share/branding/trutnacad-splash.svg</SplashScreen>
+  <AboutImage>share/branding/trutnacad-splash.svg</AboutImage>
+  <!-- Empty colours turn off the text drawn over the splash image: the name and version
+       (the image already shows the name) and the "development version" warning -->
+  <SplashInfoColor></SplashInfoColor>
+  <SplashWarningColor></SplashWarningColor>
+</Branding>

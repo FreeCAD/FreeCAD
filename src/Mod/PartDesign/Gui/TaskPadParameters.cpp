@@ -29,6 +29,7 @@
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
+#include "TaskProfileParameters.h"
 
 
 using namespace PartDesignGui;
@@ -37,7 +38,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad* PadView, QWidget* parent, bool newObj)
-    : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
+    : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Extrude"))
 {
     ui->offsetEdit->setToolTip(tr("Offset the pad from the face at which the pad will end on side 1"));
     ui->offsetEdit2->setToolTip(tr("Offset the pad from the face at which the pad will end on side 2"));
@@ -142,6 +143,7 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool /*newO
     : TaskDlgExtrudeParameters(PadView)
     , parameters(new TaskPadParameters(PadView))
 {
+    Content.push_back(new TaskProfileParameters(PadView));
     Content.push_back(parameters);
     Content.push_back(preview);
 }

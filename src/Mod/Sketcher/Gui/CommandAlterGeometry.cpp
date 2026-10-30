@@ -100,12 +100,12 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Toggle Construction Geometry");
+    sMenuText = QT_TR_NOOP("Normal/Construction");
     sToolTipText = QT_TR_NOOP("Toggles between defining geometry and construction geometry modes");
     sWhatsThis = "Sketcher_ToggleConstruction";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_ToggleConstruction";
-    sAccel = "G, N";
+    sAccel = "X";  // TrutnaCAD: single-key sketch shortcut, as in Fusion
     eType = ForEdit;
 
     auto app = Gui::Application::Instance;

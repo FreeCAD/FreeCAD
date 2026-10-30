@@ -89,7 +89,8 @@ bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
 void FirstStartWidget::retranslateUi()
 {
     _doneButton->setText(tr("Done"));
-    QString application = QString::fromStdString(App::Application::getExecutableName());
+    // The displayed (branded) name; the executable name stays FreeCAD.
+    QString application = QGuiApplication::applicationName();
     _welcomeLabel->setText(
         QLatin1String("<h1>") + tr("Welcome to %1").arg(application) + QLatin1String("</h1>")
     );

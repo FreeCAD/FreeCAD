@@ -72,9 +72,9 @@
     </rdf:RDF>
   </metadata>
   <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
-    <path style="fill:none;stroke:#0b1521;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 8,56 56,8.0000004" id="path3165" inkscape:connector-curvature="0"/>
-    <path style="fill:none;stroke:#3465a4;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 8,56 56,8.0000004" id="path3165-9" inkscape:connector-curvature="0"/>
-    <path style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 7.3,55.3 55.3,7.3000004" id="path3165-9-1" inkscape:connector-curvature="0" sodipodi:nodetypes="cc"/>
+    <path style="fill:none;stroke:#0b1521;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:7,5" d="M 8,56 56,8.0000004" id="path3165" inkscape:connector-curvature="0"/>
+    <path style="fill:none;stroke:#3465a4;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:7,5" d="M 8,56 56,8.0000004" id="path3165-9" inkscape:connector-curvature="0"/>
+    <path style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-dasharray:7,5" d="M 7.3,55.3 55.3,7.3000004" id="path3165-9-1" inkscape:connector-curvature="0" sodipodi:nodetypes="cc"/>
     <g transform="matrix(0.5613787,1.5641823e-8,0,0.56576972,1.28696,26.558916)" id="g3827-1-3-92-1-7">
       <g transform="translate(31.322131,40.570289)" id="g3797-9-5-66-7-5">
         <path inkscape:connector-curvature="0" style="fill:#ef2929;stroke:#280000;stroke-width:3.54880524;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="path4250-71-6-49-2-9" d="M -26.118221,5.6643347 A 8.9379793,8.8680774 0 1 1 -12.540634,17.200906 8.9379793,8.8680774 0 1 1 -26.118221,5.6643347 z"/>

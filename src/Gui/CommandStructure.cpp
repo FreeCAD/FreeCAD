@@ -46,7 +46,7 @@ StdCmdPart::StdCmdPart()
     : Command("Std_Part")
 {
     sGroup = "Structure";
-    sMenuText = QT_TR_NOOP("New Part");
+    sMenuText = QT_TR_NOOP("New Component");
     sToolTipText = QT_TR_NOOP(
         "Creates a part, which is a general-purpose container to group objects so they "
         "act as a unit in the 3D view. It is intended to arrange objects that have a part "

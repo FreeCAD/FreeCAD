@@ -213,7 +213,7 @@ CmdPartDesignPlane::CmdPartDesignPlane()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Datum Plane");
+    sMenuText = QT_TR_NOOP("Plane");
     sToolTipText = QT_TR_NOOP("Creates a new datum plane");
     sWhatsThis = "PartDesign_Plane";
     sStatusTip = sToolTipText;
@@ -243,7 +243,7 @@ CmdPartDesignLine::CmdPartDesignLine()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Datum Line");
+    sMenuText = QT_TR_NOOP("Axis");
     sToolTipText = QT_TR_NOOP("Creates a new datum line");
     sWhatsThis = "PartDesign_Line";
     sStatusTip = sToolTipText;
@@ -273,7 +273,7 @@ CmdPartDesignPoint::CmdPartDesignPoint()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Datum Point");
+    sMenuText = QT_TR_NOOP("Point");
     sToolTipText = QT_TR_NOOP("Creates a new datum point");
     sWhatsThis = "PartDesign_Point";
     sStatusTip = sToolTipText;
@@ -609,7 +609,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("New Sketch");
+    sMenuText = QT_TR_NOOP("Create Sketch");
     sToolTipText = QT_TR_NOOP("Creates a new sketch");
     sWhatsThis = "PartDesign_NewSketch";
     sStatusTip = sToolTipText;
@@ -1279,7 +1279,7 @@ CmdPartDesignPad::CmdPartDesignPad()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Pad");
+    sMenuText = QT_TR_NOOP("Extrude");
     sToolTipText = QT_TR_NOOP("Extrudes the selected sketch or profile and adds it to the body");
     sWhatsThis = "PartDesign_Pad";
     sStatusTip = sToolTipText;
@@ -1514,7 +1514,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Additive Pipe");
+    sMenuText = QT_TR_NOOP("Sweep");
     sToolTipText = QT_TR_NOOP(
         "Sweeps the selected sketch or profile along a path and adds it to the body"
     );
@@ -1614,7 +1614,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Additive Loft");
+    sMenuText = QT_TR_NOOP("Loft");
     sToolTipText = QT_TR_NOOP(
         "Lofts the selected sketch or profile through one or more sections and adds it to the body"
     );
@@ -1712,7 +1712,7 @@ CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Additive Helix");
+    sMenuText = QT_TR_NOOP("Coil");
     sToolTipText = QT_TR_NOOP(
         "Sweeps the selected sketch or profile along a helix and adds it to the body"
     );
@@ -2227,7 +2227,7 @@ CmdPartDesignThickness::CmdPartDesignThickness()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Thickness");
+    sMenuText = QT_TR_NOOP("Shell");
     sToolTipText = QT_TR_NOOP("Applies thickness and removes the selected faces");
     sWhatsThis = "PartDesign_Thickness";
     sStatusTip = sToolTipText;
@@ -2412,7 +2412,7 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Linear Pattern");
+    sMenuText = QT_TR_NOOP("Rectangular Pattern");
     sToolTipText = QT_TR_NOOP(
         "Duplicates the selected features or the active body in a linear pattern"
     );
@@ -2486,7 +2486,7 @@ CmdPartDesignCircularPattern::CmdPartDesignCircularPattern()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Circular Pattern");
+    sMenuText = QT_TR_NOOP("Concentric Pattern");
     sToolTipText = QT_TR_NOOP(
         "Duplicates the selected features or the active body in concentric circular patterns"
     );
@@ -2553,7 +2553,7 @@ CmdPartDesignPathPattern::CmdPartDesignPathPattern()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Path Pattern");
+    sMenuText = QT_TR_NOOP("Pattern on Path");
     sToolTipText = QT_TR_NOOP("Duplicates the selected features or the active body along a path");
     sWhatsThis = "PartDesign_PathPattern";
     sStatusTip = sToolTipText;
@@ -2633,7 +2633,7 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Polar Pattern");
+    sMenuText = QT_TR_NOOP("Circular Pattern");
     sToolTipText = QT_TR_NOOP(
         "Duplicates the selected features or the active body in a circular pattern"
     );
@@ -2869,7 +2869,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 {
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
-    sMenuText = QT_TR_NOOP("Boolean Operation");
+    sMenuText = QT_TR_NOOP("Combine");
     sToolTipText = QT_TR_NOOP(
         "Applies boolean operations with the selected objects and the active body"
     );

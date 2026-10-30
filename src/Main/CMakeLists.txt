@@ -2,6 +2,19 @@
 
 configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
+
+# TrutnaCAD branding: branding.xml sits next to the executable, its images under share/branding
+set(Branding_Images
+    trutnacad.svg
+    trutnacad-splash.svg
+)
+configure_file(branding/branding.xml ${CMAKE_BINARY_DIR}/bin/branding.xml COPYONLY)
+foreach(image ${Branding_Images})
+    configure_file(branding/${image} ${CMAKE_BINARY_DIR}/share/branding/${image} COPYONLY)
+endforeach()
+INSTALL(FILES branding/branding.xml DESTINATION ${CMAKE_INSTALL_BINDIR})
+list(TRANSFORM Branding_Images PREPEND branding/ OUTPUT_VARIABLE Branding_Image_Paths)
+INSTALL(FILES ${Branding_Image_Paths} DESTINATION share/branding)
 file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 ######################## FreeCADMain ########################
@@ -34,6 +47,18 @@ if(BUILD_GUI)
     target_compile_warn_error(FreeCADMain)
 
     SET_BIN_DIR(FreeCADMain FreeCAD)
+
+    # macOS names the app in the menu bar and Dock after the program file (a symlink is
+    # resolved, so it has to be a copy). Settings still live under "FreeCAD" (see branding.xml).
+    if(APPLE)
+        add_custom_command(TARGET FreeCADMain POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_FILE:FreeCADMain> $<TARGET_FILE_DIR:FreeCADMain>/TrutnaCAD
+        )
+        if(BUILD_WITH_CONDA)
+            INSTALL(PROGRAMS $<TARGET_FILE_DIR:FreeCADMain>/TrutnaCAD DESTINATION ${CMAKE_INSTALL_BINDIR})
+        endif()
+    endif()
 
     if(WIN32)
         INSTALL(TARGETS FreeCADMain

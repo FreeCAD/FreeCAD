@@ -546,6 +546,9 @@ FreeCADGui.Workbench = Workbench
 
 _fc_install_add_workbench_icon_wrapper(Gui)
 
+# Registers Std_CommandSearch ("S" searches the toolbars) before workbench menus are built
+__import__("freecad.gui.CommandSearch")
+
 Gui.addWorkbench(_fc_patch_workbench_icon_object(NoneWorkbench()))
 # init modules
 InitApplications()
@@ -573,6 +576,10 @@ FreeCAD.addTranslatableExportType(
 from PySide import QtCore as _QtCore
 
 _QtCore.QTimer.singleShot(0, lambda: __import__("freecad.gui.Ribbon", fromlist=["install"]).install())
+# Task panel as a permanent pane on the right
+_QtCore.QTimer.singleShot(
+    0, lambda: __import__("freecad.gui.TaskPane", fromlist=["dock_on_right"]).dock_on_right()
+)
 del _QtCore
 
 Log("Init: Running FreeCADGuiInit.py start script... done\n")

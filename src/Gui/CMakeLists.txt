@@ -1511,6 +1511,8 @@ set(FreeCADGui_Scripts
     RemoteDebugger.ui
     RemoteDebugger.py
     Ribbon.py
+    CommandSearch.py
+    TaskPane.py
 )
 
 set(FreeCADGui_Configs

@@ -40,6 +40,7 @@ class DocumentObject;
 
 namespace Gui
 {
+class Command;
 class DocumentObject;
 class Document;
 }  // namespace Gui
@@ -97,6 +98,16 @@ void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 
 // Recomputes and closes a transaction, then resets the transaction id
 void closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj);
+
+/// Records that a constraint is about to be appended to the sketch (connected to
+/// SketchObject::signalConstraintAdded while editing).
+void noteConstraintAdded(Sketcher::SketchObject* obj);
+
+/// Checks the constraints added by a constraint command since the last check. If any is fully
+/// redundant an error is shown and they are not kept: the transaction of @p cmd is aborted, or
+/// without @p cmd the redundant constraints are deleted. Partially redundant constraints are kept
+/// with a warning. @return true if constraints were rejected.
+bool rejectRedundantConstraints(Sketcher::SketchObject* obj, Gui::Command* cmd = nullptr);
 
 /// Release any currently-active handler for the document.
 /// Returns true if a handler was released, and false if not

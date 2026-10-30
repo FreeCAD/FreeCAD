@@ -94,7 +94,7 @@ private:
 }  // namespace
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean Parameters"), true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Combine"), true, parent)
     , ui(new Ui_TaskBooleanParameters)
     , BooleanView(BooleanView)
 {

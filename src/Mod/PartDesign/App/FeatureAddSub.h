@@ -55,6 +55,7 @@ public:
     FeatureAddSub();
 
     void onChanged(const App::Property*) override;
+    void onDocumentRestored() override;
 
     Type getAddSubType();
     BooleanOperation getBooleanOperation();
@@ -72,6 +73,8 @@ public:
 
 protected:
     Type addSubType {Type::Additive};
+    /// The kind of feature this class creates by default, regardless of Operation
+    Type nativeAddSubType {Type::Additive};
     BooleanOperation booleanOperation {BooleanOperation::Union};
     void defineAdditive();
     void defineSubtractive();

@@ -198,7 +198,7 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
     sWhatsThis = "Sketcher_CreateLine";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateLine";
-    sAccel = "G, L";
+    sAccel = "L";  // TrutnaCAD: the one single-key sketch shortcut, as in Fusion
     eType = ForEdit;
 }
 
@@ -358,7 +358,7 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Arc From Center");
+    sMenuText = QT_TR_NOOP("Center Point Arc");
     sToolTipText = QT_TR_NOOP("Creates an arc defined by a center point and an end point");
     sWhatsThis = "Sketcher_CreateArc";
     sStatusTip = sToolTipText;
@@ -390,7 +390,7 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Arc From 3 Points");
+    sMenuText = QT_TR_NOOP("3-Point Arc");
     sToolTipText = QT_TR_NOOP("Creates an arc defined by 2 end points and 1 point on the arc");
     sWhatsThis = "Sketcher_Create3PointArc";
     sStatusTip = sToolTipText;
@@ -586,7 +586,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Circle From Center");
+    sMenuText = QT_TR_NOOP("Center Diameter Circle");
     sToolTipText = QT_TR_NOOP("Creates a circle from a center and rim point");
     sWhatsThis = "Sketcher_CreateCircle";
     sStatusTip = sToolTipText;
@@ -617,7 +617,7 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Circle From 3 Points");
+    sMenuText = QT_TR_NOOP("3-Point Circle");
     sToolTipText = QT_TR_NOOP("Creates a circle from 3 perimeter points");
     sWhatsThis = "Sketcher_Create3PointCircle";
     sStatusTip = sToolTipText;
@@ -657,7 +657,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Ellipse From Center");
+    sMenuText = QT_TR_NOOP("Ellipse");
     sToolTipText = QT_TR_NOOP("Creates an ellipse from a center and rim point");
     sWhatsThis = "Sketcher_CreateEllipseByCenter";
     sStatusTip = sToolTipText;
@@ -790,7 +790,7 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Rectangle");
+    sMenuText = QT_TR_NOOP("2-Point Rectangle");
     sToolTipText = QT_TR_NOOP("Creates a rectangle from 2 corner points");
     sWhatsThis = "Sketcher_CreateRectangle";
     sStatusTip = sToolTipText;
@@ -826,7 +826,7 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Centered Rectangle");
+    sMenuText = QT_TR_NOOP("Center Rectangle");
     sToolTipText = QT_TR_NOOP("Creates a centered rectangle from a center and a corner point");
     sWhatsThis = "Sketcher_CreateRectangle_Center";
     sStatusTip = sToolTipText;
@@ -1254,7 +1254,7 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Slot");
+    sMenuText = QT_TR_NOOP("Center to Center Slot");
     sToolTipText = QT_TR_NOOP("Creates a slot");
     sWhatsThis = "Sketcher_CreateSlot";
     sStatusTip = sToolTipText;
@@ -1285,7 +1285,7 @@ CmdSketcherCreateArcSlot::CmdSketcherCreateArcSlot()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Arc Slot");
+    sMenuText = QT_TR_NOOP("Center Point Arc Slot");
     sToolTipText = QT_TR_NOOP("Creates an arc slot");
     sWhatsThis = "Sketcher_CreateArcSlot";
     sStatusTip = sToolTipText;
@@ -1428,7 +1428,7 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("B-Spline");
+    sMenuText = QT_TR_NOOP("Control Point Spline");
     sToolTipText = QT_TR_NOOP("Creates a B-spline curve defined by control points");
     sWhatsThis = "Sketcher_CreateBSpline";
     sStatusTip = sToolTipText;
@@ -1507,7 +1507,7 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("B-Spline From Knots");
+    sMenuText = QT_TR_NOOP("Fit Point Spline");
     sToolTipText = QT_TR_NOOP("Creates a B-spline from knots, i.e. from interpolation");
     sWhatsThis = "Sketcher_CreateBSplineByInterpolation";
     sStatusTip = sToolTipText;
@@ -1721,7 +1721,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Trim Edge");
+    sMenuText = QT_TR_NOOP("Trim");
     sToolTipText = QT_TR_NOOP("Trims an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Trimming";
     sStatusTip = sToolTipText;
@@ -1751,7 +1751,7 @@ CmdSketcherExtend::CmdSketcherExtend()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Extend Edge");
+    sMenuText = QT_TR_NOOP("Extend");
     sToolTipText = QT_TR_NOOP("Extends an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Extend";
     sStatusTip = sToolTipText;
@@ -1781,7 +1781,7 @@ CmdSketcherSplit::CmdSketcherSplit()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Split Edge");
+    sMenuText = QT_TR_NOOP("Break");
     sToolTipText = QT_TR_NOOP("Splits an edge into 2 segments while preserving constraints");
     sWhatsThis = "Sketcher_Split";
     sStatusTip = sToolTipText;
@@ -1870,7 +1870,7 @@ CmdSketcherProjection::CmdSketcherProjection()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("External Projection");
+    sMenuText = QT_TR_NOOP("Project");
     sToolTipText = QT_TR_NOOP("Creates the projection of external geometry in the sketch plane");
     sWhatsThis = "Sketcher_Projection";
     sStatusTip = sToolTipText;
@@ -1907,7 +1907,7 @@ CmdSketcherIntersection::CmdSketcherIntersection()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("External Intersection");
+    sMenuText = QT_TR_NOOP("Intersect");
     sToolTipText = QT_TR_NOOP("Creates the intersection of external geometry with the sketch plane");
     sWhatsThis = "Sketcher_Intersection";
     sStatusTip = sToolTipText;
