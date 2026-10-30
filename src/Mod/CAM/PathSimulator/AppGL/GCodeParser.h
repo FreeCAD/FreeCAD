@@ -59,6 +59,7 @@ protected:
     const char* ParseFloat(const char* ptr, float* retFloat);
     bool ParseLine(const char* ptr);
     int lastTool = -1;
+    bool mHasR = false;  // a drill cycle's R word was read since the last G80
 };
 
 }  // namespace CAMSimulator
