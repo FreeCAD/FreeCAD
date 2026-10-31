@@ -369,6 +369,13 @@ class TreeWidgetItemDelegate: public QStyledItemDelegate
     // More information: https://github.com/FreeCAD/FreeCAD/pull/13807
     QTreeView* artificial;
 
+    // It is necessary to override the background color of tree cells when styled by a theme
+    // otherwise the stylesheet makes active container hilighting bypassed by the stylesheet
+    mutable QHash<QRgb, QTreeView*> highlighted;
+
+    QTreeView* createStyleTarget() const;
+    QTreeView* styleTarget(const QBrush& background) const;
+
     QRect calculateItemRect(const QStyleOptionViewItem& option) const;
 
 public:
@@ -396,11 +403,34 @@ public:
 TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
-    artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QStringLiteral("DocumentTreeItems"));
-    artificial->setFixedSize(0, 0);  // ensure that it does not render
+    artificial = createStyleTarget();
 }
 
+QTreeView* TreeWidgetItemDelegate::createStyleTarget() const
+{
+    auto target = new QTreeView(qobject_cast<QWidget*>(parent()));
+    target->setObjectName(QStringLiteral("DocumentTreeItems"));
+    target->setFixedSize(0, 0);  // ensure it doesn't render
+    return target;
+}
+
+QTreeView* TreeWidgetItemDelegate::styleTarget(const QBrush& background) const
+{
+    if (background.style() == Qt::NoBrush) {
+        return artificial;
+    }
+
+    QTreeView*& target = highlighted[background.color().rgba()];
+    if (!target) {
+        target = createStyleTarget();
+        target->setStyleSheet(
+            QStringLiteral("QTreeView::item:!selected:!hover { background-color: %1; }")
+                .arg(background.color().name(QColor::HexArgb))
+        );
+        target->ensurePolished();
+    }
+    return target;
+}
 
 QRect TreeWidgetItemDelegate::calculateItemRect(const QStyleOptionViewItem& option) const
 {
@@ -438,7 +468,6 @@ void TreeWidgetItemDelegate::paint(
     initStyleOption(&opt, index);
 
     auto tree = static_cast<TreeWidget*>(parent());
-    auto style = tree->style();
 
     // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
@@ -459,7 +488,9 @@ void TreeWidgetItemDelegate::paint(
             }
         }
     }
-    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, artificial);
+
+    auto target = index.column() == 0 ? styleTarget(opt.backgroundBrush) : artificial;
+    target->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, target);
 }
 
 void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const QModelIndex& index) const
