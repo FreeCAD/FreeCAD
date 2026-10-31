@@ -208,9 +208,10 @@ class ExplodedView:
                 # changes from previous steps.
                 current_placement = calculated_placements.get(obj.Name, obj.Placement)
 
-                # The part's shape is already placed, so its BBox.Center is the
-                # correct global starting position for the explosion line.
-                start_pos = obj.Shape.BoundBox.Center
+                # Apply previous moves to the original bounding box center.
+                start_pos = (current_placement * obj.Placement.inverse()).multVec(
+                    obj.Shape.BoundBox.Center
+                )
 
                 if move.MoveType == "Radial":
                     obj_com, obj_size = UtilsAssembly.getComAndSize(obj)
