@@ -152,9 +152,38 @@ def readObjExtensionFeature(obj):
 
     for extObj, features in obj.ExtensionFeature:
         for sub in features:
-            extFeature, extSub = sub.split(":")
+            extFeature, extSub = _splitSubLink(sub)
+            if extFeature is None:
+                continue
             extensions.append((extObj.Name, extFeature, extSub))
     return extensions
+
+
+def _splitSubLink(sub):
+    """_splitSubLink(sub) ...
+    Parse an ExtensionFeature sub link into a (feature, sub) tuple.
+
+    ExtensionFeature sub links are stored as "feature:sub".  Older documents
+    may have stored the element reference without the colon separator, and
+    FreeCAD may empty the link entirely (e.g. when the referenced geometry is
+    no longer available).  Returns (None, None) for any sub link that cannot
+    be used so callers can skip it gracefully.
+    """
+    if not sub:
+        return (None, None)
+
+    if ":" in sub:
+        feature, subFeature = sub.split(":", 1)
+        return (feature, subFeature)
+
+    # Legacy format: the element reference was stored without the
+    # "feature:sub" colon separator.  A face entry has no specific edge,
+    # while an edge/wire entry can be reused as both feature and sub so the
+    # geometry can still be resolved.
+    if sub.startswith("Face"):
+        return (sub, "")
+
+    return (sub, sub)
 
 
 def getExtensions(obj):
@@ -164,7 +193,10 @@ def getExtensions(obj):
 
     for extObj, features in obj.ExtensionFeature:
         for sub in features:
-            extFeature, extSub = sub.split(":")
+            extFeature, extSub = _splitSubLink(sub)
+            if extFeature is None:
+                Path.Log.debug(f"Skipping unusable extension sub link: {sub!r}")
+                continue
             extensions.append(createExtension(obj, extObj, extFeature, extSub))
             i = i + 1
     return extensions
