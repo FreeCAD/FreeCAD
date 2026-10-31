@@ -204,7 +204,10 @@ class ViewProvider:
     def setEdit(self, vobj=None, mode=0):
         """setEdit(vobj, mode=0) ... initiate editing of receivers model."""
         Path.Log.track()
-        if 0 == mode:
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+            return True
+        elif mode == 0:
             if vobj is None:
                 vobj = self.vobj
             proxy = getattr(vobj.Object, "Proxy", None)
@@ -251,12 +254,12 @@ class ViewProvider:
         if job:
             job.ViewObject.Proxy.resetEditVisibility(job)
 
-    def unsetEdit(self, arg1, arg2):
+    def unsetEdit(self, vobj, mode):
         # Mark as not selected and hide workplane visualization
         self._selected = False
         self.updateWorkplaneVisualization()
 
-        if self.panel:
+        if mode == 0 and self.panel:
             self.panel.reject(False)
 
     def dumps(self):
