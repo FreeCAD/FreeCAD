@@ -20,7 +20,6 @@ class FeatureArea(DocumentObject):
 
     def getArea(self) -> Any:
         """Return a copy of the encapsulated Python Area object."""
-        ...
 
     def setParams(self, **kwargs) -> Any:
         """
@@ -30,6 +29,5 @@ class FeatureArea(DocumentObject):
 
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties.
         """
-        ...
     WorkPlane: Any
     """The current workplane. If no plane is set, it is derived from the added shapes."""

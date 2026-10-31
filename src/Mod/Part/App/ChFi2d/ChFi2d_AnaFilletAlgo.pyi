@@ -32,7 +32,6 @@ class AnaFilletAlgo(PyObjectBase):
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
-        ...
 
     def perform(self, radius: float, /) -> bool:
         """
@@ -40,7 +39,6 @@ class AnaFilletAlgo(PyObjectBase):
 
         Constructs a fillet edge
         """
-        ...
 
     def result(self) -> Tuple[PyObjectBase, PyObjectBase, PyObjectBase]:
         """
@@ -48,4 +46,3 @@ class AnaFilletAlgo(PyObjectBase):
 
         Returns result (fillet edge, modified edge1, modified edge2)
         """
-        ...

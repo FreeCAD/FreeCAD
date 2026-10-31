@@ -30,38 +30,30 @@ def translate(
     Installed translator files are searched from the most recently installed
     translator back to the first installed translator.
     """
-    ...
 
 @callback("translateNoop")
 def QT_TRANSLATE_NOOP(context: str, sourcetext: _T, /) -> _T:
     """Return one string unchanged while marking it for contextual translation."""
-    ...
 
 @callback("translateNoop3")
 def QT_TRANSLATE_NOOP3(context: str, sourcetext: _T, disambiguation: str, /) -> _T:
     """Return one string unchanged while marking it with disambiguation metadata."""
-    ...
 
 @callback("translateNoop")
 def QT_TRANSLATE_NOOP_UTF8(context: str, sourcetext: _T, /) -> _T:
     """Return one UTF-8 string unchanged while marking it for contextual translation."""
-    ...
 
 @callback("trNoop")
 def QT_TR_NOOP(sourcetext: _T, /) -> _T:
     """Return one string unchanged while marking it for default-context translation."""
-    ...
 
 @callback("trNoop")
 def QT_TR_NOOP_UTF8(sourcetext: _T, /) -> _T:
     """Return one UTF-8 string unchanged while marking it for default-context translation."""
-    ...
 
 # Translator installation
 def installTranslator(filename: str, /) -> bool:
     """Load and install one translator file."""
-    ...
 
 def removeTranslators() -> bool:
     """Remove all translators that FreeCAD installed through this helper."""
-    ...

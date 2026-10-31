@@ -64,14 +64,12 @@ class Quantity(PyObjectBase):
         Returns a string representation rounded to number of decimals. If no decimals are specified then
         the internal precision is used
         """
-        ...
 
     @constmethod
     def getUserPreferred(self) -> Tuple[str, float, str]:
         """
         Returns tuple with (quantity incl. unit, translation factor, unit)
         """
-        ...
 
     @overload
     def getValueAs(self, unit: str, /) -> float: ...
@@ -105,7 +103,6 @@ class Quantity(PyObjectBase):
         getValueAs(Qantity('N/m^2')) # a quantity
         getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         """
-        ...
 
     @overload
     def __round__(self, /) -> int: ...
@@ -117,4 +114,3 @@ class Quantity(PyObjectBase):
         Returns the Integral closest to x, rounding half toward even.
         When an argument is passed, work like built-in round(x, ndigits).
         """
-        ...

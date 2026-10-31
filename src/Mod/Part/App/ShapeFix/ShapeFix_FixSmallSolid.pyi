@@ -27,28 +27,23 @@ class ShapeFix_FixSmallSolid(ShapeFix_Root):
         - theMode = 1 use only WidthFactorThreshold parameter
         - theMode = 2 use only VolumeThreshold parameter
         """
-        ...
 
     def setVolumeThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear volume threshold for small solids
         """
-        ...
 
     def setWidthFactorThreshold(self, value: float = -1.0, /) -> None:
         """
         Set or clear width factor threshold for small solids
         """
-        ...
 
     def remove(self, shape: TopoShape, /) -> TopoShape:
         """
         Remove small solids from the given shape
         """
-        ...
 
     def merge(self, shape: TopoShape, /) -> TopoShape:
         """
         Merge small solids in the given shape to adjacent non-small ones
         """
-        ...

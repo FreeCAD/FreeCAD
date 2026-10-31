@@ -52,10 +52,8 @@ class ShapeFix_SplitTool(PyObjectBase):
         """
         Split edge on two new edges using new vertex
         """
-        ...
 
     def cutEdge(self, edge: TopoShapeEdge, pend: float, cut: float, face: TopoShapeFace, /) -> bool:
         """
         Cut edge by parameters pend and cut
         """
-        ...

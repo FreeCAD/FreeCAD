@@ -33,7 +33,6 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
         """
         limitTolerance(shape, tmin, [tmax=0, ShapeEnum=SHAPE])
         """
-        ...
 
     @overload
     def setTolerance(self, shape: TopoShape, precision: float, /) -> None: ...
@@ -45,4 +44,3 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
         """
         setTolerance(shape, precision, [ShapeEnum=SHAPE])
         """
-        ...

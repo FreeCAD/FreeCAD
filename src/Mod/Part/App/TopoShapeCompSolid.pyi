@@ -26,4 +26,3 @@ class TopoShapeCompSolid(TopoShape):
         Add a solid to the compound.
         add(solid)
         """
-        ...

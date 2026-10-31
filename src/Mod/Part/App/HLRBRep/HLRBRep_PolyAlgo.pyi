@@ -69,7 +69,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Loads the shape S into this framework. Warning S must have already been triangulated.
         """
-        ...
 
     def remove(self, i: int, /) -> None:
         """
@@ -77,7 +76,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Remove the shape of index i from this framework.
         """
-        ...
 
     def nbShapes(self) -> int:
         """
@@ -86,7 +84,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Returns the number of shapes in the collection.  It does not modify the
         object's state and is used to retrieve the count of shapes.
         """
-        ...
 
     def shape(self, i: int, /) -> TopoShape:
         """
@@ -94,7 +91,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Return the shape of index i.
         """
-        ...
 
     def index(self, S: TopoShape, /) -> int:
         """
@@ -102,7 +98,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Return the index of the Shape S.
         """
-        ...
 
     def setProjector(
         self,
@@ -117,7 +112,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Set the projector.  With focus left to NaN, an axonometric projector is
         created.  Otherwise, a perspective projector is created with focus focus.
         """
-        ...
 
     def update(self) -> None:
         """
@@ -127,43 +121,36 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         framework. Used after setting the point of view and defining the shape or
         shapes to be visualized.
         """
-        ...
 
     def initHide(self) -> None:
         """
         initHide()
         """
-        ...
 
     def moreHide(self) -> bool:
         """
         moreHide()
         """
-        ...
 
     def nextHide(self) -> None:
         """
         nextHide()
         """
-        ...
 
     def initShow(self) -> None:
         """
         initShow()
         """
-        ...
 
     def moreShow(self) -> bool:
         """
         moreShow()
         """
-        ...
 
     def nextShow(self) -> None:
         """
         nextShow()
         """
-        ...
 
     def outLinedShape(self, S: TopoShape, /) -> TopoShape:
         """
@@ -171,7 +158,6 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 
         Make a shape with the internal outlines in each face of shape S.
         """
-        ...
     TolAngular: float = ...
 
     TolCoef: float = ...

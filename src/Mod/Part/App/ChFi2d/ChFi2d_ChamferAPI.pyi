@@ -36,7 +36,6 @@ class ChFi2d_ChamferAPI(PyObjectBase):
         Initializes a chamfer algorithm: accepts a wire consisting of two edges in a plane,
         or a pair of edges.
         """
-        ...
 
     def perform(self) -> bool:
         """
@@ -44,7 +43,6 @@ class ChFi2d_ChamferAPI(PyObjectBase):
 
         Constructs a chamfer edge
         """
-        ...
 
     def result(self, length1: float, length2: float, /) -> Tuple[object, object, object]:
         """
@@ -52,4 +50,3 @@ class ChFi2d_ChamferAPI(PyObjectBase):
 
         Returns result (chamfer edge, modified edge1, modified edge2)
         """
-        ...

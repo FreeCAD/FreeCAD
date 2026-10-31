@@ -25,20 +25,15 @@ class DrawProjGroup(DrawViewCollection):
 
     def addProjection(self, projection_type: str, /) -> DrawProjGroupItem:
         """addProjection(string projectionType) - Add a new Projection Item to this Group. Returns DocObj."""
-        ...
 
     def removeProjection(self, projection_type: str, /) -> int:
         """removeProjection(string projectionType) - Remove specified Projection Item from this Group. Returns int number of views in Group."""
-        ...
 
     def purgeProjections(self) -> Any:
         """purgeProjections() - Remove all Projection Items from this Group. Returns int number of views in Group (0)."""
-        ...
 
     def getItemByLabel(self, projection_type: str, /) -> DrawProjGroupItem:
         """getItemByLabel(string projectionType) - return specified Projection Item"""
-        ...
 
     def getXYPosition(self, projection_type: str, /) -> Vector:
         """getXYPosition(string projectionType) - return the AutoDistribute position for specified Projection Item"""
-        ...

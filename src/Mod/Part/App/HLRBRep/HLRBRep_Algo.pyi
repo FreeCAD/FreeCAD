@@ -71,7 +71,6 @@ class HLRBRep_Algo(PyObjectBase):
         nbiso desired in visualizing S.  You may add as many shapes as you wish.  Use
         the function add once for each shape.
         """
-        ...
 
     def remove(self, i: int, /) -> None:
         """
@@ -79,7 +78,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Remove the shape of index i from this framework.
         """
-        ...
 
     def index(self, S, /) -> int:
         """
@@ -87,7 +85,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Return the index of the Shape S and return 0 if the Shape S is not found.
         """
-        ...
 
     def outLinedShapeNullify(self) -> None:
         """
@@ -95,7 +92,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Nullify all the results of OutLiner from HLRTopoBRep.
         """
-        ...
 
     def setProjector(
         self,
@@ -110,7 +106,6 @@ class HLRBRep_Algo(PyObjectBase):
         Set the projector.  With focus left to NaN, an axonometric projector is
         created.  Otherwise, a perspective projector is created with focus focus.
         """
-        ...
 
     def nbShapes(self) -> int:
         """
@@ -119,7 +114,6 @@ class HLRBRep_Algo(PyObjectBase):
         Returns the number of shapes in the collection.  It does not modify the
         object's state and is used to retrieve the count of shapes.
         """
-        ...
 
     def showAll(self, i: int = -1, /) -> None:
         """
@@ -128,7 +122,6 @@ class HLRBRep_Algo(PyObjectBase):
         If i < 1, then set all the edges to visible.
         Otherwise, set to visible all the edges of the shape of index i.
         """
-        ...
 
     def hide(self, i: int = -1, j: int = -1, /) -> None:
         """
@@ -138,7 +131,6 @@ class HLRBRep_Algo(PyObjectBase):
         Otherwise, if j < 1, hide the shape of index i.
         Otherwise, hide the shape of index i by the shape of index j.
         """
-        ...
 
     def hideAll(self, i: int = -1, /) -> None:
         """
@@ -147,7 +139,6 @@ class HLRBRep_Algo(PyObjectBase):
         If i < 1, hide all the edges.
         Otherwise, hide all the edges of shape of index i.
         """
-        ...
 
     def partialHide(self) -> None:
         """
@@ -155,7 +146,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Own hiding of all the shapes of the DataStructure without hiding by each other.
         """
-        ...
 
     def select(self, i: int = -1, /) -> None:
         """
@@ -164,7 +154,6 @@ class HLRBRep_Algo(PyObjectBase):
         If i < 1, select all the DataStructure.
         Otherwise, only select the shape of index i.
         """
-        ...
 
     def selectEdge(self, i: int, /) -> None:
         """
@@ -172,7 +161,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Select only the edges of the shape of index i.
         """
-        ...
 
     def selectFace(self, i: int, /) -> None:
         """
@@ -180,7 +168,6 @@ class HLRBRep_Algo(PyObjectBase):
 
         Select only the faces of the shape of index i.
         """
-        ...
 
     def initEdgeStatus(self) -> None:
         """
@@ -189,7 +176,6 @@ class HLRBRep_Algo(PyObjectBase):
         Init the status of the selected edges depending of the back faces of a closed
         shell.
         """
-        ...
 
     def update(self) -> None:
         """
@@ -197,4 +183,3 @@ class HLRBRep_Algo(PyObjectBase):
 
         Update the DataStructure.
         """
-        ...

@@ -52,4 +52,3 @@ class ModelProperty(BaseClass):
         """
         Add a model property column.
         """
-        ...

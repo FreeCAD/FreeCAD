@@ -25,16 +25,13 @@ class ShapeFix_FreeBounds(PyObjectBase):
         """
         Returns compound of closed wires out of free edges
         """
-        ...
 
     def openWires(self) -> TopoShapeCompound:
         """
         Returns compound of open wires out of free edges
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         Returns modified source shape
         """
-        ...

@@ -11,5 +11,3 @@ class DocumentObjectExtension(Extension):
     Author: Stefan Troeger (stefantroeger@gmx.net)
     Licence: LGPL
     """
-
-    ...

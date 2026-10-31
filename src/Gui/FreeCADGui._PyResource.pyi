@@ -14,7 +14,6 @@ class _PyResource:
 
     def value(self, object_name: str, property_name: str, /) -> _PyResourceValue | None:
         """Return one property value from a named child object."""
-        ...
 
     def setValue(
         self,
@@ -24,12 +23,9 @@ class _PyResource:
         /,
     ) -> None:
         """Set one property value on a named child object."""
-        ...
 
     def show(self) -> None:
         """Show the root resource widget."""
-        ...
 
     def connect(self, sender: str, signal: str, callback: Callable[..., object], /) -> None:
         """Connect one named child signal to a Python callback."""
-        ...

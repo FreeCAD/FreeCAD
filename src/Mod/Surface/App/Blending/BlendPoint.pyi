@@ -28,18 +28,15 @@ class BlendPoint(PyObjectBase):
     @constmethod
     def getSize(self) -> Any:
         """Return BlendPoint first derivative length."""
-        ...
 
     def setSize(self, size: float, /) -> None:
         """
         Resizes the BlendPoint vectors by setting the length of the first derivative.
         """
-        ...
 
     def setvectors(self, vectors: Sequence[Vector], /) -> None:
         """
         Set the vectors of BlendPoint.
         """
-        ...
     Vectors: Final[list]
     """The list of vectors of this BlendPoint."""

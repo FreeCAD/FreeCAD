@@ -37,28 +37,24 @@ class GeometrySurface(Geometry):
         """
         Return the shape for the geometry, optionally within the given parametric bounds.
         """
-        ...
 
     @constmethod
     def toShell(self, Bounds: tuple = ..., Segment: bool = ...) -> Any:
         """
         Make a shell of the surface.
         """
-        ...
 
     @constmethod
     def getD0(self, u: float, v: float, /) -> Vector:
         """
         Returns the point at the given parameters (u, v)
         """
-        ...
 
     @constmethod
     def getDN(self, u: float, v: float, nu: int, nv: int, /) -> Any:
         """
         Returns the derivative of order (nu, nv) at the given parameters (u, v)
         """
-        ...
 
     @constmethod
     def value(self, u: float, v: float, /) -> Vector:
@@ -66,7 +62,6 @@ class GeometrySurface(Geometry):
         value(u,v) -> Point
         Computes the point of parameter (u,v) on this surface
         """
-        ...
 
     @constmethod
     def tangent(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -74,7 +69,6 @@ class GeometrySurface(Geometry):
         tangent(u,v) -> (Vector,Vector)
         Computes the tangent of parameter (u,v) on this geometry
         """
-        ...
 
     @constmethod
     def normal(self, u: float, v: float, /) -> Vector:
@@ -82,7 +76,6 @@ class GeometrySurface(Geometry):
         normal(u,v) -> Vector
         Computes the normal of parameter (u,v) on this geometry
         """
-        ...
 
     @overload
     def projectPoint(
@@ -115,7 +108,6 @@ class GeometrySurface(Geometry):
         projectPoint(Vector,"Parameters") -> list of tuples of floats
         projectPoint(Vector,"Point") -> list of points
         """
-        ...
 
     @constmethod
     def isUmbillic(self, u: float, v: float, /) -> bool:
@@ -124,7 +116,6 @@ class GeometrySurface(Geometry):
         Check if the geometry on parameter is an umbillic point,
         i.e. maximum and minimum curvature are equal.
         """
-        ...
 
     @constmethod
     def curvature(self, u: float, v: float, type: str, /) -> float:
@@ -133,7 +124,6 @@ class GeometrySurface(Geometry):
         The value of type must be one of this: Max, Min, Mean or Gauss
         Computes the curvature of parameter (u,v) on this geometry
         """
-        ...
 
     @constmethod
     def curvatureDirections(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
@@ -144,14 +134,12 @@ class GeometrySurface(Geometry):
         The first vector corresponds to the maximum curvature,
         the second vector corresponds to the minimum curvature.
         """
-        ...
 
     @constmethod
     def bounds(self) -> Tuple[float, float, float, float]:
         """
         Returns the parametric bounds (U1, U2, V1, V2) of this trimmed surface.
         """
-        ...
 
     @constmethod
     def isPlanar(self, tolerance: float = 0.0, /) -> bool:
@@ -159,63 +147,54 @@ class GeometrySurface(Geometry):
         isPlanar([float]) -> Bool
         Checks if the surface is planar within a certain tolerance.
         """
-        ...
 
     @constmethod
     def uIso(self, u: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the U isoparametric curve
         """
-        ...
 
     @constmethod
     def vIso(self, v: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the V isoparametric curve
         """
-        ...
 
     @constmethod
     def isUPeriodic(self) -> bool:
         """
         Returns true if this patch is periodic in the given parametric direction.
         """
-        ...
 
     @constmethod
     def isVPeriodic(self) -> bool:
         """
         Returns true if this patch is periodic in the given parametric direction.
         """
-        ...
 
     @constmethod
     def isUClosed(self) -> bool:
         """
         Checks if this surface is closed in the u parametric direction.
         """
-        ...
 
     @constmethod
     def isVClosed(self) -> bool:
         """
         Checks if this surface is closed in the v parametric direction.
         """
-        ...
 
     @constmethod
     def UPeriod(self) -> float:
         """
         Returns the period of this patch in the u parametric direction.
         """
-        ...
 
     @constmethod
     def VPeriod(self) -> float:
         """
         Returns the period of this patch in the v parametric direction.
         """
-        ...
 
     @constmethod
     def parameter(self, point: Vector, precision: float = ..., /) -> float:
@@ -223,7 +202,6 @@ class GeometrySurface(Geometry):
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
         """
-        ...
 
     @overload
     def toBSpline(
@@ -259,14 +237,12 @@ class GeometrySurface(Geometry):
         * precision code (default=0)
         Will raise an exception if surface is infinite in U or V (like planes, cones or cylinders)
         """
-        ...
 
     @constmethod
     def intersect(self, other: object, precision: float = ..., /) -> Any:
         """
         Returns all intersection points/curves between the surface and the curve/surface.
         """
-        ...
 
     @constmethod
     def intersectSS(self, second_surface: Any, precision: float = ..., /) -> Any:
@@ -276,4 +252,3 @@ class GeometrySurface(Geometry):
         * second_surface
         * precision (optional, default=0)
         """
-        ...

@@ -43,20 +43,17 @@ class BezierCurve2d(Curve2d):
         """
         Returns false if the weights of all the poles of this Bezier curve are equal.
         """
-        ...
 
     def isPeriodic(self) -> bool:
         """
         Returns false.
         """
-        ...
 
     def isClosed(self) -> bool:
         """
         Returns true if the distance between the start point and end point of this Bezier curve
         is less than or equal to gp::Resolution().
         """
-        ...
 
     def increase(self, Degree: int, /) -> None:
         """
@@ -64,74 +61,62 @@ class BezierCurve2d(Curve2d):
         Increases the degree of this Bezier curve to Degree.
         As a result, the poles and weights tables are modified.
         """
-        ...
 
     def insertPoleAfter(self, index: int, pole: Any, weight: float = ..., /) -> None:
         """
         Inserts after the pole of index.
         """
-        ...
 
     def insertPoleBefore(self, index: int, pole: Any, weight: float = ..., /) -> None:
         """
         Inserts before the pole of index.
         """
-        ...
 
     def removePole(self, index: int, /) -> None:
         """
         Removes the pole of index Index from the table of poles of this Bezier curve.
         If this Bezier curve is rational, it can become non-rational.
         """
-        ...
 
     def segment(self, u1: float, u2: float, /) -> None:
         """
         Modifies this Bezier curve by segmenting it.
         """
-        ...
 
     def setPole(self, index: int, pole: object, weight: float = ..., /) -> None:
         """
         Set a pole of the Bezier curve.
         """
-        ...
 
     def getPole(self, index: int, /) -> object:
         """
         Get a pole of the Bezier curve.
         """
-        ...
 
     def getPoles(self) -> List[object]:
         """
         Get all poles of the Bezier curve.
         """
-        ...
 
     def setPoles(self, poles: List[object], /) -> None:
         """
         Set the poles of the Bezier curve.
         """
-        ...
 
     def setWeight(self, index: int, weight: float, /) -> None:
         """
         Set a weight of the Bezier curve.
         """
-        ...
 
     def getWeight(self, index: int, /) -> float:
         """
         Get a weight of the Bezier curve.
         """
-        ...
 
     def getWeights(self) -> List[float]:
         """
         Get all weights of the Bezier curve.
         """
-        ...
 
     @constmethod
     def getResolution(self, Tolerance3D: float, /) -> float:
@@ -142,4 +127,3 @@ class BezierCurve2d(Curve2d):
         the parametric tolerance ensures that:
         |t1-t0| < UTolerance =\"\"==> |f(t1)-f(t0)| < Tolerance3D
         """
-        ...

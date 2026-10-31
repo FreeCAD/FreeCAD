@@ -44,4 +44,3 @@ class PartFeature(GeoFeature):
         If not recursive, then return tuple(sourceObject, sourceElementName, [intermediateNames...]),
         otherwise return a list of tuple.
         """
-        ...

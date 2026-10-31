@@ -54,20 +54,17 @@ class CurveConstraint(PyObjectBase):
         Allows you to set the order of continuity required for the constraints: G0, G1, and G2, controlled
         respectively by G0Criterion G1Criterion and G2Criterion.
         """
-        ...
 
     def order(self) -> int:
         """
         Returns the order of constraint, one of G0, G1 or G2
         """
-        ...
 
     def G0Criterion(self, u: float, /) -> float:
         """
         Returns the G0 criterion at the parametric point U on the curve.
         This is the greatest distance allowed between the constraint and the target surface at U.
         """
-        ...
 
     def G1Criterion(self, u: float, /) -> float:
         """
@@ -75,7 +72,6 @@ class CurveConstraint(PyObjectBase):
         This is the greatest angle allowed between the constraint and the target surface at U.
         Raises an exception if the curve is not on a surface.
         """
-        ...
 
     def G2Criterion(self, u: float, /) -> float:
         """
@@ -83,7 +79,6 @@ class CurveConstraint(PyObjectBase):
         This is the greatest difference in curvature allowed between the constraint and the target surface at U.
         Raises an exception if the curve is not on a surface.
         """
-        ...
 
     def setG0Criterion(self) -> None:
         """
@@ -93,7 +88,6 @@ class CurveConstraint(PyObjectBase):
         constraint. If this criterion is not set, TolDist, the
         distance tolerance from the constructor, is used.
         """
-        ...
 
     def setG1Criterion(self) -> None:
         """
@@ -103,7 +97,6 @@ class CurveConstraint(PyObjectBase):
         set, TolAng, the angular tolerance from the constructor, is used.
         Raises an exception if the curve is not on a surface.
         """
-        ...
 
     def setG2Criterion(self) -> None:
         """
@@ -114,36 +107,30 @@ class CurveConstraint(PyObjectBase):
         the constructor, is used.
         Raises ConstructionError if the point is not on the surface.
         """
-        ...
 
     def curve3d(self) -> None:
         """
         Returns a 3d curve associated the surface resulting of the constraints
         """
-        ...
 
     def setCurve2dOnSurf(self, curve: Curve2d, /) -> None:
         """
         Loads a 2d curve associated the surface resulting of the constraints
         """
-        ...
 
     def curve2dOnSurf(self) -> None:
         """
         Returns a 2d curve associated the surface resulting of the constraints
         """
-        ...
 
     def setProjectedCurve(self, curve: Curve2d, tol_u: float, tol_v: float, /) -> None:
         """
         Loads a 2d curve  resulting from the normal projection of
         the curve on the initial surface
         """
-        ...
 
     def projectedCurve(self) -> None:
         """
         Returns the projected curve resulting from the normal projection of the
         curve on the initial surface
         """
-        ...

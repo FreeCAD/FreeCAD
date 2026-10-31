@@ -26,7 +26,6 @@ class ShapeFix_FaceConnect(PyObjectBase):
         """
         add(face1, face2)
         """
-        ...
 
     def build(
         self, shell: TopoShapeShell, sewtolerance: float, fixtolerance: float, /
@@ -34,10 +33,8 @@ class ShapeFix_FaceConnect(PyObjectBase):
         """
         build(shell, sewtolerance, fixtolerance)
         """
-        ...
 
     def clear(self) -> None:
         """
         Clears internal data structure
         """
-        ...

@@ -40,10 +40,8 @@ class SketchGeometryExtension(GeometryExtension):
         """
         Returns a boolean indicating whether the given bit is set.
         """
-        ...
 
     def setGeometryMode(self, mode: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
-        ...

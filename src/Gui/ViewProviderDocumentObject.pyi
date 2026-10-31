@@ -20,7 +20,6 @@ class ViewProviderDocumentObject(ViewProvider):
         """
         Update the view representation of the object
         """
-        ...
     Object: _DocumentObject = ...
     """Set/Get the associated data object"""
 

@@ -25,12 +25,10 @@ class CenterLine(PyObjectBase):
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this centerline"""
-        ...
 
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this centerline"""
-        ...
 
     Tag: Final[str]
     """Gives the tag of the CenterLine as string."""

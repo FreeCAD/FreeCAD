@@ -16,5 +16,3 @@ class SketchObjectSF(Part2DObject):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
-
-    ...

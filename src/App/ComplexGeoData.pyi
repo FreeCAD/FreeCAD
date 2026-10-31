@@ -27,14 +27,12 @@ class ComplexGeoData(Persistence):
         """
         Return a list of element types present in the complex geometric data.
         """
-        ...
 
     @constmethod
     def countSubElements(self, type: str, /) -> int:
         """
         Return the number of elements of a type.
         """
-        ...
 
     @constmethod
     def getFacesFromSubElement(
@@ -43,7 +41,6 @@ class ComplexGeoData(Persistence):
         """
         Return vertexes and faces from a sub-element.
         """
-        ...
 
     @constmethod
     def getLinesFromSubElement(
@@ -52,46 +49,39 @@ class ComplexGeoData(Persistence):
         """
         Return vertexes and lines from a sub-element.
         """
-        ...
 
     @constmethod
     def getPoints(self, accuracy: float, /) -> tuple[list[Vector], list[Vector]]:
         """
         Return a tuple of points and normals with a given accuracy
         """
-        ...
 
     @constmethod
     def getLines(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return a tuple of points and lines with a given accuracy
         """
-        ...
 
     @constmethod
     def getFaces(self, accuracy: float, /) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return a tuple of points and triangles with a given accuracy
         """
-        ...
 
     def applyTranslation(self, translation: Vector, /) -> None:
         """
         Apply an additional translation to the placement
         """
-        ...
 
     def applyRotation(self, rotation: Rotation, /) -> None:
         """
         Apply an additional rotation to the placement
         """
-        ...
 
     def transformGeometry(self, transformation: Matrix, /) -> None:
         """
         Apply a transformation to the underlying geometry
         """
-        ...
 
     def setElementName(
         self,
@@ -116,14 +106,12 @@ class ComplexGeoData(Persistence):
         An element can have multiple mapped names. However, a name can only be mapped
         to one element
         """
-        ...
 
     @constmethod
     def getElementName(self, name: str, direction: int = 0, /) -> str:
         """
         Return a mapped element name or reverse.
         """
-        ...
 
     @constmethod
     def getElementIndexedName(
@@ -132,7 +120,6 @@ class ComplexGeoData(Persistence):
         """
         Return the indexed element name.
         """
-        ...
 
     @constmethod
     def getElementMappedName(
@@ -141,7 +128,6 @@ class ComplexGeoData(Persistence):
         """
         Return the mapped element name
         """
-        ...
 
     BoundBox: Final[BoundBox] = ...
     """Get the bounding box (BoundBox) of the complex geometric data."""

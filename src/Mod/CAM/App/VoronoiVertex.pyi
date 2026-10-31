@@ -24,7 +24,6 @@ class VoronoiVertex(BaseClass):
     @constmethod
     def toPoint(self, z: float = 0.0, /) -> Vector | None:
         """Returns a Vector - or None if not possible"""
-        ...
     Index: Final[int]
     """Internal id of the element."""
 

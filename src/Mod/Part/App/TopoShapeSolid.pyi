@@ -86,7 +86,6 @@ class TopoShapeSolid(TopoShape):
         computes the moment of inertia of the material system about the axis A.
         getMomentOfInertia(point,direction) -> Float
         """
-        ...
 
     @constmethod
     def getRadiusOfGyration(self, point: Vector, direction: Vector, /) -> float:
@@ -94,7 +93,6 @@ class TopoShapeSolid(TopoShape):
         Returns the radius of gyration of the current system about the axis A.
         getRadiusOfGyration(point,direction) -> Float
         """
-        ...
 
     @overload
     @constmethod
@@ -115,4 +113,3 @@ class TopoShapeSolid(TopoShape):
 
         solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
         """
-        ...

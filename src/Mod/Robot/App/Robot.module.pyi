@@ -16,4 +16,3 @@ def simulateToFile(
     /,
 ) -> float:
     """Run one robot simulation, write its result to one file, and return the numeric status."""
-    ...

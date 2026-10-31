@@ -19,4 +19,3 @@ class ViewProviderShapeExtension(ViewProviderExtension):
         """
         Creates a QWidget which allows manipulation of the shape properties
         """
-        ...

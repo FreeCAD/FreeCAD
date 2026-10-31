@@ -27,7 +27,6 @@ class GeoFeature(DocumentObject):
         Returns all possible paths to the root of the document.
         Note: Not implemented.
         """
-        ...
 
     @deprecated(
         deprecated_in="26.3",
@@ -44,7 +43,6 @@ class GeoFeature(DocumentObject):
         Note: This function is not available during recompute, as there the placements of parents
         can change after the execution of this object, rendering the result wrong.
         """
-        ...
 
     @staticmethod
     def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str, /) -> Placement:
@@ -63,7 +61,6 @@ class GeoFeature(DocumentObject):
         Returns the placement of the object in the global coordinate space, respecting all stacked
         relationships.
         """
-        ...
 
     def getPropertyNameOfGeometry(self) -> Optional[str]:
         """
@@ -72,7 +69,6 @@ class GeoFeature(DocumentObject):
         'Mesh' and so on.
         If an object has no such property then None is returned.
         """
-        ...
 
     def getPropertyOfGeometry(self) -> Optional[Any]:
         """
@@ -82,4 +78,3 @@ class GeoFeature(DocumentObject):
         If an object has no such property then None is returned.
         Unlike to getPropertyNameOfGeometry this function returns the geometry, not its name.
         """
-        ...

@@ -51,4 +51,3 @@ class LineSegment(TrimmedCurve):
         """
         Set the parameter range of the underlying line geometry
         """
-        ...

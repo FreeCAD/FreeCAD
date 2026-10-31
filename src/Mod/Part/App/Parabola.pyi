@@ -45,4 +45,3 @@ class Parabola(Conic):
 
         The three points must lie on a plane parallel to xy plane and must not be collinear
         """
-        ...

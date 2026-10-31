@@ -50,7 +50,6 @@ class ShapeFix_Edge(PyObjectBase):
         False, (status OK) if matches or (status FAIL) if no pcurve,
         nothing done.
         """
-        ...
 
     def fixRemoveCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
@@ -59,7 +58,6 @@ class ShapeFix_Edge(PyObjectBase):
         False, (status OK) if matches or (status FAIL) if no 3d curve,
         nothing done.
         """
-        ...
 
     @overload
     def fixAddPCurve(
@@ -95,7 +93,6 @@ class ShapeFix_Edge(PyObjectBase):
         sphere encountered during projection (see class
         ShapeConstruct_ProjectCurveOnSurface for more info).
         """
-        ...
 
     def fixAddCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
@@ -108,7 +105,6 @@ class ShapeFix_Edge(PyObjectBase):
         FAIL1: BRepLib::BuildCurve3d() has failed
         DONE1: 3d curve was added.
         """
-        ...
 
     def fixVertexTolerance(self, edge: TopoShapeEdge, face: TopoShapeFace = ..., /) -> bool:
         """
@@ -121,7 +117,6 @@ class ShapeFix_Edge(PyObjectBase):
         DONE1: the tolerance of first vertex has been increased
         DONE2: the tolerance of last  vertex has been increased.
         """
-        ...
 
     @overload
     def fixReversed2d(self, edge: TopoShapeEdge, face: TopoShapeFace, /) -> bool: ...
@@ -143,7 +138,6 @@ class ShapeFix_Edge(PyObjectBase):
         FAIL2 - no 3d curve
         DONE1 - pcurve was reversed.
         """
-        ...
 
     @overload
     def fixSameParameter(self, edge: TopoShapeEdge, tolerance: float = 0.0, /) -> bool: ...
@@ -186,4 +180,3 @@ class ShapeFix_Edge(PyObjectBase):
         DONE5 - if the edge resulting from BRepLib has been chosen, i.e. variant b. above
         (only for edges with not set SameParameter).
         """
-        ...

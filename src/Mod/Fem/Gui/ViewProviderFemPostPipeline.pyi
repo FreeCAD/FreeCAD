@@ -20,8 +20,6 @@ class ViewProviderFemPostPipeline(ViewProviderDocumentObject):
 
     def transformField(self, field_name: str, field_factor: float, /) -> None:
         """Scales values of given result mesh field by given factor"""
-        ...
 
     def updateColorBars(self) -> None:
         """Update coloring of pipeline and its childs"""
-        ...

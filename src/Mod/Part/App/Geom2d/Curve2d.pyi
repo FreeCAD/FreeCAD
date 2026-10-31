@@ -44,7 +44,6 @@ class Curve2d(Geometry2d):
         """
         Changes the direction of parametrization of the curve.
         """
-        ...
 
     @overload
     @constmethod
@@ -69,7 +68,6 @@ class Curve2d(Geometry2d):
         """
         Return the shape for the geometry.
         """
-        ...
 
     @overload
     @constmethod
@@ -139,7 +137,6 @@ class Curve2d(Geometry2d):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...
 
     @overload
     def length(self, /) -> float: ...
@@ -154,7 +151,6 @@ class Curve2d(Geometry2d):
         Computes the length of a curve
         length([uMin,uMax,Tol]) -> Float
         """
-        ...
 
     @overload
     def parameterAtDistance(self, abscissa: float, /) -> float: ...
@@ -166,54 +162,46 @@ class Curve2d(Geometry2d):
         the given distance from a starting parameter.
         parameterAtDistance([abscissa, startingParameter]) -> Float
         """
-        ...
 
     def value(self, u: float, /) -> Vector:
         """
         Computes the point of parameter u on this curve
         """
-        ...
 
     def tangent(self, u: float, /) -> Vector:
         """
         Computes the tangent of parameter u on this curve
         """
-        ...
 
     def parameter(self, point: Vector, /) -> float:
         """
         Returns the parameter on the curve of the
         nearest orthogonal projection of the point.
         """
-        ...
 
     @constmethod
     def normal(self, pos: float, /) -> Vector:
         """
         Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
     def curvature(self, pos: float, /) -> float:
         """
         Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
     def centerOfCurvature(self, pos: float, /) -> Vector:
         """
         Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined.
         """
-        ...
 
     @constmethod
     def intersectCC(self, other: "Curve2d", tolerance: float = ..., /) -> List[Vector]:
         """
         Returns all intersection points between this curve and the given curve.
         """
-        ...
 
     @overload
     def toBSpline(self, /) -> BSplineCurve: ...
@@ -224,7 +212,6 @@ class Curve2d(Geometry2d):
         Converts a curve of any type (only part from First to Last)
         toBSpline([Float=First, Float=Last]) -> B-Spline curve
         """
-        ...
 
     def approximateBSpline(
         self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
@@ -233,4 +220,3 @@ class Curve2d(Geometry2d):
         Approximates a curve of any type to a B-Spline curve
         approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve
         """
-        ...

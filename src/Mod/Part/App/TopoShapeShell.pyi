@@ -77,7 +77,6 @@ class TopoShapeShell(TopoShape):
         Add a face to the shell.
         add(face)
         """
-        ...
 
     @constmethod
     def getFreeEdges(self) -> object:
@@ -85,7 +84,6 @@ class TopoShapeShell(TopoShape):
         Get free edges as compound.
         getFreeEdges() -> compound
         """
-        ...
 
     @constmethod
     def getBadEdges(self) -> object:
@@ -93,7 +91,6 @@ class TopoShapeShell(TopoShape):
         Get bad edges as compound.
         getBadEdges() -> compound
         """
-        ...
 
     @constmethod
     def makeHalfSpace(self, point: object, /) -> object:
@@ -101,4 +98,3 @@ class TopoShapeShell(TopoShape):
         Make a half-space solid by this shell and a reference point.
         makeHalfSpace(point) -> Solid
         """
-        ...

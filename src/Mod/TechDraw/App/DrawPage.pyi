@@ -23,30 +23,24 @@ class DrawPage(DocumentObject):
 
     def addView(self, view: DrawView, /) -> int:
         """addView(DrawView) - Add a View to this Page"""
-        ...
 
     def removeView(self, view: DrawView, /) -> int:
         """removeView(DrawView) - Remove a View to this Page"""
-        ...
 
     def getViews(self) -> Any:
         """getViews() - returns a list of all the views on page excluding Views inside Collections"""
-        ...
 
     def getAllViews(self) -> Any:
         """getAllViews() - returns a list of all the views on page including Views inside Collections"""
-        ...
 
     def translateLabel(self, context: str, base_name: str, unique_name: str, /) -> None:
         """
         translateLabel(translationContext, objectBaseName, objectUniqueName).
         No return value.  Replace the current label with a translated version where possible.
         """
-        ...
 
     def requestPaint(self) -> Any:
         """Ask the Gui to redraw this page"""
-        ...
 
     PageWidth: Final[float]
     """Returns the width of this page"""

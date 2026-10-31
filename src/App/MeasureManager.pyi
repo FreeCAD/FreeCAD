@@ -36,7 +36,6 @@ class MeasureManager(PyObjectBase):
         measureType : Measure.MeasureBasePython
             The actual measure type.
         """
-        ...
 
     @staticmethod
     @no_args
@@ -44,4 +43,3 @@ class MeasureManager(PyObjectBase):
         """
         Returns a list of all registered measure types.
         """
-        ...

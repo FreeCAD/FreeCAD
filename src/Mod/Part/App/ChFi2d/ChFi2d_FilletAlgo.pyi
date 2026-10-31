@@ -35,7 +35,6 @@ class FilletAlgo(PyObjectBase):
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane
         """
-        ...
 
     def perform(self, radius: float, /) -> bool:
         """
@@ -43,13 +42,11 @@ class FilletAlgo(PyObjectBase):
 
         Constructs a fillet edge
         """
-        ...
 
     def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """
-        ...
 
     def result(self, point: Vector, solution: int = -1, /) -> tuple[object, object, object]:
         """
@@ -57,4 +54,3 @@ class FilletAlgo(PyObjectBase):
 
         Returns result (fillet edge, modified edge1, modified edge2)
         """
-        ...

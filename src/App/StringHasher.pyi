@@ -38,14 +38,12 @@ class StringHasher(BaseClass):
 
         base64: indicate if the input 'txt' is base64 encoded binary data
         """
-        ...
 
     @constmethod
     def isSame(self, other: "StringHasher", /) -> bool:
         """
         Check if two hasher are the same
         """
-        ...
 
     Count: Final[int] = 0
     """Return count of used hashes"""
