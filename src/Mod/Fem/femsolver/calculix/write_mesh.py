@@ -82,13 +82,15 @@ def get_element_variants(ccxwriter):
     if is_reduced:
         face_variant += " reduced"
 
-    # No hourglass control in a CalculiX heat transfer, linear reduced elements give
-    # checkerboard temperatures there
+    # Up to CalculiX 2.23 a heat transfer has no hourglass control, linear reduced elements give
+    # checkerboard temperatures there. Fixed upstream after 2.23, drop this warning once a
+    # CalculiX release has it
     if is_reduced and ccxwriter.analysis_type == "thermomech" and is_linear_mesh(ccxwriter.femmesh):
         FreeCAD.Console.PrintWarning(
             "Reduced integration on a linear mesh (C3D8R, S4R, CPS4R, CPE4R, CAX4R) can give "
-            "wrong temperatures in a CalculiX thermal analysis, without any solver error. "
-            "Set the solver Element Formulation to standard or incompatible mode.\n"
+            "wrong temperatures without any solver error, or a divergence, in a thermal analysis "
+            "with CalculiX 2.23 or older. Set the solver Element Formulation to standard or "
+            "incompatible mode.\n"
         )
 
     return vol_variant, face_variant, edge_variant
