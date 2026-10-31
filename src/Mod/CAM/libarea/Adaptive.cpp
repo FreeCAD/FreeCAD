@@ -2300,18 +2300,20 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // When the interior clearing process completes, we will assert that this region is
             // fully cleared. In order to make the numerics work correctly on this check, we
             // actually need this region to be *slightly* smaller than its ideal/nominal size.
-            // Specifically, each offset operation we perform can produce up to 1 unit of error.
-            // (This is a necessary result of working on an integer grid because there must be an
-            // orientation for input segments where a tiny perturbation in the input orientation
-            // (which can always be achieved, even on an integer grid) changes the output location.
-            // This is an output change of 1 for an input change of epsilon, but the non-dicritized
-            // output would only have changed by epsilon. Therefore, offset operations must have
-            // potential to accumulate error of up to 1 unit per offset operation). We perform 2
-            // offset operations to produce this path (input -> TBP -> BP), and we will do 1 more
-            // when computing the cleared area. So when computing BP, we leave a buffer of 3 units
-            // to ensure it will be seen as fully cleared when checking a correct interior clearing
-            // pass. This process is a bit finicky -- take great care if you modify it!
-            Paths64 boundPath = OffsetPaths(currentTBP, toolRadiusScaled - 3);
+            // Specifically, each offset operation we perform can produce up to sqrt(2) units of
+            // error. (This is a necessary result of working on an integer grid because there must
+            // be an orientation for input segments where a tiny perturbation in the input
+            // orientation (which can always be achieved, even on an integer grid) changes the
+            // output location. This is an output change of 1 for an input change of epsilon, but
+            // the non-dicritized output would only have changed by epsilon. Therefore, offset
+            // operations must have potential to accumulate error of up to sqrt(2) units per offset
+            // operation). We perform 2 offset operations to produce this path (input -> TBP ->
+            // BP), and we will do 1 more when computing the cleared area. So when computing BP, we
+            // leave a buffer of 3 sqrt(2) units to ensure it will be seen as fully cleared when
+            // checking a correct interior clearing pass. This process is a bit finicky -- take
+            // great care if you modify it!
+            Paths64 boundPath
+                = OffsetPaths(currentTBP, toolRadiusScaled - ceil(3 * std::numbers::sqrt2));
 
             // Skip path generation if bounds are fully cleared
             //
@@ -3289,7 +3291,8 @@ void Adaptive2d::ProcessPolyNode(
     boundPaths = SimplifyPaths(boundPaths, CLEAN_POLYGONS_TOLERANCE);
     boundPaths = Union(boundPaths, FillRule::EvenOdd);
 
-    Paths64 tbpMinus = OffsetPaths(toolBoundPaths, -2);  // toolBoundPaths shrunk by some buffer room
+    // toolBoundPaths shrunk by some buffer room: sqrt(2) allowance each for a difference and an offset
+    Paths64 tbpMinus = OffsetPaths(toolBoundPaths, -ceil(2 * std::numbers::sqrt2));
     tbpMinus = SimplifyPaths(tbpMinus, CLEAN_POLYGONS_TOLERANCE);
     tbpMinus = Union(tbpMinus, FillRule::EvenOdd);
 
