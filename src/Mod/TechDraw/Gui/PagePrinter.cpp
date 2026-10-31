@@ -192,7 +192,7 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
         renderPage(vpp, painter, sourceRect, targetRect);
 
-        postRenderCleanUp(ourScene, dPage, ourTemplate);
+        postRenderCleanUp(ourScene, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -276,7 +276,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
 
-        postRenderCleanUp(ourScene, dPage, ourTemplate);
+        postRenderCleanUp(ourScene, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -366,7 +366,7 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    postRenderCleanUp(ourScene, dPage, ourTemplate);
+    postRenderCleanUp(ourScene, ourTemplate);
     ourDoc->setModified(docModifiedState);
 }
 
@@ -428,7 +428,7 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     QRect targetRect(0, 0, twide, thigh);
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    postRenderCleanUp(ourScene, dPage, ourTemplate);
+    postRenderCleanUp(ourScene, ourTemplate);
     ourDoc->setModified(docModifiedState);
 }
 
@@ -448,14 +448,16 @@ void PagePrinter::preRenderSetUp(TechDrawGui::ViewProviderPage* vpp,
 }
 
 void PagePrinter::postRenderCleanUp(QGSPage* ourScene,
-                                    TechDraw::DrawPage* dPage,
                                     QGISVGTemplate* ourTemplate)
 {
     if (!ourScene) {
         return;
     }
+    // The file is already painted. Clear the exporting flag and repaint the
+    // on-screen items. redrawCommand() would recompute the drawing, start
+    // hidden-line removal, and a later event would rewrite dimension references.
     ourScene->setExportingPdf(false);
-    dPage->redrawCommand();
+    ourScene->refreshViews();
     ourTemplate->updateView(true);
 }
 
