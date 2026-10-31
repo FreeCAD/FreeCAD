@@ -106,13 +106,40 @@
            <double>0.5</double>
           </property>
           <property name="value">
-           <double>28.5</double>
+           <double>28.650000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>MeshAngularDeflection</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Part</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="applyToExistingLayout">
+        <item>
+         <spacer name="applyToExistingSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonApplyToExisting">
+          <property name="toolTip">
+           <string>Apply the current tessellation settings to all Part objects in open documents</string>
+          </property>
+          <property name="text">
+           <string>Apply to open documents</string>
           </property>
          </widget>
         </item>
