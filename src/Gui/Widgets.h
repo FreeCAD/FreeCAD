@@ -495,6 +495,30 @@ private:
     QElapsedTimer displayTime;
 };
 
+// -----------------------------------------------------------------------
+
+/**
+ * Qt only word-wraps a tooltip if Qt::mightBeRichText() determines it to be
+ * rich text (bug reported, not fixed - see QTBUG-41051). This is a filter
+ * that wraps plain-text tooltips longer than a certain threshold as minimal
+ * HTML so Qt will wrap it, thus allowing tooltips to be written in plaintext
+ * to ease translation etc.
+ * @author Jonah Hewett
+ */
+
+class GuiExport ToolTipWrapFilter: public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit ToolTipWrapFilter(QObject* parent = nullptr);
+    ~ToolTipWrapFilter() override = default;
+
+protected:
+    bool eventFilter(QObject* o, QEvent* e) override;
+    QString wrapForDisplay(const QString& original, const QWidget* widget);
+};
+
 // ----------------------------------------------------------------------
 
 class GuiExport StatusWidget: public QDialog
