@@ -201,6 +201,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.callback_OK = None
         self.callback_Cancel = None
         self.callback_Apply = None
+        self.attach_pending = False  # object has no attachment yet, it is added on OK/Apply
 
         self._freeze()
 
@@ -223,8 +224,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         self.obj = obj_to_attach
         try:
-            if not self.obj.hasExtension("Part::AttachExtension"):
-                self.obj.addExtension("Part::AttachExtensionPython")
+            self.attach_pending = not self.obj.hasExtension("Part::AttachExtension")
         except Exception:
             pass
 
@@ -232,6 +232,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.attacher = obj_to_attach.Attacher
         elif hasattr(obj_to_attach, "AttacherType"):
             self.attacher = Part.AttachEngine(obj_to_attach.AttacherType)
+        elif self.attach_pending:
+            self.attacher = Part.AttachEngine("Attacher::AttachEngine3D")
         else:
             movable = True
             if not hasattr(self.obj, "Placement"):
@@ -285,19 +287,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.form.attachmentOffsetX.setProperty("unit", "mm")
         self.form.attachmentOffsetY.setProperty("unit", "mm")
         self.form.attachmentOffsetZ.setProperty("unit", "mm")
-        Gui.ExpressionBinding(self.form.attachmentOffsetX).bind(self.obj, "AttachmentOffset.Base.x")
-        Gui.ExpressionBinding(self.form.attachmentOffsetY).bind(self.obj, "AttachmentOffset.Base.y")
-        Gui.ExpressionBinding(self.form.attachmentOffsetZ).bind(self.obj, "AttachmentOffset.Base.z")
-
-        Gui.ExpressionBinding(self.form.attachmentOffsetYaw).bind(
-            self.obj, "AttachmentOffset.Rotation.Yaw"
-        )
-        Gui.ExpressionBinding(self.form.attachmentOffsetPitch).bind(
-            self.obj, "AttachmentOffset.Rotation.Pitch"
-        )
-        Gui.ExpressionBinding(self.form.attachmentOffsetRoll).bind(
-            self.obj, "AttachmentOffset.Rotation.Roll"
-        )
+        if not self.attach_pending:
+            self.bindOffsetExpressions()
 
         self.refLines = [
             self.form.lineRef1,
@@ -546,13 +537,34 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.updatePreview()
 
     # internal methods
+    def bindOffsetExpressions(self):
+        Gui.ExpressionBinding(self.form.attachmentOffsetX).bind(self.obj, "AttachmentOffset.Base.x")
+        Gui.ExpressionBinding(self.form.attachmentOffsetY).bind(self.obj, "AttachmentOffset.Base.y")
+        Gui.ExpressionBinding(self.form.attachmentOffsetZ).bind(self.obj, "AttachmentOffset.Base.z")
+
+        Gui.ExpressionBinding(self.form.attachmentOffsetYaw).bind(
+            self.obj, "AttachmentOffset.Rotation.Yaw"
+        )
+        Gui.ExpressionBinding(self.form.attachmentOffsetPitch).bind(
+            self.obj, "AttachmentOffset.Rotation.Pitch"
+        )
+        Gui.ExpressionBinding(self.form.attachmentOffsetRoll).bind(
+            self.obj, "AttachmentOffset.Rotation.Roll"
+        )
+
     def writeParameters(self):
         "Transfer from the dialog to the object"
+        if self.attach_pending:
+            if not self.attacher.References and self.attacher.Mode == "Deactivated":
+                return
+            self.obj.addExtension("Part::AttachExtensionPython")
+            self.attach_pending = False
+            self.bindOffsetExpressions()
         self.attacher.writeParametersToFeature(self.obj)
 
     def readParameters(self):
         "Transfer from the object to the dialog"
-        if self.obj_is_attachable:
+        if self.obj_is_attachable and not self.attach_pending:
             self.attacher.readParametersFromFeature(self.obj)
 
         plm = self.attacher.AttachmentOffset
