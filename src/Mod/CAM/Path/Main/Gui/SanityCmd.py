@@ -165,8 +165,10 @@ class CommandCAMQuickValidate:
         FreeCAD.Console.PrintMessage(
             translate(
                 "CAM_Sanity",
-                f"=== {len(all_squawks)} issue(s) found, {len(critical_squawks)} critical ===\n",
+                "=== {len(all_squawks)} issue(s) found, {len(critical_squawks)} critical ===\n",
             )
+            .replace("{len(all_squawks)}", str(len(all_squawks)))
+            .replace("{len(critical_squawks)}", str(len(critical_squawks)))
         )
 
 

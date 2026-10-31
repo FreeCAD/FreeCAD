@@ -1432,7 +1432,9 @@ class AreaCalculator:
                     projectedArea = Part.Face(wires).Area
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
-                    translate("Arch", f"Could not project face{face_name} from {self.obj.Label}\n")
+                    translate(
+                        "Arch", "Could not project face{face_name} from {self.obj.Label}\n"
+                    ).format(face_name=face_name, self=self)
                 )
                 return False
 
@@ -1443,9 +1445,9 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if face{face_name} from {self.obj.Label}"
+                    "Could not determine if face{face_name} from {self.obj.Label}"
                     " is vertical: normalAt() failed\n",
-                )
+                ).format(face_name=face_name, self=self)
             )
             return False
 
@@ -1532,9 +1534,9 @@ class AreaCalculator:
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "Arch",
-                                f"Error computing areas for {self.obj.Label}: unable to project "
+                                "Error computing areas for {self.obj.Label}: unable to project "
                                 "non-planar faces with holes. Area values will be reset to 0.\n",
-                            )
+                            ).replace("{self.obj.Label}", self.obj.Label)
                         )
                         self.resetAreas()
                         return
@@ -1559,10 +1561,12 @@ class AreaCalculator:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "Arch",
-                        f"Error computing areas for {self.obj.Label}: unable to project or "
-                        f"make face with normal {face.normalAt(0, 0)}. "
+                        "Error computing areas for {self.obj.Label}: unable to project or "
+                        "make face with normal {face.normalAt(0, 0)}. "
                         "Area values will be reset to 0.\n",
                     )
+                    .replace("{self.obj.Label}", self.obj.Label)
+                    .replace("{face.normalAt(0, 0)}", str(face.normalAt(0, 0)))
                 )
                 self.resetAreas()
                 return
@@ -1580,9 +1584,9 @@ class AreaCalculator:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "Arch",
-                        f"Error computing areas for {self.obj.Label}: unable to combine "
+                        "Error computing areas for {self.obj.Label}: unable to combine "
                         "projected horizontal faces. Area values will be reset to 0.\n",
-                    )
+                    ).format(self=self)
                 )
                 self.resetAreas()
                 return

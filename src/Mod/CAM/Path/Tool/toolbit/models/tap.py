@@ -71,7 +71,14 @@ class ToolBitTap(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         else:
             pitch = "?"
 
-        return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge",
+        return (
+            FreeCAD.Qt.translate(
+                "CAM",
+                "{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge",
+            )
+            .replace("{diameter}", str(diameter))
+            .replace("{pitch}", str(pitch))
+            .replace("{rotation}", str(rotation))
+            .replace("{flutes}", str(flutes))
+            .replace("{cutting_edge_length}", str(cutting_edge_length))
         )

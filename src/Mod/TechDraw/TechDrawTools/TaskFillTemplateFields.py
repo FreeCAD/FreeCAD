@@ -40,6 +40,8 @@ from fractions import Fraction
 import os.path
 import TechDraw
 
+translate = App.Qt.translate
+
 CreatedByChkLst = []
 ScaleChkLst = []
 LabelChkLst = []
@@ -107,11 +109,11 @@ class TaskFillTemplateFields:
                         "Techdraw_FillTemplateFields",
                         "View or projection group missing",
                     )
-                    msg = QtCore.QT_TRANSLATE_NOOP(
+                    msg = translate(
                         "Techdraw_FillTemplateFields",
                         "There must be a view or projection group to"
-                        " establish data for the scale field in " + self.page.Label,
-                    )
+                        " establish data for the scale field in {}",
+                    ).format(self.page.Label)
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
                     msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
@@ -444,11 +446,10 @@ class TaskFillTemplateFields:
                         "Techdraw_FillTemplateFields",
                         "Corresponding template fields missing",
                     )
-                    msg = QtCore.QT_TRANSLATE_NOOP(
+                    msg = translate(
                         "Techdraw_FillTemplateFields",
-                        "There were no corresponding fields found in "
-                        + self.page.Label,
-                    )
+                        "There were no corresponding fields found in {}",
+                    ).format(self.page.Label)
                     msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)

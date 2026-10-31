@@ -44,6 +44,9 @@ class ToolBitRadius(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
         diameter = self.get_property_str("ShankDiameter", "?", precision=3)
 
-        return FreeCAD.Qt.translate(
-            "CAM", f"R{radius} radius mill, {diameter} shank, {flutes}-flute"
+        return (
+            FreeCAD.Qt.translate("CAM", "R{radius} radius mill, {diameter} shank, {flutes}-flute")
+            .replace("{radius}", str(radius))
+            .replace("{diameter}", str(diameter))
+            .replace("{flutes}", str(flutes))
         )

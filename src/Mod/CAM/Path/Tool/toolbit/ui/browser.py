@@ -287,7 +287,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             QMessageBox.critical(
                 self,
                 FreeCAD.Qt.translate("CAM", "Error"),
-                FreeCAD.Qt.translate("CAM", f"Failed to load toolbit: {e}"),
+                FreeCAD.Qt.translate("CAM", "Failed to load toolbit: {e}").format(e=e),
             )
 
     def _on_item_selection_changed(self):

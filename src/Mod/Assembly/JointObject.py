@@ -513,7 +513,13 @@ class Joint:
                         "App::PropertyXLinkSubHidden",
                         reference_attr,
                         connector_label,
-                        QT_TRANSLATE_NOOP("App::Property", f"The {order} reference of the joint"),
+                        (
+                            QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint")
+                            if order == "first"
+                            else QT_TRANSLATE_NOOP(
+                                "App::Property", "The second reference of the joint"
+                            )
+                        ),
                         locked=True,
                     )
 
