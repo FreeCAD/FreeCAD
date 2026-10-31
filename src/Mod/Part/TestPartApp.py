@@ -36,6 +36,7 @@ from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
+from parttests.EdgeSort_tests import EdgeSortTests
 from parttests.TestLinkArrayCircular import TestLinkArrayCircular
 from parttests.TestLinkArrayLinear import TestLinkArrayLinear
 from parttests.TestLinkArrayPath import TestLinkArrayPath
