@@ -57,18 +57,21 @@ public:
     void apply() override;
 
     double getValue() const;
-    bool getReversed() const;
     bool getIntersection() const;
-    int getMode() const;
     int getJoinType() const;
+    int getSelectionMode() const;
+    double getCentering() const;
 
 private Q_SLOTS:
-    void onValueChanged(double angle);
-    void onModeChanged(int mode);
+    void onValueChanged(double size);
     void onJoinTypeChanged(int join);
-    void onReversedChanged(bool on);
     void onIntersectionChanged(bool on);
     void onRefDeleted() override;
+    void onSelectionModeChanged(int selectionMode);
+    void onCenteringValueChanged(double value);
+    void onSetInside();
+    void onSetRectoVerso();
+    void onSetOutside();
 
 protected:
     void setButtons(const selectionModes mode) override;
@@ -79,9 +82,9 @@ private:
     void addContainerWidget();
     void initControls();
     void setupConnections();
-    void updateModeControls(int mode);
     PartDesign::Thickness* onBeforeChange();
     void onAfterChange(PartDesign::Thickness* obj);
+    void setCenteringValue(double size);
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
