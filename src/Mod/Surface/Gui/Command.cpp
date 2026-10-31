@@ -352,6 +352,87 @@ bool CmdSurfaceSections::isActive()
     return hasActiveDocument();
 }
 
+DEF_STD_CMD_A(CmdSurfaceIntersectionCurve)
+
+CmdSurfaceIntersectionCurve::CmdSurfaceIntersectionCurve()
+    : Command("Surface_IntersectionCurve")
+{
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Intersection Curve");
+    sToolTipText = QT_TR_NOOP(
+        "Creates intersection curves or points from two shapes, faces, or edges.\n"
+        "Two whole curve profiles are extruded along their normals in Automatic mode.\n"
+        "Use Direct mode to intersect curves without extrusion."
+    );
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Surface_IntersectionCurve";
+    sPixmap = "Surface_IntersectionCurve";
+}
+
+void CmdSurfaceIntersectionCurve::activated(int message)
+{
+    Q_UNUSED(message);
+    const auto selection = getSelection().getSelectionEx();
+    std::vector<std::pair<const Gui::SelectionObject*, std::string>> inputs;
+    for (const auto& item : selection) {
+        if (item.hasSubNames()) {
+            for (const auto& sub : item.getSubNames()) {
+                inputs.emplace_back(&item, sub);
+            }
+        }
+        else {
+            inputs.emplace_back(&item, "");
+        }
+    }
+    if (
+        inputs.size() != 2
+        || !Part::Feature::hasShapeOwner(inputs.front().first->getObject(), inputs.front().second.c_str())
+        || !Part::Feature::hasShapeOwner(inputs.back().first->getObject(), inputs.back().second.c_str())
+    ) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Surface_IntersectionCurve", "Invalid selection"),
+            qApp->translate("Surface_IntersectionCurve", "Select two shapes, faces, or edges.")
+        );
+        return;
+    }
+
+    const std::string name = getUniqueObjectName("IntersectionCurve");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create intersection curve"));
+    runCommand(
+        Doc,
+        QStringLiteral("App.ActiveDocument.addObject('Surface::IntersectionCurve', '%1')")
+            .arg(QString::fromStdString(name))
+            .toUtf8()
+    );
+    for (size_t index = 0; index < inputs.size(); ++index) {
+        const auto& [item, sub] = inputs.at(index);
+        const Gui::SelectionChanges change(
+            Gui::SelectionChanges::AddSelection,
+            item->getDocName(),
+            item->getFeatName(),
+            sub.c_str()
+        );
+        const Gui::SelectionObject input(change);
+        runCommand(
+            Doc,
+            QStringLiteral("App.ActiveDocument.%1.Curve%2 = %3")
+                .arg(QString::fromStdString(name))
+                .arg(index + 1)
+                .arg(QString::fromStdString(input.getAsPropertyLinkSubString()))
+                .toUtf8()
+        );
+    }
+    updateActive();
+    commitCommand();
+}
+
+bool CmdSurfaceIntersectionCurve::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog();
+}
+
 void CreateSurfaceCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -364,4 +445,5 @@ void CreateSurfaceCommands()
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
+    rcCmdMgr.addCommand(new CmdSurfaceIntersectionCurve());
 }
