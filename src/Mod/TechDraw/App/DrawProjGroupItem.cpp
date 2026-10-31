@@ -142,7 +142,12 @@ void DrawProjGroupItem::postHlrTasks()
     if (pGroup) {
         //DPGI has no geometry until HLR has finished, and the DPG can not properly
         //AutoDistibute until all its items have geometry.
-        autoPosition();
+        // Positioning now, while a sibling is still in HLR, uses that
+        // sibling's empty or stale size and moves this view. After the last
+        // item reports ready, the group repositions every item anyway.
+        if (!pGroup->waitingForChildren()) {
+            autoPosition();
+        }
 
         pGroup->reportReady();     //tell the parent DPG we are ready
     }
@@ -160,11 +165,17 @@ void DrawProjGroupItem::autoPosition()
     Base::Vector3d newPos;
     if (pGroup && pGroup->AutoDistribute.getValue()) {
         newPos = pGroup->getXYPosition(Type.getValueAsString());
-        X.setValue(newPos.x);
-        Y.setValue(newPos.y);
+        // This runs after every HLR pass, including the one after a file is
+        // opened. Writing the same X/Y touches the view and marks the
+        // document modified, so only write a position that moved.
+        if (!DrawUtil::fpCompare(X.getValue(), newPos.x)
+            || !DrawUtil::fpCompare(Y.getValue(), newPos.y)) {
+            X.setValue(newPos.x);
+            Y.setValue(newPos.y);
+            purgeTouched();               //prevents "still touched after recompute" message
+            pGroup->purgeTouched();  //changing dpgi x, y marks parent dpg as touched
+        }
         requestPaint();
-        purgeTouched();               //prevents "still touched after recompute" message
-        pGroup->purgeTouched();  //changing dpgi x, y marks parent dpg as touched
     }
 }
 
