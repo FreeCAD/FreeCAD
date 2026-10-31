@@ -44,6 +44,8 @@
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMetaObject>
+#include <QPointer>
 #include <QScreen>
 #include <QTextStream>
 #include <QToolTip>
@@ -3554,6 +3556,23 @@ bool ViewProviderSketch::doubleClicked()
 {
     Gui::Document* document = Gui::Application::Instance->activeDocument();
     if (document) {
+        if (auto* activeView = document->getActiveView()) {
+            // TechDraw pages expose this optional hook. Check for it before invoking
+            // so ordinary 3D views do not produce a "No such method" warning.
+            if (activeView->metaObject()->indexOfMethod("editSketchByName(QString)") >= 0) {
+                bool handled = false;
+                const bool invoked = QMetaObject::invokeMethod(
+                    activeView,
+                    "editSketchByName",
+                    Qt::DirectConnection,
+                    Q_RETURN_ARG(bool, handled),
+                    Q_ARG(QString, QString::fromUtf8(getSketchObject()->getNameInDocument()))
+                );
+                if (invoked && handled) {
+                    return true;
+                }
+            }
+        }
         if (document->getInEdit() == this && isInEditMode()) {
             Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ViewSketch");
         }
@@ -4229,6 +4248,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     preselection.reset();
     selection.reset();
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
+    if (auto* activeView = getDocument()->getActiveView();
+        activeView && activeView->property("SketcherLightBackground").toBool()) {
+        editCoinManager->useLightBackgroundColors();
+    }
     snapManager = std::make_unique<SnapManager>(*this);
 
 
@@ -4779,7 +4802,27 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         editCoinManager->updateAxesLength(vpBBox);
     }
 
-    drawGrid(true);
+    if (view && view->property("SketcherDeferredGridUpdate").toBool()) {
+        // Rebuilding the grid mutates its Coin scene graph. Do not do that
+        // re-entrantly from Coin's camera-sensor queue in the TechDraw editor.
+        // Using the view as the invocation context also cancels the callback if
+        // the temporary editor is destroyed before it runs.
+        const QPointer<Gui::View3DInventor> guardedView(view);
+        const std::weak_ptr<void> lifetime(deferredCallbackLifetime);
+        QMetaObject::invokeMethod(
+            view,
+            [this, guardedView, lifetime]() {
+                if (!lifetime.expired() && guardedView && isInEditMode()
+                    && getActiveView() == guardedView) {
+                    drawGrid(true);
+                }
+            },
+            Qt::QueuedConnection
+        );
+    }
+    else {
+        drawGrid(true);
+    }
 }
 
 int ViewProviderSketch::getPreselectPoint() const
