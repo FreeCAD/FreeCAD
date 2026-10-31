@@ -1,14 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Axis import Axis as AxisPy
 from Vector import Vector
 from Placement import Placement
 from Rotation import Rotation
-from typing import Union
 
 @export(
     Constructor=True,
@@ -27,22 +24,22 @@ class CoordinateSystem(PyObjectBase):
     Licence: LGPL
     """
 
-    Axis: AxisPy = None
+    Axis: AxisPy
     """Set or get axis."""
 
-    XDirection: Vector = None
+    XDirection: Vector
     """Set or get X-direction."""
 
-    YDirection: Vector = None
+    YDirection: Vector
     """Set or get Y-direction."""
 
-    ZDirection: Vector = None
+    ZDirection: Vector
     """Set or get Z-direction."""
 
-    Position: Vector = None
+    Position: Vector
     """Set or get position."""
 
-    def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector, /) -> None:
+    def setAxes(self, axis: AxisPy | Vector, xDir: Vector, /) -> None:
         """
         Set axis or Z-direction, and X-direction.
         The X-direction is determined from the orthonormal compononent of `xDir`
@@ -51,16 +48,14 @@ class CoordinateSystem(PyObjectBase):
         axis : Base.Axis, Base.Vector
         xDir : Base.Vector
         """
-        ...
 
     @constmethod
-    def displacement(self, coordSystem2: "CoordinateSystem", /) -> Placement:
+    def displacement(self, coordSystem2: CoordinateSystem, /) -> Placement:
         """
         Computes the placement from this to the passed coordinate system `coordSystem2`.
 
         coordSystem2 : Base.CoordinateSystem
         """
-        ...
 
     def transformTo(self, vector: Vector, /) -> Vector:
         """
@@ -68,15 +63,13 @@ class CoordinateSystem(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
-    def transform(self, trans: Union[Rotation, Placement], /) -> None:
+    def transform(self, trans: Rotation | Placement, /) -> None:
         """
         Applies a transformation on this coordinate system.
 
         trans : Base.Rotation, Base.Placement
         """
-        ...
 
     def setPlacement(self, placement: Placement, /) -> None:
         """
@@ -84,4 +77,3 @@ class CoordinateSystem(PyObjectBase):
 
         placement : Base.Placement
         """
-        ...

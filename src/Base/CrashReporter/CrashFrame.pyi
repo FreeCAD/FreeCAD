@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
-from Metadata import export, forward_declarations
-from PyObjectBase import PyObjectBase
+from Base.Metadata import export, forward_declarations
+from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
 @export(
@@ -23,16 +21,16 @@ class CrashFrame(PyObjectBase):
     A single frame of data from a (possibly symbolicated) crash report.
     """
 
-    address: Final[int] = 0
+    address: Final[int]
 
-    module_offset: Final[int | None] = None
+    module_offset: Final[int | None]
 
-    module: Final[str] = ""
+    module: Final[str]
 
-    symbol: Final[str | None] = None
+    symbol: Final[str | None]
 
-    file: Final[str | None] = None
+    file: Final[str | None]
 
-    line: Final[int | None] = None
+    line: Final[int | None]
 
-    is_inline: Final[bool] = False
+    is_inline: Final[bool]

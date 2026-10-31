@@ -2,75 +2,66 @@
 
 """Typed public method signatures for the ``FreeCADGui._MDIView`` PyCXX type."""
 
-from __future__ import annotations
+# source: `Gui/MDIViewPy.cpp`
 
 from typing import Literal, TypeAlias, overload
 
 from Base.Metadata import deprecated
-from FreeCAD import DocumentObject
+from App.DocumentObject import DocumentObject
 
 _ActiveObjectReference: TypeAlias = tuple[DocumentObject, DocumentObject, str]
-_EmptyActiveObjectReference: TypeAlias = tuple[None, None, str]
+_EmptyActiveObjectReference: TypeAlias = tuple[None, None, Literal[""]]
 
 class _MDIView:
     """Base MDI view wrapper for FreeCAD GUI view types."""
 
     def printView(self) -> None:
         """Print the current view."""
-        ...
 
     def printPdf(self) -> None:
         """Export the current view to PDF."""
-        ...
 
     def printPreview(self) -> None:
         """Open a print preview for the current view."""
-        ...
 
     def undoActions(self) -> list[str]:
         """Return the undo actions exposed by the view."""
-        ...
 
     def redoActions(self) -> list[str]:
         """Return the redo actions exposed by the view."""
-        ...
 
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="sendMessage")
     def message(self, message: str, /) -> bool:
         """Handle one generic message in the view."""
-        ...
 
     def sendMessage(self, message: str, /) -> bool:
         """Send one generic message to the view."""
-        ...
 
     def supportMessage(self, message: str, /) -> bool:
         """Return whether the view supports one generic message."""
-        ...
 
     def fitAll(self) -> None:
         """Fit the full visible content in the view."""
-        ...
 
     def setActiveObject(
         self,
         name: str,
         document_object: DocumentObject | None = None,
-        subname: str | None = None,
+        subname: str = ...,
         /,
     ) -> None:
         """Set one active object slot for the view."""
-        ...
-
-    @overload
-    def getActiveObject(self, name: str, resolve: Literal[True] = True, /) -> DocumentObject | None:
-        """Return the resolved active object for one slot name."""
-        ...
 
     @overload
     def getActiveObject(
-        self, name: str, resolve: Literal[False], /
+        self,
+        name: str,
+        resolve: Literal[False],
+        /,
     ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
+    @overload
+    def getActiveObject(self, name: str, resolve: bool = True, /) -> DocumentObject | None:
+        """Return the resolved active object for one slot name."""
+
     def cast_to_base(self) -> _MDIView:
         """Return this view as the base MDI view wrapper."""
-        ...

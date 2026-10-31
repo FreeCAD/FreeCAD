@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
 from Matrix import Matrix as MatrixPy
 from Rotation import Rotation as RotationPy
 from Vector import Vector
-from typing import Sequence, overload
+from typing import Any, overload
+from collections.abc import Sequence
 
 @export(
     Constructor=True,
@@ -62,34 +61,32 @@ class Placement(PyObjectBase):
     @property
     def Base(self) -> Vector:
         """Vector to the Base Position of the Placement."""
-        ...
 
     @Base.setter
-    def Base(self, value: Vector | Sequence[float]) -> None: ...
+    def Base(self, value: Vector | Sequence[float], /) -> None: ...
     @property
     def Rotation(self) -> RotationPy:
         """Orientation of the placement expressed as rotation."""
-        ...
 
     @Rotation.setter
-    def Rotation(self, value: RotationPy | tuple[float, float, float, float]) -> None: ...
+    def Rotation(self, value: RotationPy | tuple[float, float, float, float], /) -> None: ...
 
-    Matrix: MatrixPy = ...
+    Matrix: MatrixPy
     """Set/get matrix representation of the placement."""
 
     # fmt: off
     @overload
     def __init__(self) -> None: ...
     @overload
-    def __init__(self, placement: "Placement") -> None: ...
+    def __init__(self, placement: Placement, /) -> None: ...
     @overload
-    def __init__(self, matrix: MatrixPy) -> None: ...
+    def __init__(self, matrix: MatrixPy, /) -> None: ...
     @overload
-    def __init__(self, base: Vector, rotation: RotationPy) -> None: ...
+    def __init__(self, base: Vector, rotation: RotationPy, /) -> None: ...
     @overload
-    def __init__(self, base: Vector, rotation: RotationPy, center: Vector) -> None: ...
+    def __init__(self, base: Vector, rotation: RotationPy, center: Vector, /) -> None: ...
     @overload
-    def __init__(self, base: Vector, axis: Vector, angle: float) -> None: ...
+    def __init__(self, base: Vector, axis: Vector, angle: float, /) -> None: ...
     # fmt: on
 
     @typing_only
@@ -97,19 +94,20 @@ class Placement(PyObjectBase):
     def __mul__(self, vector: Vector, /) -> Vector: ...
     @typing_only
     @overload
-    def __mul__(self, rotation: RotationPy, /) -> "Placement": ...
+    def __mul__(self, rotation: RotationPy, /) -> Placement: ...
     @typing_only
     @overload
     def __mul__(self, matrix: MatrixPy, /) -> MatrixPy: ...
     @typing_only
     @overload
-    def __mul__(self, placement: "Placement", /) -> "Placement": ...
+    def __mul__(self, placement: Placement, /) -> Placement: ...
+    @typing_only
+    def __pow__(self, other: float, /) -> Placement: ...
     @constmethod
-    def copy(self) -> "Placement":
+    def copy(self) -> Placement:
         """
         Returns a copy of this placement.
         """
-        ...
 
     def move(self, vector: Vector, /) -> None:
         """
@@ -118,7 +116,6 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     def translate(self, vector: Vector, /) -> None:
         """
@@ -127,14 +124,23 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector by which to move the placement.
         """
-        ...
 
     @overload
     def rotate(
-        self, center: Sequence[float], axis: Sequence[float], angle: float, *, comp: bool = False
+        self,
+        /,
+        center: Sequence[float],
+        axis: Sequence[float],
+        angle: float,
+        *,
+        comp: bool = False,
     ) -> None: ...
     @overload
-    def rotate(self, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:
+    def rotate(
+        self, /, center: Vector, axis: Vector, angle: float, *, comp: bool = False
+    ) -> None: ...
+    @overload
+    def rotate(self, /, *args: Any, **kwargs: Any) -> None:
         """
         Rotate the current placement around center and axis with the given angle.
         This method is compatible with TopoShape.rotate() if the (optional) keyword
@@ -151,9 +157,8 @@ class Placement(PyObjectBase):
         behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
         """
 
-    def rotate(self, *args, **kwargs) -> None: ...
     @constmethod
-    def multiply(self, placement: "Placement", /) -> "Placement":
+    def multiply(self, placement: Placement, /) -> Placement:
         """
         Right multiply this placement with another placement.
         Also available as `*` operator.
@@ -161,7 +166,6 @@ class Placement(PyObjectBase):
         placement : Base.Placement
             Placement by which to multiply this placement.
         """
-        ...
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
@@ -171,24 +175,21 @@ class Placement(PyObjectBase):
         vector : Base.Vector
             Vector to be transformed.
         """
-        ...
 
     @constmethod
-    def toMatrix(self) -> Matrix:
+    def toMatrix(self) -> MatrixPy:
         """
         Compute the matrix representation of the placement.
         """
-        ...
 
     @constmethod
-    def inverse(self) -> "Placement":
+    def inverse(self) -> Placement:
         """
         Compute the inverse placement.
         """
-        ...
 
     @constmethod
-    def pow(self, t: float, shorten: bool = True, /) -> "Placement":
+    def pow(self, t: float, shorten: bool = True, /) -> Placement:
         """
         Raise this placement to real power using ScLERP interpolation.
         Also available as `**` operator.
@@ -199,10 +200,9 @@ class Placement(PyObjectBase):
             If True, ensures rotation quaternion is net positive to make
             the path shorter.
         """
-        ...
 
     @constmethod
-    def sclerp(self, placement2: "Placement", t: float, shorten: bool = True, /) -> "Placement":
+    def sclerp(self, placement2: Placement, t: float, shorten: bool = True, /) -> Placement:
         """
         Screw Linear Interpolation (ScLERP) between this placement and `placement2`.
         Interpolation is a continuous motion along a helical path parametrized by `t`
@@ -218,10 +218,9 @@ class Placement(PyObjectBase):
             If True, the signs are harmonized before interpolation and the interpolation
             takes the shorter path.
         """
-        ...
 
     @constmethod
-    def slerp(self, placement2: "Placement", t: float, /) -> "Placement":
+    def slerp(self, placement2: Placement, t: float, /) -> Placement:
         """
         Spherical Linear Interpolation (SLERP) between this placement and `placement2`.
         This function performs independent interpolation of rotation and movement.
@@ -233,7 +232,6 @@ class Placement(PyObjectBase):
         t : float
             Parameter of the path. t=0 returns this placement, t=1 returns `placement2`.
         """
-        ...
 
     @constmethod
     def isIdentity(self, tol: float = 0.0, /) -> bool:
@@ -244,12 +242,10 @@ class Placement(PyObjectBase):
             Tolerance used to check for identity.
             If tol is negative or zero, no tolerance is used.
         """
-        ...
 
     @constmethod
-    def isSame(self, other: "Placement", tol: float = 0.0, /) -> bool:
+    def isSame(self, other: Placement, tol: float = 0.0, /) -> bool:
         """
         Checks whether this and the given placement are the same.
         The default tolerance is set to 0.0
         """
-        ...
