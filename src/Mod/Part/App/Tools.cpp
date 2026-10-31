@@ -29,9 +29,11 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepCheck_Analyzer.hxx>
 #include <BRepIntCurveSurface_Inter.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepTools.hxx>
 #include <CSLib.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <Geom_Line.hxx>
@@ -53,6 +55,9 @@
 #include <Poly_Connect.hxx>
 #include <Poly_Triangulation.hxx>
 #include <Precision.hxx>
+#include <ShapeAnalysis.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_Wire.hxx>
 #include <Standard_Mutex.hxx>
 #include <Standard_TypeMismatch.hxx>
 #include <Standard_Version.hxx>
@@ -62,6 +67,7 @@
 #include <TColStd_Array1OfInteger.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TopoDS.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #if OCC_VERSION_HEX < 0x070600
 # include <Adaptor3d_HCurveOnSurface.hxx>
 # include <GeomAdaptor_HCurve.hxx>
@@ -904,4 +910,44 @@ Standard_Real Part::Tools::getDeflection(const Bnd_Box& bounds, double deviation
 Standard_Real Part::Tools::getDeflection(const TopoDS_Shape& shape, double deviation)
 {
     return getDeflection(getBounds(shape), deviation);
+}
+
+TopoDS_Shape Part::Tools::validateFace(const TopoDS_Face& face)
+{
+    BRepCheck_Analyzer aChecker(face);
+    if (!aChecker.IsValid()) {
+        TopoDS_Wire outerwire = BRepTools::OuterWire(face);
+        TopTools_IndexedMapOfShape myMap;
+        myMap.Add(outerwire);
+
+        TopExp_Explorer xp(face, TopAbs_WIRE);
+        ShapeFix_Wire fix;
+        fix.SetFace(face);
+        fix.Load(outerwire);
+        fix.Perform();
+        BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
+        while (xp.More()) {
+            if (!myMap.Contains(xp.Current())) {
+                fix.Load(TopoDS::Wire(xp.Current()));
+                fix.Perform();
+                mkFace.Add(fix.WireAPIMake());
+            }
+            xp.Next();
+        }
+
+        aChecker.Init(mkFace.Face());
+        if (!aChecker.IsValid()) {
+            ShapeFix_Shape fix(mkFace.Face());
+            fix.SetPrecision(Precision::Confusion());
+            fix.SetMaxTolerance(Precision::Confusion());
+            fix.Perform();
+            fix.FixWireTool()->Perform();
+            fix.FixFaceTool()->Perform();
+            return fix.Shape();
+        }
+        else {
+            return mkFace.Face();
+        }
+    }
+    return face;
 }
