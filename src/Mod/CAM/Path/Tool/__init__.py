@@ -10,6 +10,7 @@ from .library.serializers import FCTLSerializer
 from .toolbit import ToolBit
 from .toolbit.serializers import FCTBSerializer
 from .shape import ToolBitShape, ToolBitShapePngIcon, ToolBitShapeSvgIcon
+from .holder import ToolHolder, ToolHolderSerializer
 
 # Register asset classes and serializers.
 cam_assets.register_asset(Library, FCTLSerializer)
@@ -17,6 +18,7 @@ cam_assets.register_asset(ToolBit, FCTBSerializer)
 cam_assets.register_asset(ToolBitShape, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
+cam_assets.register_asset(ToolHolder, ToolHolderSerializer)
 
 # For backward compatibility with files saved before the toolbit rename
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.

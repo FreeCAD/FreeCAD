@@ -1,0 +1,30 @@
+{
+  "name": "Router collet nut, 22 mm hex",
+  "notes": "Hex nut 22 mm across the flats, drawn round across its corners. Fits compact routers such as the Makita RT0701 and DeWalt DWP611. The height is approximate: measure yours.",
+  "profile": [
+    [
+      0,
+      0
+    ],
+    [
+      11.7,
+      0
+    ],
+    [
+      12.7,
+      1.0
+    ],
+    [
+      12.7,
+      17
+    ],
+    [
+      0,
+      17
+    ]
+  ],
+  "source": "Generic; across-flats sizes from the routers' wrenches",
+  "type": "Router",
+  "units": "mm",
+  "version": 1
+}
