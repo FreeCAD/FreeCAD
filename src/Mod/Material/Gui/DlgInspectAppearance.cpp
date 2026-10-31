@@ -153,7 +153,7 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
             else {
                 ui->editObjectLabel->setText(QStringLiteral(""));
             }
-            ui->editObjectName->setText(QLatin1String(obj->getNameInDocument()));
+            ui->editObjectName->setText(QString::fromUtf8(obj->getNameInDocument()));
 
             auto subElement = Gui::Selection().getSelectionEx();
             if (subElement.size() > 0) {

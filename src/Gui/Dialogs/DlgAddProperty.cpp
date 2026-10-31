@@ -182,7 +182,7 @@ int DlgAddProperty::findLabelRow(const char* labelName, QFormLayout* layout)
         }
 
         if (auto label = qobject_cast<QLabel*>(labelItem->widget())) {
-            if (label->objectName() == QString::fromLatin1(labelName)) {
+            if (label->objectName() == QString::fromUtf8(labelName)) {
                 return row;
             }
         }
@@ -326,7 +326,7 @@ void DlgAddProperty::initializeTypes()
 
     const auto addTypes = [this, &lastType](const std::vector<Base::Type>& types) {
         for (const auto& type : types) {
-            ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
+            ui->comboBoxType->addItem(QString::fromUtf8(type.getName()));
             if (type == lastType) {
                 ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count() - 1);
             }
@@ -983,7 +983,7 @@ App::Property* DlgAddProperty::createProperty()
         critical(
             QObject::tr("Add property"),
             QObject::tr("Failed to add property to '%1': %2")
-                .arg(QString::fromLatin1(container->getFullName().c_str()), QString::fromUtf8(e.what()))
+                .arg(QString::fromUtf8(container->getFullName().c_str()), QString::fromUtf8(e.what()))
         );
         return nullptr;
     }
