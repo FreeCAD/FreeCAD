@@ -46,11 +46,7 @@ class EditTextDialog: public QDialog
     Q_OBJECT
 
 public:
-    explicit EditTextDialog(
-        ViewProviderSketch* viewProvider,
-        int constraintIndex,
-        QWidget* parent = nullptr
-    );
+    explicit EditTextDialog(ViewProviderSketch* viewProvider, int constraintIndex, QWidget* parent);
     ~EditTextDialog() override;
 
 private Q_SLOTS:
