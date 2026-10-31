@@ -54,6 +54,7 @@ public:
     void openTransactionIfNeeded();
     void setPropertyName(const std::string&);
     void setIgnoreTransactions(bool value);
+    bool isChangingProperty() const;
     void setSelection(const std::vector<SelectionObject>&);
     void reselectObjects();
     const App::DocumentObject* getFirstOfSelection() const;
@@ -87,10 +88,8 @@ private:
     void setupDocument();
     void slotActiveDocument(const Gui::Document&);
     void openCommandIfActive(Gui::Document*);
-    void commitCommandIfActive(Gui::Document*);
-    void abortCommandIfActive(Gui::Document*);
-
-private Q_SLOTS:
+    void commitCommandIfActive();
+    void abortCommandIfActive();
     void openTransaction();
 
 private:
@@ -105,6 +104,9 @@ private:
      *  that it's done by the calling instance.
      */
     bool ignoreTransaction;
+
+    /// ID of the transaction by this handler
+    int transactionID {0};
     Connection connectAct;
     /**
      * store these so we can reselect original object
@@ -131,6 +133,7 @@ public:
     void bindObject();
     void setPlacementAndBindObject(const App::DocumentObject* obj, const std::string& propertyName);
     void setIgnoreTransactions(bool value);
+    bool isChangingProperty() const;
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -213,10 +216,7 @@ public:
     void clicked(int id) override;
 
     void open() override;
-    bool isAllowedAlterDocument() const override
-    {
-        return true;
-    }
+    bool isAllowedAlterDocument() const override;
     bool isAllowedAlterView() const override
     {
         return true;
