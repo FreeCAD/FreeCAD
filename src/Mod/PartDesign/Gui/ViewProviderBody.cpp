@@ -244,6 +244,32 @@ bool ViewProviderBody::isActiveBody()
     }
 }
 
+App::DocumentObject* ViewProviderBody::getDeleteTarget(App::DocumentObject* context) const
+{
+    auto* activeView = Gui::Application::Instance->activeView();
+    if (!activeView) {
+        return context;
+    }
+
+    App::DocumentObject* activeParent = nullptr;
+    std::string activeSubName;
+    auto* activeBody
+        = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY, &activeParent, &activeSubName);
+    if (activeBody != getObject() || !activeParent) {
+        return context;
+    }
+
+    // getActiveObject() resolves links, so compare the stored activation path
+    // to distinguish two Link instances that reference the same Body.
+    for (auto* obj : activeParent->getSubObjectList(activeSubName.c_str())) {
+        if (obj && obj->getLinkedObject(true) == activeBody) {
+            return obj == context ? nullptr : context;
+        }
+    }
+
+    return context;
+}
+
 void ViewProviderBody::toggleActiveBody()
 {
     if (isActiveBody()) {
