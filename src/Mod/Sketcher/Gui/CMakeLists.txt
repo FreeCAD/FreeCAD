@@ -98,6 +98,8 @@ SET(SketcherGui_SRCS
     TaskSketcherConstraints.h
     TaskSketcherElements.ui
     TaskSketcherElements.cpp
+    SketchAnnotations.cpp
+    SketchAnnotations.h
     TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h

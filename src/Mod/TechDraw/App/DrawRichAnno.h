@@ -46,6 +46,7 @@ public:
     App::PropertyString       AnnoText;
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
+    App::PropertyLength       TextHeight;
     App::PropertyBool         OriginCentered;
 
     void Restore(Base::XMLReader& reader) override;

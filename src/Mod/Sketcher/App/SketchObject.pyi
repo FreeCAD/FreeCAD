@@ -82,6 +82,34 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def addAnnotation(self, data: dict, /) -> int:
+        """Create Text, Hatch, or Leader visual annotation from a dictionary. Return its stable ID."""
+        ...
+
+    def updateAnnotation(self, annotationId: int, changes: dict, /) -> None:
+        """Atomically update annotation fields. Geometry and solver state are unchanged."""
+        ...
+
+    def delAnnotations(self, annotationIds: List[int], /) -> None:
+        """Delete annotations by stable ID."""
+        ...
+
+    def getAnnotationFace(self, annotationId: int, /):
+        """Return a transient local face for a hatch, or raise for a broken boundary."""
+        ...
+
+    def getAnnotationStrokes(self, annotationId: int, /) -> List[Vector]:
+        """Return pairs of local endpoints for hatch strokes or a leader and its arrowhead."""
+        ...
+
+    def getAnnotationPattern(self, annotationId: int, /) -> List[dict]:
+        """Return a hatch's PAT line families in sketch coordinates.
+
+        Each family is a dictionary with Origin, Direction (unit), Offset (from one line
+        to the next) and Dashes (positive drawn, negative gap, zero dot), in millimetres.
+        """
+        ...
+
     @overload
     def addGeometry(self, geo: Geometry, is_construction: bool = False, /) -> int: ...
     @overload
