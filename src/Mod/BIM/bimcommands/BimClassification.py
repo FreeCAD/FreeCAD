@@ -25,6 +25,7 @@ import os
 
 import FreeCAD
 import FreeCADGui
+from nativeifc import ifc_backend
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -479,9 +480,11 @@ class BIM_Classification:
         preset = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Classification", system + ".ifc")
         if not os.path.exists(preset):
             return None
-        import ifcopenshell
-
-        f = ifcopenshell.open(preset)
+        try:
+            f = self.loadIfcClassification(preset)
+        except ifc_backend.IfcOpenShellUnavailable as exc:
+            FreeCAD.Console.PrintError(f"{exc}\n")
+            return None
         classes = f.by_type("IfcClassificationReference")
         rootclass = f.by_type("IfcClassification")
         if rootclass:
@@ -501,6 +504,12 @@ class BIM_Classification:
                     classdict[cl.ReferencedSource.id()].children.append(currentItem)
             classdict[cl.id()] = currentItem
         return [self.listize(c) for c in root.children]
+
+    def loadIfcClassification(self, filename):
+        """Open a classification file through the read-only ifc_backend."""
+
+        ifcopenshell = ifc_backend.get_backend(capability=ifc_backend.READ)
+        return ifcopenshell.open(filename)
 
     def build_xml(self, system):
         class Item:
