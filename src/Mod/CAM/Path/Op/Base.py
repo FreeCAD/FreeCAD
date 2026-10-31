@@ -274,6 +274,16 @@ class ObjectOp:
             "Linking",
             QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FlexyHeight",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Define additional height above the model"
+                "\nAllowed only for strategies 'Line of Sight', 'Tool Diameter' and 'Tool Shape'",
+            ),
+        )
 
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
@@ -697,6 +707,17 @@ class ObjectOp:
                     setattr(obj, n[0], n[1])
             obj.CollisionAvoidanceStrategy = "Clearance Height"
             self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
+        if FeatureLinking & features and not hasattr(obj, "FlexyHeight"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FlexyHeight",
+                "Linking",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Define additional height above the model"
+                    "\nAllowed only for strategies 'Line of Sight', 'Tool Diameter' and 'Tool Shape'",
+                ),
+            )
 
         self._migrateWorkplane(obj)
 
