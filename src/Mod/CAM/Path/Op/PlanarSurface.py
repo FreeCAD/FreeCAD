@@ -611,16 +611,6 @@ class ObjectSurface(PathOp.ObjectOp):
                     "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
                 ),
             ),
-            (
-                "App::PropertyBool",
-                "EnforceGeofence",
-                "AdaptivePatternSettings",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "WARNING: Disabling this allows the Adaptive2d algorithm to roam outside the stock boundary on open pockets. "
-                    "This can cause erratic plunges, unpredictable toolpaths, and machine crashes! Proceed with extreme caution.",
-                ),
-            ),
         ]
 
     @classmethod
@@ -839,7 +829,6 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("FinishingProfile", C)
         obj.setEditorMode("HelixMaxRampAngle", C)
         obj.setEditorMode("HelixMaxDiameterPercent", C)
-        obj.setEditorMode("EnforceGeofence", C)
 
         # Apply Visibility to Mesh/OCL Group (D)
         obj.setEditorMode("AngularDeflection", D)
@@ -1431,9 +1420,10 @@ class ObjectSurface(PathOp.ObjectOp):
         2. Data preparation
         3. Generate mask for Fill selected holes feature
         4. Generate master boundary (TrimFace) and stable background pool.
-        5. Categorize depths, reconciling standard steps with physical model floors.
-        6. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
-        7. Convert the resulting geometry stack into optimized G-code Path commands.
+        5. Generate real stock outline for Adaptive2d.
+        6. Categorize depths, reconciling standard steps with physical model floors.
+        7. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
+        8. Convert the resulting geometry stack into optimized G-code Path commands.
         """
         from Path.Base.Generator import surface_zlevel
 
@@ -1456,7 +1446,6 @@ class ObjectSurface(PathOp.ObjectOp):
         fill_holes_masks = []
 
         is_adaptive = getattr(obj, "CutPatternZLevel", "None") == "Adaptive"
-        enforce_goefence = getattr(obj, "EnforceGeofence", True)
         fill_selected_holes = getattr(obj, "FillSelectedHoles", False)
         clear_planar_only = getattr(obj, "ClearPlanarOnly", True)
         ignore_outer = getattr(obj, "IgnoreOuter", False)
@@ -1524,7 +1513,23 @@ class ObjectSurface(PathOp.ObjectOp):
 
         trim_face = surface_zlevel.getTrimFace(border_face, bb_face, wpc)
 
-        # 5. Depth categorization
+        # 5. Real stock outline for Adaptive2d (see _resolve_adaptive_stock).
+        stock_face = None
+        if is_adaptive:
+            try:
+                stock_face = surface_common.create_boundary_face(self.stock.Shape.Faces, -0.02)
+            except Exception as e:
+                Path.Log.warning(f"Adaptive: could not build the stock outline: {e}")
+
+            if stock_face is not None:
+                valid, reason = surface_zlevel.validate_stock_outline(
+                    stock_face, self.stock.Shape.BoundBox, shape.BoundBox
+                )
+                if not valid:
+                    Path.Log.warning(f"Adaptive: stock outline rejected — {reason}.")
+                    stock_face = None
+
+        # 6. Depth categorization
         cat_steps = surface_zlevel.categorize_floor_steps(
             shape_copy,
             obj.StartDepth.Value,
@@ -1534,7 +1539,7 @@ class ObjectSurface(PathOp.ObjectOp):
             is_triangulated,
         )
 
-        # 6. Generate Geometry Stack
+        # 7. Generate Geometry Stack
         wl_data = surface_zlevel.zlevel_hybrid_stack(
             shape,
             cat_steps,
@@ -1549,7 +1554,7 @@ class ObjectSurface(PathOp.ObjectOp):
             start_z=obj.StartDepth.Value,
         )
 
-        # 7. Convert to G-Code
+        # 8. Convert to G-Code
         cmds = surface_zlevel.zlevel_hybrid_to_gcode(
             wl_data,
             feed_params,
@@ -1563,12 +1568,12 @@ class ObjectSurface(PathOp.ObjectOp):
             is_adaptive,
             adaptive_params,
             bb_face,
-            enforce_goefence,
+            stock_face,
         )
 
         return cmds
 
-    def _prepare_geometry(self, optimize_stl, is_three_plus_two):
+    def _prepare_geometry(self, optimize_stl):
         """
         Resolves the model bodies into one working shape, used
         throughout opExecute for boundary and STL generation.
@@ -1580,21 +1585,18 @@ class ObjectSurface(PathOp.ObjectOp):
 
         Vertical faces are excluded up front — Surface Scan, Waterline,
         and Z-Level all treat them as irrelevant for boundary and mesh
-        purposes. This filtering is skipped for 3+2 operations, for
-        triangulated (mesh-derived) models, and when STL optimization is
-        off. STL optimization is forced off for 3+2.
+        purposes. This filtering is skipped for triangulated (mesh-derived)
+        models, and when STL optimization is off.
 
         Args:
             optimize_stl (bool): The requested STL optimization setting.
-            is_three_plus_two (bool): True if a rotated 3+2 workplane is active.
 
         Returns:
             tuple: (model_shape, model_faces, optimized_shape,
                 optimize_stl, is_triangulated), or None if there is no
-                valid geometry to machine. For 3+2, triangulated models and
+                valid geometry to machine. For triangulated models and
                 when STL optimization is off, model_faces is None and
-                optimized_shape is model_shape. optimize_stl is the effective
-                value: False for 3+2, otherwise the requested one.
+                optimized_shape is model_shape.
         """
 
         # self.model / self.stock are provided by the base
@@ -1642,10 +1644,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Mesh-derived shapes are made of thousands of small planar triangles
         is_triangulated = surface_common._is_triangulated_mesh(model_shape.Faces)
-
-        if is_three_plus_two:
-            # Already in the rotated frame: keep every face and skip shape optimization
-            return model_shape, None, model_shape, False, is_triangulated
 
         if is_triangulated or not optimize_stl:
             # Nothing to filter: meshes have no meaningful vertical faces, and
@@ -1712,8 +1710,6 @@ class ObjectSurface(PathOp.ObjectOp):
         is_surface_scan = strategy == "SurfaceScan"
         is_waterline = strategy == "Waterline"
         is_zlevel = strategy == "ZLevelHybrid"
-        is_three_plus_two = getattr(self, "_geometry_rotation", None)
-        use_cpp = True
 
         # Geometry & Generation Requirements
         needs_face_selection = is_surface_scan
@@ -1728,6 +1724,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # STL Mesh optimization
         optimize_stl = getattr(obj, "OptimizeMeshConversion", True)
+        # Disable C++ tessellation for Waterline if Mesh optimization is disabled
+        use_cpp = not is_waterline if not optimize_stl else True
         stl_filter_adj = boundary_adjustment
 
         if needs_stl and getattr(obj, "LeadInOut", False):
@@ -1743,7 +1741,6 @@ class ObjectSurface(PathOp.ObjectOp):
         # Geometry preperation
         geometry = self._prepare_geometry(
             optimize_stl,
-            is_three_plus_two,
         )
         if geometry is None:
             return
@@ -1754,10 +1751,6 @@ class ObjectSurface(PathOp.ObjectOp):
             optimize_stl,
             is_triangulated,
         ) = geometry
-
-        # NOTE: C++ tessellation is disabled for Waterline on 3+2 operations
-        if is_three_plus_two:
-            use_cpp = not is_waterline
 
         # Split selected features
         if needs_face_selection:
@@ -1976,6 +1969,5 @@ def SetupProperties():
     setup.append("FinishingProfile")
     setup.append("HelixMaxRampAngle")
     setup.append("HelixMaxDiameterPercent")
-    setup.append("EnforceGeofence")
 
     return setup
