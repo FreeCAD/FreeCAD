@@ -4162,6 +4162,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
         return PartGui::ViewProvider2DObject::setEdit(ModNum);
     }
 
+    // Entering edit mode is not a user modification. Remember whether the document was
+    // already modified so that the internal property updates performed while setting up
+    // edit mode -- solve(true) refreshing the geometry, and the visibility automation --
+    // do not wrongly flag an untouched, freshly-opened sketch as changed. (Fixes #34015)
+    const bool wasModified = getDocument()->isModified();
+
     // Make a backup of the sketch object in case the user cancel editing.
     sketchBackup.str("");
     sketchBackup.clear();
@@ -4346,6 +4352,13 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     setupActiveAndInEdit();
 
+    // The sketch has just been solved and drawn, so it needs no recompute, and opening
+    // it is not a user modification. Undo the bookkeeping side-effects of entering edit
+    // mode so that a freshly-opened, untouched sketch does not show as modified.
+    // (Fixes #34015)
+    getSketchObject()->purgeTouched();
+    getDocument()->setModified(wasModified);
+
     return true;
 }
 void ViewProviderSketch::setupActiveAndInEdit()
@@ -4524,6 +4537,13 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
     }
 
+    // Leaving edit mode is bookkeeping, not a user modification: cancelling restores the
+    // pre-edit sketch, and the visibility automation below undoes the temporary hide/show.
+    // Remember the modified state so that closing an untouched sketch does not flag the
+    // document as changed, while genuine edits made during the session -- which already
+    // set the flag -- are preserved. (Fixes #34015)
+    const bool wasModified = getDocument()->isModified();
+
     if (dragAutoConstraintHandler) {
         dragAutoConstraintHandler->clear();
     }
@@ -4592,6 +4612,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             "unsetEdit: visibility automation failed with an error: {} \n",
             e.what());
     }
+
+    // Undo any modified flag raised purely by the leave-edit bookkeeping above, so that
+    // visiting a sketch without net changes leaves the document unmodified. (Fixes #34015)
+    getDocument()->setModified(wasModified);
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)

@@ -36,6 +36,7 @@ if(BUILD_GUI)
           SketcherTests/TestDistanceLabelExtensionGui.py
           SketcherTests/TestConstraintCommandsGui.py
           SketcherTests/TestCoincidentCommandGui.py
+          SketcherTests/TestSketchModifiedGui.py
           SketcherTests/GuiTestCase.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
