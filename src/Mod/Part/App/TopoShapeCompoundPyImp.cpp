@@ -36,6 +36,7 @@
 
 
 #include "OCCError.h"
+#include <App/Document.h>
 #include "ShapeAnalysis_FreeBoundsFix.h"
 #include <Base/GeometryPyCXX.h>
 
@@ -62,6 +63,10 @@ PyObject* TopoShapeCompoundPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 // constructor method
 int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Compound
         getTopoShapePtr()->setShape(TopoDS_Compound());
@@ -138,7 +143,8 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& s = getTopoShapePtr()->getShape();
+        TopoShape* shape = getTopoShapePtr();
+        const TopoDS_Shape& s = shape->getShape();
 
         Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
         Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
@@ -158,7 +164,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject* args) const
         }
 
         getTopoShapePtr()->setShape(comp);
-        return new TopoShapeCompoundPy(new TopoShape(comp));
+        return new TopoShapeCompoundPy(new TopoShape(*shape));
     }
     catch (Standard_Failure& e) {
 

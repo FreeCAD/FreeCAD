@@ -106,7 +106,6 @@ public:
         const std::string& subPath
     ) const override;
 
-    std::string getElementMapVersion(bool restored) const override;
     void resetElementMapVersion()
     {
         _Ver.clear();

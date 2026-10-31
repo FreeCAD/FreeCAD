@@ -22,15 +22,23 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <cmath>
+#include <cstring>
 #include <unordered_set>
 
 #include "MappedName.h"
 
+
 #include "Base/Console.h"
+#include "ElementNamingUtils.h"
+#include "IndexedName.h"
+#include "StringHasher.h"
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <iostream>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <unordered_set>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -38,8 +46,117 @@ FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
 namespace Data
 {
 
+int MappedName::compare(const MappedName& other) const
+{
+    ZoneScoped;
+
+    const char* thisArray = data.constData();
+    const char* otherArray = other.data.constData();
+
+    int thisArraySize = data.size();
+    int otherArraySize = other.data.size();
+    int minimumArraySize = std::min(thisArraySize, otherArraySize);
+    int comparisonValue = std::memcmp(thisArray, otherArray, minimumArraySize);
+
+    if (comparisonValue != 0) {
+        return comparisonValue;
+    }
+
+    thisArray += minimumArraySize;
+    thisArraySize -= minimumArraySize;
+
+    if (!thisArraySize) {
+        thisArray = postfix.constData();
+        thisArraySize = postfix.size();
+    }
+
+    otherArray += minimumArraySize;
+    otherArraySize -= minimumArraySize;
+
+    if (!otherArraySize) {
+        otherArray = other.postfix.constData();
+        otherArraySize = other.postfix.size();
+    }
+
+    minimumArraySize = std::min(thisArraySize, otherArraySize);
+    comparisonValue = std::memcmp(thisArray, otherArray, minimumArraySize);
+
+    if (comparisonValue != 0) {
+        return comparisonValue;
+    } else if (thisArraySize < otherArraySize) {
+        return -1;
+    } else if (thisArraySize > otherArraySize) {
+        return 1;
+    }
+
+    return 0;
+}
+
+void MappedName::append(const MappedName& other, int startPosition, int size)
+{
+    // enforce 0 <= startPosition <= other.size
+    if (startPosition < 0) {
+        startPosition = 0;
+    }
+    else if (startPosition > other.size()) {
+        return;
+    }
+
+    // enforce 0 <= size <= other.size - startPosition
+    if (size < 0 || size > other.size() - startPosition) {
+        size = other.size() - startPosition;
+    }
+
+
+    if (startPosition < other.data.size())  // if starting inside data
+    {
+        int count = size;
+        // make sure count doesn't exceed data size and end up in postfix
+        if (count > other.data.size() - startPosition) {
+            count = other.data.size() - startPosition;
+        }
+
+        // if this is empty append in data else append in postfix
+        if (startPosition == 0 && count == other.data.size() && this->empty()) {
+            this->data = other.data;
+            this->raw = other.raw;
+        }
+        else {
+            append(other.data.constData() + startPosition, count);
+        }
+
+        // setup startPosition and count to continue appending the remainder to postfix
+        startPosition = 0;
+        size -= count;
+    }
+    else  // else starting inside postfix
+    {
+        startPosition -= other.data.size();
+    }
+
+    // if there is still data to be added to postfix
+    if (size != 0) {
+        if (startPosition == 0 && size == other.postfix.size()) {
+            if (this->empty()) {
+                this->data = other.postfix;
+            }
+            else if (this->postfix.isEmpty()) {
+                this->postfix = other.postfix;
+            }
+            else {
+                this->postfix += other.postfix;
+            }
+        }
+        else {
+            append(other.postfix.constData() + startPosition, size);
+        }
+    }
+}
+
 void MappedName::compact() const
 {
+    ZoneScoped;
+
     auto self = const_cast<MappedName*>(
         this);  // FIXME this is a workaround for a single call in ElementMap::addName()
 
@@ -49,9 +166,768 @@ void MappedName::compact() const
     }
 }
 
+DecodedMappedName& MappedName::getDecodedMappedName(const std::string& mappedNameString) {
+    ZoneScoped;
+
+    auto it = decodedMappedNameCache.find(mappedNameString);
+
+    if (it == decodedMappedNameCache.end()) {
+        std::vector<std::string> stringVectorBuffer;
+        DecodedMappedSection section;
+        DecodedMappedName name;
+        std::string* stringVectorBufferFront;
+        std::string emptyValueLocal = Data::EMPTY_VALUE;
+        std::string stringBuffer;
+        size_t mappedNameStringSize = mappedNameString.size();
+        bool updateNameSection = false;
+        bool updateNameData = false;
+        bool postSection = false;
+        int nameDataIndex = 0;
+        int subSectionIndex = 0;
+        int escapeLevel = 0;
+
+        for (size_t i = 0; i < mappedNameStringSize; i++) {
+            const char& currentChar = mappedNameString[i];
+
+            if (escapeLevel == 0) {
+                updateNameSection = false;
+                updateNameData = false;
+                postSection = false;
+                
+                if (currentChar == Data::SECTION_SUB_DELIMINATOR[0]) {
+                    updateNameSection = true;
+                } else if (currentChar == Data::NAME_SECTION_DELIMINATOR[0]) {
+                    updateNameSection = true;
+                    postSection = true;
+                } else if (currentChar == Data::NAME_DATA_DELIMINATOR[0]) {
+                    updateNameData = true;
+                } else if (currentChar == Data::SUB_SECTION_LIST_DELIMINATOR[0]) {
+                    stringVectorBuffer.push_back(stringBuffer);
+                    stringBuffer.clear();
+                    
+                    continue;
+                } else if ((i + 1) == mappedNameStringSize) {
+                    stringBuffer += currentChar;
+
+                    updateNameSection = true;
+                    postSection = true;
+                }
+
+                if (updateNameData) {
+                    if (nameDataIndex == 0) {
+                        name.ownerTag = stringBuffer;
+                    }
+
+                    stringBuffer.clear();
+                    nameDataIndex++;
+
+                    continue;
+                } else if (updateNameSection) {
+                    nameDataIndex = 1;
+
+                    if (stringBuffer.size() && stringBuffer != emptyValueLocal) {
+                        stringVectorBuffer.push_back(stringBuffer);
+                    }
+
+                    if (stringVectorBuffer.size()) {
+                        stringVectorBufferFront = &stringVectorBuffer.front();
+                    } else {
+                        stringVectorBufferFront = &emptyValueLocal;
+                    }
+
+                    switch (subSectionIndex) {
+                        case Data::SECTION_REFERENCE_ID_INDEX:
+                            section.referenceIDs = stringVectorBuffer;
+                            break;
+                        case Data::SECTION_LINKED_NAME_INDEX:
+                            section.linkedNames = stringVectorBuffer;
+                            break;
+                        case Data::SECTION_ITERATION_TAG_INDEX:
+                            section.iterationTag = *stringVectorBufferFront;
+                            break;
+                        case Data::SECTION_OPCODE_INDEX:
+                            section.opCode = *stringVectorBufferFront;
+                            break;
+                        case Data::SECTION_INDEX_NUM_INDEX:
+                            section.index = *stringVectorBufferFront;
+                            break;
+                        case Data::SECTION_ELEMENT_TYPE_INDEX:
+                            section.elementType = stringVectorBufferFront->front();
+                            break;
+                        case Data::SECTION_DUPLICATE_COUNT_INDEX:
+                            section.duplicateCount = *stringVectorBufferFront;
+                            break;
+                        case Data::SECTION_MAPPER_FLAGS_INDEX:
+                            section.mapperFlags = stringVectorBuffer;
+                            break;
+                        case Data::SECTION_CONNECTED_ELEMENTS_INDEX:
+                            section.connectedElements = stringVectorBuffer;
+                            break;
+                    }
+                    
+                    stringVectorBufferFront = nullptr;
+                    stringVectorBuffer.clear();
+                    stringBuffer.clear();
+
+                    if (postSection) {
+                        name.sections.push_back(section);
+                        subSectionIndex = 0;
+                    } else {
+                        subSectionIndex++;
+                    }
+
+                    continue;
+                }
+            }
+
+            if (currentChar == Data::SUB_SECTION_ESCAPE_CHAR[0]) {
+                if (++escapeLevel == 1) {
+                    continue;
+                }
+            } else {
+                escapeLevel = 0;
+            }
+
+            stringBuffer += currentChar;
+        }
+
+        auto emplacedCacheIterator = decodedMappedNameCache.try_emplace(mappedNameString, name);
+
+        return emplacedCacheIterator.first->second;
+    } else {
+        return it->second;
+    }
+}
+
+DecodedMappedName& MappedName::getDecodedMappedName() {
+    ZoneScoped;
+
+    return MappedName::getDecodedMappedName(toString());
+}
+
+std::string MappedName::escapeString(const std::string& stringToEscape) {
+    ZoneScoped;
+
+    std::stringstream ss;
+    std::unordered_set<char> charsToEscape {
+        Data::NAME_SECTION_DELIMINATOR[0],
+        Data::SECTION_SUB_DELIMINATOR[0],
+        Data::SUB_SECTION_LIST_DELIMINATOR[0],
+        Data::NAME_DATA_DELIMINATOR[0]
+    };
+
+    for (size_t i = 0; i < stringToEscape.size(); i++) {
+        char currentChar = stringToEscape[i];
+
+        if (charsToEscape.contains(currentChar)) {
+            ss << Data::SUB_SECTION_ESCAPE_CHAR;
+        }
+
+        ss << currentChar;
+    }
+
+    return ss.str();
+}
+
+
+DecodedMappedSection MappedName::makeDecodedSection(
+    const std::vector<std::string>& referenceIDs,
+    const std::vector<std::string>& linkedNames,
+    const std::string& iterationTag,
+    const char* opCode,
+    const std::string& index,
+    const char& elementType,
+    const std::string& duplicateCount,
+    const std::vector<std::string>& mapperFlags,
+    const std::vector<std::string>& connectedElements
+)
+{
+    ZoneScoped;
+    Data::DecodedMappedSection section;
+
+    section.referenceIDs = referenceIDs;
+    section.linkedNames = linkedNames;
+    section.iterationTag = iterationTag;
+
+    if (opCode != nullptr && strlen(opCode)) {
+        section.opCode = opCode;
+    } else {
+        section.opCode = "MKR";
+    }
+
+    section.index = index;
+    section.elementType = elementType;
+    section.duplicateCount = duplicateCount;
+    section.mapperFlags = mapperFlags;
+    section.connectedElements = connectedElements;
+
+    return section;
+}
+
+DecodedMappedSection MappedName::makeDecodedSection(
+    const std::vector<std::string>& referenceIDs,
+    const std::vector<MappedName>& linkedNames,
+    const long& iterationTag,
+    const char* opCode,
+    const int& index,
+    const char& elementType,
+    const int& duplicateCount,
+    const std::vector<std::string>& mapperFlags,
+    const std::vector<MappedName>& connectedElements
+)
+{
+    ZoneScoped;
+
+    std::vector<std::string> formattedLinkedNames { };
+    std::vector<std::string> formattedConnectedElements { };
+
+    for (const MappedName& name : linkedNames) {
+        if (name) {
+            formattedLinkedNames.push_back(name.toString());
+        }
+    }
+
+    for (const MappedName& name : connectedElements) {
+        if (name) {
+            formattedConnectedElements.push_back(name.toString());
+        }
+    }
+
+    return MappedName::makeDecodedSection(
+        referenceIDs,
+        formattedLinkedNames,
+        std::to_string(iterationTag),
+        opCode,
+        std::to_string(index),
+        elementType,
+        std::to_string(duplicateCount),
+        mapperFlags,
+        formattedConnectedElements
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeEncodedSection(
+    const std::vector<std::string>& referenceIDs,
+    const std::vector<MappedName>& linkedNames,
+    const int& iterationTag,
+    const char* opCode,
+    const int& index,
+    const char& elementType,
+    const int& duplicateCount,
+    const std::vector<std::string>& mapperFlags,
+    const std::vector<MappedName>& connectedElements
+)
+{
+    ZoneScoped;
+
+    return MappedName::makeEncodedSection(
+        referenceIDs,
+        linkedNames,
+        std::to_string(iterationTag),
+        opCode,
+        std::to_string(index),
+        elementType,
+        std::to_string(duplicateCount),
+        mapperFlags,
+        connectedElements
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeEncodedSection(
+    const std::vector<std::string>& referenceIDs,
+    const std::vector<MappedName>& linkedNames,
+    const std::string& iterationTag,
+    const char* opCode,
+    const std::string& index,
+    const char& elementType,
+    const std::string& duplicateCount,
+    const std::vector<std::string>& mapperFlags,
+    const std::vector<MappedName>& connectedElements
+)
+{
+    ZoneScoped;
+
+    std::vector<std::string> formattedLinkedNames { };
+    std::vector<std::string> formattedConnectedElements { };
+
+    for (const MappedName& name : linkedNames) {
+        if (name) {
+            formattedLinkedNames.push_back(name.toString());
+        }
+    }
+
+    for (const MappedName& name : connectedElements) {
+        if (name) {
+            formattedConnectedElements.push_back(name.toString());
+        }
+    }
+
+    return MappedName::makeEncodedSection(
+        referenceIDs,
+        formattedLinkedNames,
+        iterationTag,
+        opCode,
+        index,
+        elementType,
+        duplicateCount,
+        mapperFlags,
+        formattedConnectedElements
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeEncodedSection(
+    const std::vector<std::string>& referenceIDs,
+    const std::vector<std::string>& linkedNames,
+    const std::string& iterationTag,
+    const char* opCode,
+    const std::string& index,
+    const char& elementType,
+    const std::string& duplicateCount,
+    const std::vector<std::string>& mapperFlags,
+    const std::vector<std::string>& connectedElements
+)
+{
+    ZoneScoped;
+
+    std::string sectionString;
+    std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
+
+    if (referenceIDs.empty()) {
+        sectionString += Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < referenceIDs.size(); i++) {
+            if (i != 0) {
+                sectionString += Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            sectionString += referenceIDs[i];
+        }
+    }
+
+    sectionString += Data::SECTION_SUB_DELIMINATOR;
+
+    if (linkedNames.empty()) {
+        sectionString += Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < linkedNames.size(); i++) {
+            if (i != 0) {
+                sectionString += Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            sectionString += MappedName::escapeString(linkedNames[i]);
+        }
+    }
+
+    sectionString += (
+          Data::SECTION_SUB_DELIMINATOR
+        + iterationTag
+        + Data::SECTION_SUB_DELIMINATOR
+        + opCodeString
+        + Data::SECTION_SUB_DELIMINATOR
+        + index
+        + Data::SECTION_SUB_DELIMINATOR
+        + elementType
+        + Data::SECTION_SUB_DELIMINATOR
+        + duplicateCount
+        + Data::SECTION_SUB_DELIMINATOR
+    );
+
+    if (mapperFlags.empty()) {
+        sectionString += Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < mapperFlags.size(); i++) {
+            if (i != 0) {
+                sectionString += Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            sectionString += mapperFlags[i];
+        }
+    }
+    
+    sectionString += Data::SECTION_SUB_DELIMINATOR;
+
+    if (connectedElements.empty()) {
+        sectionString += Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < connectedElements.size(); i++) {
+            if (i != 0) {
+                sectionString += Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            sectionString += MappedName::escapeString(connectedElements[i]);
+        }
+    }
+    
+    return sectionString;
+}
+
+std::string MappedName::makeEncodedSection(const DecodedMappedSection& decodedSection)
+{
+    ZoneScoped;
+
+    return MappedName::makeEncodedSection(
+        decodedSection.referenceIDs,
+        decodedSection.linkedNames,
+        decodedSection.iterationTag,
+        decodedSection.opCode.c_str(),
+        decodedSection.index,
+        decodedSection.elementType,
+        decodedSection.duplicateCount,
+        decodedSection.mapperFlags,
+        decodedSection.connectedElements
+    );
+}
+
+MappedName MappedName::fromEncodedMappedSection(
+    const std::string& section,
+    const std::string& ownerTag
+)
+{
+    return MappedName(
+        MappedName::makeEncodedName(section, ownerTag)
+    );
+}
+
+MappedName MappedName::fromDecodedMappedSection(
+    const DecodedMappedSection& section,
+    const std::string& ownerTag
+)
+{
+    return MappedName::fromEncodedMappedSection(
+        MappedName::makeEncodedSection(section),
+        ownerTag
+    );
+}
+
+std::string MappedName::makeEncodedName(
+    const std::string& section,
+    const std::string& ownerTag
+)
+{
+    std::string encodedName = ownerTag;
+
+    encodedName += Data::NAME_DATA_DELIMINATOR;
+    encodedName += section;
+
+    return encodedName;
+}
+
+MappedName MappedName::fromDecodedMappedName(const DecodedMappedName& name) {
+    ZoneScoped;
+
+    return MappedName(makeEncodedName(name));
+}
+
+std::string MappedName::makeEncodedName(const DecodedMappedName& name) {
+    ZoneScoped;
+
+    std::string newNameString = name.ownerTag;
+
+    newNameString += Data::NAME_DATA_DELIMINATOR;
+
+    for (size_t i = 0; i < name.sections.size(); ++i) {
+        newNameString += MappedName::makeEncodedSection(name.sections[i]);
+
+        if ((i + 1) < name.sections.size()) {
+            newNameString += Data::NAME_SECTION_DELIMINATOR;
+        }
+    }
+
+    return newNameString;
+}
+
+MappedName MappedName::makeUnmappedName(
+    const std::vector<std::string>& indexedNames,
+    const long& iterationTag,
+    const long& ownerTag,
+    const char* opCode,
+    const char& elementType
+) 
+{
+    ZoneScoped;
+
+    return {
+        MappedName::fromEncodedMappedSection(
+            MappedName::makeEncodedSection(
+                indexedNames,
+                {},
+                iterationTag,
+                opCode,
+                0,
+                elementType,
+                0,
+                {Data::MAPPER_FLAG_INDEX, Data::MAPPER_FLAG_SOURCE}
+            ),
+            std::to_string(ownerTag)
+        )
+    };
+}
+
+void MappedName::spliceNameBySubSections(
+    int sectionIndex,
+    int subSectionIndex,
+    std::string* beforeSubSectionString,
+    std::string* subSectionString,
+    std::string* afterSubSectionString
+) const
+{
+    ZoneScoped;
+    
+    // subSectionData can safely be `nullptr`.
+    if (!beforeSubSectionString || !afterSubSectionString) {
+        return;
+    }
+
+    QByteArray dataBeforeSubSectionStringArray;
+    QByteArray postfixBeforeSubSectionStringArray;
+    QByteArray subSectionStringArray;
+    QByteArray dataAfterSubSectionStringArray;
+    QByteArray postfixAfterSubSectionStringArray;
+
+    spliceNameBySubSections(
+        sectionIndex,
+        subSectionIndex,
+        &dataBeforeSubSectionStringArray,
+        &postfixBeforeSubSectionStringArray,
+        &subSectionStringArray,
+        &dataAfterSubSectionStringArray,
+        &postfixAfterSubSectionStringArray
+    );
+
+    int dataBeforeSubSectionStringArraySize = dataBeforeSubSectionStringArray.size();
+    int postfixBeforeSubSectionStringArraySize = postfixBeforeSubSectionStringArray.size();
+    int subSectionStringArraySize = subSectionStringArray.size();
+    int dataAfterSubSectionStringArraySize = dataAfterSubSectionStringArray.size();
+    int postfixAfterSubSectionStringArraySize = postfixAfterSubSectionStringArray.size();
+
+    if (dataBeforeSubSectionStringArraySize) {
+        beforeSubSectionString->append(
+            dataBeforeSubSectionStringArray.constData(),
+            static_cast<size_t>(dataBeforeSubSectionStringArraySize)
+        );
+    }
+
+    if (postfixBeforeSubSectionStringArraySize) {
+        beforeSubSectionString->append(
+            postfixBeforeSubSectionStringArray.constData(),
+            static_cast<size_t>(postfixBeforeSubSectionStringArraySize)
+        );
+    }
+
+    if (subSectionString != nullptr && subSectionStringArraySize) {
+        subSectionString->append(
+            subSectionStringArray.constData(),
+            static_cast<size_t>(subSectionStringArraySize)
+        );
+    }
+    
+    if (dataAfterSubSectionStringArraySize) {
+        afterSubSectionString->append(
+            dataAfterSubSectionStringArray.constData(),
+            static_cast<size_t>(dataAfterSubSectionStringArraySize)
+        );
+    }
+
+    if (postfixAfterSubSectionStringArraySize) {
+        afterSubSectionString->append(
+            postfixAfterSubSectionStringArray.constData(),
+            static_cast<size_t>(postfixAfterSubSectionStringArraySize)
+        );
+    }
+}
+
+void MappedName::spliceNameBySubSections(
+    int sectionIndex,
+    int subSectionIndex,
+    QByteArray* dataBeforeSubSectionString,
+    QByteArray* postfixBeforeSubSectionString,
+    QByteArray* subSectionString,
+    QByteArray* dataAfterSubSectionString,
+    QByteArray* postfixAfterSubSectionString
+) const
+{
+    ZoneScoped;
+    
+    // subSectionString can safely be `nullptr`.
+    if (dataBeforeSubSectionString == nullptr 
+        || postfixBeforeSubSectionString == nullptr
+        || dataAfterSubSectionString == nullptr
+        || postfixAfterSubSectionString == nullptr)
+    {
+        return;
+    }
+
+    *dataBeforeSubSectionString = data;
+    *postfixBeforeSubSectionString = postfix;
+
+    int dataSize = data.size();
+    int postfixSize = postfix.size();
+    int subSectionReverseIndex = 0;
+
+    if (sectionIndex < 0) {
+        subSectionReverseIndex += (std::fabs(sectionIndex) - 1) * Data::SECTION_SIZE;
+    } else {
+        const char* currentArray = data.constData();
+        int numberOfSections = 1;
+        int combinedSize = dataSize + postfixSize;
+
+        for (int characterIdx = 0; characterIdx < combinedSize; characterIdx++) {
+            if (characterIdx == dataSize) {
+                currentArray = postfix.constData();
+            }
+
+            if (*(currentArray++) == Data::NAME_SECTION_DELIMINATOR[0]) {
+                numberOfSections++;
+            }
+        }
+
+        subSectionReverseIndex += (numberOfSections - sectionIndex - 1) * Data::SECTION_SIZE;
+    }
+
+    subSectionReverseIndex += Data::SECTION_SIZE - subSectionIndex - 1;
+    int currentSubSectionIndex = 0;
+
+    QByteArray* currentBeforeSubSectionString = postfixBeforeSubSectionString;
+    QByteArray* currentAfterSubSectionString = postfixAfterSubSectionString;
+    bool usingPostfix = true;
+
+    // stop the loop before reaching the very first character of the name
+    for (int characterIdx = (dataSize + postfixSize); characterIdx-- > 1;) {
+        if (usingPostfix && characterIdx == (dataSize - 1)) {
+            usingPostfix = false;
+            currentBeforeSubSectionString = dataBeforeSubSectionString;
+            currentAfterSubSectionString = dataAfterSubSectionString;
+        }
+
+        char currentCharacter = currentBeforeSubSectionString->back();
+
+        if (currentSubSectionIndex < subSectionReverseIndex) {
+            currentAfterSubSectionString->insert(0, currentCharacter);
+        } else if (subSectionString != nullptr && currentCharacter != Data::SECTION_SUB_DELIMINATOR[0]) {
+            subSectionString->insert(0, currentCharacter);
+        }
+
+        if ((currentCharacter == Data::SECTION_SUB_DELIMINATOR[0] || currentCharacter == Data::NAME_SECTION_DELIMINATOR[0])
+            && currentBeforeSubSectionString->at(currentBeforeSubSectionString->size() - 2) != Data::SUB_SECTION_ESCAPE_CHAR[0]
+            && currentSubSectionIndex++ == subSectionReverseIndex)
+        {
+            break;
+        }
+
+        currentBeforeSubSectionString->resize(
+            currentBeforeSubSectionString->size() - 1
+        );
+    }
+}
+
+void MappedName::setNameBySplicedData(
+    const QByteArray& dataBeforeSubSectionString,
+    const QByteArray& postfixBeforeSubSectionString,
+    const QByteArray& subSectionString,
+    const QByteArray& dataAfterSubSectionString,
+    const QByteArray& postfixAfterSubSectionString
+)
+{
+    if (dataBeforeSubSectionString.size() != data.size()) {
+        data = dataBeforeSubSectionString;
+        data += (subSectionString + dataAfterSubSectionString);
+    } else if (postfixBeforeSubSectionString.size() != postfix.size()) {
+        postfix = postfixBeforeSubSectionString;
+        postfix += (subSectionString + postfixAfterSubSectionString);
+    }
+}
+
+void MappedName::setSubSectionData(
+    int sectionIndex,
+    int subSectionIndex,
+    const std::string& newData
+)
+{
+    QByteArray dataBeforeSubSectionString;
+    QByteArray postfixBeforeSubSectionString;
+    QByteArray subSectionString;
+    QByteArray dataAfterSubSectionString;
+    QByteArray postfixAfterSubSectionString;
+
+    spliceNameBySubSections(
+        sectionIndex,
+        subSectionIndex,
+        &dataBeforeSubSectionString,
+        &postfixBeforeSubSectionString,
+        &subSectionString,
+        &dataAfterSubSectionString,
+        &postfixAfterSubSectionString
+    );
+
+    subSectionString.setRawData(newData.c_str(), newData.size());
+
+    setNameBySplicedData(
+        dataBeforeSubSectionString,
+        postfixBeforeSubSectionString,
+        subSectionString,
+        dataAfterSubSectionString,
+        postfixAfterSubSectionString
+    );
+}
+
+/// This method sets the owner tag of a V2 name.
+void MappedName::setOwnerTag(const std::string& newTag)
+{
+    const char* dataConstString = data.constData();
+    int dataSize = data.size();
+
+    while (dataSize) {
+        const char& character = *dataConstString;
+
+        if (character == Data::NAME_DATA_DELIMINATOR[0]) {
+            data.setRawData(newTag.c_str(), newTag.size());
+            data.append(dataConstString, dataSize);
+
+            break;
+        } else if (character == Data::SECTION_SUB_DELIMINATOR[0]) {
+            data.insert(0, Data::NAME_DATA_DELIMINATOR);
+            data.insert(0, newTag.c_str(), newTag.size());
+
+            break;
+        } else if (character == SUB_SECTION_ESCAPE_CHAR[0]) {
+            break;
+        }
+
+        dataSize--;
+        dataConstString++;
+    }
+}
+
+/// This method gets the owner tag of a V2 name.
+std::string MappedName::getOwnerTag() const
+{
+    std::string ownerTag;
+
+    for (int characterIdx = 0; characterIdx < data.size(); characterIdx++) {
+        const char& character = data[characterIdx];
+
+        if (character == Data::NAME_DATA_DELIMINATOR[0]) {
+            break;
+        } else if (character == Data::SECTION_SUB_DELIMINATOR[0]) {
+            return {Data::EMPTY_VALUE};
+        }
+
+        ownerTag += character;
+    }
+
+    return ownerTag;
+}
 
 MappedName::MappedName(const char* name, int size) : raw(false)
 {
+    ZoneScoped;
+
     if (!name) {
         return;
     }
@@ -65,6 +941,8 @@ MappedName::MappedName(const char* name, int size) : raw(false)
 MappedName::MappedName(const std::string& nameString)
     : raw(false)
 {
+    ZoneScoped;
+
     auto size = nameString.size();
     const char* name = nameString.c_str();
     if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
@@ -81,6 +959,8 @@ int MappedName::findTagInElementName(long* tagOut,
                                      bool negative,
                                      bool recursive) const
 {
+    ZoneScoped;
+
     bool hex = true;
     int pos = this->rfind(POSTFIX_TAG);
 
