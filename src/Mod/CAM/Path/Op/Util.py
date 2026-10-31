@@ -210,6 +210,14 @@ def orientWire(w, forward=True):
     return wire
 
 
+def discretizeWire(wire, tolerance=0.01):
+    """discretizeWire(wire) ... discretize any non-line edges with lines."""
+    ps = wire.discretize(Deflection=tolerance)
+    line_edges = [Part.makeLine(ps[i], ps[i + 1]) for i in range(len(ps) - 1)]
+
+    return Part.Wire(line_edges)
+
+
 def approximateWire(wire, tolerance=0.01):
     """approximateWire approximates any non-line/arc edges with lines or arcs.
     Edges that are lines or circular arcs are kept as-is.
@@ -275,7 +283,11 @@ def wireToCArea(wire, tolerance=0.01):
     c = area.Curve()
 
     # Approximate wire as lines and arcs
-    wire = approximateWire(wire, tolerance)
+    coincideTolerance = getCoincideTolerance(wire.Edges)
+    if coincideTolerance is None or coincideTolerance > Path.Geom.Tolerance:
+        wire = discretizeWire(wire, tolerance)
+    else:
+        wire = approximateWire(wire, tolerance)
     edges = _orientEdges(Part.__sortEdges__(wire.Edges))
 
     # Add the first point (start of first edge)
@@ -429,6 +441,10 @@ def offsetWire(wire, base, offset, tolerance=0.01):
     if len(wire.Edges) == 0:
         return [], []
 
+    # return original wire if offset is zero
+    if Path.Geom.isRoughly(offset, 0):
+        return [wire], [wire]
+
     debugWire("wire", wire)
 
     # Store original accuracy and set to tolerance for better precision
@@ -451,6 +467,15 @@ def offsetWire(wire, base, offset, tolerance=0.01):
 
         for i, w in enumerate(neg_wires):
             debugWire(f"negativeOffset_{i}", w)
+
+        if base and any(not w.isClosed() for w in pos_wires + neg_wires):
+            # In case of open wires, cuts pos_wires and neg_wires by solids
+            # Assumed that remaining edges from pos_wires should be longer
+            def cutLength(wires):
+                """Calculate total length of edges after cutting by solid"""
+                return sum(e.Length for e in Part.Compound(wires).cut(base).Edges)
+
+            return sorted([pos_wires, neg_wires], key=cutLength, reverse=True)
 
         # Return
         return pos_wires, neg_wires
