@@ -48,6 +48,7 @@ _CAREA_PARAM_DEFINE(Point, double, tolerance)
 CAREA_PARAM_DEFINE(bool, fit_arcs)
 CAREA_PARAM_DEFINE(double, accuracy)
 CAREA_PARAM_DEFINE(double, clipper_scale)
+CAREA_PARAM_DEFINE(short, min_arc_points)
 
 void CArea::append(const CCurve& curve)
 {

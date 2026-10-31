@@ -119,7 +119,7 @@
              "ClipperLib operate on integers. This is the scale factor to convert\n" \
              "floating points.", \
              App::PropertyFloat) \
-        )
+        )((short, min_arc_points, MinArcPoints, 4, "Minimum segments for arc discretization"))
 
 /** Pocket parameters
  *
