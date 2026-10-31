@@ -154,6 +154,8 @@ def run(repo_root: Path, check_only: bool) -> bool:
     all_synced = True
 
     for relative_path, sync_function in SYNC_TARGETS:
+        if callable(relative_path):
+            relative_path = relative_path(version)
         filepath = repo_root / relative_path
         if not filepath.exists():
             print(f"  SKIP: {relative_path} (file not found)")

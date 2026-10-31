@@ -125,7 +125,7 @@ class TestReplaceInTomlSection(unittest.TestCase):
         self.assertEqual(result, self.SAMPLE)
 
     def test_does_not_replace_key_in_wrong_section(self):
-        content = '[section_a]\nversion = "1.0"\n\n' '[section_b]\nversion = "2.0"\n'
+        content = '[section_a]\nversion = "1.0"\n\n[section_b]\nversion = "2.0"\n'
         result = replace_in_toml_section(content, "[section_a]", "version", "9.9")
         self.assertIn('version = "9.9"', result.split("[section_b]")[0])
         self.assertIn('version = "2.0"', result.split("[section_b]")[1])

@@ -21,7 +21,8 @@ install(
 )
 
 install(
-    FILES org.freecad.FreeCAD.desktop
+    FILES 
+        org.freecad.FreeCAD.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
 )
 
