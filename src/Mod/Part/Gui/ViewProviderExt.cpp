@@ -945,7 +945,7 @@ bool ViewProviderPartExt::loadParameter()
         "User parameter:BaseApp/Preferences/Mod/Part"
     );
     float deviation = hGrp->GetFloat("MeshDeviation", 0.2);
-    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.65);
+    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection", 28.5);
     NormalsFromUV = hGrp->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
     if (Deviation.getValue() != deviation) {
@@ -954,6 +954,7 @@ bool ViewProviderPartExt::loadParameter()
     }
     if (AngularDeflection.getValue() != angularDeflection) {
         AngularDeflection.setValue(angularDeflection);
+        changed = true;
     }
 
     return changed;
