@@ -1,0 +1,110 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include <cmath>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <Precision.hxx>
+#include <Base/Exception.h>
+#include <Base/Matrix.h>
+#include "GroupGeometry.h"
+
+namespace
+{
+Bnd_Box validatedSourceBounds(const std::vector<Part::Geometry*>& geometry)
+{
+    Bnd_Box bounds;
+    for (const auto* geo : geometry) {
+        if (!geo
+            || !(
+                geo->is<Part::GeomPoint>() || geo->is<Part::GeomLineSegment>()
+                || geo->is<Part::GeomCircle>() || geo->is<Part::GeomArcOfCircle>()
+                || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfEllipse>()
+                || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()
+                || geo->is<Part::GeomBSplineCurve>()
+            )) {
+            throw Base::TypeError("Unsupported geometry in group source");
+        }
+        BRepBndLib::AddOptimal(geo->toShape(), bounds, false, false);
+    }
+    if (bounds.IsVoid() || bounds.IsOpen()) {
+        throw Base::ValueError("The source file contains no finite geometry");
+    }
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    bounds.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    if (std::abs(zmin) > Precision::Confusion() || std::abs(zmax) > Precision::Confusion()) {
+        throw Base::ValueError("Group geometry must lie in the sketch XY plane");
+    }
+    return bounds;
+}
+}  // namespace
+
+std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
+    const std::vector<Part::Geometry*>& geometry,
+    const Base::Vector3d& start,
+    const Base::Vector3d& end,
+    bool height,
+    bool useOrigin,
+    const Base::Vector3d& sourceHandle
+)
+{
+    const auto bounds = validatedSourceBounds(geometry);
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    bounds.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    const bool customHandle = sourceHandle != Base::Vector3d();
+    const double size = customHandle ? sourceHandle.Length() : (height ? ymax - ymin : xmax - xmin);
+    if (!std::isfinite(size) || std::abs(sourceHandle.z) > Precision::Confusion()) {
+        throw Base::ValueError("Invalid block source handle");
+    }
+    const auto direction = end - start;
+    if (size < Precision::Confusion() || direction.Length() < Precision::Confusion()) {
+        throw Base::ValueError("The group width or height must be greater than zero");
+    }
+    // Source coordinates use the block origin (or the bounds corner for a plain
+    // group). Rotate and uniformly scale its reference handle onto the placed line.
+    const double scale = direction.Length() / size;
+    const double sourceAngle = customHandle ? std::atan2(sourceHandle.y, sourceHandle.x)
+                                            : (height ? M_PI / 2 : 0);
+    const double angle = std::atan2(direction.y, direction.x) - sourceAngle;
+    const double c = scale * std::cos(angle);
+    const double s = scale * std::sin(angle);
+    Base::Matrix4D matrix;
+    matrix[0][0] = c;
+    matrix[0][1] = -s;
+    matrix[1][0] = s;
+    matrix[1][1] = c;
+    matrix[2][2] = scale;
+    matrix[0][3] = useOrigin ? start.x : start.x - c * xmin + s * ymin;
+    matrix[1][3] = useOrigin ? start.y : start.y - s * xmin - c * ymin;
+
+    std::vector<std::unique_ptr<Part::Geometry>> result;
+    result.reserve(geometry.size());
+    for (const auto* geo : geometry) {
+        auto copy = std::unique_ptr<Part::Geometry>(geo->copy());
+        copy->transform(matrix);
+        result.push_back(std::move(copy));
+    }
+    return result;
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformFixedGroupGeometry(
+    const std::vector<Part::Geometry*>& geometry,
+    const Base::Vector3d& origin,
+    double angle
+)
+{
+    if (geometry.empty() || !std::isfinite(angle)) {
+        throw Base::ValueError("Invalid block geometry or rotation");
+    }
+    validatedSourceBounds(geometry);
+    Base::Matrix4D transform;
+    transform.rotZ(angle);
+    transform[0][3] = origin.x;
+    transform[1][3] = origin.y;
+    std::vector<std::unique_ptr<Part::Geometry>> result;
+    for (const auto* geo : geometry) {
+        auto copy = std::unique_ptr<Part::Geometry>(geo->copy());
+        copy->transform(transform);
+        result.push_back(std::move(copy));
+    }
+    return result;
+}
