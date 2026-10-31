@@ -44,6 +44,8 @@ public:
     void setNumberOfFiles(const int count);
     void useBackupExtension(const bool on);
     void setDateFormat(const std::string& fmt);
+    void consolidateBackups(const bool on);
+    void setBackupDirectory(const std::string& path);
     void apply(const std::string& sourcename, const std::string& targetname);
 
 private:
@@ -57,11 +59,16 @@ private:
                               const std::string& ext) const;
     bool checkDigits(const std::string& cmpl) const;
     bool renameFileNoErase(Base::FileInfo fi, const std::string& newName);
+    std::string getBackupDirectoryPath(const Base::FileInfo& target) const;
+    static std::string getBackupFilePath(const std::string& backupDir, const std::string& fileName);
+    std::string ensureBackupDirectory(const Base::FileInfo& target) const;
 
 private:
     Policy policy {Standard};
     int numberOfFiles {1};
     bool useFCBakExtension {true};
+    bool useBackupDirectory {false};
+    std::string backupDirectory {"%D/freecad-backups"};
     std::string saveBackupDateFormat {"%Y%m%d-%H%M%S"};
 };
 }  // namespace App
