@@ -111,6 +111,7 @@
 #include <GeomFill_Sweep.hxx>
 #include <GeomLib.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <gp.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Pln.hxx>
 #include <GProp_GProps.hxx>
@@ -2280,12 +2281,7 @@ TopoDS_Shape TopoShape::makeTorus(
     }
 
     BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
-    BRepPrimAPI_MakeRevol mkRevol(
-        mkFace.Face(),
-        gp_Ax1(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)),
-        Base::toRadians<double>(angle3),
-        Standard_True
-    );
+    BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp::OZ(), Base::toRadians<double>(angle3), Standard_True);
     return mkRevol.Shape();
 }
 

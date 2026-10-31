@@ -28,6 +28,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 
+#include <Mod/Part/App/BaseGeometry.h>
 
 #include "DatumPlane.h"
 
@@ -63,7 +64,7 @@ Plane::Plane()
     this->setAttacher(new AttachEnginePlane);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a
     // dependency of Sketcher on the PartDesign module
-    BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+    BRepBuilderAPI_MakeFace builder(Part::BaseGeometry::XY_PLANE);
     if (!builder.IsDone()) {
         return;
     }

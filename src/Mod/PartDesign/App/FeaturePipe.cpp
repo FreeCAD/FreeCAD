@@ -31,6 +31,7 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
+#include <gp.hxx>
 #include <gp_Ax2.hxx>
 #include <Law_Function.hxx>
 #include <Precision.hxx>
@@ -594,7 +595,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS
     const Base::Vector3d& bVec = Binormal.getValue();
     switch (Mode.getValue()) {
         case 1:
-            mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1), gp_Dir(1, 0, 0)));
+            mkPipeShell.SetMode(gp_Ax2(gp::Origin(), gp::DZ(), gp::DX()));
             break;
         case 2:
             mkPipeShell.SetMode(true);

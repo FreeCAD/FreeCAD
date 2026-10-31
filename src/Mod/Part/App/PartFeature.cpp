@@ -43,6 +43,7 @@
 #include <gce_MakeCirc.hxx>
 #include <gce_MakeDir.hxx>
 #include <gce_MakeLin.hxx>
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
@@ -83,6 +84,7 @@
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
 #include "Tools.h"
+#include "BaseGeometry.h"
 
 using namespace Part;
 namespace sp = std::placeholders;
@@ -1085,7 +1087,7 @@ static TopoShape _getTopoShape(
                         || boost::iequals("z", element) || boost::iequals("z-axis", element)) {
                         static TopoDS_Shape _shape;
                         if (_shape.IsNull()) {
-                            BRepBuilderAPI_MakeEdge builder(gp_Lin(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+                            BRepBuilderAPI_MakeEdge builder(gp_Lin(gp::Origin(), gp::DZ()));
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
@@ -1104,7 +1106,7 @@ static TopoShape _getTopoShape(
                 if (shape.isNull()) {
                     static TopoDS_Shape _shape;
                     if (_shape.IsNull()) {
-                        BRepBuilderAPI_MakeFace builder(gp_Pln(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1)));
+                        BRepBuilderAPI_MakeFace builder(BaseGeometry::XY_PLANE);
                         _shape = builder.Shape();
                         _shape.Infinite(Standard_True);
                     }
