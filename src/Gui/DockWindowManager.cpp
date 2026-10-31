@@ -250,8 +250,7 @@ void DockWindowManager::updateScrollBars()
 
 void DockWindowManager::updateScrollBars(QDockWidget* dw)
 {
-    auto controller
-        = dw->findChild<LeftScrollBarController*>(QString(), Qt::FindDirectChildrenOnly);
+    auto controller = dw->findChild<LeftScrollBarController*>(QString(), Qt::FindDirectChildrenOnly);
     if (!controller && leftDockScrollBarEnabled()) {
         // The controller is a child of the dock, so it is destroyed with it. Docks only get one if
         // the option has been enabled.
