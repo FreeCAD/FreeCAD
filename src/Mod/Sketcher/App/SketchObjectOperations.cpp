@@ -1206,8 +1206,17 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
         transferConstraints(GeoId, PointPos::end, newIds.back(), PointPos::end, true);
     }
+    const bool isConic = geoAsCurve->isDerivedFrom<Part::GeomConic>()
+        || geoAsCurve->isDerivedFrom<Part::GeomArcOfConic>();
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
+        // Internal geometry stays with the first piece, as in trim
+        if (con->Type == InternalAlignment && isConic) {
+            auto* newCon = con->copy();
+            newCon->Second = newIds.front();
+            newConstraints.push_back(newCon);
+            continue;
+        }
         deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints, true);
     }
 
