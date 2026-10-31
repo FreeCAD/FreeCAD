@@ -27,6 +27,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS.hxx>
 
+#include <QLabel>
 #include <cstring>
 
 #include <Base/Console.h>
@@ -287,6 +288,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     );
     // NOLINTEND
 
+    previewErrorLabel = new QLabel(this);
+    previewErrorLabel->setWordWrap(true);
+    previewErrorLabel->setVisible(false);
+    this->groupLayout()->addWidget(previewErrorLabel);
+
     this->groupLayout()->addWidget(proxy);
 
     setupGizmos(HoleView);
@@ -296,6 +302,22 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 }
 
 TaskHoleParameters::~TaskHoleParameters() = default;
+
+void TaskHoleParameters::recomputeFeature()
+{
+    TaskFeatureParameters::recomputeFeature();
+
+    auto* hole = getObject<PartDesign::Hole>();
+    if (hole && hole->isError()) {
+        previewErrorLabel->setText(
+            tr("Preview unavailable: %1").arg(QString::fromUtf8(hole->getStatusString()))
+        );
+        previewErrorLabel->setVisible(true);
+    }
+    else {
+        previewErrorLabel->setVisible(false);
+    }
+}
 
 void TaskHoleParameters::modelThreadChanged()
 {
