@@ -113,6 +113,12 @@ protected:
     void saveMaterial();
 
 private:
+    QString buildPropertyTooltip(
+        const QString& description,
+        const QString& propertyType,
+        const QString& valueString
+    );
+    void updateAppearanceTooltip(const QString& property);
     std::unique_ptr<Ui_MaterialsEditor> ui;
     std::shared_ptr<Materials::Material> _material;
     AppearancePreview* _rendered;
