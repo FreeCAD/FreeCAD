@@ -199,6 +199,15 @@ class ToolBit(Asset, ABC):
         params = attrs.get("parameter", {})
         attr = attrs.get("attribute", {})
 
+        # A file may predate parameters its shape has since gained. Add them
+        # now, before the shape's derived parameters overwrite anything they
+        # would be carried over from.
+        if isinstance(params, dict):
+            migrating = {"name": attrs.get("name"), "shape-type": tool_bit_shape.name}
+            migrating["parameter"] = dict(params)
+            if migrate_parameters(ParameterAccessor(migrating)):
+                params = migrating["parameter"]
+
         # Filter parameters if method exists
         if (
             hasattr(tool_bit_shape.__class__, "filter_parameters")
