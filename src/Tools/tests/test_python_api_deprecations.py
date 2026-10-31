@@ -80,6 +80,42 @@ class PythonApiDeprecationsTest(unittest.TestCase):
             def hide() -> None: ...
             """,
         )
+        self._write(
+            root,
+            "src/App/Thing.cpp",
+            r"""
+            namespace App
+            {
+
+            Thing::Thing()
+            {
+                ADD_PROPERTY_ALIAS(NewName, "PermanentOldName", "26.3");
+                ADD_PROPERTY_DEPRECATED_ALIAS(
+                    NewName,
+                    "OldName",
+                    "26.3",
+                    "27.2"
+                );
+            }
+
+            } // namespace App
+            """,
+        )
+        self._write(
+            root,
+            "src/Mod/Part/App/Foo.cpp",
+            r"""
+            namespace Part
+            {
+
+            Foo::Foo()
+            {
+                ADD_PROPERTY_DEPRECATED_ALIAS(NewName, "OldName", "26.3", "27.2");
+            }
+
+            } // namespace Part
+            """,
+        )
 
     def test_scans_python_bindings_modules_and_attributes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -91,9 +127,11 @@ class PythonApiDeprecationsTest(unittest.TestCase):
         self.assertEqual(
             set(records),
             {
+                "App::Thing.OldName",
                 "Example.old_api",
                 "Example.older_api",
                 "FreeCADGui.hide",
+                "Part::Foo.OldName",
                 "Part.Thing.old_attr",
                 "Part.Thing.old_method",
                 "Part.Thing",
@@ -103,7 +141,103 @@ class PythonApiDeprecationsTest(unittest.TestCase):
         self.assertEqual(records["Part.Thing.old_attr"].kind, "attribute")
         self.assertEqual(records["Part.Thing"].kind, "class")
         self.assertEqual(records["Part.Thing.old_method"].replacement, "new_method()")
+        self.assertEqual(records["App::Thing.OldName"].kind, "property_alias")
+        self.assertEqual(records["App::Thing.OldName"].deprecated_in, "26.3")
+        self.assertEqual(records["App::Thing.OldName"].removed_in, "27.2")
+        self.assertEqual(records["App::Thing.OldName"].replacement, "NewName")
+        self.assertNotIn("App::Thing.PermanentOldName", records)
         self.assertFalse(any(item.severity == "error" for item in result.diagnostics))
+
+    def test_cpp_property_alias_ignores_comments(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write(
+                root,
+                "src/App/Commented.cpp",
+                r"""
+                namespace App
+                {
+                Commented::Commented()
+                {
+                    // ADD_PROPERTY_DEPRECATED_ALIAS(
+                    //     NewName, "FakeOne", "26.3", "27.2");
+
+                    /*
+                    ADD_PROPERTY_DEPRECATED_ALIAS(
+                        NewName, "FakeTwo", "26.3", "27.2");
+                    */
+
+                    const char* text =
+                        "ADD_PROPERTY_DEPRECATED_ALIAS(NewName, "
+                        "\\\"FakeThree\\\", \\\"26.3\\\", \\\"27.2\\\")";
+
+                    const char* raw = R"tag(
+                        ADD_PROPERTY_DEPRECATED_ALIAS(NewName, "FakeRaw", "26.3", "27.2");
+                        { braces inside a raw string must not affect scanning }
+                    )tag";
+                }
+                }
+                """,
+            )
+            result = scan_repository(root)
+
+        self.assertEqual(result.records, ())
+        self.assertEqual(result.diagnostics, ())
+
+    def test_cpp_property_alias_requires_literal_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write(
+                root,
+                "src/App/InvalidAlias.cpp",
+                r"""
+                namespace App
+                {
+                InvalidAlias::InvalidAlias()
+                {
+                    ADD_PROPERTY_DEPRECATED_ALIAS(
+                        NewName,
+                        "OldName",
+                        CURRENT_RELEASE,
+                        "27.2"
+                    );
+                }
+                }
+                """,
+            )
+            result = scan_repository(root)
+
+        messages = [item.message for item in result.diagnostics]
+        self.assertIn(
+            "ADD_PROPERTY_DEPRECATED_ALIAS lifecycle metadata must use string literals",
+            messages,
+        )
+
+    def test_cpp_property_alias_validates_release_order(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._write(
+                root,
+                "src/App/BackwardsAlias.cpp",
+                r"""
+                namespace App
+                {
+                BackwardsAlias::BackwardsAlias()
+                {
+                    ADD_PROPERTY_DEPRECATED_ALIAS(
+                        NewName,
+                        "OldName",
+                        "27.2",
+                        "26.3"
+                    );
+                }
+                }
+                """,
+            )
+            result = scan_repository(root)
+
+        messages = [item.message for item in result.diagnostics]
+        self.assertIn("removed_in must be later than deprecated_in", messages)
 
     def test_reports_invalid_lifecycle_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -245,6 +379,7 @@ class PythonApiDeprecationsTest(unittest.TestCase):
                 exit_code = main(["--root", str(root), "list", "--remove-by", "27.2"])
 
         self.assertEqual(exit_code, 0)
+        self.assertIn("App::Thing.OldName", output.getvalue())
         self.assertIn("Example.old_api", output.getvalue())
         self.assertIn("FreeCADGui.hide", output.getvalue())
 
