@@ -68,9 +68,7 @@ class TestSketchModifiedGui(SketcherGuiTestCase):
     def test_opening_sketch_does_not_mark_document_modified(self):
         sketch = self._clean_sketch("OpenOnly")
         gui_doc = self._gui_document()
-        self.assertFalse(
-            gui_doc.Modified, "Baseline: a clean document must be unmodified."
-        )
+        self.assertFalse(gui_doc.Modified, "Baseline: a clean document must be unmodified.")
 
         FreeCADGui.ActiveDocument = gui_doc
         gui_doc.setEdit(sketch.Name)
@@ -87,9 +85,7 @@ class TestSketchModifiedGui(SketcherGuiTestCase):
     def test_opening_then_closing_sketch_does_not_mark_document_modified(self):
         sketch = self._clean_sketch("OpenThenClose")
         gui_doc = self._gui_document()
-        self.assertFalse(
-            gui_doc.Modified, "Baseline: a clean document must be unmodified."
-        )
+        self.assertFalse(gui_doc.Modified, "Baseline: a clean document must be unmodified.")
 
         FreeCADGui.ActiveDocument = gui_doc
         gui_doc.setEdit(sketch.Name)
