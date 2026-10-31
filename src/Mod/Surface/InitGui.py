@@ -48,5 +48,9 @@ class SurfaceWorkbench(Gui.Workbench):
     def GetClassName(self):
         return "SurfaceGui::Workbench"
 
+    def Activated(self):
+        # update the translation engine
+        Gui.updateLocale()
+
 
 Gui.addWorkbench(SurfaceWorkbench())
