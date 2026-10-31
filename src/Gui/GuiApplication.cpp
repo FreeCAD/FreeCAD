@@ -36,6 +36,7 @@
 #include <QByteArray>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QMetaMethod>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QFileOpenEvent>
@@ -162,8 +163,13 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
 
 void GUIApplication::commitData(QSessionManager& manager)
 {
+    MainWindow* mw = Gui::getMainWindow();
+    if (!mw) {
+        return;
+    }
+
     if (manager.allowsInteraction()) {
-        if (!Gui::getMainWindow()->close()) {
+        if (!mw->close()) {
             // cancel the shutdown
             manager.release();
             manager.cancel();
@@ -173,7 +179,7 @@ void GUIApplication::commitData(QSessionManager& manager)
         // no user interaction allowed, thus close all documents and
         // the main window
         App::GetApplication().closeAllDocuments();
-        Gui::getMainWindow()->close();
+        mw->close();
     }
 }
 
@@ -183,8 +189,10 @@ bool GUIApplication::event(QEvent* ev)
         // (macOS workaround when opening FreeCAD by opening a .FCStd file in 1.0)
         // With the current implementation of the splash screen boot procedure, Qt will
         // start an event loop before FreeCAD is fully initialized. This event loop will
-        // process the QFileOpenEvent that is sent by macOS before the main window is ready.
-        if (!Gui::getMainWindow()->property("eventLoop").toBool()) {
+        // process the QFileOpenEvent that is sent by macOS before the main window is ready
+        // or even exists.
+        MainWindow* mw = Gui::getMainWindow();
+        if (!mw || !mw->property("eventLoop").toBool()) {
             // If we never reach this point when opening FreeCAD by double clicking an
             // .FCStd file, then the workaround isn't needed anymore and can be removed
             QEvent* eventCopy = new QFileOpenEvent(static_cast<QFileOpenEvent*>(ev)->file());
@@ -346,6 +354,12 @@ void GUISingleApplication::receiveConnection()
 
 void GUISingleApplication::processMessages()
 {
+    // messages may arrive while still starting up, keep them until somebody listens
+    if (!isSignalConnected(QMetaMethod::fromSignal(&GUISingleApplication::messageReceived))) {
+        d_ptr->timer->start(1000);
+        return;
+    }
+
     QList<QString> msg = d_ptr->messages;
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);

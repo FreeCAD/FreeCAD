@@ -223,7 +223,7 @@ void StartupPostProcess::execute()
     checkOpenGL();
     loadOpenInventor();
     setBranding();
-    showMainWindow();
+    runInitGuiScripts();
     activateWorkbench();
     checkParameters();
     checkVersionMigration();
@@ -437,13 +437,8 @@ void StartupPostProcess::setImportImageFormats()
     App::GetApplication().addImportType(filter.c_str(), "FreeCADGui");
 }
 
-void StartupPostProcess::showMainWindow()
+void StartupPostProcess::runInitGuiScripts()
 {
-    // show splasher while initializing the GUI
-    if (!Application::hiddenMainWindow() && !loadFromPythonModule) {
-        mainWindow->startSplasher();
-    }
-
     // running the GUI init script
     try {
         Base::Console().log("Run Gui init script\n");
@@ -452,18 +447,20 @@ void StartupPostProcess::showMainWindow()
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in FreeCADGuiInit.py: {}\n", e.what());
-        mainWindow->stopSplasher();
         throw;
     }
-
-    // stop splash screen and set immediately the active window that may be of interest
-    // for scripts using Python binding for Qt
-    mainWindow->stopSplasher();
-    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::activateWorkbench()
 {
+    // the splash stays shown until the main window is up, but must not process events from now
+    // on as this breaks the toolbars and the window geometry restored by loadWindowSettings()
+    Gui::Application::freezeSplash();
+
+    // set immediately the active window that may be of interest for scripts using Python
+    // binding for Qt
+    mainWindow->activateWindow();
+
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().log("Init: Activating default workbench {}\n", start);
@@ -512,6 +509,11 @@ void StartupPostProcess::activateWorkbench()
 
     // Reactivate the startup workbench
     guiApp.activateWorkbench(start.c_str());
+
+    // stop splash screen only now, once the main window is shown, to leave no gap without
+    // any window on the screen
+    Gui::Application::hideSplash(mainWindow);
+    mainWindow->activateWindow();
 }
 
 void StartupPostProcess::setStyleSheet()

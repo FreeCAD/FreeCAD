@@ -75,7 +75,7 @@ private:
     void setStyleSheet();
     void autoloadModules(const QStringList& wb);
     void setImportImageFormats();
-    void showMainWindow();
+    void runInitGuiScripts();
     void activateWorkbench();
     void checkParameters();
     void checkVersionMigration() const;
