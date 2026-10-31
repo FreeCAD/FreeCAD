@@ -59,7 +59,7 @@ DatumElement::~DatumElement() = default;
 
 bool DatumElement::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const
 {
-    Q_UNUSED(subname);
+    (void)subname;
     
     Placement.getValue().getRotation().multVec(baseDir, directionZ);
 
@@ -163,7 +163,7 @@ bool LocalCoordinateSystem::getCameraAlignmentDirection(Base::Vector3d& directio
                                                         Base::Vector3d& directionX,
                                                         const char* subname) const
 {
-    Q_UNUSED(subname);
+    (void)subname;
 
     Placement.getValue().getRotation().multVec(Base::Vector3d::UnitZ, directionZ);
     Placement.getValue().getRotation().multVec(Base::Vector3d::UnitX, directionX);
@@ -284,8 +284,7 @@ DatumElement* LocalCoordinateSystem::createDatum(const SetupData& data)
 
     assert(featureObj && featureObj->isDerivedFrom<App::DatumElement>());
 
-    QByteArray byteArray = data.label.toUtf8();
-    featureObj->Label.setValue(byteArray.constData());
+    featureObj->Label.setValue(data.label.c_str());
 
     auto* feature = static_cast<App::DatumElement*>(featureObj);
     feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));

@@ -27,13 +27,12 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
 #include <TopoDS_Iterator.hxx>
-#include <QtGlobal>
-
 
 #include <memory>
 
 #include "FaceMaker.h"
 #include <App/MappedElement.h>
+#include <Base/Translation.h>
 #include "TopoShape.h"
 #include "TopoShapeOpCode.h"
 
@@ -79,7 +78,13 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape)
             break;
         default:
             throw Base::TypeError(
-                tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString()
+                Base::Translation::translate(
+                    "FaceMaker",
+                    QT_TRANSLATE_NOOP(
+                        "FaceMaker",
+                        "Shape must be a wire, edge or compound. Something else was supplied."
+                    )
+                )
             );
             break;
     }
@@ -276,7 +281,7 @@ void Part::FaceMaker::postBuild()
         int nameCount = 0;
         for (const auto& e : edgeNames) {
             names.push_back(e.name);
-            sids += e.sids;
+            sids.insert(sids.end(), e.sids.begin(), e.sids.end());
             if (namesUsed.insert(e.name).second) {
                 if (++nameCount >= minElementNames) {
                     break;
@@ -335,14 +340,19 @@ TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic)
 
 std::string Part::FaceMakerSimple::getUserFriendlyName() const
 {
-    return {tr("Simple").toStdString()};
+    return Base::Translation::translate("FaceMaker", QT_TRANSLATE_NOOP("FaceMaker", "Simple"));
 }
 
 std::string Part::FaceMakerSimple::getBriefExplanation() const
 {
-    return {tr("Makes separate plane face from every wire independently. No support for holes; "
-               "wires can be on different planes.")
-                .toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP(
+            "FaceMaker",
+            "Makes separate plane face from every wire independently. No support for holes; "
+            "wires can be on different planes."
+        )
+    );
 }
 
 void Part::FaceMakerSimple::Build_Essence()

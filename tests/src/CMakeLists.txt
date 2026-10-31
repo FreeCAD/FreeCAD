@@ -2,6 +2,8 @@
 
 add_subdirectory(Base)
 add_subdirectory(App)
-add_subdirectory(Gui)
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+endif()
 add_subdirectory(Mod)
 add_subdirectory(zipios++)

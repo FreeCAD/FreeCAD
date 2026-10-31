@@ -41,6 +41,7 @@
 #include <set>
 
 #include <Base/Console.h>
+#include <Base/Translation.h>
 
 FC_LOG_LEVEL_INIT("FaceMakerUnified", true, true)
 
@@ -50,12 +51,18 @@ TYPESYSTEM_SOURCE(Part::FaceMakerUnified, Part::FaceMakerBuildFace)
 
 std::string FaceMakerUnified::getUserFriendlyName() const
 {
-    return {tr("Unified facemaker").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Unified facemaker")
+    );
 }
 
 std::string FaceMakerUnified::getBriefExplanation() const
 {
-    return {tr("Unified: handles nested holes, overlapping wires, and curved surfaces").toStdString()};
+    return Base::Translation::translate(
+        "FaceMaker",
+        QT_TRANSLATE_NOOP("FaceMaker", "Unified: handles nested holes, overlapping wires, and curved surfaces")
+    );
 }
 
 namespace

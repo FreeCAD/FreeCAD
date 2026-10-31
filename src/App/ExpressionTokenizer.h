@@ -24,7 +24,9 @@
 
 #pragma once
 
-#include <QString>
+#include <string>
+#include <string_view>
+
 #include <FCGlobal.h>
 
 namespace App
@@ -33,22 +35,24 @@ namespace App
 class AppExport ExpressionTokenizer
 {
 public:
-    QString perform(const QString& text, int pos);
+    // Tokenize UTF-8 input and return the completion prefix (UTF-8).
+    // `posBytes` is a byte offset into `text`.
+    std::string perform(std::string_view text, std::size_t posBytes);
 
     void getPrefixRange(int& start, int& end) const
     {
-        start = prefixStart;
-        end = prefixEnd;
+        start = prefixStartBytes;
+        end = prefixEndBytes;
     }
 
-    void updatePrefixEnd(int end)
+    void updatePrefixEnd(int endBytes)
     {
-        prefixEnd = end;
+        prefixEndBytes = endBytes;
     }
 
 private:
-    int prefixStart = 0;
-    int prefixEnd = 0;
+    int prefixStartBytes = 0;
+    int prefixEndBytes = 0;
 };
 
 }  // namespace App
