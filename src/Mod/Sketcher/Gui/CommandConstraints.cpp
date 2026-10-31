@@ -5045,7 +5045,8 @@ protected:
     CoincidentSolveStatus getCoincidentSolveStatus(SketchObject* obj, SketchSolveStatus result);
     bool abortIfCoincidentSolveRejected(SketchObject* obj, const CoincidentSolveStatus& before);
     static bool shouldRejectCoincidentSolve(const CoincidentSolveStatus& before,
-                                            const CoincidentSolveStatus& after);
+                                            const CoincidentSolveStatus& after,
+                                            bool autoRemoveRedundants);
 };
 
 CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(const char* initName)
@@ -5748,7 +5749,8 @@ CmdSketcherConstrainCoincidentUnified::getCoincidentSolveStatus(SketchObject* ob
 
 bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
     const CoincidentSolveStatus& before,
-    const CoincidentSolveStatus& after)
+    const CoincidentSolveStatus& after,
+    bool autoRemoveRedundants)
 {
     if (after.status == SketchSolveStatus::Success) {
         return false;
@@ -5756,6 +5758,15 @@ bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
 
     if (after.status == SketchSolveStatus::InvalidGeometry) {
         return true;
+    }
+
+    // When "Auto remove redundant constraints" is enabled, a purely redundant
+    // outcome must not be rejected: the redundant constraints are removed right
+    // after the transaction commits (finishTransactionAndUpdate ->
+    // tryAutoRecompute -> autoRemoveRedundants). Rejecting here would roll the
+    // new constraint back before auto-removal ever runs. (Fixes #34008)
+    if (autoRemoveRedundants && after.status == SketchSolveStatus::RedundantConstraints) {
+        return false;
     }
 
     if (getCoincidentSolveStatusSeverity(after.status)
@@ -5795,7 +5806,11 @@ bool CmdSketcherConstrainCoincidentUnified::abortIfCoincidentSolveRejected(
     auto solveResult = obj->solve();
     auto after = getCoincidentSolveStatus(obj, solveResult);
 
-    if (!shouldRejectCoincidentSolve(before, after)) {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", false);
+
+    if (!shouldRejectCoincidentSolve(before, after, autoRemoveRedundants)) {
         return false;
     }
 
