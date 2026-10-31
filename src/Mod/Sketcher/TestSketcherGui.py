@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-from SketcherTests.TestConstraintPreselectionGui import SketcherGuiTestCases
-from SketcherTests.TestDistanceLabelExtensionGui import TestDistanceLabelExtensionGui
-from SketcherTests.TestConstraintCommandsGui import TestConstraintCommandsGui
 from SketcherTests.TestCoincidentCommandGui import TestCoincidentCommandGui
+from SketcherTests.TestConstraintCommandsGui import TestConstraintCommandsGui
+from SketcherTests.TestConstraintPreselectionGui import SketcherGuiTestCases
+from SketcherTests.TestDeferredConstraints import TestDeferredConstraints
+from SketcherTests.TestDistanceLabelExtensionGui import TestDistanceLabelExtensionGui
+from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
 from SketcherTests.TestOnViewParameterGui import TestOnViewParameterGui
 from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
 from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
@@ -18,6 +20,7 @@ from SketcherTests.TestVisualLayerListGui import TestVisualLayerListGui
     and TestSketchPlacementUpdate
     and TestOnViewParameterGui
     and TestExternalFacePreselection
+    and TestDeferredConstraints
     and TestVisualLayerListGui
     else False
 )
