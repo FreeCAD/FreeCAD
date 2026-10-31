@@ -339,3 +339,114 @@ class TestCoincidentCommandGui(SketcherGuiTestCase):
         self.assertEqual(len(sketch.Constraints), constraint_count)
         self.assertNotEqual(self.constraint_signature(sketch), constraints_before)
         self.assertNotEqual(sketch.solve(), 0, "The original redundancy should remain.")
+
+    def make_open_rectangle_sketch(self, name):
+        """Rectangle whose top-right corner is deliberately left open.
+
+        Reproducer for #34008. Constraint #8 is a two-point Horizontal between
+        the top-left point (Geo3.start) and the top-right point (Geo2.end).
+        Closing the open corner by making Geo3.end coincident with Geo2.end
+        implies that Horizontal constraint, i.e. makes it redundant.
+        """
+        sketch = self.doc.addObject("Sketcher::SketchObject", name)
+        # Geo0: left edge, top-left -> bottom-left
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0, 10, 0), FreeCAD.Vector(0, 0, 0)), False
+        )
+        # Geo1: bottom edge, bottom-left -> bottom-right
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(20, 0, 0)), False
+        )
+        # Geo2: right edge, bottom-right -> top-right
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(20, 0, 0), FreeCAD.Vector(20, 10, 0)), False
+        )
+        # Geo3: top edge, shortened so the top-right corner stays open
+        sketch.addGeometry(
+            Part.LineSegment(FreeCAD.Vector(0, 10, 0), FreeCAD.Vector(14, 10, 0)), False
+        )
+
+        sketch.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        sketch.addConstraint(Sketcher.Constraint("Vertical", 0))
+        sketch.addConstraint(Sketcher.Constraint("Vertical", 2))
+        sketch.addConstraint(Sketcher.Constraint("Horizontal", 1))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", 3, 1, 0, 1))
+        sketch.addConstraint(Sketcher.Constraint("Horizontal", 3))
+        # Constraint #8: two-point Horizontal (top-left, top-right). It becomes
+        # redundant once the open corner is closed.
+        sketch.addConstraint(Sketcher.Constraint("Horizontal", 3, 1, 2, 2))
+        return sketch
+
+    def closing_coincident_signatures(self, sketch):
+        """Signatures of the coincident that closes the open corner, in both
+        endpoint orders, captured by temporarily adding it.
+
+        Also asserts the #34008 precondition: adding it makes the sketch
+        redundant rather than conflicting or over-constrained.
+        """
+        signatures = []
+        for order in ((2, 2, 3, 2), (3, 2, 2, 2)):
+            idx = sketch.addConstraint(Sketcher.Constraint("Coincident", *order))
+            self.assertNotEqual(
+                sketch.solve(),
+                0,
+                "Closing the open corner must create a redundant constraint.",
+            )
+            self.assertNotEqual(sketch.RedundantConstraints, [])
+            signatures.append(self.constraint_signature(sketch)[idx])
+            sketch.delConstraint(idx)
+            self.assertEqual(sketch.solve(), 0)
+        return signatures
+
+    def redundant_horizontal_signature(self, sketch):
+        """Signature of constraint #8, the two-point Horizontal that goes redundant."""
+        return self.constraint_signature(sketch)[7]
+
+    def test_redundant_coincident_is_rejected_when_autoremove_disabled(self):
+        """Control for #34008: with auto-remove OFF the coincident is rejected."""
+        self.set_boolean_preference_for_test(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher", "AutoRemoveRedundants", False
+        )
+        sketch = self.make_open_rectangle_sketch("OpenRectAutoRemoveOff")
+        self.assertEqual(sketch.solve(), 0)
+
+        closing = self.closing_coincident_signatures(sketch)
+        redundant_horizontal = self.redundant_horizontal_signature(sketch)
+        constraint_count = len(sketch.Constraints)
+
+        warnings = self.apply_coincident_command_capturing_warning(sketch, "Vertex6", "Vertex8")
+
+        self.assertEqual(len(warnings), 1)
+        self.assertEqual(warnings[0][0], "Coincident constraint not added")
+        self.assertIn("redundant", warnings[0][1].lower())
+        signatures = self.constraint_signature(sketch)
+        self.assertEqual(len(sketch.Constraints), constraint_count)
+        self.assertFalse(any(sig in signatures for sig in closing))
+        self.assertIn(redundant_horizontal, signatures)
+        self.assertEqual(sketch.solve(), 0)
+
+    def test_redundant_coincident_is_auto_removed_when_preference_enabled(self):
+        """Fix for #34008: with auto-remove ON the coincident is kept and the
+        redundant Horizontal constraint is removed automatically."""
+        self.set_boolean_preference_for_test(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher", "AutoRemoveRedundants", True
+        )
+        sketch = self.make_open_rectangle_sketch("OpenRectAutoRemoveOn")
+        self.assertEqual(sketch.solve(), 0)
+
+        closing = self.closing_coincident_signatures(sketch)
+        redundant_horizontal = self.redundant_horizontal_signature(sketch)
+        constraint_count = len(sketch.Constraints)
+
+        self.apply_coincident_command(sketch, "Vertex6", "Vertex8")
+
+        signatures = self.constraint_signature(sketch)
+        self.assertTrue(
+            any(sig in signatures for sig in closing),
+            "The coincident constraint must be kept when auto-remove is enabled.",
+        )
+        self.assertNotIn(redundant_horizontal, signatures)
+        self.assertEqual(len(sketch.Constraints), constraint_count)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.RedundantConstraints, [])
