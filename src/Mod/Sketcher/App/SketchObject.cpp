@@ -544,6 +544,9 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
+        // FaceMakerBuildFace makes the faces of new sketches, so the joiner only has to find
+        // the open wires and can skip the tight bound search.
+        joiner.setOpenWiresOnly(!legacy);
         joiner.addShape(edges);
 
         if (legacy) {
