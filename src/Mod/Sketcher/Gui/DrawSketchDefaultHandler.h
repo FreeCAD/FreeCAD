@@ -571,6 +571,7 @@ protected:
         }
 
         AutoConstraints.clear();
+        RemoveConstraints.clear();
         ShapeGeometry.clear();
         ShapeConstraints.clear();
 
@@ -701,7 +702,9 @@ protected:
         }
 
         for (auto& ac : autoConstrs) {
-            if (!generateOneAutoConstraintFromSuggestion(ac, geoId1, posId1, AutoConstraints)) {
+            if (
+                !generateOneAutoConstraintFromSuggestion(ac, geoId1, posId1, AutoConstraints, RemoveConstraints)
+            ) {
                 return;
             }
         }
@@ -734,7 +737,7 @@ protected:
      * all the constraints stored in the AutoConstraints vector. */
     void tryAddAutoConstraints()
     {
-        addGeneratedAutoConstraints(AutoConstraints);
+        addGeneratedAutoConstraints(AutoConstraints, RemoveConstraints);
     }
 
     /** @brief Convenience function to remove redundant autoconstraints from the AutoConstraints
@@ -751,7 +754,7 @@ protected:
      */
     void removeRedundantAutoConstraints()
     {
-        if (!filterRedundantAutoConstraints(AutoConstraints)) {
+        if (!filterRedundantAutoConstraints(AutoConstraints, RemoveConstraints)) {
             // This exception stops the procedure here, which means that:
             // 1) Geometry (and constraints of the geometry in case of a multicurve shape)
             // are created 2) No autoconstrains are actually added 3) No widget mandated
@@ -783,7 +786,7 @@ protected:
 
         auto autoConstraints = toPointerVector(AutoConstraints);
 
-        sketchobject->diagnoseAdditionalConstraints(autoConstraints);
+        sketchobject->diagnoseAdditionalConstraints(autoConstraints, RemoveConstraints);
 
         if (sketchobject->getLastHasRedundancies() || sketchobject->getLastHasConflicts()) {
             THROWM(
@@ -1092,6 +1095,7 @@ protected:
     std::vector<std::unique_ptr<Part::Geometry>> ShapeGeometry;
     std::vector<std::unique_ptr<Sketcher::Constraint>> ShapeConstraints;
     std::vector<std::unique_ptr<Sketcher::Constraint>> AutoConstraints;
+    std::vector<int> RemoveConstraints;
 
     bool avoidRedundants;
     bool continuousMode;

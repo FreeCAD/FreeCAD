@@ -5012,6 +5012,7 @@ protected:
         Valid,
         AlreadyCoincident,
         WouldCollapseGeometry,
+        RemovePointOnObject
     };
 
     struct CoincidentSolveStatus {
@@ -5286,10 +5287,15 @@ void CmdSketcherConstrainCoincidentUnified::activatedPointOnObject(SketchObject*
     }
 }
 
-void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves)
+// clang-format on
+void CmdSketcherConstrainCoincidentUnified::activatedCoincident(
+    SketchObject* obj,
+    std::vector<SelIdPair> points,
+    std::vector<SelIdPair> curves
+)
 {
-    bool allConicsEdges = true;// If user selects only conics (circle, ellipse, arc, arcOfEllipse)
-                               // then we make concentric constraint.
+    bool allConicsEdges = true;  // If user selects only conics (circle, ellipse, arc, arcOfEllipse)
+                                 // then we make concentric constraint.
     for (auto& curve : curves) {
         if (!isGeoConcentricCompatible(obj->getGeometry(curve.GeoId))) {
             allConicsEdges = false;
@@ -5299,15 +5305,26 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             Gui::TranslatedUserWarning(
                 obj,
                 QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more vertices from the sketch for a coincident "
+                QObject::tr(
+                    "Select two or more vertices from the sketch for a coincident "
                     "constraint, or two or more circles, ellipses, arcs or arcs of ellipse "
-                    "for a concentric constraint."));
+                    "for a concentric constraint."
+                )
+            );
             return;
         }
         curve.PosId = Sketcher::PointPos::mid;
     }
 
     std::vector<SelIdPair> vecOfSelIdToUse = curves.empty() ? points : curves;
+    const auto originIt
+        = std::find_if(vecOfSelIdToUse.begin(), vecOfSelIdToUse.end(), [](const SelIdPair& item) {
+              return item.GeoId == GeoEnum::RtPnt;
+          });
+
+    if (originIt != vecOfSelIdToUse.end()) {
+        std::rotate(vecOfSelIdToUse.begin(), originIt, originIt + 1);
+    }
 
     int GeoId1 = vecOfSelIdToUse[0].GeoId;
     Sketcher::PointPos PosId1 = vecOfSelIdToUse[0].PosId;
@@ -5337,15 +5354,35 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             break;
         }
 
+        const int MaxValidationAttempts = vecOfSelIdToUse.size() + 1;
+
         auto validation = validateCoincidentSelection(obj, GeoId1, PosId1, GeoId2, PosId2);
+
+        for (int attempt = 0; validation == CoincidentSelectionResult::RemovePointOnObject
+             && attempt < MaxValidationAttempts;
+             ++attempt) {
+            const auto conflictingConstraints
+                = obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+
+            if (conflictingConstraints.empty()) {
+                break;
+            }
+
+            Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", conflictingConstraints.front());
+
+            validation = validateCoincidentSelection(obj, GeoId1, PosId1, GeoId2, PosId2);
+        }
+
         if (validation == CoincidentSelectionResult::Valid) {
             constraintsAdded = true;
-            Gui::cmdAppObjectArgs(obj,
+            Gui::cmdAppObjectArgs(
+                obj,
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
                 GeoId1,
                 static_cast<int>(PosId1),
                 GeoId2,
-                static_cast<int>(PosId2));
+                static_cast<int>(PosId2)
+            );
         }
         else {
             lastRejectedSelection = validation;
@@ -5366,6 +5403,7 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
         showCoincidentSelectionWarning(obj, lastRejectedSelection);
     }
 }
+// clang-format off
 
 void CmdSketcherConstrainCoincidentUnified::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
 {
@@ -5507,7 +5545,25 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
     auto beforeSolve = getCoincidentSolveStatus(Obj);
 
     if (!substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+        constexpr int MaxValidationAttempts = 3;
+
         auto validation = validateCoincidentSelection(Obj, GeoId1, PosId1, GeoId2, PosId2);
+
+        for (int attempt = 0; validation == CoincidentSelectionResult::RemovePointOnObject
+             && attempt < MaxValidationAttempts;
+             ++attempt) {
+            const auto conflictingConstraints
+                = Obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+
+            if (conflictingConstraints.empty()) {
+                break;
+            }
+
+            Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", conflictingConstraints.front());
+
+            validation = validateCoincidentSelection(Obj, GeoId1, PosId1, GeoId2, PosId2);
+        }
+
         if (validation != CoincidentSelectionResult::Valid) {
             abortCommand();
             showCoincidentSelectionWarning(Obj, validation);
@@ -5539,6 +5595,11 @@ CmdSketcherConstrainCoincidentUnified::validateCoincidentSelection(SketchObject*
     bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
     if (constraintExists) {
         return CoincidentSelectionResult::AlreadyCoincident;
+    }
+
+    const auto sameObject = obj->getPointOnSameObjectConstraints(GeoId1, PosId1, GeoId2, PosId2);
+    if (!sameObject.empty()) {
+        return CoincidentSelectionResult::RemovePointOnObject;
     }
 
     auto firstPoints = obj->getAllCoincidentPoints(GeoId1, PosId1);
@@ -5576,6 +5637,12 @@ void CmdSketcherConstrainCoincidentUnified::showCoincidentSelectionWarning(
                 QObject::tr("Coincident constraint not added"),
                 QObject::tr("Cannot add a coincident constraint because it would collapse geometry "
                             "to zero length."));
+            break;
+        case CoincidentSelectionResult::RemovePointOnObject:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("Cannot add a coincident constraint because the points are linked by a PointOnObject constraint already."));
             break;
         case CoincidentSelectionResult::Valid:
             break;

@@ -1125,6 +1125,7 @@ private:
             sugConstraints[0].clear();
             sugConstraints[1].clear();
             AutoConstraints.clear();
+            RemoveConstraints.clear();
 
             auto obj = sketchgui->getSketchObject();
             obj->solve();

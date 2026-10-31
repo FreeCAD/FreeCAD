@@ -337,7 +337,10 @@ public:
 
     /** Performs a full analysis of the addition of additional constraints without adding them to
      * the sketch object */
-    int diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint*> additionalconstraints);
+    int diagnoseAdditionalConstraints(
+        std::vector<Sketcher::Constraint*> additionalconstraints,
+        std::vector<int>& removeConstraints
+    );
 
     /** Solves the sketch and (optionally) updates the geometry.
      * Does not trigger a recompute of any dependent features; when that is necessary, call
@@ -638,7 +641,7 @@ public:
 
     // retrieves an array of maps, each map containing the points that are coincidence by virtue of
     // any number of direct or indirect coincidence constraints
-    const std::vector<std::map<int, Sketcher::PointPos>> getCoincidenceGroups();
+    const std::vector<std::map<int, Sketcher::PointPos>> getCoincidenceGroups() const;
     // returns if the given geoId is fixed (coincident) with external geometry on any of the
     // possible relevant points
     void isCoincidentWithExternalGeometry(
@@ -649,7 +652,7 @@ public:
     );
     // returns a map containing all the GeoIds that are coincident with the given point as keys, and
     // the PosIds as values associated with the keys.
-    const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId);
+    const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId) const;
 
     /// retrieves for a Vertex number a list with all coincident points (sharing a single
     /// coincidence constraint)
@@ -664,13 +667,28 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
+
+    /// returns all the points that form an intersection between GeoId1 and GeoId2
     void getDirectlyCoincidentPoints(
         const int GeoId1,
         const int GeoId2,
         std::vector<int>& GeoIds3,
         std::vector<PointPos>& PosIds3
     ) const;
-    bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    /// Checks if the two points are directly or indirectly coincident
+    bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2) const;
+
+    /// returns the constraints between each point and a common edge that are linked by
+    /// PointOnObject constraints followCoincident follows coincident points from GeoId1/GeoId2 to
+    /// see if they are indirectly connected to the same edge
+    std::vector<int> getPointOnSameObjectConstraints(
+        int GeoId1,
+        PointPos PosId1,
+        int GeoId2,
+        PointPos PosId2,
+        bool followCoincident = true
+    ) const;
 
     // Returns true if the sketch has 1 or more block constraint
     bool hasBlockConstraint() const;

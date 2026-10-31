@@ -91,6 +91,12 @@ public:
         GeoIdMode geoIdMode = GeoIdMode::DoNotChangeGeoIds
     );
 
+    /// Convert a vector of constraint indices into the string representing the command deleting them
+    static std::string makeDelConstraintCommandString(
+        const std::string& doc,
+        const std::vector<int>& constraints
+    );
+
     static std::vector<std::string> multiLine(std::string&& singlestring);
 
 private:

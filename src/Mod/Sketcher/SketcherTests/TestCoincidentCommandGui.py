@@ -333,9 +333,113 @@ class TestCoincidentCommandGui(SketcherGuiTestCase):
 
         constraints_before = self.constraint_signature(sketch)
         constraint_count = len(sketch.Constraints)
+        self.assertEqual(constraint_count, 3)
         self.apply_coincident_command(sketch, "Vertex2", "Vertex3")
 
         self.assertEqual(self.selected_sub_elements(), [])
         self.assertEqual(len(sketch.Constraints), constraint_count)
         self.assertNotEqual(self.constraint_signature(sketch), constraints_before)
         self.assertNotEqual(sketch.solve(), 0, "The original redundancy should remain.")
+
+    def make_point_on_object_sketch(self, targets, initial_coincidences=()):
+        """Three independent line starts at the origin, plus three reference edges.
+
+        targets maps point numbers (1..3) to target geometry IDs or axis IDs.
+        Keeping all starts at (0, 0) makes the constraints solvable before the command.
+        """
+        sketch = self.doc.addObject("Sketcher::SketchObject", "PointOnObjectSketch")
+        for end in ((4, 7), (8, 5), (6, -7)):
+            sketch.addGeometry(
+                Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(end[0], end[1], 0)),
+                False,
+            )
+        for start, end in (
+            ((-20, 0), (20, 0)),
+            ((0, -20), (0, 20)),
+            ((-20, -20), (20, 20)),
+        ):
+            sketch.addGeometry(
+                Part.LineSegment(
+                    FreeCAD.Vector(start[0], start[1], 0),
+                    FreeCAD.Vector(end[0], end[1], 0),
+                ),
+                True,
+            )
+        for first, second in initial_coincidences:
+            sketch.addConstraint(Sketcher.Constraint("Coincident", first - 1, 1, second - 1, 1))
+        for point, edges in targets.items():
+            for edge in edges:
+                sketch.addConstraint(Sketcher.Constraint("PointOnObject", point - 1, 1, edge))
+        self.doc.recompute()
+        self.assertEqual(sketch.solve(), 0, "Fixture must solve before coincident command")
+        return sketch
+
+    def assert_point_on_object_command(self, sketch, selected, remaining_targets, coincidences):
+        """Exercise the GUI command, not just the conflict-detection helper."""
+        before = [c for c in sketch.Constraints if c.Type == "Coincident"]
+        self.assertEqual(sketch.solve(), 0)
+        self.apply_coincident_command(sketch, *selected)
+        actual_targets = sorted(
+            (c.First + 1, c.Second) for c in sketch.Constraints if c.Type == "PointOnObject"
+        )
+        self.assertEqual(actual_targets, sorted(remaining_targets))
+        actual_coincidences = [c for c in sketch.Constraints if c.Type == "Coincident"]
+        self.assertEqual(len(actual_coincidences), len(before) + coincidences)
+        self.assertEqual(sketch.solve(), 0)
+        FreeCADGui.ActiveDocument.resetEdit()
+
+    def test_point_on_same_edge_through_coincident_point(self):
+        # P1 on edge 3; P2 coincident with P1; P3 on edge 3.
+        # Both P1/P3 and P2/P3 must remove the redundant PointOnObject.
+        for selected in (
+            ("Vertex1", "Vertex5"),
+            ("Vertex5", "Vertex1"),
+            ("Vertex3", "Vertex5"),
+            ("Vertex5", "Vertex3"),
+        ):
+            with self.subTest(selected=selected):
+                sketch = self.make_point_on_object_sketch({1: (3,), 3: (3,)}, ((1, 2),))
+                self.assert_point_on_object_command(sketch, selected, [(3, 3)], 1)
+
+    def test_three_point_selection_with_multiple_targets(self):
+        # Joining P1, P2 and P3 must remove shared targets on either side
+        # while preserving constraints onto different edges.
+        for selected in (
+            ("Vertex1", "Vertex3", "Vertex5"),
+            ("Vertex5", "Vertex3", "Vertex1"),
+        ):
+            with self.subTest(selected=selected):
+                sketch = self.make_point_on_object_sketch({1: (3, 4), 2: (3,), 3: (4, 5)})
+                self.assertEqual(sketch.solve(), 0)
+                self.apply_coincident_command(sketch, *selected)
+                self.assertEqual(len([c for c in sketch.Constraints if c.Type == "Coincident"]), 2)
+                remaining = [
+                    (c.First + 1, c.Second) for c in sketch.Constraints if c.Type == "PointOnObject"
+                ]
+                self.assertEqual(len(remaining), 3)
+                self.assertIn((3, 5), remaining)
+                self.assertEqual(sum(edge == 3 for _, edge in remaining), 1)
+                self.assertEqual(sum(edge == 4 for _, edge in remaining), 1)
+                self.assertEqual(sketch.solve(), 0)
+                FreeCADGui.ActiveDocument.resetEdit()
+
+    def test_point_without_target_does_not_remove_unrelated_constraints(self):
+        for selected in (("Vertex1", "Vertex3"), ("Vertex3", "Vertex1")):
+            with self.subTest(selected=selected):
+                sketch = self.make_point_on_object_sketch({1: (3, 4), 3: (5,)})
+                self.assert_point_on_object_command(sketch, selected, [(1, 3), (1, 4), (3, 5)], 1)
+
+    def test_axis_targets_and_origin_are_equivalent(self):
+        # The origin lies on both built-in axes, which have IDs -1 and -2.
+        for target in (-1, -2):
+            for selected in (("Vertex1", "RootPoint"), ("RootPoint", "Vertex1")):
+                with self.subTest(target=target, selected=selected):
+                    sketch = self.make_point_on_object_sketch({1: (target,)})
+                    self.assert_point_on_object_command(sketch, selected, [], 1)
+
+    def test_origin_equivalence_through_a_coincident_point(self):
+        for target in (-1, -2):
+            for selected in (("Vertex3", "RootPoint"), ("RootPoint", "Vertex3")):
+                with self.subTest(target=target, selected=selected):
+                    sketch = self.make_point_on_object_sketch({1: (target,), 3: (5,)}, ((1, 2),))
+                    self.assert_point_on_object_command(sketch, selected, [(3, 5)], 1)
