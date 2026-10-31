@@ -620,6 +620,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFeedRate.py
     CAMTests/TestPathFlute.py
     CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
