@@ -186,7 +186,7 @@ class ToolController:
             "App::PropertySpeed",
             "RampFeed",
             "Feed",
-            QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp and helical entry moves"),
         )
         obj.setExpression("RampFeed", "HorizFeed")
 
@@ -282,7 +282,7 @@ class ToolController:
                 "App::PropertySpeed",
                 "RampFeed",
                 "Feed",
-                QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+                QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp and helical entry moves"),
             )
             obj.setExpression("RampFeed", "HorizFeed")
             _migrateRampDressups(obj)

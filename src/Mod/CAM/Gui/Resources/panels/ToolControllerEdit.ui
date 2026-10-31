@@ -175,6 +175,9 @@
       </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="rampFeed">
+        <property name="toolTip">
+         <string>Feed rate for ramp and helical entry moves</string>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>

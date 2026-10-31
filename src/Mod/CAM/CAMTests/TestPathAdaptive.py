@@ -24,6 +24,7 @@ import FreeCAD
 import Part
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
 from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
@@ -1043,6 +1044,105 @@ class TestPathAdaptive(PathTestBase):
         )
 
         self.assertTrue(okAt10 and okAt5, "Path feeds extend excessively in +X")
+
+    def testHelixEntryUsesRampFeed(self):
+        """Verify the helical entry uses the tool controller's RampFeed."""
+
+        mainToolController = self.job.Tools.Group[0]
+        toolController = PathToolController.copyTC(mainToolController, self.job)
+        toolController.Label = "Adaptive ramp feed test controller"
+        # RampFeed defaults to an expression referencing HorizFeed. Clear it so
+        # the test can assign an independent value.
+        toolController.setExpression("RampFeed", None)
+        toolController.HorizFeed = 30.0
+        toolController.VertFeed = 10.0
+        toolController.RampFeed = 3.0
+
+        adaptive = PathAdaptive.Create("AdaptiveHelixRampFeedTest")
+        adaptive.Base = [(self.doc.Fusion, ["Face3"])]
+        adaptive.FinishingProfile = False
+        adaptive.HelixMaxRampAngle = 75.0
+        adaptive.StepOverPercent = 75.0
+        adaptive.UseOutline = False
+        adaptive.clearExpression("StepDown")
+        adaptive.StepDown.Value = 20.0
+        adaptive.ToolController = toolController
+
+        _addViewProvider(adaptive)
+        adaptive.recompute()
+
+        def getEntryAndClearingFeeds(commands):
+            helixCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if command.Name.startswith("(Helix to depth:")
+                ),
+                None,
+            )
+            self.assertIsNotNone(helixCommentIndex, "No helical entry was generated")
+            adaptiveCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if index > helixCommentIndex and command.Name.startswith("(Adaptive - depth:")
+                ),
+                None,
+            )
+            self.assertIsNotNone(adaptiveCommentIndex, "No adaptive path was generated")
+            nextHelixCommentIndex = next(
+                (
+                    index
+                    for index, command in enumerate(commands)
+                    if index > adaptiveCommentIndex and command.Name.startswith("(Helix to depth:")
+                ),
+                len(commands),
+            )
+            cuttingMoves = Constants.GCODE_MOVE_STRAIGHT + Constants.GCODE_MOVE_ARC
+            helixFeeds = {
+                command.Parameters["F"]
+                for command in commands[helixCommentIndex + 1 : adaptiveCommentIndex]
+                if command.Name in cuttingMoves and "F" in command.Parameters
+            }
+            adaptiveFeeds = {
+                command.Parameters["F"]
+                for command in commands[adaptiveCommentIndex + 1 : nextHelixCommentIndex]
+                if command.Name in cuttingMoves and "F" in command.Parameters
+            }
+            return helixFeeds, adaptiveFeeds
+
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+
+        self.assertTrue(helixFeeds, "Expected feed moves in the helical entry")
+        self.assertEqual(
+            helixFeeds,
+            {toolController.RampFeed.Value},
+            "Helical entry moves should use the tool controller's RampFeed",
+        )
+        self.assertTrue(adaptiveFeeds, "Expected feed moves in the adaptive path")
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Adaptive moves should use the tool controller's horizontal and vertical feeds",
+        )
+        self.assertNotIn(
+            toolController.RampFeed.Value,
+            adaptiveFeeds,
+            "The adaptive clearing path should not use RampFeed",
+        )
+
+        # Changing RampFeed only affects the helical entry, not the clearing path.
+        toolController.RampFeed = 1.5
+        adaptive.recompute()
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(
+            helixFeeds,
+            {toolController.RampFeed.Value},
+            "Helical entry feed should follow changes to RampFeed",
+        )
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Changing RampFeed should not affect the adaptive clearing feeds",
+        )
 
     # POSSIBLY MISSING TESTS:
     # - Something for region ordering

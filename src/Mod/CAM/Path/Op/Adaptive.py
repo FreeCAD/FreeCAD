@@ -157,6 +157,19 @@ def discretize(edge, flipDirection=False):
     return pts
 
 
+def _applyFeedRate(commands, feedRate):
+    """Apply feedRate to every milling move in commands.
+
+    Helical entry moves are ramp moves, so they use the tool controller's
+    RampFeed instead of the regular horizontal and vertical feeds.
+    """
+    for command in commands:
+        if command.Name in Constants.GCODE_MOVE_MILL:
+            parameters = command.Parameters
+            parameters["F"] = feedRate
+            command.Parameters = parameters
+
+
 def GenerateGCode(op, obj, adaptiveResults):
 
     # minLiftDistance = op.tool.Diameter
@@ -252,6 +265,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                 op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
                 PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                # The helical entry is a ramp move; use the ramp feed rate.
+                if op.rampFeed:
+                    _applyFeedRate(helixCommands, op.rampFeed)
                 op.commandlist.extend(helixCommands[2:])
 
                 if cone_angle_rad:
@@ -267,6 +283,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                     }
                     spiralCommands = spiral.generate(**spiralArgs)
                     PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # The spiral is part of the entry; use the ramp feed rate.
+                    if op.rampFeed:
+                        _applyFeedRate(spiralCommands, op.rampFeed)
                     # remove first linear movements
                     while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
                         del spiralCommands[0]
