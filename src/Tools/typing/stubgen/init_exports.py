@@ -130,7 +130,7 @@ def _render_enum_class(node: ast.ClassDef) -> str:
         if isinstance(member, ast.Assign) and len(member.targets) == 1:
             target = member.targets[0]
             if isinstance(target, ast.Name):
-                lines.append(f"    {target.id}: Final[int] = {ast.unparse(member.value)}")
+                lines.append(f"    {target.id} = {ast.unparse(member.value)}")
         elif isinstance(member, ast.AnnAssign) and isinstance(member.target, ast.Name):
             lines.append(f"    {ast.unparse(member)}")
 
