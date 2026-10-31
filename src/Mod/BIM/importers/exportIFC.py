@@ -39,6 +39,7 @@ import math
 import os
 import time
 import tempfile
+from dataclasses import dataclass, field
 from builtins import open as pyopen
 
 import FreeCAD
@@ -56,8 +57,49 @@ from draftutils.messages import _msg, _err
 from importers import exportIFCHelper
 from importers import exportIFCStructuralTools
 from importers.importIFCHelper import dd2dms
+from nativeifc import ifc_backend
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+
+
+@dataclass
+class ExportState:
+    """Mutable state for one IFC geometry export operation."""
+
+    ifcbin: object
+    ifcopenshell: object
+    clones: dict = field(default_factory=dict)
+    sharedobjects: dict = field(default_factory=dict)
+    profiledefs: dict = field(default_factory=dict)
+    surfstyles: dict = field(default_factory=dict)
+    shapedefs: dict = field(default_factory=dict)
+    curvestyles: dict = field(default_factory=dict)
+
+
+def create_export_state(ifcfile, ifcopenshell_module):
+    """Create isolated state for callers of the geometry conversion API."""
+
+    return ExportState(
+        ifcbin=exportIFCHelper.recycler(ifcfile, template=False),
+        ifcopenshell=ifcopenshell_module,
+    )
+
+
+def _legacy_export_state():
+    """Adapt the full legacy exporter globals to the explicit state API."""
+
+    namespace = globals()
+    return ExportState(
+        ifcbin=namespace["ifcbin"],
+        ifcopenshell=namespace.get("ifcopenshell"),
+        clones=namespace.get("clones", {}),
+        sharedobjects=namespace.get("sharedobjects", {}),
+        profiledefs=namespace.get("profiledefs", {}),
+        surfstyles=namespace.get("surfstyles", {}),
+        shapedefs=namespace.get("shapedefs", {}),
+        curvestyles=namespace.get("curvestyles", {}),
+    )
+
 
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations
@@ -165,7 +207,7 @@ def _prepare_export_list_skipping_std_groups(initial_export_list, preferences_di
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
 
-    import ifcopenshell
+    ifcopenshell = ifc_backend.get_backend(capability=ifc_backend.LEGACY_EXPORT)
 
     ifcunit = params.get_param_arch("ifcUnit")
 
@@ -255,16 +297,14 @@ def export(exportList, filename, colors=None, preferences=None):
     """
     try:
         global ifcopenshell
-        import ifcopenshell
-    except ModuleNotFoundError:
+        ifcopenshell = ifc_backend.get_backend(capability=ifc_backend.LEGACY_EXPORT)
+    except ifc_backend.IfcOpenShellUnavailable as exc:
         _err(
-            "IfcOpenShell was not found on this system. "
-            "IFC support is disabled.\n"
+            f"IfcOpenShell is unavailable or cannot export IFC files: {exc}\n"
             "Visit https://wiki.freecad.org/IfcOpenShell "
             "to learn about installing it."
         )
         return
-    from ifcopenshell import guid
 
     if str(filename).lower().endswith("json"):
         import json
@@ -758,7 +798,7 @@ def export(exportList, filename, colors=None, preferences=None):
             else:
                 aname = "Assembly"
             ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(), history, aname, "", products[obj.Name], assemblyElements
+                ifc_backend.new_guid(), history, aname, "", products[obj.Name], assemblyElements
             )
             if preferences["DEBUG"]:
                 print("      aggregating", len(assemblyElements), "object(s)")
@@ -774,11 +814,11 @@ def export(exportList, filename, colors=None, preferences=None):
                     print("      adding ", c2, " : ", o.Label)
                 l = o.Label
                 prod2 = ifcfile.createIfcBuildingElementProxy(
-                    ifcopenshell.guid.new(), history, l, None, None, p2, r2, None, "ELEMENT"
+                    ifc_backend.new_guid(), history, l, None, None, p2, r2, None, "ELEMENT"
                 )
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(), history, "Addition", "", product, [prod2]
+                    ifc_backend.new_guid(), history, "Addition", "", product, [prod2]
                 )
 
         # subtractions
@@ -799,11 +839,11 @@ def export(exportList, filename, colors=None, preferences=None):
                     print("      subtracting ", c2, " : ", o.Label)
                 l = o.Label
                 prod2 = ifcfile.createIfcOpeningElement(
-                    ifcopenshell.guid.new(), history, l, None, None, p2, r2, None
+                    ifc_backend.new_guid(), history, l, None, None, p2, r2, None
                 )
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelVoidsElement(
-                    ifcopenshell.guid.new(), history, "Subtraction", "", product, prod2
+                    ifc_backend.new_guid(), history, "Subtraction", "", product, prod2
                 )
 
         # properties
@@ -830,10 +870,10 @@ def export(exportList, filename, colors=None, preferences=None):
                         psets.setdefault(pset, []).append(p)
                     for pname, props in psets.items():
                         pset = ifcfile.createIfcPropertySet(
-                            ifcopenshell.guid.new(), history, pname, None, props
+                            ifc_backend.new_guid(), history, pname, None, props
                         )
                         ifcfile.createIfcRelDefinesByProperties(
-                            ifcopenshell.guid.new(), history, None, None, [product], pset
+                            ifc_backend.new_guid(), history, None, None, [product], pset
                         )
 
                 elif obj.IfcProperties.TypeId == "Spreadsheet::Sheet":
@@ -903,10 +943,10 @@ def export(exportList, filename, colors=None, preferences=None):
                                 print("Unable to create a property of type:", tp)
                         if props:
                             pset = ifcfile.createIfcPropertySet(
-                                ifcopenshell.guid.new(), history, cat, None, props
+                                ifc_backend.new_guid(), history, cat, None, props
                             )
                             ifcfile.createIfcRelDefinesByProperties(
-                                ifcopenshell.guid.new(), history, None, None, [product], pset
+                                ifc_backend.new_guid(), history, None, None, [product], pset
                             )
 
         if hasattr(obj, "IfcData"):
@@ -963,10 +1003,10 @@ def export(exportList, filename, colors=None, preferences=None):
                         props.append(ifcbin.createIfcPropertySingleValue(str(key), str(tp), val))
                 if props:
                     pset = ifcfile.createIfcPropertySet(
-                        ifcopenshell.guid.new(), history, "PropertySet", None, props
+                        ifc_backend.new_guid(), history, "PropertySet", None, props
                     )
                     ifcfile.createIfcRelDefinesByProperties(
-                        ifcopenshell.guid.new(), history, None, None, [product], pset
+                        ifc_backend.new_guid(), history, None, None, [product], pset
                     )
 
         if not ifcprop:
@@ -1082,17 +1122,17 @@ def export(exportList, filename, colors=None, preferences=None):
                                     )
             if FreeCADProps:
                 pset = ifcfile.createIfcPropertySet(
-                    ifcopenshell.guid.new(), history, "FreeCADPropertySet", None, FreeCADProps
+                    ifc_backend.new_guid(), history, "FreeCADPropertySet", None, FreeCADProps
                 )
                 ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.new(), history, None, None, [product], pset
+                    ifc_backend.new_guid(), history, None, None, [product], pset
                 )
             if FreeCADGuiProps:
                 pset = ifcfile.createIfcPropertySet(
-                    ifcopenshell.guid.new(), history, "FreeCADGuiPropertySet", None, FreeCADGuiProps
+                    ifc_backend.new_guid(), history, "FreeCADGuiPropertySet", None, FreeCADGuiProps
                 )
                 ifcfile.createIfcRelDefinesByProperties(
-                    ifcopenshell.guid.new(), history, None, None, [product], pset
+                    ifc_backend.new_guid(), history, None, None, [product], pset
                 )
 
         # Classifications
@@ -1115,7 +1155,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 rel.RelatedObjects = rel.RelatedObjects + [product]
             else:
                 rel = ifcfile.createIfcRelAssociatesClassification(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "FreeCADClassificationRel",
                     None,
@@ -1151,7 +1191,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         treated.append(c.Name)
                 if subs:
                     ifcfile.createIfcRelAggregates(
-                        ifcopenshell.guid.new(), history, "Assembly", "", products[bp.Name], subs
+                        ifc_backend.new_guid(), history, "Assembly", "", products[bp.Name], subs
                     )
 
     # storeys
@@ -1182,11 +1222,11 @@ def export(exportList, filename, colors=None, preferences=None):
                     treated.append(c.Name)
             if buildingelements:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.new(), history, "StoreyLink", "", buildingelements, f
+                    ifc_backend.new_guid(), history, "StoreyLink", "", buildingelements, f
                 )
             if spaces:
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(), history, "StoreyLink", "", f, spaces
+                    ifc_backend.new_guid(), history, "StoreyLink", "", f, spaces
                 )
 
     # buildings
@@ -1218,11 +1258,11 @@ def export(exportList, filename, colors=None, preferences=None):
                         treated.append(c.Name)
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.new(), history, "BuildingLink", "", children, b
+                    ifc_backend.new_guid(), history, "BuildingLink", "", children, b
                 )
             if childfloors:
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(), history, "BuildingLink", "", b, childfloors
+                    ifc_backend.new_guid(), history, "BuildingLink", "", b, childfloors
                 )
 
     # sites
@@ -1250,7 +1290,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 print("No site found. Adding default site")
             sites = [
                 ifcfile.createIfcSite(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "Default Site",
                     "",
@@ -1268,7 +1308,7 @@ def export(exportList, filename, colors=None, preferences=None):
             ]
     if sites:
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, "ProjectLink", "", project, sites
+            ifc_backend.new_guid(), history, "ProjectLink", "", project, sites
         )
     if not buildings:
         if preferences["ADD_DEFAULT_BUILDING"] and not existing_file:
@@ -1276,7 +1316,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 print("No building found. Adding default building")
             buildings = [
                 ifcfile.createIfcBuilding(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "Default Building",
                     "",
@@ -1292,15 +1332,15 @@ def export(exportList, filename, colors=None, preferences=None):
             ]
     if buildings and (not sites):
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, "ProjectLink", "", project, buildings
+            ifc_backend.new_guid(), history, "ProjectLink", "", project, buildings
         )
     if floors and buildings:
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, "BuildingLink", "", buildings[0], floors
+            ifc_backend.new_guid(), history, "BuildingLink", "", buildings[0], floors
         )
     if sites and buildings:
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, "SiteLink", "", sites[0], buildings
+            ifc_backend.new_guid(), history, "SiteLink", "", sites[0], buildings
         )
 
     # treat objects that are not related to any site, building or storey
@@ -1327,7 +1367,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 if preferences["DEBUG"]:
                     print("No floor found. Adding default floor")
                 defaulthost = ifcfile.createIfcBuildingStorey(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "Default Storey",
                     "",
@@ -1345,7 +1385,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         print("No building found. Adding default building")
                     buildings = [
                         ifcfile.createIfcBuilding(
-                            ifcopenshell.guid.new(),
+                            ifc_backend.new_guid(),
                             history,
                             "Default Building",
                             "",
@@ -1361,14 +1401,14 @@ def export(exportList, filename, colors=None, preferences=None):
                     ]
                     if sites:
                         ifcfile.createIfcRelAggregates(
-                            ifcopenshell.guid.new(), history, "SiteLink", "", sites[0], buildings
+                            ifc_backend.new_guid(), history, "SiteLink", "", sites[0], buildings
                         )
                     else:
                         ifcfile.createIfcRelAggregates(
-                            ifcopenshell.guid.new(), history, "ProjectLink", "", project, buildings
+                            ifc_backend.new_guid(), history, "ProjectLink", "", project, buildings
                         )
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "DefaultStoreyLink",
                     "",
@@ -1386,7 +1426,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     buildingelements.append(entity)
             if spaces:
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "UnassignedObjectsLink",
                     "",
@@ -1395,7 +1435,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 )
             if buildingelements:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.new(),
+                    ifc_backend.new_guid(),
                     history,
                     "UnassignedObjectsLink",
                     "",
@@ -1409,7 +1449,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     "WARNING - Default building generation is disabled. You are producing a non-standard file."
                 )
             ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(), history, "ProjectLink", "", project, untreated
+                ifc_backend.new_guid(), history, "ProjectLink", "", project, untreated
             )
 
     # materials
@@ -1451,7 +1491,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 isr = ifcfile.createIfcStyledRepresentation(context, "Style", "Material", [isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None, None, [isr], mat)
             ifcfile.createIfcRelAssociatesMaterial(
-                ifcopenshell.guid.new(), history, "MaterialLink", "", relobjs, mat
+                ifc_backend.new_guid(), history, "MaterialLink", "", relobjs, mat
             )
 
     # 2D objects
@@ -1505,11 +1545,11 @@ def export(exportList, filename, colors=None, preferences=None):
                     swallowed.append(annos[o])
             if children:
                 name = FreeCAD.ActiveDocument.getObject(g[0]).Label
-                grp = ifcfile.createIfcGroup(ifcopenshell.guid.new(), history, name, "", None)
+                grp = ifcfile.createIfcGroup(ifc_backend.new_guid(), history, name, "", None)
                 products[g[0]] = grp
                 spatialelements[g[0]] = grp
                 ass = ifcfile.createIfcRelAssignsToGroup(
-                    ifcopenshell.guid.new(), history, "GroupLink", "", children, None, grp
+                    ifc_backend.new_guid(), history, "GroupLink", "", children, None, grp
                 )
 
     # stack groups inside containers
@@ -1523,7 +1563,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     stack.setdefault(parent.Name, []).append(spatialelements[g[0]])
     for k, v in stack.items():
         ifcfile.createIfcRelAggregates(
-            ifcopenshell.guid.new(), history, "GroupStackLink", "", spatialelements[k], v
+            ifc_backend.new_guid(), history, "GroupStackLink", "", spatialelements[k], v
         )
 
     # add remaining 2D objects to default host
@@ -1536,7 +1576,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     if preferences["DEBUG"]:
                         print("No floor found. Adding default floor")
                     defaulthost = ifcfile.createIfcBuildingStorey(
-                        ifcopenshell.guid.new(),
+                        ifc_backend.new_guid(),
                         history,
                         "Default Storey",
                         "",
@@ -1553,7 +1593,7 @@ def export(exportList, filename, colors=None, preferences=None):
                     if not buildings:
                         buildings = [
                             ifcfile.createIfcBuilding(
-                                ifcopenshell.guid.new(),
+                                ifc_backend.new_guid(),
                                 history,
                                 "Default Building",
                                 "",
@@ -1569,7 +1609,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         ]
                         if sites:
                             ifcfile.createIfcRelAggregates(
-                                ifcopenshell.guid.new(),
+                                ifc_backend.new_guid(),
                                 history,
                                 "SiteLink",
                                 "",
@@ -1578,7 +1618,7 @@ def export(exportList, filename, colors=None, preferences=None):
                             )
                         else:
                             ifcfile.createIfcRelAggregates(
-                                ifcopenshell.guid.new(),
+                                ifc_backend.new_guid(),
                                 history,
                                 "ProjectLink",
                                 "",
@@ -1586,7 +1626,7 @@ def export(exportList, filename, colors=None, preferences=None):
                                 buildings,
                             )
                     ifcfile.createIfcRelAggregates(
-                        ifcopenshell.guid.new(),
+                        ifc_backend.new_guid(),
                         history,
                         "DefaultStoreyLink",
                         "",
@@ -1596,7 +1636,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 elif preferences["ADD_DEFAULT_BUILDING"]:
                     if not buildings:
                         defaulthost = ifcfile.createIfcBuilding(
-                            ifcopenshell.guid.new(),
+                            ifc_backend.new_guid(),
                             history,
                             "Default Building",
                             "",
@@ -1611,7 +1651,7 @@ def export(exportList, filename, colors=None, preferences=None):
                         )
                         if sites:
                             ifcfile.createIfcRelAggregates(
-                                ifcopenshell.guid.new(),
+                                ifc_backend.new_guid(),
                                 history,
                                 "SiteLink",
                                 "",
@@ -1620,7 +1660,7 @@ def export(exportList, filename, colors=None, preferences=None):
                             )
                         else:
                             ifcfile.createIfcRelAggregates(
-                                ifcopenshell.guid.new(),
+                                ifc_backend.new_guid(),
                                 history,
                                 "ProjectLink",
                                 "",
@@ -1629,11 +1669,11 @@ def export(exportList, filename, colors=None, preferences=None):
                             )
             if defaulthost:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.guid.new(), history, "AnnotationsLink", "", remaining, defaulthost
+                    ifc_backend.new_guid(), history, "AnnotationsLink", "", remaining, defaulthost
                 )
             else:
                 ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(), history, "ProjectLink", "", project, remaining
+                    ifc_backend.new_guid(), history, "ProjectLink", "", project, remaining
                 )
 
     if not existing_file:
@@ -1838,15 +1878,15 @@ def buildAddress(obj, ifcfile):
     return addr
 
 
-def createCurve(ifcfile, wire, scaling=1.0):
+def createCurve(ifcfile, wire, scaling=1.0, export_state=None):
     """creates an IfcIndexdPolyCurve from a wire
     if possible, or defects to createCurveWithArcs"""
 
     if wire.ShapeType != "Wire":
-        return createCurveWithArcs(ifcfile, wire, scaling)
+        return createCurveWithArcs(ifcfile, wire, scaling, export_state)
     for e in wire.Edges:
         if isinstance(e.Curve, Part.Circle):
-            return createCurveWithArcs(ifcfile, wire, scaling)
+            return createCurveWithArcs(ifcfile, wire, scaling, export_state)
     verts = [v.Point for v in wire.Vertexes]
     if scaling != 1:
         verts = [v.multiply(scaling) for v in verts]
@@ -1856,8 +1896,11 @@ def createCurve(ifcfile, wire, scaling=1.0):
     return idc
 
 
-def createCurveWithArcs(ifcfile, wire, scaling=1.0):
+def createCurveWithArcs(ifcfile, wire, scaling=1.0, export_state=None):
     "creates an IfcCompositeCurve from a shape"
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
 
     segments = []
     pol = None
@@ -1959,11 +2002,14 @@ def checkRectangle(edges):
     return False
 
 
-def getProfile(ifcfile, p):
+def getProfile(ifcfile, p, export_state=None):
     """returns an IFC profile definition from a shape"""
 
     import Part
     import DraftGeomUtils
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
 
     profile = None
     if len(p.Edges) == 1:
@@ -2006,7 +2052,7 @@ def getProfile(ifcfile, p):
         # face with holes
         f = p.Faces[0]
         if DraftGeomUtils.hasCurves(f.OuterWire):
-            outerwire = createCurve(ifcfile, f.OuterWire)
+            outerwire = createCurve(ifcfile, f.OuterWire, export_state=state)
         else:
             w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
             pts = [
@@ -2018,7 +2064,7 @@ def getProfile(ifcfile, p):
         for w in f.Wires:
             if w.hashCode() != f.OuterWire.hashCode():
                 if DraftGeomUtils.hasCurves(w):
-                    innerwires.append(createCurve(ifcfile, w))
+                    innerwires.append(createCurve(ifcfile, w, export_state=state))
                 else:
                     w = Part.Wire(Part.__sortEdges__(w.Edges))
                     pts = [
@@ -2030,7 +2076,7 @@ def getProfile(ifcfile, p):
     else:
         if DraftGeomUtils.hasCurves(p):
             # extruded composite curve
-            pol = createCurve(ifcfile, p)
+            pol = createCurve(ifcfile, p, export_state=state)
         else:
             # extruded polyline
             w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
@@ -2054,6 +2100,7 @@ def getRepresentation(
     preferences=None,
     forceclone=False,
     skipshape=False,
+    export_state=None,
 ):
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
@@ -2061,6 +2108,15 @@ def getRepresentation(
     import Part
     import DraftGeomUtils
     import DraftVecUtils
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
+    ifcopenshell = state.ifcopenshell
+    clones = state.clones
+    sharedobjects = state.sharedobjects
+    profiledefs = state.profiledefs
+    surfstyles = state.surfstyles
+    shapedefs = state.shapedefs
 
     shapes = []
     placement = None
@@ -2135,7 +2191,7 @@ def getRepresentation(
                     for w in rdata[0]:
                         w.Placement = w.Placement.multiply(obj.getGlobalPlacement())
                         w.scale(preferences["SCALE_FACTOR"])
-                        cur = createCurve(ifcfile, w)
+                        cur = createCurve(ifcfile, w, export_state=state)
                         shape = ifcfile.createIfcSweptDiskSolid(cur, r)
                         shapes.append(shape)
                         solidType = "SweptSolid"
@@ -2181,14 +2237,14 @@ def getRepresentation(
                                 # Fix bug in Forum Discussion
                                 # https://forum.freecad.org/viewtopic.php?p=771954#p771954
                                 if not isinstance(pi, Part.Compound):
-                                    profile = getProfile(ifcfile, pi)
+                                    profile = getProfile(ifcfile, pi, export_state=state)
                                     if profile:
                                         profiledefs[pstr] = profile
                                         profiles = [profile]
                                 else:  # i.e. Part.Compound
                                     profiles = []
                                     for pif in pi.Faces:
-                                        profile = getProfile(ifcfile, pif)
+                                        profile = getProfile(ifcfile, pif, export_state=state)
                                         if profile:
                                             profiledefs[pstr] = profile
                                             profiles.append(profile)
@@ -2225,7 +2281,7 @@ def getRepresentation(
             profile, pl = ArchComponent.Component.rebase(obj, obj.Base.Shape)
             profile.scale(preferences["SCALE_FACTOR"])
             pl.Base = pl.Base.multiply(preferences["SCALE_FACTOR"])
-            profile = getProfile(ifcfile, profile)
+            profile = getProfile(ifcfile, profile, export_state=state)
             if profile:
                 profiledefs[pstr] = profile
             ev = FreeCAD.Vector(obj.Dir)
@@ -2292,7 +2348,11 @@ def getRepresentation(
 
                     # new ifcopenshell serializer
 
-                    from ifcopenshell import geom
+                    geom = getattr(ifcopenshell, "geom", None)
+                    if geom is None:
+                        geom = ifc_backend.get_module(
+                            "ifcopenshell.geom", capability=ifc_backend.LEGACY_EXPORT
+                        )
 
                     serialized = False
                     if (
@@ -2532,7 +2592,7 @@ def getRepresentation(
         representation = [ifcfile.createIfcShapeRepresentation(context, "Body", solidType, shapes)]
         # additional representations?
         if Draft.getType(obj) in ["Wall", "Structure"]:
-            addrepr = createAxis(ifcfile, obj, preferences, forceclone)
+            addrepr = createAxis(ifcfile, obj, preferences, forceclone, export_state=state)
             if addrepr:
                 representation = representation + [addrepr]
         productdef = ifcfile.createIfcProductDefinitionShape(None, None, representation)
@@ -2604,7 +2664,7 @@ def getUID(obj, preferences):
                 # this UID  has already been used in another object
                 uid = None
     if not uid:
-        uid = ifcopenshell.guid.new()
+        uid = ifc_backend.new_guid()
         # storing the uid for further use
         if preferences["STORE_UID"]:
             if hasattr(obj, "IfcData"):
@@ -2646,7 +2706,7 @@ def getAxisContext(ifcfile):
     return nctx
 
 
-def createAxis(ifcfile, obj, preferences, delta=None):
+def createAxis(ifcfile, obj, preferences, delta=None, export_state=None):
     """Creates an axis for a given wall, if applicable"""
 
     shape = None
@@ -2659,7 +2719,12 @@ def createAxis(ifcfile, obj, preferences, delta=None):
         shape = obj.Base.Shape
     if shape:
         if shape.ShapeType in ["Wire", "Edge"]:
-            curve = createCurve(ifcfile, shape, preferences["SCALE_FACTOR"])
+            curve = createCurve(
+                ifcfile,
+                shape,
+                preferences["SCALE_FACTOR"],
+                export_state=export_state,
+            )
             if curve:
                 ctx = getAxisContext(ifcfile)
                 axis = ifcfile.createIfcShapeRepresentation(ctx, "Axis", "Curve2D", [curve])
@@ -2689,10 +2754,12 @@ def writeJson(filename, ifcfile):
     f.close()
 
 
-def create_annotation(anno, ifcfile, context, history, preferences):
+def create_annotation(anno, ifcfile, context, history, preferences, export_state=None):
     """Creates an annotation object"""
 
-    global curvestyles, ifcbin
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
+    curvestyles = state.curvestyles
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
@@ -2742,7 +2809,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
         ehc = []
         curves = []
         for w in sh.Wires:
-            curves.append(createCurve(ifcfile, w))
+            curves.append(createCurve(ifcfile, w, export_state=state))
             for e in w.Edges:
                 ehc.append(e.hashCode())
         if curves:
@@ -2750,7 +2817,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
         curves = []
         for e in sh.Edges:
             if e.hashCode not in ehc:
-                curves.append(createCurve(ifcfile, e))
+                curves.append(createCurve(ifcfile, e, export_state=state))
         if curves:
             reps.append(ifcfile.createIfcGeometricCurveSet(curves))
     elif anno.isDerivedFrom("App::Annotation"):
@@ -2790,7 +2857,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             else:
                 sh = Part.makePolygon([vp.p1, vp.p2, vp.p3, vp.p4])
             sh.scale(preferences["SCALE_FACTOR"])  # to meters
-            curve = createCurve(ifcfile, sh)
+            curve = createCurve(ifcfile, sh, export_state=state)
             reps = [ifcfile.createIfcGeometricCurveSet([curve])]
             # Append text
             l = FreeCAD.Vector(vp.tbase).multiply(preferences["SCALE_FACTOR"])
@@ -2863,6 +2930,6 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     label = anno.Label
     description = getattr(anno, "Description", "")
     ann = ifcfile.createIfcAnnotation(
-        ifcopenshell.guid.new(), history, label, description, objectType, placement, rep
+        ifc_backend.new_guid(), history, label, description, objectType, placement, rep
     )
     return ann
