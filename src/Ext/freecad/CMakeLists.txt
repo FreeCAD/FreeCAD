@@ -30,6 +30,7 @@ set(EXT_FILES
     UiTools.py
     utils.py
     utils_zip.py
+    content_provider.py
 )
 
 foreach (it ${EXT_FILES})
