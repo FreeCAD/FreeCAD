@@ -129,6 +129,7 @@
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "ShapeUtils.h"
+#include "ShapeExtractor.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -264,7 +265,8 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
-        return DrawViewSection::makeSectionCut(baseShape);
+        DrawViewSection::makeSectionCut(baseShape);
+        return;
     }
 
     try {
@@ -285,7 +287,7 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
         return;
     }
 
-    return DrawViewSection::makeSectionCut(baseShape);
+    DrawViewSection::makeSectionCut(baseShape);
 }
 
 
@@ -589,7 +591,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
         return {};
     }
 
-    TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape toolShape = ShapeExtractor::getLocatedShape(toolObj);
     if (toolShape.IsNull()) {
         return {};
     }
@@ -715,7 +717,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     auto* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
-        TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        TopoDS_Shape toolShape = ShapeExtractor::getLocatedShape(toolObj);
         if (toolShape.IsNull()) {
             // CuttingToolWireObject is likely still restoring and has no shape yet
             return {};
