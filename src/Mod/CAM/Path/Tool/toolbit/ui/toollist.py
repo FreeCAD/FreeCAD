@@ -82,7 +82,9 @@ class ToolBitListWidget(QtGui.QListWidget):
         drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction)
         Path.Log.debug("startDrag: Drag executed.")
 
-    def _create_toolbit_item(self, toolbit: ToolBit, tool_no: int | None = None):
+    def _create_toolbit_item(
+        self, toolbit: ToolBit, tool_no: int | None = None, store_badge: str | None = None
+    ):
         """
         Creates a QListWidgetItem and populates it with ToolBit data.
         """
@@ -101,6 +103,7 @@ class ToolBitListWidget(QtGui.QListWidget):
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
         cell.set_lower_text(toolbit.summary)
+        cell.set_store_badge(store_badge)
         cell.set_icon_from_shape(toolbit._tool_bit_shape)
 
         # Set the custom widget for the list item
@@ -112,7 +115,9 @@ class ToolBitListWidget(QtGui.QListWidget):
 
         return item
 
-    def add_toolbit(self, toolbit: ToolBit, tool_no: int | None = None):
+    def add_toolbit(
+        self, toolbit: ToolBit, tool_no: int | None = None, store_badge: str | None = None
+    ):
         """
         Adds a ToolBit to the list.
 
@@ -120,11 +125,19 @@ class ToolBitListWidget(QtGui.QListWidget):
             toolbit (ToolBit): The ToolBit object to add.
             tool_no (int | None): The tool number associated with the ToolBit,
                                   or None if not applicable.
+            store_badge (str | None): Name of the asset store to display as a
+                                      badge, or None for no badge.
         """
-        item = self._create_toolbit_item(toolbit, tool_no)
+        item = self._create_toolbit_item(toolbit, tool_no, store_badge)
         self.addItem(item)
 
-    def insert_toolbit(self, row: int, toolbit: ToolBit, tool_no: int | None = None):
+    def insert_toolbit(
+        self,
+        row: int,
+        toolbit: ToolBit,
+        tool_no: int | None = None,
+        store_badge: str | None = None,
+    ):
         """
         Inserts a ToolBit to the list at the specified row.
 
@@ -133,8 +146,10 @@ class ToolBitListWidget(QtGui.QListWidget):
             toolbit (ToolBit): The ToolBit object to add.
             tool_no (int | None): The tool number associated with the ToolBit,
                                   or None if not applicable.
+            store_badge (str | None): Name of the asset store to display as a
+                                      badge, or None for no badge.
         """
-        item = self._create_toolbit_item(toolbit, tool_no)
+        item = self._create_toolbit_item(toolbit, tool_no, store_badge)
         self.insertItem(row, item)
 
     def clear_list(self):
@@ -204,7 +219,9 @@ class CompactToolBitListWidget(ToolBitListWidget):
     CompactTwoLineTableCell widgets.
     """
 
-    def _create_toolbit_item(self, toolbit: ToolBit, tool_no: int | None = None):
+    def _create_toolbit_item(
+        self, toolbit: ToolBit, tool_no: int | None = None, store_badge: str | None = None
+    ):
         """
         Creates a QListWidgetItem and populates it with ToolBit data
         using CompactTwoLineTableCell.
@@ -223,6 +240,7 @@ class CompactToolBitListWidget(ToolBitListWidget):
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
         cell.set_lower_text(toolbit.summary)
+        cell.set_store_badge(store_badge)
         cell.set_icon_from_shape(toolbit._tool_bit_shape)
 
         # Set the custom widget for the list item
