@@ -1623,7 +1623,8 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             }
             if (pr.HasSymmetryAxis()) {
                 Base::Console().warning(
-                    "AttachEngine3D::calculateAttachedPlacement:InertialCS ({}): inertia tensor has "
+                    "AttachEngine3D::calculateAttachedPlacement:InertialCS ({}): inertia tensor "
+                    "has "
                     "axis of symmetry. Second and third axes of inertia are undefined.\n",
                     ownerName
                 );

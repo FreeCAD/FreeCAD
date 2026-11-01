@@ -800,7 +800,7 @@ void AttachExtension::updateAttacherVals(bool base) const
 
     auto* owner = getExtendedObject();
     const char* rawName = owner ? owner->Label.getValue() : nullptr;
-    std::string owner_name = rawName ? rawName : std::string{};
+    std::string owner_name = rawName ? rawName : std::string {};
     attacher(base).setOwnerName(owner_name);
 
     attacher(base).setUp(
