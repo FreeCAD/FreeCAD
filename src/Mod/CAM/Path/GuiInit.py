@@ -50,6 +50,7 @@ def Startup():
         from Path.Dressup.Gui import Mirror
         from Path.Dressup.Gui import Boundary
         from Path.Dressup.Gui import PlungeMilling
+        from Path.Dressup.Gui import ProfileTrim
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
         from Path.Dressup.Gui import ZCorrect

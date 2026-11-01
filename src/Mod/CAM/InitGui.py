@@ -155,6 +155,7 @@ class CAMWorkbench(Workbench):
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupArray",
+            "CAM_DressupProfileTrim",
             "CAM_DressupAxisMap",
             "CAM_DressupPathBoundary",
             "CAM_DressupPathBoundary2",

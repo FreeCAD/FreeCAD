@@ -67,6 +67,7 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
     Path/Dressup/Array.py
+    Path/Dressup/ProfileTrim.py
     Path/Dressup/Boundary.py
     Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
@@ -75,6 +76,7 @@ SET(PathPythonDressup_SRCS
 SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/Array.py
+    Path/Dressup/Gui/ProfileTrim.py
     Path/Dressup/Gui/AxisMap.py
     Path/Dressup/Gui/Boundary2.py
     Path/Dressup/Gui/DogboneII.py
@@ -610,6 +612,7 @@ SET(Tests_SRCS
     CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
+    CAMTests/TestPathDressupProfileTrim.py
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupDragknife.py
     CAMTests/TestPathDressupHoldingTags.py
