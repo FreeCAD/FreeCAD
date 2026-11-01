@@ -5498,7 +5498,6 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
     // Block signals here otherwise we get a recursion and quadratic runtime
     bool ok = treeWidget()->blockSignals(true);
     FOREACH_ITEM_ALL(item);
-    _v.second->dirtyFlag = false;
     if (item == exclude) {
         if (item->selected > 0) {
             item->selected = -1;
@@ -5506,6 +5505,7 @@ void DocumentItem::clearSelection(DocumentObjectItem* exclude)
         else {
             item->selected = 0;
         }
+        _v.second->dirtyFlag = false;
         updateItemSelection(item);
         // The set has been changed while calling updateItemSelection
         // so that the iterator has become invalid -> Abort
