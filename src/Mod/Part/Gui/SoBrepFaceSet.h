@@ -27,9 +27,12 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <memory>
+#include <set>
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
+
+#include "SoBrepHiddenSelection.h"
 
 
 namespace PartGui
@@ -132,6 +135,8 @@ private:
 
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
+    bool hasHiddenSelection(const SelContextPtr& ctx) const;
+    void renderHiddenSelection(SoGLRenderAction* action, SelContextPtr ctx);
 
     bool overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2);
 
@@ -154,6 +159,12 @@ private:
 
     SoIndexedFaceSet* overlayFaceSet {nullptr};
     std::vector<int32_t> overlayCoordIndex;
+
+    HiddenSelectionPass hiddenSelection;
+    // Dashed outline of the selected faces, cached until the selection or the mesh changes.
+    std::vector<int32_t> hiddenOutlineIndex;
+    std::set<int> hiddenOutlineParts;
+    SbUniqueId hiddenOutlineNodeId {0};
 
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;
