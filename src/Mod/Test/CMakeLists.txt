@@ -33,7 +33,9 @@ SET(Test_SRCS
     TestGraphicsViewWrapping.py
     TestMDIView.py
     TestRubberbandSelection.py
-    TestCoinNodeSnapshots.py
+    VisualTestSupport.py
+    VisualCoinNodeSnapshots.py
+    VisualView3DRenderSnapshots.py
     TestView3DFramebufferCapture.py
     TestSelectionVisual.py
     TestCornerAxisCrossVisual.py
@@ -77,10 +79,10 @@ ADD_CUSTOM_TARGET(Test ALL
 
 fc_copy_sources(Test "${CMAKE_BINARY_DIR}/Mod/Test" ${Test_SRCS} ${TestData_SRCS})
 
-# Coin node snapshot visual test baselines (Python unittest `TestCoinNodeSnapshots`).
+# Coin node snapshot visual test baselines (Python unittest `VisualCoinNodeSnapshots`).
 # For out-of-source builds, copy baselines into the build tree so the test can find them
 # without requiring FC_VISUAL_BASELINE_DIR to be set.
-set(_coin_node_snapshot_baseline_dir "${CMAKE_SOURCE_DIR}/tests/visual/baselines/coin-nodes")
+set(_coin_node_snapshot_baseline_dir "${CMAKE_SOURCE_DIR}/tests/visual/baselines/VisualCoinNodeSnapshots")
 if(EXISTS "${_coin_node_snapshot_baseline_dir}")
     file(
         GLOB
@@ -89,7 +91,7 @@ if(EXISTS "${_coin_node_snapshot_baseline_dir}")
         "${_coin_node_snapshot_baseline_dir}/*.png"
     )
     if(TestCoinNodeSnapshotBaselines)
-        set(_coin_node_snapshot_baseline_outdir "${CMAKE_BINARY_DIR}/tests/visual/baselines/coin-nodes")
+        set(_coin_node_snapshot_baseline_outdir "${CMAKE_BINARY_DIR}/tests/visual/baselines/VisualCoinNodeSnapshots")
         set(_coin_node_snapshot_baseline_outputs)
         foreach(_baseline ${TestCoinNodeSnapshotBaselines})
             get_filename_component(_baseline_name "${_baseline}" NAME)
