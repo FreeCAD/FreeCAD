@@ -1014,7 +1014,7 @@ class Machine:
         """Create standard A/C table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AC Table Configuration")
@@ -1024,10 +1024,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["C"].parent = "A"
         config.rotary_axes["C"].sequence = 0
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["A"].parent = "C"
         config.rotary_axes["A"].sequence = 1
         config.set_alignment_axes("C", "A")
         return config
@@ -1037,7 +1037,7 @@ class Machine:
         """Create standard B/C head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         config = cls("BC Head Configuration")
@@ -1047,10 +1047,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.HEAD_ROTARY
+        config.rotary_axes["B"].parent = "C"
         config.rotary_axes["B"].sequence = 0
         config.add_rotary_axis("C", FreeCAD.Vector(0, 0, 1), c_limits[0], c_limits[1])
         config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
-        config.rotary_axes["C"].parent = "B"
         config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
         config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
@@ -1061,7 +1061,7 @@ class Machine:
         """Create standard A/B table configuration.
 
         Kinematic tree:
-          BaseFrame -> A (tilt-X, table_rotary) -> B (tilt-Y, table_rotary)
+          BaseFrame -> B (tilt-Y, table_rotary) -> A (tilt-X, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         config = cls("AB Table Configuration")
@@ -1072,10 +1072,10 @@ class Machine:
         config.linear_axes["Z"].role = AxisRole.HEAD_LINEAR
         config.add_rotary_axis("A", FreeCAD.Vector(1, 0, 0), a_limits[0], a_limits[1])
         config.rotary_axes["A"].role = AxisRole.TABLE_ROTARY
+        config.rotary_axes["A"].parent = "B"
         config.rotary_axes["A"].sequence = 0
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.rotary_axes["B"].role = AxisRole.TABLE_ROTARY
-        config.rotary_axes["B"].parent = "A"
         config.rotary_axes["B"].sequence = 1
         config.set_alignment_axes("A", "B")
         return config
@@ -1393,7 +1393,7 @@ class Machine:
         """Initialize as a 5-axis AC table configuration.
 
         Kinematic tree:
-          BaseFrame -> C (azimuth, table_rotary) -> A (tilt, table_rotary)
+          BaseFrame -> A (tilt, table_rotary) -> C (azimuth, table_rotary)
           BaseFrame -> Z (head_linear)
         """
         self._initialize_3axis_config()
@@ -1403,7 +1403,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent=None,
+            parent="A",
             sequence=0,
         )
         self.rotary_axes["A"] = RotaryAxis(
@@ -1412,7 +1412,7 @@ class Machine:
             min_limit=a_limits[0],
             max_limit=a_limits[1],
             role=AxisRole.TABLE_ROTARY,
-            parent="C",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "C"
@@ -1422,7 +1422,7 @@ class Machine:
         """Initialize as a 5-axis BC head configuration.
 
         Kinematic tree:
-          BaseFrame -> B (tilt, head_rotary) -> C (azimuth, head_rotary)
+          BaseFrame -> C (azimuth, head_rotary) -> B (tilt, head_rotary)
           BaseFrame -> X, Y (table_linear)
         """
         self._initialize_3axis_config()
@@ -1432,7 +1432,7 @@ class Machine:
             min_limit=b_limits[0],
             max_limit=b_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent=None,
+            parent="C",
             sequence=0,
         )
         self.rotary_axes["C"] = RotaryAxis(
@@ -1441,7 +1441,7 @@ class Machine:
             min_limit=c_limits[0],
             max_limit=c_limits[1],
             role=AxisRole.HEAD_ROTARY,
-            parent="B",
+            parent=None,
             sequence=1,
         )
         self.primary_rotary_axis = "B"

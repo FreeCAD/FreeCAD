@@ -531,6 +531,7 @@ def _machine_ac(strategy):
         name="C",
         rotation_vector=FreeCAD.Vector(0, 0, 1),
         role=AxisRole.TABLE_ROTARY,
+        parent="A",
         sequence=0,
     )
     machine.rotary_axes["A"] = RotaryAxis(
@@ -539,7 +540,7 @@ def _machine_ac(strategy):
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     machine.kinematics.rotation_strategy = strategy

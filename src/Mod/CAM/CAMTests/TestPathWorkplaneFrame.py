@@ -66,7 +66,11 @@ def _machineCA():
 
     m = Machine(name="Test CA Machine")
     m.rotary_axes["C"] = RotaryAxis(
-        name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
+        name="C",
+        rotation_vector=Vector(0, 0, 1),
+        role=AxisRole.TABLE_ROTARY,
+        parent="A",
+        sequence=0,
     )
     m.rotary_axes["A"] = RotaryAxis(
         name="A",
@@ -74,7 +78,7 @@ def _machineCA():
         min_limit=-120,
         max_limit=120,
         role=AxisRole.TABLE_ROTARY,
-        parent="C",
+        parent=None,
         sequence=1,
     )
     return m
