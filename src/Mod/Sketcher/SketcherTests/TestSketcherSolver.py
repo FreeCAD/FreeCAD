@@ -1189,6 +1189,27 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(sketch1.AttachmentSupport[0][1][0], "Face9")
             self.assertIn("Face6", pad.Shape.ElementReverseMap)  # different Face6 exists
 
+    def testSolveSolvedSketchDoesNotTouch(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, [0, 0], [30, 20])
+        self.Doc.recompute()
+        self.assertTrue(sketch.FullyConstrained)
+        self.assertNotIn("Touched", sketch.State)
+        self.assertSuccessfulSolve(sketch)
+        self.assertNotIn("Touched", sketch.State)
+        self.assertTrue(sketch.FullyConstrained)
+        sketch.setDatum(11, App.Units.Quantity("40 mm"))
+        self.assertIn("Touched", sketch.State)
+
+    def testSetVisibilitySameValueDoesNotTouch(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, [0, 0], [30, 20])
+        self.Doc.recompute()
+        sketch.setVisibility([0, 1], True)
+        self.assertNotIn("Touched", sketch.State)
+        sketch.setVisibility(0, False)
+        self.assertIn("Touched", sketch.State)
+
     # TODO other tests:
     #  getHigherElement
 

@@ -430,6 +430,10 @@ void GroupExtension::extensionOnChanged(const Property* p)
 void GroupExtension::slotChildChanged(const DocumentObject& obj, const Property& prop)
 {
     if (&prop == &obj.Visibility && !_togglingVisibility) {
+        Base::ObjectStatusLocker<Property::Status, Property> guard(
+            Property::NoModify,
+            &_GroupTouched
+        );
         _GroupTouched.touch();
     }
 }

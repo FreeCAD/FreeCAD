@@ -1093,6 +1093,7 @@ private:
 
     bool blockContextMenu;
     std::stringstream sketchBackup;
+    std::string sketchAtEditStart;
 };
 
 }  // namespace SketcherGui
