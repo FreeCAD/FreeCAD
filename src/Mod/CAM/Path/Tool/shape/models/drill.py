@@ -22,17 +22,10 @@
 # ***************************************************************************
 
 import FreeCAD
-import math
+from types import SimpleNamespace
 from typing import Any, Tuple, Mapping
+from Path.Op.Util import drillTipLength
 from .base import ToolBitShape
-
-
-def _tip_length(params) -> float:
-    """Length of the tip cone: the part of a drill that cuts sideways."""
-    angle = params["TipAngle"].Value
-    if angle <= 0 or angle >= 180:
-        return 0.0
-    return params["Diameter"].Value / 2 / math.tan(math.radians(angle / 2))
 
 
 class ToolBitShapeDrill(ToolBitShape):
@@ -66,7 +59,7 @@ class ToolBitShapeDrill(ToolBitShape):
     @classmethod
     def derived_parameters(cls) -> Mapping[str, Any]:
         """Only the tip cone cuts sideways, so the cutting edge height is its length."""
-        return {"CuttingEdgeHeight": _tip_length}
+        return {"CuttingEdgeHeight": lambda p: drillTipLength(SimpleNamespace(**p))}
 
     @property
     def label(self) -> str:

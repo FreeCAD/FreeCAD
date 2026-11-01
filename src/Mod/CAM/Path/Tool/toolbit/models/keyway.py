@@ -44,5 +44,5 @@ class ToolBitKeyway(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(
-            "CAM", f"{diameter} x {lower_cutting_height} keyway cutter, {flutes}-flute"
-        )
+            "CAM", "{diameter} x {lower_cutting_height} keyway cutter, {flutes}-flute"
+        ).format(diameter=diameter, lower_cutting_height=lower_cutting_height, flutes=flutes)

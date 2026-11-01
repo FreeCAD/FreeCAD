@@ -44,5 +44,5 @@ class ToolBitLollipop(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(
-            "CAM", f"{diameter} lollipop on a {neck_diameter} neck, {flutes}-flute"
-        )
+            "CAM", "{diameter} lollipop on a {neck_diameter} neck, {flutes}-flute"
+        ).format(diameter=diameter, neck_diameter=neck_diameter, flutes=flutes)

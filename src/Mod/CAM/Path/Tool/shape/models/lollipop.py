@@ -36,6 +36,7 @@ class ToolBitShapeLollipop(ToolBitShape):
     """A lollipop (undercut) cutter: a ball on a narrower neck, then the shank."""
 
     name = "Lollipop"
+    ball_end = True
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

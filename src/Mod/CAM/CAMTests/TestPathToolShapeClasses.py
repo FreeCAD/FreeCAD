@@ -392,6 +392,15 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(height.Unit, FreeCAD.Units.Unit("mm"))
         self.assertEqual(shape.apply_derived_parameters(), {})
 
+    def test_ball_end_shapes(self):
+        """Ball end, tapered ball nose and lollipop cut with a ball; nothing else does."""
+        for name in ("ballend", "Ballend", "taperedballnose", "conicalballnose", "lollipop"):
+            with self.subTest(name=name):
+                self.assertTrue(ToolBitShape.is_ball_end(name))
+        for name in ("endmill", "bullnose", "v-bit", "custom", "unknown", "", None):
+            with self.subTest(name=name):
+                self.assertFalse(ToolBitShape.is_ball_end(name))
+
     def test_drill_derived_cutting_edge_height(self):
         """A drill cuts sideways with its tip cone only: CuttingEdgeHeight is its length."""
         shape = self.assets.get(ToolBitShape.resolve_name("drill"))

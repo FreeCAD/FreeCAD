@@ -43,4 +43,6 @@ class ToolBitReamer(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         diameter = self.get_property_str("Diameter", "?", precision=3)
         flute_length = self.get_property_str("FluteLength", "?", precision=3)
 
-        return FreeCAD.Qt.translate("CAM", f"{diameter} reamer, {flute_length} flute length")
+        return FreeCAD.Qt.translate("CAM", "{diameter} reamer, {flute_length} flute length").format(
+            diameter=diameter, flute_length=flute_length
+        )
