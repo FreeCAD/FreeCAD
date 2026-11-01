@@ -797,6 +797,9 @@ void AttachExtension::updateAttacherVals(bool base) const
     if (!props.attachment) {
         return;
     }
+    if (auto* owner = getExtendedObject()) {
+        attacher(base).ownerName = owner->getFullName();
+    }
     attacher(base).setUp(
         *props.attachment,
         eMapMode(props.mapMode->getValue()),
