@@ -119,8 +119,22 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 
 void DlgSettings3DViewPart::saveSettings()
 {
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+    const double oldDeviation = hPart->GetFloat("MeshDeviation", ui->maxDeviation->value());
+    const double oldAngularDeflection
+        = hPart->GetFloat("MeshAngularDeflection", ui->maxAngularDeflection->value());
+
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+
+    const bool tessellationSettingsChanged = oldDeviation
+            != hPart->GetFloat("MeshDeviation", oldDeviation)
+        || oldAngularDeflection != hPart->GetFloat("MeshAngularDeflection", oldAngularDeflection);
+    if (!tessellationSettingsChanged) {
+        return;
+    }
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
