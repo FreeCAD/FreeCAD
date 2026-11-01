@@ -176,12 +176,12 @@ void SectionAnalysisWidget::setupUi()
     auto* planeLayout = new QGridLayout(planeGroup);
 
     // Preset combo
-    planeLayout->addWidget(new QLabel(tr("Preset:"), this), 0, 0);
+    planeLayout->addWidget(new QLabel(tr("Preset"), this), 0, 0);
     presetCombo = new QComboBox(this);
     presetCombo->addItem(tr("XY Plane (Z normal)"));
     presetCombo->addItem(tr("XZ Plane (Y normal)"));
     presetCombo->addItem(tr("YZ Plane (X normal)"));
-    presetCombo->addItem(tr("View Direction"));
+    presetCombo->addItem(tr("View direction"));
     // Shown when the plane matches no preset, so the box reads as "none of
     // these" rather than as an empty control that failed to populate.
     presetCombo->setPlaceholderText(tr("(no preset)"));
@@ -212,7 +212,7 @@ void SectionAnalysisWidget::setupUi()
     }
 
     // Angle adjustments (tilt the plane from the preset orientation)
-    angleLabel1 = new QLabel(tr("X Angle:"), this);
+    angleLabel1 = new QLabel(tr("X-angle"), this);
     planeLayout->addWidget(angleLabel1, 1, 0);
     angle1Spin = new Gui::QuantitySpinBox(this);
     angle1Spin->setUnit(Base::Unit::Angle);
@@ -221,7 +221,7 @@ void SectionAnalysisWidget::setupUi()
     angle1Spin->setValue(0.0);
     planeLayout->addWidget(angle1Spin, 1, 1);
 
-    angleLabel2 = new QLabel(tr("Z Angle:"), this);
+    angleLabel2 = new QLabel(tr("Z-angle"), this);
     planeLayout->addWidget(angleLabel2, 2, 0);
     angle2Spin = new Gui::QuantitySpinBox(this);
     angle2Spin->setUnit(Base::Unit::Angle);
@@ -233,7 +233,7 @@ void SectionAnalysisWidget::setupUi()
     applyPresetAngleLabels(static_cast<Preset>(presetCombo->currentIndex()));
 
     // Offset along the normal.
-    auto* offsetLabel = new QLabel(tr("Offset:"), this);
+    auto* offsetLabel = new QLabel(tr("Offset"), this);
     planeLayout->addWidget(offsetLabel, 3, 0);
     offsetSpin = new Gui::QuantitySpinBox(this);
     offsetSpin->setUnit(Base::Unit::Length);
@@ -242,7 +242,7 @@ void SectionAnalysisWidget::setupUi()
     offsetSpin->setValue(feature->PlaneOffset.getValue());
     planeLayout->addWidget(offsetSpin, 3, 1);
 
-    flipCheck = new QCheckBox(tr("Flip Direction"), this);
+    flipCheck = new QCheckBox(tr("Flip direction"), this);
     flipCheck->setChecked(feature->FlipCut.getValue());
     planeLayout->addWidget(flipCheck, 4, 0, 1, 2);
 
@@ -252,7 +252,7 @@ void SectionAnalysisWidget::setupUi()
     auto* appearGroup = new QGroupBox(tr("Appearance"), this);
     auto* appearLayout = new QGridLayout(appearGroup);
 
-    appearLayout->addWidget(new QLabel(tr("Section Color:"), this), 0, 0);
+    appearLayout->addWidget(new QLabel(tr("Section color"), this), 0, 0);
     sectionColorBtn = new Gui::ColorButton(this);
     {
         // Reflect the section's actual colour (each new section gets a distinct
@@ -264,11 +264,11 @@ void SectionAnalysisWidget::setupUi()
     }
     appearLayout->addWidget(sectionColorBtn, 0, 1);
 
-    hatchCheck = new QCheckBox(tr("Show Hatching"), this);
+    hatchCheck = new QCheckBox(tr("Show hatching"), this);
     hatchCheck->setChecked(viewProvider->ShowHatching.getValue());
     appearLayout->addWidget(hatchCheck, 1, 0, 1, 2);
 
-    autoHideHatchCheck = new QCheckBox(tr("Fade Hatching When Zoomed Out"), this);
+    autoHideHatchCheck = new QCheckBox(tr("Fade hatching when zoomed out"), this);
     autoHideHatchCheck->setToolTip(
         tr("Fade the hatching out, then stop drawing it, once the lines are too\n"
            "close together on screen to be told apart")
@@ -276,7 +276,7 @@ void SectionAnalysisWidget::setupUi()
     autoHideHatchCheck->setChecked(viewProvider->AutoHideHatching.getValue());
     appearLayout->addWidget(autoHideHatchCheck, 4, 0, 1, 2);
 
-    perSolidColorCheck = new QCheckBox(tr("Per-Body Colors"), this);
+    perSolidColorCheck = new QCheckBox(tr("Per-Body colors"), this);
     perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
     // Nothing to tell apart below two bodies, and while it is on the single
     // colour picker would overwrite the per-body colours it assigns
@@ -294,7 +294,7 @@ void SectionAnalysisWidget::setupUi()
     sectionColorBtn->setEnabled(!perSolidColorCheck->isChecked());
     appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
 
-    ghostCheck = new QCheckBox(tr("Show Removed Material"), this);
+    ghostCheck = new QCheckBox(tr("Show memoved material"), this);
     ghostCheck->setToolTip(
         tr("Draw the material the section removes faintly, so the\n"
            "cross-sections have something to sit in")
@@ -306,14 +306,14 @@ void SectionAnalysisWidget::setupUi()
     // going nor the full width its siblings get.
     appearLayout->addWidget(ghostCheck, 5, 0, 1, 2);
 
-    showPlaneCheck = new QCheckBox(tr("Show Cutting Plane"), this);
+    showPlaneCheck = new QCheckBox(tr("Show cutting plane"), this);
     showPlaneCheck->setChecked(true);
     appearLayout->addWidget(showPlaneCheck, 3, 0, 1, 2);
 
     mainLayout->addWidget(appearGroup);
 
     // Update View checkbox
-    updateViewCheck = new QCheckBox(tr("Update View"), this);
+    updateViewCheck = new QCheckBox(tr("Update view"), this);
     updateViewCheck->setChecked(true);
     mainLayout->addWidget(updateViewCheck);
 
@@ -366,22 +366,22 @@ void SectionAnalysisWidget::applyPresetAngleLabels(Preset preset)
 {
     switch (preset) {
         case Preset::XY:
-            angleLabel1->setText(tr("X Angle:"));
-            angleLabel2->setText(tr("Y Angle:"));
+            angleLabel1->setText(tr("X-angle"));
+            angleLabel2->setText(tr("Y-angle"));
             break;
         case Preset::XZ:
-            angleLabel1->setText(tr("X Angle:"));
-            angleLabel2->setText(tr("Z Angle:"));
+            angleLabel1->setText(tr("X-angle"));
+            angleLabel2->setText(tr("Z-angle"));
             break;
         case Preset::YZ:
-            angleLabel1->setText(tr("Y Angle:"));
-            angleLabel2->setText(tr("Z Angle:"));
+            angleLabel1->setText(tr("Y-angle"));
+            angleLabel2->setText(tr("Z-angle"));
             break;
         default:
             // View direction, or no preset at all: the tilt axes are derived
             // from the current normal, so they have no standing names.
-            angleLabel1->setText(tr("Angle 1:"));
-            angleLabel2->setText(tr("Angle 2:"));
+            angleLabel1->setText(tr("Angle-1"));
+            angleLabel2->setText(tr("Angle-2"));
             break;
     }
 }
