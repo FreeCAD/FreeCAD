@@ -738,10 +738,10 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         self.assertEqual([i.item_type for i in items], ["rotation", "operation"])
 
         positions = dict(rotation.solve_orientation(self.machine, n).angles)
-        rotary = items[0].path.Commands[0]
-        self.assertEqual(rotary.Name, "G0")
+        self.assertEqual({c.Name for c in items[0].path.Commands}, {"G0"})
+        moved = {k: v for c in items[0].path.Commands for k, v in c.Parameters.items()}
         for axis, angle in positions.items():
-            self.assertAlmostEqual(rotary.Parameters[axis], angle, places=6)
+            self.assertAlmostEqual(moved[axis], angle, places=6)
 
         chain = rotation.build_kinematic_chain(self.machine)
         R = rotation.compute_rotation_matrix(chain, positions)
