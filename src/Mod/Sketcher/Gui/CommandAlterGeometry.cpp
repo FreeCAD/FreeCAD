@@ -202,8 +202,16 @@ GeometryCreationMode toggleCreationMode(GeometryCreationMode currentMode)
 void CmdSketcherToggleConstruction::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    auto* activeDocument = getActiveGuiDocument();
+    auto* editing = activeDocument
+        ? dynamic_cast<SketcherGui::ViewProviderSketch*>(activeDocument->getInEdit())
+        : nullptr;
+    // A running tool owns the selection (the hatch tool selects the loops it hatches), so
+    // the toggle then always switches the creation mode instead of converting geometry.
+    const bool toolActive = editing
+        && editing->getSketchMode() == SketcherGui::ViewProviderSketch::STATUS_SKETCH_UseHandler;
     // Option A: nothing is selected change creation mode from/to construction
-    if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 0) {
+    if (toolActive || Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() == 0) {
         auto doc = getActiveGuiDocument();
         if (doc) {
             auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
@@ -271,8 +279,21 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             // in 90% of the cases the uses will select just the points only naturally.
 
 
+            // Cosmetics (text, hatch, leader) carry their own construction flag.
+            if (const long annotationId = Sketcher::Annotation::idFromSubName(subname)) {
+                const auto* annotation = Obj->findAnnotation(annotationId);
+                if (!annotation) {
+                    continue;
+                }
+                Gui::cmdAppObjectArgs(
+                    Obj,
+                    "updateAnnotation(%ld, {'Construction': %s})",
+                    annotationId,
+                    annotation->construction ? "False" : "True"
+                );
+            }
             // only handle edges
-            if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
+            else if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
                 int geoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
                 auto gf = Obj->getGeometryFacade(geoId);
                 if (!gf || gf->isInternalAligned()) {

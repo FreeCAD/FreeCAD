@@ -27,6 +27,7 @@
 #include <utility>
 
 #include <Geom_TrimmedCurve.hxx>
+#include "HatchPattern.h"
 
 #include <App/Document.h>
 #include <Base/AxisPy.h>
@@ -35,6 +36,7 @@
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/TopoShapePy.h>
 
 #include "PythonConverter.h"
 
@@ -50,6 +52,187 @@
 
 
 using namespace Sketcher;
+
+namespace
+{
+// Annotation data is built from arbitrary Python objects, so PyCXX and OCC may both
+// throw here. Nothing may unwind past a PyCFunction frame, so every path is mapped.
+PyObject* annotationError(const std::exception& error, bool typeError = false)
+{
+    PyErr_SetString(typeError ? PyExc_TypeError : PyExc_ValueError, error.what());
+    return nullptr;
+}
+// Base::Exception is not a std::exception.
+PyObject* annotationError(const Base::Exception& error, bool typeError = false)
+{
+    PyErr_SetString(typeError ? PyExc_TypeError : PyExc_ValueError, error.what());
+    return nullptr;
+}
+}  // namespace
+
+PyObject* SketchObjectPy::addAnnotation(PyObject* args)
+{
+    PyObject* data {};
+    if (!PyArg_ParseTuple(args, "O!", &PyDict_Type, &data)) {
+        return nullptr;
+    }
+    try {
+        Annotation a;
+        return PyLong_FromLong(getSketchObjectPtr()->addAnnotation(Annotation::fromPython(data, a)));
+    }
+    catch (const Py::Exception&) {
+        return nullptr;  // PyCXX has already set the Python error indicator.
+    }
+    catch (const Base::TypeError& e) {
+        return annotationError(e, true);
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
+
+PyObject* SketchObjectPy::updateAnnotation(PyObject* args)
+{
+    long id {};
+    PyObject* data {};
+    if (!PyArg_ParseTuple(args, "lO!", &id, &PyDict_Type, &data)) {
+        return nullptr;
+    }
+    try {
+        auto* sketch = getSketchObjectPtr();
+        sketch->updateAnnotation(id, Annotation::fromPython(data, sketch->getAnnotation(id)));
+        Py_RETURN_NONE;
+    }
+    catch (const Py::Exception&) {
+        return nullptr;
+    }
+    catch (const Base::TypeError& e) {
+        return annotationError(e, true);
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
+
+PyObject* SketchObjectPy::delAnnotations(PyObject* args)
+{
+    PyObject* data {};
+    if (!PyArg_ParseTuple(args, "O", &data)) {
+        return nullptr;
+    }
+    if (!PySequence_Check(data)) {
+        PyErr_SetString(PyExc_TypeError, "delAnnotations expects a sequence of annotation IDs");
+        return nullptr;
+    }
+    try {
+        std::vector<long> ids;
+        for (auto item : Py::Sequence(data)) {
+            ids.push_back(Py::Long(item).as_long());
+        }
+        getSketchObjectPtr()->delAnnotations(ids);
+        Py_RETURN_NONE;
+    }
+    catch (const Py::Exception&) {
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
+
+PyObject* SketchObjectPy::getAnnotationFace(PyObject* args)
+{
+    long id {};
+    if (!PyArg_ParseTuple(args, "l", &id)) {
+        return nullptr;
+    }
+    try {
+        auto* sketch = getSketchObjectPtr();
+        return new Part::TopoShapePy(
+            new Part::TopoShape(sketch->annotationFace(sketch->getAnnotation(id)))
+        );
+    }
+    catch (const Py::Exception&) {
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
+
+PyObject* SketchObjectPy::getAnnotationStrokes(PyObject* args)
+{
+    long id {};
+    if (!PyArg_ParseTuple(args, "l", &id)) {
+        return nullptr;
+    }
+    try {
+        auto* sketch = getSketchObjectPtr();
+        Py::List result;
+        for (const auto& point : sketch->annotationStrokes(sketch->getAnnotation(id))) {
+            result.append(Py::Object(new Base::VectorPy(point), true));
+        }
+        return Py::new_reference_to(result);
+    }
+    catch (const Py::Exception&) {
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
+
+PyObject* SketchObjectPy::getAnnotationPattern(PyObject* args)
+{
+    long id {};
+    if (!PyArg_ParseTuple(args, "l", &id)) {
+        return nullptr;
+    }
+    try {
+        const auto& a = getSketchObjectPtr()->getAnnotation(id);
+        if (a.kind != Annotation::Kind::Hatch) {
+            throw Base::ValueError("Annotation is not a hatch");
+        }
+        Py::List result;
+        for (const auto& lines : placeHatchPattern(a.pattern, a.position, a.rotation, a.spacing)) {
+            Py::Dict family;
+            family.setItem("Origin", Py::Object(new Base::VectorPy(lines.origin), true));
+            family.setItem("Direction", Py::Object(new Base::VectorPy(lines.direction), true));
+            family.setItem("Offset", Py::Object(new Base::VectorPy(lines.offset), true));
+            Py::List dashes;
+            for (double dash : lines.dashes) {
+                dashes.append(Py::Float(dash));
+            }
+            family.setItem("Dashes", dashes);
+            result.append(family);
+        }
+        return Py::new_reference_to(result);
+    }
+    catch (const Py::Exception&) {
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        return annotationError(e);
+    }
+    catch (const std::exception& e) {
+        return annotationError(e);
+    }
+}
 
 // returns a string which represents the object e.g. when printed in python
 std::string SketchObjectPy::representation() const

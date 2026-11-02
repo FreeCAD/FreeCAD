@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QCheckBox>
+#include <QSignalBlocker>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -118,6 +119,12 @@ void TaskSketcherMessages::createSettingsButtonActions()
     checkbox->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
     checkbox->setChecked(state);
     layout->addWidget(checkbox, 0, 0, 1, 2);
+
+    auto* cosmeticsCheckbox = new QCheckBox(tr("Show cosmetics"));
+    cosmeticsCheckbox->setObjectName(QStringLiteral("showSketchCosmeticsCheckbox"));
+    cosmeticsCheckbox->setToolTip(tr("Shows the Cosmetics task panel and toolbar. Cosmetics stay visible in the 3D view."));
+    cosmeticsCheckbox->setChecked(hGrp->GetBool("ShowCosmetics", true));
+    layout->addWidget(cosmeticsCheckbox, 1, 0, 1, 2);
     containerWidget->setLayout(layout);
     autoUpdateAction->setDefaultWidget(containerWidget);
 
@@ -127,6 +134,9 @@ void TaskSketcherMessages::createSettingsButtonActions()
         hGrp->SetBool("AutoRecompute", checked);
         sketchView->getSketchObject()->noRecomputes = !checked;
     });
+    connect(cosmeticsCheckbox, &QCheckBox::toggled, this, [hGrp](bool checked) {
+        hGrp->SetBool("ShowCosmetics", checked);
+    });
 
     auto* gridAction = new GridSpaceAction(this);
     auto* snapAction = new SnapSpaceAction(this);
@@ -134,6 +144,11 @@ void TaskSketcherMessages::createSettingsButtonActions()
 
     QMenu* myMenu = new QMenu(this);
     myMenu->addAction(autoUpdateAction);
+    connect(myMenu, &QMenu::aboutToShow, this, [cosmeticsCheckbox, hGrp]() {
+        // Another place may have changed the setting since the menu was built.
+        QSignalBlocker block(cosmeticsCheckbox);
+        cosmeticsCheckbox->setChecked(hGrp->GetBool("ShowCosmetics", true));
+    });
     myMenu->addSeparator();
     myMenu->addAction(gridAction);
     myMenu->addSeparator();

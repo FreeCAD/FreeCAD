@@ -193,6 +193,15 @@
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticText.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticText_Constr.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_CosmeticText.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticHatch.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticHatch_Constr.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_CosmeticHatch.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticLeader.svg</file>
+        <file>icons/geometry/Sketcher_CosmeticLeader_Constr.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_CosmeticLeader.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
         <file>icons/geometry/Sketcher_CreateText_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
