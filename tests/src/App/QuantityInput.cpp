@@ -436,7 +436,9 @@ TEST(QuantityInput, GrammarSelectionIsExplicit)
         InputPhase::Commit,
         constraints
     );
-    EXPECT_EQ(quantity.status, InputStatus::Invalid);
+    EXPECT_EQ(quantity.status, InputStatus::Acceptable);
+    ASSERT_TRUE(quantity.quantity);
+    EXPECT_DOUBLE_EQ(quantity.quantity->getValue(), 3.0);
 
     const auto expression = interpretQuantityInput(
         "1+2 mm",
@@ -502,7 +504,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
     const auto localizedPlus = interpretQuantityInput(
         "plus1 mm",
-        QuantityInputGrammar::Expression,
+        QuantityInputGrammar::Quantity,
         path,
         Base::Unit::Length,
         custom,
