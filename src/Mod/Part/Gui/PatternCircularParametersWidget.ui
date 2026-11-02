@@ -143,6 +143,16 @@
    <header>Gui/SpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>axisCombo</tabstop>
+  <tabstop>tangentAxisCombo</tabstop>
+  <tabstop>flipTangentDirection</tabstop>
+  <tabstop>radialDistance</tabstop>
+  <tabstop>tangentialDistance</tabstop>
+  <tabstop>numberCircles</tabstop>
+  <tabstop>symmetry</tabstop>
+  <tabstop>centerAroundFeature</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

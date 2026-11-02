@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <fastsignals/signal.h>
+
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
 #include "FeatureRefine.h"
@@ -81,8 +83,11 @@ protected:
 
 
 private:
+    void onSettingDocument() override;
+    void slotChangedObject(const App::DocumentObject& object, const App::Property& prop);
     Part::TopoShape getBooleanTopoShape(const App::DocumentObject* object) const;
 
+    fastsignals::scoped_connection connection;
     static const char* TypeEnums[];
 };
 

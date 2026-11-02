@@ -26,6 +26,7 @@
 #include <QComboBox>
 #include <QModelIndex>
 #include <QPainter>
+#include <QSignalBlocker>
 #include <QTimer>
 #include <QKeyEvent>
 
@@ -223,22 +224,17 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
         }
     }
     else if (ev->type() == QEvent::FocusIn) {
-        auto* comboBox = qobject_cast<QComboBox*>(o);
-        if (comboBox) {
-            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-            if (parentEditor && parentEditor->activeEditor == comboBox) {
-                comboBox->showPopup();
-            }
+        if (auto* comboBox = qobject_cast<QComboBox*>(o); comboBox && propertyEditor == comboBox) {
+            comboBox->showPopup();
         }
-        auto* checkBox = qobject_cast<QCheckBox*>(o);
-        if (checkBox) {
-            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-            if (parentEditor && parentEditor->activeEditor == checkBox) {
-                if (this->pressed) {
-                    checkBox->toggle();
-                    // Delay valueChanged to ensure proper recomputation
-                    QTimer::singleShot(0, this, [this]() { valueChanged(); });
-                }
+        if (auto* checkBox = qobject_cast<QCheckBox*>(o); checkBox && propertyEditor == checkBox) {
+            if (this->pressed) {
+                checkBox->toggle();
+                QTimer::singleShot(0, checkBox, [this, checkBox]() {
+                    if (propertyEditor == checkBox) {
+                        valueChanged();
+                    }
+                });
             }
         }
         this->pressed = false;
@@ -249,22 +245,6 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
             if (button->property("modal_dialog_active").toBool()) {
                 return true;
             }
-        }
-        auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-        if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
-            if (parentEditor && parentEditor->activeEditor == comboBox) {
-                parentEditor->activeEditor = nullptr;
-            }
-        }
-        auto widget = qobject_cast<QWidget*>(o);
-        if (widget && parentEditor && parentEditor->activeEditor
-            && widget != parentEditor->activeEditor) {
-            // All the attempts to ignore the focus-out event has been approved to not work
-            // reliably because there are still cases that cannot be handled.
-            // So, the best for now is to always ignore this event.
-            // See https://forum.freecad.org/viewtopic.php?p=579530#p579530 why this is not
-            // possible.
-            return false;
         }
     }
     QPointer<QObject> guardedObject(o);
@@ -289,10 +269,6 @@ QWidget* PropertyItemDelegate::createEditor(
     }
 
     auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
-    if (parentEditor) {
-        parentEditor->closeEditor();
-    }
-
     auto createEditor = [this, childItem, parent]() {
         // Can't use a terniary here because the lambdas have different types.
         if (qobject_cast<PropertyBoolItem*>(childItem)) {
@@ -329,41 +305,21 @@ QWidget* PropertyItemDelegate::createEditor(
     if (editor) {
         // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
+        Q_EMIT const_cast<PropertyItemDelegate*>(this)->editorCreated(editor, index);
     }
-    if (editor && childItem->isReadOnly()) {
-        editor->setDisabled(true);
-    }
-    else if (editor /*&& this->pressed*/) {
-        // We changed the way editor is activated in PropertyEditor (in response
-        // of signal activated and clicked), so now we should grab focus
-        // regardless of "pressed" or not (e.g. when activated by keyboard
-        // enter)
-        editor->setFocus();
-    }
-
-    if (editor) {
-        const auto widgets = editor->findChildren<QWidget*>();
-        for (auto w : widgets) {
-            if (qobject_cast<QAbstractButton*>(w) || qobject_cast<QLabel*>(w)) {
-                w->installEventFilter(const_cast<PropertyItemDelegate*>(this));
-            }
-        }
-        parentEditor->activeEditor = editor;
-        parentEditor->editingIndex = index;
-    }
-
     return editor;
 }
 
 void PropertyItemDelegate::valueChanged()
 {
-    if (propertyEditor) {
-        Base::FlagToggler<> flag(changed);
-        Q_EMIT commitData(propertyEditor);
-        if (qobject_cast<QComboBox*>(propertyEditor) || qobject_cast<QCheckBox*>(propertyEditor)) {
-            Q_EMIT closeEditor(propertyEditor);
-            return;
-        }
+    QPointer<QWidget> editor = propertyEditor;
+    if (!editor) {
+        return;
+    }
+    Base::FlagToggler<> flag(changed);
+    Q_EMIT commitData(editor);
+    if (editor && (qobject_cast<QComboBox*>(editor) || qobject_cast<QCheckBox*>(editor))) {
+        Q_EMIT closeEditor(editor);
     }
 }
 
@@ -374,7 +330,7 @@ void PropertyItemDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
     }
     QVariant data = index.data(Qt::EditRole);
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
-    editor->blockSignals(true);
+    const QSignalBlocker blocker(editor);
     if (expressionEditor == editor) {
         childItem->setExpressionEditorData(editor, data);
     }
@@ -384,8 +340,6 @@ void PropertyItemDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
     else {
         childItem->setEditorData(editor, data);
     }
-    editor->blockSignals(false);
-    return;
 }
 
 void PropertyItemDelegate::setModelData(

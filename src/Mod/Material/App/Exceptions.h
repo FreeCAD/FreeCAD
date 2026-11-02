@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <QString>
+#include <string>
 
 #include <Base/BaseClass.h>
 #include <Base/Exception.h>
@@ -34,189 +34,147 @@ namespace Materials
 class Uninitialized: public Base::Exception
 {
 public:
-    Uninitialized();
-    explicit Uninitialized(const char* msg);
-    explicit Uninitialized(const QString& msg);
+    explicit Uninitialized(std::string msg = "Uninitialized");
     ~Uninitialized() noexcept override;
 };
 
 class ModelNotFound: public Base::Exception
 {
 public:
-    ModelNotFound();
-    explicit ModelNotFound(const char* msg);
-    explicit ModelNotFound(const QString& msg);
+    explicit ModelNotFound(std::string msg = "Model not found");
     ~ModelNotFound() noexcept override;
 };
 
 class InvalidMaterialType: public Base::Exception
 {
 public:
-    InvalidMaterialType();
-    explicit InvalidMaterialType(const char* msg);
-    explicit InvalidMaterialType(const QString& msg);
+    explicit InvalidMaterialType(std::string msg = "Invalid material type");
     ~InvalidMaterialType() noexcept override;
 };
 
 class MaterialNotFound: public Base::Exception
 {
 public:
-    MaterialNotFound();
-    explicit MaterialNotFound(const char* msg);
-    explicit MaterialNotFound(const QString& msg);
+    explicit MaterialNotFound(std::string msg = "Material not found");
     ~MaterialNotFound() noexcept override;
 };
 
 class MaterialExists: public Base::Exception
 {
 public:
-    MaterialExists();
-    explicit MaterialExists(const char* msg);
-    explicit MaterialExists(const QString& msg);
+    explicit MaterialExists(std::string msg = "Material already exists");
     ~MaterialExists() noexcept override;
 };
 
 class MaterialReadError: public Base::Exception
 {
 public:
-    MaterialReadError();
-    explicit MaterialReadError(const char* msg);
-    explicit MaterialReadError(const QString& msg);
+    explicit MaterialReadError(std::string msg = "Unable to read material");
     ~MaterialReadError() noexcept override;
 };
 
 class PropertyNotFound: public Base::Exception
 {
 public:
-    PropertyNotFound();
-    explicit PropertyNotFound(const char* msg);
-    explicit PropertyNotFound(const QString& msg);
+    explicit PropertyNotFound(std::string msg = "Property not found");
     ~PropertyNotFound() noexcept override;
 };
 
 class LibraryNotFound: public Base::Exception
 {
 public:
-    LibraryNotFound();
-    explicit LibraryNotFound(const char* msg);
-    explicit LibraryNotFound(const QString& msg);
+    explicit LibraryNotFound(std::string msg = "Library not found");
     ~LibraryNotFound() noexcept override;
 };
 
 class CreationError: public Base::Exception
 {
 public:
-    CreationError();
-    explicit CreationError(const char* msg);
-    explicit CreationError(const QString& msg);
+    explicit CreationError(std::string msg = "Unable to create object");
     ~CreationError() noexcept override;
 };
 
 class InvalidModel: public Base::Exception
 {
 public:
-    InvalidModel();
-    explicit InvalidModel(const char* msg);
-    explicit InvalidModel(const QString& msg);
+    explicit InvalidModel(std::string msg = "Invalid model");
     ~InvalidModel() noexcept override;
 };
 
 class InvalidMaterial: public Base::Exception
 {
 public:
-    InvalidMaterial();
-    explicit InvalidMaterial(const char* msg);
-    explicit InvalidMaterial(const QString& msg);
+    explicit InvalidMaterial(std::string msg = "Invalid material");
     ~InvalidMaterial() noexcept override;
 };
 
 class InvalidProperty: public Base::Exception
 {
 public:
-    InvalidProperty();
-    explicit InvalidProperty(const char* msg);
-    explicit InvalidProperty(const QString& msg);
+    explicit InvalidProperty(std::string msg = "Invalid property");
     ~InvalidProperty() noexcept override;
 };
 
 class InvalidLibrary: public Base::Exception
 {
 public:
-    InvalidLibrary();
-    explicit InvalidLibrary(const char* msg);
-    explicit InvalidLibrary(const QString& msg);
+    explicit InvalidLibrary(std::string msg = "Invalid library");
     ~InvalidLibrary() noexcept override;
 };
 
 class InvalidIndex: public Base::Exception
 {
 public:
-    InvalidIndex();
-    explicit InvalidIndex(const char* msg);
-    explicit InvalidIndex(const QString& msg);
+    explicit InvalidIndex(std::string msg = "Invalid index");
     ~InvalidIndex() noexcept override;
 };
 
 class UnknownValueType: public Base::Exception
 {
 public:
-    UnknownValueType();
-    explicit UnknownValueType(const char* msg);
-    explicit UnknownValueType(const QString& msg);
+    explicit UnknownValueType(std::string msg = "Unknown value type");
     ~UnknownValueType() noexcept override;
 };
 
 class DeleteError: public Base::Exception
 {
 public:
-    DeleteError();
-    explicit DeleteError(const char* msg);
-    explicit DeleteError(const QString& msg);
+    explicit DeleteError(std::string msg = "Unable to delete object");
     ~DeleteError() noexcept override;
 };
 
 class RenameError: public Base::Exception
 {
 public:
-    RenameError();
-    explicit RenameError(const char* msg);
-    explicit RenameError(const QString& msg);
+    explicit RenameError(std::string msg = "Unable to rename object");
     ~RenameError() noexcept override;
 };
 
 class ReplacementError: public Base::Exception
 {
 public:
-    ReplacementError();
-    explicit ReplacementError(const char* msg);
-    explicit ReplacementError(const QString& msg);
+    explicit ReplacementError(std::string msg = "Unable to replace object");
     ~ReplacementError() noexcept override;
 };
 
 class UpdateError: public Base::Exception
 {
 public:
-    UpdateError();
-    explicit UpdateError(const char* msg);
-    explicit UpdateError(const QString& msg);
+    explicit UpdateError(std::string msg = "Unable to update object");
     ~UpdateError() noexcept override;
 };
 
 class MoveError: public Base::Exception
 {
 public:
-    MoveError();
-    explicit MoveError(const char* msg);
-    explicit MoveError(const QString& msg);
+    explicit MoveError(std::string msg = "Unable to move object");
     ~MoveError() noexcept override;
 };
 
 class ConnectionError: public Base::Exception
 {
 public:
-    ConnectionError();
-    explicit ConnectionError(const char* msg);
-    explicit ConnectionError(const QString& msg);
+    explicit ConnectionError(std::string msg = "Unable to connect");
     ~ConnectionError() noexcept override;
 };
 

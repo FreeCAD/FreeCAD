@@ -23,7 +23,7 @@ public:
     }
 
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
-    gp_Ax2 getRotation(const App::PropertyLinkSub& property) const override;
+    std::optional<gp_Ax2> getAxis(const App::PropertyLinkSub& property) const override;
 };
 
 }  // namespace PartDesign

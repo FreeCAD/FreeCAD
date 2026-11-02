@@ -212,4 +212,12 @@ void GuiDisplay::setSsaoEnabled(bool b)
     ui->ssaoButton->setChecked(b);
 }
 
+void GuiDisplay::setBackgroundColor(const QColor& background)
+{
+    const double luma = 0.299 * background.redF() + 0.587 * background.greenF()
+        + 0.114 * background.blueF();
+    const QColor ink = luma > 0.55 ? QColor(25, 25, 25) : QColor(Qt::white);
+    ui->speedLabel->setStyleSheet(QStringLiteral("color:%1").arg(ink.name()));
+}
+
 }  // namespace CAMSimulator

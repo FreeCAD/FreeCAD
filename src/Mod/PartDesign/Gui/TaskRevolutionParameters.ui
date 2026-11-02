@@ -453,10 +453,13 @@
   <tabstop>axis</tabstop>
   <tabstop>changeMode</tabstop>
   <tabstop>revolveAngle</tabstop>
+  <tabstop>buttonFace</tabstop>
   <tabstop>lineFaceName</tabstop>
   <tabstop>changeMode2</tabstop>
   <tabstop>revolveAngle2</tabstop>
+  <tabstop>buttonFace2</tabstop>
   <tabstop>lineFaceName2</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
   <tabstop>checkBoxProjectAxis</tabstop>
   <tabstop>checkBoxReversed</tabstop>
   <tabstop>comboOperation</tabstop>

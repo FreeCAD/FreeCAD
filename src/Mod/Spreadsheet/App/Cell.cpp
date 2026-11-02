@@ -260,7 +260,7 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
             s = "=" + expression->toString();
         }
         else if (freecad_cast<App::NumberExpression*>(expression.get())) {
-            s = expression->toString();
+            s = expression->toString(persistent);
         }
         else {
             s = "=" + expression->toString(persistent);

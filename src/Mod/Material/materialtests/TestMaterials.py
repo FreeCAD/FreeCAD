@@ -76,6 +76,9 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
+        self.assertEqual(steel.Author, "Juergen Riegel")
+        self.assertEqual(steel.License, "CC-BY-3.0")
+        self.assertEqual(steel.AuthorAndLicense, "Juergen Riegel CC-BY-3.0")
 
         self.assertTrue(steel.hasPhysicalModel(self.uuids.Density))
         self.assertTrue(steel.hasPhysicalModel(self.uuids.IsotropicLinearElastic))

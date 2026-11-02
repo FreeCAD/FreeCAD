@@ -21,8 +21,9 @@ PatternCircularParametersWidget::PatternCircularParametersWidget(QWidget* parent
 {
     ui->setupUi(this);
     axisWidget->setupReferenceCombo(ui->axisCombo);
+    binormalAxisWidget->setSelectionIndex(AXIS_INDEX);
     binormalAxisWidget->setupReferenceCombo(ui->tangentAxisCombo);
-    binormalAxisWidget->setAxisIndex(1);
+    binormalAxisWidget->setSelectionIndex(BINORMAL_AXIS_INDEX);
 
     connect(
         ui->radialDistance,

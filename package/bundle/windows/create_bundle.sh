@@ -92,13 +92,17 @@ if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]]; then
   then
     echo "Azure Artifact Signing access confirmed. Beginning signing process..."
 
-    shopt -s nullglob
+    BINARIES=()
+    while IFS= read -r -d '' f; do
+      BINARIES+=("$f")
+    done < <(find "$SIGN_DIR" -type f \( -iname '*.exe' -o -iname '*.dll' -o -iname '*.pyd' \) -print0)
 
-    FILES=(
-      "$SIGN_DIR"/bin/*.exe
-      "$SIGN_DIR"/bin/*.dll
-      "$SIGN_DIR"/bin/*.pyd
-    )
+    FILES=()
+    for f in "${BINARIES[@]}"; do
+      if ! signtool verify -pa -q "$f" >/dev/null 2>&1; then
+        FILES+=("$f")
+      fi
+    done
 
     count=0
     total=${#FILES[@]}
@@ -121,6 +125,18 @@ if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]]; then
 
     # Manually check the important one!
     signtool verify -pa "$SIGN_DIR/bin/FreeCAD.exe"
+
+    unsigned=0
+    for f in "${BINARIES[@]}"; do
+      if ! signtool verify -pa -q "$f" >/dev/null 2>&1; then
+        echo "Not signed: $f"
+        ((unsigned+=1))
+      fi
+    done
+    if [[ $unsigned -ne 0 ]]; then
+      echo "Signing failed: $unsigned files are not signed."
+      exit 1
+    fi
 
     echo "Signing completed."
   else

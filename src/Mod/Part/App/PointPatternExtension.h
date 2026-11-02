@@ -33,6 +33,9 @@ public:
     short extensionMustExecute() override;
 
     void extensionOnChanged(const App::Property* prop) override;
+
+private:
+    void updatePropertyStatus();
 };
 
 }  // namespace Part

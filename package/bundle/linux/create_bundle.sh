@@ -105,6 +105,14 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
+echo "Copying resources and compiling translations for the AppRun script..."
+cp ../../../src/Gui/Icons/launch-error.svg AppDir/
+for po in ./AppDir/locale/*/AppRun.po; do
+    LC_MESSAGES_DIR="$(dirname "${po}")/LC_MESSAGES"
+    mkdir -p "${LC_MESSAGES_DIR}"
+    msgfmt -o "${LC_MESSAGES_DIR}/AppRun.mo" "${po}"
+done
+
 echo "Running FreeCAD command-line smoke test..."
 if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
     echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
@@ -137,6 +145,7 @@ fi
 echo -e "\nCreate the appimage"
 # export GPG_TTY=$(tty)
 chmod a+x ./AppDir/AppRun
+export VERSION="${BUILD_TAG}"
 ./appimagetool-$(uname -m).AppImage \
   --comp zstd \
   --mksquashfs-opt -Xcompression-level \

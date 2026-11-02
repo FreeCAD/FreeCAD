@@ -47,7 +47,7 @@ from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg, _err, _toolmsg
+from draftutils.messages import _msg, _err, _toolmsg, _wrn
 from draftutils.translate import translate
 
 
@@ -694,6 +694,14 @@ class Trimex(gui_base_original.Modifier):
         when valid x, y, and z have been entered in the input fields.
         """
         self.force = dist
+        if self.point is None:
+            # no mouse position yet, so no direction to apply the value to (#33411)
+            _wrn(
+                translate(
+                    "draft", "Trimex: move the mouse into the 3D view " "before typing a value"
+                )
+            )
+            return
         self.trimObject()
         self.finish()
 

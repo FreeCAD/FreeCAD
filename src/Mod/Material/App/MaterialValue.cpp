@@ -21,6 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
+#include <format>
+
 #include <QMetaType>
 #include <QRegularExpression>
 
@@ -404,12 +406,16 @@ void Array2D::validateColumn(int column) const
 void Array2D::validate(const Array2D& other) const
 {
     if (rows() != other.rows()) {
-        Base::Console().log("Local row count {}, remote {}\n", rows(), other.rows());
-        throw InvalidProperty("Material property value row counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value row counts don't match (local {}, remote {})",
+                        rows(),
+                        other.rows()));
     }
     if (columns() != other.columns()) {
-        Base::Console().log("Local column count {}, remote {}\n", columns(), other.columns());
-        throw InvalidProperty("Material property value column counts don't match");
+        throw InvalidProperty(
+            std::format("Material property value column counts don't match (local {}, remote {})",
+                        columns(),
+                        other.columns()));
     }
     try {
         for (int i = 0; i < rows(); i++) {
