@@ -28,6 +28,7 @@ import Path
 import unittest
 from Path.Post.Processor import PostProcessor
 from Machine.models.machine import Machine
+from CAMTests.PostTestMocks import MockJob
 import Path.Tool.Controller as PathToolController
 from Path.Tool.toolbit import ToolBit
 import Path.Main.Job as PathJob
@@ -588,7 +589,12 @@ class TestEmptyMoveSuppression(unittest.TestCase):
 
     def setUp(self):
         """Set up a PostProcessor with Z excluded from parameter_order."""
-        self.processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
+        self.processor = PostProcessor(MockJob(), tooltip=None, tooltipargs=None, units=None)
+        self.processor._machine = Machine.create_3axis_config()
+        self.processor.apply_configuration_bundle()
+        machine_state = self.processor.use_machine_state()
+        machine_state.__enter__()
+        self.addCleanup(machine_state.__exit__, None, None, None)
         # Exclude Z from parameter order (wire EDM scenario)
         self.processor.values["PARAMETER_ORDER"] = [
             "X",
