@@ -7799,7 +7799,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="371"/>
-      <location filename="../../PatternParametersWidget.cpp" line="467"/>
+      <location filename="../../PatternParametersWidget.cpp" line="476"/>
       <source>Spacing %1</source>
       <translation type="unfinished">Spacing %1</translation>
     </message>
@@ -7809,7 +7809,7 @@ Overlapping volumes of the shapes will be removed.</translation>
       <translation type="unfinished">Remove this spacing definition.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="894"/>
+      <location filename="../../PatternParametersWidget.cpp" line="903"/>
       <source>Reset spacing</source>
       <translation type="unfinished">Reset spacing</translation>
     </message>
@@ -7905,68 +7905,103 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::PatternPathParametersWidget</name>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="17"/>
       <source>Path</source>
       <translation>Rata</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="24"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="240"/>
       <source>Select Path</source>
       <translation type="unfinished">Select Path</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="31"/>
       <source>Spacing mode</source>
       <translation type="unfinished">Spacing mode</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="41"/>
       <source>Occurrences</source>
       <translation>Tapahtumaa</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="51"/>
       <source>Spacing</source>
       <translation>Tiheys</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="65"/>
       <source>Start offset</source>
       <translation type="unfinished">Start offset</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="79"/>
       <source>End offset</source>
       <translation type="unfinished">End offset</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="93"/>
       <source>Reverse path</source>
       <translation type="unfinished">Reverse path</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="100"/>
       <source>Align to path</source>
       <translation type="unfinished">Align to path</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="107"/>
+      <source>Tangent Axis</source>
+      <translation type="unfinished">Tangent Axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="117"/>
+      <source>Flip tangent axis</source>
+      <translation type="unfinished">Flip tangent axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="124"/>
+      <source>Vertical axis</source>
+      <translation type="unfinished">Vertical axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="134"/>
+      <source>Flip vertical axis</source>
+      <translation type="unfinished">Flip vertical axis</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="141"/>
+      <source>Origin point index</source>
+      <translation type="unfinished">Origin point index</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="151"/>
+      <source>Total offset</source>
+      <translation type="unfinished">Total offset</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="161"/>
+      <source>Relative to first</source>
+      <translation type="unfinished">Relative to first</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed count</source>
       <translation type="unfinished">Fixed count</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed spacing</source>
       <translation type="unfinished">Fixed spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed count and spacing</source>
       <translation type="unfinished">Fixed count and spacing</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="252"/>
       <source>(+%1)</source>
       <translation type="unfinished">(+%1)</translation>
     </message>
@@ -8127,99 +8162,99 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::TaskLinkArrayParameters</name>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
       <source>Circular Link Array</source>
       <translation type="unfinished">Circular Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="168"/>
       <source>Path Link Array</source>
       <translation type="unfinished">Path Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="171"/>
       <source>Point Link Array</source>
       <translation type="unfinished">Point Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="175"/>
       <source>Polar Link Array</source>
       <translation type="unfinished">Polar Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="178"/>
       <source>Linear Link Array</source>
       <translation type="unfinished">Linear Link Array</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="321"/>
       <source>Selecting…</source>
       <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="327"/>
       <source>Select Object</source>
       <translation type="unfinished">Select Object</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="345"/>
       <source>Select an object to link</source>
       <translation type="unfinished">Select an object to link</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="566"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="584"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object X-axis</source>
       <translation type="unfinished">Object X-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="570"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="587"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Object Y-axis</source>
       <translation type="unfinished">Object Y-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="576"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="591"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="608"/>
       <source>Object Z-axis</source>
       <translation type="unfinished">Object Z-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="614"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select connected path edges</source>
       <translation type="unfinished">Select connected path edges</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="746"/>
       <source>Select a sketch or shape containing points</source>
       <translation type="unfinished">Select a sketch or shape containing points</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="750"/>
       <source>Select a rotation axis</source>
       <translation type="unfinished">Select a rotation axis</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="752"/>
       <source>Select a direction reference</source>
       <translation type="unfinished">Select a direction reference</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="902"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="919"/>
       <source>Input Error</source>
       <translation>Virhe syötetyissä tiedoissa</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="902"/>
       <source>Select an object to link.</source>
       <translation type="unfinished">Select an object to link.</translation>
     </message>

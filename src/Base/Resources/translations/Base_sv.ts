@@ -31,17 +31,17 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="594"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Byggnad Euro (cm, m², m³)</translation>
+      <translation>Europeiska byggmåttenheter (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="826"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Byggnad US (ft-in, sqft, cft)</translation>
+      <translation>Amerikanska byggmåttenheter (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>Metriska smådelar &amp; CNC (mm, mm/min)</translation>
+      <translation>Metriska måttenheter för smådelar och CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="627"/>

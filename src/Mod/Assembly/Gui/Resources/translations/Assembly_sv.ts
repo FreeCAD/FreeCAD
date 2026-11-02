@@ -567,32 +567,32 @@ SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring t
       <translation>Simulering</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Radiell förflyttning</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Rotation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Förflyttning</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Vinkel för denna rörelse i sprängskissen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Avstånd för denna rörelse i sprängskissen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Redigera placering</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE anger övergångarnas branthet från 0 till H1 och från H2 till 0 kring t
       <translation>Objektet som ska fixeras</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>De objekt som flyttas av flytten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Detta är förflyttningens transformation. Slutplaceringen är resultatet av startplaceringen * denna placering.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>Typ av flyttning</translation>
     </message>
@@ -1515,7 +1515,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapar en kuggstångs- och pinjongled som kopplar en del med en glidled till en del med en rotationsled&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidlederna. Delningsradien definierar rörelseförhållandet mellan kuggstången och pinjongen.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en led för kuggstång och kugghjul som kopplar en del med en glidled till en del med en vridled.&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för vrid- och glidlederna. Stigningsradien anger rörelseförhållandet mellan kuggstången och kugghjulet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1575,12 +1575,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
-      <translation>Exploderad vy</translation>
+      <translation>Sprängvy</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation>Skapar en sprängskiss av den aktuella sammanställningen</translation>
+      <translation>Skapar en sprängvy av den aktuella sammanställningen</translation>
     </message>
   </context>
   <context>
@@ -1634,6 +1634,24 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Välj minst två komponenter för att skapa en stel grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Skapa stel grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Skapa en stel grupp.&lt;/p&gt;&lt;p&gt;Skapar en stel grupp som permanent låser de markerade komponenterna till varandra.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1657,24 +1675,6 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Återställ ögonblicksbild</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Välj minst två komponenter för att skapa en stel grupp</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Skapa stel grupp</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapa en stel grupp.&lt;/p&gt;&lt;p&gt;Skapar en stel grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

@@ -567,32 +567,32 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation>Симулација</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Радијално померање</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Окретање</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Транслација</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Угао овог померања на растављеном склопу</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Растојање овог померања на растављеном склопу</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Уреди положај</translation>
     </message>
@@ -727,18 +727,18 @@ SLOPE дефинише нагиб прелаза између 0 и H1, и H2 д�
       <translation>Објекат који треба направити непокретним</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>Објекти који се померају приликом померања</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Померање током померања. Крајњи положај је резултат почетног положаја * овог положаја.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>Врста померања</translation>
     </message>
@@ -1634,32 +1634,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateSnapshot</name>
-    <message>
-      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
-      <source>Snapshot</source>
-      <translation>Снимак</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
-      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation>Снима тренутно стање склопа (положаје и видљивост). Двоструки клик на објекат Снимак врац́а склоп у стање снимљено на том снимку.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_Snapshot</name>
-    <message>
-      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
-      <source>Create Snapshot</source>
-      <translation>Направи Снимак</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
-      <source>Restore Snapshot</source>
-      <translation>Врати Снимак</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_CreateJointRigidGroup</name>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
@@ -1675,6 +1649,32 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Направи круту групу.&lt;/p&gt;&lt;p&gt;Направи круту групу у којој су изабране компоненте међусобно трајно повезане и закључане.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateSnapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="49"/>
+      <source>Snapshot</source>
+      <translation>Снимак</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="53"/>
+      <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
+      <translation>Снима тренутно стање склопа (положаје и видљивост). Двоструки клик на објекат Снимак враћа склоп у стање снимљено на том снимку.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_Snapshot</name>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="70"/>
+      <source>Create Snapshot</source>
+      <translation>Направи Снимак</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSnapshot.py" line="249"/>
+      <source>Restore Snapshot</source>
+      <translation>Обнови Снимак</translation>
     </message>
   </context>
   <context>

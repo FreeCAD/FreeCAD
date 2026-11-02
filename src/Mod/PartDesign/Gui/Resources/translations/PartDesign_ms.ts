@@ -6,129 +6,131 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Titik tengah bagi permulaan heliks; diperoleh daripada paksi rujukan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Arah heliks; diperoleh daripada paksi rujukan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="101"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Paksi rujukan bagi heliks.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="108"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Mod input heliks menentukan sifat yang ditetapkan oleh pengguna. Sifat bersandar kemudiannya dikira.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="120"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Jarak paksi antara dua pusingan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="127"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Ketinggian laluan heliks, tanpa mengambil kira takat profil.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="137"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Bilangan pusingan dalam heliks.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, negative shrinks.</translation>
+      <translation>Sudut kon yang membentuk badan di sekeliling heliks.
+
+Nilai bukan sifar mengubah heliks menjadi pilin kon.
+
+Nilai positif membesarkan jejari, manakala nilai negatif mengecilkannya.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="158"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Pertambahan jejari heliks bagi setiap pusingan.
+
+Nilai bukan sifar mengubah heliks menjadi pilin kon.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="169"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Menetapkan arah pusingan ke tangan kiri,
+
+iaitu lawan arah jam apabila bergerak di sepanjang paksinya.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="180"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Menentukan sama ada heliks menghala ke arah yang bertentangan dengan paksi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="210"/>
       <source>deprecated, do not use</source>
-      <translation type="unfinished">deprecated, do not use</translation>
+      <translation>lapuk, jangan guna</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="190"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Jika palsu, alat ini akan mencadangkan nilai awal bagi pic berdasarkan kotak sempadan profil, supaya persilangan kendiri dapat dielakkan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="202"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
-      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
+      <translation>Toleransi gabungan untuk heliks, tingkatkan jika bentuk berheliks tidak bercantum dengan elok bersama bahagian.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
       <source>Number of gear teeth</source>
-      <translation type="unfinished">Number of gear teeth</translation>
+      <translation>Bilangan gigi gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="120"/>
       <source>Pressure angle of gear teeth</source>
-      <translation type="unfinished">Pressure angle of gear teeth</translation>
+      <translation>Sudut tekanan gigi gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="114"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>Modul gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="129"/>
       <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
+      <translation>Benar=2 lengkung dengan setiap satunya mempunyai 3 titik kawalan, Palsu=1 lengkung dengan 4 titik kawalan.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="137"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
+      <translation>Benar=Gear luaran, Palsu=Gear dalaman</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="146"/>
       <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
-      <translation type="unfinished">The height of the tooth from the pitch circle up to its tip, normalized by the module.</translation>
+      <translation>Ketinggian gigi dari bulatan pic hingga ke hujungnya, dinormalkan mengikut modul.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="155"/>
       <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
-      <translation type="unfinished">The height of the tooth from the pitch circle down to its root, normalized by the module.</translation>
+      <translation>Ketinggian gigi dari bulatan pic hingga ke hujungnya, dinormalkan mengikut modul.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="164"/>
       <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
-      <translation type="unfinished">The radius of the fillet at the root of the tooth, normalized by the module.</translation>
+      <translation>Jejari kambi pada punca gigi, dinormalkan mengikut modul.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="173"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation type="unfinished">The distance by which the reference profile is shifted outwards, normalized by the module.</translation>
+      <translation>Jarak anjakan profil rujukan ke luar, dinormalkan mengikut modul.</translation>
     </message>
   </context>
   <context>
@@ -136,17 +138,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Additive Helix</source>
-      <translation type="unfinished">Additive Helix</translation>
+      <translation>Heliks Penambahan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1717"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
+      <translation>Menyapu lakaran atau profil yang dipilih di sepanjang heliks dan menambahkannya pada jasad</translation>
     </message>
   </context>
   <context>
@@ -154,17 +156,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1617"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1618"/>
       <source>Additive Loft</source>
-      <translation type="unfinished">Additive Loft</translation>
+      <translation>Loteng Penambahan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1619"/>
       <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and adds it to the body</translation>
+      <translation>Meloteng lakaran atau profil yang dipilih melalui satu atau lebih keratan dan menambahkannya pada jasad</translation>
     </message>
   </context>
   <context>
@@ -172,17 +174,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1517"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Additive Pipe</source>
-      <translation type="unfinished">Additive Pipe</translation>
+      <translation>Paip Penambahan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1519"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Menyapu lakaran atau profil yang dipilih di sepanjang laluan dan menambahkannya pada jasad</translation>
     </message>
   </context>
   <context>
@@ -190,35 +192,35 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="109"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="110"/>
       <source>New Body</source>
-      <translation type="unfinished">New Body</translation>
+      <translation>Jasad Baharu</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="111"/>
       <source>Creates a new body and activates it</source>
-      <translation type="unfinished">Creates a new body and activates it</translation>
+      <translation>Mencipta jasad baharu dan mengaktifkannya</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2870"/>
-      <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2871"/>
-      <source>Boolean Operation</source>
-      <translation type="unfinished">Boolean Operation</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2872"/>
+      <source>PartDesign</source>
+      <translation>Reka Bentuk Bahagian</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2873"/>
+      <source>Boolean Operation</source>
+      <translation>Operasi Boolean</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2874"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
-      <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
+      <translation>Menggunakan operasi Boolean dengan objek yang dipilih dan jasad aktif</translation>
     </message>
   </context>
   <context>
@@ -226,17 +228,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="306"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>Local Coordinate System</source>
-      <translation type="unfinished">Local Coordinate System</translation>
+      <translation>Sistem Koordinat Tempatan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Creates a new local coordinate system</source>
-      <translation type="unfinished">Creates a new local coordinate system</translation>
+      <translation>Mencipta sistem koordinat tempatan baharu</translation>
     </message>
   </context>
   <context>
@@ -244,17 +246,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2043"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2044"/>
       <source>Chamfer</source>
-      <translation type="unfinished">Chamfer</translation>
+      <translation>Serongan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2045"/>
       <source>Applies a chamfer to the selected edges or faces</source>
-      <translation type="unfinished">Applies a chamfer to the selected edges or faces</translation>
+      <translation>Mengenakan serongan pada tepi atau muka yang dipilih</translation>
     </message>
   </context>
   <context>
@@ -262,7 +264,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="523"/>
@@ -272,7 +274,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="524"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
-      <translation type="unfinished">Copies a solid object parametrically as the base feature of a new body</translation>
+      <translation>Menyalin objek pepejal secara parametrik sebagai ciri asas bagi jasad baharu</translation>
     </message>
   </context>
   <context>
@@ -280,17 +282,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2160"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2161"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>Draf</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2162"/>
       <source>Applies a draft to the selected faces</source>
-      <translation type="unfinished">Applies a draft to the selected faces</translation>
+      <translation>Mengenakan draf pada muka yang dipilih</translation>
     </message>
   </context>
   <context>
@@ -298,17 +300,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="757"/>
       <source>Duplicate &amp;Object</source>
-      <translation type="unfinished">Duplicate &amp;Object</translation>
+      <translation>Duplikasi &amp;Objek</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="758"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Menduplikasi objek terpilih dan menambahkannya ke dalam jasad aktif</translation>
     </message>
   </context>
   <context>
@@ -316,17 +318,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2015"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2016"/>
       <source>Fillet</source>
-      <translation type="unfinished">Fillet</translation>
+      <translation>Filet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2017"/>
       <source>Applies a fillet to the selected edges or faces</source>
-      <translation type="unfinished">Applies a fillet to the selected edges or faces</translation>
+      <translation>Menerapkan filet pada pinggir atau muka yang dipilih</translation>
     </message>
   </context>
   <context>
@@ -334,17 +336,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1448"/>
       <source>Groove</source>
-      <translation type="unfinished">Groove</translation>
+      <translation>Lurah</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1449"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
+      <translation>Memutarkan lakaran atau profil mengelilingi garisan atau paksi dan menyingkirkannya daripada jasad</translation>
     </message>
   </context>
   <context>
@@ -352,17 +354,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1340"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1341"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Lubang</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1343"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
-      <translation type="unfinished">Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</translation>
+      <translation>Mencipta lubang pada jasad aktif pada titik pusat bulatan atau arka daripada lakaran atau profil terpilih</translation>
     </message>
   </context>
   <context>
@@ -370,17 +372,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Garisan Datum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Creates a new datum line</source>
-      <translation type="unfinished">Creates a new datum line</translation>
+      <translation>Mencipta garisan datum baharu</translation>
     </message>
   </context>
   <context>
@@ -388,17 +390,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2415"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2416"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>Corak Linear</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2417"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
+      <translation>Menduplikasi ciri terpilih atau jasad aktif dalam corak linear</translation>
     </message>
   </context>
   <context>
@@ -406,17 +408,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="391"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="392"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migrasi</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="393"/>
       <source>Migrates the document to the modern Part Design workflow</source>
-      <translation type="unfinished">Migrates the document to the modern Part Design workflow</translation>
+      <translation>Melakukan migrasi dokumen ke aliran kerja PartDesign moden</translation>
     </message>
   </context>
   <context>
@@ -424,17 +426,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2358"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2359"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Cermin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2360"/>
       <source>Mirrors the selected features or active body</source>
-      <translation type="unfinished">Mirrors the selected features or active body</translation>
+      <translation>Mencerminkan ciri terpilih atau jasad aktif</translation>
     </message>
   </context>
   <context>
@@ -442,17 +444,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="824"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="825"/>
       <source>Move Object To…</source>
-      <translation type="unfinished">Move Object To…</translation>
+      <translation>Pindahkan Objek Ke…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
       <source>Moves the selected object to another body</source>
-      <translation type="unfinished">Moves the selected object to another body</translation>
+      <translation>Memindahkan objek terpilih ke jasad lain</translation>
     </message>
   </context>
   <context>
@@ -460,17 +462,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1021"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1022"/>
       <source>Move Feature After…</source>
-      <translation type="unfinished">Move Feature After…</translation>
+      <translation>Pindahkan Ciri Selepas…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1023"/>
       <source>Moves the selected feature after another feature in the same body</source>
-      <translation type="unfinished">Moves the selected feature after another feature in the same body</translation>
+      <translation>Memindahkan ciri terpilih selepas ciri lain dalam jasad yang sama</translation>
     </message>
   </context>
   <context>
@@ -478,35 +480,35 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="657"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="658"/>
       <source>Set Tip</source>
-      <translation type="unfinished">Set Tip</translation>
+      <translation>Tetapkan Tip</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="659"/>
       <source>Moves the tip of the body to the selected feature</source>
-      <translation type="unfinished">Moves the tip of the body to the selected feature</translation>
+      <translation>Memindahkan hujung jasad ke ciri terpilih</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2739"/>
-      <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2740"/>
-      <source>Multi-Transform</source>
-      <translation type="unfinished">Multi-Transform</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2741"/>
+      <source>PartDesign</source>
+      <translation>Reka Bentuk Bahagian</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2742"/>
+      <source>Multi-Transform</source>
+      <translation>Pelbagai Transformasi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2743"/>
       <source>Applies multiple transformations to the selected features or active body</source>
-      <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
+      <translation>Menerapkan pelbagai transformasi pada ciri terpilih atau jasad aktif</translation>
     </message>
   </context>
   <context>
@@ -514,17 +516,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Lakaran Baharu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="614"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>Mencipta lakaran baharu</translation>
     </message>
   </context>
   <context>
@@ -532,17 +534,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
       <source>Pad</source>
-      <translation type="unfinished">Pad</translation>
+      <translation>Pad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1284"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile and adds it to the body</translation>
+      <translation>Mengeksrud lakaran atau profil terpilih dan menambahkannya pada jasad</translation>
     </message>
   </context>
   <context>
@@ -550,17 +552,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="217"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Satah Datum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Creates a new datum plane</source>
-      <translation type="unfinished">Creates a new datum plane</translation>
+      <translation>Mencipta satah datum baharu</translation>
     </message>
   </context>
   <context>
@@ -568,17 +570,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1311"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Pocket</source>
-      <translation type="unfinished">Pocket</translation>
+      <translation>Saku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile and removes it from the body</translation>
+      <translation>Mengeksrud lakaran atau profil terpilih dan membuangnya daripada jasad</translation>
     </message>
   </context>
   <context>
@@ -586,35 +588,35 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Titik Datum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Creates a new datum point</source>
-      <translation type="unfinished">Creates a new datum point</translation>
+      <translation>Mencipta titik datum baharu</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2634"/>
-      <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2635"/>
-      <source>Polar Pattern</source>
-      <translation type="unfinished">Polar Pattern</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2636"/>
+      <source>PartDesign</source>
+      <translation>Reka Bentuk Bahagian</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2637"/>
+      <source>Polar Pattern</source>
+      <translation>Corak Kutu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2638"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in a circular pattern</translation>
+      <translation>Menduplikasi ciri terpilih atau jasad aktif dalam corak kutub</translation>
     </message>
   </context>
   <context>
@@ -622,35 +624,35 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1386"/>
       <source>Revolve</source>
-      <translation type="unfinished">Revolve</translation>
+      <translation>Putar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1387"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
-      <translation type="unfinished">Revolves the selected sketch or profile around a line or axis and adds it to the body</translation>
+      <translation>Memutarkan lakaran atau profil terpilih mengelilingi garisan atau paksi dan menambahkannya pada jasad</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2696"/>
+      <location filename="../../Command.cpp" line="2698"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2697"/>
+      <location filename="../../Command.cpp" line="2699"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2698"/>
+      <location filename="../../Command.cpp" line="2700"/>
       <source>Scales the selected features or the active body</source>
-      <translation type="unfinished">Scales the selected features or the active body</translation>
+      <translation>Menyelaraskan skala ciri terpilih atau jasad aktif</translation>
     </message>
   </context>
   <context>
@@ -658,17 +660,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Shape Binder</source>
-      <translation type="unfinished">Shape Binder</translation>
+      <translation>Pengikat Bentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Creates a new shape binder</source>
-      <translation type="unfinished">Creates a new shape binder</translation>
+      <translation>Mencipta pengikat bentuk baharu</translation>
     </message>
   </context>
   <context>
@@ -676,17 +678,17 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Pengikat Sub-Bentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
-      <translation type="unfinished">Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</translation>
+      <translation>Mencipta rujukan pada geometri daripada satu atau lebih objek, membolehkannya digunakan di dalam atau di luar jasad. Tindakan ini menjejaki kedudukan relatif, menyokong pelbagai jenis geometri (pepejal, muka, tepi, bucu), dan boleh berfungsi dengan objek dalam dokumen yang sama atau dokumen luaran.</translation>
     </message>
   </context>
   <context>
@@ -694,7 +696,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1799"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1800"/>
@@ -704,7 +706,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and removes it from the body</translation>
+      <translation>Menyapu lakaran atau profil terpilih mengikut heliks dan mengeluarkannya daripada jasad</translation>
     </message>
   </context>
   <context>
@@ -712,7 +714,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1667"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1668"/>
@@ -730,7 +732,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
@@ -748,7 +750,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2230"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2231"/>
@@ -766,57 +768,57 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="76"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="77"/>
       <source>Additive Primitive</source>
-      <translation type="unfinished">Additive Primitive</translation>
+      <translation>Primitif Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="78"/>
       <source>Creates an additive primitive</source>
-      <translation type="unfinished">Creates an additive primitive</translation>
+      <translation>Mencipta primitif penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Kotak Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Silinder Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="233"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Sfera Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Kon Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="248"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Elipsoid Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="254"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Torus Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="260"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Prisma Penambahan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="266"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Baji Penambahan</translation>
     </message>
   </context>
   <context>
@@ -824,52 +826,52 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="284"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="285"/>
       <source>Subtractive Primitive</source>
-      <translation type="unfinished">Subtractive Primitive</translation>
+      <translation>Primitif Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="286"/>
       <source>Creates a subtractive primitive</source>
-      <translation type="unfinished">Creates a subtractive primitive</translation>
+      <translation>Mencipta primitif penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="400"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Kotak Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="409"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Silinder Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="418"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Sfera Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="427"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Kon Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="433"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Elipsoid Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="439"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Torus Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="445"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Prisma Penolakan</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="451"/>
@@ -882,37 +884,37 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Penyuntingan Pengikat Bentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Create Shape Binder</source>
-      <translation type="unfinished">Create Shape Binder</translation>
+      <translation>Cipta Pengikat Bentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="472"/>
       <source>Create Sub-Shape Binder</source>
-      <translation type="unfinished">Create Sub-Shape Binder</translation>
+      <translation>Cipta Pengikat Subbentuk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="542"/>
       <source>Create Clone</source>
-      <translation type="unfinished">Create Clone</translation>
+      <translation>Cipta Klon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1166"/>
       <source>Make Copy</source>
-      <translation type="unfinished">Make Copy</translation>
+      <translation>Buat Salinan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2794"/>
+      <location filename="../../Command.cpp" line="2796"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation type="unfinished">Convert to Multi-Transform feature</translation>
+      <translation>Tukar kepada ciri Pelbagai Penjelmaan</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="289"/>
       <source>Sketch on Face</source>
-      <translation type="unfinished">Sketch on Face</translation>
+      <translation>Lakaran pada Muka</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="351"/>
@@ -923,76 +925,76 @@ so that self intersection is avoided.</translation>
       <location filename="../../SketchWorkflow.cpp" line="553"/>
       <location filename="../../SketchWorkflow.cpp" line="813"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Lakaran Baharu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2891"/>
+      <location filename="../../Command.cpp" line="2893"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Cipta Operasi Boolean</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="225"/>
       <source>Add a Body</source>
-      <translation type="unfinished">Add a Body</translation>
+      <translation>Tambah Jasad</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Migrate legacy Part Design features to bodies</source>
-      <translation type="unfinished">Migrate legacy Part Design features to bodies</translation>
+      <translation>Pindahkan ciri Rekaan Bahagian legasi ke dalam jasad</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="770"/>
       <source>Duplicate a Part Design object</source>
-      <translation type="unfinished">Duplicate a Part Design object</translation>
+      <translation>Duplikasi objek Rekaan Bahagian</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1115"/>
       <source>Move a feature inside body</source>
-      <translation type="unfinished">Move a feature inside body</translation>
+      <translation>Pindahkan ciri ke dalam jasad</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="724"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>Pindahkan hujung ke ciri yang dipilih</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="929"/>
       <source>Move an object</source>
-      <translation type="unfinished">Move an object</translation>
+      <translation>Pindahkan objek</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="306"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="308"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Cermin</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="346"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="348"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>Linear Pattern</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="395"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="397"/>
       <source>Polar Pattern</source>
-      <translation type="unfinished">Polar Pattern</translation>
+      <translation>Corak Kutub</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="436"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="438"/>
       <source>Circular Pattern</source>
-      <translation type="unfinished">Circular Pattern</translation>
+      <translation>Corak Membulat</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="475"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="477"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Corak Laluan</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="499"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="501"/>
       <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
+      <translation>Corak Titik</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="521"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="523"/>
       <source>Scale</source>
       <translation>Skala</translation>
     </message>
@@ -1002,37 +1004,37 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Face Tools</source>
-      <translation type="unfinished">Face Tools</translation>
+      <translation>Alat Muka</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Edge Tools</source>
-      <translation type="unfinished">Edge Tools</translation>
+      <translation>Alat Pinggir</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Alat Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Helper Tools</source>
-      <translation type="unfinished">Helper Tools</translation>
+      <translation>Alat Bantuan</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Modeling Tools</source>
-      <translation type="unfinished">Modeling Tools</translation>
+      <translation>Alat Pemodelan</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Create Geometry</source>
-      <translation type="unfinished">Create Geometry</translation>
+      <translation>Cipta Geometri</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Start Part</source>
-      <translation type="unfinished">Start Part</translation>
+      <translation>Mulakan Bahagian</translation>
     </message>
   </context>
   <context>
@@ -1040,7 +1042,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute Parameter</source>
-      <translation type="unfinished">Involute Parameter</translation>
+      <translation>Parameter Involut</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -1283,59 +1285,59 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Pic</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Sistem Koordinat</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
       <source>Growth</source>
-      <translation type="unfinished">Growth</translation>
+      <translation>Pertumbuhan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Bilangan Putaran</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1947"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Sudut 1</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1842"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1964"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Sudut 2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Daripada 3 Titik</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Jejari Utama</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Jejari Kecil</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -1366,32 +1368,32 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2365"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2370"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1645"/>
       <source>Right-handed</source>
-      <translation type="unfinished">Right-handed</translation>
+      <translation>Tangan Kanan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1650"/>
       <source>Left-handed</source>
-      <translation type="unfinished">Left-handed</translation>
+      <translation>Tangan Kiri</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
       <source>Start point</source>
-      <translation type="unfinished">Start point</translation>
+      <translation>Titik Mula</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2160"/>
       <source>End point</source>
-      <translation type="unfinished">End point</translation>
+      <translation>Titik Akhir</translation>
     </message>
   </context>
   <context>
@@ -1399,27 +1401,27 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation type="unfinished">Reference</translation>
+      <translation>Rujukan</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Anda telah memilih geometri yang bukan sebahagian daripada jasad aktif. Sila tentukan cara untuk mengendalikan pemilihan tersebut. Jika anda tidak mahukan rujukan tersebut, batalkan perintah ini.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Buat salinan bebas (disyorkan)</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="52"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Buat salinan bersandar</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Cipta rujukan silang</translation>
     </message>
   </context>
   <context>
@@ -1427,7 +1429,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="336"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Memilih ini akan menyebabkan kebergantungan pekeliling.</translation>
     </message>
   </context>
   <context>
@@ -1435,32 +1437,32 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add Body</source>
-      <translation type="unfinished">Add Body</translation>
+      <translation>Tambah Jasad</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove Body</source>
-      <translation type="unfinished">Remove Body</translation>
+      <translation>Keluarkan Jasad</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Lakur</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation type="unfinished">Cut</translation>
+      <translation>Potong</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="97"/>
       <source>Boolean Parameters</source>
-      <translation type="unfinished">Boolean Parameters</translation>
+      <translation>Parameter Boolean</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="128"/>
@@ -1473,17 +1475,17 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="100"/>
       <source>Subtractive Box Parameters</source>
-      <translation type="unfinished">Subtractive Box Parameters</translation>
+      <translation>Parameter Kotak Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="101"/>
       <source>Additive Box Parameters</source>
-      <translation type="unfinished">Additive Box Parameters</translation>
+      <translation>Parameter Kotak Penambahan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="103"/>
       <source>Subtractive Cylinder Parameters</source>
-      <translation type="unfinished">Subtractive Cylinder Parameters</translation>
+      <translation>Parameter Silinder Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="104"/>
@@ -1908,17 +1910,17 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Buat salinan bebas (disyorkan)</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="79"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Buat salinan bersandar</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Cipta rujukan silang</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="79"/>
@@ -2123,12 +2125,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="285"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="290"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="307"/>
@@ -2259,76 +2261,76 @@ If zero, it is equal to Radius2</translation>
       <translation type="unfinished">Offset from the profile or selected start reference</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="702"/>
+      <location filename="../../TaskHoleParameters.cpp" line="711"/>
       <source>Cancel</source>
       <translation type="unfinished">Cancel</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="703"/>
+      <location filename="../../TaskHoleParameters.cpp" line="712"/>
       <source>Select face, plane...</source>
       <translation type="unfinished">Select face, plane...</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="708"/>
+      <location filename="../../TaskHoleParameters.cpp" line="717"/>
       <source>Pick Reference</source>
       <translation type="unfinished">Pick Reference</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="709"/>
-      <location filename="../../TaskHoleParameters.cpp" line="1130"/>
+      <location filename="../../TaskHoleParameters.cpp" line="718"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1139"/>
       <source>No start reference selected</source>
       <translation type="unfinished">No start reference selected</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="772"/>
+      <location filename="../../TaskHoleParameters.cpp" line="781"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation type="unfinished">Medium</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="776"/>
+      <location filename="../../TaskHoleParameters.cpp" line="785"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Denda</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="780"/>
+      <location filename="../../TaskHoleParameters.cpp" line="789"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Kasar</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="786"/>
+      <location filename="../../TaskHoleParameters.cpp" line="795"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
-      <translation type="unfinished">Normal</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="790"/>
-      <source>Close</source>
-      <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
-      <translation>Tutup</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="794"/>
-      <source>Loose</source>
-      <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
-      <translation type="unfinished">Loose</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="798"/>
-      <source>Normal</source>
-      <comment>Distance between thread crest and hole wall</comment>
       <translation type="unfinished">Normal</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="799"/>
       <source>Close</source>
+      <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
+      <translation>Tutup</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="803"/>
+      <source>Loose</source>
+      <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
+      <translation type="unfinished">Loose</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="807"/>
+      <source>Normal</source>
+      <comment>Distance between thread crest and hole wall</comment>
+      <translation type="unfinished">Normal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="808"/>
+      <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Tutup</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="800"/>
+      <location filename="../../TaskHoleParameters.cpp" line="809"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation type="unfinished">Wide</translation>
@@ -2379,12 +2381,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="126"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="131"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="148"/>
@@ -2746,12 +2748,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="773"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="778"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="788"/>
@@ -2903,12 +2905,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="169"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="174"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -3156,12 +3158,12 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="404"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="409"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="123"/>
@@ -3397,64 +3399,70 @@ measured along the specified direction</translation>
   <context>
     <name>PartDesignGui::TaskTransformedParameters</name>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="111"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="112"/>
       <source>Remove</source>
       <translation>Keluarkan</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="398"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="445"/>
       <source>Normal sketch axis</source>
       <translation type="unfinished">Normal sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="397"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="396"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="423"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="509"/>
+      <source>No reference</source>
+      <translation type="unfinished">No reference</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTransformedParameters.cpp" line="433"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="400"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="436"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="449"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="529"/>
       <source>Construction line %1</source>
       <translation type="unfinished">Construction line %1</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="414"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="466"/>
       <source>Base X-axis</source>
       <translation type="unfinished">Base X-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="415"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="472"/>
       <source>Base Y-axis</source>
       <translation type="unfinished">Base Y-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="416"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="478"/>
       <source>Base Z-axis</source>
       <translation type="unfinished">Base Z-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="450"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="551"/>
       <source>Base XY-plane</source>
       <translation type="unfinished">Base XY-plane</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="451"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="557"/>
       <source>Base YZ-plane</source>
       <translation type="unfinished">Base YZ-plane</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="452"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="563"/>
       <source>Base XZ-plane</source>
       <translation type="unfinished">Base XZ-plane</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="424"/>
-      <location filename="../../TaskTransformedParameters.cpp" line="460"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="491"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="576"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
@@ -3502,7 +3510,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1100"/>
       <source>Move Feature After…</source>
-      <translation type="unfinished">Move Feature After…</translation>
+      <translation>Pindahkan Ciri Selepas…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1101"/>
@@ -3580,11 +3588,11 @@ measured along the specified direction</translation>
       <translation type="unfinished">No valid planes in this document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="164"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../SketchWorkflow.cpp" line="778"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
@@ -3629,37 +3637,6 @@ measured along the specified direction</translation>
       <translation type="unfinished">No sketch is available in the document</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1195"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../ViewProvider.cpp" line="165"/>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
-      <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1876"/>
-      <location filename="../../Command.cpp" line="1911"/>
-      <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1877"/>
-      <source>Select an edge, face, or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1884"/>
-      <location filename="../../Command.cpp" line="2335"/>
-      <source>Selection is not in the active body</source>
-      <translation type="unfinished">Selection is not in the active body</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1912"/>
-      <source>Shape of the selected part is empty</source>
-      <translation type="unfinished">Shape of the selected part is empty</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2085"/>
       <location filename="../../Command.cpp" line="2113"/>
       <source>Wrong Selection</source>
@@ -3695,6 +3672,37 @@ measured along the specified direction</translation>
       <location filename="../../Command.cpp" line="2336"/>
       <source>Select only one feature in an active body.</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="165"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <source>Close this dialog?</source>
+      <translation type="unfinished">Close this dialog?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1911"/>
+      <source>Wrong selection</source>
+      <translation type="unfinished">Wrong selection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1877"/>
+      <source>Select an edge, face, or body from a single body.</source>
+      <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="2335"/>
+      <source>Selection is not in the active body</source>
+      <translation type="unfinished">Selection is not in the active body</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1912"/>
+      <source>Shape of the selected part is empty</source>
+      <translation type="unfinished">Shape of the selected part is empty</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
@@ -3898,14 +3906,14 @@ This may lead to unexpected results.</translation>
       <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="433"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="299"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="519"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="434"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="300"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="525"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
@@ -3959,9 +3967,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="121"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="71"/>
+      <location filename="../../ViewProvider.cpp" line="121"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation type="unfinished">Edit %1</translation>
@@ -4014,7 +4022,7 @@ This feature is broken and cannot be edited.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
       <source>Edit Shape Binder</source>
-      <translation type="unfinished">Edit Shape Binder</translation>
+      <translation>Penyuntingan Pengikat Bentuk</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="352"/>
@@ -4556,7 +4564,7 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="153"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Lubang</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="265"/>
@@ -4599,12 +4607,12 @@ Only available for holes without thread</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1221"/>
       <source>Subtraction</source>
-      <translation type="unfinished">Subtraction</translation>
+      <translation>Penolakan</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1226"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Biasa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="868"/>
@@ -4874,12 +4882,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="181"/>
       <source>Chamfer</source>
-      <translation type="unfinished">Chamfer</translation>
+      <translation>Serongan</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="182"/>
       <source>Fillet</source>
-      <translation type="unfinished">Fillet</translation>
+      <translation>Filet</translation>
     </message>
   </context>
   <context>
@@ -4952,23 +4960,23 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Cannot do boolean operation with invalid base shape</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <location filename="../../../App/FeatureHelix.cpp" line="419"/>
       <location filename="../../../App/FeatureHelix.cpp" line="435"/>
       <location filename="../../../App/FeatureHelix.cpp" line="453"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="514"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="539"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="557"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="836"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="852"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="865"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2144"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="387"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="422"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -5003,11 +5011,11 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
       <location filename="../../../App/FeatureHelix.cpp" line="445"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="549"/>
       <location filename="../../../App/FeatureLoft.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="827"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="132"/>
       <source>Resulting shape is not a solid</source>
       <translation type="unfinished">Resulting shape is not a solid</translation>
     </message>
@@ -5084,8 +5092,8 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="528"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <source>Creating a face from sketch failed</source>
       <translation type="unfinished">Creating a face from sketch failed</translation>
     </message>
@@ -5406,8 +5414,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <location filename="../../../App/FeatureLoft.cpp" line="408"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
     </message>
@@ -5654,12 +5662,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2938"/>
+      <location filename="../../Command.cpp" line="2940"/>
       <source>Create Datum</source>
       <translation type="unfinished">Create Datum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2939"/>
+      <location filename="../../Command.cpp" line="2941"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation type="unfinished">Creates a datum object or local coordinate system</translation>
     </message>
@@ -5667,12 +5675,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2973"/>
+      <location filename="../../Command.cpp" line="2975"/>
       <source>Create Datum</source>
       <translation type="unfinished">Create Datum</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2974"/>
+      <location filename="../../Command.cpp" line="2976"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation type="unfinished">Creates a datum object or local coordinate system</translation>
     </message>
@@ -5901,32 +5909,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>PartDesignGui::TaskPatternParameters</name>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="425"/>
+      <location filename="../../TaskPatternParameters.cpp" line="438"/>
       <source>Select a sketch or shape containing the pattern points</source>
       <translation type="unfinished">Select a sketch or shape containing the pattern points</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="431"/>
+      <location filename="../../TaskPatternParameters.cpp" line="444"/>
       <source>Select a sketch, Sub-Shape Binder, or path edge</source>
       <translation type="unfinished">Select a sketch, Sub-Shape Binder, or path edge</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="440"/>
+      <location filename="../../TaskPatternParameters.cpp" line="453"/>
       <source>Select a direction reference (edge, face, datum line)</source>
       <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="504"/>
+      <location filename="../../TaskPatternParameters.cpp" line="517"/>
       <source>Invalid selection. Select a sketch or shape containing points.</source>
       <translation type="unfinished">Invalid selection. Select a sketch or shape containing points.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="507"/>
+      <location filename="../../TaskPatternParameters.cpp" line="520"/>
       <source>Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</source>
       <translation type="unfinished">Invalid selection. Select a sketch, Sub-Shape Binder, or path edge.</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="509"/>
+      <location filename="../../TaskPatternParameters.cpp" line="522"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
     </message>
@@ -5955,11 +5963,74 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderDefeaturing</name>
+    <message>
+      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
+      <source>Defeaturing Parameters</source>
+      <translation type="unfinished">Defeaturing Parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPointPattern</name>
+    <message>
+      <location filename="../../ViewProviderPointPattern.h" line="18"/>
+      <source>Point Pattern Parameters</source>
+      <translation type="unfinished">Point Pattern Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
+      <source>Edit Point Pattern</source>
+      <translation type="unfinished">Edit Point Pattern</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPathPattern</name>
+    <message>
+      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
+      <source>Edit Path Pattern</source>
+      <translation type="unfinished">Edit Path Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPathPattern.h" line="18"/>
+      <source>Path Pattern Parameters</source>
+      <translation type="unfinished">Path Pattern Parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation type="unfinished">Input Error</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderCircularPattern</name>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
+      <source>Edit Circular Pattern</source>
+      <translation type="unfinished">Edit Circular Pattern</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
+      <source>Circular Pattern Parameters</source>
+      <translation type="unfinished">Circular Pattern Parameters</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdPartDesignDefeaturing</name>
     <message>
       <location filename="../../Command.cpp" line="2132"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2133"/>
@@ -5977,7 +6048,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2489"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2490"/>
@@ -5995,12 +6066,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2556"/>
       <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
+      <translation>Reka Bentuk Bahagian</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2557"/>
       <source>Path Pattern</source>
-      <translation type="unfinished">Path Pattern</translation>
+      <translation>Corak Laluan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2558"/>
@@ -6011,40 +6082,19 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
   <context>
     <name>CmdPartDesignPointPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2594"/>
-      <source>PartDesign</source>
-      <translation type="unfinished">PartDesign</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2595"/>
-      <source>Point Pattern</source>
-      <translation type="unfinished">Point Pattern</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2596"/>
+      <source>PartDesign</source>
+      <translation>Reka Bentuk Bahagian</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2597"/>
+      <source>Point Pattern</source>
+      <translation>Corak Titik</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Duplicates the selected features or the active body at points from a shape</source>
       <translation type="unfinished">Duplicates the selected features or the active body at points from a shape</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderDefeaturing</name>
-    <message>
-      <location filename="../../ViewProviderDefeaturing.h" line="40"/>
-      <source>Defeaturing Parameters</source>
-      <translation type="unfinished">Defeaturing Parameters</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPathPattern</name>
-    <message>
-      <location filename="../../ViewProviderPathPattern.h" line="18"/>
-      <source>Path Pattern Parameters</source>
-      <translation type="unfinished">Path Pattern Parameters</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPathPattern.cpp" line="11"/>
-      <source>Edit Path Pattern</source>
-      <translation type="unfinished">Edit Path Pattern</translation>
     </message>
   </context>
   <context>
@@ -6070,48 +6120,6 @@ Adjust the parameters and try again.</source>
       <translation type="unfinished">The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation type="unfinished">Input Error</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderCircularPattern</name>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.h" line="18"/>
-      <source>Circular Pattern Parameters</source>
-      <translation type="unfinished">Circular Pattern Parameters</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderCircularPattern.cpp" line="11"/>
-      <source>Edit Circular Pattern</source>
-      <translation type="unfinished">Edit Circular Pattern</translation>
-    </message>
-  </context>
-  <context>
-    <name>BooleanToolSelection</name>
-    <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
-      <source>The result Body cannot be used as a Boolean tool.</source>
-      <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::ViewProviderPointPattern</name>
-    <message>
-      <location filename="../../ViewProviderPointPattern.h" line="18"/>
-      <source>Point Pattern Parameters</source>
-      <translation type="unfinished">Point Pattern Parameters</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderPointPattern.cpp" line="11"/>
-      <source>Edit Point Pattern</source>
-      <translation type="unfinished">Edit Point Pattern</translation>
     </message>
   </context>
 </TS>

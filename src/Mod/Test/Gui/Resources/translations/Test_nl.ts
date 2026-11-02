@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD Unit Test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>Selecteer een testnaam</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>Mislukt</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="235"/>
@@ -91,12 +91,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>Resterend</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>Fouten</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="288"/>
@@ -144,7 +144,7 @@ FreeCAD UnitTest is onderdeel van FreeCAD en ondersteunt het schrijven van eenhe
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>Fouten naar klembord gekopieerd</translation>
     </message>
   </context>
 </TS>

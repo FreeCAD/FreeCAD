@@ -437,7 +437,7 @@ A value in the range of 0.1-1.</source>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness</source>
-      <translation type="unfinished">Fineness</translation>
+      <translation>Финоћа</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

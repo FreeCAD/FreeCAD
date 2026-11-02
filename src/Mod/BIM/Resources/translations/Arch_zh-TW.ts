@@ -13650,7 +13650,7 @@ select both the view and the page before executing the command.</source>
     <message>
       <location filename="../../InitGui.py" line="320"/>
       <source>Extrude Tools</source>
-      <translation type="unfinished">Extrude Tools</translation>
+      <translation>擠出工具</translation>
     </message>
   </context>
   <context>
@@ -13704,12 +13704,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
-      <translation type="unfinished">Remove From Group</translation>
+      <translation>從群組移除</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
-      <translation type="unfinished">Removes this object from its parent group</translation>
+      <translation>從其父群組中移除此物件</translation>
     </message>
   </context>
   <context>

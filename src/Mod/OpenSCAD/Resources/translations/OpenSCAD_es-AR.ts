@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Convierte aristas en caras</translation>
     </message>
   </context>
   <context>

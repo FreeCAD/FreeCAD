@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation>Inspektera utseendeegenskaperna för det valda objektet</translation>
+      <translation>Inspektera utseendeegenskaperna för det markerade objektet</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation>Inspekterar materialegenskaperna för det valda objektet</translation>
+      <translation>Inspekterar materialegenskaperna för det markerade objektet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>Inspektera materialegenskaperna för det valda objektet</translation>
+      <translation>Inspektera materialegenskaperna för det markerade objektet</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>Om du tar bort detta kommer även allt 2D-innehåll att tas bort.</translation>
+      <translation>Om du tar bort raden tas även allt tvådimensionellt innehåll bort.</translation>
     </message>
   </context>
   <context>
@@ -266,12 +266,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
       <source>Emissive color</source>
-      <translation>Emissiv färg</translation>
+      <translation>Emitterad färg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
+      <translation>Anger färgen på en yta som ser ut att avge ljus som en ljuskälla, oberoende av extern belysning. Ange svart för att inte använda någon emitterad färg.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -521,7 +521,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation>De kort som är inbyggda i FreeCAD kommer att listas som tillgängliga</translation>
+      <translation>Korten som är inbyggda i FreeCAD visas som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
@@ -541,7 +541,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation>Materialkort från den angivna katalogen kommer också att listas som tillgängliga</translation>
+      <translation>Materialkort från den angivna katalogen visas också som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
@@ -567,13 +567,13 @@
       <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation>Materialkort visas sorterade efter sina resurser (platser).
-Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
+      <translation>Materialkorten sorteras efter sina källor (platser).
+Om alternativet inte är markerat sorteras de efter namn.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
-      <translation>Sortera efter resurser</translation>
+      <translation>Sortera efter källa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="202"/>
@@ -722,7 +722,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>Om du sparar över originalfilen kan det leda till att andra dokument går sönder. Detta är inte att rekommendera.</translation>
+      <translation>Om du skriver över originalfilen kan andra dokument sluta fungera. Det rekommenderas inte.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="223"/>
@@ -757,7 +757,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation>Att spara en kopia är inte att rekommendera eftersom det kan förstöra andra dokument. Vi rekommenderar att du sparar som ett nytt material.</translation>
+      <translation>Att spara en kopia rekommenderas inte eftersom andra dokument kan sluta fungera. Spara i stället som ett nytt material.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="256"/>
@@ -826,7 +826,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation>Källans URL</translation>
+      <translation>Källans webbadress</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -846,7 +846,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation>Referens till källa</translation>
+      <translation>Källreferens</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
@@ -921,7 +921,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation>Detta kort använder det gamla formatet och måste sparas före användning</translation>
+      <translation>Kortet använder det gamla formatet och måste sparas innan det används</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
@@ -1083,7 +1083,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>Öppnar produkt-URL:en för detta material i en extern webbläsare</translation>
+      <translation>Öppnar materialets produktwebbadress i en extern webbläsare</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -1128,7 +1128,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation>Sparar detta material som ett kort</translation>
+      <translation>Sparar materialet som ett kort</translation>
     </message>
   </context>
   <context>
@@ -1196,8 +1196,8 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     </message>
     <message>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Confirm Delete</source>
       <translation>Bekräfta borttagning</translation>
     </message>
@@ -1219,7 +1219,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
-      <translation>Ställer in visningsegenskaperna för det valda objektet</translation>
+      <translation>Ställer in visningsegenskaperna för det markerade objektet</translation>
     </message>
   </context>
   <context>
@@ -1233,7 +1233,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../Command.cpp" line="118"/>
       <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
-      <translation>Ställer in materialet för det valda objektet</translation>
+      <translation>Ställer in materialet för det markerade objektet</translation>
     </message>
   </context>
   <context>
@@ -1318,7 +1318,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation>Träffkvot</translation>
+      <translation>Träffandel</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
@@ -1373,7 +1373,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>
       <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation>Okänt undantag - avbrutet</translation>
+      <translation>Okänt undantag – avbrutet</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="125"/>
@@ -1382,7 +1382,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="137"/>
       <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
-      <translation>Avbruten</translation>
+      <translation>Avbrutet</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1418,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
-      <translation>Migrera befintligt material till den externa materialhanteraren</translation>
+      <translation>Migrera befintliga material till den externa materialhanteraren</translation>
     </message>
   </context>
   <context>

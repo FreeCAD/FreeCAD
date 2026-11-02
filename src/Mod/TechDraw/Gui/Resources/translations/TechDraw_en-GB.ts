@@ -281,7 +281,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="389"/>
       <source>Cosmetic Vertex</source>
-      <translation>Cosmetic vertex</translation>
+      <translation>Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="390"/>
@@ -300,7 +300,7 @@
       <location filename="../../CommandAnnotate.cpp" line="203"/>
       <location filename="../../CommandAnnotate.cpp" line="277"/>
       <source>Cosmetic Vertex</source>
-      <translation>Cosmetic vertex</translation>
+      <translation>Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="204"/>
@@ -1618,7 +1618,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="89"/>
       <source>Leader Line</source>
-      <translation>Leader line</translation>
+      <translation>Leader Line</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="90"/>
@@ -3501,7 +3501,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="1003"/>
       <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
-      <translation>Task In progress</translation>
+      <translation>Task In Progress</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="121"/>
@@ -3686,7 +3686,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1167"/>
       <source>At least 1 object in selection is not a part view</source>
-      <translation>At least 1 object in the selection is not a part view</translation>
+      <translation>At least 1 object in selection is not a part view</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1214"/>
@@ -3839,22 +3839,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="218"/>
       <source>New Leader Line</source>
-      <translation>New leader line</translation>
+      <translation>New Leader Line</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="260"/>
       <source>Edit Leader Line</source>
-      <translation>Edit leader line</translation>
+      <translation>Edit Leader Line</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
-      <translation>Rich-text editor</translation>
+      <translation>Rich text editor</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="107"/>
       <source>New Cosmetic Vertex</source>
-      <translation>New cosmetic vertex</translation>
+      <translation>New Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="232"/>
@@ -6270,7 +6270,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="127"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="184"/>
@@ -6484,7 +6484,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="14"/>
       <source>Balloon</source>
-      <translation>Balloon annotation</translation>
+      <translation>Balloon</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="20"/>
@@ -6589,7 +6589,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="229"/>
       <source>Leader Line</source>
-      <translation>Leader line</translation>
+      <translation>Leader Line</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="291"/>
@@ -6814,7 +6814,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="121"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="129"/>
@@ -6934,7 +6934,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="14"/>
       <source>Cosmetic Vertex</source>
-      <translation>Cosmetic vertex</translation>
+      <translation>Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="29"/>
@@ -7425,7 +7425,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="72"/>
@@ -7844,19 +7844,19 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation>Leader line</translation>
+      <translation>Leader Line</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="91"/>
       <source>Discard Changes</source>
-      <translation>Discard changes</translation>
+      <translation>Discard Changes</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="84"/>
       <location filename="../../TaskLeaderLine.cpp" line="225"/>
       <location filename="../../TaskLeaderLine.cpp" line="500"/>
       <source>Pick Points</source>
-      <translation>Pick points</translation>
+      <translation>Pick Points</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="41"/>
@@ -8050,8 +8050,8 @@ You can pick further points to get line segments.</translation>
       <location filename="../../TaskLineDecor.cpp" line="81"/>
       <source>%n line(s)</source>
       <translation>
-        <numerusform>%n line</numerusform>
-        <numerusform>%n lines</numerusform>
+        <numerusform>%n line(s)</numerusform>
+        <numerusform>%n line(s)</numerusform>
       </translation>
     </message>
   </context>
@@ -8154,7 +8154,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="55"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="153"/>
@@ -8488,7 +8488,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="85"/>
       <source>Thickness</source>
-      <translation>Dicke</translation>
+      <translation>Thickness</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="92"/>
@@ -8508,7 +8508,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="122"/>
       <source>NoLine</source>
-      <translation>No line</translation>
+      <translation>NoLine</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="127"/>
@@ -8586,7 +8586,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="108"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="116"/>
@@ -9453,7 +9453,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Balloon</source>
-      <translation>Balloon annotation</translation>
+      <translation>Balloon</translation>
     </message>
   </context>
   <context>
@@ -9619,7 +9619,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="14"/>
       <source>Cosmetic Vertex</source>
-      <translation>Cosmetic vertex</translation>
+      <translation>Cosmetic Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="29"/>

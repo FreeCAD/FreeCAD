@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="753"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation>Lägger till en triangel manuellt till ett nät</translation>
+      <translation>Lägger manuellt till en triangel i ett nät</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation>Skapar en boolesk skillnad mellan de valda näten</translation>
+      <translation>Skapar en boolesk differens mellan de markerade näten</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation>Tessellerar den valda formen till ett nät</translation>
+      <translation>Triangulerar den markerade formen till ett nät</translation>
     </message>
   </context>
   <context>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation>Delar upp ett nät i 2 nät</translation>
+      <translation>Delar upp ett nät i två nät</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation>Avlägsnar topologiskt oberoende komponenter från nätet</translation>
+      <translation>Tar bort topologiskt oberoende komponenter från nätet</translation>
     </message>
   </context>
   <context>
@@ -507,7 +507,7 @@
     <message>
       <location filename="../../Command.cpp" line="966"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation>Snittar nätet med det valda planet</translation>
+      <translation>Skär nätet med det markerade planet</translation>
     </message>
   </context>
   <context>
@@ -646,7 +646,7 @@
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <source>Curvature Info</source>
-      <translation>Info om krökning</translation>
+      <translation>Information om krökning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
@@ -664,7 +664,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Mesh difference</source>
-      <translation>Nätskillnad</translation>
+      <translation>Nätdifferens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Mesh VertexCurvature</source>
-      <translation>Krökning vid näthörn</translation>
+      <translation>Krökning i nätets hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="175"/>
@@ -749,7 +749,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
       <source>Remove duplicated points</source>
-      <translation>Ta bort dubblerade punkter</translation>
+      <translation>Ta bort dubbla punkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1073"/>
@@ -775,7 +775,7 @@
       <location filename="../../ViewProvider.cpp" line="955"/>
       <location filename="../../ViewProvider.cpp" line="1016"/>
       <source>Cut</source>
-      <translation>Klipp ut</translation>
+      <translation>Skär</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="965"/>
@@ -791,7 +791,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1242"/>
       <source>Segment</source>
-      <translation>Segmentet</translation>
+      <translation>Segmentera</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1870"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation>Sampling</translation>
+      <translation>Samplingsupplösning</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1433,7 +1433,7 @@ används när en fil skrivs i AMF-format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Tips&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Att definiera normalerna per hörn kallas också &lt;span style=" font-style:italic;"&gt;Phong-skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;medan definition av normalerna per yta kallas &lt;/span&gt;platt skuggning&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Tips&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Att definiera normalerna per hörnpunkt kallas också &lt;span style=" font-style:italic;"&gt;Phong-skuggning&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;medan definition av normalerna per yta kallas &lt;/span&gt;platt skuggning&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
@@ -1473,7 +1473,7 @@ to a smoother appearance.
       <translation>Om detta alternativ är markerat används Phong-skuggning, annars platt skuggning.
 Skuggningen bestämmer ytornas utseende.
 
-Med platt skuggning definieras ytnormalerna inte per hörn, vilket leder
+Med platt skuggning definieras ytnormalerna inte per hörnpunkt, vilket leder
 till ett onaturligt utseende för krökta ytor. Phong-skuggning ger
 ett jämnare utseende.
 </translation>
@@ -1672,7 +1672,7 @@ ett jämnare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="311"/>
       <source>No selection</source>
-      <translation>Inget val</translation>
+      <translation>Ingen markering</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="311"/>
@@ -2227,7 +2227,7 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../Command.cpp" line="1591"/>
       <source>Fill Holes</source>
-      <translation>Fyllningshål</translation>
+      <translation>Fyll hål</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1592"/>
@@ -2414,13 +2414,13 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../../Init.py" line="20"/>
       <source>Binary Mesh</source>
-      <translation>Binärt Mesh</translation>
+      <translation>Binärt nät</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="23"/>
       <source>Alias Mesh</source>
       <extracomment>Translation note: "Alias" in this case is a product/format name and should not be translated</extracomment>
-      <translation>Alias nät</translation>
+      <translation>Alias-nät</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="27"/>

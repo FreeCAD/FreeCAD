@@ -437,7 +437,7 @@ Vrednost u opsegu od 0,1-1.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
       <source>Fineness</source>
-      <translation type="unfinished">Fineness</translation>
+      <translation>Finoća</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
