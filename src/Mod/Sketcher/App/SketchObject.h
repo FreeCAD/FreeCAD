@@ -1028,6 +1028,9 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+    /// center-coincident arc of the same conic (left by a trim) that can take over the internal
+    /// alignment of GeoId, or GeoUndef
+    int findInternalAlignmentSibling(int GeoId) const;
 
     void onGeometryChanged();
     void onConstraintsChanged();

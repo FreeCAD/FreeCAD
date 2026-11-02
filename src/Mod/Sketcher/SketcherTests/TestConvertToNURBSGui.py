@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import math
+
 import FreeCAD
 import Part
+import Sketcher
 
 from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
 
@@ -136,3 +139,37 @@ class TestConvertToNURBSGui(SketcherGuiTestCase):
         self.assertEqual(len(splines), 2)
         self.assertTrue(all(spline.isPeriodic() for spline in splines))
         self.assertFalse(any(g.TypeId == "Part::GeomLineSegment" for g in self.sketch.Geometry))
+
+    def test_trimmed_conic_hands_internal_geometry_to_sibling_arc(self):
+        # Two arcs of one ellipse sharing its center, as left by trimming it.
+        ellipse = Part.Ellipse(FreeCAD.Vector(0, 0, 0), 10, 5)
+        lower = self.sketch.addGeometry(Part.ArcOfEllipse(ellipse, math.pi, 2 * math.pi))
+        self.sketch.exposeInternalGeometry(lower)
+        upper = self.sketch.addGeometry(Part.ArcOfEllipse(ellipse, 0, math.pi))
+        self.sketch.addConstraint(Sketcher.Constraint("Coincident", lower, 3, upper, 3))
+        axis = next(
+            c.First
+            for c in self.sketch.Constraints
+            if c.Type == "InternalAlignment"
+            and self.sketch.Geometry[c.First].TypeId == "Part::GeomLineSegment"
+        )
+        self.sketch.addConstraint(Sketcher.Constraint("Distance", axis, 20))
+        types_before = self.geometry_types()
+
+        self.convert(f"Edge{lower + 1}")
+
+        types_after = self.geometry_types()
+        self.assertEqual(types_after[lower], "Part::GeomBSplineCurve")
+        self.assertEqual(types_after[upper], "Part::GeomArcOfEllipse")
+        # The axes and foci survive, now owned by the other arc.
+        self.assertEqual(
+            types_after.count("Part::GeomLineSegment"), types_before.count("Part::GeomLineSegment")
+        )
+        alignment = [
+            c for c in self.sketch.Constraints if c.Type == "InternalAlignment" and c.Second != lower
+        ]
+        self.assertEqual(len(alignment), 4)
+        self.assertTrue(all(c.Second == upper for c in alignment))
+        self.assertTrue(
+            any(c.Type == "Distance" and c.First == axis for c in self.sketch.Constraints)
+        )

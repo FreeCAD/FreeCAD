@@ -1110,6 +1110,43 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         return -1;
 }
 
+int SketchObject::findInternalAlignmentSibling(int GeoId) const
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    if (!geo) {
+        return GeoEnum::GeoUndef;
+    }
+
+    auto isEllipse = [](const Part::Geometry* g) {
+        return g->is<Part::GeomEllipse>() || g->is<Part::GeomArcOfEllipse>();
+    };
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (const auto& constr : vals) {
+        if (constr->Type != Sketcher::Coincident || constr->FirstPos != PointPos::mid
+            || constr->SecondPos != PointPos::mid) {
+            continue;
+        }
+        int candidate = constr->First == GeoId ? constr->Second
+            : constr->Second == GeoId          ? constr->First
+                                               : GeoEnum::GeoUndef;
+        const Part::Geometry* cg = candidate >= 0 ? getGeometry(candidate) : nullptr;
+        if (!cg || cg->is<Part::GeomBSplineCurve>() || !hasInternalGeometry(cg)
+            || (cg->getTypeId() != geo->getTypeId() && !(isEllipse(geo) && isEllipse(cg)))) {
+            continue;
+        }
+        // A conic that already owns axes/foci cannot take over another set.
+        bool ownsInternalGeometry = std::ranges::any_of(vals, [candidate](const auto* c) {
+            return c->Type == Sketcher::InternalAlignment && c->Second == candidate;
+        });
+        if (!ownsInternalGeometry) {
+            return candidate;
+        }
+    }
+    return GeoEnum::GeoUndef;
+}
+
 int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid)
 {
     int majorelementindex = -1;
@@ -1165,24 +1202,8 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
     // If a center-coincident sibling arc exists (created by a case-2 trim), transfer
     // InternalAlignment to it instead of deleting the internal geometry.
     if (delgeoid) {
-        int siblingGeoId = -1;
-        for (const auto& constr : vals) {
-            if (constr->Type != Sketcher::Coincident)
-                continue;
-            int candidate = (constr->First == GeoId && constr->FirstPos == PointPos::mid
-                                && constr->SecondPos == PointPos::mid)
-                ? constr->Second
-                : (constr->Second == GeoId && constr->SecondPos == PointPos::mid
-                      && constr->FirstPos == PointPos::mid)
-                    ? constr->First
-                    : -1;
-            const auto* cg = candidate >= 0 ? getGeometry(candidate) : nullptr;
-            if (cg && hasInternalGeometry(cg) && !cg->is<Part::GeomBSplineCurve>()) {
-                siblingGeoId = candidate;
-                break;
-            }
-        }
-        if (siblingGeoId >= 0) {
+        int siblingGeoId = findInternalAlignmentSibling(GeoId);
+        if (siblingGeoId != GeoEnum::GeoUndef) {
             std::vector<Constraint*> transferred;
             for (const auto& constr : vals)
                 if (constr->Type == Sketcher::InternalAlignment && constr->Second == GeoId) {

@@ -2851,8 +2851,11 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     std::vector<Part::Geometry*> newVals(vals);
 
+    // Like deletion, hand the axes/foci over to a sibling arc of the trimmed conic if there is one.
+    int siblingGeoId = GeoId >= 0 ? findInternalAlignmentSibling(GeoId) : GeoEnum::GeoUndef;
+
     std::set<int> internalGeometry;
-    if (GeoId >= 0) {
+    if (GeoId >= 0 && siblingGeoId == GeoEnum::GeoUndef) {
         for (const auto* constraint : Constraints.getValues()) {
             if (constraint->Type == InternalAlignment && constraint->Second == GeoId
                 && constraint->First >= 0 && constraint->First != GeoId)
@@ -2887,6 +2890,14 @@ bool SketchObject::convertToNURBS(int GeoId)
             // not support them currently), except for coincidents on mid point of the
             // to-be-converted curve.
             for (; index >= 0; index--) {
+                if (siblingGeoId != GeoEnum::GeoUndef && cvals[index]->Type == InternalAlignment
+                    && cvals[index]->Second == GeoId) {
+                    Constraint* transferred = cvals[index]->clone();
+                    transferred->Second = siblingGeoId;
+                    newcVals[index] = transferred;
+                    continue;
+                }
+
                 auto otherthancoincident = cvals[index]->Type != Sketcher::Coincident
                     && cvals[index]->involvesGeoId(GeoId);
 
