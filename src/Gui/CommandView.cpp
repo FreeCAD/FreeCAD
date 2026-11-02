@@ -4093,6 +4093,50 @@ void StdCmdClarifySelection::activated(int iMsg)
         );
     }
 
+    QPoint globalPos;
+    if (storedPosition.has_value()) {
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        int logicalHeight = static_cast<int>(widget->height());
+        QPoint localPos(
+            static_cast<int>(point[0] / devicePixelRatio),
+            logicalHeight - static_cast<int>(point[1] / devicePixelRatio) - 1
+        );
+        globalPos = widget->mapToGlobal(localPos);
+    }
+    else {
+        globalPos = QCursor::pos();
+    }
+
+    // An object being edited (e.g. a sketch) draws its elements outside of the regular
+    // selection scene graph, so ask its view provider which elements are under the cursor.
+    if (auto* document = Application::Instance->editDocument()) {
+        if (auto* vpEdit = freecad_cast<ViewProviderDocumentObject*>(document->getInEdit())) {
+            std::vector<std::string> subNames = vpEdit->getSelectionCandidates(point, viewer);
+            App::DocumentObject* obj = vpEdit->getObject();
+
+            if (!subNames.empty() && obj) {
+                std::vector<PickData> selections;
+                selections.reserve(subNames.size());
+
+                for (const auto& subName : subNames) {
+                    selections.push_back(
+                        PickData {
+                            .obj = obj,
+                            .element = subName,
+                            .docName = obj->getDocument()->getName(),
+                            .objName = obj->getNameInDocument(),
+                            .subName = subName
+                        }
+                    );
+                }
+
+                SelectionMenu editContextMenu(widget);
+                editContextMenu.doPick(selections, globalPos);
+                return;
+            }
+        }
+    }
+
     // Use ray picking to get all objects under cursor
     SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
     pickAction.setPoint(point);
@@ -4188,20 +4232,6 @@ void StdCmdClarifySelection::activated(int iMsg)
 
     if (selections.empty()) {
         return;
-    }
-
-    QPoint globalPos;
-    if (storedPosition.has_value()) {
-        qreal devicePixelRatio = widget->devicePixelRatioF();
-        int logicalHeight = static_cast<int>(widget->height());
-        QPoint localPos(
-            static_cast<int>(point[0] / devicePixelRatio),
-            logicalHeight - static_cast<int>(point[1] / devicePixelRatio) - 1
-        );
-        globalPos = widget->mapToGlobal(localPos);
-    }
-    else {
-        globalPos = QCursor::pos();
     }
 
     // Use SelectionMenu to display and handle the pick menu

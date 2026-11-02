@@ -6,6 +6,7 @@ from SketcherTests.TestCoincidentCommandGui import TestCoincidentCommandGui
 from SketcherTests.TestOnViewParameterGui import TestOnViewParameterGui
 from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
 from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
+from SketcherTests.TestOverlappingSelectionGui import TestOverlappingSelectionGui
 from SketcherTests.TestVisualLayerListGui import TestVisualLayerListGui
 
 # Use the module so that code checkers don't complain (flake8)
@@ -18,6 +19,7 @@ from SketcherTests.TestVisualLayerListGui import TestVisualLayerListGui
     and TestSketchPlacementUpdate
     and TestOnViewParameterGui
     and TestExternalFacePreselection
+    and TestOverlappingSelectionGui
     and TestVisualLayerListGui
     else False
 )

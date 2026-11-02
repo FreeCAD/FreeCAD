@@ -283,6 +283,16 @@ public:
         const SbVec2s& cursorPos,
         int hoveredPointIndex = PreselectionResult::InvalidPoint
     );
+    /** Collect every distinct element under the cursor instead of a single winner.
+     *
+     * detectPreselection() resolves overlapping elements to the one with the highest
+     * priority. This returns all of them, so that the user can be offered a choice
+     * between elements that lie on top of each other.
+     */
+    PreselectionCandidates collectAllPreselectionCandidates(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos
+    );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}

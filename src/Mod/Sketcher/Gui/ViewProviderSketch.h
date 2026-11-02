@@ -604,7 +604,14 @@ public:
     //@}
 
     // create right click context menu based on selection in the 3D view
-    void generateContextMenu(const Gui::View3DInventorViewer* viewer);
+    void generateContextMenu(const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
+
+    /// adds an entry to choose between the elements under the cursor, if there are several
+    void addClarifySelectionItem(
+        QMenu& contextMenu,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    );
 
     //@}
 
@@ -753,6 +760,16 @@ public:
         std::vector<std::string>& subElementNames,
         Base::Vector3d& pickedPoint
     );
+
+    /** Returns the sub-element names of every sketch element under the cursor.
+     *
+     * Edit mode geometry is not part of the regular selection scene graph, so this is
+     * what makes the generic Std_ClarifySelection command work inside the Sketcher.
+     */
+    std::vector<std::string> getSelectionCandidates(
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) const override;
 
     /** @name Attorneys for collaboration with helper classes */
     //@{

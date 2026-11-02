@@ -60,6 +60,7 @@
 #include <Base/Converter.h>
 #include <Base/ServiceProvider.h>
 #include <Base/Vector3D.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -67,6 +68,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
@@ -975,6 +977,57 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::resolveClickPreselec
     return viewProviderParameters.lastPreselectionResult;
 }
 
+namespace
+{
+/// Appends the sub-element names a preselection result refers to.
+void appendSubElementNames(
+    const EditModeCoinManager::PreselectionResult& result,
+    std::vector<std::string>& subElementNames
+)
+{
+    switch (result.Kind) {
+        case EditModeCoinManager::PreselectionResult::HitKind::Point:
+            subElementNames.emplace_back("Vertex" + std::to_string(result.PointIndex + 1));
+            break;
+        case EditModeCoinManager::PreselectionResult::HitKind::Edge:
+            if (result.GeoIndex >= 0) {
+                subElementNames.emplace_back("Edge" + std::to_string(result.GeoIndex + 1));
+            }
+            else {
+                subElementNames.emplace_back(
+                    "ExternalEdge"
+                    + std::to_string(-result.GeoIndex + Sketcher::GeoEnum::RefExt + 1)
+                );
+            }
+            break;
+        case EditModeCoinManager::PreselectionResult::HitKind::Axis:
+            switch (result.Cross) {
+                case EditModeCoinManager::PreselectionResult::Axes::RootPoint:
+                    subElementNames.emplace_back("RootPoint");
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::HorizontalAxis:
+                    subElementNames.emplace_back("H_Axis");
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::VerticalAxis:
+                    subElementNames.emplace_back("V_Axis");
+                    break;
+                case EditModeCoinManager::PreselectionResult::Axes::None:
+                    break;
+            }
+            break;
+        case EditModeCoinManager::PreselectionResult::HitKind::Constraint:
+            for (int constraintId : result.ConstrIndices) {
+                subElementNames.emplace_back(
+                    Sketcher::PropertyConstraintList::getConstraintName(constraintId)
+                );
+            }
+            break;
+        case EditModeCoinManager::PreselectionResult::HitKind::None:
+            break;
+    }
+}
+}  // namespace
+
 bool ViewProviderSketch::getPreselectionAtViewportPos(
     const SbVec2s& pos,
     const Gui::View3DInventorViewer* viewer,
@@ -991,49 +1044,36 @@ bool ViewProviderSketch::getPreselectionAtViewportPos(
 
     pickedPoint = result.pickedPoint();
 
-    switch (result.Kind) {
-        case EditModeCoinManager::PreselectionResult::HitKind::Point:
-            subElementNames.emplace_back("Vertex" + std::to_string(result.PointIndex + 1));
-            return true;
-        case EditModeCoinManager::PreselectionResult::HitKind::Edge:
-            if (result.GeoIndex >= 0) {
-                subElementNames.emplace_back("Edge" + std::to_string(result.GeoIndex + 1));
-            }
-            else {
-                subElementNames.emplace_back(
-                    "ExternalEdge"
-                    + std::to_string(-result.GeoIndex + Sketcher::GeoEnum::RefExt + 1)
-                );
-            }
-            return true;
-        case EditModeCoinManager::PreselectionResult::HitKind::Axis:
-            switch (result.Cross) {
-                case EditModeCoinManager::PreselectionResult::Axes::RootPoint:
-                    subElementNames.emplace_back("RootPoint");
-                    break;
-                case EditModeCoinManager::PreselectionResult::Axes::HorizontalAxis:
-                    subElementNames.emplace_back("H_Axis");
-                    break;
-                case EditModeCoinManager::PreselectionResult::Axes::VerticalAxis:
-                    subElementNames.emplace_back("V_Axis");
-                    break;
-                case EditModeCoinManager::PreselectionResult::Axes::None:
-                    break;
-            }
-            return !subElementNames.empty();
-        case EditModeCoinManager::PreselectionResult::HitKind::Constraint:
-            subElementNames.reserve(result.ConstrIndices.size());
-            for (int constraintId : result.ConstrIndices) {
-                subElementNames.emplace_back(
-                    Sketcher::PropertyConstraintList::getConstraintName(constraintId)
-                );
-            }
-            return true;
-        case EditModeCoinManager::PreselectionResult::HitKind::None:
-            break;
+    appendSubElementNames(result, subElementNames);
+
+    return !subElementNames.empty();
+}
+
+std::vector<std::string> ViewProviderSketch::getSelectionCandidates(
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+) const
+{
+    std::vector<std::string> subElementNames;
+
+    if (!isInEditMode() || getEditingMode() != ViewProviderSketch::Default) {
+        return subElementNames;
     }
 
-    return false;
+    SoPickedPointList points = getPickedPointsOnRay(cursorPos, viewer);
+    auto candidates = editCoinManager->collectAllPreselectionCandidates(points, cursorPos);
+
+    for (const auto& candidate : candidates.Items) {
+        appendSubElementNames(candidate, subElementNames);
+    }
+
+    // a single element may be reported by more than one candidate
+    std::set<std::string> seen;
+    std::erase_if(subElementNames, [&seen](const std::string& name) {
+        return !seen.insert(name).second;
+    });
+
+    return subElementNames;
 }
 
 bool ViewProviderSketch::keyPressed(bool pressed, int key)
@@ -1523,7 +1563,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     sketchHandler->pressRightButton(Base::Vector2d(x, y));
                     return true;
                 case STATUS_NONE:
-                    generateContextMenu(viewer);
+                    generateContextMenu(cursorPos, viewer);
                     return true;
                 case STATUS_SELECT_Point:
                     if (hasSelectionPoint) {
@@ -1534,7 +1574,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu(viewer);
+                    generateContextMenu(cursorPos, viewer);
                     return true;
                 case STATUS_SELECT_Edge:
                     if (hasSelectionPoint) {
@@ -1549,7 +1589,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu(viewer);
+                    generateContextMenu(cursorPos, viewer);
                     return true;
                 case STATUS_SELECT_Cross:
                     if (hasSelectionPoint) {
@@ -1571,7 +1611,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         preselectToSelection(ss, selectionPoint, false);
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu(viewer);
+                    generateContextMenu(cursorPos, viewer);
                     return true;
                 case STATUS_SELECT_Constraint: {
                     if (hasSelectionPoint) {
@@ -1584,7 +1624,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
                     }
                     setSketchMode(STATUS_NONE);
-                    generateContextMenu(viewer);
+                    generateContextMenu(cursorPos, viewer);
                     return true;
                 }
                 case STATUS_SKETCH_Drag:
@@ -2876,11 +2916,43 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int PtIndex = std::atoi(&shapetype[6]) - 1;
                         setPreselectPoint(PtIndex);
                     }
+                    else if (shapetype == "RootPoint") {
+                        setPreselectRootPoint();
+                    }
+                    else if (shapetype == "H_Axis") {
+                        resetPreselectPoint();
+                        preselection.PreselectCross = Preselection::Axes::HorizontalAxis;
+                    }
+                    else if (shapetype == "V_Axis") {
+                        resetPreselectPoint();
+                        preselection.PreselectCross = Preselection::Axes::VerticalAxis;
+                    }
+                    else if (shapetype.size() > 10 && shapetype.substr(0, 10) == "Constraint") {
+                        int ConstrId =
+                            Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
+                        resetPreselectPoint();
+                        preselection.PreselectConstraintSet = {ConstrId};
+                    }
+
+                    // A preselection requested from outside the 3D view, as done by the
+                    // clarify selection menu, has to trigger the redraw itself. The
+                    // preselection following the mouse is redrawn by mouseMove().
+                    if (msg.SubType == Gui::SelectionChanges::MsgSource::TreeView) {
+                        editCoinManager->drawConstraintIcons();
+                        updateColor();
+                    }
                 }
             }
         }
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
             resetPreselectPoint();
+
+            // while the clarify selection menu is open there is no mouse movement in the
+            // 3D view that would clear the highlight of the previously hovered element
+            if (Gui::Selection().isClarifySelectionActive()) {
+                editCoinManager->drawConstraintIcons();
+                updateColor();
+            }
         }
     }
 }
@@ -5376,7 +5448,10 @@ bool ViewProviderSketch::isInEditMode() const
 {
     return editCoinManager != nullptr;
 }
-void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* viewer)
+void ViewProviderSketch::generateContextMenu(
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+)
 {
     if (blockContextMenu) return;
 
@@ -5639,7 +5714,59 @@ void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* vi
     Gui::Application::Instance->setupContextMenu("Sketch", &menu);
     QMenu contextMenu(viewer->getGLWidget());
     Gui::MenuManager::getInstance()->setupContextMenu(&menu, contextMenu);
+
+    addClarifySelectionItem(contextMenu, cursorPos, viewer);
+
+    // commands triggered from the menu act on the position that was clicked, not on
+    // wherever the cursor ended up inside the menu
+    auto& rightClickPosition = viewer->navigationStyle()->getRightClickPosition();
+    rightClickPosition = cursorPos;
+
     contextMenu.exec(QCursor::pos());
+
+    rightClickPosition.reset();
+}
+
+void ViewProviderSketch::addClarifySelectionItem(
+    QMenu& contextMenu,
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+)
+{
+    // only worth offering when several elements lie on top of each other
+    if (getSelectionCandidates(cursorPos, viewer).size() < 2) {
+        return;
+    }
+
+    Gui::Command* command =
+        Gui::Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
+    if (!command || !command->getAction()) {
+        return;
+    }
+
+    auto* clarifyAction = new QAction(command->getAction()->text(), &contextMenu);
+    clarifyAction->setIcon(command->getAction()->icon());
+    clarifyAction->setShortcut(command->getAction()->shortcut());
+    clarifyAction->setToolTip(command->getAction()->toolTip());
+
+    // the right click has already selected the element on top, which is not the one the
+    // user is after when asking for the other elements below it
+    std::vector<std::string> topMostElements;
+    Base::Vector3d pickedPoint;
+    getPreselectionAtViewportPos(cursorPos, viewer, topMostElements, pickedPoint);
+
+    QObject::connect(clarifyAction, &QAction::triggered, [this, topMostElements]() {
+        for (const auto& subName : topMostElements) {
+            rmvSelection(subName);
+        }
+        Gui::Application::Instance->commandManager().runCommandByName("Std_ClarifySelection");
+    });
+
+    QAction* firstAction = contextMenu.actions().isEmpty() ? nullptr : contextMenu.actions().first();
+    contextMenu.insertAction(firstAction, clarifyAction);
+    if (firstAction) {
+        contextMenu.insertSeparator(firstAction);
+    }
 }
 
 void ViewProviderSketch::preselectToSelection(const std::stringstream& ss,
