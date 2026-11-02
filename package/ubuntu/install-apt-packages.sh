@@ -1,8 +1,19 @@
 #!/bin/bash
 set -euox pipefail
 
-# Update package lists quietly
-sudo apt-get update -qq
+# Wraps `apt update` so that it is retried upon failure.
+apt_update_retryable() {
+  local delay
+  for delay in 60 120 180; do
+    sudo apt-get update -qq --error-on=any && return
+    sleep "$delay"
+  done
+  # Since all prior attempts failed, loosen what counts as an error (e.g.
+  # incomplete download of package lists)
+  sudo apt-get update -qq
+}
+
+apt_update_retryable
 sudo apt-get install -y --no-install-recommends gpg ca-certificates
 
 # Add the KDE Neon repository for up-to-date and matching Qt6 and PySide packages
@@ -11,7 +22,7 @@ script_dir=$(dirname "${BASH_SOURCE[0]}")
 sudo gpg --yes --dearmor -o /usr/share/keyrings/neon-keyring.gpg "$script_dir/neon-archive-keyring.asc"
 echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
 
-sudo apt-get update -qq
+apt_update_retryable
 
 packages=(
   build-essential
