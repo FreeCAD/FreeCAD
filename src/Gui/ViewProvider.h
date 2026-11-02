@@ -307,6 +307,22 @@ public:
         const std::string& subname,
         const SbVec3f& pickPoint
     ) const;
+    /** Return the sub-elements that can be selected at the given viewport position.
+     *
+     * While a view provider is in edit mode its geometry may live outside of the regular
+     * selection scene graph, so that ray picking the viewer scene graph does not find it.
+     * Such a view provider can override this to report every sub-element under the cursor,
+     * which lets the user pick between overlapping elements. The default implementation
+     * returns an empty vector.
+     *
+     * @param cursorPos  position in viewport coordinates
+     * @param viewer     the viewer the position refers to
+     * @return sub-element names (e.g. "Edge1", "Vertex2") of all elements under the cursor
+     */
+    virtual std::vector<std::string> getSelectionCandidates(
+        const SbVec2s& cursorPos,
+        const View3DInventorViewer* viewer
+    ) const;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const
     {

@@ -79,6 +79,16 @@ public:
             "The tuple uses the same coordinate system as Gui.ActiveDocument.ActiveView"
             ".getPointOnViewport().\n"
         );
+        add_varargs_method(
+            "getActiveSketchSelectionCandidates",
+            &Module::getActiveSketchSelectionCandidates,
+            "getActiveSketchSelectionCandidates(tuple(int,int)) -> list of str\n"
+            "\n"
+            "Return the sub-element names of every Sketcher edit-mode element at viewport\n"
+            "coordinates, that is the choice offered by the Clarify Selection command.\n"
+            "The tuple uses the same coordinate system as Gui.ActiveDocument.ActiveView"
+            ".getPointOnViewport().\n"
+        );
         initialize("This module is the SketcherGui module.");  // register with Python
     }
 
@@ -86,6 +96,36 @@ public:
     {}
 
 private:
+    /// Returns the sketch view provider currently in edit mode and its viewer, if any
+    static std::pair<SketcherGui::ViewProviderSketch*, Gui::View3DInventorViewer*> getEditingSketch()
+    {
+        auto* editDoc = Gui::Application::Instance->editDocument();
+        if (!editDoc) {
+            return {nullptr, nullptr};
+        }
+
+        auto* sketchViewProvider = freecad_cast<SketcherGui::ViewProviderSketch*>(editDoc->getInEdit());
+        if (!sketchViewProvider) {
+            return {nullptr, nullptr};
+        }
+
+        auto* view = dynamic_cast<Gui::View3DInventor*>(
+            editDoc->getEditingViewOfViewProvider(sketchViewProvider)
+        );
+        if (!view) {
+            return {nullptr, nullptr};
+        }
+
+        return {sketchViewProvider, view->getViewer()};
+    }
+
+    static SbVec2s toViewportPosition(const Py::Tuple& position)
+    {
+        Py::Long x(position[0]);
+        Py::Long y(position[1]);
+        return {static_cast<short>((long)x), static_cast<short>((long)y)};
+    }
+
     Py::Object getActiveSketchPreselection(const Py::Tuple& args)
     {
         PyObject* object;
@@ -93,32 +133,16 @@ private:
             throw Py::Exception();
         }
 
-        const Py::Tuple tuple(object);
-        Py::Long x(tuple[0]);
-        Py::Long y(tuple[1]);
-
-        auto* editDoc = Gui::Application::Instance->editDocument();
-        if (!editDoc) {
-            return Py::None();
-        }
-
-        auto* sketchViewProvider = freecad_cast<SketcherGui::ViewProviderSketch*>(editDoc->getInEdit());
-        if (!sketchViewProvider) {
-            return Py::None();
-        }
-
-        auto* view = dynamic_cast<Gui::View3DInventor*>(
-            editDoc->getEditingViewOfViewProvider(sketchViewProvider)
-        );
-        if (!view) {
+        auto [sketchViewProvider, viewer] = getEditingSketch();
+        if (!viewer) {
             return Py::None();
         }
 
         std::vector<std::string> subElementNames;
         Base::Vector3d pickedPoint;
         if (!sketchViewProvider->getPreselectionAtViewportPos(
-                SbVec2s(static_cast<short>((long)x), static_cast<short>((long)y)),
-                view->getViewer(),
+                toViewportPosition(Py::Tuple(object)),
+                viewer,
                 subElementNames,
                 pickedPoint
             )) {
@@ -147,6 +171,28 @@ private:
         result.setItem("ObjectName", Py::String(sketchObject->getNameInDocument()));
         result.setItem("SubElementNames", pySubElementNames);
         result.setItem("PickedPoints", pyPickedPoints);
+        return result;
+    }
+
+    Py::Object getActiveSketchSelectionCandidates(const Py::Tuple& args)
+    {
+        PyObject* object;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &object)) {
+            throw Py::Exception();
+        }
+
+        Py::List result;
+
+        auto [sketchViewProvider, viewer] = getEditingSketch();
+        if (!viewer) {
+            return result;
+        }
+
+        for (const auto& subElementName :
+             sketchViewProvider->getSelectionCandidates(toViewportPosition(Py::Tuple(object)), viewer)) {
+            result.append(Py::String(subElementName));
+        }
+
         return result;
     }
 };

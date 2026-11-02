@@ -834,10 +834,11 @@ void SelectionMenu::buildMenuStructure(
 
 PickData SelectionMenu::onPicked(QAction* picked, const std::vector<PickData>& sels)
 {
-    // Clear the ClarifySelection active flag when menu is done
+    // Remove the preselection while the flag is still set, so that view providers which
+    // only redraw on behalf of this menu get a chance to clear their highlight
+    Gui::Selection().rmvPreselect();
     Gui::Selection().setClarifySelectionActive(false);
 
-    Gui::Selection().rmvPreselect();
     if (!picked) {
         return PickData {};
     }

@@ -1036,6 +1036,14 @@ std::vector<std::pair<std::string, std::string>> ViewProvider::
     return {};
 }
 
+std::vector<std::string> ViewProvider::getSelectionCandidates(
+    const SbVec2s& /*cursorPos*/,
+    const View3DInventorViewer* /*viewer*/
+) const
+{
+    return {};
+}
+
 bool ViewProvider::getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const
 {
     if (pcRoot->findChild(pcModeSwitch) < 0) {

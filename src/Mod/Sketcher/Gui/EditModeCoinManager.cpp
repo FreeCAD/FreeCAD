@@ -1582,6 +1582,72 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     );
 }
 
+EditModeCoinManager::PreselectionCandidates EditModeCoinManager::collectAllPreselectionCandidates(
+    const SoPickedPointList& points,
+    const SbVec2s& cursorPos
+)
+{
+    PreselectionCandidates candidates;
+
+    auto isSameHit = [](const PreselectionResult& lhs, const PreselectionResult& rhs) {
+        return lhs.Kind == rhs.Kind && lhs.PointIndex == rhs.PointIndex
+            && lhs.GeoIndex == rhs.GeoIndex && lhs.Cross == rhs.Cross
+            && lhs.ConstrIndices == rhs.ConstrIndices;
+    };
+
+    auto addCandidate = [&](const PreselectionResult& result) {
+        if (!result.hasWinner()) {
+            return;
+        }
+
+        bool known = std::ranges::any_of(candidates.Items, [&](const PreselectionResult& item) {
+            return isSameHit(item, result);
+        });
+
+        if (!known) {
+            candidates.Items.push_back(result);
+        }
+    };
+
+    addCandidate(detectConstraintPreselection(points, cursorPos));
+
+    for (int i = 0; i < points.getLength(); ++i) {
+        SoPickedPoint* point = points[i];
+        if (!point) {
+            continue;
+        }
+
+        PreselectionResult origin;
+        if (detectOriginPreselection(point, origin)) {
+            addCandidate(origin);
+        }
+
+        for (int layerIndex = 0; layerIndex < geometryLayerParameters.getCoinLayerCount();
+             ++layerIndex) {
+            PreselectionResult vertex;
+            if (detectPointPreselection(point, layerIndex, vertex)) {
+                addCandidate(vertex);
+            }
+
+            PreselectionResult curve;
+            if (detectCurvePreselection(point, layerIndex, curve)) {
+                addCandidate(curve);
+            }
+        }
+
+        PreselectionResult axis;
+        if (detectAxisPreselection(point, axis)) {
+            addCandidate(axis);
+        }
+    }
+
+    // The ray pick misses elements that are only close to the cursor on screen. Adding the
+    // regular preselection guarantees that whatever a plain click would hit is offered too.
+    addCandidate(detectPreselection(points, cursorPos));
+
+    return candidates;
+}
+
 SoGroup* EditModeCoinManager::getSelectedConstraints()
 {
     SoGroup* group = new SoGroup();
