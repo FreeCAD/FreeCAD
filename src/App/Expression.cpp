@@ -3882,6 +3882,47 @@ UChar32 previousCodePoint(std::string_view input, const std::size_t position, st
     return codePoint;
 }
 
+// Moves `position` backwards over any Unicode whitespace and returns the new offset.
+std::size_t skipWhitespaceBackward(std::string_view input, std::size_t position)
+{
+    while (position > 0) {
+        std::size_t start = 0;
+        const UChar32 codePoint = previousCodePoint(input, position, start);
+        if (codePoint == U_SENTINEL || !u_isUWhiteSpace(codePoint)) {
+            break;
+        }
+        position = start;
+    }
+    return position;
+}
+
+// True if the code point ending at `position` is a Unicode letter or digit.
+bool endsWithAlphanumeric(std::string_view input, std::size_t position)
+{
+    std::size_t start = 0;
+    const UChar32 codePoint = previousCodePoint(input, position, start);
+    return codePoint != U_SENTINEL && u_isalnum(codePoint);
+}
+
+// Checks whether a unit punctuation character at the end of a range
+// terminates a localized numeric token. Whitespace between the number
+// and the unit punctuation is allowed.
+bool endsWithUnitPunctuationAfterLocalizedDigit(
+    std::string_view input,
+    const std::size_t end,
+    const NumericLocaleContext& locale
+)
+{
+    std::size_t unitStart = 0;
+    const UChar32 unit = previousCodePoint(input, end, unitStart);
+    if (!isExpressionUnitPunctuation(unit)) {
+        return false;
+    }
+
+    const std::size_t digitEnd = skipWhitespaceBackward(input, unitStart);
+    return localizedDigitEndsAt(input, digitEnd, locale);
+}
+
 bool followsExpressionTokenContinuation(std::string_view input, const std::size_t position)
 {
     std::size_t start = 0;
@@ -3913,7 +3954,12 @@ bool startsExpressionNumber(
     // Base scans numeric tokens; App decides where expression grammar allows one to start.
     // In particular, identifier and cell-reference suffixes remain opaque to localization.
     if (followsExpressionTokenContinuation(input, position) && !isSignAt(position)) {
-        return false;
+        // Unit punctuation can separate two numeric tokens, as in feet-and-inches
+        // notation: 1'2,500". Do not treat the number after the punctuation as
+        // an identifier or unit-token continuation.
+        if (!endsWithUnitPunctuationAfterLocalizedDigit(input, position, locale)) {
+            return false;
+        }
     }
 
     const auto digitAt = [&](const std::size_t offset) {
@@ -3941,26 +3987,16 @@ bool startsExpressionNumber(
 
         // A sign following a numeric token is an expression operator, not part of the next
         // numeric token. This keeps compact addition ("1+2") distinct from unary signs.
-        std::size_t previous = position;
-        while (previous > 0
-               && std::isspace(static_cast<unsigned char>(input[previous - 1]))) {
-            --previous;
-        }
+        const std::size_t previous = skipWhitespaceBackward(input, position);
         if (previous > 0) {
             const char preceding = input[previous - 1];
-            if (std::isalnum(static_cast<unsigned char>(preceding)) || preceding == ')'
-                || preceding == ']') {
+            if (endsWithAlphanumeric(input, previous) || preceding == ')' || preceding == ']') {
                 return false;
             }
 
             // Unit punctuation can also terminate a numeric token.
-            // Treat a sign following such punctuation as binary when
-            // the punctuation itself follows a localized digit.
-            std::size_t unitStart = 0;
-            const UChar32 unit = previousCodePoint(input, previous, unitStart);
-            if (
-                isExpressionUnitPunctuation(unit)
-                && localizedDigitEndsAt(input, unitStart, locale)) {
+            // Allow whitespace between the number and its unit marker.
+            if (endsWithUnitPunctuationAfterLocalizedDigit(input, previous, locale)) {
                 return false;
             }
 
@@ -3990,13 +4026,8 @@ bool isFunctionOpening(std::string_view input, const std::size_t position)
     if (position == 0) {
         return false;
     }
-    std::size_t previous = position;
-    while (previous > 0 && std::isspace(static_cast<unsigned char>(input[previous - 1]))) {
-        --previous;
-    }
-    return previous > 0
-        && (std::isalnum(static_cast<unsigned char>(input[previous - 1]))
-            || input[previous - 1] == '_');
+    std::size_t previous = skipWhitespaceBackward(input, position);
+    return previous > 0 && (endsWithAlphanumeric(input, previous) || input[previous - 1] == '_');
 }
 
 std::size_t functionArgumentSeparatorLength(
@@ -4017,7 +4048,6 @@ std::size_t functionArgumentSeparatorLength(
         std::size_t digitLength = 0;
         const auto afterComma = position + 1;
         if (afterComma == input.size()
-            || std::isspace(static_cast<unsigned char>(input[afterComma]))
             || !Base::localizedDigitAt(input, afterComma, locale, digit, digitLength)) {
             return 1;
         }
