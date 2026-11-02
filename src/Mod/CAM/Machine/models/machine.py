@@ -746,8 +746,6 @@ class Machine:
     # Rotary axis configuration (legacy - will be deprecated)
     primary_rotary_axis: Optional[str] = None
     secondary_rotary_axis: Optional[str] = None
-    compound_moves: bool = True
-    prefer_positive_rotation: bool = True
 
     # Units and versioning
     configuration_units: str = "metric"  # Internal storage for configuration_units
@@ -1053,7 +1051,6 @@ class Machine:
         config.rotary_axes["C"].role = AxisRole.HEAD_ROTARY
         config.rotary_axes["C"].sequence = 1
         config.set_alignment_axes("C", "B")
-        config.compound_moves = True  # Ensure compound moves are enabled for test compatibility
         return config
 
     @classmethod
@@ -1252,7 +1249,6 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
     def validate_kinematic_chain(self) -> List[str]:
         """Validate the kinematic chain configuration.
@@ -1432,7 +1428,6 @@ class Machine:
         self.rotary_axes = {}
         self.primary_rotary_axis = None
         self.secondary_rotary_axis = None
-        self.compound_moves = True
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Machine":
