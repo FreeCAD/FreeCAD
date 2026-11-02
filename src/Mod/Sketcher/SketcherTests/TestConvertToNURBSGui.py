@@ -166,7 +166,9 @@ class TestConvertToNURBSGui(SketcherGuiTestCase):
             types_after.count("Part::GeomLineSegment"), types_before.count("Part::GeomLineSegment")
         )
         alignment = [
-            c for c in self.sketch.Constraints if c.Type == "InternalAlignment" and c.Second != lower
+            c
+            for c in self.sketch.Constraints
+            if c.Type == "InternalAlignment" and c.Second != lower
         ]
         self.assertEqual(len(alignment), 4)
         self.assertTrue(all(c.Second == upper for c in alignment))
