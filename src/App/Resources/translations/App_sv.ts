@@ -91,7 +91,7 @@ Användaren bör sedan klicka på knappen Uppdatera i huvudverktygsfältet.
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
       <translation>Sparar användarens senaste val om huruvida CopyOnChange ska tillämpas på alla länkar
-som länkar till samma konfigurerbara objekt</translation>
+som pekar på samma konfigurerbara objekt</translation>
     </message>
   </context>
 </TS>

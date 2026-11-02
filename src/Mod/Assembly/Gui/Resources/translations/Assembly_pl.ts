@@ -585,32 +585,32 @@ Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
       <translation>Symulacja</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="394"/>
+      <location filename="../../../CommandCreateView.py" line="395"/>
       <source>Radial Translation</source>
       <translation>Przemieszczenie promieniowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="398"/>
       <source>Rotation</source>
       <translation>Obrót</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="400"/>
+      <location filename="../../../CommandCreateView.py" line="401"/>
       <source>Translation</source>
       <translation>Przesunięcie</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="988"/>
+      <location filename="../../../CommandCreateView.py" line="989"/>
       <source>Angle of this exploded-view move</source>
       <translation>Kąt tego przesunięcia widoku rozłożenia</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="998"/>
+      <location filename="../../../CommandCreateView.py" line="999"/>
       <source>Distance of this exploded-view move</source>
       <translation>Odległość tego przesunięcia widoku rozłożenia</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <location filename="../../../CommandCreateView.py" line="1039"/>
       <source>Edit placement</source>
       <translation>Edytuj umiejscowienie</translation>
     </message>
@@ -749,18 +749,18 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
       <translation>Obiekt do zakotwienia</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="527"/>
-      <location filename="../../../CommandCreateView.py" line="564"/>
+      <location filename="../../../CommandCreateView.py" line="528"/>
+      <location filename="../../../CommandCreateView.py" line="565"/>
       <source>The objects moved by the move</source>
       <translation>Obiekty przeniesione przez ruch</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="539"/>
+      <location filename="../../../CommandCreateView.py" line="540"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Jest to ruch przesunięcia. Pozycja końcowa jest wynikiem pozycji początkowej * tej pozycji.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="548"/>
+      <location filename="../../../CommandCreateView.py" line="549"/>
       <source>The type of the move</source>
       <translation>Typ ruchu</translation>
     </message>
@@ -1666,6 +1666,24 @@ Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zd
     </message>
   </context>
   <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Wybierz co najmniej 2 komponenty, aby utworzyć sztywną grupę</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Utwórz sztywną grupę</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Utwórz sztywną grupę.&lt;/p&gt;&lt;p&gt;Tworzy sztywną grupę, która trwale blokuje razem wybrane komponenty.&lt;/p&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Assembly_CreateSnapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1689,24 +1707,6 @@ Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zd
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Przywróć zrzut</translation>
-    </message>
-  </context>
-  <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Wybierz co najmniej 2 komponenty, aby utworzyć sztywną grupę</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Utwórz sztywną grupę</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Utwórz sztywną grupę.&lt;/p&gt;&lt;p&gt;Tworzy sztywną grupę, która trwale blokuje razem wybrane komponenty.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

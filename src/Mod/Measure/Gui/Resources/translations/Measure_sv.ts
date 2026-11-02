@@ -447,19 +447,6 @@
     </message>
   </context>
   <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Massegenskaper</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Beräknar massegenskaper för valda objekt</translation>
-    </message>
-  </context>
-  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="355"/>
@@ -504,7 +491,20 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="1236"/>
       <source> (Average)</source>
-      <translation> (Medelvärde)</translation>
+      <translation> (medelvärde)</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Massegenskaper</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Beräknar massegenskaper för valda objekt</translation>
     </message>
   </context>
   <context>

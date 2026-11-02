@@ -382,6 +382,11 @@
       <translation>Rensa bakgrundsfärg</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Räkna om celler</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Infoga rader</translation>
@@ -392,35 +397,20 @@
       <translation>Ta bort rader</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <source>Insert Columns</source>
-      <translation>Infoga kolumner</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Räkna om celler</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Ta bort kolumner</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
+      <translation>Infoga kolumner</translation>
+    </message>
+    <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
       <translation>Rensa celler</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation>Skapa konfigurationstabell</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation>Ta bort konfigurationstabellens inställningar</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Ta bort bindning mellan celler</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Skapa konfigurationstabell</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Ta bort konfigurationstabellens inställningar</translation>
     </message>
   </context>
   <context>
@@ -465,9 +465,9 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Startcelladress att binda till.
-Skriv '=' om du vill använda ett uttryck.
-Uttrycket måste utvärderas till en sträng med någon celladress.</translation>
+      <translation>Startcellens adress att binda till.
+Skriv ”=” om du vill använda ett uttryck.
+Uttrycket måste ge en sträng som innehåller en celladress.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
@@ -484,9 +484,9 @@ Uttrycket måste utvärderas till en sträng med någon celladress.</translation
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Slutcelladress att binda till.
-Skriv '=' för att använda ett uttryck.
-Uttrycket måste utvärderas till en sträng med någon celladress.</translation>
+      <translation>Slutcellens adress att binda till.
+Skriv ”=” för att använda ett uttryck.
+Uttrycket måste ge en sträng som innehåller en celladress.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -929,7 +929,7 @@ Spreadsheet.my_alias_name i stället för Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="131"/>
       <source>Zoom</source>
-      <translation>Zooma</translation>
+      <translation>Zoom</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
@@ -1069,7 +1069,7 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tecken som används för att avgränsa strängar, vanligtvis enkelcitat (') eller dubbelcitat (&amp;quot;). Måste vara ett enda tecken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tecken som används för att avgränsa strängar, vanligtvis enkelt citattecken (') eller dubbelt citattecken (&amp;quot;). Det måste vara ett enda tecken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>

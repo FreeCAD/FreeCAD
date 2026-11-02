@@ -9,25 +9,25 @@
       <translation>&lt;ຫວ່າງເປົ່າ&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2446"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2735"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2444"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2733"/>
       <source>Angle</source>
       <translation>ມຸມ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2450"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2739"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2448"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2737"/>
       <source>Axis</source>
       <translation>ແກນ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2744"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Position</source>
       <translation>ຕຳແໜ່ງ</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3016"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3014"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>ການວາງຕຳແໜ່ງ</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="108"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
+      <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>ແປງຮູບ</translation>
     </message>
@@ -5588,12 +5588,12 @@ originally selected prior to opening this dialog</source>
       <translation>ໄປຫາຕອນທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="733"/>
+      <location filename="../ReportView.cpp" line="738"/>
       <source>Save As…</source>
       <translation>ບັນທຶກເປັນ...</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="745"/>
+      <location filename="../ReportView.cpp" line="750"/>
       <source>Plain text files</source>
       <translation>ໄຟລ໌ຂໍ້ຄວາມທຳມະດາ</translation>
     </message>
@@ -5620,12 +5620,12 @@ originally selected prior to opening this dialog</source>
       <translation>ສະແດງມຸມມອງລາຍງານເມື່ອ</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="731"/>
+      <location filename="../ReportView.cpp" line="733"/>
       <source>Clear</source>
       <translation>ລ້າງຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="743"/>
+      <location filename="../ReportView.cpp" line="748"/>
       <source>Save Report Output</source>
       <translation>ບັນທຶກຜົນລາຍງານ</translation>
     </message>
@@ -5972,14 +5972,14 @@ Save all changes?</source>
       <translation>ບິດແມັບ (Bitmap)</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="411"/>
-      <location filename="../CommandDoc.cpp" line="765"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="474"/>
+      <source>Export graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="474"/>
-      <source>Export graph</source>
+      <location filename="../CommandDoc.cpp" line="765"/>
+      <location filename="../GraphvizView.cpp" line="411"/>
+      <source>Export Graph</source>
       <translation>ສົ່ງອອກກຣາຟ</translation>
     </message>
   </context>
@@ -6030,66 +6030,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>ກຳນົດເອງ...</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>ທິດທາງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>ທິດທາງຕ້ອງບໍ່ແມ່ນເວັກເຕີສູນ (null vector)</translation>
     </message>
@@ -6513,12 +6513,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4663"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4665"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4663"/>
       <source>Object not found</source>
       <translation>ບໍ່ພົບວັດຖຸ</translation>
     </message>
@@ -6526,152 +6526,152 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="382"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="363"/>
       <source>Edit</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="374"/>
       <source>property</source>
       <translation>ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="919"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
       <source>Expand/Collapse Properties</source>
       <translation>ຂະຫຍາຍ/ຫຍໍ້ ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="921"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Expand to Default</source>
       <translation>ຂະຫຍາຍເປັນຄ່າເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="923"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="873"/>
       <source>Expand All</source>
       <translation>ຂະຫຍາຍທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="925"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="875"/>
       <source>Collapse All</source>
       <translation>ຫຍໍ້ທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="881"/>
       <source>Default Expand</source>
       <translation>ຂະຫຍາຍຕາມຄ່າເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="934"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="884"/>
       <source>Auto Expand</source>
       <translation>ຂະຫຍາຍອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="887"/>
       <source>Auto Collapse</source>
       <translation>ຫຍໍ້ອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1027"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="977"/>
       <source>object %1 (%2):
 </source>
       <translation>ວັດຖຸ %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1034"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="984"/>
       <source>property %1
 </source>
       <translation>ຄຸນລັກສະນະ %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="996"/>
       <source>document %1:
 </source>
       <translation>ເອກະສານ %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1071"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>ຄຸນລັກສະນະ %1 ໃນວັດຖຸ %2 (%3) ໃນເອກະສານ %4 ຖືກອ້າງອີງໂດຍ:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1087"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1037"/>
       <source>(No references found.)</source>
       <translation>(ບໍ່ພົບການອ້າງອີງ)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1105"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1055"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
       <source>Property Uses</source>
       <translation>ການໃຊ້ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1135"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1085"/>
       <source>Copy</source>
       <translation>ກັອບປີ້</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1093"/>
       <source>Add Property</source>
       <translation>ເພີ່ມຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1150"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1433"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1100"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1383"/>
       <source>Rename Property Group</source>
       <translation>ປ່ຽນຊື່ກຸ່ມຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1161"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1111"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>ບໍ່ສາມາດປ່ຽນຊື່ກຸ່ມໄດ້: ມີໜຶ່ງຄຸນລັກສະນະ ຫຼື ຫຼາຍກວ່ານັ້ນທີ່ມີຊື່ຂຶ້ນຕົ້ນດ້ວຍຊື່ກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1403"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1120"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1353"/>
       <source>Rename Property</source>
       <translation>ປ່ຽນຊື່ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1373"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1323"/>
       <source>Edit Property Tooltip</source>
       <translation>ແກ້ໄຂຄຳອະທິບາຍຂອງຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1188"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1138"/>
       <source>Delete Property</source>
       <translation>ລຶບຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1203"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1153"/>
       <source>Move Property</source>
       <translation>ຍ້າຍຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1324"/>
       <source>Tooltip</source>
       <translation>ຄຳແນະນຳເຄື່ອງມື (Tooltip)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1213"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1163"/>
       <source>Show Hidden</source>
       <translation>ສະແດງສິ່ງທີ່ເຊື່ອງໄວ້</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1230"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1180"/>
       <source>Expression</source>
       <translation>ນິພົດ (Expression)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1404"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1354"/>
       <source>Property name</source>
       <translation>ຊື່ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1434"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1384"/>
       <source>Group name:</source>
       <translation>ຊື່ກຸ່ມ:</translation>
     </message>
@@ -7246,6 +7246,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="Translator.cpp" line="241"/>
+      <location filename="Translator.cpp" line="279"/>
       <source>English</source>
       <translation>ພາສາອັງກິດ</translation>
     </message>
@@ -8746,12 +8747,12 @@ Choose 'Abort' to abort</source>
       <translation>ບໍ່ສາມາດເປີດບຣາວເຊີຂອງລະບົບໄດ້.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3342"/>
+      <location filename="../View3DInventorViewer.cpp" line="3343"/>
       <source>Out of memory</source>
       <translation>ໜ່ວຍຄວາມຈຳເຕັມ</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3343"/>
+      <location filename="../View3DInventorViewer.cpp" line="3344"/>
       <source>Not enough memory available to display the data.</source>
       <translation>ມີໜ່ວຍຄວາມຈຳບໍ່ພຽງພໍທີ່ຈະສະແດງຜົນຂໍ້ມູນ.</translation>
     </message>
@@ -8897,8 +8898,8 @@ Choose 'Abort' to abort</source>
       <translation>ການລາກ ແລະ ວາງ ບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1010"/>
       <location filename="../ViewProviderLink.cpp" line="3055"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <source>Apply to all</source>
       <translation>ນຳໃຊ້ກັບທັງໝົດ</translation>
     </message>
@@ -14600,7 +14601,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4700"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4698"/>
       <source>Changes the linked object</source>
       <translation>ປ່ຽນວັດຖຸທີ່ລິ້ງໄວ້</translation>
     </message>
@@ -14608,12 +14609,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="144"/>
       <source>Yes</source>
       <translation>ແມ່ນ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="144"/>
       <source>No</source>
       <translation>ບໍ່</translation>
     </message>
@@ -14758,6 +14759,49 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>ວັດຖຸ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>ກັ່ນຕອງຕາມປະເພດ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>ຊິງໂຄຣໄນການເລືອກໃນມຸມເບິ່ງ 3D ກັບລຳດັບຊັ້ນຂອງວັດຖຸທັງໝົດ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>ຊິງການເລືອກວັດຖຸຍ່ອຍ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>ຊອກຫາ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>ຮູບແບບການຊອກຫາເພື່ອຕອງຜົນລັດດ້ານເທິງ</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>ຄືນຄ່າໃໝ່</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>ລ້າງຂໍ້ມູນ</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14860,95 +14904,17 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
+    <name>FileDialog</name>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>ວັດຖຸ</translation>
+      <location filename="../FileDialog.cpp" line="579"/>
+      <source>Save As</source>
+      <translation>ບັນທຶກເປັນ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>ກັ່ນຕອງຕາມປະເພດ</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>ຊິງໂຄຣໄນການເລືອກໃນມຸມເບິ່ງ 3D ກັບລຳດັບຊັ້ນຂອງວັດຖຸທັງໝົດ</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>ຊິງການເລືອກວັດຖຸຍ່ອຍ</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>ຊອກຫາ</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>ຮູບແບບການຊອກຫາເພື່ອຕອງຜົນລັດດ້ານເທິງ</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>ຄືນຄ່າໃໝ່</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>ລ້າງຂໍ້ມູນ</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <location filename="../Command.cpp" line="1063"/>
-      <source>Experimental</source>
-      <translation>ແບບທົດລອງ (Experimental)</translation>
-    </message>
-    <message>
-      <location filename="../Command.cpp" line="1065"/>
-      <source>EXPERIMENTAL: this command may change.</source>
-      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
-    </message>
-    <message>
-      <location filename="../Command.cpp" line="1069"/>
-      <source>Development preview</source>
-      <translation type="unfinished">Development preview</translation>
-    </message>
-    <message>
-      <location filename="../Command.cpp" line="1070"/>
-      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
-      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdOpenGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="85"/>
-      <source>&amp;Open…</source>
-      <translation>&amp;ເປີດ...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="86"/>
-      <source>Opens a document or imports files</source>
-      <translation>ເປີດເອກະສານ ຫຼື ນຳເຂົ້າໄຟລ໌</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdSaveGroup</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="966"/>
-      <source>Save</source>
-      <translation>ບັນທຶກ</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="967"/>
-      <source>Saves the active document</source>
-      <translation>ບັນທຶກເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
+      <location filename="../FileDialog.cpp" line="715"/>
+      <location filename="../FileDialog.cpp" line="811"/>
+      <source>Open</source>
+      <translation>ເປີດ</translation>
     </message>
   </context>
   <context>
@@ -14990,43 +14956,55 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3858"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>ເປີດ/ປິດ ແຜງດ້ານລຸ່ມ</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3859"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>ເປີດ/ປິດ ແຜງທີ່ຕິດຢູ່ດ້ານລຸ່ມ</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyMapEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1913"/>
+      <location filename="../Widgets.cpp" line="1924"/>
       <source>Key</source>
       <translation>ຄີ (Key)</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1913"/>
+      <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
       <translation>ຄ່າ (Value)</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleSuppress</name>
+    <name>StdCmdOpenGroup</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>ເປີດ/ປິດ ການລະງັບ (Suppress)</translation>
+      <location filename="../CommandDoc.cpp" line="85"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;ເປີດ...</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>ເປີດ/ປິດ ສະຖານະການລະງັບຂອງວັດຖຸທີ່ເລືອກ. ວັດຖຸທີ່ຖືກລະງັບຈະເຮັດວຽກຄືກັບວ່າມັນຖືກລຶບອອກແລ້ວ.</translation>
+      <location filename="../CommandDoc.cpp" line="86"/>
+      <source>Opens a document or imports files</source>
+      <translation>ເປີດເອກະສານ ຫຼື ນຳເຂົ້າໄຟລ໌</translation>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
+    <name>StdCmdSaveGroup</name>
     <message>
-      <location filename="../FileDialog.cpp" line="579"/>
-      <source>Save As</source>
-      <translation>ບັນທຶກເປັນ</translation>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <source>Save</source>
+      <translation>ບັນທຶກ</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="715"/>
-      <location filename="../FileDialog.cpp" line="811"/>
-      <source>Open</source>
-      <translation>ເປີດ</translation>
+      <location filename="../CommandDoc.cpp" line="967"/>
+      <source>Saves the active document</source>
+      <translation>ບັນທຶກເອກະສານທີ່ກຳລັງໃຊ້ງານຢູ່</translation>
     </message>
   </context>
   <context>
@@ -15061,16 +15039,39 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleBottomPanels</name>
+    <name>StdCmdToggleSuppress</name>
     <message>
-      <location filename="../CommandView.cpp" line="3858"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>ເປີດ/ປິດ ແຜງດ້ານລຸ່ມ</translation>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>ເປີດ/ປິດ ການລະງັບ (Suppress)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3859"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>ເປີດ/ປິດ ແຜງທີ່ຕິດຢູ່ດ້ານລຸ່ມ</translation>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>ເປີດ/ປິດ ສະຖານະການລະງັບຂອງວັດຖຸທີ່ເລືອກ. ວັດຖຸທີ່ຖືກລະງັບຈະເຮັດວຽກຄືກັບວ່າມັນຖືກລຶບອອກແລ້ວ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Command</name>
+    <message>
+      <location filename="../Command.cpp" line="1063"/>
+      <source>Experimental</source>
+      <translation>ແບບທົດລອງ (Experimental)</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1065"/>
+      <source>EXPERIMENTAL: this command may change.</source>
+      <translation type="unfinished">EXPERIMENTAL: this command may change.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1069"/>
+      <source>Development preview</source>
+      <translation type="unfinished">Development preview</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="1070"/>
+      <source>DEVELOPMENT PREVIEW: this command may change or be removed.</source>
+      <translation type="unfinished">DEVELOPMENT PREVIEW: this command may change or be removed.</translation>
     </message>
   </context>
   <context>
@@ -15084,32 +15085,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3588"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3586"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>ກຳນົດສີພື້ນຂອງຜິວໜ້າເມື່ອມີແສງມາກະທົບ. ມັນສະແດງເຖິງວິທີທີ່ວັດຖຸກະຈາຍແສງອອກໄປທຸກທິດທາງຢ່າງສະເໝີຕົ້ນສະເໝີປາຍ, ໂດຍບໍ່ຂຶ້ນກັບມຸມຂອງຜູ້ເບິ່ງ. ຄຸນລັກສະນະນີ້ຈະມີຜົນຕໍ່ສີຂອງວັດສະດຸຫຼາຍທີ່ສຸດ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3598"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3596"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>ກຳນົດສີຂອງຜິວໜ້າພາຍໃຕ້ແສງສະຫວ່າງທາງອ້ອມທີ່ສະເໝີກັນ, ສະແດງເຖິງສິ່ງທີ່ປະກົດຂຶ້ນເມື່ອໄດ້ຮັບແສງຈາກສະພາບແວດລ້ອມເທົ່ານັ້ນ, ໂດຍບໍ່ມີແສງສ່ອງທິດທາງ, ເງົາ ຫຼື ຈຸດເດັ່ນຂອງແສງ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3608"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3606"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>ກຳນົດສີ ແລະ ຄວາມເຂັ້ມຂອງຈຸດເດັ່ນທີ່ສະຫວ່າງຄືກັບແວ່ນ ເຊິ່ງປະກົດຢູ່ເທິງຜິວໜ້າທີ່ເງົາ ຫຼື ສະທ້ອນແສງ ເມື່ອມີແສງມາກະທົບໂດຍກົງ. ຕັ້ງເປັນສີສະຫວ່າງສຳລັບວັດຖຸທີ່ເງົາງາມ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3618"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3616"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>ກຳນົດສີຂອງຜິວໜ້າທີ່ປະກົດວ່າແຜ່ແສງອອກມາຄືກັບວ່າມັນເປັນແຫຼ່ງກຳເນີດແສງເອງ, ໂດຍບໍ່ຂຶ້ນກັບແສງພາຍນອກ, ເຮັດໃຫ້ວັດຖຸເບິ່ງຄືວ່າມີແສງໃນຕົວ. ຕັ້ງເປັນສີດຳເພື່ອບໍ່ໃຫ້ມີການແຜ່ແສງ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3630"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3628"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>ກຳນົດຂະໜາດ ແລະ ຄວາມຄົມຊັດຂອງຈຸດສະທ້ອນເງົາເທິງຜິວໜ້າ. ຄ່າທີ່ສູງກວ່າຈະເຮັດໃຫ້ເກີດຈຸດສະທ້ອນຂະໜາດນ້ອຍ ແລະ ຄົມຊັດ, ໃນຂະນະທີ່ຄ່າທີ່ຕ່ຳກວ່າຈະສ້າງຈຸດສະທ້ອນທີ່ກວ້າງ ແລະ ນຸ່ມນວນກວ່າ. ໝາຍເຫດວ່າຄວາມເຂັ້ມຂອງຈຸດສະທ້ອນແມ່ນຖືກກຳນົດໂດຍສີສະທ້ອນເງົາ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3642"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3640"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>ກຳນົດປະລິມານແສງທີ່ຜ່ານວັດຖຸ, ເຮັດໃຫ້ມັນສາມາດເບິ່ງທະລຸໄດ້ບາງສ່ວນ ຫຼື ທັງໝົດ</translation>
     </message>
@@ -15117,32 +15118,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3954"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3952"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>ກຳນົດສີພື້ນຂອງຜິວໜ້າເມື່ອມີແສງມາກະທົບ. ມັນສະແດງເຖິງວິທີທີ່ວັດຖຸກະຈາຍແສງອອກໄປທຸກທິດທາງຢ່າງສະເໝີຕົ້ນສະເໝີປາຍ, ໂດຍບໍ່ຂຶ້ນກັບມຸມຂອງຜູ້ເບິ່ງ. ຄຸນລັກສະນະນີ້ຈະມີຜົນຕໍ່ສີຂອງວັດສະດຸຫຼາຍທີ່ສຸດ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3964"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3962"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>ກຳນົດສີຂອງຜິວໜ້າພາຍໃຕ້ແສງສະຫວ່າງທາງອ້ອມທີ່ສະເໝີກັນ, ສະແດງເຖິງສິ່ງທີ່ປະກົດຂຶ້ນເມື່ອໄດ້ຮັບແສງຈາກສະພາບແວດລ້ອມເທົ່ານັ້ນ, ໂດຍບໍ່ມີແສງສ່ອງທິດທາງ, ເງົາ ຫຼື ຈຸດເດັ່ນຂອງແສງ</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3974"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3972"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>ກຳນົດສີ ແລະ ຄວາມເຂັ້ມຂອງຈຸດເດັ່ນທີ່ສະຫວ່າງຄືກັບແວ່ນ ເຊິ່ງປະກົດຢູ່ເທິງຜິວໜ້າທີ່ເງົາ ຫຼື ສະທ້ອນແສງ ເມື່ອມີແສງມາກະທົບໂດຍກົງ. ຕັ້ງເປັນສີສະຫວ່າງສຳລັບວັດຖຸທີ່ເງົາງາມ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3984"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3982"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>ກຳນົດສີຂອງຜິວໜ້າທີ່ປະກົດວ່າແຜ່ແສງອອກມາຄືກັບວ່າມັນເປັນແຫຼ່ງກຳເນີດແສງເອງ, ໂດຍບໍ່ຂຶ້ນກັບແສງພາຍນອກ, ເຮັດໃຫ້ວັດຖຸເບິ່ງຄືວ່າມີແສງໃນຕົວ. ຕັ້ງເປັນສີດຳເພື່ອບໍ່ໃຫ້ມີການແຜ່ແສງ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3996"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3994"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>ກຳນົດຂະໜາດ ແລະ ຄວາມຄົມຊັດຂອງຈຸດສະທ້ອນເງົາເທິງຜິວໜ້າ. ຄ່າທີ່ສູງກວ່າຈະເຮັດໃຫ້ເກີດຈຸດສະທ້ອນຂະໜາດນ້ອຍ ແລະ ຄົມຊັດ, ໃນຂະນະທີ່ຄ່າທີ່ຕ່ຳກວ່າຈະສ້າງຈຸດສະທ້ອນທີ່ກວ້າງ ແລະ ນຸ່ມນວນກວ່າ. ໝາຍເຫດວ່າຄວາມເຂັ້ມຂອງຈຸດສະທ້ອນແມ່ນຖືກກຳນົດໂດຍສີສະທ້ອນເງົາ.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4008"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4006"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>ກຳນົດປະລິມານແສງທີ່ຜ່ານວັດຖຸ, ເຮັດໃຫ້ມັນສາມາດເບິ່ງທະລຸໄດ້ບາງສ່ວນ ຫຼື ທັງໝົດ</translation>
     </message>
@@ -15150,7 +15151,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4930"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4928"/>
       <source>Map</source>
       <translation>ແຜນຜັງ (Map)</translation>
     </message>

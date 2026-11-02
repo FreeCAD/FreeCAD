@@ -52,7 +52,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation>Överföringsmekanismen för att få data till och från OpenSCAD</translation>
+      <translation>Mekanism för överföring av data till och från OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../InitGui.py" line="132"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation>Det verkar som om du kanske använder en Snap-version av OpenSCAD.</translation>
+      <translation>Det verkar som om du använder en Snap-version av OpenSCAD.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="137"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation>Välj 3 objekt först</translation>
+      <translation>Välj först 3 objekt</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>

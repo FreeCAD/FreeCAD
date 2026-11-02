@@ -5085,7 +5085,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchCoveringGui.py" line="541"/>
       <location filename="../../ArchCoveringGui.py" line="862"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="619"/>

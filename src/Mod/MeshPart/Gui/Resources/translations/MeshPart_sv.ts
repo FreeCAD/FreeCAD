@@ -569,7 +569,7 @@ Välj en annan form.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>MeshDel</translation>
+      <translation>MeshPart</translation>
     </message>
   </context>
   <context>

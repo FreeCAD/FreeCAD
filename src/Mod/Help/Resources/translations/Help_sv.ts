@@ -108,7 +108,7 @@ egen stilmall nedan och kan bli snyggare än wiki-alternativet. Python-modulen �
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation>Dokumentationen kommer att öppnas i standardwebbläsaren</translation>
+      <translation>Dokumentationen öppnas i standardwebbläsaren</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
@@ -118,7 +118,7 @@ egen stilmall nedan och kan bli snyggare än wiki-alternativet. Python-modulen �
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation>Dokumentationen kommer att öppnas i en ny flik i FreeCAD-gränssnittet. Detta kräver PySide QtWebengineWidgets-komponenten.</translation>
+      <translation>Dokumentationen öppnas i en ny flik i FreeCAD-gränssnittet. Detta kräver komponenten PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>

@@ -538,12 +538,12 @@
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>Сегментација од површи које најбоље одговарају</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1717"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>Направи нове сегменте мреже од површи које најбоље одговарају</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>Сједини изабране мреже</translation>
     </message>
   </context>
   <context>
@@ -1089,19 +1089,19 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated Faces</source>
-      <translation type="unfinished">Duplicated Faces</translation>
+      <translation>Дуплиране пљосни</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Дуплиране тачке</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh Repair</source>
-      <translation type="unfinished">Mesh Repair</translation>
+      <translation>Поправи мрежу</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
@@ -2273,7 +2273,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1745"/>
       <source>Mesh: %1</source>
-      <translation type="unfinished">Mesh: %1</translation>
+      <translation>Мрежа: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>
@@ -2283,17 +2283,17 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="1751"/>
       <source>Points: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Points: &lt;%1, %2, %3&gt;</translation>
+      <translation>Тачке: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1758"/>
       <source>Neighbours: &lt;%1, %2, %3&gt;</source>
-      <translation type="unfinished">Neighbours: &lt;%1, %2, %3&gt;</translation>
+      <translation>Суседи: &lt;%1, %2, %3&gt;</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1764"/>
       <source>Triangle:</source>
-      <translation type="unfinished">Triangle:</translation>
+      <translation>Троугао:</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>
@@ -2409,7 +2409,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../../Init.py" line="19"/>
       <source>STL Mesh</source>
-      <translation type="unfinished">STL Mesh</translation>
+      <translation>STL мрежа</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="20"/>

@@ -135,7 +135,7 @@
     <message>
       <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
-      <translation>Zuletzt verwendete Dateien</translation>
+      <translation>Zuletzt geöffnete Dateien</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="548"/>

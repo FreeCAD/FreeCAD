@@ -2848,7 +2848,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
       <source>Reverse direction</source>
-      <translation>Umgekehrte Richtung</translation>
+      <translation>Reverse direction</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="81"/>
@@ -5080,7 +5080,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="187"/>
       <source>Failed to add slot</source>
-      <translation>Failed to add slot</translation>
+      <translation>Failed to add edge</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="171"/>

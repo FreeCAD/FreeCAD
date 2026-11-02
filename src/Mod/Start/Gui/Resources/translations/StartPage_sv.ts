@@ -234,8 +234,8 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation>En valfri anpassad mapp som ska visas på startsidan.
-Flera mappar kan läggas till med hjälp av ";;" för att separera sökvägar.</translation>
+      <translation>En valfri anpassad mapp som visas på startsidan.
+Flera mappar kan läggas till genom att skilja sökvägarna åt med ”;;”.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>

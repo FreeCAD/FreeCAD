@@ -3726,7 +3726,7 @@ Den Wert auf Null setzen, um die G-Code-Hervorhebung zu deaktivieren.</translati
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; … the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; … is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; … lets you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; … the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; … is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; … lets you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legt die Länge des Einschnitts am Haltesteg fest, der in das Profil eingesetzt werden soll.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptiv&lt;/span&gt; … die Länge wird so angepasst, dass die Ecke entsprechend dem Winkel ihrer Kanten abgedeckt wird, wobei der aktuelle Werkzeugradius berücksichtigt wird (Standard)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixiert&lt;/span&gt; … entspricht dem Wert „adaptiv“ für gerade Winkel. Bei T-förmigen Profilen ist es der Radius des Werkzeugs (R) und bei knochenförmigen Profilen ist es R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; … unten kann eine benutzerdefinierte (feste) Länge festlegen werden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -10395,7 +10395,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="543"/>
       <source>Pre-Fixture</source>
-      <translation type="unfinished">Pre-Fixture</translation>
+      <translation>Vorabkonfiguration</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="545"/>
@@ -10405,7 +10405,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="551"/>
       <source>Post-Fixture</source>
-      <translation type="unfinished">Post-Fixture</translation>
+      <translation>Nachkonfiguration</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="553"/>
@@ -10920,7 +10920,7 @@ Spindle_Control: Alle M3/M5-Befehle werden unverändert ausgegeben.</translation
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="140"/>
       <source>Blend Tolerance</source>
-      <translation type="unfinished">Blend Tolerance</translation>
+      <translation>Passungstoleranz</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="149"/>
@@ -12105,7 +12105,7 @@ Mehrere Bearbeitungsvorgänge können mit identischer Werkzeugsteuerung und iden
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="582"/>
       <source>The Waterline operation</source>
-      <translation type="unfinished">The Waterline operation</translation>
+      <translation>Die Wasserlinien-Bearbeitung</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="585"/>
@@ -13036,7 +13036,7 @@ Werkzeugnummer für {}:</translation>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="198"/>
       <source>No-Engagement feed</source>
-      <translation type="unfinished">No-Engagement feed</translation>
+      <translation>Vorschub ohne Eingriff</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="224"/>
@@ -13412,7 +13412,7 @@ ungleich Null</translation>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
       <source>Enable Remote Posting</source>
-      <translation type="unfinished">Enable Remote Posting</translation>
+      <translation>Entfernte Ausgabe aktivieren</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
@@ -14872,7 +14872,7 @@ Unterstützte Werkzeugtypen: Flachfräser, Rundfräser, V-Fräser.</translation>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="641"/>
       <source>Z-Level Hybrid</source>
-      <translation type="unfinished">Z-Level Hybrid</translation>
+      <translation>Hybride Z-Ebene</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="644"/>
@@ -15087,12 +15087,12 @@ Unterstützte Werkzeugtypen: Flachfräser, Rundfräser, V-Fräser.</translation>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="222"/>
       <source>Spiral Circular</source>
-      <translation type="unfinished">Spiral Circular</translation>
+      <translation>Spiralförmig rund</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="223"/>
       <source>Spiral Rectangular</source>
-      <translation type="unfinished">Spiral Rectangular</translation>
+      <translation>Spiralförmig rechteckig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="443"/>

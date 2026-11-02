@@ -3739,7 +3739,7 @@ Set to zero to disable G-code highlighter.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
@@ -8202,7 +8202,7 @@ Larger values will calculate faster; Smaller values will result in more accurate
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="109"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="112"/>
@@ -8975,7 +8975,7 @@ Without sub selection:
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="114"/>
       <source>All Files (*.*)</source>
-      <translation>Alle Dateien (*.*)</translation>
+      <translation>All Files (*.*)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="112"/>
@@ -11673,7 +11673,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="443"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="446"/>
@@ -11953,7 +11953,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="154"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="155"/>
@@ -13742,7 +13742,7 @@ Tool number for {}:</translation>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1025"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1108"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="939"/>
@@ -14885,7 +14885,7 @@ Supported tool types: flat, bull-nose, V-bit.</translation>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="649"/>
       <source>Custom</source>
-      <translation>Custom color</translation>
+      <translation>Custom</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PlanarSurface.py" line="652"/>

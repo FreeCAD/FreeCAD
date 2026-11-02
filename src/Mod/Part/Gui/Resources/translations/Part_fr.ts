@@ -7833,7 +7833,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="371"/>
-      <location filename="../../PatternParametersWidget.cpp" line="467"/>
+      <location filename="../../PatternParametersWidget.cpp" line="476"/>
       <source>Spacing %1</source>
       <translation>Espacement %1</translation>
     </message>
@@ -7843,7 +7843,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
       <translation>Supprimer cette définition d'espacement</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="894"/>
+      <location filename="../../PatternParametersWidget.cpp" line="903"/>
       <source>Reset spacing</source>
       <translation>Réinitialiser l'espacement</translation>
     </message>
@@ -7939,68 +7939,103 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>PartGui::PatternPathParametersWidget</name>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="6"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="17"/>
       <source>Path</source>
       <translation>Chemin d'accès</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="7"/>
-      <location filename="../../PatternPathParametersWidget.cpp" line="148"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="24"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="240"/>
       <source>Select Path</source>
       <translation>Sélectionner une courbe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="8"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="31"/>
       <source>Spacing mode</source>
       <translation>Mode d'espacement</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="10"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="41"/>
       <source>Occurrences</source>
       <translation>Occurrences</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="12"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="51"/>
       <source>Spacing</source>
       <translation>Espacement</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="14"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="65"/>
       <source>Start offset</source>
       <translation>Décalage de départ</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="16"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="79"/>
       <source>End offset</source>
       <translation>Décalage de fin</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="18"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="93"/>
       <source>Reverse path</source>
       <translation>Inverser la courbe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.ui" line="19"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="100"/>
       <source>Align to path</source>
       <translation>Aligner sur la courbe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.ui" line="107"/>
+      <source>Tangent Axis</source>
+      <translation>Axe tangent</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="117"/>
+      <source>Flip tangent axis</source>
+      <translation>Inverser l'axe tangent</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="124"/>
+      <source>Vertical axis</source>
+      <translation>Axe vertical</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="134"/>
+      <source>Flip vertical axis</source>
+      <translation>Inverser l'axe vertical</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="141"/>
+      <source>Origin point index</source>
+      <translation>Indice du point d'origine</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="151"/>
+      <source>Total offset</source>
+      <translation>Décalage total</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.ui" line="161"/>
+      <source>Relative to first</source>
+      <translation>Relatif au premier</translation>
+    </message>
+    <message>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed count</source>
       <translation>Nombre fixe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed spacing</source>
       <translation>Espacement fixe</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="115"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="180"/>
       <source>Fixed count and spacing</source>
       <translation>Nombre et espacement fixes</translation>
     </message>
     <message>
-      <location filename="../../PatternPathParametersWidget.cpp" line="160"/>
+      <location filename="../../PatternPathParametersWidget.cpp" line="252"/>
       <source>(+%1)</source>
       <translation>(+%1)</translation>
     </message>
@@ -8161,99 +8196,99 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>PartGui::TaskLinkArrayParameters</name>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="163"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
       <source>Circular Link Array</source>
       <translation>Réseau circulaire de liens</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="166"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="168"/>
       <source>Path Link Array</source>
       <translation>Réseau de copies liées selon une courbe</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="169"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="171"/>
       <source>Point Link Array</source>
       <translation>Réseau selon des points de liens</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="173"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="175"/>
       <source>Polar Link Array</source>
       <translation>Réseau polaire de liens</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="176"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="178"/>
       <source>Linear Link Array</source>
       <translation>Réseau de liens linéaires</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="312"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="321"/>
       <source>Selecting…</source>
       <translation>Sélectionner…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="318"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="327"/>
       <source>Select Object</source>
       <translation>Sélectionner un objet</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="336"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="345"/>
       <source>Select an object to link</source>
       <translation>Sélectionner un objet à lier</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="557"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="575"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="590"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="566"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="584"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
       <source>Object X-axis</source>
       <translation>Axe X de l'objet</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="561"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="578"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="596"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="570"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="587"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
       <source>Object Y-axis</source>
       <translation>Axe Y de l'objet</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="567"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="582"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="599"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="576"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="591"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="608"/>
       <source>Object Z-axis</source>
       <translation>Axe Z de l'objet</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="605"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="614"/>
       <source>Select reference…</source>
       <translation>Sélectionner une référence…</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="734"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
       <source>Select connected path edges</source>
       <translation>Sélectionner les arêtes de la trajectoire connectée</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="737"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="746"/>
       <source>Select a sketch or shape containing points</source>
       <translation>Sélectionner une esquisse ou une forme contenant des points</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="741"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="750"/>
       <source>Select a rotation axis</source>
       <translation>Sélectionner un axe de rotation</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="743"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="752"/>
       <source>Select a direction reference</source>
       <translation>Sélectionner une référence de direction</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="896"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="902"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="919"/>
       <source>Input Error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskLinkArrayParameters.cpp" line="879"/>
+      <location filename="../../TaskLinkArrayParameters.cpp" line="902"/>
       <source>Select an object to link.</source>
       <translation>Sélectionner un objet à lier</translation>
     </message>
