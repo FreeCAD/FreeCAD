@@ -157,7 +157,7 @@ public:
                 ui->elementList
             );
             item->setData(Qt::UserRole, QColor());
-            item->setData(Qt::UserRole + 1, QString::fromUtf8(sub));
+            item->setData(Qt::UserRole + 1, QString::fromLatin1(sub));
             elements.emplace(sub, item);
             return;
         }
