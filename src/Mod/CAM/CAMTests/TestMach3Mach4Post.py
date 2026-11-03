@@ -92,31 +92,6 @@ class TestMach3Mach4Post(PathTestUtils.PathTestBase):
         """
         pass
 
-    def single_compare(self, path, expected, args, debug=False):
-        """Perform a test with a single line of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
-
-    def multi_compare(self, path, expected, args, debug=False):
-        """Perform a test with multiple lines of gcode comparison."""
-        nl = "\n"
-        self.job.PostProcessorArgs = args
-        # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
-        # the gcode is in the first section for this particular job and operation
-        gcode = self.post.export()[0][1]
-        if debug:
-            print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode, expected)
-
     def test000(self) -> None:
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.

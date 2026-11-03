@@ -236,12 +236,12 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     TopoDS_Edge edge = TopoDS::Edge(edges.Current());
                     edges.Next();
                     if (edges.More()) {
-                        return App::MeasureElementType::PLANE;
+                        return App::MeasureElementType::PLANESEGMENT;
                     }
 
                     BRepAdaptor_Curve adapt(edge);
                     if (adapt.GetType() != GeomAbs_Circle) {
-                        return App::MeasureElementType::PLANE;
+                        return App::MeasureElementType::PLANESEGMENT;
                     }
 
                     return App::MeasureElementType::DISC;
@@ -250,8 +250,10 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     TopLoc_Location loc;
                     Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
                     GeomLib_IsPlanarSurface check(surf, AttachEnginePlane::planarPrecision());
-                    return check.IsPlanar() ? App::MeasureElementType::PLANE
-                                            : App::MeasureElementType::SURFACE;
+                    if (!check.IsPlanar()) {
+                        return App::MeasureElementType::SURFACE;
+                    }
+                    return App::MeasureElementType::PLANESEGMENT;
                 }
             }
         }
@@ -415,7 +417,7 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 
     if (isDatum(subject)) {
         return std::make_shared<MeasureAreaInfo>(
-            true,
+            false,
             0.0,
             App::GeoFeature::getGlobalPlacement(
                 subject.getSubObjectList().back(),
