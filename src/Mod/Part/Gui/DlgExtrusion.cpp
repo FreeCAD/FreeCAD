@@ -701,7 +701,7 @@ void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
         lnk.setValue(nullptr);
     }
     else {
-        QStringList parts = text.split(QChar::fromLatin1(':'));
+        QStringList parts = text.split(u':');
         App::DocumentObject* obj = App::GetApplication().getActiveDocument()->getObject(
             parts[0].toUtf8()
         );
@@ -714,7 +714,7 @@ void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
         }
         else if (parts.size() == 2) {
             std::vector<std::string> subs;
-            subs.emplace_back(parts[1].toLatin1().constData());
+            subs.emplace_back(parts[1].toUtf8().constData());
             lnk.setValue(obj, subs);
         }
     }
@@ -1100,7 +1100,7 @@ void DlgExtrusion::onDeletedObject(const App::DocumentObject& obj)
     if (!name) {
         return;
     }
-    const QString objName = QString::fromLatin1(name);
+    const QString objName = QString::fromUtf8(name);
 
     {
         const QSignalBlocker blocker(ui->treeWidget);
@@ -1113,7 +1113,7 @@ void DlgExtrusion::onDeletedObject(const App::DocumentObject& obj)
     }
 
     const QString axisLink = ui->txtLink->text();
-    if (axisLink == objName || axisLink.startsWith(objName + QLatin1Char(':'))) {
+    if (axisLink == objName || axisLink.startsWith(objName + u':')) {
         const QSignalBlocker blocker(ui->txtLink);
         ui->txtLink->clear();
     }
