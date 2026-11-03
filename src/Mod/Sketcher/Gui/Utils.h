@@ -27,6 +27,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
+#include <Gui/Tree.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
 
@@ -232,6 +233,9 @@ inline void scrollTo(QListWidget* list, int i, bool select)
         list->scrollTo(index, QAbstractItemView::PositionAtCenter);
     }
 }
+
+// Model TreeWidget helpers
+Gui::TreeWidget* findModelTreeWidget();
 
 }  // namespace SketcherGui
 
