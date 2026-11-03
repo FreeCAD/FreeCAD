@@ -4,13 +4,24 @@ set -euox pipefail
 # Wraps `apt update` so that it is retried upon failure.
 apt_update_retryable() {
   local delay
-  for delay in 60 120 180; do
-    sudo apt-get update -qq --error-on=any && return
+  local log=/tmp/apt-update.log
+
+  # The last delay should be zero so there's no wait after the last attempt
+  for delay in 60 120 180 0; do
+
+    if sudo apt-get update -q --error-on=any 2>&1 | tee "$log"; then
+      return 0
+    fi
+
+    # If a signing key is rejected, no further attempt will succeed.
+    if grep -qE 'NO_PUBKEY|EXPKEYSIG|BADSIG|EXPSIG|REVKEYSIG' "$log"; then
+      echo "apt rejected a repository signing key; not retrying" >&2
+      return 1
+    fi
+
     sleep "$delay"
   done
-  # Since all prior attempts failed, loosen what counts as an error (e.g.
-  # incomplete download of package lists)
-  sudo apt-get update -qq
+  return 1
 }
 
 apt_update_retryable
