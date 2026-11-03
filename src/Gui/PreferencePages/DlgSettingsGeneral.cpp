@@ -55,6 +55,8 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Language/Translator.h>
+#include <qcheckbox.h>
+#include <qnamespace.h>
 #include <qt6/QtWidgets/qcombobox.h>
 
 #include "DlgSettingsGeneral.h"
@@ -120,6 +122,12 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
             &DlgSettingsGeneral::onManagePreferencePacksClicked
         );
         connect(
+            ui->followSystemThemeCheckBox,
+            &QCheckBox::checkStateChanged,
+            this,
+            &DlgSettingsGeneral::onFollowSystemThemeCheckBoxChanged
+        );
+        connect(
             ui->themesCombobox,
             qOverload<int>(&QComboBox::activated),
             this,
@@ -138,6 +146,10 @@ DlgSettingsGeneral::DlgSettingsGeneral(QWidget* parent)
             &DlgSettingsGeneral::onThemeChanged
         );
         connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
+#if !SYSTEM_THEMING_SUPPORTED
+        ui->followSystemThemeCheckBox->hide();
+        ui->followSystemThemeCheckBox->setChecked(false);
+#endif
     }
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
@@ -381,8 +393,8 @@ void DlgSettingsGeneral::loadSettings()
     loadThemes(ui->lightThemeCombobox);
     loadThemes(ui->darkThemeCombobox);
 
-    // determines if light and dark theme boxes need to be shown (when using system theme)
-    onThemeChanged(0);
+    auto followingSystemTheme = hGrp->GetBool("FollowSystemTheme");
+    ui->followSystemThemeCheckBox->setChecked(followingSystemTheme);
 }
 
 void DlgSettingsGeneral::resetSettingsToDefaults()
@@ -401,6 +413,8 @@ void DlgSettingsGeneral::resetSettingsToDefaults()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
+    // reset "FollowSystemTheme" parameter;
+    hGrp->RemoveBool("FollowSystemTheme");
     // reset "Theme" parameter
     hGrp->RemoveASCII("Theme");
     // reset "ThemeSetting" parameter
@@ -440,20 +454,24 @@ void DlgSettingsGeneral::saveThemes()
     );
 
     // First we check if the theme has actually changed.
+    bool previousFollowSystemTheme = hGrp->GetBool("FollowSystemTheme", false);
     std::string previousThemeSetting = hGrp->GetASCII("ThemeSetting", "");
     std::string previousLightThemeSetting = hGrp->GetASCII("LightThemeSetting", "");
     std::string previousDarkThemeSetting = hGrp->GetASCII("DarkThemeSetting", "");
+    bool newFollowSystemTheme = ui->followSystemThemeCheckBox->isChecked();
     std::string newThemeSetting = ui->themesCombobox->currentText().toStdString();
     std::string newLightThemeSetting = ui->lightThemeCombobox->currentText().toStdString();
     std::string newDarkThemeSetting = ui->darkThemeCombobox->currentText().toStdString();
 
     if (previousThemeSetting == newThemeSetting && previousLightThemeSetting == newLightThemeSetting
-        && previousDarkThemeSetting == newDarkThemeSetting) {
+        && previousDarkThemeSetting == newDarkThemeSetting
+        && previousFollowSystemTheme == newFollowSystemTheme) {
         themeChanged = false;
         return;
     }
 
     // Save the name of the theme
+    hGrp->SetBool("FollowSystemTheme", newFollowSystemTheme);
     hGrp->SetASCII("ThemeSetting", newThemeSetting);
     hGrp->SetASCII("LightThemeSetting", newLightThemeSetting);
     hGrp->SetASCII("DarkThemeSetting", newDarkThemeSetting);
@@ -462,7 +480,7 @@ void DlgSettingsGeneral::saveThemes()
 
 #if SYSTEM_THEMING_SUPPORTED
     // Check if using system theme
-    if (newThemeSetting == "Use system theme") {
+    if (newFollowSystemTheme) {
         newTheme = GUIApplication::isSystemInDarkMode() ? newDarkThemeSetting : newLightThemeSetting;
     }
 #endif  // SYSTEM_THEMING_SUPPORTED
@@ -879,19 +897,21 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(const int index)
     ui->fractionalInchLabel->setVisible(visible);
 }
 
+void DlgSettingsGeneral::onFollowSystemThemeCheckBoxChanged(Qt::CheckState checkState)
+{
+    ui->themesLabel->setVisible(checkState != Qt::CheckState::Checked);
+    ui->themesCombobox->setVisible(checkState != Qt::CheckState::Checked);
+    ui->lightThemeLabel->setVisible(checkState == Qt::CheckState::Checked);
+    ui->lightThemeCombobox->setVisible(checkState == Qt::CheckState::Checked);
+    ui->darkThemeLabel->setVisible(checkState == Qt::CheckState::Checked);
+    ui->darkThemeCombobox->setVisible(checkState == Qt::CheckState::Checked);
+
+    themeChanged = true;
+}
+
 void DlgSettingsGeneral::onThemeChanged(int index)
 {
     Q_UNUSED(index);
-
-    std::string selectedTheme = ui->themesCombobox->currentText().toStdString();
-
-#if SYSTEM_THEMING_SUPPORTED
-    bool systemThemeSelected = (selectedTheme == "Use system theme");
-    ui->lightThemeLabel->setVisible(systemThemeSelected);
-    ui->lightThemeCombobox->setVisible(systemThemeSelected);
-    ui->darkThemeLabel->setVisible(systemThemeSelected);
-    ui->darkThemeCombobox->setVisible(systemThemeSelected);
-#endif  // SYSTEM_THEMING_SUPPORTED
 
     themeChanged = true;
 }

@@ -27,6 +27,7 @@
 
 #include <Gui/PropertyPage.h>
 #include <memory>
+#include <qnamespace.h>
 #include <qt6/QtWidgets/qcombobox.h>
 #include <string>
 
@@ -71,6 +72,7 @@ protected Q_SLOTS:
     void newPreferencePackDialogAccepted();
     void onManagePreferencePacksClicked();
     void onImportConfigClicked();
+    void onFollowSystemThemeCheckBoxChanged(Qt::CheckState checkState);
     void onThemeChanged(int index);
     void onLinkActivated(const QString& link);
 
