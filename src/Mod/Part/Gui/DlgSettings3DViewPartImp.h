@@ -52,6 +52,7 @@ protected:
 private:
     void onMaxDeviationValueChanged(double);
     void onMaxAngularDeflectionEditingFinished();
+    void onApplyToExistingClicked();
 
 private:
     std::unique_ptr<Ui_DlgSettings3DViewPart> ui;
