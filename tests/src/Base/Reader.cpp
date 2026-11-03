@@ -63,9 +63,13 @@ public:
 
     void givenDataAsXMLStream(const std::string& data)
     {
-        auto stringData = R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data
-            + "</document>";
-        std::istringstream stream(stringData);
+        givenDocumentAsXMLStream(
+            R"(<?xml version="1.0" encoding="UTF-8"?><document>)" + data + "</document>"
+        );
+    }
+
+    void givenDocumentAsXMLStream(const std::string& stringData)
+    {
         std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
         fileStream.close();
@@ -615,4 +619,24 @@ TEST_F(ReaderTest, validateXmlString)
     output.push_back('_');
     std::string result = Base::Persistence::validateXMLString(input);
     EXPECT_EQ(output, result);
+}
+
+TEST_F(ReaderTest, documentTypeDeclarationRejected)
+{
+    ReaderXML xml;
+    xml.givenDocumentAsXMLStream(
+        R"(<?xml version="1.0" encoding="UTF-8"?>)"
+        R"(<!DOCTYPE document [<!ENTITY a "aaaaaaaaaa"><!ENTITY b "&a;&a;&a;&a;&a;">]>)"
+        R"(<document><data>&b;</data></document>)"
+    );
+
+    EXPECT_FALSE(xml.Reader()->isValid());
+}
+
+TEST_F(ReaderTest, documentWithoutTypeDeclarationAccepted)
+{
+    ReaderXML xml;
+    xml.givenDataAsXMLStream("<data>Test ASCII data</data>");
+
+    EXPECT_TRUE(xml.Reader()->isValid());
 }
