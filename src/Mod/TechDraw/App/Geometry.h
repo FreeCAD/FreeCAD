@@ -480,7 +480,7 @@ class TechDrawExport GeometryUtils
         static bool isCircle(const TopoDS_Edge& occEdge);
         static bool getCircleParms(const TopoDS_Edge& occEdge, double& radius, Base::Vector3d& center, bool& isArc);
         static TopoDS_Edge asCircle(const TopoDS_Edge& splineEdge, bool& arc);
-        static bool isLine(const TopoDS_Edge& occEdge);
+        static bool isLine(const TopoDS_Edge& splineEdge);
         static TopoDS_Edge asLine(const TopoDS_Edge& occEdge);
 
         static double edgeLength(TopoDS_Edge occEdge);
@@ -506,6 +506,10 @@ class TechDrawExport GeometryUtils
                     bestFitArc(opencascade::handle<Geom_TrimmedCurve> splineActual,
                                opencascade::handle<Geom_TrimmedCurve> circleArc0,
                                opencascade::handle<Geom_TrimmedCurve> circleArc1);
+
+        static bool colinearPoints2d(Base::Vector3d p0, Base::Vector3d p1, Base::Vector3d p2);
+        static bool colinearPoints2dAll(const std::vector<Base::Vector3d>& points2d);
+
 };
 
 } //end namespace TechDraw
