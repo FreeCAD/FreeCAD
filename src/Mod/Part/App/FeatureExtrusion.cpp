@@ -345,6 +345,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
 
     // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
     TopoShape myShape(source.makeElementCopy());
+    myShape.Tag = result.Tag;
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
         || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
@@ -403,13 +404,15 @@ App::DocumentObjectExecReturn* Extrusion::execute()
 
     try {
         ExtrusionParameters params = computeFinalParameters();
-        TopoShape result(0, getDocument()->getStringHasher());
+        TopoShape result = makeTopoShape(getID());
+        TopoShape source
+            = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
 
-        extrudeShape(
-            result,
-            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform),
-            params
-        );
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            source.markOwnership(getID());
+        }
+
+        extrudeShape(result, source, params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

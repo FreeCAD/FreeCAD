@@ -30,6 +30,7 @@
 #include "Application.h"
 #include "MappedElement.h"
 #include "StringHasher.h"
+#include "ElementNamingUtils.h"
 
 #include <cstring>
 #include <deque>
@@ -89,6 +90,7 @@ public:
      * restore process of the map.
      */
     ElementMap();
+    ElementMap(const ElementMap& other) = default;
 
     /**
      * @brief Prepare this map for saving.
@@ -306,6 +308,19 @@ public:
      */
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
+    const App::HistoryAlgorithm& getHistoryAlgorithm() const {
+        return historyAlgorithm;
+    }
+
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newHistoryAlgorithm) {
+        historyAlgorithm = newHistoryAlgorithm;
+    }
+
+    /// Retag method, only used with V2 element maps.
+    void retagElementMap(long newTag);
+
+    /// Method to change the ownership of all the names in the map.
+    void markNameOwnership(long newOwnerTag);
 
 private:
     /** Serialize this map
@@ -400,6 +415,9 @@ private:
     std::map<const char*, IndexedElements, CStringComp> indexedNames;
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
+
+    App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2;
+
 
     struct ChildMapInfo
     {

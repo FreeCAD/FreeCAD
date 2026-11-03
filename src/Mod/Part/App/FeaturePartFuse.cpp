@@ -112,7 +112,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
     }
 
     bool argumentsAreInCompound = false;
-    TopoShape compoundOfArguments;
+    TopoShape compoundOfArguments = makeTopoShape();
 
     // if only one source shape, and it is a compound - fuse children of the compound
     const int maxIterations = 1'000'000;  // will trigger "not enough shape objects linked" error
@@ -157,7 +157,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                 throw Base::RuntimeError("MultiFusion failed");
             }
 
-            TopoShape res(0);
+            TopoShape res = makeTopoShape(false);
             res = res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
             for (const auto& it2 : shapes) {
                 history.push_back(buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));

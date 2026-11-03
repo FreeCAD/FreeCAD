@@ -570,12 +570,6 @@ void ComplexGeoDataPy::setPlacement(Py::Object arg)
     }
 }
 
-Py::String ComplexGeoDataPy::getElementMapVersion() const
-{
-    return Py::String(getComplexGeoDataPtr()->getElementMapVersion());
-}
-
-
 Py::Long ComplexGeoDataPy::getTag() const
 {
     return Py::Long(getComplexGeoDataPtr()->Tag);

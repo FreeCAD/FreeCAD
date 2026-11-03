@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
                 return new App::DocumentObjectExecReturn("Invalid link.");
             }
         }
-        TopoShape res(0, getDocument()->getStringHasher());
+        TopoShape res = makeTopoShape();
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
         return Part::Feature::execute();
@@ -225,10 +225,20 @@ App::DocumentObjectExecReturn* Loft::execute()
         return new App::DocumentObjectExecReturn("No sections linked.");
     }
 
+    const App::HistoryAlgorithm& historyAlgorithm = getSelectedHistoryAlgorithm();
+    long newTag = getID();
+
     try {
         std::vector<TopoShape> shapes;
         for (auto& obj : Sections.getValues()) {
-            shapes.emplace_back(getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform));
+            TopoShape sectionShape
+                = getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+
+            if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+                sectionShape.markOwnership(newTag);
+            }
+
+            shapes.emplace_back(sectionShape);
             if (shapes.back().isNull()) {
                 return new App::DocumentObjectExecReturn("Invalid section link");
             }
@@ -237,7 +247,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         IsRuled isRuled = Ruled.getValue() ? IsRuled::ruled : IsRuled::notRuled;
         IsClosed isClosed = Closed.getValue() ? IsClosed::closed : IsClosed::notClosed;
         int degMax = MaxDegree.getValue();
-        TopoShape result(0, getDocument()->getStringHasher());
+        TopoShape result = makeTopoShape();
         result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
@@ -310,6 +320,8 @@ App::DocumentObjectExecReturn* Sweep::execute()
     }
     TopoShape spine = getTopoShape(Spine.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform);
     const auto& subs = Spine.getSubValues();
+    const App::HistoryAlgorithm& historyAlgorithm = getSelectedHistoryAlgorithm();
+    long newTag = getID();
     if (spine.isNull()) {
         return new App::DocumentObjectExecReturn("Invalid spine");
     }
@@ -322,7 +334,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
             }
             spineShapes.push_back(shape);
         }
-        spine = TopoShape(0).makeElementCompound(
+        spine = makeTopoShape(false).makeElementCompound(
             spineShapes,
             0,
             TopoShape::SingleShapeCompoundCreationPolicy::returnShape
@@ -331,7 +343,11 @@ App::DocumentObjectExecReturn* Sweep::execute()
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
     for (auto& obj : Sections.getValues()) {
-        shapes.emplace_back(getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform));
+        TopoShape sectionShape = getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+        if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            sectionShape.markOwnership(newTag);
+        }
+        shapes.emplace_back(sectionShape);
         if (shapes.back().isNull()) {
             return new App::DocumentObjectExecReturn("Invalid section link");
         }
@@ -340,7 +356,7 @@ App::DocumentObjectExecReturn* Sweep::execute()
     Standard_Boolean isFrenet = Frenet.getValue() ? Standard_True : Standard_False;
     auto transMode = static_cast<TransitionMode>(Transition.getValue());
     try {
-        TopoShape result(0, getDocument()->getStringHasher());
+        TopoShape result = makeTopoShape();
         result.makeElementPipeShell(shapes, isSolid, isFrenet, transMode, Part::OpCodes::Sweep);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);

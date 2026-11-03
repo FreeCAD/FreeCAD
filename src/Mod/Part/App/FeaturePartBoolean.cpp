@@ -166,7 +166,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
 
         throwIfInvalidIfCheckModel(resShape);
 
-        TopoShape res(0);
+        TopoShape res = makeTopoShape(0, false);
         res.makeElementShape(*mkBool, shapes, opCode());
         if (this->Refine.getValue()) {
             res = res.makeElementRefine();

@@ -28,6 +28,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_CompSolid.hxx>
 
+#include <App/Document.h>
 
 #include "OCCError.h"
 #include "PartPyCXX.h"
@@ -57,6 +58,10 @@ PyObject* TopoShapeCompSolidPy::PyMake(struct _typeobject*, PyObject*, PyObject*
 
 int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined CompSolid
         getTopoShapePtr()->setShape(TopoDS_CompSolid());

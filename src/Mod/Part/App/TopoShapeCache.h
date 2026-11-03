@@ -76,6 +76,9 @@ public:
     /// Inverse of location
     TopLoc_Location locationInverse;
 
+    /// The history version of the owner TopoShape.
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
+
     struct PartExport AncestorInfo
     {
         bool initialized = false;

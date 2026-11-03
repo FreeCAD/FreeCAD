@@ -39,15 +39,6 @@ namespace Part
 class PartExport OpCodes
 {
 public:
-    /** Element name encoding scheme version number
-     *
-     * Increase this version if there is major change in encoding scheme.
-     * Opening a document containing a mismatched version number will cause the
-     * element map to be regenerated after recompute
-     */
-
-    static constexpr const int Version = 15;
-
     /** @name Op codes that are also accepted by TopoShape::makEBoolean() */
     //@{
     static constexpr const char* Fuse = "FUS";

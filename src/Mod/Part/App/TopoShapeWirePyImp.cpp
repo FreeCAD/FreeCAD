@@ -45,6 +45,7 @@
 
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 
+#include <App/Document.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
@@ -82,6 +83,10 @@ PyObject* TopoShapeWirePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  //
 // constructor method
 int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Wire
         getTopoShapePtr()->setShape(TopoDS_Wire());
@@ -251,7 +256,8 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject* args) const
     if (!PyArg_ParseTuple(args, "d", &dist)) {
         return nullptr;
     }
-    const TopoDS_Wire& w = TopoDS::Wire(getTopoShapePtr()->getShape());
+    TopoShape* shape = getTopoShapePtr();
+    const TopoDS_Wire& w = TopoDS::Wire(shape->getShape());
     BRepBuilderAPI_FindPlane findPlane(w);
     if (!findPlane.Found()) {
         PyErr_SetString(PartExceptionOCCError, "No planar wire");
@@ -261,7 +267,7 @@ PyObject* TopoShapeWirePy::makeOffset(PyObject* args) const
     BRepOffsetAPI_MakeOffset mkOffset(w);
     mkOffset.Perform(dist);
 
-    return new TopoShapePy(new TopoShape(mkOffset.Shape()));
+    return new TopoShapePy(new TopoShape(shape->getHistoryAlgorithm(), mkOffset.Shape()));
 }
 
 PyObject* TopoShapeWirePy::makePipe(PyObject* args) const
@@ -269,9 +275,10 @@ PyObject* TopoShapeWirePy::makePipe(PyObject* args) const
     PyObject* pShape;
     if (PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pShape)) {
         try {
+            TopoShape* thisShape = this->getTopoShapePtr();
             TopoDS_Shape profile = static_cast<TopoShapePy*>(pShape)->getTopoShapePtr()->getShape();
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipe(profile);
-            return new TopoShapePy(new TopoShape(shape));
+            TopoDS_Shape shape = thisShape->makePipe(profile);
+            return new TopoShapePy(new TopoShape(thisShape->getHistoryAlgorithm(), shape));
         }
         catch (Standard_Failure& e) {
 
@@ -296,6 +303,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject* args) const
         try {
             TopTools_ListOfShape sections;
             Py::Sequence list(obj);
+            TopoShape* thisShape = this->getTopoShapePtr();
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& shape
@@ -303,13 +311,13 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject* args) const
                     sections.Append(shape);
                 }
             }
-            TopoDS_Shape shape = this->getTopoShapePtr()->makePipeShell(
+            TopoDS_Shape shape = thisShape->makePipeShell(
                 sections,
                 Base::asBoolean(make_solid),
                 Base::asBoolean(is_Frenet),
                 transition
             );
-            return new TopoShapePy(new TopoShape(shape));
+            return new TopoShapePy(new TopoShape(thisShape->getHistoryAlgorithm(), shape));
         }
         catch (Standard_Failure& e) {
 
@@ -409,14 +417,15 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject* args) const
     }
     try {
         TopoDS_Wire o1, o2;
-        const TopoDS_Wire& w1 = TopoDS::Wire(getTopoShapePtr()->getShape());
+        TopoShape* thisShape = getTopoShapePtr();
+        const TopoDS_Wire& w1 = TopoDS::Wire(thisShape->getShape());
         const TopoDS_Wire& w2 = TopoDS::Wire(
             static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape()
         );
         ShapeAlgo_AlgoContainer shapeAlgo;
         if (shapeAlgo.HomoWires(w1, w2, o1, o2, Standard_True)) {
             getTopoShapePtr()->setShape(o1);
-            return new TopoShapeWirePy(new TopoShape(o2));
+            return new TopoShapeWirePy(new TopoShape(thisShape->getHistoryAlgorithm(), o2));
         }
         else {
             Py_INCREF(wire);
