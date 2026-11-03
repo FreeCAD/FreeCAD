@@ -36,7 +36,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         box.Height = height
         self.document.recompute()
         return box
-        
+
     def _create_TD_page(self):
         tpath = os.path.join(
             App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
@@ -189,7 +189,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
 
         area_expected = 1200 * 2200 - 800 * 1800
         self.assertAlmostEqual(face.Area, area_expected)
-        
+
     def testTechDrawViewWindowSymbols(self):
         """Tests the display of plan symbols in a TD view from
         a section with 'Only Solids' set to true.
@@ -217,7 +217,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         section = Arch.makeSectionPlane(door)
         section.OnlySolids = True
         App.ActiveDocument.recompute()
-        
+
         # Create a TD page
         page = self._create_TD_page()
         view = App.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIMView")
