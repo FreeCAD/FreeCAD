@@ -86,6 +86,8 @@ class TestGroupVisibilityRestoreGui(unittest.TestCase):
             self._rewrite_archive(original, target, mode, group_first)
             restored = App.openDocument(str(target))
             try:
+                if kind.endswith("Python") and mode != "missing_gui":
+                    self.assertIsInstance(restored.Group.ViewObject.Proxy, GroupViewProxy)
                 self.assertTrue(restored.Group.Visibility)
                 self.assertTrue(restored.Group.ViewObject.Visibility)
                 self.assertFalse(restored.Box.Visibility)
@@ -125,3 +127,48 @@ class TestGroupVisibilityRestoreGui(unittest.TestCase):
 
     def test_python_group_uses_app_visibility_without_gui_document(self):
         self._check_visibility("App::DocumentObjectGroupPython", "missing_gui")
+
+    def _check_hidden_group(self, kind, mode, group_first):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            original = directory / "original.FCStd"
+            document = App.newDocument("HiddenGroupRestore")
+            try:
+                box = document.addObject("Part::Box", "Box")
+                group = document.addObject(kind, "Group")
+                if kind.endswith("Python"):
+                    group.ViewObject.Proxy = GroupViewProxy()
+                group.addObject(box)
+                group.ViewObject.Visibility = False
+                box.ViewObject.Visibility = True
+                document.recompute()
+                self.assertFalse(group.Visibility)
+                self.assertTrue(box.Visibility)
+                document.saveAs(str(original))
+            finally:
+                App.closeDocument(document.Name)
+
+            target = directory / "restored.FCStd"
+            self._rewrite_archive(original, target, mode, group_first)
+            restored = App.openDocument(str(target))
+            try:
+                if kind.endswith("Python"):
+                    self.assertIsInstance(restored.Group.ViewObject.Proxy, GroupViewProxy)
+                self.assertFalse(restored.Group.Visibility)
+                self.assertFalse(restored.Group.ViewObject.Visibility)
+                self.assertTrue(restored.Box.Visibility)
+                self.assertTrue(restored.Box.ViewObject.Visibility)
+            finally:
+                App.closeDocument(restored.Name)
+
+    def _check_hidden_group_all(self, kind):
+        for mode in ("normal", "legacy_without_app_visibility"):
+            for group_first in (True, False):
+                with self.subTest(mode=mode, group_first=group_first):
+                    self._check_hidden_group(kind, mode, group_first)
+
+    def test_plain_hidden_group_restores_shown_member(self):
+        self._check_hidden_group_all("App::DocumentObjectGroup")
+
+    def test_python_hidden_group_restores_shown_member(self):
+        self._check_hidden_group_all("App::DocumentObjectGroupPython")

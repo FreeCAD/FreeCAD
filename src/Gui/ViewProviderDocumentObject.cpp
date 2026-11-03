@@ -407,8 +407,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject* pcObj)
     // save Object pointer
     pcObject = pcObj;
 
-    // Python proxies can reattach while the view is temporarily hidden for restore.
-    if (pcObj && pcObj->isAttachedToDocument() && !isRestoring()
+    if (pcObj && pcObj->isAttachedToDocument()
         && Visibility.getValue() != pcObj->Visibility.getValue()) {
         pcObj->Visibility.setValue(Visibility.getValue());
     }
