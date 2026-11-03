@@ -82,6 +82,7 @@ function(fc_target_copy_resource target_name inpath outpath)
             OUTPUT  "${outfile}"
             COMMENT "Copying ${infile} to ${outfile}${fc_details}"
             MAIN_DEPENDENCY "${infile}"
+            VERBATIM
         )
         target_sources(${target_name} PRIVATE "${outfile}")
     endforeach(it)

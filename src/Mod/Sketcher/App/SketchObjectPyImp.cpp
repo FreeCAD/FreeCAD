@@ -763,6 +763,41 @@ PyObject* SketchObjectPy::delConstraintsToExternal()
     Py_Return;
 }
 
+PyObject* SketchObjectPy::replaceGroupGeometry(PyObject* args)
+{
+    int index;
+    PyObject* values;
+    PyObject* handle = nullptr;
+    if (
+        !PyArg_ParseTuple(args, "iO!|O!", &index, &PyList_Type, &values, &Base::VectorPy::Type, &handle)
+    ) {
+        return nullptr;
+    }
+    try {
+        Py::List list(values);
+        std::vector<Part::Geometry*> geometry;
+        for (const auto& item : list) {
+            if (!PyObject_TypeCheck(item.ptr(), &Part::GeometryPy::Type)) {
+                throw Base::TypeError("Expected a list of Part geometry");
+            }
+            geometry.push_back(static_cast<Part::GeometryPy*>(item.ptr())->getGeometryPtr());
+        }
+        return Py::new_reference_to(
+            Py::Long(
+                getSketchObjectPtr()->replaceGroupGeometry(
+                    index,
+                    geometry,
+                    handle ? static_cast<Base::VectorPy*>(handle)->value() : Base::Vector3d()
+                )
+            )
+        );
+    }
+    catch (const Base::Exception& error) {
+        error.setPyException();
+        return nullptr;
+    }
+}
+
 PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
 {
     int constrIndex = -1;
