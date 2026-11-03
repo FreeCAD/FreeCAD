@@ -46,6 +46,14 @@ using namespace Clipper2Lib;
 // Matches CleanPolygons default distance in Clipper1 (sqrt(2))
 const double CLEAN_POLYGONS_TOLERANCE = 1.415;
 
+// SimplifyPaths, then drops 2-point pancake paths
+inline Paths64 SimplifyPathsFilterPancakes(const Paths64& paths, double epsilon)
+{
+    Paths64 result = SimplifyPaths(paths, epsilon);
+    std::erase_if(result, [](const Path64& p) { return p.size() < 3; });
+    return result;
+}
+
 // Wrappers that preserve Clipper1 default offset behavior (arc_tolerance=0.25 absolute)
 inline Paths64 OffsetPaths(
     const Paths64& paths,
@@ -977,7 +985,7 @@ public:
     void AddClearedPaths(const Paths64& paths)
     {
         clearedPaths = Union(clearedPaths, paths, FillRule::EvenOdd);
-        clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
+        clearedPaths = SimplifyPathsFilterPancakes(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
     }
@@ -990,7 +998,7 @@ public:
         Perf_ExpandCleared.Start();
         Paths64 toolCoverPoly = OffsetPath(toClearToolPath, toolRadiusScaled + 1, EndType::Round);
         clearedPaths = Union(clearedPaths, toolCoverPoly, FillRule::EvenOdd);
-        clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
+        clearedPaths = SimplifyPathsFilterPancakes(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
         Perf_ExpandCleared.Stop();
