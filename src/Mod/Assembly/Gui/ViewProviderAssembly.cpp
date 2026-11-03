@@ -23,6 +23,7 @@
 
 
 #include <boost/core/ignore_unused.hpp>
+#include <QApplication>
 #include <QMessageBox>
 #include <QTimer>
 #include <QMenu>
@@ -119,6 +120,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , ctrlPressed(false)
     , forceSolveOnMoveForRigid(false)
     , ungroundedJointDrag(false)
+    , spinOnPlane(false)
     , lastClickTime(0)
     , jointVisibilitiesBackup({})
     , docsToMove({})
@@ -342,6 +344,9 @@ bool ViewProviderAssembly::setEdit(int mode)
 void ViewProviderAssembly::unsetEdit(int mode)
 {
     if (mode == ViewProvider::Default) {
+        if (partMoving && dragMode == DragMode::TranslationOnPlane && !ungroundedJointDrag) {
+            Gui::getMainWindow()->hideHints();
+        }
         canStartDragging = false;
         partMoving = false;
         docsToMove.clear();
@@ -531,6 +536,33 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
         else if (dragMode == DragMode::TranslationOnPlane) {
             SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
+
+            bool spin = !ungroundedJointDrag
+                && QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier);
+            bool nearPivot = false;
+            if (spin) {
+                // Too close to the pivot the angle is meaningless, so hold the part still there
+                auto deadZone = short(QApplication::startDragDistance() * viewer->devicePixelRatio());
+                SbVec3f edgeX = viewer->getPointOnXYPlaneOfPlacement(
+                    cursorPos + SbVec2s(deadZone, 0),
+                    jcsGlobalPlc
+                );
+                SbVec3f edgeY = viewer->getPointOnXYPlaneOfPlacement(
+                    cursorPos + SbVec2s(0, deadZone),
+                    jcsGlobalPlc
+                );
+                double radius = std::max(
+                    (Base::convertTo<Base::Vector3d>(edgeX) - newPos).Length(),
+                    (Base::convertTo<Base::Vector3d>(edgeY) - newPos).Length()
+                );
+                Base::Vector3d center = jcsGlobalPlc.getPosition();
+                nearPivot = (newPos - center).Length() <= radius
+                    || (initialPositionRot - center).Length() <= radius;
+            }
+            if (spin != spinOnPlane || nearPivot) {
+                restartDragFrom(newPos);
+                spinOnPlane = spin;
+            }
         }
         else {
             SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
@@ -618,6 +650,27 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                         * Base::Placement(Base::Vector3d(), zRotation);
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * newJcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
+                }
+                else if (dragMode == DragMode::TranslationOnPlane && spinOnPlane) {
+                    Base::Vector3d center = jcsGlobalPlc.getPosition();
+                    Base::Vector3d u = initialPositionRot - center;
+                    Base::Vector3d v = newPos - center;
+                    if (u.Length() > Precision::Confusion() && v.Length() > Precision::Confusion()) {
+                        Base::Vector3d norm = jcsGlobalPlc.getRotation().multVec(
+                            Base::Vector3d(0., 0., -1.)
+                        );
+                        double angle = v.GetAngleOriented(u, norm);
+                        Base::Placement zRotation(
+                            Base::Vector3d(),
+                            Base::Rotation(Base::Vector3d(0., 0., 1.), angle)
+                        );
+                        // Rotate in world space about the joint, placements are in the assembly frame
+                        Base::Placement asmPlc = App::GeoFeature::getGlobalPlacement(
+                            getObject<AssemblyObject>()
+                        );
+                        plc = asmPlc.inverse() * jcsGlobalPlc * zRotation * jcsGlobalPlc.inverse()
+                            * asmPlc * plc;
+                    }
                 }
                 else if (dragMode == DragMode::TranslationOnPlane) {
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
@@ -1054,7 +1107,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         else if (jointType == JointType::Distance) {
             //  depends on the type of distance. For example plane-plane:
             DistanceType distanceType = getDistanceType(movingJoint);
-            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::Other) {
+            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::PlaneTorus
+                || distanceType == DistanceType::TorusTorus || distanceType == DistanceType::Other) {
                 return DragMode::TranslationOnPlane;
             }
         }
@@ -1132,6 +1186,14 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     else if (dragMode == DragMode::TranslationOnPlane) {
         vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
         initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+        initialPositionRot = initialPosition;
+        spinOnPlane = false;
+        if (!ungroundedJointDrag) {
+            using enum Gui::InputHint::UserInput;
+            Gui::getMainWindow()->showHints(
+                {{.message = tr("%1 rotate around the plane normal"), .sequences = {{ModifierShift}}}}
+            );
+        }
     }
     else {
         vec = viewer->getPointOnFocalPlane(cursorPos);
@@ -1173,6 +1235,10 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
 
 void ViewProviderAssembly::endMove()
 {
+    if (dragMode == DragMode::TranslationOnPlane && !ungroundedJointDrag) {
+        Gui::getMainWindow()->hideHints();
+    }
+
     docsToMove.clear();
     partMoving = false;
     canStartDragging = false;
@@ -1208,6 +1274,28 @@ void ViewProviderAssembly::endMove()
     if (moveInCommand) {
         getDocument()->commitCommand();
     }
+}
+
+void ViewProviderAssembly::restartDragFrom(const Base::Vector3d& position)
+{
+    if (docsToMove.empty()) {
+        return;
+    }
+
+    // The joint origin follows the moved part, so the next move starts from the current state
+    auto* propPlacement = docsToMove[0].obj->getPlacementProperty();
+    if (propPlacement) {
+        Base::Placement asmPlc = App::GeoFeature::getGlobalPlacement(getObject<AssemblyObject>());
+        Base::Placement moved = propPlacement->getValue() * docsToMove[0].plc.inverse();
+        jcsGlobalPlc = asmPlc * moved * asmPlc.inverse() * jcsGlobalPlc;
+    }
+    for (auto& objToMove : docsToMove) {
+        if (auto* prop = objToMove.obj->getPlacementProperty()) {
+            objToMove.plc = prop->getValue();
+        }
+    }
+    initialPosition = position;
+    initialPositionRot = position;
 }
 
 void ViewProviderAssembly::initMoveDragger()

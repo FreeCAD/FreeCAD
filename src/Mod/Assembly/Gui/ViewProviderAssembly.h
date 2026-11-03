@@ -229,6 +229,7 @@ public:
     bool ctrlPressed;
     bool forceSolveOnMoveForRigid;
     bool ungroundedJointDrag;
+    bool spinOnPlane;
 
     long lastClickTime;  // Store last click time as milliseconds
 
@@ -259,6 +260,7 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+    void restartDragFrom(const Base::Vector3d& position);
 
     void collectMovableObjects(
         App::DocumentObject* selRoot,
