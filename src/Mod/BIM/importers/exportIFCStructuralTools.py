@@ -19,6 +19,7 @@
 #                                                                              #
 ################################################################################
 
+from nativeifc import ifc_backend
 
 __title__ = "FreeCAD structural IFC export tools"
 __author__ = "Yorik van Havre"
@@ -37,9 +38,7 @@ def setup(ifcfile, ifcbin, scale):
     global structural_nodes, scaling
     structural_nodes = {}
     scaling = scale
-    import ifcopenshell
-
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     project = ifcfile.by_type("IfcProject")[0]
     structContext = createStructuralContext(ifcfile)
@@ -97,9 +96,7 @@ def getStructuralContext(ifcfile):
 def createStructuralNode(ifcfile, ifcbin, point):
     """Creates a connection node at the given point"""
 
-    import ifcopenshell
-
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structContext = getStructuralContext(ifcfile)
     cartPoint = ifcbin.createIfcCartesianPoint(tuple(point))
@@ -144,9 +141,7 @@ def createStructuralNode(ifcfile, ifcbin, point):
 def createStructuralCurve(ifcfile, ifcbin, curve):
     """Creates a structural connection for a curve"""
 
-    import ifcopenshell
-
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structContext = getStructuralContext(ifcfile)
 
@@ -188,10 +183,9 @@ def createStructuralMember(ifcfile, ifcbin, obj):
     structuralMember = None
     import Draft
     import Part
-    import ifcopenshell
     import FreeCAD
 
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structContext = getStructuralContext(ifcfile)
 
@@ -409,9 +403,7 @@ def createStructuralMember(ifcfile, ifcbin, obj):
 def createStructuralGroup(ifcfile):
     """Assigns all structural objects found in the file to the structural model"""
 
-    import ifcopenshell
-
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structSrfMember = ifcfile.by_type("IfcStructuralSurfaceMember")
     structCrvMember = ifcfile.by_type("IfcStructuralCurveMember")
@@ -432,8 +424,6 @@ def associates(ifcfile, aobj, sobj):
     # This is probably not the right way to do this, ie. relate a structural
     # object with an IfcProduct. Needs to investigate more....
 
-    import ifcopenshell
-
-    uid = ifcopenshell.guid.new
+    uid = ifc_backend.new_guid
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     ifcfile.createIfcRelAssignsToProduct(uid(), ownerHistory, None, None, [sobj], None, aobj)
