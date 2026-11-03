@@ -73,7 +73,12 @@ bool NavigationAnimator::startAndWait(const std::shared_ptr<NavigationAnimation>
         loop.quit();
     });
     start(animation);
-    loop.exec();
+
+    // A zero duration animation finishes synchronously inside start(), so the finished signal has
+    // already been emitted and the event loop would never quit
+    if (animation->state() == QAbstractAnimation::State::Running) {
+        loop.exec();
+    }
     return finished;
 }
 
