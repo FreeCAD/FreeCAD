@@ -1100,6 +1100,15 @@ def makeSolverMystran(doc, name="SolverMystran"):
     return obj
 
 
+def makeSolverOpenRadioss(doc, name="SolverOpenRadioss"):
+    """makeSolverOpenRadioss(document, [name]):
+    makes an OpenRadioss solver object (explicit dynamics)"""
+    import femsolver.openradioss.solver
+
+    obj = femsolver.openradioss.solver.create(doc, name)
+    return obj
+
+
 def makeSolverZ88(doc, name="SolverZ88"):
     """makeSolverZ88(document, [name]):
     makes a Z88 solver object"""

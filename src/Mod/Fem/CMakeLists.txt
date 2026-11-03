@@ -363,6 +363,16 @@ SET(FemSolverMystran_SRCS
     femsolver/mystran/writer.py
 )
 
+SET(FemSolverOpenRadioss_SRCS
+    femsolver/openradioss/__init__.py
+    femsolver/openradioss/model.py
+    femsolver/openradioss/results.py
+    femsolver/openradioss/runner.py
+    femsolver/openradioss/solver.py
+    femsolver/openradioss/tasks.py
+    femsolver/openradioss/writer.py
+)
+
 SET(FemSolverZ88_SRCS
     femsolver/z88/__init__.py
     femsolver/z88/write_constraint_displacement.py
@@ -399,6 +409,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_security.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
+    femtest/app/test_solver_openradioss.py
     femtest/app/test_solver_z88.py
     femtest/app/test_gmsh.py
 )
@@ -534,6 +545,12 @@ SET(FemTestsMystran_SRCS
     femtest/data/mystran/mystran_plate.bdf
 )
 
+SET(FemTestsOpenRadioss_SRCS
+    femtest/data/openradioss/__init__.py
+    femtest/data/openradioss/ccx_cantilever_faceload.k
+    femtest/data/openradioss/ccx_cantilever_nodeload.k
+)
+
 SET(FemTestsOpen_SRCS
     femtest/data/open/__init__.py
     femtest/data/open/all_objects_de9b3fb438.FCStd
@@ -620,6 +637,7 @@ SET(FemAllScripts
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverFenics_SRCS}
     ${FemSolverMystran_SRCS}
+    ${FemSolverOpenRadioss_SRCS}
     ${FemSolverZ88_SRCS}
     ${FemTests_SRCS}
     ${FemTestsApp_SRCS}
@@ -629,6 +647,7 @@ SET(FemAllScripts
     ${FemTestsMesh_SRCS}
     ${FemTestsGMSH_SRCS}
     ${FemTestsMystran_SRCS}
+    ${FemTestsOpenRadioss_SRCS}
     ${FemTestsOpen_SRCS}
     ${FemTestsZ88Main_SRCS}
     ${FemTestsZ88Ccxcantifl_SRCS}
@@ -660,6 +679,7 @@ INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
 INSTALL(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
+INSTALL(FILES ${FemSolverOpenRadioss_SRCS} DESTINATION Mod/Fem/femsolver/openradioss)
 INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
@@ -668,6 +688,7 @@ INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
+INSTALL(FILES ${FemTestsOpenRadioss_SRCS} DESTINATION Mod/Fem/femtest/data/openradioss)
 INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
 INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
 INSTALL(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
@@ -828,6 +849,7 @@ endif(BUILD_FEM_VTK_PYTHON)
 SET(FemGuiPreferencePages_SRCS
     fempreferencepages/__init__.py
     fempreferencepages/dlg_settings_netgen.py
+    fempreferencepages/dlg_settings_openradioss.py
 )
 
 SET(FemAllGuiScripts

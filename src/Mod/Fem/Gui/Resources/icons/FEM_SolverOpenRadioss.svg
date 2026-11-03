@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg2"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>FEM_SolverOpenRadioss</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6" />
+  <!-- impact lines -->
+  <path
+     id="impact"
+     style="fill:none;stroke:#2e3436;stroke-width:3;stroke-linecap:round"
+     d="M 54,8 59,4 M 56,15 62,14 M 49,4 50,1" />
+  <!-- letter R: dark outline, color, highlight -->
+  <path
+     id="outline"
+     style="fill:none;stroke:#2e1500;stroke-width:13;stroke-linecap:round;stroke-linejoin:round"
+     d="M 15,55 V 10 H 32 A 11.5,11 0 0 1 32,32 H 15 M 30,32 48,55" />
+  <path
+     id="letter"
+     style="fill:none;stroke:#f57900;stroke-width:9;stroke-linecap:round;stroke-linejoin:round"
+     d="M 15,55 V 10 H 32 A 11.5,11 0 0 1 32,32 H 15 M 30,32 48,55" />
+  <path
+     id="highlight"
+     style="fill:none;stroke:#fcaf3e;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"
+     d="M 13.5,53 V 8.5 H 32 A 13,12.5 0 0 1 43.5,16" />
+</svg>

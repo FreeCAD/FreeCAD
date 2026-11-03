@@ -178,6 +178,7 @@ def get_default_solver():
         2: "Elmer",
         3: "Mystran",
         4: "Z88",
+        5: "OpenRadioss",
     }
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return solver_map[param_group.GetInt("DefaultSolver", 0)]

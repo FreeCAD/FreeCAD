@@ -63,6 +63,8 @@ def setup_cantilever_base_solid(doc=None, solvertype="ccxtools", test_mode=False
         ObjectsFem.makeEquationElasticity(doc, solver_obj)
     elif solvertype == "mystran":
         solver_obj = ObjectsFem.makeSolverMystran(doc, "SolverMystran")
+    elif solvertype == "openradioss":
+        solver_obj = ObjectsFem.makeSolverOpenRadioss(doc, "SolverOpenRadioss")
     elif solvertype == "z88":
         solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:

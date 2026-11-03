@@ -77,6 +77,7 @@ class FemWorkbench(Workbench):
         import fempreferencepages
 
         FreeCADGui.addPreferencePage(fempreferencepages.DlgSettingsNetgen, "FEM")
+        FreeCADGui.addPreferencePage(fempreferencepages.DlgSettingsOpenRadioss, "FEM")
 
         # dummy usage to get flake8 and lgtm quiet
         False if Fem.__name__ else True

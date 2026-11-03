@@ -292,6 +292,9 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual("Fem::SolverCalculiX", type_of_obj(ObjectsFem.makeSolverCalculiX(doc)))
         self.assertEqual("Fem::SolverElmer", type_of_obj(solverelmer))
         self.assertEqual("Fem::SolverMystran", type_of_obj(ObjectsFem.makeSolverMystran(doc)))
+        self.assertEqual(
+            "Fem::SolverOpenRadioss", type_of_obj(ObjectsFem.makeSolverOpenRadioss(doc))
+        )
         self.assertEqual("Fem::SolverZ88", type_of_obj(ObjectsFem.makeSolverZ88(doc)))
         self.assertEqual(
             "Fem::EquationElmerDeformation",
@@ -489,6 +492,7 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(ObjectsFem.makeSolverCalculiX(doc), "Fem::SolverCalculiX"))
         self.assertTrue(is_of_type(solverelmer, "Fem::SolverElmer"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverMystran(doc), "Fem::SolverMystran"))
+        self.assertTrue(is_of_type(ObjectsFem.makeSolverOpenRadioss(doc), "Fem::SolverOpenRadioss"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverZ88(doc), "Fem::SolverZ88"))
         self.assertTrue(
             is_of_type(
@@ -918,6 +922,13 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(solver_mystran, "Fem::FemSolverObjectPython"))
         self.assertTrue(is_derived_from(solver_mystran, "Fem::SolverMystran"))
 
+        # SolverOpenRadioss
+        solver_openradioss = ObjectsFem.makeSolverOpenRadioss(doc)
+        self.assertTrue(is_derived_from(solver_openradioss, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(solver_openradioss, "Fem::FemSolverObject"))
+        self.assertTrue(is_derived_from(solver_openradioss, "Fem::FemSolverObjectPython"))
+        self.assertTrue(is_derived_from(solver_openradioss, "Fem::SolverOpenRadioss"))
+
         # SolverZ88
         solver_z88 = ObjectsFem.makeSolverZ88(doc)
         self.assertTrue(is_derived_from(solver_z88, "App::DocumentObject"))
@@ -1147,6 +1158,9 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             ObjectsFem.makeSolverMystran(doc).isDerivedFrom("Fem::FemSolverObjectPython")
         )
+        self.assertTrue(
+            ObjectsFem.makeSolverOpenRadioss(doc).isDerivedFrom("Fem::FemSolverObjectPython")
+        )
         self.assertTrue(ObjectsFem.makeSolverZ88(doc).isDerivedFrom("Fem::FemSolverObjectPython"))
         self.assertTrue(
             ObjectsFem.makeEquationDeformation(doc, solverelmer).isDerivedFrom("App::FeaturePython")
@@ -1300,6 +1314,7 @@ def create_all_fem_objects_doc(doc):
     analysis.addObject(ObjectsFem.makeSolverCalculiX(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
     analysis.addObject(ObjectsFem.makeSolverMystran(doc))
+    analysis.addObject(ObjectsFem.makeSolverOpenRadioss(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
     ObjectsFem.makeEquationDeformation(doc, sol)

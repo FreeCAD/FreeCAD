@@ -109,6 +109,7 @@
         <file>icons/FEM_SolverControl.svg</file>
         <file>icons/FEM_SolverElmer.svg</file>
         <file>icons/FEM_SolverMystran.svg</file>
+        <file>icons/FEM_SolverOpenRadioss.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
         <file>icons/FEM_SolverStandard.svg</file>
         <file>icons/FEM_SolverZ88.svg</file>

@@ -83,6 +83,8 @@ class _Analysis(CommandManager):
                     cmd = "FEM_SolverMystran"
                 case "Z88":
                     cmd = "FEM_SolverZ88"
+                case "OpenRadioss":
+                    cmd = "FEM_SolverOpenRadioss"
 
             if cmd:
                 FreeCADGui.doCommand(f'FreeCADGui.runCommand("{cmd}")')
@@ -1278,6 +1280,22 @@ class _SolverMystran(CommandManager):
         self.do_activated = "add_obj_on_gui_expand_noset_edit"
 
 
+class _SolverOpenRadioss(CommandManager):
+    "The FEM_SolverOpenRadioss command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.pixmap = "FEM_SolverOpenRadioss"
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverOpenRadioss", "Solver OpenRadioss")
+        self.accel = "S, O"
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_SolverOpenRadioss",
+            "Creates a FEM solver OpenRadioss for explicit dynamics (impact, crash, drop tests)",
+        )
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_expand_noset_edit"
+
+
 class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
 
@@ -1364,6 +1382,8 @@ class _CompSolvers(CommandManager):
             "FEM_SolverElmer",
             "FEM_SolverMystran",
             "FEM_SolverZ88",
+            # appended: the index must match the DefaultSolver preference
+            "FEM_SolverOpenRadioss",
         ]
 
     def Activated(self, i):
@@ -1440,6 +1460,7 @@ FreeCADGui.addCommand("FEM_SolverCalculiX", _SolverCalculiX())
 FreeCADGui.addCommand("FEM_SolverControl", _SolverControl())
 FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())
+FreeCADGui.addCommand("FEM_SolverOpenRadioss", _SolverOpenRadioss())
 FreeCADGui.addCommand("FEM_SolverRun", _SolverRun())
 FreeCADGui.addCommand("FEM_SolverZ88", _SolverZ88())
 FreeCADGui.addCommand("FEM_CompSolvers", _CompSolvers())
