@@ -242,11 +242,12 @@ bool GUIApplication::event(QEvent* ev)
             "User parameter:BaseApp/Preferences/MainWindow"
         );
 
+        bool currentFollowSystemTheme = hGrp->GetBool("FollowSystemTheme", false);
         std::string currentTheme = hGrp->GetASCII("ThemeSetting", "");
         std::string currentLightTheme = hGrp->GetASCII("LightThemeSetting", "");
         std::string currentDarkTheme = hGrp->GetASCII("DarkThemeSetting", "");
 
-        if (currentTheme == "Use system theme") {
+        if (currentFollowSystemTheme) {
             const auto scheme = QGuiApplication::styleHints()->colorScheme();
             currentTheme = scheme == Qt::ColorScheme::Dark ? currentDarkTheme : currentLightTheme;
 
