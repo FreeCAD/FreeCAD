@@ -539,11 +539,6 @@ bool DlgExpressionInput::isPropertyNameValid(
         return false;
     }
 
-    if (ExpressionParser::isTokenAUnit(name)) {
-        message = withPrefix(tr("%1 is a unit").arg(nameProp));
-        return false;
-    }
-
     if (ExpressionParser::isTokenAConstant(name)) {
         message = withPrefix(tr("%1 is a constant").arg(nameProp));
         return false;
