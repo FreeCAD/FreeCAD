@@ -613,20 +613,24 @@ class _CommandStructure:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset", self.Profile)
             else:
-                # elt[4] is the cross-section depth, elt[5] is the cross-section width.
-                # For beams the cross-section depth is Height; for columns it is Length.
-                depth = float(elt[4])
-                width = float(elt[5])
+                # elt[4] is the profile's width (along its local X), elt[5] its
+                # height (along its local Y). A beam's profile height is its
+                # Height. A column's profile width and height are its Length
+                # and Width.
+                profile_width = float(elt[4])
+                profile_height = float(elt[5])
                 if self.mode == StructureMode.BEAM:
                     self.vHeight.setText(
-                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                        FreeCAD.Units.Quantity(profile_height, FreeCAD.Units.Length).UserString
                     )
-                    self.setHeight(depth)
+                    self.setHeight(profile_height)
+                    width = profile_width
                 else:
                     self.vLength.setText(
-                        FreeCAD.Units.Quantity(depth, FreeCAD.Units.Length).UserString
+                        FreeCAD.Units.Quantity(profile_width, FreeCAD.Units.Length).UserString
                     )
-                    self.setLength(depth)
+                    self.setLength(profile_width)
+                    width = profile_height
                 self.vWidth.setText(FreeCAD.Units.Quantity(width, FreeCAD.Units.Length).UserString)
                 self.setWidth(width)
                 self.Profile = elt
