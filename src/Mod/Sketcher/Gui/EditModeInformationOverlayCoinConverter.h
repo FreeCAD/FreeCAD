@@ -81,6 +81,8 @@ struct DrawingParameters;
  */
 class EditModeInformationOverlayCoinConverter
 {
+    bool geometryVisible = true;
+
 private:
     enum class CalculationType
     {

@@ -127,6 +127,12 @@ int SketchObject::toggleExternalGeometryFlag(
     if (flags.empty()) {
         return 0;
     }
+    for (int id : geoIds) {
+        checkGeometryUnlocked(id);
+        for (int related : getRelatedGeometry(id)) {
+            checkGeometryUnlocked(related);
+        }
+    }
     auto flag = flags.front();
 
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -524,6 +530,10 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     for (const auto& geoOld : svals) {
         Part::Geometry* geoNew = geoOld->copy();
+        // Imported geometry belongs to the destination's active layer; source IDs are local.
+        GeometryFacade::getFacade(geoNew)->setGeometryLayerId(
+            hasLayer(ActiveLayer.getValue()) ? ActiveLayer.getValue() : 0
+        );
         if (xinv || yinv) {
             // corrections for flipped geometry
             applyGeometryFlipCorrection(geoNew);
@@ -894,6 +904,12 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
         }
     }
 
+    for (long id : geoIds) {
+        const auto found = externalGeoMap.find(id);
+        if (found != externalGeoMap.end()) {
+            checkGeometryUnlocked(-found->second - 1);
+        }
+    }
     delExternalPrivate(geoIds, true);
     return 0;
 }
@@ -2690,6 +2706,8 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(GeometryFacade::getId(geo.get()));
             if(it == externalGeoMap.end()) {
+                GeometryFacade::getFacade(geo.get())->setGeometryLayerId(
+                    hasLayer(ActiveLayer.getValue()) ? ActiveLayer.getValue() : 0);
                 // This is a new geometries.
                 // Set its defining state based on the inferred state of its parent link.
                 if (hasLinkState) {
@@ -2700,6 +2718,8 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             }
             // This is an existing geometry. Update it while keeping the old flags
             ExternalGeometryFacade::copyFlags(geoms[it->second], geo.get());
+            GeometryFacade::getFacade(geo.get())->setGeometryLayerId(
+                GeometryFacade::getFacade(geoms[it->second])->getGeometryLayerId());
             geoms[it->second] = geo.release();
         }
     }

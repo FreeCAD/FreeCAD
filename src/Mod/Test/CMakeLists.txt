@@ -30,6 +30,7 @@ SET(Test_SRCS
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
+    TestLayerWidget.py
     TestGraphicsViewWrapping.py
     TestMDIView.py
     TestRubberbandSelection.py

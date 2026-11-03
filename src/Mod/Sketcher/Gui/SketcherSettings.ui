@@ -20,6 +20,25 @@
       <string>Task Panel Widgets</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowLayers">
+        <property name="toolTip">
+         <string>Shows the Layers taskbox while editing a sketch. When disabled, all layers are shown.</string>
+        </property>
+        <property name="text">
+         <string>Show layers</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowLayers</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
         <property name="toolTip">
