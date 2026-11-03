@@ -1666,48 +1666,46 @@ TopoDS_Edge GeometryUtils::asCircle(const TopoDS_Edge& splineEdge, bool& arc)
     return BRepBuilderAPI_MakeEdge(arcToUse);
 }
 
-bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
+//! true if occEdge (a bspline) can be represented by a straight line.
+bool GeometryUtils::isLine(const TopoDS_Edge& splineEdge)
 {
-    BRepAdaptor_Curve adapt(occEdge);
+    BRepAdaptor_Curve adapt(splineEdge);
 
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+
+    auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
+    auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
+
+    if (startPoint.IsEqual(endPoint, EWTOLERANCE)) {
+        // either not a line (circle?) or a zero length line.
+        return false;
+    }
 
     // Because Geom_BSplineCurve::Segment() modifies the curve in-place, we must work with a copy
     Handle(Geom_BSplineCurve) spline = Handle(Geom_BSplineCurve)::DownCast(adapt.BSpline()->Copy());
     spline->Segment(firstParm, lastParm);
 
-    auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
-    auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
-    auto edgeLong = edgeLength(occEdge);
-
-    constexpr double LimitFactor{0.001};     // 0.1%  not sure about this value
-    double tolerance = edgeLong * LimitFactor;
-    if (startPoint.IsEqual(endPoint, tolerance)) {
-        // either not a line or a zero length line?
-        return false;
-    }
-    if (adapt.Degree() == 1) {
-        // Skip the calculation.  This is a line masquerading as a bspline.
-        return true;
-    }
-
-    // still might be a line disguised as a curve with a really big curvature.
-
-    // in a line the sum of the lengths of the segments should equal the distance
-    // from start to end
-    double endPointLength = (endPoint - startPoint).Length();
-
     const TColgp_Array1OfPnt& poles = spline->Poles();
-    double lenTotal = 0.0;
-    for (int i = poles.Lower(); i < poles.Upper() - 1; i++) {
-        gp_Pnt p1 = poles.Value(i);
-        gp_Pnt p2 = poles.Value(i+1);
-        auto v = Base::convertTo<Base::Vector3d>(p2.XYZ() - p1.XYZ());
-        lenTotal += v.Length();
+    if (poles.Size() < 2) {
+        throw Base::RuntimeError("BSpline has too few points");
     }
 
-    return DrawUtil::fpCompare(lenTotal, endPointLength, EWTOLERANCE);
+    if (poles.Size() == 2) {
+        if (adapt.Degree() == 1) {
+            // Skip the calculation.  This is a line masquerading as a bspline.
+            return true;
+        }
+        // only 2 poles, but degree implies we need a least 1 more pole to bend the line.
+        return false;  // we can't draw this as a line
+    }
+
+    std::vector<Base::Vector3d> polePoints;
+    for (int iPole = poles.Lower(); iPole <= poles.Upper(); iPole++) {
+        polePoints.push_back(Base::convertTo<Base::Vector3d>(poles.Value(iPole)));
+    }
+
+    return colinearPoints2dAll(polePoints);;
 }
 
 
@@ -1993,4 +1991,60 @@ opencascade::handle<Geom_TrimmedCurve> GeometryUtils::bestFitArc(opencascade::ha
     return circleArc1;
 }
 
+//! true if 2d points p0 (x, y, 0), p1, p2 are colinear
+bool GeometryUtils::colinearPoints2d(Base::Vector3d p0, Base::Vector3d p1, Base::Vector3d p2)
+{
+    Base::Matrix4D myMat;   // identity mat
+    myMat.setRow(0, p0);
+    myMat.setRow(1, p1);
+    myMat.setRow(2,p2);
+    Base::Vector3d allOnes(1, 1, 1);
+    myMat.setCol(2, allOnes);
+    double detValue = myMat.determinant3();
+    return DU::fpCompare(detValue, 0, Precision::Confusion());
+}
+
+
+//! true if all entries in points2d are colinear.  Expects 2 or more points.
+bool GeometryUtils::colinearPoints2dAll(const std::vector<Base::Vector3d>& points2d)
+{
+    constexpr int TripleSize{3};
+    int pointCount = points2d.size();
+    if (pointCount < 2) {
+        throw Base::RuntimeError("BSpline has too few points");
+    }
+
+    if (pointCount == 2) {
+        return true;
+    }
+
+    // 3 or more points
+    int tripleCount = pointCount % TripleSize;
+
+    for (int iTriple = 0; iTriple < tripleCount; iTriple++) {
+        int tripleStartPoint = iTriple * TripleSize;
+        if (colinearPoints2d(points2d.at(tripleStartPoint),
+                             points2d.at(tripleStartPoint + 1),
+                             points2d.at(tripleStartPoint + 2))) {
+            continue;
+        }
+        // at least one group of 3 points is not colinear
+        return false;
+    }
+
+    if (pointCount > tripleCount * TripleSize) {
+        // check the last few points
+        if (!colinearPoints2d(points2d.at(pointCount - 3),
+                             points2d.at(pointCount - 2),
+                             points2d.at(pointCount - 1))) {
+            return false;
+        }
+    }
+
+    // all the point triples are colinear, but we don't know yet if all are colinear.  We need to test 3 points that
+    // were not in the same triple.
+    return colinearPoints2d(points2d.front(),
+                            points2d.at(pointCount % 2),
+                            points2d.back());
+}
 
