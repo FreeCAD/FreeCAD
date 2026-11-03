@@ -22,6 +22,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchValidateCoincidents.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
+    SketcherTests/TestSketchGroups.py
     SketcherTests/TestSketchInternalFaces.py
     SketcherTests/TestSketcherEllipse.py
 )
@@ -37,6 +38,7 @@ if(BUILD_GUI)
           SketcherTests/TestConstraintCommandsGui.py
           SketcherTests/TestCoincidentCommandGui.py
           SketcherTests/GuiTestCase.py
+          SketcherTests/TestSketchGroupsGui.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
           SketcherTests/TestExternalFacePreselection.py
