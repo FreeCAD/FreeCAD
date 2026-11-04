@@ -1696,6 +1696,8 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
     };
 
     bool selecting = isSelected(getSelectionName(clickedGeoId));
+    // only edges of the same kind as the clicked one can be part of the wire
+    bool clickedIsConstruction = GeometryFacade::getConstruction(geo1);
 
     struct CandidateEdge {
         int geoId;
@@ -1704,9 +1706,17 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
     };
     std::vector<CandidateEdge> candidateEdges;
 
-    auto addCandidate = [&obj, &candidateEdges](int geoId) {
+    auto addCandidate = [&obj, &candidateEdges, clickedIsConstruction, clickedGeoId](int geoId) {
         const Part::Geometry* geo = obj->getGeometry(geoId);
         if (!geo || isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo)) {
+            return;
+        }
+        // external geometry is not mixed with the sketch's own geometry
+        if ((geoId < 0) != (clickedGeoId < 0)) {
+            return;
+        }
+        // construction geometry is not mixed with normal geometry
+        if (GeometryFacade::getConstruction(geo) != clickedIsConstruction) {
             return;
         }
         Base::Vector3d p1 = obj->getPoint(geoId, PointPos::start);
@@ -1738,29 +1748,21 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
         return;
     }
 
-    bool partHasBeenAdded = true;
-    while (partHasBeenAdded) {
-        partHasBeenAdded = false;
+    auto isConnected = [](const CandidateEdge& a, const CandidateEdge& b) {
+        return (a.pStart - b.pStart).Length() < Precision::Confusion()
+            || (a.pStart - b.pEnd).Length() < Precision::Confusion()
+            || (a.pEnd - b.pStart).Length() < Precision::Confusion()
+            || (a.pEnd - b.pEnd).Length() < Precision::Confusion();
+    };
 
-        for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
-            bool connected = false;
-            for (const auto& conEdge : connectedEdges) {
-                if ((it->pStart - conEdge.pStart).Length() < Precision::Confusion()
-                    || (it->pStart - conEdge.pEnd).Length() < Precision::Confusion()
-                    || (it->pEnd - conEdge.pStart).Length() < Precision::Confusion()
-                    || (it->pEnd - conEdge.pEnd).Length() < Precision::Confusion()) {
-                    connected = true;
-                    break;
-                }
-            }
-
-            if (connected) {
-                connectedEdges.push_back(*it);
-                candidateEdges.erase(it);
-                partHasBeenAdded = true;
-                break;
-            }
-        }
+    // breadth-first walk: every edge of the wire is compared with the remaining candidates once
+    for (size_t i = 0; i < connectedEdges.size(); ++i) {
+        // a copy, insert() below may reallocate connectedEdges
+        const CandidateEdge current = connectedEdges[i];
+        auto firstConnected = std::partition(candidateEdges.begin(), candidateEdges.end(),
+            [&](const CandidateEdge& c) { return !isConnected(c, current); });
+        connectedEdges.insert(connectedEdges.end(), firstConnected, candidateEdges.end());
+        candidateEdges.erase(firstConnected, candidateEdges.end());
     }
 
     for (const auto& edge : connectedEdges) {
