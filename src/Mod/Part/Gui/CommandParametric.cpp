@@ -49,7 +49,7 @@ QString getAutoGroupCommandStr()
         "part"
     );
     if (activePart) {
-        QString activePartName = QString::fromLatin1(activePart->getNameInDocument());
+        QString activePartName = QString::fromUtf8(activePart->getNameInDocument());
         return QStringLiteral(
                    "App.ActiveDocument.getObject('%1\')."
                    "addObject(App.ActiveDocument.ActiveObject)\n"

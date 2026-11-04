@@ -578,7 +578,7 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
     catch (Base::PyException& e) {
         Base::Console().developerError("SketcherSettings", "error in onBtnTVApplyClicked:\n");
         e.reportException();
-        errMsg = QString::fromLatin1(e.what());
+        errMsg = QString::fromUtf8(e.what());
     }
     catch (...) {
         errMsg = tr("Unexpected C++ exception");

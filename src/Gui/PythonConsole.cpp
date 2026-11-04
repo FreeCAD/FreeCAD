@@ -436,7 +436,7 @@ PythonConsole::PythonConsole(QWidget* parent)
         d->interpreter = new InteractiveInterpreter();
     }
     catch (const Base::Exception& e) {
-        setPlainText(QString::fromLatin1(e.what()));
+        setPlainText(QString::fromUtf8(e.what()));
         setEnabled(false);
     }
 
