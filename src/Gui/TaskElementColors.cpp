@@ -157,7 +157,7 @@ public:
                 ui->elementList
             );
             item->setData(Qt::UserRole, QColor());
-            item->setData(Qt::UserRole + 1, QString::fromLatin1(sub));
+            item->setData(Qt::UserRole + 1, QString::fromUtf8(sub));
             elements.emplace(sub, item);
             return;
         }
@@ -195,7 +195,7 @@ public:
         for (int i = 0; i < count; ++i) {
             auto item = ui->elementList->item(i);
             auto col = item->data(Qt::UserRole).value<QColor>();
-            std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
+            std::string sub = item->data(Qt::UserRole + 1).toString().toStdString();
             info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
         if (tid == App::NullTransaction) {
@@ -246,7 +246,7 @@ public:
     {
         const auto items = ui->elementList->selectedItems();
         for (auto item : items) {
-            std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
+            std::string sub = item->data(Qt::UserRole + 1).toString().toStdString();
             if (sub == hiddenSub) {
                 hiddenSub.clear();
             }
@@ -258,7 +258,7 @@ public:
 
     void editItem(QWidget* parent, QListWidgetItem* item)
     {
-        std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
+        std::string sub = item->data(Qt::UserRole + 1).toString().toStdString();
         if (ViewProvider::hasHiddenMarker(sub.c_str())) {
             return;
         }
@@ -333,7 +333,7 @@ public:
         }
         const auto items = ui->elementList->selectedItems();
         for (auto item : items) {
-            std::string name(qPrintable(item->data(Qt::UserRole + 1).value<QString>()));
+            std::string name = item->data(Qt::UserRole + 1).toString().toStdString();
             if (ViewProvider::hasHiddenMarker(name.c_str())) {
                 continue;
             }
@@ -589,7 +589,7 @@ void ElementColors::leaveEvent(QEvent* e)
 
 void ElementColors::onElementListItemEntered(QListWidgetItem* item)
 {
-    std::string name(qPrintable(item->data(Qt::UserRole + 1).value<QString>()));
+    std::string name = item->data(Qt::UserRole + 1).toString().toStdString();
     if (!d->hiddenSub.empty()) {
         d->vp->partialRender({d->hiddenSub}, false);
         d->hiddenSub.clear();
