@@ -23,10 +23,17 @@
  ***************************************************************************/
 
 # include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QKeyEvent>
 # include <QPainter>
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
 
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <utility>
+#include <vector>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -38,6 +45,7 @@
 
 #include "QGIBreakLine.h"
 #include "PreferencesGui.h"
+#include "Rez.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -53,12 +61,15 @@ QGIBreakLine::QGIBreakLine()
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    m_background = new QGraphicsRectItem();
+    m_background = new QGraphicsPathItem();
     addToGroup(m_background);
     m_line0 = new QGraphicsPathItem();
     addToGroup(m_line0);
     m_line1 = new QGraphicsPathItem();
     addToGroup(m_line1);
+    m_background->setAcceptedMouseButtons(Qt::NoButton);
+    m_line0->setAcceptedMouseButtons(Qt::NoButton);
+    m_line1->setAcceptedMouseButtons(Qt::NoButton);
 
 
     setColor(PreferencesGui::sectionLineQColor());
@@ -67,6 +78,12 @@ QGIBreakLine::QGIBreakLine()
 
 void QGIBreakLine::draw()
 {
+    if (m_genericGeometry) {
+        drawGenericLines();
+        update();
+        return;
+    }
+
     if (breakType() == DrawBrokenView::BreakType::NONE) {
         // none
         m_background->hide();
@@ -87,6 +104,28 @@ void QGIBreakLine::draw()
         m_background->hide();
         m_line0->show();
         m_line1->show();
+    }
+
+    if (breakType() == DrawBrokenView::BreakType::SINUSOID) {
+        const Base::Vector3d horizontal{1.0, 0.0, 0.0};
+        const QRectF bounds(
+            QPointF(m_left, m_bottom), QPointF(m_right, m_top));
+        if (DU::fpCompare(
+                std::fabs(m_direction.Dot(horizontal)), 1.0, EWTOLERANCE)) {
+            setLineGeometry(
+                QPointF(m_left, bounds.center().y()),
+                QPointF(m_right, bounds.center().y()),
+                QPointF(0.0, 1.0),
+                bounds);
+        }
+        else {
+            setLineGeometry(
+                QPointF(bounds.center().x(), m_bottom),
+                QPointF(bounds.center().x(), m_top),
+                QPointF(1.0, 0.0),
+                bounds);
+        }
+        drawGenericLines();
     }
 
     update();
@@ -121,7 +160,158 @@ void QGIBreakLine::drawLargeZigZag()
     QRectF backgroundRect(m_left - offset, m_bottom - offset,
                           std::fabs(m_right - m_left + zigzagWidth),
                           std::fabs(m_top - m_bottom + zigzagWidth));
-    m_background->setRect(backgroundRect);
+    QPainterPath background;
+    background.addRect(backgroundRect);
+    m_background->setPath(background);
+}
+
+void QGIBreakLine::setLineGeometry(const QPointF& first,
+                                   const QPointF& second,
+                                   const QPointF& tangent,
+                                   const QRectF& bounds)
+{
+    m_firstPoint = first;
+    m_secondPoint = second;
+    m_tangent = tangent;
+    const double length = std::hypot(m_tangent.x(), m_tangent.y());
+    if (length > 1.0e-12) {
+        m_tangent /= length;
+    }
+    m_clipBounds = bounds.normalized();
+    m_genericGeometry = true;
+}
+
+std::optional<std::pair<QPointF, QPointF>>
+QGIBreakLine::clippedLine(const QPointF& point, const QPointF& tangent) const
+{
+    constexpr double epsilon = 1.0e-9;
+    std::vector<std::pair<double, QPointF>> hits;
+    auto addHit = [&](double parameter) {
+        const QPointF hit = point + tangent * parameter;
+        if (hit.x() >= m_clipBounds.left() - epsilon
+            && hit.x() <= m_clipBounds.right() + epsilon
+            && hit.y() >= m_clipBounds.top() - epsilon
+            && hit.y() <= m_clipBounds.bottom() + epsilon) {
+            hits.emplace_back(parameter, hit);
+        }
+    };
+    if (std::abs(tangent.x()) > epsilon) {
+        addHit((m_clipBounds.left() - point.x()) / tangent.x());
+        addHit((m_clipBounds.right() - point.x()) / tangent.x());
+    }
+    if (std::abs(tangent.y()) > epsilon) {
+        addHit((m_clipBounds.top() - point.y()) / tangent.y());
+        addHit((m_clipBounds.bottom() - point.y()) / tangent.y());
+    }
+    if (hits.size() < 2) {
+        return std::nullopt;
+    }
+    std::sort(hits.begin(), hits.end(),
+              [](const auto& left, const auto& right) {
+                  return left.first < right.first;
+              });
+    if (std::hypot(hits.back().second.x() - hits.front().second.x(),
+                   hits.back().second.y() - hits.front().second.y())
+        <= epsilon) {
+        return std::nullopt;
+    }
+    return std::pair{hits.front().second, hits.back().second};
+}
+
+QPainterPath QGIBreakLine::makeStyledLine(const QPointF& start,
+                                          const QPointF& end,
+                                          double outwardSign) const
+{
+    QPainterPath path(start);
+    if (breakType() == BreakType::SIMPLE) {
+        path.lineTo(end);
+        return path;
+    }
+
+    QPointF tangent = end - start;
+    const double length = std::hypot(tangent.x(), tangent.y());
+    if (length <= 1.0e-9) {
+        return path;
+    }
+    tangent /= length;
+    const QPointF normal(-tangent.y(), tangent.x());
+    const double amplitude = Rez::guiX(1.5);
+    const int segments = breakType() == BreakType::SINUSOID ? 100 : 12;
+    for (int segment = 1; segment <= segments; ++segment) {
+        const double fraction =
+            static_cast<double>(segment) / static_cast<double>(segments);
+        double offset = 0.0;
+        if (breakType() == BreakType::SINUSOID) {
+            const double phase = fraction * 10.0 * std::numbers::pi;
+            offset = outwardSign == 0.0
+                ? amplitude * std::sin(phase)
+                : outwardSign * amplitude * 0.5 * (1.0 - std::cos(phase));
+        }
+        else if (segment < segments) {
+            offset = outwardSign == 0.0
+                ? (segment % 2 == 0 ? -amplitude : amplitude)
+                : (segment % 2 == 0 ? 0.0 : outwardSign * amplitude);
+        }
+        path.lineTo(start + tangent * (length * fraction) + normal * offset);
+    }
+    return path;
+}
+
+void QGIBreakLine::drawGenericLines()
+{
+    prepareGeometryChange();
+    if (breakType() == BreakType::NONE) {
+        m_background->hide();
+        m_line0->hide();
+        m_line1->hide();
+        return;
+    }
+
+    const auto firstLine = clippedLine(m_firstPoint, m_tangent);
+    const auto secondLine = clippedLine(m_secondPoint, m_tangent);
+    if (!firstLine || !secondLine) {
+        m_background->setPath({});
+        m_line0->setPath({});
+        m_line1->setPath({});
+        m_background->hide();
+        m_line0->hide();
+        m_line1->hide();
+        return;
+    }
+
+    const QPointF lineVector = firstLine->second - firstLine->first;
+    const double lineLength = std::hypot(lineVector.x(), lineVector.y());
+    const QPointF gapVector = m_secondPoint - m_firstPoint;
+    const double gapLength = std::hypot(gapVector.x(), gapVector.y());
+    double firstOutward = 0.0;
+    double secondOutward = 0.0;
+    if (lineLength > 1.0e-9 && gapLength > 1.0e-9) {
+        const QPointF lineNormal(-lineVector.y() / lineLength,
+                                 lineVector.x() / lineLength);
+        const QPointF gapNormal = gapVector / gapLength;
+        const double alignment =
+            QPointF::dotProduct(lineNormal, gapNormal);
+        firstOutward = alignment < 0.0 ? 1.0 : -1.0;
+        secondOutward = -firstOutward;
+    }
+
+    const QPainterPath firstPath =
+        makeStyledLine(firstLine->first, firstLine->second, firstOutward);
+    const QPainterPath secondPath =
+        makeStyledLine(secondLine->first, secondLine->second, secondOutward);
+    m_line0->setPath(firstPath);
+    m_line1->setPath(secondPath);
+
+    // The page-coloured mask must have the same boundary as the visible
+    // break lines.  A straight-sided mask leaves the HLR cut edge visible
+    // underneath zigzag and sinusoidal decorations.
+    QPainterPath background = firstPath;
+    background.connectPath(secondPath.toReversed());
+    background.closeSubpath();
+    m_background->setPath(background);
+    m_background->show();
+    m_line0->show();
+    m_line1->show();
 }
 
 // start needs to be Rez'd and +Y up
@@ -240,6 +430,12 @@ void QGIBreakLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     myOption.state &= ~QStyle::State_Selected;
 
     setTools();
+    if (isSelected()) {
+        QPen selectedPen = m_pen;
+        selectedPen.setColor(prefSelectColor());
+        m_line0->setPen(selectedPen);
+        m_line1->setPen(selectedPen);
+    }
 
     // painter->setPen(Qt::blue);
     // painter->drawRect(boundingRect());          //good for debugging
@@ -260,9 +456,42 @@ void QGIBreakLine::setTools()
     m_background->setPen(Qt::NoPen);
 }
 
+void QGIBreakLine::setDeleteCallback(std::function<void()> callback)
+{
+    m_deleteCallback = std::move(callback);
+    const bool selectable = static_cast<bool>(m_deleteCallback);
+    setFlag(QGraphicsItem::ItemIsSelectable, selectable);
+    setFlag(QGraphicsItem::ItemIsFocusable, selectable);
+    setAcceptedMouseButtons(selectable ? Qt::LeftButton : Qt::NoButton);
+    setCursor(selectable ? Qt::PointingHandCursor : Qt::ArrowCursor);
+    if (selectable) {
+        setToolTip(QObject::tr("Select and press Delete to remove this break"));
+    }
+}
+
+void QGIBreakLine::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    QGIDecoration::mousePressEvent(event);
+    if (m_deleteCallback) {
+        setFocus();
+        event->accept();
+    }
+}
+
+void QGIBreakLine::keyPressEvent(QKeyEvent* event)
+{
+    if (m_deleteCallback
+        && (event->key() == Qt::Key_Delete
+            || event->key() == Qt::Key_Backspace)) {
+        m_deleteCallback();
+        event->accept();
+        return;
+    }
+    QGraphicsItemGroup::keyPressEvent(event);
+}
+
 
 void QGIBreakLine::setLinePen(QPen isoPen)
 {
     m_pen = isoPen;
 }
-

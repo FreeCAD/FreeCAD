@@ -62,11 +62,7 @@ class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
 // NOLINTEND
 
 public:
-    enum class BreakType : int {
-        NONE,
-        ZIGZAG,
-        SIMPLE
-    };
+    using BreakType = DrawViewPart::BreakType;
     static const char* BreakTypeEnums[];    // NOLINT
 
     DrawBrokenView();
