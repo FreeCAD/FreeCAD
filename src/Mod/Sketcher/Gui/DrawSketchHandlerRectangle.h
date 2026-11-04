@@ -579,8 +579,8 @@ private:
             }
         }
         else if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-            // add auto constraints at center
-            if (!sugConstraints[0].empty()) {
+            // A reused center already satisfies its coincident suggestion.
+            if (centerPointId >= firstCurve && !sugConstraints[0].empty()) {
                 generateAutoConstraintsOnElement(
                     sugConstraints[0],
                     centerPointId,
@@ -668,8 +668,8 @@ private:
             }
         }
         else if (constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-            // add auto constraints at center
-            if (!sugConstraints[0].empty()) {
+            // A reused center already satisfies its coincident suggestion.
+            if (centerPointId >= firstCurve && !sugConstraints[0].empty()) {
                 generateAutoConstraintsOnElement(
                     sugConstraints[0],
                     centerPointId,
@@ -899,6 +899,7 @@ private:
     double radius, length, width, thickness, radiusFrame, angle, angle123, angle412;
     int firstCurve, constructionPointOneId, constructionPointTwoId, constructionPointThreeId,
         centerPointId, side;
+    Sketcher::PointPos centerPointPos {Sketcher::PointPos::start};
 
     // Sign tracking for OVP lock fix (issue #23459)
     // These store the direction sign when OVP is first set to prevent sign flipping
@@ -1395,18 +1396,15 @@ private:
             if (negThicknessEqualRadius) {
                 constructionPointOneId = firstCurve + 12;  // NOLINT
                 constructionPointTwoId = firstCurve + 13;  // NOLINT
-                centerPointId = firstCurve + 14;           // NOLINT
             }
             else {
                 constructionPointOneId = firstCurve + 16;  // NOLINT
                 constructionPointTwoId = firstCurve + 17;  // NOLINT
-                centerPointId = firstCurve + 18;           // NOLINT
             }
         }
         else {
             constructionPointOneId = firstCurve + 8;  // NOLINT
             constructionPointTwoId = firstCurve + 9;  // NOLINT
-            centerPointId = firstCurve + 10;          // NOLINT
         }
 
         addPointToShapeGeometry(Base::Vector3d(corner1.x, corner1.y, 0.), true);
@@ -1440,7 +1438,7 @@ private:
                 firstCurve + 3
             );
         }
-        addPointToShapeGeometry(Base::Vector3d(center.x, center.y, 0.), true);
+        createCenterPoint();
         addToShapeConstraints(
             Sketcher::Symmetric,
             firstCurve + 2,
@@ -1448,7 +1446,7 @@ private:
             firstCurve,
             Sketcher::PointPos::start,
             centerPointId,
-            Sketcher::PointPos::start
+            centerPointPos
         );
         addToShapeConstraints(
             Sketcher::PointOnObject,
@@ -1469,20 +1467,17 @@ private:
         if (thicknessNotZero) {
             if (negThicknessEqualRadius) {
                 constructionPointOneId = firstCurve + 12;  // NOLINT
-                centerPointId = firstCurve + 13;           // NOLINT
             }
             else {
                 constructionPointOneId = firstCurve + 16;  // NOLINT
-                centerPointId = firstCurve + 17;           // NOLINT
             }
         }
         else {
             constructionPointOneId = firstCurve + 8;  // NOLINT
-            centerPointId = firstCurve + 9;           // NOLINT
         }
 
         addPointToShapeGeometry(Base::Vector3d(corner3.x, corner3.y, 0.), true);
-        addPointToShapeGeometry(Base::Vector3d(center.x, center.y, 0.), true);
+        createCenterPoint();
         addToShapeConstraints(
             Sketcher::Symmetric,
             firstCurve + 2,
@@ -1490,7 +1485,7 @@ private:
             firstCurve,
             Sketcher::PointPos::start,
             centerPointId,
-            Sketcher::PointPos::start
+            centerPointPos
         );
         addToShapeConstraints(
             Sketcher::PointOnObject,
@@ -1645,7 +1640,7 @@ private:
 
         if (constructionMethod() == ConstructionMethod::CenterAndCorner
             || constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-            finishCenteredRectangleCreation(thicknessNotZero);
+            finishCenteredRectangleCreation();
         }
     }
 
@@ -1878,16 +1873,27 @@ private:
         );  // NOLINT
     }
 
-    void finishCenteredRectangleCreation(bool thicknessNotZero)
+    void createCenterPoint()
     {
-        if (thicknessNotZero) {
-            centerPointId = firstCurve + 12;  // NOLINT
-        }
-        else {
-            centerPointId = firstCurve + 4;  // NOLINT
+        if (sketchgui->Autoconstraints.getValue()) {
+            for (const auto& constraint : sugConstraints[0]) {
+                if (constraint.Type == Sketcher::Coincident) {
+                    centerPointId = constraint.GeoId;
+                    centerPointPos = constraint.PosId;
+                    return;
+                }
+            }
         }
 
+        // Point-on-object and midpoint suggestions still need a separate center point.
+        centerPointId = firstCurve + static_cast<int>(ShapeGeometry.size());
+        centerPointPos = Sketcher::PointPos::start;
         addPointToShapeGeometry(Base::Vector3d(center.x, center.y, 0.), true);
+    }
+
+    void finishCenteredRectangleCreation()
+    {
+        createCenterPoint();
         addToShapeConstraints(
             Sketcher::Symmetric,
             firstCurve + 2,  // NOLINT
@@ -1895,7 +1901,7 @@ private:
             firstCurve,
             Sketcher::PointPos::start,
             centerPointId,
-            Sketcher::PointPos::start
+            centerPointPos
         );
     }
 
@@ -2997,6 +3003,7 @@ void DSHRectangleController::addConstraints()
     using namespace Sketcher;
 
     int firstPointId = firstCurve;
+    PointPos firstPointPos = PointPos::start;
     if (handler->constructionMethod() == ConstructionMethod::Diagonal
         || handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (handler->radius > Precision::Confusion()) {
@@ -3005,14 +3012,21 @@ void DSHRectangleController::addConstraints()
     }
     else {
         firstPointId = handler->centerPointId;
+        firstPointPos = handler->centerPointPos;
+    }
+
+    // The origin and external geometry are fixed and have no point solver extension.
+    if (firstPointId < 0) {
+        x0set = false;
+        y0set = false;
     }
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::VAxis, x0, obj);
+        ConstraintToAttachment(GeoElementId(firstPointId, firstPointPos), GeoElementId::VAxis, x0, obj);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::HAxis, y0, obj);
+        ConstraintToAttachment(GeoElementId(firstPointId, firstPointPos), GeoElementId::HAxis, y0, obj);
     };
 
     auto constraintlength = [&]() {
@@ -3043,9 +3057,8 @@ void DSHRectangleController::addConstraints()
         );
     };
 
-    // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
-    // diagnose was run.
-    if (handler->AutoConstraints.empty()) {
+    // Reused centers can already have dimensional constraints even without new autoconstraints.
+    if (handler->AutoConstraints.empty() && firstPointId >= firstCurve) {
         if (x0set) {
             constraintx0();
         }
@@ -3062,25 +3075,31 @@ void DSHRectangleController::addConstraints()
             constraintwidth();
         }
     }
-    else {  // There is a valid diagnose.
-        auto firstpointinfo = handler->getPointInfo(GeoElementId(firstPointId, PointPos::start));
-
-        if (x0set && firstpointinfo.isXDoF()) {
-            constraintx0();
-
-            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
-                                                     // each constraint addition
-
-            firstpointinfo = handler->getPointInfo(
-                GeoElementId(firstPointId, PointPos::start)
-            );  // get updated point position
+    else {
+        if (handler->AutoConstraints.empty()) {
+            handler->diagnoseWithAutoConstraints();
         }
 
-        if (y0set && firstpointinfo.isYDoF()) {
-            constrainty0();
+        if (x0set || y0set) {
+            auto firstpointinfo = handler->getPointInfo(GeoElementId(firstPointId, firstPointPos));
 
-            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
-                                                     // each constraint addition
+            if (x0set && firstpointinfo.isXDoF()) {
+                constraintx0();
+
+                handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters
+                                                         // after each constraint addition
+
+                firstpointinfo = handler->getPointInfo(
+                    GeoElementId(firstPointId, firstPointPos)
+                );  // get updated point position
+            }
+
+            if (y0set && firstpointinfo.isYDoF()) {
+                constrainty0();
+
+                handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters
+                                                         // after each constraint addition
+            }
         }
 
         if (lengthSet) {
