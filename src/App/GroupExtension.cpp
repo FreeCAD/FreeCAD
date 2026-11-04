@@ -401,6 +401,7 @@ void GroupExtension::extensionOnChanged(const Property* p)
     }
     else if (p == &owner->Visibility) {
         if (!_togglingVisibility && !owner->isRestoring()
+            && !owner->getDocument()->testStatus(Document::Restoring)
             && !owner->getDocument()->isPerformingTransaction()) {
             bool touched = false;
             bool vis = owner->Visibility.getValue();
