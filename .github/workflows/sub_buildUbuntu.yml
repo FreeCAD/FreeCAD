@@ -24,7 +24,7 @@
 # This is a build and test workflow for CI of FreeCAD.
 # This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 24.04
+name: Build Ubuntu
 
 on:
   workflow_call:
