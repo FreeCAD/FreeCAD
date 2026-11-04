@@ -179,6 +179,14 @@ public:
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
+    /// Build a standalone face scene, preserving placement and leaving the input mesh untouched.
+    /// Uses the same tessellation and normals as the Part view provider; angles are in degrees.
+    static Gui::CoinPtr<SoSeparator> createFaceGeometry(
+        const TopoDS_Shape& shape,
+        double deviation,
+        double angularDeflection
+    );
+
     /// configures Coin nodes so they render given toposhape
     static void setupCoinGeometry(
         TopoDS_Shape shape,

@@ -70,5 +70,30 @@ class DrawViewPartTest(unittest.TestCase):
         self.assertEqual(lineFormat["visible"], visible)
         self.assertEqual(len(view.GeomFormats), 0)
 
+    def testDisplayStyleControlsHardHidden(self):
+        """DisplayStyle controls hard hidden edges without changing other HLR options."""
+        view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewPart", "StyleView")
+
+        self.assertEqual(view.DisplayStyle, "Visible Edges")
+        self.assertFalse(view.HardHidden)
+        hard_hidden_status = view.getPropertyStatus("HardHidden")
+        self.assertIn(24, hard_hidden_status)  # App::Property::PropReadOnly
+        self.assertIn(26, hard_hidden_status)  # App::Property::PropHidden
+
+        view.DisplayStyle = "All Edges"
+        self.assertTrue(view.HardHidden)
+
+        view.DisplayStyle = "Hidden Edges"
+        self.assertTrue(view.HardHidden)
+
+        view.DisplayStyle = "Shaded with Edges"
+        self.assertFalse(view.HardHidden)
+
+        view.SmoothHidden = True
+        view.SeamHidden = True
+        view.DisplayStyle = "Shaded"
+        self.assertTrue(view.SmoothHidden)
+        self.assertTrue(view.SeamHidden)
+
 if __name__ == "__main__":
     unittest.main()

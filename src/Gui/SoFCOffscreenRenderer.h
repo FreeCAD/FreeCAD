@@ -141,6 +141,9 @@ public:
     void setInternalTextureFormat(GLenum internalTextureFormat);
     GLenum internalTextureFormat() const;
 
+    /// Keep framebuffer alpha instead of keying out a translucent background.
+    void setPerPixelAlpha(bool enabled);
+
     SbBool render(SoNode* scene);
     SbBool render(SoPath* scene);
 
@@ -164,6 +167,7 @@ private:
     int numSamples;
     GLenum texFormat;
     QImage glImage;
+    bool perPixelAlpha = false;
 };
 
 }  // namespace Gui
