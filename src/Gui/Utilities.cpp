@@ -147,7 +147,7 @@ public:
     {}
     bool operator()(const App::DocumentObject* obj)
     {
-        return name == QLatin1String(obj->getNameInDocument());
+        return name == QString::fromUtf8(obj->getNameInDocument());
     }
 
 private:

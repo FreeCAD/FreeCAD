@@ -2333,7 +2333,7 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         return false;
     }
 
-    constrIdsStr = QString::fromLatin1(constrIdsNode->string.getValue().getString());
+    constrIdsStr = QString::fromUtf8(constrIdsNode->string.getValue().getString());
     iconSize = getDisplayedSize(iconNode);
     if (iconSize[0] <= 0 || iconSize[1] <= 0) {
         return false;
@@ -2866,7 +2866,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
     }
 
     combinedConstrBoxes[idString] = boundingBoxes;
-    thisInfo->string.setValue(idString.toLatin1().data());
+    thisInfo->string.setValue(idString.toUtf8().data());
     sendConstraintIconToCoin(compositeIcon, thisDest);
 }
 
@@ -2888,11 +2888,11 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
 
     QPixmap pxMap;
     std::stringstream constraintName;
-    constraintName << type.toLatin1().data()
+    constraintName << type.toUtf8().data()
                    << drawingParameters.constraintIconSize;  // allow resizing by embedding size
     if (!Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
         pxMap = Gui::BitmapFactory().pixmapFromSvg(
-            type.toLatin1().data(),
+            type.toUtf8().data(),
             QSizeF(drawingParameters.constraintIconSize, drawingParameters.constraintIconSize)
         );
         Gui::BitmapFactory().addPixmapToCache(
@@ -2992,7 +2992,7 @@ void EditModeConstraintCoinManager::drawTypicalConstraintIcon(const constrIconQu
     QImage image
         = renderConstrIcon(i.type, color, QStringList(i.label), QList<QColor>() << color, i.iconRotation);
 
-    i.infoPtr->string.setValue(QString::number(i.constraintId).toLatin1().data());
+    i.infoPtr->string.setValue(QString::number(i.constraintId).toUtf8().data());
     sendConstraintIconToCoin(image, i.destination);
 }
 

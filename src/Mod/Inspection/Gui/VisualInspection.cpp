@@ -113,13 +113,13 @@ VisualInspection::VisualInspection(QWidget* parent)
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
             item1->setText(0, QString::fromUtf8(it->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
+            item1->setData(0, Qt::UserRole, QString::fromUtf8(it->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
             item2->setText(0, QString::fromUtf8(it->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromLatin1(it->getNameInDocument()));
+            item2->setData(0, Qt::UserRole, QString::fromUtf8(it->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 
@@ -249,7 +249,7 @@ bool VisualInspection::accept()
                 Gui::Command::App,
                 "App_activeDocument___InspectionGroup.newObject("
                 "\"Inspection::Feature\",\"%s_Inspect\")",
-                (const char*)actualName.toLatin1()
+                (const char*)actualName.toUtf8()
             );
             Gui::Command::doCommand(
                 Gui::Command::App,
@@ -257,7 +257,7 @@ bool VisualInspection::accept()
                 "App_activeDocument___activeObject___Nominals=list()\n"
                 "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
                 "App.ActiveDocument.ActiveObject.Thickness=%.3f\n",
-                (const char*)actualName.toLatin1(),
+                (const char*)actualName.toUtf8(),
                 searchRadius,
                 thickness
             );
@@ -266,7 +266,7 @@ bool VisualInspection::accept()
                     Gui::Command::App,
                     "App_activeDocument___activeObject___Nominals.append("
                     "App.ActiveDocument.%s)\n",
-                    (const char*)it.toLatin1()
+                    (const char*)it.toUtf8()
                 );
             }
             Gui::Command::doCommand(
@@ -290,7 +290,7 @@ bool VisualInspection::accept()
             Gui::Command::doCommand(
                 Gui::Command::App,
                 "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                (const char*)sel->data(0, Qt::UserRole).toString().toUtf8()
             );
         }
     }
@@ -301,7 +301,7 @@ bool VisualInspection::accept()
             Gui::Command::doCommand(
                 Gui::Command::App,
                 "Gui.ActiveDocument.getObject(\"%s\").Visibility=False",
-                (const char*)sel->data(0, Qt::UserRole).toString().toLatin1()
+                (const char*)sel->data(0, Qt::UserRole).toString().toUtf8()
             );
         }
     }

@@ -760,7 +760,7 @@ void TaskCheckGeometryResults::buildShapeContent(
     catch (Py::Exception&) {
         Base::PyException e;
         e.reportException();
-        stream << baseName.toLatin1().data() << std::endl;
+        stream << baseName.toUtf8().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);
         set.DumpExtent(stream);
@@ -985,7 +985,7 @@ void TaskCheckGeometryResults::currentRowChanged(const QModelIndex& current, con
                 // object might be "name (label)", so trim if necessary
                 int idx = object.indexOf(QLatin1String(" ("));
                 QString trimmed = (idx != -1) ? object.left(idx) : object;
-                Gui::Selection().addSelection(doc.toLatin1(), trimmed.toLatin1(), sub.toLatin1());
+                Gui::Selection().addSelection(doc.toUtf8(), trimmed.toUtf8(), sub.toUtf8());
             }
         }
     }

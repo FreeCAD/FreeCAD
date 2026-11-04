@@ -354,7 +354,7 @@ QString BlendCurvePanel::linkToString(const App::PropertyLinkSub& link)
     std::string name = sub.empty() ? "" : sub.front();
 
     return QString::fromLatin1("%1 [%2]").arg(
-        QString::fromLatin1(obj->Label.getValue()),
+        QString::fromUtf8(obj->Label.getValue()),
         QString::fromStdString(name)
     );
 }

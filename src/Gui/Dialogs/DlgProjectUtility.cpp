@@ -100,7 +100,7 @@ void DlgProjectUtility::tryExtractArchive(const QString& source, const QString& 
         Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failed to Extract Document"), QString::fromLatin1(e.what()));
+        QMessageBox::critical(this, tr("Failed to Extract Document"), QString::fromUtf8(e.what()));
     }
 }
 
@@ -117,7 +117,7 @@ void DlgProjectUtility::tryCreateArchive(const QString& source, const QString& t
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failed to Create Document"), QString::fromLatin1(e.what()));
+        QMessageBox::critical(this, tr("Failed to Create Document"), QString::fromUtf8(e.what()));
     }
 }
 

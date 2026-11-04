@@ -72,8 +72,8 @@ void StdCmdDlgMacroRecord::activated(int iMsg)
         getGuiApplication()->macroManager()->commit();
         if (getAction()) {
             getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("media-record"));
-            getAction()->setText(QString::fromLatin1(sMenuText));
-            getAction()->setToolTip(QString::fromLatin1(sToolTipText));
+            getAction()->setText(QString::fromUtf8(sMenuText));
+            getAction()->setToolTip(QString::fromUtf8(sToolTipText));
         }
     }
 }
