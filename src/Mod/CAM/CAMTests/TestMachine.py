@@ -28,6 +28,12 @@ from Machine.models.machine import (
     Toolhead,
     ToolheadType,
     OutputOptions,
+    OutputUnits,
+    HeaderOptions,
+    CommentOptions,
+    FormattingOptions,
+    PrecisionOptions,
+    DuplicateOptions,
     ProcessingOptions,
     MachineFactory,
 )
@@ -117,99 +123,79 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         """Test OutputOptions initialization with defaults"""
         opts = OutputOptions()
 
-        # Default values - using current field names
-        from Machine.models.machine import OutputUnits
-
-        self.assertEqual(opts.output_units, OutputUnits.METRIC)
-        self.assertEqual(opts.command_space, " ")
-        self.assertEqual(opts.comment_symbol, "(")
-        self.assertEqual(opts.end_of_line_chars, "\n")
-        self.assertEqual(opts.line_increment, 10)
-        self.assertEqual(opts.line_number_start, 100)
-        self.assertFalse(opts.line_numbers)
-        self.assertEqual(opts.line_number_prefix, "N")
-        self.assertTrue(opts.output_comments)
-        self.assertTrue(opts.output_blank_lines)
-        self.assertTrue(opts.output_bcnc_comments)
+        self.assertEqual(opts.units, OutputUnits.METRIC)
+        self.assertTrue(opts.output_tool_length_offset)
+        self.assertFalse(opts.remote_post)
         self.assertTrue(opts.output_header)
-        self.assertFalse(opts.output_labels)
-        self.assertTrue(opts.output_operation_labels)
-        self.assertFalse(opts.list_tools_in_header)
-        self.assertTrue(opts.list_fixtures_in_header)
-        self.assertFalse(opts.machine_name_in_header)
-        self.assertTrue(opts.description_in_header)
-        self.assertTrue(opts.project_file_in_header)
-        self.assertTrue(opts.output_units_in_header)
-        self.assertTrue(opts.date_in_header)
-        self.assertTrue(opts.document_name_in_header)
-        self.assertTrue(opts.output_duplicate_parameters)
-        self.assertTrue(opts.output_duplicate_commands)
-        self.assertEqual(opts.axis_precision, 3)
-        self.assertEqual(opts.feed_precision, 3)
-        self.assertEqual(opts.spindle_precision, 0)
+
+        self.assertTrue(opts.header.include_date)
+        self.assertTrue(opts.header.include_description)
+        self.assertTrue(opts.header.include_document_name)
+        self.assertTrue(opts.header.include_machine_name)
+        self.assertTrue(opts.header.include_project_file)
+        self.assertTrue(opts.header.include_units)
+        self.assertTrue(opts.header.include_tool_list)
+        self.assertTrue(opts.header.include_fixture_list)
+
+        self.assertTrue(opts.comments.enabled)
+        self.assertEqual(opts.comments.symbol, "(")
+        self.assertFalse(opts.comments.include_operation_labels)
+        self.assertTrue(opts.comments.include_blank_lines)
+        self.assertFalse(opts.comments.output_bcnc_comments)
+
+        self.assertFalse(opts.formatting.line_numbers)
+        self.assertEqual(opts.formatting.line_number_start, 100)
+        self.assertEqual(opts.formatting.line_number_prefix, "N")
+        self.assertEqual(opts.formatting.line_increment, 10)
+        self.assertEqual(opts.formatting.command_space, " ")
+        self.assertEqual(opts.formatting.end_of_line_chars, "\n")
+
+        self.assertEqual(opts.precision.axis, 3)
+        self.assertEqual(opts.precision.feed, 3)
+        self.assertEqual(opts.precision.spindle, 0)
+
+        self.assertTrue(opts.duplicates.commands)
+        self.assertTrue(opts.duplicates.parameters)
 
     def test_custom_initialization(self):
         """Test OutputOptions initialization with custom values"""
-        from Machine.models.machine import OutputUnits
-
         opts = OutputOptions(
-            output_units=OutputUnits.IMPERIAL,
-            command_space="",
-            comment_symbol=";",
-            end_of_line_chars="\r\n",
-            line_increment=5,
-            line_number_start=10,
-            line_numbers=True,
-            line_number_prefix="L",
-            output_comments=False,
-            output_blank_lines=False,
-            output_bcnc_comments=False,
+            units=OutputUnits.IMPERIAL,
+            output_tool_length_offset=False,
             output_header=False,
-            output_labels=True,
-            output_operation_labels=False,
-            list_tools_in_header=True,
-            list_fixtures_in_header=False,
-            machine_name_in_header=True,
-            description_in_header=False,
-            project_file_in_header=False,
-            output_units_in_header=False,
-            date_in_header=False,
-            document_name_in_header=False,
-            output_duplicate_parameters=False,
-            output_duplicate_commands=False,
-            axis_precision=4,
-            feed_precision=2,
-            spindle_precision=1,
+            header=HeaderOptions(include_date=False, include_tool_list=False),
+            comments=CommentOptions(enabled=False, symbol=";"),
+            formatting=FormattingOptions(
+                line_numbers=True,
+                line_number_start=10,
+                line_number_prefix="L",
+                line_increment=5,
+                command_space="",
+                end_of_line_chars="\r\n",
+            ),
+            precision=PrecisionOptions(axis=4, feed=2, spindle=1),
+            duplicates=DuplicateOptions(commands=False, parameters=False),
         )
 
-        # Verify custom values
-        self.assertEqual(opts.output_units, OutputUnits.IMPERIAL)
-        self.assertEqual(opts.command_space, "")
-        self.assertEqual(opts.comment_symbol, ";")
-        self.assertEqual(opts.end_of_line_chars, "\r\n")
-        self.assertEqual(opts.line_increment, 5)
-        self.assertEqual(opts.line_number_start, 10)
-        self.assertTrue(opts.line_numbers)
-        self.assertEqual(opts.line_number_prefix, "L")
-        self.assertFalse(opts.output_comments)
-        self.assertFalse(opts.output_blank_lines)
-        self.assertFalse(opts.output_bcnc_comments)
+        self.assertEqual(opts.units, OutputUnits.IMPERIAL)
+        self.assertFalse(opts.output_tool_length_offset)
         self.assertFalse(opts.output_header)
-        self.assertTrue(opts.output_labels)
-        self.assertFalse(opts.output_operation_labels)
-        self.assertTrue(opts.list_tools_in_header)
-        self.assertFalse(opts.list_fixtures_in_header)
-        self.assertTrue(opts.machine_name_in_header)
-        self.assertFalse(opts.description_in_header)
-        self.assertFalse(opts.project_file_in_header)
-        self.assertFalse(opts.output_units_in_header)
-        self.assertFalse(opts.date_in_header)
-        self.assertFalse(opts.document_name_in_header)
-        self.assertFalse(opts.output_duplicate_parameters)
-        self.assertFalse(opts.output_duplicate_commands)
-        self.assertEqual(opts.axis_precision, 4)
-        self.assertEqual(opts.feed_precision, 2)
-        self.assertEqual(opts.spindle_precision, 1)
+        self.assertFalse(opts.header.include_date)
+        self.assertFalse(opts.header.include_tool_list)
+        self.assertTrue(opts.header.include_description)
+        self.assertFalse(opts.comments.enabled)
+        self.assertEqual(opts.comments.symbol, ";")
+        self.assertTrue(opts.formatting.line_numbers)
+        self.assertEqual(opts.formatting.line_number_start, 10)
+        self.assertEqual(opts.formatting.line_number_prefix, "L")
+        self.assertEqual(opts.formatting.line_increment, 5)
+        self.assertEqual(opts.formatting.command_space, "")
+        self.assertEqual(opts.formatting.end_of_line_chars, "\r\n")
+        self.assertEqual(opts.precision.axis, 4)
+        self.assertEqual(opts.precision.feed, 2)
+        self.assertEqual(opts.precision.spindle, 1)
+        self.assertFalse(opts.duplicates.commands)
+        self.assertFalse(opts.duplicates.parameters)
 
     def test_equality(self):
         """Test OutputOptions equality comparison"""
@@ -217,8 +203,15 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
         opts2 = OutputOptions()
         self.assertEqual(opts1, opts2)
 
-        opts2.output_comments = False
+        opts2.comments.enabled = False
         self.assertNotEqual(opts1, opts2)
+
+    def test_nested_defaults_are_not_shared(self):
+        """Each OutputOptions gets its own nested option objects"""
+        opts1 = OutputOptions()
+        opts2 = OutputOptions()
+        opts2.formatting.line_numbers = True
+        self.assertFalse(opts1.formatting.line_numbers)
 
 
 class TestProcessingOptions(PathTestUtils.PathTestBase):
