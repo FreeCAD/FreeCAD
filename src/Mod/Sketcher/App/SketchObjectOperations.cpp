@@ -2805,6 +2805,13 @@ int SketchObject::addCopy(
 
     return Geometry.getSize() - 1;
 }
+
+bool SketchObject::isExemptFromNURBSConversion(int GeoId) const
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    return GeoId >= 0 && geo
+        && (geo->is<Part::GeomBSplineCurve>() || GeometryFacade::isInternalAligned(geo));
+}
 // clang-format off
 
 bool SketchObject::convertToNURBS(int GeoId)
@@ -2812,22 +2819,25 @@ bool SketchObject::convertToNURBS(int GeoId)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-    if (GeoId > getHighestCurveIndex()
-        || (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.getSize())) || GeoId == -1
-        || GeoId == -2)
+    const Part::Geometry* geo = getGeometry(GeoId);
+    if (!geo || GeoId == -1 || GeoId == -2)
         return false;
 
-    const Part::Geometry* geo = getGeometry(GeoId);
+    if (isExemptFromNURBSConversion(GeoId))
+        return true;
 
     if (geo->is<Part::GeomPoint>())
         return false;
 
     const auto* geo1 = static_cast<const Part::GeomCurve*>(geo);
 
-    Part::GeomBSplineCurve* bspline;
+    std::unique_ptr<Part::GeomBSplineCurve> bspline;
 
     try {
-        bspline = geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter());
+        bspline.reset(geo1->toNurbs(geo1->getFirstParameter(), geo1->getLastParameter()));
+
+        if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>())
+            bspline->setPeriodic();
 
         if (geo1->isDerivedFrom<Part::GeomArcOfConic>()) {
             const auto* geoaoc = static_cast<const Part::GeomArcOfConic*>(geo1);
@@ -2846,18 +2856,35 @@ bool SketchObject::convertToNURBS(int GeoId)
 
     std::vector<Part::Geometry*> newVals(vals);
 
+    // Like deletion, hand the axes/foci over to a sibling arc of the trimmed conic if there is one.
+    int siblingGeoId = GeoId >= 0 ? findInternalAlignmentSibling(GeoId) : GeoEnum::GeoUndef;
+
+    std::set<int> internalGeometry;
+    if (GeoId >= 0 && siblingGeoId == GeoEnum::GeoUndef) {
+        for (const auto* constraint : Constraints.getValues()) {
+            if (constraint->Type == InternalAlignment && constraint->Second == GeoId
+                && constraint->First >= 0 && constraint->First != GeoId)
+                internalGeometry.insert(constraint->First);
+        }
+        // Shared internal geometry still belongs to the other conic.
+        for (const auto* constraint : Constraints.getValues()) {
+            if (constraint->Type == InternalAlignment && constraint->Second != GeoId)
+                internalGeometry.erase(constraint->First);
+        }
+    }
+
     // Block checks and updates in OnChanged to avoid unnecessary checks and updates
     {
         Base::StateLocker preventUpdate(internaltransaction, true);
 
         if (GeoId < 0) {// external geometry
-            newVals.push_back(bspline);
-            generateId(bspline);
+            generateId(bspline.get());
+            newVals.push_back(bspline.release());
         }
         else {// normal geometry
 
-            newVals[GeoId] = bspline;
-            GeometryFacade::copyId(geo, bspline);
+            GeometryFacade::copyId(geo, bspline.get());
+            newVals[GeoId] = bspline.release();
 
             const std::vector<Sketcher::Constraint*>& cvals = Constraints.getValues();
 
@@ -2868,6 +2895,14 @@ bool SketchObject::convertToNURBS(int GeoId)
             // not support them currently), except for coincidents on mid point of the
             // to-be-converted curve.
             for (; index >= 0; index--) {
+                if (siblingGeoId != GeoEnum::GeoUndef && cvals[index]->Type == InternalAlignment
+                    && cvals[index]->Second == GeoId) {
+                    Constraint* transferred = cvals[index]->clone();
+                    transferred->Second = siblingGeoId;
+                    newcVals[index] = transferred;
+                    continue;
+                }
+
                 auto otherthancoincident = cvals[index]->Type != Sketcher::Coincident
                     && cvals[index]->involvesGeoId(GeoId);
 
@@ -2882,6 +2917,13 @@ bool SketchObject::convertToNURBS(int GeoId)
         }
 
         Geometry.setValues(std::move(newVals));
+
+        // Remove obsolete axes/foci along with their constraints, and remap surviving geometry.
+        if (!internalGeometry.empty()) {
+            delGeometriesExclusiveList(
+                std::vector<int>(internalGeometry.begin(), internalGeometry.end()),
+                DeleteOption::NoSolve);
+        }
     }
 
     // trigger update now
