@@ -740,7 +740,7 @@ public:
     IndexedName toIndexedName() const
     {
         if (this->postfix.isEmpty()) {
-            return IndexedName(Base::BytesView(this->data.constData(), this->data.size()));
+            return IndexedName(Base::asBytes(this->data.constData(), this->data.size()));
         }
         return IndexedName();
     }
