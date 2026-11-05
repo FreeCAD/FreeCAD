@@ -35,6 +35,7 @@
 from pivy import coin
 from PySide import QtCore
 from PySide import QtGui
+from PySide import QtWidgets
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -525,6 +526,94 @@ class ViewProviderLayer:
         Gui.Selection.clearSelection()
         for obj in self.Object.Group:
             Gui.Selection.addSelection(obj)
+
+    def onDelete(self, vobj, subelements):
+        """Handle deletion of the layer.
+
+        Draft Layers do not use the group extension, so the recursive
+        deletion that is offered for groups does not work for them.
+        This method provides the equivalent behavior: if the layer is
+        not empty the user is asked if its contents should be deleted
+        as well.
+
+        If the layer is deleted as part of the recursive deletion of
+        a parent object, for example the LayerContainer, the
+        `group_recursive_deletion` marker is passed, which is the
+        marker used by Gui::ViewProviderGroupExtension in that case.
+        The contents of the layer are then deleted without asking
+        again.
+        """
+        if subelements and subelements[0] == "group_recursive_deletion":
+            self._delete_contents()
+            return True
+
+        if not hasattr(self.Object, "Group") or not self.Object.Group:
+            return True
+
+        if Gui.getMainWindow() is None:
+            return True
+
+        message = translate(
+            "draft",
+            "The layer '{0}' contains {1} object(s). Delete them as well?",
+        ).format(self.Object.Label, len(self.Object.Group))
+        choice = QtWidgets.QMessageBox.question(
+            Gui.getMainWindow(),
+            translate("draft", "Delete Layer Contents Recursively?"),
+            message,
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel,
+            QtWidgets.QMessageBox.No,
+        )
+        if choice == QtWidgets.QMessageBox.Cancel:
+            return False
+        if choice == QtWidgets.QMessageBox.Yes:
+            self._delete_contents()
+        return True
+
+    def _delete_contents(self):
+        """Delete the contents of the layer, recursively."""
+        seen = set()
+        for obj in list(self.Object.Group):
+            if not self._delete_recursively(obj, seen):
+                break
+
+    def _delete_recursively(self, obj, seen):
+        """Delete an object and the contents of its `Group` property.
+
+        The contents of nested containers (layers, groups, bodies,
+        ...) are deleted first. The viewprovider of each object is
+        then notified through its `onDelete` method, with the
+        `group_recursive_deletion` marker, and can veto the deletion
+        of its object. If a deletion is vetoed, the remaining contents
+        are kept. This mirrors `deleteGroupContentsRecursively()` in
+        Gui/ViewProviderGroupExtension.cpp.
+
+        Return True if the deletion can continue with the next object.
+        """
+        if obj in seen or not obj.isAttachedToDocument():
+            return True
+        seen.add(obj)
+
+        group = getattr(obj, "Group", None)
+        if group:
+            for child in list(group):
+                if not self._delete_recursively(child, seen):
+                    return False
+
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is not None:
+            try:
+                if not vobj.onDelete(["group_recursive_deletion"]):
+                    return False
+            except Exception as err:
+                App.Console.PrintWarning(
+                    "Draft: onDelete of '{}' failed: {}\n".format(obj.Label, err)
+                )
+                return False
+
+        if obj.isAttachedToDocument():
+            obj.Document.removeObject(obj.Name)
+        return True
 
 
 class ViewProviderLayerContainer:
