@@ -613,13 +613,8 @@ App::DocumentObjectExecReturn* Helix::execute()
             remaining.height -= inner.height;
             remaining.turns -= inner.turns;
             // The shorter side ends where the remaining segment starts.
-            const TopoDS_Shape innerPath = generateHelixPath(
-                inner.turns,
-                inner.height,
-                inner.angle,
-                inner.growth,
-                inner.reversed
-            );
+            const TopoDS_Shape innerPath
+                = generateHelixPath(inner.turns, inner.height, inner.angle, inner.growth, inner.reversed);
             TopoDS_Vertex firstVertex, lastVertex;
             TopExp::Vertices(TopoDS::Wire(innerPath), firstVertex, lastVertex);
             const gp_Pnt start = BRep_Tool::Pnt(firstVertex);
