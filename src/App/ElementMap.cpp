@@ -173,7 +173,7 @@ void ElementMap::save(std::ostream& stream,
                 }
                 else {
                     prefixID = ::App::StringID::fromString(
-                        Base::BytesView(ref->name.dataBytes().constData(),
+                        Base::asBytes(ref->name.dataBytes().constData(),
                                         ref->name.dataBytes().size())
                     );
                     if (prefixID.id != 0) {
@@ -436,7 +436,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
                     case '$':
                         ref->name = MappedName(tokens[0].c_str() + 1);
                         prefixID = ::App::StringID::fromString(
-                            Base::BytesView(ref->name.dataBytes().constData(),
+                            Base::asBytes(ref->name.dataBytes().constData(),
                                             ref->name.dataBytes().size())
                         );
                         break;
@@ -745,7 +745,7 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
         return name;
     }
     const QByteArray raw = name.toRawBytes();
-    auto id = App::StringID::fromString(Base::BytesView(raw.constData(), raw.size()));
+    auto id = App::StringID::fromString(Base::asBytes(raw.constData(), raw.size()));
     if (!id) {
         return name;
     }

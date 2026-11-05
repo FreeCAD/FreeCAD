@@ -105,9 +105,11 @@ public:
     explicit MappedName(const App::StringIDRef& sid)
         : raw(false)
     {
-        Base::ByteBuffer bytes;
-        sid.toBytes(bytes);
-        this->data = QByteArray(bytes.data(), static_cast<int>(bytes.size()));
+        const Base::ByteBuffer bytes = sid.toBytes();
+        this->data = QByteArray(
+            reinterpret_cast<const char*>(bytes.data()),
+            static_cast<qsizetype>(bytes.size())
+        );
     }
 
     MappedName()
