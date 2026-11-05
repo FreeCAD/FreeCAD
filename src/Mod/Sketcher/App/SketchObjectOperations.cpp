@@ -2805,6 +2805,13 @@ int SketchObject::addCopy(
 
     return Geometry.getSize() - 1;
 }
+
+bool SketchObject::isExemptFromNURBSConversion(int GeoId) const
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    return GeoId >= 0 && geo
+        && (geo->is<Part::GeomBSplineCurve>() || GeometryFacade::isInternalAligned(geo));
+}
 // clang-format off
 
 bool SketchObject::convertToNURBS(int GeoId)
@@ -2816,9 +2823,7 @@ bool SketchObject::convertToNURBS(int GeoId)
     if (!geo || GeoId == -1 || GeoId == -2)
         return false;
 
-    // Replacing an existing spline would discard its constraints and detach its internal geometry.
-    // External geometry is still converted into a new internal copy.
-    if (GeoId >= 0 && geo->is<Part::GeomBSplineCurve>())
+    if (isExemptFromNURBSConversion(GeoId))
         return true;
 
     if (geo->is<Part::GeomPoint>())

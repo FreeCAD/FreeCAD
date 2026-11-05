@@ -27,6 +27,7 @@
 
 #include <BRep_Tool.hxx>
 #include <Geom_TrimmedCurve.hxx>
+#include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
@@ -1110,16 +1111,58 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         return -1;
 }
 
+namespace
+{
+bool isArcOfSameConic(const Part::Geometry* first, const Part::Geometry* second)
+{
+    if (first->getTypeId() != second->getTypeId() || !first->isDerivedFrom<Part::GeomArcOfConic>()) {
+        return false;
+    }
+
+    const double tolerance = Precision::Confusion();
+    const auto* firstArc = static_cast<const Part::GeomArcOfConic*>(first);
+    const auto* secondArc = static_cast<const Part::GeomArcOfConic*>(second);
+    if (!firstArc->getCenter().IsEqual(secondArc->getCenter(), tolerance)
+        || !firstArc->getXAxisDir().IsEqual(secondArc->getXAxisDir(), tolerance)) {
+        return false;
+    }
+
+    auto isClose = [tolerance](double firstValue, double secondValue) {
+        return std::abs(firstValue - secondValue) < tolerance;
+    };
+    auto haveSameRadii = [&isClose](const auto* firstConic, const auto* secondConic) {
+        return isClose(firstConic->getMajorRadius(), secondConic->getMajorRadius())
+            && isClose(firstConic->getMinorRadius(), secondConic->getMinorRadius());
+    };
+
+    if (first->is<Part::GeomArcOfEllipse>()) {
+        return haveSameRadii(
+            static_cast<const Part::GeomArcOfEllipse*>(first),
+            static_cast<const Part::GeomArcOfEllipse*>(second)
+        );
+    }
+    if (first->is<Part::GeomArcOfHyperbola>()) {
+        return haveSameRadii(
+            static_cast<const Part::GeomArcOfHyperbola*>(first),
+            static_cast<const Part::GeomArcOfHyperbola*>(second)
+        );
+    }
+    if (first->is<Part::GeomArcOfParabola>()) {
+        return isClose(
+            static_cast<const Part::GeomArcOfParabola*>(first)->getFocal(),
+            static_cast<const Part::GeomArcOfParabola*>(second)->getFocal()
+        );
+    }
+    return false;
+}
+}  // namespace
+
 int SketchObject::findInternalAlignmentSibling(int GeoId) const
 {
     const Part::Geometry* geo = getGeometry(GeoId);
     if (!geo) {
         return GeoEnum::GeoUndef;
     }
-
-    auto isEllipse = [](const Part::Geometry* g) {
-        return g->is<Part::GeomEllipse>() || g->is<Part::GeomArcOfEllipse>();
-    };
 
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
@@ -1132,8 +1175,7 @@ int SketchObject::findInternalAlignmentSibling(int GeoId) const
             : constr->Second == GeoId          ? constr->First
                                                : GeoEnum::GeoUndef;
         const Part::Geometry* cg = candidate >= 0 ? getGeometry(candidate) : nullptr;
-        if (!cg || cg->is<Part::GeomBSplineCurve>() || !hasInternalGeometry(cg)
-            || (cg->getTypeId() != geo->getTypeId() && !(isEllipse(geo) && isEllipse(cg)))) {
+        if (!cg || !isArcOfSameConic(geo, cg)) {
             continue;
         }
         // A conic that already owns axes/foci cannot take over another set.

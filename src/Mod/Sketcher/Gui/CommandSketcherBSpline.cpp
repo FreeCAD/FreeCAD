@@ -153,15 +153,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
         else {
             continue;
         }
-        const auto* geometry = Obj->getGeometry(GeoId);
-        if (!geometry) {
-            continue;
-        }
-        // Preserve existing splines and auxiliary geometry, including pole circles selected alone.
-        // External splines are allowed so that conversion can create an internal copy.
-        if (GeoId >= 0
-            && (geometry->is<Part::GeomBSplineCurve>()
-                || Obj->getGeometryFacade(GeoId)->isInternalAligned())) {
+        if (!Obj->getGeometry(GeoId) || Obj->isExemptFromNURBSConversion(GeoId)) {
             continue;
         }
         long id = 0;
@@ -172,6 +164,14 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     }
 
     if (selectedGeometry.empty()) {
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr(
+                "None of the selected elements can be converted. Select edges that are neither "
+                "B-splines nor internal geometry."
+            )
+        );
         return;
     }
 

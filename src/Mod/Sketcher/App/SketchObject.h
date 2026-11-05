@@ -583,6 +583,17 @@ public:
      succeed.
      */
     bool convertToNURBS(int GeoId);
+    /**
+     * @brief Whether convertToNURBS() leaves @p GeoId unchanged.
+     *
+     * Replacing an existing spline would discard its constraints and detach its internal
+     * geometry, and converting an axis or pole would detach it from its parent. External geometry
+     * is never exempt, since its conversion creates a new internal copy.
+     *
+     * @param[in] GeoId The geometry to check.
+     * @return @c true for internal splines and internal-aligned geometry.
+     */
+    bool isExemptFromNURBSConversion(int GeoId) const;
 
     /*!
      \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
