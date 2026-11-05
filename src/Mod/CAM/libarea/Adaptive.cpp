@@ -3469,6 +3469,7 @@ void Adaptive2d::ProcessPolyNode(
                 double dx = clp.x - toolPos.x;
                 double len = sqrt(dx * dx + dy * dy);
                 angle = asin((dy * toolDir.x - dx * toolDir.y) / len);
+                pointNotInterp = true;
             }
             else if (!foundArea) {
                 // if the previous iteration didn't cut area then nothing will; exit early
