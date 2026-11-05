@@ -106,7 +106,6 @@ MillPathSegment::MillPathSegment(const EndMill& _endmill, const MillMotion& from
                 mDiff[PZ] / numSimSteps,
                 &mShape
             );
-            numSimSteps++;
         }
 
         isMultyPart = true;
@@ -147,7 +146,7 @@ void MillPathSegment::AppendPathPoints(std::vector<MillPathPosition>& pointsBuff
         float ang = mStartAngRad;
         float z = mStartPos[PZ];
         float zStep = mDiff[PZ] / numSimSteps;
-        for (int i = 1; i < numSimSteps; i++) {
+        for (int i = 1; i <= numSimSteps; i++) {
             ang -= mStepAngRad;
             z += zStep;
             mpPos.X = mCenter[PX] - sinf(ang) * mRadius;
@@ -182,12 +181,15 @@ void MillPathSegment::render(int step)
         mat4x4_rotate_Z(mat, mat, mStartAngRad - (step - 1) * mStepAngRad);
         mat4x4_rotate_Z(rmat, rmat, mStartAngRad - (step - 1) * mStepAngRad);
 
-        if (mSmallRad || step == numSimSteps) {
-            mat4x4_translate_in_place(mat, 0, mRadius, 0);
-            endmill->toolShape.Render(mat, rmat);
-        }
-        else {
+        if (!mSmallRad) {
             mShape.Render(mat, rmat);
+        }
+        // a tight arc stamps the whole tool at each step's end; a wide one only at its last
+        if (mSmallRad || step == numSimSteps) {
+            mat4x4_rotate_Z(mat, mat, -mStepAngRad);
+            mat4x4_rotate_Z(rmat, rmat, -mStepAngRad);
+            mat4x4_translate_in_place(mat, 0, mRadius, mDiff[PZ] / numSimSteps);
+            endmill->toolShape.Render(mat, rmat);
         }
     }
     else {
@@ -226,7 +228,12 @@ void MillPathSegment::GetHeadPosition(vec3 headPos)
 {
     if (mMotionType == MTCurved) {
         float angRad = mStartAngRad - mStepNumber * mStepAngRad;
-        vec3_set(mHeadPos, -mRadius * sinf(angRad), mRadius * cosf(angRad), 0);
+        vec3_set(
+            mHeadPos,
+            -mRadius * sinf(angRad),
+            mRadius * cosf(angRad),
+            mDiff[PZ] * mStepNumber / numSimSteps
+        );
         vec3_add(mHeadPos, mHeadPos, mCenter);
     }
     else {
