@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 """The toolbar tooltip of a Python group command is the tooltip of its active tool
-(issue #24639): title, help text and command name appear once."""
+(issue #24639): title, help text, shortcut and command name appear once."""
 
 import unittest
 from uuid import uuid4
@@ -9,15 +9,24 @@ import FreeCAD as App
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from PySide import QtWidgets
+    from PySide import QtGui, QtWidgets
+else:
+    Gui = QtGui = QtWidgets = None
+
+ACCEL = "Ctrl+Alt+Shift+F11"
 
 
 class _Child:
-    def __init__(self, tag):
+    def __init__(self, tag, accel=""):
         self.tag = tag
+        self.accel = accel
 
     def GetResources(self):
-        return {"MenuText": "Child menu " + self.tag, "ToolTip": "Child tip " + self.tag}
+        """Command resources, with an optional shortcut."""
+        res = {"MenuText": f"Child menu {self.tag}", "ToolTip": f"Child tip {self.tag}"}
+        if self.accel:
+            res["Accel"] = self.accel
+        return res
 
     def IsActive(self):
         return True
@@ -42,14 +51,16 @@ class _Group:
 
 @unittest.skipUnless(App.GuiUp, "Requires the GUI")
 class TestPythonGroupCommandToolTipGui(unittest.TestCase):
+    """Tooltip of the toolbar button of a Python group command."""
+
     def setUp(self):
         token = uuid4().hex[:8]
-        self.child_a = "TipChildA_" + token
-        self.child_b = "TipChildB_" + token
-        self.group = "TipGroup_" + token
-        self.toolbar = "TipToolbar_" + token
-        self.workbench = "TipWorkbench_" + token
-        Gui.addCommand(self.child_a, _Child("A"))
+        self.child_a = f"TipChildA_{token}"
+        self.child_b = f"TipChildB_{token}"
+        self.group = f"TipGroup_{token}"
+        self.toolbar = f"TipToolbar_{token}"
+        self.workbench = f"TipWorkbench_{token}"
+        Gui.addCommand(self.child_a, _Child("A", ACCEL))
         Gui.addCommand(self.child_b, _Child("B"))
         Gui.addCommand(self.group, _Group((self.child_a, self.child_b)))
 
@@ -89,14 +100,31 @@ class TestPythonGroupCommandToolTipGui(unittest.TestCase):
         self.assertEqual(len(actions), 1)
         return actions[0].toolTip()
 
-    def testCollapsedGroupShowsActiveToolOnce(self):
-        tip = self._group_tooltip()
-        self.assertIn("<b>Child menu A</b>", tip)
-        self.assertIn("Child tip A", tip)
+    def _assert_single_tool(self, tip, tool, other, tag, index):
+        self.assertIn(f"<b>Child menu {tag}</b>", tip)
+        self.assertIn(f"Child tip {tag}", tip)
         self.assertNotIn("Group menu", tip)
         self.assertEqual(tip.count("<b>"), 1, tip)
         self.assertEqual(tip.count("<i>"), 1, tip)
-        self.assertEqual(tip.count(self.child_a), 1, tip)
-        self.assertNotIn(self.child_b, tip)
+        self.assertEqual(tip.count(tool), 1, tip)
+        self.assertNotIn(other, tip)
         # like a C++ group command: "<active tool> (<group>:<index>)"
-        self.assertIn("<i>{} ({}:0)</i>".format(self.child_a, self.group), tip)
+        self.assertIn(f"<i>{tool} ({self.group}:{index})</i>", tip)
+
+    def testCollapsedGroupShowsActiveToolOnce(self):
+        """The default tool is described once, with its shortcut."""
+        tip = self._group_tooltip()
+        self._assert_single_tool(tip, self.child_a, self.child_b, "A", 0)
+        shortcut = QtGui.QKeySequence(ACCEL).toString(QtGui.QKeySequence.NativeText)
+        self.assertIn(f"<b>Child menu A</b> ({shortcut})", tip)
+
+    def testPickedToolShowsCommandNameLikeDefaultTool(self):
+        """After picking a tool from the drop-down, its tooltip has the same form."""
+        children = Gui.Command.get(self.group).getAction()
+        self.assertEqual(len(children), 2)
+        children[1].trigger()
+        QtWidgets.QApplication.processEvents()
+
+        tip = self._group_tooltip()
+        self._assert_single_tool(tip, self.child_b, self.child_a, "B", 1)
+        self.assertIn("<b>Child menu B</b></p>", tip)
