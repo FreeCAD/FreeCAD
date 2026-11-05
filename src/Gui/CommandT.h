@@ -489,7 +489,7 @@ public:
     }
     static void emit()
     {
-        for ( auto& [eType, element] : getBuffer()) {
+        for (auto& [eType, element] : getBuffer()) {
             if (eType == Command::Gui) {
                 Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, element.c_str());
             }
@@ -503,7 +503,7 @@ public:
 
     static void push(Command::DoCmd_Type eType, std::string sCmd)
     {
-        getBuffer().push_back( { eType, sCmd });
+        getBuffer().push_back({eType, sCmd});
     }
 
 private:

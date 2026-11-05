@@ -850,9 +850,10 @@ void Command::_runCommand(const char* file, int line, DoCmd_Type eType, const ch
     Base::PyGILStateLocker lock;
 
     printCaller(file, line);
-    if( TransactionCommandQueue::isBuffering()) {
+    if (TransactionCommandQueue::isBuffering()) {
         TransactionCommandQueue::push(eType, sCmd);
-    } else {
+    }
+    else {
         if (eType == Gui) {
             Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
         }
