@@ -1447,7 +1447,7 @@ void CmdSketcherViewSection::activated(int iMsg)
     QLatin1String revert = vp->getViewOrientationFactor() < 0 ? QLatin1String("True") : QLatin1String("False");
 
     cmdStr = cmdStr.arg(doc->getDocument()->getName(), vp->getSketchObject()->getNameInDocument(), revert);
-    doCommand(Doc, cmdStr.toLatin1());
+    doCommand(Doc, cmdStr.toUtf8());
 }
 
 bool CmdSketcherViewSection::isActive()

@@ -353,7 +353,7 @@ void SelectionView::select(QListWidgetItem* item)
     try {
         // Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
-        // Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
+        // Gui::Selection().addSelection(elements[0].toUtf8(),elements[1].toUtf8(),0);
         QString cmd = QString::fromUtf8(
                           R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))"
         )
@@ -376,7 +376,7 @@ void SelectionView::deselect()
         return;
     }
 
-    // Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
+    // Gui::Selection().rmvSelection(elements[0].toUtf8(),elements[1].toUtf8(),0);
     QString cmd = QString::fromUtf8(
                       R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))"
     )

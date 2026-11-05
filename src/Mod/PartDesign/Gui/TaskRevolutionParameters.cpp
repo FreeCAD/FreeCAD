@@ -976,7 +976,7 @@ void TaskRevolutionParameters::apply()
     if (static_cast<Mode>(getMode2()) == Mode::ToFace) {
         facename2 = getFaceName(ui->lineFaceName2);
     }
-    FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
+    FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toUtf8().data());
     FCMD_OBJ_CMD(tobj, "UpToFace2 = " << facename2.toLatin1().data());
 }
 
