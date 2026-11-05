@@ -25,23 +25,28 @@ import os
 import tempfile
 import unittest
 
-import ifcopenshell
-from ifcopenshell.util import element
-
 import FreeCAD
 import Arch
 import Draft
 
 from bimtests import TestArchBase
 
-from nativeifc import ifc_import
-from nativeifc import ifc_tools
-from nativeifc import ifc_export
-from nativeifc import ifc_geometry
-from nativeifc import ifc_materials
-from nativeifc import ifc_layers
-from nativeifc import ifc_psets
-from nativeifc import ifc_types
+# The nativeifc machinery needs ifcopenshell, which is an optional dependency
+try:
+    import ifcopenshell
+
+    from nativeifc import ifc_import
+    from nativeifc import ifc_tools
+    from nativeifc import ifc_export
+    from nativeifc import ifc_geometry
+    from nativeifc import ifc_materials
+    from nativeifc import ifc_layers
+    from nativeifc import ifc_psets
+    from nativeifc import ifc_types
+
+    _HAS_IFCOPENSHELL = True
+except ImportError:
+    _HAS_IFCOPENSHELL = False
 
 IFC_FILE_PATH = None  # downloaded IFC file path
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -98,6 +103,7 @@ def get_schema_descendant_names(schema_name, root_name):
     return sorted(set(descendants))
 
 
+@unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
 class TestNativeIfc(TestArchBase.TestArchBase):
 
     def createFreeCADFile(self):

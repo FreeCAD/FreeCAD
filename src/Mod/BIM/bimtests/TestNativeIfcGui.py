@@ -21,15 +21,19 @@
 
 """Unit tests for the Native IFC module that require the GUI"""
 
+import unittest
+
 import FreeCAD
 
 from bimtests import TestArchBaseGui
-from bimtests.TestNativeIfc import SINGLEDOC, getIfcFilePath
+from bimtests.TestNativeIfc import _HAS_IFCOPENSHELL, SINGLEDOC, getIfcFilePath
 
-from nativeifc import ifc_import
-from nativeifc import ifc_tools
+if _HAS_IFCOPENSHELL:
+    from nativeifc import ifc_import
+    from nativeifc import ifc_tools
 
 
+@unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
 class TestNativeIfcGui(TestArchBaseGui.TestArchBaseGui):
 
     def test12_RemoveObject(self):
