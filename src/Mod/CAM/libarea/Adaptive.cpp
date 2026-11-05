@@ -1082,83 +1082,105 @@ public:
 
     void clear()
     {
-        m_min.reset();
-        m_max.reset();
+        m_best.reset();
+        m_bound.reset();
     }
     bool bothSides()
     {
-        return m_min && m_max && m_min->error < 0 && m_max->error >= 0
-            && (!m_min->isConventional || !m_max->isConventional);
+        return m_best && m_bound && m_best->error < 0 && m_bound->error >= 0;
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
     void addPoint(double error, std::pair<double, Point64> angle, bool allowSkip, bool isConventional)
     {
         const InterpItem newItem = {angle, error, isConventional};
+        const bool isValid = !isConventional && error < 0;
+        const bool bestIsValid = m_best && !m_best->isConventional && m_best->error < 0;
 
-        if (!m_min) {
-            m_min = newItem;
+        // If we don't have any points, it's the best
+        if (!m_best) {
+            m_best = newItem;
         }
-        else if (!m_max) {
-            m_max = newItem;
-            if (m_min->error > m_max->error) {
-                auto tmp = m_min;
-                m_min = m_max;
-                m_max = tmp;
+
+        // If we don't have a second point, keep it and sort best vs bound
+        else if (!m_bound) {
+            if (isValid && !bestIsValid) {
+                m_bound = m_best;
+                m_best = newItem;
             }
-        }
-        else if (isConventional && (m_min->isConventional ^ m_max->isConventional)) {
-            if (!allowSkip) {
-                if (m_min->isConventional) {
-                    m_min.reset();
-                }
-                else {
-                    m_max.reset();
-                }
-                addPoint(error, angle, false, isConventional);
+            else if (isValid && bestIsValid && abs(error) < abs(m_best->error)) {
+                m_bound = m_best;
+                m_best = newItem;
             }
-        }
-        else if (bothSides()) {
-            if (error < 0) {
-                m_min = newItem;
+            else if (!isValid && !bestIsValid && error < m_best->error) {
+                m_bound = m_best;
+                m_best = newItem;
             }
             else {
-                m_max = newItem;
+                m_bound = newItem;
             }
         }
         else {
-            if (allowSkip && abs(error) > abs(m_min->error) && abs(error) > abs(m_max->error)
-                && (isConventional || !m_min->isConventional || !m_max->isConventional)) {
-                return;
+            // We have 2 points already; only keep the point point if we must or if it's better
+            const bool betterThanBest = isConventional < m_best->isConventional
+                || (isConventional == m_best->isConventional && abs(error) < abs(m_best->error));
+            const bool betterThanBound = isConventional < m_bound->isConventional
+                || (isConventional == m_bound->isConventional && abs(error) < abs(m_bound->error));
+
+            // If best is valid, keep it that way
+            if (bestIsValid && !isValid) {
+                if (!allowSkip || betterThanBound) {
+                    m_bound = newItem;
+                }
             }
 
-            if (m_min->isConventional ^ m_max->isConventional) {
-                if (m_min->isConventional) {
-                    m_min.reset();
+            // If we have both sides of 0 error, keep it that way
+            else if (bothSides()) {
+                if (error < 0) {
+                    if (!allowSkip || betterThanBest) {
+                        m_best = newItem;
+                    }
                 }
                 else {
-                    m_max.reset();
+                    if (!allowSkip || betterThanBound) {
+                        m_bound = newItem;
+                    }
                 }
             }
-            else if (abs(m_min->error) > abs(m_max->error)) {
-                m_min.reset();
-            }
+
+            // If this point gives us both sides, or if it's better than an existing point, keep it
             else {
-                m_max.reset();
+                const bool newSide = error < 0 ? (m_best->error >= 0 && m_bound->error >= 0)
+                                               : (m_best->error < 0 && m_bound->error < 0);
+
+                if (newSide || !allowSkip || betterThanBest || betterThanBound) {
+                    // Determine which of m_best and m_bound is worse and drop it
+                    if (m_best->isConventional ^ m_bound->isConventional) {
+                        if (m_best->isConventional) {
+                            m_best = m_bound;
+                        }
+                    }
+                    else if (abs(m_best->error) > abs(m_bound->error)) {
+                        m_best = m_bound;
+                    }
+                    m_bound.reset();
+
+                    // Keep the new point; this call will sort best/bound correctly
+                    addPoint(error, angle, false, isConventional);
+                }
             }
-            addPoint(error, angle, false, isConventional);
         }
     }
 
     double interpolateAngle()
     {
-        if (!m_min) {
+        if (!m_best) {
             return MIN_ANGLE;
         }
 
-        if (!m_max) {
+        if (!m_bound) {
             return MAX_ANGLE;
         }
-        double p = (0 - m_min->error) / (m_max->error - m_min->error);
+        double p = (0 - m_best->error) / (m_bound->error - m_best->error);
 
         // Ensure search is sufficiently efficient -- this is a compromise
         // between binary search (p = 0.5, guaranteed search completion in log
@@ -1167,7 +1189,7 @@ public:
         const double minInterp = .2;
         p = max(min(p, 1 - minInterp), minInterp);
 
-        return m_min->angle.first * (1 - p) + m_max->angle.first * p;
+        return m_best->angle.first * (1 - p) + m_bound->angle.first * p;
     }
 
     double clampAngle(double angle)
@@ -1177,13 +1199,17 @@ public:
 
     size_t getPointCount()
     {
-        return (m_min ? 1 : 0) + (m_max ? 1 : 0);
+        return (m_best ? 1 : 0) + (m_bound ? 1 : 0);
     }
 
 public:
+    // best stores the only valid candidate
+    // ...or if there are two, then the lower abs(error) candidate
+    // ...or if there are zero, then the lower signed error candidate
+    // bound stores the other candidate
     // {{angle, clipper point}, error}
-    std::optional<InterpItem> m_min;
-    std::optional<InterpItem> m_max;
+    std::optional<InterpItem> m_best;
+    std::optional<InterpItem> m_bound;
 };
 
 //***************************************
@@ -3491,61 +3517,34 @@ void Adaptive2d::ProcessPolyNode(
 
             // Skip iteration if this Point64 has already been processed
             bool intRepeat = false;
-            if (interp.m_min && newToolPos == interp.m_min->angle.second) {
-                interp.m_min = InterpItem {
-                    {angle, newToolPos},
-                    interp.m_min->error,
-                    interp.m_min->isConventional
-                };
+            if (interp.m_best && newToolPos == interp.m_best->angle.second) {
+                interp.m_best
+                    = {{angle, newToolPos}, interp.m_best->error, interp.m_best->isConventional};
                 intRepeat = true;
             }
-            if (interp.m_max && newToolPos == interp.m_max->angle.second) {
-                interp.m_max = InterpItem {
-                    {angle, newToolPos},
-                    interp.m_max->error,
-                    interp.m_max->isConventional
-                };
+            if (interp.m_bound && newToolPos == interp.m_bound->angle.second) {
+                interp.m_bound
+                    = {{angle, newToolPos}, interp.m_bound->error, interp.m_bound->isConventional};
                 intRepeat = true;
             }
 
             if (intRepeat) {
-                if (interp.m_min && interp.m_max
-                    && abs(interp.m_min->angle.second.x - interp.m_max->angle.second.x) <= 1
-                    && abs(interp.m_min->angle.second.y - interp.m_max->angle.second.y) <= 1) {
+                if (interp.m_best && interp.m_bound
+                    && abs(interp.m_best->angle.second.x - interp.m_bound->angle.second.x) <= 1
+                    && abs(interp.m_best->angle.second.y - interp.m_bound->angle.second.y) <= 1) {
                     if (pointNotInterp) {
                         // if this happens while testing min/max of the range it doesn't mean
                         // anything; only exit early if interpolation is down to adjacent
                         // integers
                         continue;
                     }
+
                     // exit early, selecting the better of the two adjacent integers
-                    double error;
-                    if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
-                        if (!interp.m_min->isConventional) {
-                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                            newToolPos = interp.m_min->angle.second;
-                            error = interp.m_min->error;
-                            isConventional = interp.m_min->isConventional;
-                        }
-                        else {
-                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                            newToolPos = interp.m_max->angle.second;
-                            error = interp.m_max->error;
-                            isConventional = interp.m_max->isConventional;
-                        }
-                    }
-                    else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
-                        newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                        newToolPos = interp.m_min->angle.second;
-                        error = interp.m_min->error;
-                        isConventional = interp.m_min->isConventional;
-                    }
-                    else {
-                        newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                        newToolPos = interp.m_max->angle.second;
-                        error = interp.m_max->error;
-                        isConventional = interp.m_max->isConventional;
-                    }
+                    newToolDir = rotate(toolDir, interp.m_best->angle.first);
+                    newToolPos = interp.m_best->angle.second;
+                    double error = interp.m_best->error;
+                    isConventional = interp.m_best->isConventional;
+
                     areaPD = error + targetAreaPD;
                     area = areaPD * sqrt(DistanceSqrd(toolPos, newToolPos));
                     out.iterationAngle = angle;
