@@ -31,6 +31,8 @@
 #include "MappedElement.h"
 #include "StringHasher.h"
 
+#include <QHash>
+
 #include <cstring>
 #include <deque>
 #include <functional>

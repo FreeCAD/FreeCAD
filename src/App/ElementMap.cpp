@@ -177,7 +177,7 @@ void ElementMap::save(std::ostream& stream,
                         for (auto& sid : ref->sids) {
                             if (sid.isMarked() && sid.value() == prefixID.id) {
                                 stream << '$';
-                                stream.write(ref->name.dataBytes().data(),
+                                stream.write(reinterpret_cast<const char*>(ref->name.dataBytes().data()),
                                              static_cast<std::streamsize>(ref->name.dataBytes().size()));
                                 printName = false;
                                 break;
@@ -190,7 +190,7 @@ void ElementMap::save(std::ostream& stream,
                 }
                 if (printName) {
                     stream << ';';
-                    stream.write(ref->name.dataBytes().data(),
+                    stream.write(reinterpret_cast<const char*>(ref->name.dataBytes().data()),
                                  static_cast<std::streamsize>(ref->name.dataBytes().size()));
                 }
 
@@ -200,7 +200,8 @@ void ElementMap::save(std::ostream& stream,
                 }
                 else {
                     auto postfixKey =
-                        QByteArray::fromRawData(postfix.data(), static_cast<int>(postfix.size()));
+                        QByteArray::fromRawData(reinterpret_cast<const char*>(postfix.data()),
+                                                static_cast<int>(postfix.size()));
                     auto it = postfixMap.find(postfixKey);
                     assert(it != postfixMap.end());
                     stream << '.' << it->second;
@@ -451,8 +452,7 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
                     }
                     else {
                         const auto& postfix = postfixes[postfixIndex - 1];
-                        ref->name += Base::BytesView(postfix.constData(),
-                                                     static_cast<std::size_t>(postfix.size()));
+                        ref->name += Base::asBytes(postfix);
                     }
                 }
 
@@ -849,7 +849,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             return IndexedName();
         }
         const Base::ByteBuffer keyBytes = name.toRawBytes(len);
-        const QByteArray key = QByteArray::fromRawData(keyBytes.data(),
+        const QByteArray key = QByteArray::fromRawData(reinterpret_cast<const char*>(keyBytes.data()),
                                                        static_cast<int>(keyBytes.size()));
         auto it = this->childElements.find(key);
         if (it == this->childElements.end()) {
@@ -934,7 +934,7 @@ MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
             name = MappedName(childIdx);
         }
         if (name) {
-            name += Base::BytesView(child.postfix.constData(),
+            name += Base::asBytes(child.postfix.constData(),
                                     static_cast<std::size_t>(child.postfix.size()));
             return name;
         }
@@ -981,7 +981,7 @@ std::vector<std::pair<MappedName, ElementIDRefs>> ElementMap::findAll(const Inde
         IndexedName childIdx(idx.getType(), idx.getIndex() - child.offset);
         if (child.elementMap) {
             res = child.elementMap->findAll(childIdx);
-            const auto postfixView = Base::BytesView(child.postfix.constData(),
+            const auto postfixView = Base::asBytes(child.postfix.constData(),
                                                      static_cast<std::size_t>(child.postfix.size()));
             for (auto& v : res) {
                 v.first += postfixView;
@@ -990,7 +990,7 @@ std::vector<std::pair<MappedName, ElementIDRefs>> ElementMap::findAll(const Inde
         else {
             res.emplace_back(
                 MappedName(childIdx)
-                    + Base::BytesView(child.postfix.constData(),
+                    + Base::asBytes(child.postfix.constData(),
                                       static_cast<std::size_t>(child.postfix.size())),
                 ElementIDRefs()
             );
@@ -1053,7 +1053,7 @@ void ElementMap::hashChildMaps(long masterTag)
             int len = 0;
             long tag = 0;
             int pos = MappedName::fromRawData(
-                          Base::BytesView(child.postfix.constData(),
+                          Base::asBytes(child.postfix.constData(),
                                           static_cast<std::size_t>(child.postfix.size()))
                       )
                           .findTagInElementName(&tag, &len, nullptr, nullptr, false, false);
@@ -1075,7 +1075,7 @@ void ElementMap::hashChildMaps(long masterTag)
                                   true);
                 this->childElements.remove(child.postfix);
                 const Base::ByteBuffer tmpBytes = tmp.toBytes();
-                child.postfix = QByteArray(tmpBytes.data(), static_cast<int>(tmpBytes.size()));
+                child.postfix = QByteArray(reinterpret_cast<const char*>(tmpBytes.data()), static_cast<int>(tmpBytes.size()));
                 this->childElements[child.postfix].childMap = &child;
             }
         }
@@ -1240,7 +1240,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             // Perform some disambiguation in case the same shape is mapped
             // multiple times, e.g. draft array.
             const Base::ByteBuffer tmpBytes = tmp.toBytes();
-            const QByteArray tmpKey(tmpBytes.data(), static_cast<int>(tmpBytes.size()));
+            const QByteArray tmpKey(reinterpret_cast<const char*>(tmpBytes.data()), static_cast<int>(tmpBytes.size()));
             entry = &childElements[tmpKey];
             int mapIndex = entry->mapIndices[child.elementMap.get()]++;
             ++entry->index;
@@ -1300,7 +1300,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                               true);
 
             const Base::ByteBuffer tmpBytes = tmp.toBytes();
-            const QByteArray tmpKey(tmpBytes.data(), static_cast<int>(tmpBytes.size()));
+            const QByteArray tmpKey(reinterpret_cast<const char*>(tmpBytes.data()), static_cast<int>(tmpBytes.size()));
             entry = &childElements[tmpKey];
             if (entry->childMap) {
                 FC_ERR("duplicate mapped child element");  // NOLINT
@@ -1315,7 +1315,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         if (!res.second) {
             if (!entry->childMap) {
                 const Base::ByteBuffer tmpBytes = tmp.toBytes();
-                const QByteArray tmpKey(tmpBytes.data(), static_cast<int>(tmpBytes.size()));
+                const QByteArray tmpKey(reinterpret_cast<const char*>(tmpBytes.data()), static_cast<int>(tmpBytes.size()));
                 this->childElements.remove(tmpKey);
             }
             FC_ERR("duplicate mapped child element");  // NOLINT
@@ -1325,7 +1325,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         auto& insertedChild = res.first->second;
         {
             const Base::ByteBuffer tmpBytes = tmp.toBytes();
-            insertedChild.postfix = QByteArray(tmpBytes.data(), static_cast<int>(tmpBytes.size()));
+            insertedChild.postfix = QByteArray(reinterpret_cast<const char*>(tmpBytes.data()), static_cast<int>(tmpBytes.size()));
         }
         entry->childMap = &insertedChild;
         childElementSize += insertedChild.count;
@@ -1363,7 +1363,7 @@ std::vector<MappedElement> ElementMap::getAll() const
                 name = MappedName(childIdx);
             }
             if (name) {
-                name += Base::BytesView(child.postfix.constData(),
+                name += Base::asBytes(child.postfix.constData(),
                                         static_cast<std::size_t>(child.postfix.size()));
                 ret.emplace_back(name, idx);
             }
