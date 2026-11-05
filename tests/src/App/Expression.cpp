@@ -369,8 +369,19 @@ TEST_F(Expression, serializeUnitPowerPrecedence)
     EXPECT_EQ(reserialize("10 (mm / s)"), "10 (mm / s)");
     EXPECT_EQ(reserialize("10 mm / s"), "10 mm / s");
 
-    EXPECT_EQ(reserialize("(-5 mm) ^ 2"), "-(5 mm) ^ 2");
-    EXPECT_EQ(reserialize("(+5 mm) ^ 2"), "+(5 mm) ^ 2");
+    EXPECT_EQ(reserialize("(-5 mm) ^ 2"), "(-5 mm) ^ 2");
+    EXPECT_EQ(reserialize("(+5 mm) ^ 2"), "(+5 mm) ^ 2");
+    EXPECT_EQ(reserialize("(- -5 mm) ^ 2"), "(--5 mm) ^ 2");
+}
+
+TEST_F(Expression, serializeSignedQuantityWithoutParens)
+{
+    EXPECT_EQ(reserialize("-5 mm"), "-5 mm");
+    EXPECT_EQ(reserialize("+5 mm"), "+5 mm");
+    EXPECT_EQ(reserialize("-(5 mm)"), "-5 mm");
+    EXPECT_EQ(reserialize("-(5) mm"), "-5 mm");
+    EXPECT_EQ(reserialize("2 * -5 mm"), "2 * -5 mm");
+    EXPECT_EQ(reserialize("-10 mm ^ 3"), "-10 mm ^ 3");
 }
 
 TEST_F(Expression, serializeUnitPowerRoundTrip)
@@ -382,6 +393,11 @@ TEST_F(Expression, serializeUnitPowerRoundTrip)
         "(10 mm) ^ 3",
         "(-5 mm) ^ 2",
         "(+5 mm) ^ 2",
+        "(- -5 mm) ^ 2",
+        "-(-5 mm) ^ 2",
+        "-5 mm",
+        "2 * -5 mm",
+        "-10 mm ^ 3",
         "10 (mm / s) ^ 2",
         "10 (mm / s)",
         "10 mm / s",
