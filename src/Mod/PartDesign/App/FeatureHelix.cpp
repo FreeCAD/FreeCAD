@@ -34,6 +34,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepTools_WireExplorer.hxx>
@@ -597,8 +598,61 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.move(invObjLoc);
 
+        // A cylindrical helix is invariant under its screw motion. Its remaining segment is then
+        // the helix of the remaining height, swept from the sketch profile like a one-sided
+        // helix and moved by the screw motion along the shorter side. Sweeping that segment
+        // from a transported profile instead depends on where OCCT places a profile on a path
+        // it lies far from (see generateHelixPath): on large parts it picked another turn.
+        const bool cylindricalTrim = trimOverlap && helixSides[0].angle == 0.
+            && std::abs(helixSides[0].growth) < Precision::Confusion();
+        gp_Trsf trimMove;
+        if (cylindricalTrim) {
+            const auto outerSide = heightAbs > height2Abs ? 0 : 1;
+            const HelixSideParameters inner = helixSides[1 - outerSide];
+            HelixSideParameters remaining = helixSides[outerSide];
+            remaining.height -= inner.height;
+            remaining.turns -= inner.turns;
+            // The shorter side ends where the remaining segment starts.
+            const TopoDS_Shape innerPath = generateHelixPath(
+                inner.turns,
+                inner.height,
+                inner.angle,
+                inner.growth,
+                inner.reversed
+            );
+            TopoDS_Vertex firstVertex, lastVertex;
+            TopExp::Vertices(TopoDS::Wire(innerPath), firstVertex, lastVertex);
+            const gp_Pnt start = BRep_Tool::Pnt(firstVertex);
+            const gp_Pnt end = BRep_Tool::Pnt(lastVertex);
+            const Base::Vector3d baseVector = Base.getValue();
+            const Base::Vector3d axisVector = Axis.getValue();
+            gp_Ax1 axis(
+                gp_Pnt(baseVector.x, baseVector.y, baseVector.z),
+                gp_Dir(axisVector.x, axisVector.y, axisVector.z)
+            );
+            axis.Transform(invObjLoc.Transformation());
+            // Use the exact turns and height of the shorter side; its path only decides the
+            // directions of the rotation and the translation.
+            double bestDistance = std::numeric_limits<double>::max();
+            for (const double angleSign : {1., -1.}) {
+                for (const double heightSign : {1., -1.}) {
+                    gp_Trsf rotation;
+                    rotation.SetRotation(axis, angleSign * 2. * std::numbers::pi * inner.turns);
+                    gp_Trsf translation;
+                    translation.SetTranslation(gp_Vec(axis.Direction()) * (heightSign * inner.height));
+                    const gp_Trsf move = translation * rotation;
+                    const double distance = start.Transformed(move).Distance(end);
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        trimMove = move;
+                    }
+                }
+            }
+            helixSides = {remaining};
+        }
+
         std::vector<TopoDS_Shape> overlappingPaths;
-        if (trimOverlap) {
+        if (trimOverlap && !cylindricalTrim) {
             for (const auto& side : helixSides) {
                 overlappingPaths.push_back(generateHelixPath(
                     side.turns,
@@ -623,7 +677,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         for (const auto& side : helixSides) {
             // generate the helix path
             TopoDS_Shape path;
-            if (trimOverlap) {
+            if (trimOverlap && !cylindricalTrim) {
                 path = overlappingPaths[sideShapes.size()];
             }
             else if (side.angle == 0.) {
@@ -644,7 +698,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             TopoDS_Shape face = sketchshape;
             face.Move(invObjLoc);
-            if (trimOverlap && !endProfile.IsNull()) {
+            if (trimOverlap && !cylindricalTrim && !endProfile.IsNull()) {
                 face = endProfile;
             }
 
@@ -687,8 +741,13 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (fixer.Perform()) {
                 result = fixer.Solid();
             }
+            if (cylindricalTrim) {
+                // Transform the geometry: a location on the result would be replaced by the
+                // placement of the feature.
+                result = BRepBuilderAPI_Transform(result, trimMove, Standard_True).Shape();
+            }
             sideShapes.emplace_back(result, 0, getDocument()->getStringHasher());
-            if (trimOverlap) {
+            if (trimOverlap && !cylindricalTrim) {
                 endProfile = mkPS.LastShape();
             }
         }
