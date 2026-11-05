@@ -3314,8 +3314,6 @@ void Adaptive2d::ProcessPolyNode(
     ClearedArea cleared(toolRadiusScaled);
     cleared.SetClearedPaths(initialClearedPaths);
 
-    long stepScaled = long(MIN_STEP_CLIPPER);
-
     CheckReportProgress(progressPaths, true);
 
     Path64 passToolPath;  // to store pass toolpath
@@ -3367,22 +3365,23 @@ void Adaptive2d::ProcessPolyNode(
 
         // set the step size: 1x to 8x base size
         double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
+        long nominalStep;
         if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
-            stepScaled = long(MIN_STEP_CLIPPER);
+            nominalStep = long(MIN_STEP_CLIPPER);
         }
         else if (fabs(angle) > NTOL) {
-            stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
+            nominalStep = long(MIN_STEP_CLIPPER / fabs(angle));
         }
         else {
-            stepScaled = long(MIN_STEP_CLIPPER * 8);
+            nominalStep = long(MIN_STEP_CLIPPER * 8);
         }
 
         // clamp the step size - for stability
-        if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
-            stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
+        if (nominalStep > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
+            nominalStep = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
         }
-        if (stepScaled < MIN_STEP_CLIPPER) {
-            stepScaled = long(MIN_STEP_CLIPPER);
+        if (nominalStep < MIN_STEP_CLIPPER) {
+            nominalStep = long(MIN_STEP_CLIPPER);
         }
 
         //*****************************
@@ -3433,7 +3432,7 @@ void Adaptive2d::ProcessPolyNode(
                 Paths64 clearedArea = cleared.GetCleared();
 
                 // 1.5 > sqrt(2) for the constructed triangle to contain possible steps
-                double dist = (stepScaled + toolRadiusScaled) * 1.5;
+                double dist = (nominalStep + toolRadiusScaled) * 1.5;
                 PointD leftAngle = rotate(toolDir, -std::numbers::pi / 4);
                 PointD rightAngle = rotate(toolDir, std::numbers::pi / 4);
                 Path64 triangle = {toolPos};
@@ -3486,8 +3485,8 @@ void Adaptive2d::ProcessPolyNode(
 
             newToolDir = rotate(toolDir, angle);
             newToolPos = Point64(
-                long(toolPos.x + newToolDir.x * stepScaled),
-                long(toolPos.y + newToolDir.y * stepScaled)
+                long(toolPos.x + newToolDir.x * nominalStep),
+                long(toolPos.y + newToolDir.y * nominalStep)
             );
 
             // Skip iteration if this Point64 has already been processed
@@ -3548,7 +3547,7 @@ void Adaptive2d::ProcessPolyNode(
                         isConventional = interp.m_max->isConventional;
                     }
                     areaPD = error + targetAreaPD;
-                    area = areaPD * double(stepScaled);
+                    area = areaPD * sqrt(DistanceSqrd(toolPos, newToolPos));
                     out.iterationAngle = angle;
                     break;
                 }
@@ -3564,7 +3563,7 @@ void Adaptive2d::ProcessPolyNode(
                 foundArea = true;
             }
 
-            areaPD = area / double(stepScaled);  // area per distance
+            areaPD = area / sqrt(DistanceSqrd(toolPos, newToolPos));  // area per distance
             double error = areaPD - targetAreaPD;
             errorFraction = abs(error / optimalCutAreaPD);
             interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
@@ -3604,8 +3603,8 @@ void Adaptive2d::ProcessPolyNode(
                 recalcArea = true;
                 newToolDir = rotate(newToolDir, rotateIncrement);
                 newToolPos = Point64(
-                    long(toolPos.x + newToolDir.x * stepScaled),
-                    long(toolPos.y + newToolDir.y * stepScaled)
+                    long(toolPos.x + newToolDir.x * nominalStep),
+                    long(toolPos.y + newToolDir.y * nominalStep)
                 );
             }
             if (rotateStep >= 180) {
@@ -3623,7 +3622,7 @@ void Adaptive2d::ProcessPolyNode(
             if (recalcArea) {
                 const auto caRet = CalcCutArea(toolPos, newToolPos, cleared);
                 area = std::get<0>(caRet);
-                areaPD = area / double(stepScaled);  // area per distance
+                areaPD = area / sqrt(DistanceSqrd(toolPos, newToolPos));  // area per distance
                 double error = areaPD - targetAreaPD;
                 errorFraction = abs(error / optimalCutAreaPD);
 
@@ -3633,7 +3632,8 @@ void Adaptive2d::ProcessPolyNode(
             }
 
             // safety condition
-            if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
+            if (area > sqrt(DistanceSqrd(toolPos, newToolPos)) * optimalCutAreaPD
+                && areaPD > 2 * optimalCutAreaPD) {
                 over_cut_count++;
                 out.failed = true;
             }
@@ -4019,7 +4019,7 @@ void Adaptive2d::ProcessPolyNode(
                     passToolPath.push_back(toolPos);
                 }
                 passToolPath.push_back(itResult.newToolPos);
-                perf_total_len += stepScaled;
+                perf_total_len += sqrt(DistanceSqrd(toolPos, itResult.newToolPos));
                 toolPos = itResult.newToolPos;
 
                 // append to progress info paths
