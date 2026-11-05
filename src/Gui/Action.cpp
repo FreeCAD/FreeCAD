@@ -218,6 +218,30 @@ QString Action::text() const
     return _action->text();
 }
 
+namespace
+{
+// The tooltip of a group command is the one of its active tool, so it shows the shortcut of
+// that tool when the group has no shortcut of its own.
+QKeySequence toolTipShortcut(const Action* action)
+{
+    QKeySequence shortcut = action->shortcut();
+    if (!shortcut.isEmpty()) {
+        return shortcut;
+    }
+    const Command* cmd = action->command();
+    if (dynamic_cast<const GroupCommand*>(cmd) || dynamic_cast<const PythonGroupCommand*>(cmd)) {
+        if (auto group = qobject_cast<const ActionGroup*>(action)) {
+            int idx = group->property("defaultAction").toInt();
+            QList<QAction*> acts = group->actions();
+            if (idx >= 0 && idx < acts.size()) {
+                shortcut = acts[idx]->shortcut();
+            }
+        }
+    }
+    return shortcut;
+}
+}  // namespace
+
 void Action::setToolTip(const QString& text, const QString& title)
 {
     _tooltip = text;
@@ -226,7 +250,7 @@ void Action::setToolTip(const QString& text, const QString& title)
         text,
         title.isEmpty() ? _action->text() : title,
         _action->font(),
-        _action->shortcut().toString(QKeySequence::NativeText),
+        toolTipShortcut(this).toString(QKeySequence::NativeText),
         command()
     ));
 }
