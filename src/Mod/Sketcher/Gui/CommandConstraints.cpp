@@ -5016,7 +5016,6 @@ protected:
 
     struct CoincidentSolveStatus {
         SketchSolveStatus status {SketchSolveStatus::Success};
-        std::vector<ConstraintDiagnosticIdentity> redundantIdentities;
         std::vector<ConstraintDiagnosticIdentity> conflictingIdentities;
         std::vector<ConstraintDiagnosticIdentity> malformedIdentities;
     };
@@ -5586,13 +5585,6 @@ void CmdSketcherConstrainCoincidentUnified::showCoincidentSolveWarning(SketchObj
                                                                        SketchSolveStatus result)
 {
     switch (result) {
-        case SketchSolveStatus::RedundantConstraints:
-            Gui::TranslatedUserWarning(
-                obj,
-                QObject::tr("Coincident constraint not added"),
-                QObject::tr("Cannot add the coincident constraint because it would create redundant "
-                            "constraints."));
-            break;
         case SketchSolveStatus::ConflictingConstraints:
             Gui::TranslatedUserWarning(
                 obj,
@@ -5628,6 +5620,7 @@ void CmdSketcherConstrainCoincidentUnified::showCoincidentSolveWarning(SketchObj
                 QObject::tr("Cannot add the coincident constraint because the sketch contains "
                             "constraints that refer to invalid geometry."));
             break;
+        case SketchSolveStatus::RedundantConstraints:
         case SketchSolveStatus::Success:
             break;
     }
@@ -5741,7 +5734,6 @@ CmdSketcherConstrainCoincidentUnified::getCoincidentSolveStatus(SketchObject* ob
     }
 
     return {status,
-            getConstraintDiagnosticIdentities(obj, obj->getLastRedundant()),
             getConstraintDiagnosticIdentities(obj, obj->getLastConflicting()),
             getConstraintDiagnosticIdentities(obj, obj->getLastMalformedConstraints())};
 }
@@ -5750,7 +5742,9 @@ bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
     const CoincidentSolveStatus& before,
     const CoincidentSolveStatus& after)
 {
-    if (after.status == SketchSolveStatus::Success) {
+    // Redundancy is left to the user or to AutoRemoveRedundants, which runs after the commit.
+    if (after.status == SketchSolveStatus::Success
+        || after.status == SketchSolveStatus::RedundantConstraints) {
         return false;
     }
 
@@ -5776,8 +5770,7 @@ bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
         return false;
     };
 
-    return introducesDiagnostic(before.redundantIdentities, after.redundantIdentities)
-        || introducesDiagnostic(before.conflictingIdentities, after.conflictingIdentities)
+    return introducesDiagnostic(before.conflictingIdentities, after.conflictingIdentities)
         || introducesDiagnostic(before.malformedIdentities, after.malformedIdentities);
 }
 
