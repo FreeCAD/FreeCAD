@@ -80,3 +80,70 @@ class TestSketcherEllipse(unittest.TestCase):
 
         geo = sketch.ExternalGeo[-1]
         self.assertEqual(type(geo), Part.Circle)
+
+    def addEllipseWithInternalGeometry(self, sketch):
+        ellipse = sketch.addGeometry(
+            Part.Ellipse(App.Vector(20, 0, 0), App.Vector(0, 10, 0), App.Vector())
+        )
+        sketch.exposeInternalGeometry(ellipse)
+        return ellipse
+
+    def internalAlignmentOwners(self, sketch):
+        return [c.Second for c in sketch.Constraints if c.Type == "InternalAlignment"]
+
+    def testConvertToNURBSLeavesInternalGeometryUnchanged(self):
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        ellipse = self.addEllipseWithInternalGeometry(sketch)
+        types_before = [g.TypeId for g in sketch.Geometry]
+        axis = next(
+            c.First
+            for c in sketch.Constraints
+            if c.Type == "InternalAlignment"
+            and isinstance(sketch.Geometry[c.First], Part.LineSegment)
+        )
+
+        sketch.convertToNURBS(axis)
+
+        self.assertEqual([g.TypeId for g in sketch.Geometry], types_before)
+        self.assertEqual(self.internalAlignmentOwners(sketch), [ellipse] * 4)
+
+    def testConvertToNURBSDoesNotGiveInternalGeometryToConcentricEllipse(self):
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        outer = self.addEllipseWithInternalGeometry(sketch)
+        inner_ellipse = Part.Ellipse(App.Vector(0, 12, 0), App.Vector(4, 0, 0), App.Vector())
+        inner = sketch.addGeometry(inner_ellipse)
+        sketch.addConstraint(Sketcher.Constraint("Coincident", outer, 3, inner, 3))
+
+        sketch.convertToNURBS(outer)
+        self.doc.recompute()
+
+        self.assertEqual(self.internalAlignmentOwners(sketch), [])
+        ellipses = [g for g in sketch.Geometry if isinstance(g, Part.Ellipse)]
+        self.assertEqual(len(ellipses), 1)
+        self.assertAlmostEqual(ellipses[0].MajorRadius, inner_ellipse.MajorRadius)
+        self.assertAlmostEqual(ellipses[0].MinorRadius, inner_ellipse.MinorRadius)
+
+    def testConvertToNURBSDoesNotGiveInternalGeometryToDifferentArcOfEllipse(self):
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        lower = sketch.addGeometry(
+            Part.ArcOfEllipse(Part.Ellipse(App.Vector(), 10, 5), math.pi, 2 * math.pi)
+        )
+        sketch.exposeInternalGeometry(lower)
+        upper = sketch.addGeometry(Part.ArcOfEllipse(Part.Ellipse(App.Vector(), 12, 5), 0, math.pi))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", lower, 3, upper, 3))
+
+        sketch.convertToNURBS(lower)
+
+        self.assertEqual(self.internalAlignmentOwners(sketch), [])
+
+    def testConvertToNURBSGivesInternalGeometryToArcOfSameEllipse(self):
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        ellipse = Part.Ellipse(App.Vector(), 10, 5)
+        lower = sketch.addGeometry(Part.ArcOfEllipse(ellipse, math.pi, 2 * math.pi))
+        sketch.exposeInternalGeometry(lower)
+        upper = sketch.addGeometry(Part.ArcOfEllipse(ellipse, 0, math.pi))
+        sketch.addConstraint(Sketcher.Constraint("Coincident", lower, 3, upper, 3))
+
+        sketch.convertToNURBS(lower)
+
+        self.assertEqual(self.internalAlignmentOwners(sketch), [upper] * 4)
