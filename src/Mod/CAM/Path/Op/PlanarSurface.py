@@ -746,7 +746,6 @@ class ObjectSurface(PathOp.ObjectOp):
             "FinishingProfile": True,
             "HelixMaxRampAngle": 3.00,
             "HelixMaxDiameterPercent": 75,
-            "EnforceGeofence": True,
         }
 
         return defaults
