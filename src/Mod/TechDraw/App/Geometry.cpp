@@ -2019,7 +2019,7 @@ bool GeometryUtils::colinearPoints2dAll(const std::vector<Base::Vector3d>& point
     }
 
     // 3 or more points
-    int tripleCount = pointCount % TripleSize;
+    int tripleCount = pointCount / TripleSize;
 
     for (int iTriple = 0; iTriple < tripleCount; iTriple++) {
         int tripleStartPoint = iTriple * TripleSize;
