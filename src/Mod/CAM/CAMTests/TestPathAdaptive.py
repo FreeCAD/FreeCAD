@@ -1204,7 +1204,8 @@ class TestPathAdaptive(PathTestBase):
         mainToolController = self.job.Tools.Group[0]
         toolController = PathToolController.copyTC(mainToolController, self.job)
         toolController.Label = "Adaptive ramp feed test controller"
-        # RampFeed defaults to an expression referencing HorizFeed. Clear it so
+        toolController.RampFeedMode = "Custom"
+        # Clear any RampFeed expression so
         # the test can assign an independent value.
         toolController.setExpression("RampFeed", None)
         toolController.HorizFeed = 30.0
@@ -1295,6 +1296,18 @@ class TestPathAdaptive(PathTestBase):
         self.assertTrue(
             adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
             "Changing RampFeed should not affect the adaptive clearing feeds",
+        )
+
+        toolController.RampFeedMode = "Automatic"
+        toolController.RampFeed = 0.0
+        adaptive.recompute()
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertTrue(helixFeeds)
+        self.assertTrue(all(feed > 0 for feed in helixFeeds))
+        self.assertNotEqual(helixFeeds, {toolController.HorizFeed.Value})
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Automatic ramp feed should not affect the adaptive clearing feeds",
         )
 
     # POSSIBLY MISSING TESTS:

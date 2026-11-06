@@ -25,6 +25,7 @@ import Path.Tool.Controller as PathToolController
 from CAMTests.TestPathAdaptive import getGcodeMoves
 
 import math
+from types import SimpleNamespace
 
 from Path.Base.Generator.ramp_entry import RampEntry
 
@@ -68,6 +69,7 @@ def _resetArgs():
     ]
 
     tc = PathToolController.Create("TC0")
+    tc.RampFeedMode = "Custom"
     tc.VertFeed = 500
     tc.RampFeed = 500
     tc.HorizFeed = 500
@@ -145,6 +147,29 @@ class TestPathRampEntryGenerator(PathTestUtils.PathTestBase):
         args = _resetArgs()
         args["tc"].RampFeed = 0
         self.assertRaises(ValueError, RampEntry, **args)
+
+    def testAutomaticFeed(self):
+        args = _resetArgs()
+        tc = args["tc"]
+        tc.RampFeedMode = "Automatic"
+        tc.RampFeed = 0  # An automatic feed does not require a custom value.
+        tc.HorizFeed = 10
+        tc.VertFeed = 2
+        generator = RampEntry(**args)
+        commands = [
+            Path.Command("G0", {"X": 5, "Y": 0, "Z": 10}),
+            Path.Command("G3", {"X": 5, "Y": 0, "Z": 9, "I": -5}),
+            Path.Command("G1", {"X": 15, "Z": 8}),
+            Path.Command("G1", {"Z": 7}),
+            Path.Command("G1", {"X": 20}),
+        ]
+        result = generator.createCommands([SimpleNamespace(command=cmd) for cmd in commands])
+        self.assertAlmostEqual(
+            result[1].Parameters["F"], 10 * math.hypot(10 * math.pi, 1) / (10 * math.pi)
+        )
+        self.assertAlmostEqual(result[2].Parameters["F"], math.hypot(10, 1))
+        self.assertEqual(result[3].Parameters["F"], 2)
+        self.assertEqual(result[4].Parameters["F"], 10)
 
     def test10(self):
         """Test ramp entry method 0 - Helix"""
