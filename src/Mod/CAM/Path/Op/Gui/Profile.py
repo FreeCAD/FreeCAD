@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
@@ -50,8 +48,35 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.extraOffsetSpinBox = QuantitySpinBox(self.form.extraOffset, obj, "OffsetExtra")
         self.thresholdSpinBox = QuantitySpinBox(self.form.threshold, obj, "RetractThreshold")
         self.stepoverSpinBox = QuantitySpinBox(self.form.stepover, obj, "Stepover")
+        self.finishingOffsetSpinBox = QuantitySpinBox(
+            self.form.finishingOffset, obj, "FinishingOffset"
+        )
 
         FreeCADGui.ExpressionBinding(self.form.numPasses).bind(self.obj, "NumPasses")
+        FreeCADGui.ExpressionBinding(self.form.finishingPasses).bind(self.obj, "FinishingPasses")
+
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("cutSide", "Side"))
+        tuples.append(("direction", "Direction"))
+        tuples.append(("startAt", "StartAt"))
+        tuples.append(("sorting", "SortingMode"))
+        tuples.append(("extraOffset", "OffsetExtra"))
+        tuples.append(("threshold", "RetractThreshold"))
+        tuples.append(("numPasses", "NumPasses"))
+        tuples.append(("stepover", "Stepover"))
+        tuples.append(("finishingPasses", "FinishingPasses"))
+        tuples.append(("finishingOffset", "FinishingOffset"))
+        tuples.append(("finishingOneStepDown", "FinishingOneStepDown"))
+        tuples.append(("processHoles", "processHoles"))
+        tuples.append(("useCompensation", "UseComp"))
+        tuples.append(("processCircles", "processCircles"))
+        tuples.append(("processPerimeter", "processPerimeter"))
+        tuples.append(("useLongestEdge", "UseLongestEdge"))
+        tuples.append(("useStartPoint", "UseStartPoint"))
+
+        return tuples
 
     def profileFeatures(self):
         """profileFeatures() ... return which of the optional profile features are supported.
@@ -65,7 +90,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getForm() ... returns UI customized according to profileFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFullEdit.ui")
 
-        comboToPropertyMap = [("cutSide", "Side"), ("direction", "Direction")]
+        comboToPropertyMap = [
+            ("cutSide", "Side"),
+            ("direction", "Direction"),
+            ("startAt", "StartAt"),
+            ("sorting", "SortingMode"),
+        ]
         enumTups = PathProfile.ObjectProfile.areaOpPropertyEnumerations(dataType="raw")
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
@@ -75,6 +105,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.extraOffsetSpinBox.updateWidget()
         self.thresholdSpinBox.updateWidget()
         self.stepoverSpinBox.updateWidget()
+        self.finishingOffsetSpinBox.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -82,15 +113,25 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Side = str(self.form.cutSide.currentData())
         if obj.Direction != str(self.form.direction.currentData()):
             obj.Direction = str(self.form.direction.currentData())
+        if obj.StartAt != str(self.form.startAt.currentData()):
+            obj.StartAt = str(self.form.startAt.currentData())
+        if obj.SortingMode != str(self.form.sorting.currentData()):
+            obj.SortingMode = str(self.form.sorting.currentData())
 
         self.extraOffsetSpinBox.updateProperty()
         self.thresholdSpinBox.updateProperty()
         self.stepoverSpinBox.updateProperty()
+        self.finishingOffsetSpinBox.updateProperty()
 
         obj.NumPasses = self.form.numPasses.value()
+        obj.FinishingPasses = self.form.finishingPasses.value()
 
+        if obj.FinishingOneStepDown != self.form.finishingOneStepDown.isChecked():
+            obj.FinishingOneStepDown = self.form.finishingOneStepDown.isChecked()
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
+        if obj.UseLongestEdge != self.form.useLongestEdge.isChecked():
+            obj.UseLongestEdge = self.form.useLongestEdge.isChecked()
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
 
@@ -107,71 +148,56 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
+        self.selectInComboBox(obj.StartAt, self.form.startAt)
+        self.selectInComboBox(obj.SortingMode, self.form.sorting)
         self.form.numPasses.setValue(obj.NumPasses)
+        self.form.finishingPasses.setValue(obj.FinishingPasses)
+        self.form.finishingOneStepDown.setChecked(obj.FinishingOneStepDown)
         self.form.useCompensation.setChecked(obj.UseComp)
+        self.form.useLongestEdge.setChecked(obj.UseLongestEdge)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.processHoles.setChecked(obj.processHoles)
         self.form.processPerimeter.setChecked(obj.processPerimeter)
         self.form.processCircles.setChecked(obj.processCircles)
-
-        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.cutSide.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
+        signals.append(self.form.startAt.currentIndexChanged)
+        signals.append(self.form.sorting.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.finishingOffset.editingFinished)
         signals.append(self.form.threshold.editingFinished)
         signals.append(self.form.numPasses.editingFinished)
+        signals.append(self.form.finishingPasses.editingFinished)
         signals.append(self.form.stepover.editingFinished)
-        if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
-            signals.append(self.form.useCompensation.checkStateChanged)
-            signals.append(self.form.useStartPoint.checkStateChanged)
-            signals.append(self.form.processHoles.checkStateChanged)
-            signals.append(self.form.processPerimeter.checkStateChanged)
-            signals.append(self.form.processCircles.checkStateChanged)
-        else:  # Qt version < 6.7.0
-            signals.append(self.form.useCompensation.stateChanged)
-            signals.append(self.form.useStartPoint.stateChanged)
-            signals.append(self.form.processHoles.stateChanged)
-            signals.append(self.form.processPerimeter.stateChanged)
-            signals.append(self.form.processCircles.stateChanged)
+
+        signals.append(self.form.finishingOneStepDown.checkStateChanged)
+        signals.append(self.form.useCompensation.checkStateChanged)
+        signals.append(self.form.useLongestEdge.checkStateChanged)
+        signals.append(self.form.useStartPoint.checkStateChanged)
+        signals.append(self.form.processHoles.checkStateChanged)
+        signals.append(self.form.processPerimeter.checkStateChanged)
+        signals.append(self.form.processCircles.checkStateChanged)
 
         return signals
 
-    def updateVisibility(self):
-        hasFace = False
-        objBase = list()
+    def updateData(self, obj, prop):
+        hasFace = any(s for _, subs in self.obj.Base for s in subs if s[:4] == "Face")
+        self.form.processCircles.setEnabled(hasFace)
+        self.form.processHoles.setEnabled(hasFace)
+        self.form.processPerimeter.setEnabled(hasFace)
 
-        if hasattr(self.obj, "Base"):
-            objBase = self.obj.Base
-
-        if objBase.__len__() > 0:
-            for base, subsList in objBase:
-                for sub in subsList:
-                    if sub[:4] == "Face":
-                        hasFace = True
-                        break
-
-        if hasFace:
-            self.form.processCircles.show()
-            self.form.processHoles.show()
-            self.form.processPerimeter.show()
-        else:
-            self.form.processCircles.hide()
-            self.form.processHoles.hide()
-            self.form.processPerimeter.hide()
-
+        self.form.startAt.setEnabled(self.obj.NumPasses > 1)
         self.form.stepover.setEnabled(self.obj.NumPasses > 1)
+        self.form.finishingOffset.setEnabled(self.obj.FinishingPasses)
+        self.form.finishingOneStepDown.setEnabled(self.obj.FinishingPasses)
+        self.form.useLongestEdge.setEnabled(not self.obj.UseStartPoint)
+        self.form.useLongestEdge.setEnabled(not self.obj.UseStartPoint)
 
     def registerSignalHandlers(self, obj):
-        if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
-            self.form.useCompensation.checkStateChanged.connect(self.updateVisibility)
-        else:  # Qt version < 6.7.0
-            self.form.useCompensation.stateChanged.connect(self.updateVisibility)
-        self.form.numPasses.editingFinished.connect(self.updateVisibility)
-
         self.form.setStartPoint.clicked.connect(self.setStartPoint)
         self.form.thresholdToggle.clicked.connect(self.thresholdToggle)
 
