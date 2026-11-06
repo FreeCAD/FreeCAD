@@ -60,7 +60,8 @@ FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
 
-namespace {
+namespace
+{
 void refreshAccessibleTree(QTreeView* view)
 {
 #if QT_CONFIG(accessibility)
@@ -73,7 +74,7 @@ void refreshAccessibleTree(QTreeView* view)
     Q_UNUSED(view);
 #endif
 }
-}
+}  // namespace
 
 PropertyEditor::PropertyEditor(QWidget* parent)
     : QTreeView(parent)
