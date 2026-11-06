@@ -39,9 +39,7 @@ class BOPFeatures:
         obj.Base = self.doc.getObject(inputNames[0])
         obj.Tool = self.doc.getObject(inputNames[1])
         self.copy_visual_attributes(obj, obj.Base)
-        target = self.move_input_objects([obj.Base, obj.Tool])
-        if target:
-            target.addObject(obj)
+        self.move_input_objects([obj.Base, obj.Tool], obj)
         return obj
 
     def make_cut(self, inputNames):
@@ -49,9 +47,7 @@ class BOPFeatures:
         obj.Base = self.doc.getObject(inputNames[0])
         obj.Tool = self.doc.getObject(inputNames[1])
         self.copy_visual_attributes(obj, obj.Base)
-        target = self.move_input_objects([obj.Base, obj.Tool])
-        if target:
-            target.addObject(obj)
+        self.move_input_objects([obj.Base, obj.Tool], obj)
         return obj
 
     def make_common(self, inputNames):
@@ -59,18 +55,14 @@ class BOPFeatures:
         obj.Base = self.doc.getObject(inputNames[0])
         obj.Tool = self.doc.getObject(inputNames[1])
         self.copy_visual_attributes(obj, obj.Base)
-        target = self.move_input_objects([obj.Base, obj.Tool])
-        if target:
-            target.addObject(obj)
+        self.move_input_objects([obj.Base, obj.Tool], obj)
         return obj
 
     def make_multi_common(self, inputNames):
         obj = self.doc.addObject("Part::MultiCommon", "Common")
         obj.Shapes = [self.doc.getObject(name) for name in inputNames]
         self.copy_visual_attributes(obj, obj.Shapes[0])
-        target = self.move_input_objects(obj.Shapes)
-        if target:
-            target.addObject(obj)
+        self.move_input_objects(obj.Shapes, obj)
         return obj
 
     def make_fuse(self, inputNames):
@@ -78,29 +70,49 @@ class BOPFeatures:
         obj.Base = self.doc.getObject(inputNames[0])
         obj.Tool = self.doc.getObject(inputNames[1])
         self.copy_visual_attributes(obj, obj.Base)
-        target = self.move_input_objects([obj.Base, obj.Tool])
-        if target:
-            target.addObject(obj)
+        self.move_input_objects([obj.Base, obj.Tool], obj)
         return obj
 
     def make_multi_fuse(self, inputNames):
         obj = self.doc.addObject("Part::MultiFuse", "Fusion")
         obj.Shapes = [self.doc.getObject(name) for name in inputNames]
         self.copy_visual_attributes(obj, obj.Shapes[0])
-        target = self.move_input_objects(obj.Shapes)
-        if target:
-            target.addObject(obj)
+        self.move_input_objects(obj.Shapes, obj)
         return obj
 
-    def move_input_objects(self, objects):
+    def move_input_objects(self, objects, result=None):
+        """Hide the inputs, move them out of their group and put `result` there.
+
+        Only groups that really list an input as a member are touched. A
+        PartDesign Body reports itself as the parent of the object it uses as
+        BaseFeature, but the Body neither holds that object in its Group nor
+        accepts Part features, so it must not be used as the target.
+        """
         targetGroup = None
         for obj in objects:
             obj.Visibility = False
             parent = obj.getParent()
-            if parent:
+            if (
+                parent
+                and hasattr(parent, "hasObject")
+                and parent.hasObject(obj)
+                and (result is None or self._allows(parent, result))
+            ):
                 parent.removeObject(obj)
                 targetGroup = parent
+        if result is not None and targetGroup:
+            targetGroup.addObject(result)
         return targetGroup
+
+    @staticmethod
+    def _allows(group, obj):
+        allow = getattr(group, "allowObject", None)
+        if allow is None:
+            return True
+        try:
+            return allow(obj)
+        except Exception:
+            return False
 
     def copy_visual_attributes(self, target, source):
         if target.ViewObject:

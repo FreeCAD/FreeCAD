@@ -1002,6 +1002,37 @@ class PartBOPTestContainer(unittest.TestCase):
         fuse = bp.make_multi_common([cyl.Name, box.Name])
         self.assertEqual(part, fuse.getParent())
 
+    def testMakeCutWithBodyBaseFeature(self):
+        # An object used as a PartDesign Body's BaseFeature reports the Body
+        # as its parent, but the Body neither lists it in Group nor accepts
+        # Part features. The boolean must not try to move anything into it.
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = box
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([cyl.Name, box.Name])
+        self.assertIsNone(cut.getParent())
+        self.assertEqual(box, body.BaseFeature)
+
+    def testMakeCutWithBodyBaseFeatureAndGroup(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        cyl = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part = self.Doc.addObject("App::Part", "Part")
+        part.addObject(box)
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = cyl
+        self.Doc.recompute()
+        from BOPTools import BOPFeatures
+
+        bp = BOPFeatures.BOPFeatures(self.Doc)
+        cut = bp.make_cut([box.Name, cyl.Name])
+        self.assertEqual(part, cut.getParent())
+        self.assertEqual(cyl, body.BaseFeature)
+
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
 
