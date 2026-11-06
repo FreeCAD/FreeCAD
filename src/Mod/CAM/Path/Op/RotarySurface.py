@@ -28,28 +28,30 @@ __doc__ = "Class and implementation of the Rotary Surface operation."
 import math
 
 import FreeCAD
+import Part
+from PathScripts import PathUtils
 from PySide import QtCore
 
 import Path
 import Path.Op.Base as PathOp
-import Path.Op.SurfaceSupport as SurfaceSupport
-import Path.Base.Generator.rotary_dropcutter as rotary_dropcutter
-import Path.Base.Generator.rotary_parallel as rotary_parallel
-import Path.Base.Generator.rotary_rings as rotary_rings
-import Path.Base.Generator.rotary_spiral as rotary_spiral
-import Path.Base.Generator.rotary_wrap as rotary_wrap
-import Path.Main.Stock as PathStock
-import PathScripts.PathUtils as PathUtils
+from Path.Base.Generator import (
+    rotary_dropcutter,
+    rotary_parallel,
+    rotary_rings,
+    rotary_spiral,
+    rotary_wrap,
+)
+from Path.Op import SurfaceSupport
 
 # OCL is loaded lazily in opExecute so the module can be imported in
 # environments without OCL (for non-execute access like loading saved
 # documents).
 try:
-    import ocl  # noqa: F401  (preferred name on some packagings)
-except ImportError:  # pragma: no cover
+    import ocl
+except ImportError:
     try:
-        import opencamlib as ocl  # noqa: F401
-    except ImportError:  # pragma: no cover
+        import opencamlib as ocl
+    except ImportError:
         ocl = None
 
 
@@ -96,7 +98,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
     def initOpProperties(self, obj, warn=False):
         Path.Log.track()
-        self.addNewProps = list()
+        self.addNewProps = []
         for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
@@ -255,10 +257,10 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         }
         if dataType == "raw":
             return enums
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
-        for k in enums:
-            data.append((k, [tup[idx] for tup in enums[k]]))
+        for k, v in enums.items():
+            data.append((k, [tup[idx] for tup in v]))
         return data
 
     def opPropertyDefaults(self, obj, job):
@@ -284,40 +286,30 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 Path.Log.warning("RotarySurface: failed to set default for {}: {}".format(name, e))
 
         # Initialize axial extents from stock if cylindrical.
-        stock = job.Stock if job else None
-        x_min, x_max = self._stock_axial_extents(stock)
-        if x_min is not None and x_max is not None:
-            obj.StartX = x_min
-            obj.StopX = x_max
+        try:
+            axis_label, _, _, angle_min, angle_max, _ = self._resolve_rotary(job)
+        except ValueError as e:
+            Path.Log.error("Rotary Surface: {}".format(e))
+            return
 
-        obj.StartAngle = 0.0
-        obj.StopAngle = 360.0
+        try:
+            _, axis_min, axis_max = self._get_stock_data(job.Stock, axis_label)
+        except ValueError as e:
+            Path.Log.error("Rotary Surface: {}".format(e))
+            return
+
+        obj.StartX = axis_min
+        obj.StopX = axis_max
+
+        obj.StartAngle = angle_min
+        obj.StopAngle = angle_max
         obj.MaxFeed = 0.0  # 0 == unset; will fall back to tool-controller rapid
-
-    @staticmethod
-    def _stock_axial_extents(stock):
-        """Best-effort axial bounds from a cylindrical stock object."""
-        if stock is None:
-            return None, None
-        if not hasattr(stock, "Shape") or stock.Shape.isNull():
-            return None, None
-        bb = stock.Shape.BoundBox
-        # We don't know the rotary axis here — use whichever world span is
-        # largest (stock cylinders are typically aligned with their
-        # longest dimension).
-        spans = [
-            (bb.XMax - bb.XMin, "X", bb.XMin, bb.XMax),
-            (bb.YMax - bb.YMin, "Y", bb.YMin, bb.YMax),
-            (bb.ZMax - bb.ZMin, "Z", bb.ZMin, bb.ZMax),
-        ]
-        spans.sort(reverse=True)
-        return spans[0][2], spans[0][3]
 
     # ------------------------------------------------------------------
     # Machine + stock validation
     # ------------------------------------------------------------------
 
-    def _resolve_rotary(self, obj, job):
+    def _resolve_rotary(self, job):
         """Read the rotary axis from the Job's Machine.
 
         Returns (axis_label, rotary_letter, rotation_vector_world,
@@ -409,32 +401,26 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                         th = math.degrees(math.atan2(v.x, v.z))
                     if th < 0:
                         th += 360.0
-                    if ax < ax_min:
-                        ax_min = ax
-                    if ax > ax_max:
-                        ax_max = ax
-                    if th < th_min:
-                        th_min = th
-                    if th > th_max:
-                        th_max = th
+                    ax_min = min(ax, ax_min)
+                    ax_max = max(ax, ax_max)
+                    th_min = min(th, th_min)
+                    th_max = max(th, th_max)
         if not found:
             return None
         return ax_min, ax_max, th_min, th_max
 
-    def _validate_stock(self, stock, axis_label):
-        """Validate stock is a cylinder with axis along axis_label."""
+    def _get_stock_data(self, stock, axis_label):
+        """Validate stock is a cylinder with axis along axis_label.
+        Returns cylinder radius and shape min and max size."""
         if stock is None:
             raise ValueError("Job has no Stock.")
-        stock_type = PathStock.StockType.FromStock(stock)
-        if stock_type != PathStock.StockType.CreateCylinder:
-            raise ValueError(
-                "Rotary Surface requires a Cylinder stock (got {}).".format(stock_type)
-            )
-        # Cylinder primitive built around +Z by default; rotated by Placement.
-        rot = stock.Placement.Rotation
-        cyl_axis = rot.multVec(FreeCAD.Vector(0, 0, 1))
-        cyl_axis.normalize()
 
+        faces = stock.Shape.Faces
+        cyl_face = next((f for f in faces if isinstance(f.Surface, Part.Cylinder)), None)
+        if len(faces) != 3 or not cyl_face:
+            raise ValueError("Rotary Surface requires a cylinder shape.")
+
+        cyl_axis = cyl_face.Surface.Axis
         target = FreeCAD.Vector(1, 0, 0) if axis_label == "X" else FreeCAD.Vector(0, 1, 0)
         # Accept both polarities (cylinder axis sign convention).
         dot = abs(cyl_axis.dot(target))
@@ -445,6 +431,15 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                     axis_label, dot
                 )
             )
+
+        if axis_label == "X":
+            axis_min = cyl_face.BoundBox.XMin
+            axis_max = cyl_face.BoundBox.XMax
+        else:
+            axis_min = cyl_face.BoundBox.YMin
+            axis_max = cyl_face.BoundBox.YMax
+
+        return cyl_face.Surface.Radius, axis_min, axis_max
 
     # ------------------------------------------------------------------
     # Execution
@@ -464,7 +459,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         # Resolve rotary axis + letter from the Job's Machine.
         try:
             axis_label, rotary_letter, rot_vec, amin, amax, wrap_strategy = self._resolve_rotary(
-                obj, job
+                job
             )
         except ValueError as e:
             Path.Log.error("Rotary Surface: {}".format(e))
@@ -472,7 +467,7 @@ class ObjectRotarySurface(PathOp.ObjectOp):
 
         # Validate stock.
         try:
-            self._validate_stock(job.Stock, axis_label)
+            stock_radius, _, _ = self._get_stock_data(job.Stock, axis_label)
         except ValueError as e:
             Path.Log.error("Rotary Surface: {}".format(e))
             return
@@ -639,14 +634,11 @@ class ObjectRotarySurface(PathOp.ObjectOp):
         # outermost pass cuts just inside the stock surface rather than at
         # surface_r + offset (which would lift the cutter into open air when
         # the part has tall ridges).
-        stock_radius = (
-            float(getattr(job.Stock, "Radius", 0).Value) if hasattr(job.Stock, "Radius") else 0.0
-        )
         valid_radii = [
             r
             for row in (radii.tolist() if hasattr(radii, "tolist") else radii)
             for r in row
-            if not (r is None or (r != r))  # NaN check
+            if not (r is None or math.isnan(r))
         ]
         min_surface_r = min(valid_radii) if valid_radii else 0.0
         gap = max(0.0, stock_radius - (min_surface_r + stock_to_leave))
@@ -665,30 +657,30 @@ class ObjectRotarySurface(PathOp.ObjectOp):
                 cutter_z_floor = None
 
             pattern = str(obj.CutPattern)
-            generator_kwargs = dict(
-                radii=radii,
-                xs=xs,
-                thetas=thetas,
-                rotary_letter=rotary_letter,
-                rotary_axis=axis_label,
-                x_min=x_min,
-                x_max=x_max,
-                theta_start=math.radians(start_deg),
-                theta_end=math.radians(stop_deg),
-                axial_stepover=step_over,
-                angular_resolution=ang_res_rad,
-                radial_stock_to_leave=stock_to_leave,
-                cut_mode=str(obj.CutMode),
-                safe_height=float(obj.SafeHeight.Value),
-                clearance_height=float(obj.ClearanceHeight.Value),
-                horiz_feed=self.horizFeed,
-                vert_feed=self.vertFeed,
-                horiz_rapid=self.horizRapid,
-                vert_rapid=self.vertRapid,
-                max_feed=max_feed,
-                cutter_z_floor=cutter_z_floor,
-                feed_mode=str(obj.FeedMode),
-            )
+            generator_kwargs = {
+                "radii": radii,
+                "xs": xs,
+                "thetas": thetas,
+                "rotary_letter": rotary_letter,
+                "rotary_axis": axis_label,
+                "x_min": x_min,
+                "x_max": x_max,
+                "theta_start": math.radians(start_deg),
+                "theta_end": math.radians(stop_deg),
+                "axial_stepover": step_over,
+                "angular_resolution": ang_res_rad,
+                "radial_stock_to_leave": stock_to_leave,
+                "cut_mode": str(obj.CutMode),
+                "safe_height": float(obj.SafeHeight.Value),
+                "clearance_height": float(obj.ClearanceHeight.Value),
+                "horiz_feed": self.horizFeed,
+                "vert_feed": self.vertFeed,
+                "horiz_rapid": self.horizRapid,
+                "vert_rapid": self.vertRapid,
+                "max_feed": max_feed,
+                "cutter_z_floor": cutter_z_floor,
+                "feed_mode": str(obj.FeedMode),
+            }
             if pattern == "Rings":
                 raw_commands = rotary_rings.generate(**generator_kwargs)
             elif pattern == "Parallel":
