@@ -1317,9 +1317,22 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool delBadJoints, b
 
     // add sub assemblies joints.
     if (subJoints) {
-        for (auto& assembly : getSubAssemblies()) {
+        // The parts of a flexible sub-assembly are solved with this assembly, and so are the
+        // parts of its own flexible sub-assemblies: their joints apply too.
+        std::vector<AssemblyLink*> subAssemblies = getSubAssemblies();
+        for (size_t i = 0; i < subAssemblies.size(); ++i) {
+            AssemblyLink* assembly = subAssemblies[i];
             auto subJoints = assembly->getJoints();
             joints.insert(joints.end(), subJoints.begin(), subJoints.end());
+
+            if (assembly->isRigid()) {
+                continue;
+            }
+            for (auto* obj : assembly->Group.getValues()) {
+                if (auto* nested = freecad_cast<AssemblyLink*>(obj)) {
+                    subAssemblies.push_back(nested);
+                }
+            }
         }
     }
 
