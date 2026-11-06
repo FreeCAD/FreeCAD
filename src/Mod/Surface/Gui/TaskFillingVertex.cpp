@@ -300,7 +300,7 @@ void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             Gui::SelectionObject sel(msg);
             QString text = QStringLiteral("%1.%2").arg(
                 QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName)
+                QString::fromUtf8(msg.pSubName)
             );
             item->setText(text);
 

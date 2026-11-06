@@ -51,6 +51,9 @@ if FreeCAD.GuiUp:
 
 __doc__ = "Class and implementation of the Adaptive CAM operation."
 
+# Set to a callable(results) to receive raw AdaptiveOutput lists after each Execute call.
+_debug_results_callback = None
+
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -406,7 +409,7 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
-        clearedArea = get_cleared_area(op, obj, pathArray)
+        clearedArea = get_cleared_area(op, obj, pathArray, obj.FinalDepth.Value)
 
         # put here all properties that influence calculation of adaptive base paths,
 
@@ -461,6 +464,8 @@ def Execute(op, obj):
 
             # EXECUTE
             results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
+            if _debug_results_callback is not None:
+                _debug_results_callback(results)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -515,9 +520,14 @@ def get_cleared_area(op, obj, pathArray, zOverride=None):
             for wire in shape.Wires:
                 outputWire = []
                 for edge in wire.Edges:
-                    assert edge.Curve.TypeId == "Part::GeomLine"
-                    v = edge.Vertexes[0].Point
-                    outputWire.append([v.x, v.y])
+                    typeId = edge.Curve.TypeId
+                    assert typeId in ("Part::GeomLine", "Part::GeomCircle"), typeId
+                    if typeId == "Part::GeomLine":
+                        points = [edge.Vertexes[0].Point]
+                    else:
+                        points = discretize(edge)[:-1]
+                    for v in points:
+                        outputWire.append([v.x, v.y])
                 clearedArea.append(outputWire)
 
     return clearedArea
@@ -721,6 +731,8 @@ def ExecuteModelAware(op, obj):
                 rdict["toolpaths"] = a2d.Execute(
                     stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
+                if _debug_results_callback is not None:
+                    _debug_results_callback(rdict["toolpaths"])
 
             # Sort regions to cut by either depth or area.
             # TODO: Bonus points for ordering to minimize rapids
