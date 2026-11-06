@@ -941,7 +941,7 @@ void TaskView::setShownTaskInfo(TaskIndex index)
 
     setCurrentIndex(index);
 
-    if (isIndexValid(initIndex)) {
+    if (isIndexValid(initIndex) && initIndex != index) {
         if (auto dialog = taskInfos[initIndex].ActiveDialog) {
             Gui::Selection().rmvSelectionGate();
             dialog->deactivate();
