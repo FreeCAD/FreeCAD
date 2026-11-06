@@ -611,7 +611,7 @@ class TestHeidenhainPost(PathTestUtils.PathTestBase):
 
     def test_tool_change_suppressed(self):
         """Without tool changes the speed still reaches the spindle via TOOL CALL S."""
-        self.post._machine.processing.tool_change = False
+        self.post._machine.processing.tool_change_format = "no_tool_change"
         self.post._machine.output.comments.enabled = True
         lines = self.blocks([])
         self.assertFalse(any(re.match(r"TOOL CALL \d", l) for l in lines), lines)

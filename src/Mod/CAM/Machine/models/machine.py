@@ -80,6 +80,37 @@ class AxisRole(Enum):
     HEAD_ROTARY = "head_rotary"
 
 
+class ToolChangeFormat(Enum):
+    """Format of the tool change command sequence."""
+
+    M6_T = "m6_t"  # M6 T# Change to Tool
+    T_M6 = "t_m6"  # T# M6 Change to Tool
+    M6_T_EARLY_PREP = "m6_t_early_prep"  # M6 T# Change to Prepped Tool, Prep Next Tool
+    M6_ONLY = "m6_only"  # No T parameters are written when a tool change is hit.
+    NO_TOOL_CHANGE = "no_tool_change"
+
+    @property
+    def label(self) -> str:
+        return {
+            ToolChangeFormat.M6_T: "M6 T#: Change to Tool",
+            ToolChangeFormat.T_M6: "T# M6: Change to Tool",
+            ToolChangeFormat.M6_T_EARLY_PREP: "M6 T#: Change to Prepped Tool, Prep Next Tool",
+            ToolChangeFormat.M6_ONLY: "M6: No T Command Inline",
+            ToolChangeFormat.NO_TOOL_CHANGE: "No M6 or T commands",
+        }[self]
+
+    @property
+    def tooltip(self) -> str:
+        return {
+            ToolChangeFormat.M6_T: "T Specifies the tool to actively switch to",
+            ToolChangeFormat.T_M6: "T Specifies the tool to actively switch to. Use with early tool prep is highly unusual.",
+            ToolChangeFormat.M6_T_EARLY_PREP: "M6 changes to last prepped tool, T sets up the next tool. Use with early tool prep on",
+            ToolChangeFormat.M6_ONLY: "No T parameters are written when a M6 tool change is hit.\n"
+            "Can be used for machines that do not use T parameters, or with early tool prep to write \nT#\n...\nM6\nT#",
+            ToolChangeFormat.NO_TOOL_CHANGE: "Ignore all generated M6 and T tool change commands in output",
+        }[self]
+
+
 # ============================================================================
 # Post-Processor Configuration Dataclasses
 # ============================================================================
@@ -164,6 +195,10 @@ class ProcessingOptions:
     # Conversion and expansion of Path Objects. Does not affect final gcode generation
 
     early_tool_prep: bool = False  # Prepare tool before operation (affects postlist ordering)
+    assert_tool_prep: bool = (
+        False  # Write T# before every tool change to force tool prep. Useful for starting in the middle of a file.
+    )
+    tool_change_format: ToolChangeFormat = ToolChangeFormat.M6_T  # Dropdown of tool change formats
     filter_inefficient_moves: bool = False  # Collapse redundant G0 rapid move chains
     split_arcs: bool = False
     tool_change: bool = True  # Enable tool change commands
@@ -1230,6 +1265,8 @@ class Machine:
         # Processing options
         data["processing"] = {
             "early_tool_prep": self.processing.early_tool_prep,
+            "assert_tool_prep": self.processing.assert_tool_prep,
+            "tool_change_format": self.processing.tool_change_format.value,
             "filter_inefficient_moves": self.processing.filter_inefficient_moves,
             "split_arcs": self.processing.split_arcs,
             "tool_change": self.processing.tool_change,
@@ -1786,6 +1823,10 @@ class Machine:
         processing_data = data.get("processing", {})
         if processing_data:
             config.processing.early_tool_prep = processing_data.get("early_tool_prep", False)
+            config.processing.assert_tool_prep = processing_data.get("assert_tool_prep", False)
+            config.processing.tool_change_format = ToolChangeFormat(
+                processing_data.get("tool_change_format", ToolChangeFormat.M6_T.value)
+            )
             config.processing.filter_inefficient_moves = processing_data.get(
                 "filter_inefficient_moves", False
             )
