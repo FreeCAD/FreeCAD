@@ -32,6 +32,8 @@
 #include <Gui/Selection/SoFCSelectionContext.h>
 #include <Mod/Part/PartGlobal.h>
 
+#include "SoBrepHiddenSelection.h"
+
 
 class SoCoordinateElement;
 
@@ -103,6 +105,8 @@ private:
 
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
+    bool hasHiddenSelection(const SelContextPtr& ctx) const;
+    void renderHiddenSelection(SoGLRenderAction* action, SelContextPtr ctx);
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
 
 
@@ -119,6 +123,7 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     SoIndexedLineSet* overlayLineSet {nullptr};
+    HiddenSelectionPass hiddenSelection;
 
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;
