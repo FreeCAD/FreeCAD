@@ -24,7 +24,6 @@
 
 #include "FCGlobal.h"
 
-#include "Application.h"
 #include "MappedElement.h"
 #include "StringHasher.h"
 

@@ -31,6 +31,7 @@
 #include "ElementNamingUtils.h"
 
 #include <Base/BoundBox.h>
+#include <Base/Console.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Rotation.h>

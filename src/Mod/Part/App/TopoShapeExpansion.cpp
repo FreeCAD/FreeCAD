@@ -104,6 +104,7 @@
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/BoundBox.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
