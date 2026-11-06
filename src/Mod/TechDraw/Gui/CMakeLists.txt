@@ -67,7 +67,6 @@ set(TechDrawGui_UIC_SRCS
     SymbolChooser.ui
     TaskMoveView.ui
     TaskProjection.ui
-    TaskComplexSection.ui
     TaskDimRepair.ui
     TaskCosmeticCircle.ui
 
@@ -208,9 +207,6 @@ SET(TechDrawGui_SRCS
     TaskProjection.cpp
     TaskProjection.h
     TaskProjection.ui
-    TaskComplexSection.cpp
-    TaskComplexSection.h
-    TaskComplexSection.ui
     TaskDimRepair.cpp
     TaskDimRepair.h
     TaskDimRepair.ui
@@ -258,6 +254,7 @@ SET(TechDrawGuiView_SRCS
     QGDisplayArea.h
     QGIView.cpp
     QGIView.h
+    ViewPlacement.h
     QGIArrow.cpp
     QGIArrow.h
     QGIDatumLabel.cpp
@@ -286,6 +283,7 @@ SET(TechDrawGuiView_SRCS
     QGIProjGroup.h
     QGIViewPart.cpp
     QGIViewPart.h
+    QGIViewPartSection.cpp
     QGIViewSection.cpp
     QGIViewSection.h
     QGIViewAnnotation.cpp
@@ -442,7 +440,6 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCustomizeFormat.ui
     TaskMoveView.ui
     TaskProjection.ui
-    TaskComplexSection.ui
     TaskDimRepair.ui
 )
 
