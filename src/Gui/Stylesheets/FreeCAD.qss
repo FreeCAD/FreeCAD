@@ -983,10 +983,14 @@ QSpinBox {
   padding-right: 4px;
 }
 
+QAbstractSpinBox[buttonSymbols="0"]:up-button,
+QAbstractSpinBox[buttonSymbols="1"]:up-button {
+  subcontrol-position: top right;
+}
+
 QAbstractSpinBox:up-button {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   subcontrol-origin: border;
-  subcontrol-position: top right;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
   border-bottom: 1px solid @GeneralBorderColor;
@@ -1018,10 +1022,14 @@ QAbstractSpinBox::up-arrow:hover {
   image: url(qss:@IconsLocationFolderName/arrow-up-@StylesheetIconsColor.svg);
 }
 
+QAbstractSpinBox[buttonSymbols="0"]:down-button,
+QAbstractSpinBox[buttonSymbols="1"]:down-button {
+  subcontrol-position: bottom right;
+}
+
 QAbstractSpinBox:down-button {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   subcontrol-origin: border;
-  subcontrol-position: bottom right;
   border-bottom: 1px solid transparent;
   border-right: 1px solid transparent;
   border-top: 1px solid @GeneralBorderColor;
