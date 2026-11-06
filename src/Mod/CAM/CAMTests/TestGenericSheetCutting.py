@@ -754,6 +754,77 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
         )
 
+    def test_strip_z_discards_vertical_only_moves_and_their_feed(self):
+        commands = [
+            Path.Command("G0", {"Z": 5.0}),
+            Path.Command("G4", {"P": 1.0}),
+            Path.Command("G1", {"Z": 0.0, "F": 0.0}),
+            Path.Command("G1", {"X": 10.0, "F": 1000.0}),
+            Path.Command("G1", {"Z": 5.0, "F": 500.0}),
+            Path.Command("G1", {"Y": 20.0}),
+        ]
+        self.profile_op.Path = Path.Path(commands)
+        self._set_postprocessor_properties(STRIP_Z=True)
+
+        self.post._strip_z_parameterts([("section", [self.profile_op])])
+
+        result = self.profile_op.Path.Commands
+        self.assertEqual([cmd.Name for cmd in result], ["G4", "G1", "G1"])
+        self.assertEqual(result[0].Parameters, {"P": 1.0})
+        self.assertEqual(result[1].Parameters, {"X": 10.0, "F": 1000.0})
+        self.assertEqual(result[2].Parameters, {"Y": 20.0})
+
+    def test_strip_z_preserves_planar_moves_and_independent_feed_changes(self):
+        commands = [
+            Path.Command("G1", {"X": 10.0, "Z": 0.0, "F": 700.0}),
+            Path.Command("G2", {"I": 5.0, "Z": 0.0, "F": 600.0}),
+            Path.Command("G1", {"F": 900.0}),
+            Path.Command("M3", {"S": 1000.0}),
+        ]
+        self.profile_op.Path = Path.Path(commands)
+        self._set_postprocessor_properties(STRIP_Z=True)
+
+        self.post._strip_z_parameterts([("section", [self.profile_op])])
+
+        result = self.profile_op.Path.Commands
+        self.assertEqual([cmd.Name for cmd in result], ["G1", "G2", "G1", "M3"])
+        self.assertEqual(result[0].Parameters, {"X": 10.0, "F": 700.0})
+        self.assertEqual(result[1].Parameters, {"I": 5.0, "F": 600.0})
+        self.assertEqual(result[2].Parameters, {"F": 900.0})
+        self.assertEqual(result[3].Parameters, {"S": 1000.0})
+
+    def test_strip_z_after_torch_control_preserves_delays_and_cut_feed(self):
+        self.profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"Z": 5.0}),
+                Path.Command("G1", {"Z": 0.0, "F": 0.0}),
+                Path.Command("G1", {"X": 10.0, "F": 1000.0}),
+                Path.Command("G0", {"Z": 5.0}),
+            ]
+        )
+        self._set_postprocessor_properties(STRIP_Z=True, cutter_control="Z_Control")
+
+        self.post._expand_postprocessor_commands([("section", [self.profile_op])])
+
+        result = self.profile_op.Path.Commands
+        self.assertTrue(any(cmd.Name == "G4" for cmd in result))
+        self.assertTrue(any(cmd.Name == "M3" for cmd in result))
+        self.assertTrue(any(cmd.Name == "M5" for cmd in result))
+        self.assertFalse(any("Z" in cmd.Parameters for cmd in result))
+        self.assertFalse(any(cmd.Parameters.get("F") == 0.0 for cmd in result))
+        cut = next(cmd for cmd in result if "X" in cmd.Parameters)
+        self.assertEqual(cut.Parameters, {"X": 10.0, "F": 1000.0})
+
+    def test_strip_z_disabled_preserves_vertical_moves(self):
+        self.profile_op.Path = Path.Path([Path.Command("G1", {"Z": 0.0, "F": 500.0})])
+        self._set_postprocessor_properties(STRIP_Z=False)
+
+        self.post._strip_z_parameterts([("section", [self.profile_op])])
+
+        result = self.profile_op.Path.Commands
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].Parameters, {"Z": 0.0, "F": 500.0})
+
     def test12_reset_cutter_state_active_torch_and_clearance_move(self):
         """
         Test that _reset_cutter_state() extinguishes an active torch and
