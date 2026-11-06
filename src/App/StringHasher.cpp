@@ -68,39 +68,23 @@ Base::ByteBuffer sha1DigestBuffer(Base::BytesView bytes)
         Base::asBytes(reinterpret_cast<const char*>(digest.data()), digest.size()));
 }
 
-bool decodeBase64(std::string_view encoded, Base::ByteBuffer& decoded)
+// The string table used to be stored and read as C strings, so data stops at
+// an embedded NUL. Keep doing so to stay compatible with existing files and
+// older versions.
+std::string_view cString(std::string_view text)
 {
-    std::size_t padding = 0;
-    while (padding < encoded.size() && encoded[encoded.size() - padding - 1] == '=') {
-        ++padding;
-    }
+    return text.substr(0, text.find('\0'));
+}
 
-    if (padding > 2) {
-        return false;
-    }
+std::string_view cString(const Base::ByteBuffer& bytes)
+{
+    return cString(std::string_view(reinterpret_cast<const char*>(bytes.data()), bytes.size()));
+}
 
-    const std::size_t dataLength = encoded.size() - padding;
-    if (dataLength % 4 == 1 || (padding != 0 && encoded.size() % 4 != 0)
-        || (padding != 0 && padding != (4 - dataLength % 4) % 4)) {
-        return false;
-    }
-
-    const auto table = Base::base64_decode_table();
-    for (std::size_t i = 0; i < dataLength; ++i) {
-        if (table[static_cast<unsigned char>(encoded[i])] < 0) {
-            return false;
-        }
-    }
-
-    std::vector<std::byte> result;
-    const std::size_t consumedInputLength
-        = Base::base64_decode(result, encoded.data(), encoded.size());
-    if (consumedInputLength != dataLength) {
-        return false;
-    }
-
-    decoded = Base::ByteBuffer::copy(Base::asBytes(result.data(), result.size()));
-    return true;
+// Decode hashed and binary data the way QByteArray::fromBase64() did.
+Base::ByteBuffer decodeBase64(std::string_view encoded)
+{
+    return Base::ByteBuffer::copy(Base::asBytes(Base::base64_decode_lenient(cString(encoded))));
 }
 
 }  // namespace
@@ -637,15 +621,11 @@ void StringHasher::saveStream(std::ostream& stream) const
         // store in raw stream.
         if (d.isPostfixed()) {
             if (!d.isPrefixIDIndex() && !d.isIndexed() && !d.isPrefixID()) {
-                stream << ' ';
-                stream.write(reinterpret_cast<const char*>(d._data.data()),
-                             static_cast<std::streamsize>(d._data.size()));
+                stream << ' ' << cString(d._data);
             }
 
             if (!d.isPostfixEncoded()) {
-                stream << ' ';
-                stream.write(reinterpret_cast<const char*>(d._postfix.data()),
-                             static_cast<std::streamsize>(d._postfix.size()));
+                stream << ' ' << cString(d._postfix);
             }
             stream << '\n';
         }
@@ -653,8 +633,7 @@ void StringHasher::saveStream(std::ostream& stream) const
             // Reaching here means the string may contain space and newlines
             // We rely on OutputStream (i.e. textStreamWrapper) to save the string.
             stream << ' ';
-            textStreamWrapper
-                << std::string(reinterpret_cast<const char*>(d._data.data()), d._data.size());
+            textStreamWrapper << std::string(cString(d._data));
         }
     }
 }
@@ -750,14 +729,10 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
         if (!d.isPostfixed()) {
             asciiStream >> content;
             if (d.isHashed() || d.isBinary()) {
-                Base::ByteBuffer decoded;
-                if (!decodeBase64(content, decoded)) {
-                    FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
-                }
-                d._data = std::move(decoded);
+                d._data = decodeBase64(content);
             }
             else {
-                d._data = Base::ByteBuffer::copy(Base::asBytes(content));
+                d._data = Base::ByteBuffer::copy(Base::asBytes(cString(content)));
             }
         }
         else {
@@ -786,11 +761,11 @@ void StringHasher::restoreStreamNew(std::istream& stream, std::size_t count)
             }
             else {
                 stream >> content;
-                d._data = Base::ByteBuffer::copy(Base::asBytes(content));
+                d._data = Base::ByteBuffer::copy(Base::asBytes(cString(content)));
             }
             if (!d.isPostfixEncoded()) {
                 stream >> content;
-                d._postfix = Base::ByteBuffer::copy(Base::asBytes(content));
+                d._postfix = Base::ByteBuffer::copy(Base::asBytes(cString(content)));
             }
         }
 
@@ -823,14 +798,10 @@ void StringHasher::restoreStream(std::istream& stream, std::size_t count)
         stream >> id >> type >> content;
         StringIDRef sid = new StringID(id, Base::ByteBuffer{}, static_cast<StringID::Flag>(type));
         if (sid.isHashed() || sid.isBinary()) {
-            Base::ByteBuffer decoded;
-            if (!decodeBase64(content, decoded)) {
-                FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
-            }
-            sid._sid->_data = std::move(decoded);
+            sid._sid->_data = decodeBase64(content);
         }
         else {
-            sid._sid->_data = Base::ByteBuffer::copy(Base::asBytes(content));
+            sid._sid->_data = Base::ByteBuffer::copy(Base::asBytes(cString(content)));
         }
         insert(sid);
     }
@@ -906,11 +877,7 @@ void StringHasher::Restore(Base::XMLReader& reader)
             if (hashed || reader.hasAttribute("data")) {
                 const char* value =
                     hashed ? reader.getAttribute<const char*>("hash") : reader.getAttribute<const char*>("data");
-                Base::ByteBuffer decoded;
-                if (!decodeBase64(std::string_view(value), decoded)) {
-                    FC_THROWM(Base::RuntimeError, "Invalid Base64 string in string table");
-                }
-                sid = new StringID(id, std::move(decoded), StringID::Flag::Hashed);
+                sid = new StringID(id, decodeBase64(value), StringID::Flag::Hashed);
             }
             else {
                 const char* text = reader.getAttribute<const char*>("text");

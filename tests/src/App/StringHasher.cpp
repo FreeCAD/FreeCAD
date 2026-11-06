@@ -12,6 +12,7 @@
 #include <Base/ByteBuffer.h>
 #include <Base/BytesView.h>
 #include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include <array>
 #include <sstream>
@@ -1239,15 +1240,91 @@ TEST_F(StringHasherTest, RestoreDocFileAcceptsUnpaddedBase64)  // NOLINT
     }
 }
 
-TEST_F(StringHasherTest, RestoreDocFileRejectsInvalidBase64)  // NOLINT
+TEST_F(StringHasherTest, RestoreDocFileDecodesBase64LikeQt)  // NOLINT
 {
-    const std::vector<std::string> invalid {"YQ=", "Y!", "YQ==A", "A"};
+    // Older versions decoded with QByteArray::fromBase64(), which never fails and
+    // skips any character outside the Base64 alphabet. Raw data saved by them
+    // must keep restoring to the same bytes.
+    const std::vector<std::string> inputs {
+        "YQ=",
+        "Y!",
+        "YQ==A",
+        "A",
+        "YW=Jj",
+        "Y\x01W\xffJj",
+        "-_.,~",
+        std::string("\x9a\x02\x7f\xc3\x88\x10\xee\x41", 8),
+    };
 
-    for (const auto& encoded : invalid) {
+    for (const auto& encoded : inputs) {
         std::stringstream stream("StringTableStart v1 1\n1.1 0:" + encoded + "\n");
         Base::Reader reader(stream, "StringTable", 2);
 
-        EXPECT_THROW(Hasher()->RestoreDocFile(reader), Base::RuntimeError);
+        ASSERT_NO_THROW(Hasher()->RestoreDocFile(reader));
+        const auto id = Hasher()->getID(1);
+        ASSERT_TRUE(id);
+        const QByteArray expected = QByteArray::fromBase64(encoded.c_str());
+        EXPECT_EQ(
+            std::string(
+                reinterpret_cast<const char*>(id.deref().data().data()),
+                id.deref().data().size()
+            ),
+            std::string(expected.constData(), expected.size())
+        ) << encoded;
+    }
+}
+
+TEST_F(StringHasherTest, RestoreDocFileAcceptsEmptyBase64)  // NOLINT
+{
+    std::stringstream stream("StringTableStart v1 1\n1.1 0:\n");
+    Base::Reader reader(stream, "StringTable", 2);
+
+    ASSERT_NO_THROW(Hasher()->RestoreDocFile(reader));
+    const auto id = Hasher()->getID(1);
+    ASSERT_TRUE(id);
+    EXPECT_TRUE(id.deref().data().empty());
+}
+
+TEST_F(StringHasherTest, SaveDocFileWritesBinaryDataUnencoded)  // NOLINT
+{
+    // The file format stores binary data as is, up to an embedded NUL, so files
+    // stay readable by older versions.
+    Hasher()->setSaveAll(true);
+    auto id = Hasher()->getID(
+        Base::asBytes(std::string("abc\0def", 7)),
+        App::StringHasher::Option::Binary
+    );
+    ASSERT_TRUE(id.isBinary());
+
+    Base::StringWriter writer;
+    Hasher()->SaveDocFile(writer);
+
+    EXPECT_NE(writer.getString().find(" 0:abc\n"), std::string::npos) << writer.getString();
+}
+
+TEST_F(StringHasherTest, pyGetIDFromBase64UsesFirstDecodedByte)  // NOLINT
+{
+    // Matches the QByteArray based binding: only the first decoded byte is
+    // stored, as plain text, or the terminating NUL if nothing was decoded.
+    const std::vector<std::pair<const char*, std::string>> cases {
+        {"YWJj", "a"},
+        {"AAEC", std::string("\0", 1)},
+        {"!!", std::string("\0", 1)},
+    };
+    Base::PyGILStateLocker lock;
+    Py::Object hasher(Hasher()->getPyObject(), true);
+
+    for (const auto& [encoded, expected] : cases) {
+        Py::Object result(PyObject_CallMethod(hasher.ptr(), "getID", "sO", encoded, Py_True), true);
+        ASSERT_TRUE(result.ptr()) << encoded;
+        ASSERT_TRUE(PyObject_TypeCheck(result.ptr(), &App::StringIDPy::Type));
+        const auto* sid = static_cast<App::StringIDPy*>(result.ptr())->getStringIDPtr();
+        EXPECT_FALSE(sid->isBinary());
+        EXPECT_FALSE(sid->isHashed());
+        EXPECT_EQ(
+            std::string(reinterpret_cast<const char*>(sid->data().data()), sid->data().size()),
+            expected
+        ) << encoded;
     }
 }
 
