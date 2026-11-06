@@ -20,9 +20,10 @@
 
 #pragma once
 
+#include <atomic>
 #include <cstddef>
-#include <memory>
-#include <vector>
+#include <cstring>
+#include <utility>
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
@@ -40,59 +41,147 @@ namespace Base
 /// - cheap copies (shared backing store)
 /// - the ability to create non-owning instances for temporary lookups/parsing
 ///
+/// Owned bytes live in a single reference counted block. A buffer may view a
+/// sub-range of its block, which lets assignment from a borrowed view of the
+/// buffer's own storage keep that storage alive without copying.
+///
 /// This uses C++20 byte views and does not rely on heterogeneous lookup in unordered containers.
 class BaseExport ByteBuffer
 {
 public:
     using size_type = std::size_t;
 
-    ByteBuffer();
-    ByteBuffer(const ByteBuffer&);
-    ByteBuffer& operator=(const ByteBuffer&);
-    ByteBuffer(ByteBuffer&& other) noexcept;
-    ByteBuffer& operator=(ByteBuffer&& other);
-    ~ByteBuffer();
+    ByteBuffer() noexcept = default;
+
+    ByteBuffer(const ByteBuffer& other) noexcept
+        : ptr(other.ptr)
+        , len(other.len)
+        , block(other.block)
+    {
+        if (block) {
+            block->refs.fetch_add(1, std::memory_order_relaxed);
+        }
+    }
+
+    ByteBuffer(ByteBuffer&& other) noexcept
+        : ptr(std::exchange(other.ptr, nullptr))
+        , len(std::exchange(other.len, 0U))
+        , block(std::exchange(other.block, nullptr))
+    {}
+
+    ByteBuffer& operator=(const ByteBuffer& other) noexcept
+    {
+        ByteBuffer copy(other);
+        return *this = std::move(copy);
+    }
+
+    ByteBuffer& operator=(ByteBuffer&& other) noexcept;
+
+    ~ByteBuffer()
+    {
+        release(block);
+    }
 
     static ByteBuffer copy(BytesView bytes);
-    static ByteBuffer borrow(BytesView bytes);
+    static ByteBuffer borrow(BytesView bytes) noexcept
+    {
+        ByteBuffer out;
+        if (!bytes.empty()) {
+            out.ptr = bytes.data();
+            out.len = bytes.size();
+        }
+        return out;
+    }
 
-    BytesView view() const;
-    const std::byte* data() const;
-    size_type size() const;
-    bool empty() const;
-    bool isBorrowed() const;
+    BytesView view() const noexcept
+    {
+        return {data(), len};
+    }
+    const std::byte* data() const noexcept
+    {
+        return ptr ? ptr : emptyData();
+    }
+    size_type size() const noexcept
+    {
+        return len;
+    }
+    bool empty() const noexcept
+    {
+        return len == 0U;
+    }
+    bool isBorrowed() const noexcept
+    {
+        return len != 0U && !block;
+    }
 
-    /// Ensure this instance owns its data. If already owning but shared, detaches (COW).
+    /// Ensure this instance owns its data. Shared owned storage is kept shared.
     void makeOwning();
-    void clear();
+    void clear() noexcept;
     void reserve(size_type capacity);
     void resize(size_type newSize, std::byte fill = std::byte {0});
     void append(BytesView bytes);
 
-    friend bool operator==(const ByteBuffer& a, const ByteBuffer& b);
-    friend bool operator!=(const ByteBuffer& a, const ByteBuffer& b);
+    friend bool operator==(const ByteBuffer& a, const ByteBuffer& b) noexcept
+    {
+        return a.len == b.len && (a.len == 0U || std::memcmp(a.ptr, b.ptr, a.len) == 0);
+    }
+    friend bool operator!=(const ByteBuffer& a, const ByteBuffer& b) noexcept
+    {
+        return !(a == b);
+    }
 
-    int compare(const ByteBuffer& other) const;
-    bool operator<(const ByteBuffer& other) const;
+    int compare(const ByteBuffer& other) const noexcept
+    {
+        const size_type common = len < other.len ? len : other.len;
+        if (common != 0U) {
+            const int cmp = std::memcmp(ptr, other.ptr, common);
+            if (cmp != 0) {
+                return cmp;
+            }
+        }
+        return len < other.len ? -1 : (len > other.len ? 1 : 0);
+    }
+    bool operator<(const ByteBuffer& other) const noexcept
+    {
+        return compare(other) < 0;
+    }
 
 private:
-    static bool rangesOverlap(
-        const std::byte* first,
-        size_type firstSize,
-        const std::byte* second,
-        size_type secondSize
-    );
-    void syncFromOwner();
-    void resetToEmpty() noexcept;
-    void ensureOwningForMutation(size_type minCapacity);
+    struct Block
+    {
+        explicit Block(size_type capacity) noexcept
+            : refs(1U)
+            , capacity(capacity)
+        {}
+
+        std::atomic<size_type> refs;
+        size_type capacity;
+
+        std::byte* bytes() noexcept
+        {
+            return reinterpret_cast<std::byte*>(this + 1);
+        }
+    };
+
+    static const std::byte* emptyData() noexcept;
+    static Block* allocate(size_type capacity);
+    static void destroy(Block* block) noexcept;
+    static void release(Block* block) noexcept
+    {
+        if (block && block->refs.fetch_sub(1, std::memory_order_acq_rel) == 1) {
+            destroy(block);
+        }
+    }
+
+    bool viewsOwnBlock(BytesView bytes) const noexcept;
+    /// Make the bytes uniquely owned with room for at least @p minCapacity bytes
+    /// past the start of the data.
+    void ensureUnique(size_type minCapacity);
 
 private:
     const std::byte* ptr {nullptr};
     size_type len {0U};
-    std::shared_ptr<std::vector<std::byte>> owner;
+    Block* block {nullptr};
 };
-
-BaseExport bool operator==(const ByteBuffer& a, const ByteBuffer& b);
-BaseExport bool operator!=(const ByteBuffer& a, const ByteBuffer& b);
 
 }  // namespace Base
