@@ -1,6 +1,7 @@
 add_executable(Base_tests_run
         Axis.cpp
         Base64.cpp
+        ByteBuffer.cpp
         Bitmask.cpp
         BoundBox.cpp
         Builder3D.cpp
@@ -15,6 +16,7 @@ add_executable(Base_tests_run
         FileInfo.cpp
         InputSource.cpp
         Handle.cpp
+        HashUtils.cpp
         Matrix.cpp
         NumericFormatting.cpp
         NumericInput.cpp
@@ -29,6 +31,7 @@ add_executable(Base_tests_run
         Rotation.cpp
         SchemaTests.cpp
         ServiceProvider.cpp
+        Sha1.cpp
         Stream.cpp
         StringUtils.cpp
         TimeInfo.cpp
