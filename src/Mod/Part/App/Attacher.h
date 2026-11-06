@@ -250,6 +250,8 @@ public:  // methods
 
     void setOffset(const Base::Placement& offset);
 
+    void setOwnerName(const std::string& name);
+
     virtual AttachEngine* copy() const = 0;
 
     Base::Placement calculateAttachedPlacement(
@@ -424,6 +426,9 @@ public:  // members
     double surfU = 0.0, surfV = 0.0;
     double precision = 1.0e-7;
     Base::Placement attachmentOffset;
+
+    // Holds the name of engine owner object
+    std::string ownerName;
 
     /**
      * @brief modeEnabled is an indicator, whether some mode is ever suggested
