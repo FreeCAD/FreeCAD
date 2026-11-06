@@ -360,6 +360,14 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         shape.apply_derived_parameters()
         self.assertAlmostEqual(shape.get_parameter("CuttingEdgeHeight").Value, 3.175)
 
+        # The flutes end where the neck does, never in the shank.
+        shape.set_parameters(
+            NeckHeight=FreeCAD.Units.Quantity("10 mm"),
+            NeckCuttingHeight=FreeCAD.Units.Quantity("15 mm"),
+        )
+        shape.apply_derived_parameters()
+        self.assertAlmostEqual(shape.get_parameter("CuttingEdgeHeight").Value, 13.175)
+
     def test_toolbitshapelollipop_defaults(self):
         """Test ToolBitShapeLollipop default parameters and labels."""
         shape = self._test_shape_common("lollipop")

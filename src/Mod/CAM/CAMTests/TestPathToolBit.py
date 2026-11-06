@@ -32,8 +32,9 @@ import pathlib
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.library import Library
-from Path.Tool.shape import ToolBitShapeBullnose
+from Path.Tool.shape import ToolBitShapeBullnose, ToolBitShapeDovetail
 from Path.Tool.toolbit import (
+    ToolBit,
     ToolBitEndmill,
     ToolBitBullnose,
     ToolBitDovetail,
@@ -151,6 +152,12 @@ class TestPathToolBitMigration(_InDocument):
         self.assertEqual(obj.getGroupOfProperty("NeckCuttingHeight"), "Shape")
         self.assertEqual(obj.NeckCuttingHeight, FreeCAD.Units.Quantity("0 mm"))
         self.assertFalse(migrate_parameters(ParameterAccessor(obj)))
+
+    def testNewDovetailKeepsShapeNeckCuttingHeight(self):
+        """A new dovetail takes NeckCuttingHeight from its shape, not from the migration"""
+        shape = ToolBitShapeDovetail("dovetail", NeckCuttingHeight=FreeCAD.Units.Quantity("4 mm"))
+        toolbit = ToolBit.from_shape(shape, {"name": "New dovetail"})
+        self.assertEqual(toolbit.obj.NeckCuttingHeight, FreeCAD.Units.Quantity("4 mm"))
 
     def _old_reamer_dict(self, height="20.0000 mm"):
         return {

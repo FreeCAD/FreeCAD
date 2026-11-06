@@ -72,10 +72,10 @@ class ToolBitShapeKeyway(ToolBitShape):
 
     @classmethod
     def derived_parameters(cls) -> Mapping[str, Any]:
-        """The head and the fluted part of the neck above it both cut."""
+        """The head and the fluted part of the neck above it cut; the flutes end with the neck."""
         return {
             "CuttingEdgeHeight": lambda p: p["LowerCuttingHeight"].Value
-            + p["NeckCuttingHeight"].Value
+            + min(p["NeckCuttingHeight"].Value, p["NeckHeight"].Value)
         }
 
     @property
