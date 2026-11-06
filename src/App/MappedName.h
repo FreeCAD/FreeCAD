@@ -761,12 +761,6 @@ public:
         return this->postfix.view();
     }
 
-    /// Convenience function providing access to the pointer to the beginning of the postfix data.
-    const char* constPostfix() const
-    {
-        return reinterpret_cast<const char*>(this->postfix.data());
-    }
-
     // No constData() because 'data' is allowed to contain raw data, which may not end with 0.
 
     /**
