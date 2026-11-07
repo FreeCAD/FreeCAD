@@ -273,7 +273,6 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             is_adaptive=False,
             adaptive_params={},
             bb_face=self.border_face,
-            enforce_geofence=True,
         )
 
         self.assertGreater(len(cmds), 0, "G-code generation produced no commands")

@@ -429,6 +429,88 @@ def getTrimFace(border_face, bbFace, wpc):
 
 
 # ---------------------------------------------------------------------------
+# Adaptive2d real stock outline
+# ---------------------------------------------------------------------------
+
+
+def validate_stock_outline(stock_face, stock_bb, model_bb, tol=0.5):
+    """
+    Sanity check of the 2D stock outline handed to Adaptive2d.
+
+    Adaptive2d treats everything outside this outline as air, so an outline
+    that is misplaced or in another coordinate frame (e.g. a 3+2 setup)
+    would send the tool through real material. The outline must:
+      - span the stock's XY bounding box (it was built from the stock, shrunk
+        by a few hundredths of a millimetre), and
+      - enclose the XY bounding box of the model being machined.
+
+    Args:
+        stock_face (Part.Shape or None): The 2D stock outline.
+        stock_bb (FreeCAD.BoundBox): Bounding box of the job stock.
+        model_bb (FreeCAD.BoundBox or None): Bounding box of the machined model.
+        tol (float): Allowed mismatch in mm.
+
+    Returns:
+        tuple: (valid (bool), reason (str))
+    """
+    if not stock_face or stock_face.isNull() or not stock_face.Faces:
+        return False, "the stock outline is empty"
+
+    f_bb = stock_face.BoundBox
+    if (
+        abs(f_bb.XMin - stock_bb.XMin) > tol
+        or abs(f_bb.XMax - stock_bb.XMax) > tol
+        or abs(f_bb.YMin - stock_bb.YMin) > tol
+        or abs(f_bb.YMax - stock_bb.YMax) > tol
+    ):
+        return False, "the stock outline does not match the stock's bounding box"
+
+    if model_bb is not None and (
+        model_bb.XMin < f_bb.XMin - tol
+        or model_bb.XMax > f_bb.XMax + tol
+        or model_bb.YMin < f_bb.YMin - tol
+        or model_bb.YMax > f_bb.YMax + tol
+    ):
+        return False, "the model extends outside the stock outline"
+
+    return True, ""
+
+
+def _resolve_adaptive_stock(stock_face, bb_face, radius, adaptive_params):
+    """
+    Chooses the stock outline handed to Adaptive2d.
+
+    Unless forceInsideOut is set, Adaptive2d treats everything outside the stock
+    it is given as air: that region is marked as already cleared, and the tool
+    may enter, link and plunge there. The stock must therefore be the real
+    material outline. A machining boundary (BaseBoundBox, a negative Boundary
+    adjustment, a model outline) is smaller than the stock, and the band between
+    the two is real material.
+
+    Args:
+        stock_face (Part.Shape or None): 2D outline of the real job stock.
+        bb_face (Part.Shape): The tool-centre machining boundary.
+        radius (float): Tool radius in mm.
+        adaptive_params (dict): Adaptive parameters (never modified).
+
+    Returns:
+        tuple: (a2d_stock (Part.Shape), a2d_stock_offset (float), adaptive_params (dict))
+    """
+    if stock_face and not stock_face.isNull():
+        return stock_face, 0.0, adaptive_params
+
+    # No stock outline: the area outside the boundary cannot be trusted to be
+    # air, so keep the tool inside the machining area (helix entries only).
+    Path.Log.warning(
+        "Adaptive: no stock outline available — entries from outside the stock are "
+        "disabled (Force inside-out is used)."
+    )
+    params = dict(adaptive_params)
+    params["force_insideout"] = True
+    return bb_face, radius - 0.01, params
+
+
+# ---------------------------------------------------------------------------
 # Depth categorization
 # ---------------------------------------------------------------------------
 
@@ -1158,7 +1240,7 @@ def zlevel_hybrid_to_gcode(
     is_adaptive,
     adaptive_params,
     bb_face,
-    enforce_geofence,
+    stock_face=None,
 ):
     """Converts the geometry stack into G-code Path Commands.
 
@@ -1184,6 +1266,9 @@ def zlevel_hybrid_to_gcode(
             'force_insideout', 'finishing_profile', 'lift_distance', 'keep_tool_down',
             'helix_angle', 'helix_diameter', 'helix_min_diameter'
         bb_face: A Part.Face representing the stock or boundary footprint.
+        stock_face: A Part.Face with the 2D outline of the real job stock. Adaptive2d
+            treats everything outside the stock it is given as air, so this must be
+            the real material outline, not the machining boundary.
 
     Returns:
         A list of Path.Command objects (G-code).
@@ -1211,6 +1296,14 @@ def zlevel_hybrid_to_gcode(
     keep_tool_down = pattern_options.get("keep_tool_down", True)
     keep_down_ratio = pattern_options.get("keep_down_ratio", 2.0) * tool_diam
 
+    # Adaptive: resolve the stock outline handed to Adaptive2d once for all layers
+    if is_adaptive:
+        from . import adaptive_common as _adaptive
+
+        a2d_stock, a2d_stock_offset, adaptive_params = _resolve_adaptive_stock(
+            stock_face, bb_face, radius, adaptive_params
+        )
+
     # 2. Main Layer Processing
     for z_target, cut_area, status in stack:
 
@@ -1222,17 +1315,8 @@ def zlevel_hybrid_to_gcode(
 
         # A: Adaptive Cut Pattern
         if is_adaptive:
-            from . import adaptive_common as _adaptive
-
-            # This single call checks the topology, sets up the offsets,
-            # handles the finishing_profile override, and prints a warning!
-            # layer_params is a per-layer view; adaptive_params itself is never modified.
-            geofence, bb_offset, layer_params = _setup_adaptive_geofence(
-                cut_area, bb_face, adaptive_params, radius, z_target, enforce_geofence
-            )
-
             pattern_cmds = _adaptive.generate(
-                layer_params,
+                adaptive_params,
                 feed_params,
                 radius,
                 step_over,
@@ -1241,10 +1325,9 @@ def zlevel_hybrid_to_gcode(
                 prev_z,
                 cut_area,
                 min_adaptive_area,
-                bb_face,
-                enforce_geofence=geofence,
+                a2d_stock,
                 cut_area_offset=radius,
-                bb_face_offset=bb_offset,
+                bb_face_offset=a2d_stock_offset,
             )
 
             commands.extend(pattern_cmds)
@@ -1337,105 +1420,6 @@ def zlevel_hybrid_to_gcode(
     commands.append(Path.Command("G0", {"Z": clear_hght, "F": vert_rapid}))
 
     return commands
-
-
-def _setup_adaptive_geofence(
-    cut_area, bb_face, adaptive_params, radius, z_target, enforce_geofence
-):
-    """
-    Analyzes the geometric relationship between the cut area and the stock boundary
-    to detect open pockets, and configures safety overrides for the Adaptive2d algorithm.
-
-    The libarea Adaptive2d algorithm is optimized for closed pockets and can produce
-    erratic toolpaths when encountering open boundaries. This function detects those
-    breaches using a two-pass check (AABB followed by topological intersection) and
-    applies geofencing and parameter overrides to ensure safe machining.
-
-    Overrides are applied to a per-layer copy of the parameters. The caller's
-    adaptive_params dictionary is never modified, so an override on one layer
-    does not leak into the following layers.
-
-    Args:
-        cut_area (Part.Shape): The 2D boundary of the area to be machined on this layer.
-        bb_face (Part.Shape): The 2D stock boundary (geofence limit).
-        adaptive_params (dict): The dictionary of adaptive routing parameters (read-only).
-        radius (float): The tool radius in millimeters.
-        z_target (float): The current Z-depth (used for contextual logging).
-        enforce_geofence (bool): The user's preference from the operation's Data tab.
-                                      If False, respects the power-user's choice to disable
-                                      geofence clipping on open pockets. Defaults to True.
-
-    Returns:
-        tuple: (geofence_active (bool), bb_offset (float), layer_params (dict))
-               - geofence_active: True if transit moves should be strictly clipped.
-               - bb_offset: The boundary offset applied for the Adaptive2d algorithm.
-               - layer_params: The parameters to use for this layer. This is the
-                 original dictionary when no override is needed, or a copy with
-                 the overrides applied.
-    """
-    # Defaults for closed pockets
-    force_insideout = bool(adaptive_params.get("force_insideout", False))
-    geofence = False
-    bb_offset = radius - 0.01
-
-    if not cut_area or cut_area.isNull() or not bb_face or bb_face.isNull():
-        return geofence, bb_offset, adaptive_params
-
-    # Open Pocket Geometric Detection
-    c_bb = cut_area.BoundBox
-    s_bb = bb_face.BoundBox
-    tol = 0.01
-    is_open = False
-
-    # Fast AABB Check
-    if (
-        c_bb.XMin <= s_bb.XMin + tol
-        or c_bb.XMax >= s_bb.XMax - tol
-        or c_bb.YMin <= s_bb.YMin + tol
-        or c_bb.YMax >= s_bb.YMax - tol
-    ):
-        is_open = True
-    else:
-        # Irregular Stock Check
-        try:
-            intersection = cut_area.common(bb_face)
-            if (
-                intersection
-                and not intersection.isNull()
-                and (
-                    abs(cut_area.Area - intersection.Area) > 0.01
-                    or abs(intersection.Length - cut_area.Length) > 0.01
-                )
-            ):
-                is_open = True
-        except Exception:
-            is_open = True
-
-    # Closed pocket: no overrides, use the caller's parameters unchanged
-    if not is_open or force_insideout:
-        return geofence, bb_offset, adaptive_params
-
-    # Open pocket: apply safety overrides to a per-layer copy
-    layer_params = dict(adaptive_params)
-    layer_params["finishing_profile"] = False
-
-    # Respect the power-user toggle
-    geofence = bool(enforce_geofence)
-    bb_offset = -0.01
-
-    status_text = "ENABLED" if geofence else "DISABLED (by user override)"
-
-    Path.Log.warning(
-        f"Z={round(z_target, 3)}: Outside adaptive cut detected.\n"
-        f"Geofence clipping is {status_text}.\n"
-        "The Adaptive2d algorithm can be unpredictable in open regions. For safest results:\n"
-        " - Inspect the toolpath closely for any anomalies.\n"
-        " - Set the 'Boundary box' to 'Stock' instead of 'BaseBoundBox'.\n"
-        " - Adjust the 'Boundary adjustment' manually if the tool overextends.\n"
-        "(Note: 'Finishing profile' was automatically disabled for this layer to prevent edge artifacts.)"
-    )
-
-    return geofence, bb_offset, layer_params
 
 
 def _find_start_point(wire, start_point, cut_climb):
