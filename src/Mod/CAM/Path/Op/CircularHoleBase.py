@@ -245,7 +245,10 @@ class ObjectOp(PathOp.ObjectOp):
                             obj.Disabled = disabled
                         break
                 else:  # is not a repeat, add unique position
-                    bottom = base.Shape.getElement(sub).BoundBox.ZMin
+                    # an edge stands for its wall, down to the step's floor
+                    shape = base.Shape.getElement(sub)
+                    faces = base.Shape.ancestorsOfType(shape, Part.Face) if "Edge" in sub else []
+                    bottom = min(f.BoundBox.ZMin for f in faces + [shape])
                     holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub, "bottom": bottom})
 
         for pos in getattr(obj, "Locations", []):
