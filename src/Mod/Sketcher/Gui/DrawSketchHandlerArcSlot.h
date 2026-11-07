@@ -96,34 +96,35 @@ public:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
-        const Gui::InputHint switchModeHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint switchModeHint {
+            .message = tr("%1 switch mode"),
+            .sequences = {{Qt::Key_M}}
+        };
 
         return Gui::lookupHints<SelectMode>(state(),
                                             {
                                                 {.state = SelectMode::SeekFirst,
                                                  .hints =
                                                      {
-                                                         {tr("%1 pick slot center"), {MouseLeft}},
+                                                         {tr("%1 pick slot center"), {{Gui::MouseInput::MouseLeft}}},
                                                          switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekSecond,
                                                  .hints =
                                                      {
-                                                         {tr("%1 pick slot radius"), {MouseLeft}},
+                                                         {tr("%1 pick slot radius"), {{Gui::MouseInput::MouseLeft}}},
                                                          switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekThird,
                                                  .hints =
                                                      {
-                                                         {tr("%1 pick slot angle"), {MouseLeft}},
+                                                         {tr("%1 pick slot angle"), {{Gui::MouseInput::MouseLeft}}},
                                                          switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekFourth,
                                                  .hints =
                                                      {
-                                                         {tr("%1 pick slot width"), {MouseLeft}},
+                                                         {tr("%1 pick slot width"), {{Gui::MouseInput::MouseLeft}}},
                                                          switchModeHint,
                                                      }},
                                             });
