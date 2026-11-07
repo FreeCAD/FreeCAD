@@ -26,10 +26,13 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <QMenu>
 
+#include <string>
+
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/PropertyStandard.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
@@ -69,6 +72,19 @@ bool hasBaseFeatureShape(const App::DocumentObject* object)
         return !shapeProperty->getShape().isNull();
     }
     return false;
+}
+
+bool isStandaloneForm(const App::DocumentObject* object)
+{
+    if (!object || PartDesign::Body::findBodyOf(object)) {
+        return false;
+    }
+    const auto* formType = dynamic_cast<const App::PropertyString*>(
+        object->getPropertyByName("FormType")
+    );
+    const std::string type = formType ? formType->getValue() : "";
+    return type.rfind("Forms::", 0) == 0 && object->getPropertyByName("ControlPoints")
+        && object->getPropertyByName("ControlFaces");
 }
 
 }  // namespace
@@ -531,6 +547,9 @@ bool ViewProviderBody::canDropObjects() const
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
+    if (isStandaloneForm(obj)) {
+        return obj->getDocument() == getObject()->getDocument();
+    }
     if (obj->isDerivedFrom<App::VarSet>()) {
         return true;
     }
@@ -564,6 +583,16 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
     auto* body = getObject<PartDesign::Body>();
+    if (isStandaloneForm(obj)) {
+        Gui::Command::doCommand(Gui::Command::Doc, "import FormSurfaceFeature");
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "FormSurfaceFeature.schedule_move_form_to_body(%s, %s)",
+            Gui::Command::getObjectCmd(obj).c_str(),
+            Gui::Command::getObjectCmd(body).c_str()
+        );
+        return;
+    }
     if (obj->isDerivedFrom<Part::Part2DObject>() || obj->isDerivedFrom<App::DatumElement>()
         || obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         body->addObject(obj);

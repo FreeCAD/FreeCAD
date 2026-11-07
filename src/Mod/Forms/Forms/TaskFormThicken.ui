@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormThicken</class>
+ <widget class="QWidget" name="TaskFormThicken">
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0"><widget class="QLabel" name="thicknessLabel"><property name="text"><string>Thickness</string></property></widget></item>
+   <item row="0" column="1"><layout class="QHBoxLayout" name="thicknessLayout">
+    <item><widget class="QDoubleSpinBox" name="thickness"><property name="minimum"><double>-1000000.000000000000000</double></property><property name="maximum"><double>1000000.000000000000000</double></property><property name="decimals"><number>2</number></property><property name="singleStep"><double>1.000000000000000</double></property><property name="suffix"><string notr="true"> mm</string></property></widget></item>
+    <item><widget class="QToolButton" name="reverseButton"><property name="toolTip"><string>Reverses the thickness direction</string></property><property name="text"><string>Reverse</string></property><property name="icon"><iconset resource=""><normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg</iconset></property></widget></item>
+   </layout></item>
+   <item row="1" column="0" colspan="2"><layout class="QHBoxLayout" name="buttonLayout">
+    <item><widget class="QPushButton" name="applyButton"><property name="text"><string>Apply</string></property></widget></item>
+    <item><widget class="QPushButton" name="cancelButton"><property name="text"><string>Cancel</string></property></widget></item>
+   </layout></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

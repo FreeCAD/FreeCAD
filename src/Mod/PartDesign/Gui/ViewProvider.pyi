@@ -35,3 +35,7 @@ class ViewProvider(ViewProviderPartExt):
         other viewproviders without doing anything to the document and properties.
         """
         ...
+
+    def showPreviousFeature(self, visible: bool, /) -> None:
+        """Show the preceding feature instead of this feature."""
+        ...

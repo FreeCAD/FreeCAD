@@ -374,6 +374,14 @@ class _View3DInventor:
         """Remove one Pivy event callback."""
         ...
 
+    def activateToolHandler(self, icon_name: str, /) -> bool:
+        """Activate the shared tool-handler cursor using a registered SVG icon."""
+        ...
+
+    def deactivateToolHandler(self) -> None:
+        """Deactivate the shared tool-handler cursor."""
+        ...
+
     @deprecated(
         deprecated_in="26.3",
         removed_in="27.2",

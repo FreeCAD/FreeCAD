@@ -83,6 +83,46 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def tearDown(self):
         App.closeDocument("TopoShape")
 
+    def testSewShapePreservesFaceNamesAndRefreshesCache(self):
+        faces = [face.copy() for face in Part.makeBox(2, 3, 4).Faces]
+        for index, face in enumerate(faces):
+            face.ElementMap = {f"SewFace{index}": "Face1"}
+        shape = Part.makeCompound(faces)
+        original_map = dict(shape.ElementMap)
+        original = shape.copy()
+        # Populate the cache before sewing changes the underlying topology.
+        self.assertEqual(len(shape.Edges), 24)
+        shape.sewShape()
+        self.assertEqual(len(shape.Edges), 12)
+        self.assertEqual(len(shape.Shells), 1)
+        self.assertTrue(shape.isClosed())
+        self.assertEqual(original.ElementMap, original_map)
+        self.assertEqual(len(original.Edges), 24)
+        for index, face in enumerate(faces):
+            mapped = [
+                value
+                for name, value in shape.ElementMap.items()
+                if name.split(";", 1)[0] == f"SewFace{index}" and value.startswith("Face")
+            ]
+            self.assertEqual(len(mapped), 1)
+            result = shape.getElement(mapped[0])
+            self.assertTrue(result.CenterOfMass.isEqual(face.CenterOfMass, 1.0e-7))
+
+    def testSewShapeHonorsTolerance(self):
+        first = Part.makePlane(1, 1)
+        second = Part.makePlane(1, 1, App.Vector(1.0001, 0, 0))
+        separate = Part.makeCompound([first, second])
+        separate.sewShape(1.0e-6)
+        self.assertEqual(len(separate.Shells), 0)
+        joined = Part.makeCompound([first, second])
+        joined.sewShape(1.0e-3)
+        self.assertEqual(len(joined.Shells), 1)
+        self.assertEqual(len(joined.Edges), 7)
+
+    def testSewNullShapeRaisesPythonException(self):
+        with self.assertRaises(ValueError):
+            Part.Shape().sewShape()
+
     def testTopoShapeBox(self):
         # Arrange our test TopoShape
         box2_toposhape = self.doc.Box2.Shape
