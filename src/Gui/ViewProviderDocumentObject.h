@@ -93,6 +93,8 @@ public:
 
     bool showInTree() const override;
 
+    QString getToolTip() const override;
+
     /// Get a list of TaskBoxes associated with this object
     void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
