@@ -45,6 +45,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Inventor/Draggers/SoTransformDragger.h>
 #include <Gui/TaskView/TaskImage.h>
 
 #include "ViewProviderImagePlane.h"
@@ -184,9 +185,35 @@ bool ViewProviderImagePlane::doubleClicked()
 
 void ViewProviderImagePlane::manipulateImage()
 {
-    auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
+    getDocument()->setEdit(this, ViewProvider::Default);
+}
 
+bool ViewProviderImagePlane::setEdit(int ModNum)
+{
+    // Std_TransformManip and the other modes keep the generic transform panel
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderGeometryObject::setEdit(ModNum);
+    }
+
+    // The image panel gets the transform dragger too, so the image can be moved in the 3D view
+    createTransformDragger();
+    // The panel can only express a rotation inside the image plane
+    transformDragger->hideRotationX();
+    transformDragger->hideRotationY();
+    imageEditing = true;
+
+    auto dialog = new TaskImageDialog(getObject<Image::ImagePlane>());
     Gui::Control().showDialog(dialog, getDocument()->getDocument());
+
+    setDraggerPlacement(getObjectPlacement() * getTransformOrigin());
+
+    return true;
+}
+
+void ViewProviderImagePlane::unsetEdit(int ModNum)
+{
+    imageEditing = false;
+    ViewProviderGeometryObject::unsetEdit(ModNum);
 }
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
@@ -365,5 +392,10 @@ void ViewProviderImagePlane::updateData(const App::Property* prop)
     }
     else {
         Gui::ViewProviderGeometryObject::updateData(prop);
+
+        // Keep the dragger on the image when the panel or an undo moves it
+        if (imageEditing && transformDragger && prop == &pcPlaneObj->Placement) {
+            setDraggerPlacement(getObjectPlacement() * getTransformOrigin());
+        }
     }
 }
