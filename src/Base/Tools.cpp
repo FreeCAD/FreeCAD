@@ -193,7 +193,16 @@ std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
         return string;
     }
     if (PyUnicode_Check(unicode)) {
-        string = PyUnicode_AsUTF8(unicode);
+        // PyUnicode_AsUTF8 returns NULL and sets a Python error for strings that
+        // cannot be encoded as UTF-8 (e.g. a lone surrogate like \ud800).
+        // Assigning NULL to std::string would call strlen(NULL) and crash.
+        const char* utf8 = PyUnicode_AsUTF8(unicode);
+        if (utf8) {
+            string = utf8;
+        }
+        else {
+            PyErr_Clear();
+        }
     }
     Py_DECREF(unicode);
     return string;
