@@ -835,6 +835,9 @@ void TopoShape::importBinary(std::istream& str)
 
     BinTools::GetInteger(str, locId);
     BinTools::GetInteger(str, orient);
+    if (orient < TopAbs_FORWARD || orient > TopAbs_EXTERNAL) {
+        throw Base::RuntimeError("Invalid orientation in binary shape stream");
+    }
     TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
 
     try {
