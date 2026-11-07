@@ -27,8 +27,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Gui/Command.h>
-#include <type_traits>
-#include <typeinfo>
+#include <Gui/Macro.h>
 #include <boost/format.hpp>
 
 
@@ -463,6 +462,114 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
             _cmd
         );
         throw;
+    }
+}
+
+// Helper to manage pending constraint commands
+class ConstraintCommandQueue
+{
+public:
+    static std::vector<std::string>& getBuffer()
+    {
+        static thread_local std::vector<std::string> buffer;
+        return buffer;
+    }
+    static bool isBuffering()
+    {
+        return buffering;
+    }
+    static void setBuffering(bool val)
+    {
+        buffering = val;
+    }
+    static void reset()
+    {
+        getBuffer().clear();
+    }
+    static void emit(Command::DoCmd_Type eType)
+    {
+        for (const auto& element : getBuffer()) {
+            if (eType == Command::Gui) {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, element.c_str());
+            }
+            else {
+                Gui::Application::Instance->macroManager()->addLine(MacroManager::App, element.c_str());
+            }
+        }
+        getBuffer().clear();
+    }
+
+private:
+    inline static thread_local bool buffering = false;
+};
+
+/** Runs or buffers a Python command string for a Sketcher constraint operation.
+ * Formats a command string using boost::format/printf-style arguments and either queues
+ * it in the ConstraintCommandQueue during an active transaction or executes it immediately.
+ * @param obj: pointer to the DocumentObject (e.g. Sketcher::SketchObject) being constrained
+ * @param format: command string pattern, supporting boost::format/printf-style specifiers
+ * @param args: variadic arguments matching the format string specifiers
+ * @sa ConstraintCommandQueue, cmdSketcherExpression()
+ */
+template<typename... Args>
+void cmdSketcherConstraint(const App::DocumentObject* obj, const std::string& format, Args&&... args)
+{
+    std::string _cmd;
+    try {
+        boost::format fmt(format);
+        _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
+
+        std::string fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').getObject('") + obj->getNameInDocument() + std::string("').") + _cmd;
+
+        if (Gui::ConstraintCommandQueue::isBuffering()) {
+            Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
+
+            // 2. Execute LIVE in the interpreter so C++ Sketcher model updates NOW
+            Base::Interpreter().runString(fullPythonCmd.c_str());
+        }
+        else {
+            Gui::Command::doCommand(Gui::Command::Doc, "%s", fullPythonCmd.c_str());
+        }
+    }
+    catch (const std::exception& e) {
+        Base::Console().developerError("SketcherConstraint", "{}\n", e.what());
+    }
+}
+
+/** Runs or buffers a Python setExpression command string for a document object.
+ * Formats a setExpression call for the given path and expression, queuing it into
+ * ConstraintCommandQueue if transaction buffering is active, or executing it immediately via
+ * doCommand.
+ * @param obj: pointer to the DocumentObject whose expression property is being set
+ * @param pathStr: escaped property path string (e.g., "Constraints[0]")
+ * @param exprStr: expression formula string; if empty, clears the expression (sets to None)
+ * @sa ConstraintCommandQueue, cmdSketcherConstraint()
+ */
+template<typename... Args>
+void cmdSketcherExpression(
+    const App::DocumentObject* obj,
+    const std::string& pathStr,
+    const std::string& exprStr
+)
+{
+    std::string fullPythonCmd;
+    if (exprStr.empty()) {
+        fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').") + obj->getNameInDocument() + std::string(".setExpression('")
+            + pathStr + std::string("', None)");
+    }
+    else {
+        fullPythonCmd = std::string("App.getDocument('") + obj->getDocument()->getName()
+            + std::string("').") + obj->getNameInDocument() + std::string(".setExpression('")
+            + pathStr + std::string("', u'") + exprStr + std::string("')");
+    }
+
+    if (Gui::ConstraintCommandQueue::isBuffering()) {
+        Gui::ConstraintCommandQueue::getBuffer().push_back(fullPythonCmd);
+    }
+    else {
+        Gui::Command::doCommand(Gui::Command::Doc, "%s", fullPythonCmd.c_str());
     }
 }
 
