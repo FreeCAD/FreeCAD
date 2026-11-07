@@ -2168,7 +2168,7 @@ void Document::restore(const char* filename,
     d->lastObjectId = 0;
 
     if (signal) {
-        GetApplication().signalNewDocument(*this, true);
+        GetApplication().signalNewDocument(*this, !testStatus(Document::HiddenDoc));
         if (activeDoc == this) {
             GetApplication().setActiveDocument(this);
         }
