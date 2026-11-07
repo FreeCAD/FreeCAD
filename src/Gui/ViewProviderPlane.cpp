@@ -147,7 +147,7 @@ void ViewProviderPlane::attach(App::DocumentObject* obj)
 
     handlers.addDelayedHandler(
         ViewParams::instance()->getHandle(),
-        {"DatumLineSize", "DatumScale"},
+        {"DatumPlaneSize", "DatumScale"},
         [this](ParameterGrp::handle) { updatePlaneSize(); }
     );
 

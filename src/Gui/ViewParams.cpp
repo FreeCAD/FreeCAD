@@ -272,6 +272,15 @@ void ViewParams::setup()
     );
 
     static_assert(
+        Base::is_getter<decltype(&ViewParams::getDatumPointSize), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDatumPointSize), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
         Base::is_getter<decltype(&ViewParams::getDatumPlaneSize), Double::value_type>,
         "Mismatching signature"
     );
@@ -406,6 +415,7 @@ void ViewParams::setup()
     addParameter("PlacementIndicatorScale", Double {40.0});
     addParameter("DraggerScale", Double {0.03});
     addParameter("DatumScale", Double {100.0});
+    addParameter("DatumPointSize", Double {2.5});
     addParameter("DatumPlaneSize", Double {62.0});
     addParameter("DatumLineSize", Double {70.0});
     addParameter("DatumTemporaryScaleFactor", Double {2.0});
@@ -703,6 +713,16 @@ double ViewParams::getDatumScale() const
 void ViewParams::setDatumScale(double v)
 {
     setValue("DatumScale", v);
+}
+
+double ViewParams::getDatumPointSize() const
+{
+    return getValue<double>("DatumPointSize");
+}
+
+void ViewParams::setDatumPointSize(double v)
+{
+    setValue("DatumPointSize", v);
 }
 
 double ViewParams::getDatumPlaneSize() const

@@ -65,6 +65,8 @@ private:
     void loadRenderCache();
     void saveMarkerSize();
     void loadMarkerSize();
+    void saveDatumSize();
+    void loadDatumSize();
 
 private:
     std::unique_ptr<Ui_DlgSettings3DView> ui;
