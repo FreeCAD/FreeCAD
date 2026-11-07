@@ -50,6 +50,8 @@ void DlgSettingsSelection::saveSettings()
     ui->checkBoxAutoSwitch->onSave();
     ui->checkBoxAutoExpand->onSave();
     ui->checkBoxPreselect->onSave();
+    ui->checkBoxPreselectHidden->onSave();
+    ui->spinPreselectDelay->onSave();
     ui->checkBoxRecord->onSave();
     ui->checkBoxSelectionCheckBoxes->onSave();
 }
@@ -64,8 +66,16 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxAutoSwitch->onRestore();
     ui->checkBoxAutoExpand->onRestore();
     ui->checkBoxPreselect->onRestore();
+    ui->checkBoxPreselectHidden->onRestore();
+    ui->spinPreselectDelay->onRestore();
     ui->checkBoxRecord->onRestore();
     ui->checkBoxSelectionCheckBoxes->onRestore();
+
+    // the toggled() connection only fires on clicks, so set the initial state
+    const bool preselect = ui->checkBoxPreselect->isChecked();
+    ui->checkBoxPreselectHidden->setEnabled(preselect);
+    ui->spinPreselectDelay->setEnabled(preselect);
+    ui->spinPreselectDelayLabel->setEnabled(preselect);
 }
 
 void DlgSettingsSelection::changeEvent(QEvent* e)
