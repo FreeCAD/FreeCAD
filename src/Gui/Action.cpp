@@ -937,6 +937,21 @@ void RecentFilesAction::appendFile(const QString& filename)
     Q_EMIT recentFilesListModified();
 }
 
+/** Removes a file from the recent files list. Does nothing if the file is not present. */
+void RecentFilesAction::removeFile(const QString& filename)
+{
+    QStringList current = this->files();
+    if (!current.removeAll(filename)) {
+        return;
+    }
+    setFiles(current);
+    save();
+
+    _pimpl->trySaveUserParameter();
+
+    Q_EMIT recentFilesListModified();
+}
+
 static QString numberToLabel(int number)
 {
     if (number > 0 && number < 10) {  // NOLINT: *-magic-numbers
