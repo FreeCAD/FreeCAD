@@ -24,6 +24,9 @@
 
 #include <algorithm>
 #include <cstring>
+#include <set>
+#include <tuple>
+#include <utility>
 #include <QAbstractButton>
 #include <QApplication>
 #include <QCheckBox>
@@ -1424,6 +1427,20 @@ void PreferencesSearchController::performSearch(const QString& searchText)
             );
         }
     }
+
+    // Several widgets of one page can show the same text, e.g. the "Auto-load" check box of
+    // every workbench. The popup only shows the page and that text, so such entries cannot be
+    // told apart: keep the first one only.
+    std::set<std::tuple<QString, QString, QString, bool>> seenResults;
+    QList<SearchResult> uniqueResults;
+    for (const SearchResult& result : std::as_const(m_searchResults)) {
+        if (seenResults
+                .emplace(result.groupName, result.pageName, result.matchText, result.isPageLevelMatch)
+                .second) {
+            uniqueResults.append(result);
+        }
+    }
+    m_searchResults = uniqueResults;
 
     // Sort results by score (highest first)
     std::sort(
