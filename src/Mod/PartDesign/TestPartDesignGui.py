@@ -304,8 +304,10 @@ class PartDesignGuiTestCases(unittest.TestCase):
         search.setInterest(coin.SoSearchAction.ALL)
         search.setSearchingAll(True)
         search.apply(switch)
-        return [tuple(path.getTail().getField("translation").getValue().getValue())
-                for path in search.getPaths()]
+        return [
+            tuple(path.getTail().getField("translation").getValue().getValue())
+            for path in search.getPaths()
+        ]
 
     def checkDressUpGizmoRecovery(self, initially_valid, enabled):
         Gui.activateWorkbench("PartDesignWorkbench")
@@ -318,8 +320,9 @@ class PartDesignGuiTestCases(unittest.TestCase):
                 ("Fillet", "Radius", "filletRadius"),
                 ("Chamfer", "Size", "chamferSize"),
             ):
-                with self.subTest(feature=feature_type, enabled=enabled,
-                                  initially_valid=initially_valid):
+                with self.subTest(
+                    feature=feature_type, enabled=enabled, initially_valid=initially_valid
+                ):
                     body = self.Doc.addObject("PartDesign::Body", "Body")
                     box = body.newObject("PartDesign::AdditiveBox", "Box")
                     box.Length = box.Width = box.Height = 1
@@ -336,9 +339,16 @@ class PartDesignGuiTestCases(unittest.TestCase):
                         self.assertEqual(len(switches), 1 if enabled else 0)
                         switch = switches[0] if enabled else None
                         if switch is not None:
-                            self.assertEqual(bool(switch.getField("on").getValue()), initially_valid)
-                        editors = [widget for widget in Gui.getMainWindow().findChildren(
-                            QtGui.QAbstractSpinBox, editor_name) if widget.isVisible()]
+                            self.assertEqual(
+                                bool(switch.getField("on").getValue()), initially_valid
+                            )
+                        editors = [
+                            widget
+                            for widget in Gui.getMainWindow().findChildren(
+                                QtGui.QAbstractSpinBox, editor_name
+                            )
+                            if widget.isVisible()
+                        ]
                         self.assertEqual(len(editors), 1)
                         editor = editors[0]
 
@@ -369,8 +379,10 @@ class PartDesignGuiTestCases(unittest.TestCase):
                         self.assertFalse(feature.Shape.isNull())
                         self.assertTrue(feature.Shape.isValid())
                         if enabled:
-                            self.assertTrue(switch.getField("on").getValue(),
-                                            "Recovered valid feature retains hidden gizmos")
+                            self.assertTrue(
+                                switch.getField("on").getValue(),
+                                "Recovered valid feature retains hidden gizmos",
+                            )
                             self.assertTrue(self.dressUpGizmoPositions(switch))
                             change_size(0.25)
                             self.assertTrue(feature.isValid(), feature.State)
@@ -433,22 +445,34 @@ class PartDesignGuiTestCases(unittest.TestCase):
                         switch = switches[0]
                         self.assertFalse(switch.getField("on").getValue())
                         if changed == "type":
-                            combos = [widget for widget in Gui.getMainWindow().findChildren(
-                                QtGui.QComboBox, "chamferType") if widget.isVisible()]
+                            combos = [
+                                widget
+                                for widget in Gui.getMainWindow().findChildren(
+                                    QtGui.QComboBox, "chamferType"
+                                )
+                                if widget.isVisible()
+                            ]
                             self.assertEqual(len(combos), 1)
                             combos[0].setCurrentIndex(0)  # Equal distance: Size2 is not used.
                         else:
                             name = "chamferAngle" if changed == "angle" else "chamferSize2"
-                            editors = [widget for widget in Gui.getMainWindow().findChildren(
-                                QtGui.QAbstractSpinBox, name) if widget.isVisible()]
+                            editors = [
+                                widget
+                                for widget in Gui.getMainWindow().findChildren(
+                                    QtGui.QAbstractSpinBox, name
+                                )
+                                if widget.isVisible()
+                            ]
                             self.assertEqual(len(editors), 1)
                             value = 45 if changed == "angle" else 0.2
                             self.assertTrue(editors[0].setProperty("rawValue", value))
                         Gui.updateGui()
                         self.assertTrue(feature.isValid(), feature.State)
                         self.assertTrue(feature.Shape.isValid())
-                        self.assertTrue(switch.getField("on").getValue(),
-                                        "Recovered valid chamfer retains hidden gizmos")
+                        self.assertTrue(
+                            switch.getField("on").getValue(),
+                            "Recovered valid chamfer retains hidden gizmos",
+                        )
                         self.assertTrue(self.dressUpGizmoPositions(switch))
                     finally:
                         Gui.getDocument(self.Doc.Name).resetEdit()
@@ -459,8 +483,6 @@ class PartDesignGuiTestCases(unittest.TestCase):
                 preferences.SetBool("EnableGizmos", old_enabled)
             else:
                 preferences.RemBool("EnableGizmos")
-
-
 
 
 class PartDesignTransformed(unittest.TestCase):
