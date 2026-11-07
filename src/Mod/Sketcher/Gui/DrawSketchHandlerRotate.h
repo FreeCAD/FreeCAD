@@ -464,8 +464,10 @@ private:
                         // external or unselected geometry) and a DistanceX/Y locking a point's
                         // coordinate do not hold for a rotated copy.
                         && (secondIndex >= 0 || cstr->Second == GeoEnum::GeoUndef)
-                        && !(cstr->Type != Distance && cstr->Second == GeoEnum::GeoUndef
-                             && cstr->FirstPos != PointPos::none)
+                        && !(
+                            cstr->Type != Distance && cstr->Second == GeoEnum::GeoUndef
+                            && cstr->FirstPos != PointPos::none
+                        )
                     ) {
                         if (!deleteOriginal && cloneConstraints
                             && (cstr->First == cstr->Second
