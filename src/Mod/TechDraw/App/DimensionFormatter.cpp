@@ -149,6 +149,11 @@ std::string DimensionFormatter::formatValue(const qreal value,
     }
 
     Base::Quantity asQuantity {value, unit};
+    std::string dimensionUnitSchema {
+        m_dimension->getUnitSystemOverride() == DrawViewDimension::UNIT_OVERRIDE_NONE
+            ? std::string() : m_dimension->getUnitSystemOverrideName()
+    };
+    auto overrideSchema = Base::UnitsApi::createOverrideSchema(dimensionUnitSchema);
 
     QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
     const std::string formatPrefix = qsl[0].toStdString();
@@ -157,7 +162,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     // this handles mm to inch/km/parsec etc and decimal positions but
     // won't give more than Global_Decimals precision
-    std::string basicString = formatPrefix + asQuantity.getUserString() + formatSuffix;
+    std::string basicString = formatPrefix + asQuantity.getUserString(overrideSchema.get()) + formatSuffix;
 
     if (isMultiValueSchema() || partial == Format::UNALTERED) {
         return basicString;  // Don't even try to use Alt Decimals or hide units
@@ -185,7 +190,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     double factor{1.0};
     std::string unitText{""};
-    asQuantity.getUserString(factor, unitText);
+    asQuantity.getUserString(overrideSchema.get(), factor, unitText);
     std::string squareTag{"^2"};
 
     if (unitText.empty()) {
