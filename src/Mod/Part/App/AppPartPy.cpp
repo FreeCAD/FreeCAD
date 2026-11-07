@@ -1026,7 +1026,7 @@ private:
     {
         PyObject* shape;
         Py::List list;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(Part::TopoShapePy::Type), &shape)) {
             throw Py::Exception();
         }
         auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
