@@ -3754,6 +3754,10 @@ void TopoShape::setFaces(
         return Edges[key];
     };
     for (const auto& it : Topo) {
+        // Skip out-of-range facets, as the triangle loop below does.
+        if (it.I1 >= ctPoints || it.I2 >= ctPoints || it.I3 >= ctPoints) {
+            continue;
+        }
         CreateEdge(it.I1, it.I2);
         CreateEdge(it.I2, it.I3);
         CreateEdge(it.I3, it.I1);
