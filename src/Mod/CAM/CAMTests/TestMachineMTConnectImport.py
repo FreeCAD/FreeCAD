@@ -188,7 +188,7 @@ class TestLinuxCNC5Axis(unittest.TestCase):
         data = self.machine.to_dict()
         restored = Machine.from_dict(data)
         self.assertEqual(restored.machine_type, "xyzac")
-        self.assertEqual(restored.rotary_axes["A"].parent, "C")
+        self.assertEqual(restored.rotary_axes["C"].parent, "A")
 
 
 class TestForeignVendor(unittest.TestCase):
