@@ -3079,10 +3079,7 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
     v = curve->LastParameter();
     if (emulateCCWXY) {
         Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
-        double angleXU = -conic->Position().XDirection().AngleWithRef(
-            gp_Dir(1.0, 0.0, 0.0),
-            gp_Dir(0.0, 0.0, 1.0)
-        );
+        double angleXU = -conic->Position().XDirection().AngleWithRef(gp::DX(), gp::DZ());
         double u1 = u, v1 = v;  // the true arc curve parameters, cached. u,v will contain the
                                 // rotation-corrected and swapped angles.
         if (conic->Axis().Direction().Z() > 0.0) {
@@ -3120,10 +3117,7 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
         Handle(Geom_TrimmedCurve) curve = Handle(Geom_TrimmedCurve)::DownCast(handle());
         if (emulateCCWXY) {
             Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
-            double angleXU = -conic->Position().XDirection().AngleWithRef(
-                gp_Dir(1.0, 0.0, 0.0),
-                gp_Dir(0.0, 0.0, 1.0)
-            );
+            double angleXU = -conic->Position().XDirection().AngleWithRef(gp::DX(), gp::DZ());
             double u1 = u, v1 = v;  // the values that were passed, ccw angles from X axis. u,v will
                                     // contain the rotation-corrected and swapped angles.
             if (conic->Axis().Direction().Z() > 0.0) {
@@ -4758,8 +4752,8 @@ TYPESYSTEM_SOURCE(Part::GeomLineSegment, Part::GeomTrimmedCurve)
 GeomLineSegment::GeomLineSegment()
 {
     gp_Lin line;
-    line.SetLocation(gp_Pnt(0.0, 0.0, 0.0));
-    line.SetDirection(gp_Dir(0.0, 0.0, 1.0));
+    line.SetLocation(gp::Origin());
+    line.SetDirection(gp::DZ());
     Handle(Geom_Line) c = new Geom_Line(line);
     this->myCurve = new Geom_TrimmedCurve(c, 0.0, 1.0);
 }

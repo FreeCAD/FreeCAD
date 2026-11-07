@@ -28,6 +28,7 @@
 
 #include <optional>
 
+#include <gp.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
@@ -152,12 +153,12 @@ gp_Ax2 LinkArrayPolar::getRotation() const
     }
 
     if (!refObject && (role == "X_Axis" || role == "Y_Axis" || role == "Z_Axis")) {
-        gp_Dir direction(0.0, 0.0, 1.0);
+        gp_Dir direction = gp::DZ();
         if (role == "X_Axis") {
-            direction = gp_Dir(1.0, 0.0, 0.0);
+            direction = gp::DX();
         }
         else if (role == "Y_Axis") {
-            direction = gp_Dir(0.0, 1.0, 0.0);
+            direction = gp::DY();
         }
         gp_Ax2 localAxis(gp_Pnt(), direction);
         if (Reversed.getValue()) {

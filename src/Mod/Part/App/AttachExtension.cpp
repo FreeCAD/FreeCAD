@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 
+#include <gp.hxx>
+
 #include <Base/Console.h>
 #include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
@@ -566,9 +568,9 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
 
     // determine the dominant global axis
     std::array<double, 3> cosXYZ = {
-        fabs(normal.Dot(gp_Dir(1, 0, 0))),  // normal dot global X axis
-        fabs(normal.Dot(gp_Dir(0, 1, 0))),  // normal dot global Y axis
-        fabs(normal.Dot(gp_Dir(0, 0, 1)))   // normal dot global Z axis
+        fabs(normal.Dot(gp::DX())),  // normal dot global X axis
+        fabs(normal.Dot(gp::DY())),  // normal dot global Y axis
+        fabs(normal.Dot(gp::DZ()))   // normal dot global Z axis
     };
     std::size_t axis = std::distance(cosXYZ.begin(), std::ranges::max_element(cosXYZ));
 
