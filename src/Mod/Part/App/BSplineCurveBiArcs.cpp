@@ -215,15 +215,13 @@ BSplineCurveBiArcs::Type BSplineCurveBiArcs::calculateBiArcPoints(
     if (fabs(a) < Precision::Intersection()) {
         // Check the tangent of a value between t_start and t_end
         double t_mid = 0.9 * t_start + 0.1 * t_end;
-        if (fabs(t_mid) > 0.1) {
-            gp_Pnt p_mid;
-            gp_Vec v_mid;
-            this->myCurve->D1(t_mid, p_mid, v_mid);
-            v_mid.Normalize();
-            double a = 2 * (v_start * v_mid - 1);
-            if (fabs(a) >= Precision::Intersection()) {
-                return Type::SplitCurve;
-            }
+        gp_Pnt p_mid;
+        gp_Vec v_mid;
+        this->myCurve->D1(t_mid, p_mid, v_mid);
+        v_mid.Normalize();
+        double a = 2 * (v_start * v_mid - 1);
+        if (fabs(a) >= Precision::Intersection()) {
+            return Type::SplitCurve;
         }
         return Type::SingleLine;
     }
