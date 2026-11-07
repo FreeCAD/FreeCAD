@@ -220,7 +220,7 @@ public:
      * This node may have any tag name: it is only accessed via its children, which are
      * expected to follow the standard Metadata format for the contents of the <package> element.
      */
-    Metadata(const XERCES_CPP_NAMESPACE::DOMNode* domNode, int format);
+    Metadata(const XERCES_CPP_NAMESPACE::DOMNode* domNode, int format, int depth = 0);
 
     /**
      * Treat the incoming rawData as metadata to be parsed.
@@ -394,8 +394,8 @@ private:
     std::shared_ptr<XERCES_CPP_NAMESPACE::XercesDOMParser> _parser;
 
     void loadFromInputSource(const XERCES_CPP_NAMESPACE::InputSource& source);
-    void parseVersion1(const XERCES_CPP_NAMESPACE::DOMNode* startNode);
-    void parseContentNodeVersion1(const XERCES_CPP_NAMESPACE::DOMElement* contentNode);
+    void parseVersion1(const XERCES_CPP_NAMESPACE::DOMNode* startNode, int depth = 0);
+    void parseContentNodeVersion1(const XERCES_CPP_NAMESPACE::DOMElement* contentNode, int depth = 0);
 
     void appendToElement(XERCES_CPP_NAMESPACE::DOMElement* root) const;
 };

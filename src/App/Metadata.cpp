@@ -106,14 +106,14 @@ Metadata::Metadata()
     : _dom(nullptr)
 {}
 
-Metadata::Metadata(const DOMNode* domNode, int format)
+Metadata::Metadata(const DOMNode* domNode, int format, int depth)
     : _dom(nullptr)
 {
     auto element = dynamic_cast<const DOMElement*>(domNode);
     if (element) {
         switch (format) {
             case 1:
-                parseVersion1(element);
+                parseVersion1(element, depth);
                 break;
             default:
                 throw Base::XMLBaseException(
@@ -859,8 +859,14 @@ void Metadata::appendToElement(DOMElement* root) const
 }
 
 
-void Metadata::parseVersion1(const DOMNode* startNode)
+void Metadata::parseVersion1(const DOMNode* startNode, int depth)
 {
+    // Bound the recursive <content> nesting from package.xml.
+    static const int maxDepth = 50;
+    if (depth > maxDepth) {
+        throw Base::XMLBaseException("package.xml <content> nesting is too deep");
+    }
+
     auto children = startNode->getChildNodes();
 
     for (XMLSize_t i = 0; i < children->getLength(); ++i) {
@@ -934,7 +940,7 @@ void Metadata::parseVersion1(const DOMNode* startNode)
             _icon = fs::path(StrXUTF8(element->getTextContent()).str);
         }
         else if (tagString == "content") {
-            parseContentNodeVersion1(element);  // Recursive call
+            parseContentNodeVersion1(element, depth);  // Recursive call
         }
         else {
             // If none of this node's nodeChildren have nodeChildren of their own, it is a simple
@@ -953,14 +959,14 @@ void Metadata::parseVersion1(const DOMNode* startNode)
     }
 }
 
-void Metadata::parseContentNodeVersion1(const DOMElement* contentNode)
+void Metadata::parseContentNodeVersion1(const DOMElement* contentNode, int depth)
 {
     auto children = contentNode->getChildNodes();
     for (XMLSize_t i = 0; i < children->getLength(); ++i) {
         auto child = dynamic_cast<const DOMElement*>(children->item(i));
         if (child) {
             auto tag = StrXUTF8(child->getTagName()).str;
-            _content.insert(std::make_pair(tag, Metadata(child, 1)));
+            _content.insert(std::make_pair(tag, Metadata(child, 1, depth + 1)));
         }
     }
 }
