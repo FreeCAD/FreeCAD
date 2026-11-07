@@ -45,6 +45,8 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
 
         for prop in self._get_properties():
             prop.add_to_object(obj)
+        # A new solver keeps the reduced integration default, an old one is migrated
+        obj.ElementFormulation = "reduced integration"
 
     def _get_properties(self):
         prop = []
@@ -279,11 +281,12 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyBool",
-                name="ReducedIntegration",
+                type="App::PropertyEnumeration",
+                name="ElementFormulation",
                 group="ElementModel",
-                doc="Set to True to use elements with reduced integration",
-                value=True,
+                doc="Element formulation: standard, reduced integration, or incompatible\n"
+                + "mode (C3D8I for first-order hexahedra, standard elements otherwise)",
+                value=["standard", "reduced integration", "incompatible mode"],
             )
         )
         prop.append(
@@ -433,11 +436,12 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         except Base.PropertyError:
             pass
 
-        # rename BeamReducedIntegration
-        try:
-            obj.ReducedIntegration = obj.getPropertyByName("BeamReducedIntegration")
-            obj.setPropertyStatus("BeamReducedIntegration", "-LockDynamic")
-            obj.removeProperty("BeamReducedIntegration")
-
-        except Base.PropertyError:
-            pass
+        # BeamReducedIntegration, then ReducedIntegration, became ElementFormulation
+        for old in ("BeamReducedIntegration", "ReducedIntegration"):
+            try:
+                reduced = obj.getPropertyByName(old)
+            except Base.PropertyError:
+                continue
+            obj.ElementFormulation = "reduced integration" if reduced else "standard"
+            obj.setPropertyStatus(old, "-LockDynamic")
+            obj.removeProperty(old)
