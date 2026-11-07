@@ -3039,6 +3039,28 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     // recompute teardown has finished. signalBecameStable() is the first
     // point where observers may treat the document as stable again.
 
+    // Observers of signalRecomputed() and signalBecameStable() may delete
+    // objects of topoSortedObjects, which is still passed to the remaining
+    // observers and read below. Keep such objects alive until then.
+    struct DeferDestroy
+    {
+        DocumentP* d;
+        explicit DeferDestroy(DocumentP* d)
+            : d(d)
+        {
+            ++d->deferDestroy;
+        }
+        ~DeferDestroy()
+        {
+            if (--d->deferDestroy == 0) {
+                auto objects = std::move(d->pendingDestroy);
+                d->pendingDestroy.clear();
+            }
+        }
+    };
+    std::optional<DeferDestroy> deferDestroy;
+    deferDestroy.emplace(d);
+
     signalRecomputed(*this, topoSortedObjects);
     recomputingStatus.reset();
     signalBecameStable(*this);
@@ -3057,6 +3079,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
             }
         }
     }
+    deferDestroy.reset();
 
     for (auto doc : GetApplication().getDocuments()) {
         decltype(doc->d->pendingRemove) objects;
@@ -3635,6 +3658,10 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     // Erase last to avoid invalidating pcObject->pcNameInDocument
     // when it is still needed in Transaction::addObjectNew
     d->objectMap.erase(pos);
+
+    if (tobedestroyed && d->deferDestroy > 0) {
+        d->pendingDestroy.push_back(std::move(tobedestroyed));
+    }
 }
 
 void Document::breakDependency(DocumentObject* pcObject, const bool clear) // NOLINT

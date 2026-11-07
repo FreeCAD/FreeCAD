@@ -1245,6 +1245,48 @@ class DocumentRecomputeCases(unittest.TestCase):
         self.Doc.removeObject(L7.Name)
         self.Doc.removeObject(L8.Name)
 
+    def testRemoveObjectInRecomputedObserver(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/27781
+        # An observer of the recomputed signal deletes an object that was just
+        # recomputed. The object list of the signal is still delivered to the
+        # other observers (e.g. the tree view) and read by recompute itself,
+        # so the object must stay alive until recompute is finished.
+        doc = self.Doc
+        doc.UndoMode = 0
+        victim = self.L1
+        doc.recompute()
+        victim.touch()
+
+        class Remover:
+            def slotRecomputedDocument(self, d):
+                if d == doc and doc.getObject("Label_1"):
+                    doc.removeObject("Label_1")
+
+        class Reader:
+            result = None
+
+            def slotRecomputedDocument(self, d):
+                if d == doc:
+                    try:
+                        self.result = victim.TypeId
+                    except ReferenceError as e:
+                        self.result = str(e)
+
+        remover = Remover()
+        reader = Reader()
+        FreeCAD.addDocumentObserver(remover)
+        FreeCAD.addDocumentObserver(reader)
+        try:
+            doc.recompute()
+        finally:
+            FreeCAD.removeDocumentObserver(remover)
+            FreeCAD.removeDocumentObserver(reader)
+
+        self.assertEqual(reader.result, "App::FeatureTest")
+        self.assertIsNone(doc.getObject("Label_1"))
+        with self.assertRaises(ReferenceError):
+            victim.TypeId
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("RecomputeTests")
