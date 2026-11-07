@@ -116,7 +116,7 @@ public:
      *  @note
      *  Inserts new and replaces existing items.
      */
-    void insertTo(const Base::Reference<ParameterGrp>& Group);
+    void insertTo(const Base::Reference<ParameterGrp>& Group, int depth = 0);
 
     /**
      *  Exports this group to a given file.

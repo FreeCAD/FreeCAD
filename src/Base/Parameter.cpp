@@ -213,17 +213,23 @@ void ParameterGrp::copyTo(const Base::Reference<ParameterGrp>& Grp)
     insertTo(Grp);
 }
 
-void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Grp)
+void ParameterGrp::insertTo(const Base::Reference<ParameterGrp>& Grp, int depth)
 {
     if (Grp == this) {
         return;
+    }
+
+    // Nesting depth comes from the imported XML; bound it.
+    static const int maxDepth = 50;
+    if (depth > maxDepth) {
+        throw Base::RuntimeError("ParameterGrp::insertTo: maximum group nesting depth exceeded");
     }
 
     // copy group
     std::vector<Base::Reference<ParameterGrp>> Grps = GetGroups();
     std::vector<Base::Reference<ParameterGrp>>::iterator It1;
     for (It1 = Grps.begin(); It1 != Grps.end(); ++It1) {
-        (*It1)->insertTo(Grp->GetGroup((*It1)->GetGroupName()));
+        (*It1)->insertTo(Grp->GetGroup((*It1)->GetGroupName()), depth + 1);
     }
 
     // copy strings
