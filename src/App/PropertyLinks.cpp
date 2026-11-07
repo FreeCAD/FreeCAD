@@ -4379,10 +4379,11 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
     }
     else if (reader.hasAttribute("count")) {
         int count = reader.getAttribute<long>("count");
-        subs.resize(count);
-        shadows.resize(count);
+        // Grow per element instead of pre-sizing from the untrusted count.
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
+            subs.resize(i + 1);
+            shadows.resize(i + 1);
             shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
             if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
                 subs[i] = shadows[i].newName =
