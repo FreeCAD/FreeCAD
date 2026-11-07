@@ -37,6 +37,7 @@
 #include <unordered_map>
 #include <algorithm>
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -390,6 +391,19 @@ void Transformed::onChanged(const App::Property* prop)
     }
 
     FeatureRefine::onChanged(prop);
+
+    // Body::addObject() treats a feature without Originals as a MultiTransform child and does not
+    // move the Tip. Once Originals is set it is a standalone pattern, so move the Tip here.
+    if (prop == &Originals && !isRestoring() && getDocument()
+        && !getDocument()->isPerformingTransaction() && !Originals.getValues().empty()
+        && !BaseFeature.getValue()) {
+        if (auto body = getFeatureBody()) {
+            if (body->Tip.getValue() != this
+                && body->Tip.getValue() == body->getPrevSolidFeature(this)) {
+                body->Tip.setValue(this);
+            }
+        }
+    }
 }
 
 App::DocumentObjectExecReturn* Transformed::execute()

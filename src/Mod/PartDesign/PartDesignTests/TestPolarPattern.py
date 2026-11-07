@@ -164,6 +164,23 @@ class TestPolarPattern(unittest.TestCase):
         # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
         self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
+    def testNewObjectMovesTip(self):
+        """Body.newObject() of a PolarPattern followed by setting Originals moves the Tip."""
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        box = body.newObject("PartDesign::AdditiveBox", "Box")
+        box.Length = box.Width = box.Height = 10
+        self.Doc.recompute()
+        pattern = body.newObject("PartDesign::PolarPattern", "PolarPattern")
+        pattern.Originals = [box]
+        pattern.Axis = (self.Doc.X_Axis, [""])
+        pattern.Angle = 360
+        pattern.Occurrences = 4
+        self.Doc.recompute()
+        self.assertEqual(body.Tip, pattern)
+        self.assertEqual(pattern.BaseFeature, box)
+        self.assertAlmostEqual(pattern.Shape.Volume, 4000)
+        self.assertAlmostEqual(body.Shape.Volume, 4000)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestPolarPattern")
