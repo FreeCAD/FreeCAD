@@ -23,6 +23,7 @@
 
 import FreeCAD
 import FreeCADGui
+from draftutils import utils
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -96,7 +97,7 @@ class BIM_Box:
                 ).UserString
             )
             self.Length.setFocus()
-            self.Length.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Length.text()))
+            self.Length.setSelection(0, utils.get_number_length(self.Length.text()))
         elif len(self.points) == 2:
             # now we already have our base line, we update the 1st rectangle
             p = point
@@ -114,7 +115,7 @@ class BIM_Box:
                 ).UserString
             )
             self.Width.setFocus()
-            self.Width.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Width.text()))
+            self.Width.setSelection(0, utils.get_number_length(self.Width.text()))
         elif len(self.points) == 3:
             h = DraftGeomUtils.distance_to_plane(point, self.cubetracker[0].p3(), self.normal)
             w = self.normal * h
@@ -125,7 +126,7 @@ class BIM_Box:
             self.cubetracker[3].p3((self.cubetracker[0].p3()).add(w))
             self.Height.setText(FreeCAD.Units.Quantity(h, FreeCAD.Units.Length).UserString)
             self.Height.setFocus()
-            self.Height.setSelection(0, FreeCADGui.draftToolBar.number_length(self.Height.text()))
+            self.Height.setSelection(0, utils.get_number_length(self.Height.text()))
 
     def PointCallback(self, point, snapinfo):
         if not point:
