@@ -141,6 +141,39 @@ DlgMacroExecuteImp::~DlgMacroExecuteImp() = default;
 void DlgMacroExecuteImp::setupConnections()
 {
     // clang-format off
+
+    /* improve performance of find file and find in files functions
+     * by not calling the fillup list function until the user
+     * is finished typing
+     */
+    auto findFileTimer = new QTimer(this);
+    findFileTimer->setSingleShot(true);
+    findFileTimer->setInterval(600);
+
+    //start timer when user types
+    connect(ui->LineEditFind, &QLineEdit::textChanged,
+            this, [findFileTimer] (const QString&) {
+                findFileTimer->start();
+    });
+
+    //call the handler only after the timer times out
+    connect(findFileTimer, &QTimer::timeout, this, [this]() {
+        this->onLineEditFindTextChanged(ui->LineEditFind->text());
+    });
+
+    auto findInFilesTimer = new QTimer(this);
+    findInFilesTimer->setSingleShot(true);
+    findInFilesTimer->setInterval(600);
+
+    connect(ui->LineEditFindInFiles, &QLineEdit::textChanged,
+            this, [findInFilesTimer] (const QString&) {
+                findInFilesTimer->start();
+    });
+    connect(findInFilesTimer, &QTimer::timeout, this, [this]() {
+        this->onLineEditFindInFilesTextChanged(ui->LineEditFindInFiles->text());
+    });
+
+
     connect(ui->fileChooser, &FileChooser::fileNameChanged,
             this, &DlgMacroExecuteImp::onFileChooserFileNameChanged);
     connect(ui->createButton, &QPushButton::clicked,
@@ -165,10 +198,6 @@ void DlgMacroExecuteImp::setupConnections()
             this, &DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged);
     connect(ui->tabMacroWidget, &QTabWidget::currentChanged,
             this, &DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged);
-    connect(ui->LineEditFind, &QLineEdit::textChanged,
-            this, &DlgMacroExecuteImp::onLineEditFindTextChanged);
-    connect(ui->LineEditFindInFiles, &QLineEdit::textChanged,
-            this, &DlgMacroExecuteImp::onLineEditFindInFilesTextChanged);
     // clang-format on
 }
 
