@@ -104,9 +104,7 @@ bool makeCircleOffset(const TopoDS_Wire& wire, double offset, TopoDS_Shape& resu
     if (plane.IsNull()) {
         return false;
     }
-    gp_Dir normal = plane->Axis().Direction().Transformed(
-        findSurface.Location().Transformation()
-    );
+    gp_Dir normal = plane->Axis().Direction().Transformed(findSurface.Location().Transformation());
     bool reversed = (edge.Orientation() == TopAbs_REVERSED)
         != (wire.Orientation() == TopAbs_REVERSED);
     bool counterClockwise = (circ.Axis().Direction().Dot(normal) > 0.0) != reversed;
