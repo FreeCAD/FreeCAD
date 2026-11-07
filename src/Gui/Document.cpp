@@ -57,6 +57,7 @@
 #include "DocumentPy.h"
 #include "Application.h"
 #include "Command.h"
+#include "CommandT.h"
 #include "Control.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -2893,16 +2894,19 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  */
 int Document::openCommand(const char* sName)
 {
+    Gui::TransactionCommandQueue::setBuffering(true);
     return getDocument()->openTransaction(App::TransactionName {.name = sName, .temporary = false});
 }
 
 void Document::commitCommand()
 {
+    Gui::TransactionCommandQueue::emit();
     getDocument()->commitTransaction();
 }
 
 void Document::abortCommand()
 {
+    Gui::TransactionCommandQueue::reset();
     getDocument()->abortTransaction();
 }
 
