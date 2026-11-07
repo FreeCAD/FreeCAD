@@ -1977,12 +1977,15 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     }
 
     std::vector<int> mapped;
-    std::vector<std::string> values(count);
-    std::vector<ShadowSub> shadows(count);
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<std::string> values;
+    std::vector<ShadowSub> shadows;
     bool restoreLabel = false;
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
+        values.resize(i + 1);
+        shadows.resize(i + 1);
         shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
         if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
             values[i] = shadows[i].newName =
