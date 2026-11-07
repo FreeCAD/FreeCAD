@@ -84,8 +84,8 @@ class AssetOpenDialog(QFileDialog):
             external_toolbits = []  # Track toolbits found externally
 
             for dependency_uri in dependencies:
-                # First check if dependency exists in asset manager stores
-                if self.asset_manager.exists(dependency_uri, store=["local", "builtin"]):
+                # First check if dependency exists in the search-order stores
+                if self.asset_manager.exists(dependency_uri):
                     continue
 
                 # If not in stores, check if it exists relative to the library file

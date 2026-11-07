@@ -205,5 +205,7 @@ class ToolBitTypeFilterMixin:
         search_term = search_edit.text()
         filtered_assets = self._apply_type_and_search_filter(assets, search_term)
 
+        badge_for = getattr(self, "_store_badge_for", None)
         for asset in filtered_assets:
-            tool_list_widget.add_toolbit(asset)
+            store_badge = badge_for(asset) if badge_for else None
+            tool_list_widget.add_toolbit(asset, store_badge=store_badge)
