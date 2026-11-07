@@ -268,6 +268,12 @@ SET(PathPythonToolsLibrary_SRCS
     Path/Tool/library/util.py
 )
 
+SET(PathPythonToolsHolder_SRCS
+    Path/Tool/holder/__init__.py
+    Path/Tool/holder/models.py
+    Path/Tool/holder/sketch.py
+)
+
 SET(PathPythonToolsLibraryModels_SRCS
     Path/Tool/library/models/__init__.py
     Path/Tool/library/models/library.py
@@ -527,6 +533,11 @@ SET(Tools_Bit_SRCS
     Tools/Bit/slittingsaw.fctb
 )
 
+FILE(GLOB Tools_ToolHolder_SRCS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/Tools/ToolHolder/*.fcholder"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Tools/ToolHolder/*.FCStd"
+)
+
 SET(Tools_Library_SRCS
     Tools/Library/Default.fctl
 )
@@ -662,6 +673,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolAssetStore.py
     CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
+    CAMTests/TestPathToolHolder.py
     CAMTests/TestPathToolBitSerializer.py
     CAMTests/TestPathToolBitBrowserWidget.py
     CAMTests/TestPathToolBitEditorWidget.py
@@ -799,6 +811,7 @@ SET(all_files
     ${PathPythonToolsToolBitSerializers_SRCS}
     ${PathPythonToolsToolBitUi_SRCS}
     ${PathPythonToolsLibrary_SRCS}
+    ${PathPythonToolsHolder_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsLibrarySerializers_SRCS}
     ${PathPythonToolsLibraryUi_SRCS}
@@ -808,6 +821,7 @@ SET(all_files
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
+    ${Tools_ToolHolder_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
     ${Path_Images}
@@ -1074,6 +1088,13 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonToolsHolder_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/holder
+)
+
+INSTALL(
+    FILES
         ${PathPythonToolsLibraryModels_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/library/models
@@ -1169,6 +1190,13 @@ INSTALL(
         ${Tools_Bit_SRCS}
     DESTINATION
         Mod/CAM/Tools/Bit
+)
+
+INSTALL(
+    FILES
+        ${Tools_ToolHolder_SRCS}
+    DESTINATION
+        Mod/CAM/Tools/ToolHolder
 )
 
 INSTALL(
