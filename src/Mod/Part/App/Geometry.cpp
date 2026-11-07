@@ -1342,6 +1342,15 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
     // get the value of my attribute
     int polescount = reader.getAttribute<long>("PolesCount");
 
+    // Validate the count coming from the (untrusted) file before allocating.
+    // A Bezier curve must have between 2 and MaxDegree()+1 poles. Without this
+    // check a negative count throws Standard_RangeError from the array
+    // constructor outside the try block below, and a huge positive count forces
+    // an enormous allocation before any <Pole> element is read.
+    if (polescount < 2 || polescount > Geom_BezierCurve::MaxDegree() + 1) {
+        THROWM(Base::CADKernelError, "Invalid number of poles in BezierCurve")
+    }
+
     TColgp_Array1OfPnt poleArray(1, polescount);
     TColStd_Array1OfReal weightArray(1, polescount);
 
