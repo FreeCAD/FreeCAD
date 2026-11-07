@@ -992,9 +992,12 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    std::vector<Base::Placement> values(uCt);
-    if (!isSinglePrecision()) {
-        for (auto& it : values) {
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<Base::Placement> values;
+    bool single = isSinglePrecision();
+    for (uint32_t i = 0; i < uCt; ++i) {
+        Base::Placement it;
+        if (!single) {
             Base::Vector3d pos;
             double q0, q1, q2, q3;
             str >> pos.x >> pos.y >> pos.z >> q0 >> q1 >> q2 >> q3;
@@ -1002,17 +1005,19 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader& reader)
             it.setPosition(pos);
             it.setRotation(rot);
         }
-    }
-    else {
-        float x {}, y {}, z {};
-        float q0 {}, q1 {}, q2 {}, q3 {};
-        for (auto& it : values) {
+        else {
+            float x {}, y {}, z {};
+            float q0 {}, q1 {}, q2 {}, q3 {};
             str >> x >> y >> z >> q0 >> q1 >> q2 >> q3;
             Base::Vector3d pos(x, y, z);
             Base::Rotation rot(q0, q1, q2, q3);
             it.setPosition(pos);
             it.setRotation(rot);
         }
+        if (!str) {
+            throw Base::FileException("PropertyPlacementList::RestoreDocFile(): truncated data");
+        }
+        values.push_back(it);
     }
     setValues(values);
 }
