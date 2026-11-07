@@ -1501,6 +1501,20 @@ ExpressionPtr OperatorExpression::simplify() const
     return std::make_unique<OperatorExpression>(owner, v1.release(), op, v2.release());
 }
 
+/// Check to see if the given expression has both one or more explicit sign operators, and a unit
+static bool isSignedUnitQuantity(const Expression* expression)
+{
+    auto operatorExpression = freecad_cast<const OperatorExpression*>(expression);
+    while (operatorExpression
+           && (operatorExpression->getOperator() == OperatorExpression::NEG
+               || operatorExpression->getOperator() == OperatorExpression::POS)) {
+        // This loop handles multiple chained sign operators, otherwise only the outer sign would
+        // apply
+        operatorExpression = freecad_cast<const OperatorExpression*>(operatorExpression->getLeft());
+    }
+    return operatorExpression && operatorExpression->getOperator() == OperatorExpression::UNIT;
+}
+
 void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 {
     bool needsParens;
@@ -1520,7 +1534,16 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     if (op == UNIT && !freecad_cast<NumberExpression*>(left)) {
         needsParens = true;
     }
-
+    if ((op == NEG || op == POS) && leftOperator == UNIT) {
+        // A sign cannot separate a number from its unit: -5 mm, -(5) mm, and -(5 mm) all parse to
+        // the same tree, so parens here are just noise.
+        needsParens = false;
+    }
+    if (op == POW && isSignedUnitQuantity(left)) {
+        // e.g. (-5 mm) ^ 2 -- we have to keep the parens or the ^ applies to the *unit*, so turn
+        // parens on in that case
+        needsParens = true;
+    }
     switch (op) {
     case NEG:
         s << "-" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
@@ -1612,6 +1635,8 @@ Expression *OperatorExpression::_copy() const
 
 int OperatorExpression::priority() const
 {
+    // Keep these priorities in sync with the precedence declarations
+    // in Expression.y.
     switch (op) {
     case EQ:
     case NEQ:
@@ -1627,12 +1652,14 @@ int OperatorExpression::priority() const
     case DIV:
     case MOD:
         return 4;
-    case POW:
-        return 5;
     case UNIT:
-    case NEG:
-    case POS:
+        return 5;
+    case POW:
         return 6;
+    case NEG:
+        return 7;
+    case POS:
+        return 8;
     default:
         assert(false);
         return 0;
