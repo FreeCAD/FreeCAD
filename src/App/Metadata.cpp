@@ -840,8 +840,12 @@ void Metadata::appendToElement(DOMElement* root) const
 
     for (const auto& md : _genericMetadata) {
         auto element = appendSimpleXMLNode(root, md.first, md.second.contents);
-        for (const auto& attr : md.second.attributes) {
-            addAttribute(element, attr.first, attr.second);
+        // appendSimpleXMLNode returns nullptr for empty contents; guard the
+        // attribute loop as the maintainer/license/url loops above do.
+        if (element) {
+            for (const auto& attr : md.second.attributes) {
+                addAttribute(element, attr.first, attr.second);
+            }
         }
     }
 
