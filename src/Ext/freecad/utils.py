@@ -24,49 +24,25 @@
 # ***************************************************************************
 
 import os
-import platform
-import shutil
 import sys
 
 import FreeCAD
 
 
 def get_python_exe() -> str:
-    """Find Python. In preference order
-    A) The value of the BaseApp/Preferences/PythonConsole/PathToPythonExecutable user preference
-    B) The executable located in the same bin directory as FreeCAD and called "python3"
-    C) The executable located in the same bin directory as FreeCAD and called "python"
-    D) The executable located at sys.prefix/python.exe (Windows) or sys.prefix/bin/python3 (Other)
-    E) The result of a shutil search for your system's "python3" executable
-    F) The result of a shutil search for your system's "python" executable"""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
-    python_exe = prefs.GetString("PathToPythonExecutable", "")
-    fc_dir = FreeCAD.getHomePath()
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python3")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
+    """
+    Find Python. In preference order.
+
+    A) The value of the BaseApp/Preferences/PythonConsole/PathToPythonExecutable user preference.
+    B) The executable reported by sys.executable (The same used by the running FreeCAD Instance).
+
+    The only python interpreter guaranteed to be compatible with the running FreeCAD instance
+    is `sys.executable`. User defined interpreter path is under user own risk.
+    """
+    user_preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/PythonConsole")
+    python_exe = user_preferences.GetString("PathToPythonExecutable", "").replace("/", os.path.sep)
 
     if not python_exe or not os.path.exists(python_exe):
-        python_exe = os.path.join(fc_dir, "bin", "python")
-        if "Windows" in platform.system():
-            python_exe += ".exe"
+        python_exe = sys.executable
 
-    if not python_exe or not os.path.exists(python_exe):
-        # For pixi/conda environments
-        if "Windows" in platform.system():
-            python_exe = os.path.join(sys.prefix, "python.exe")
-        else:
-            python_exe = os.path.join(sys.prefix, "bin", "python3")
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python3")
-
-    if not python_exe or not os.path.exists(python_exe):
-        python_exe = shutil.which("python")
-
-    if not python_exe or not os.path.exists(python_exe):
-        return ""
-
-    python_exe = python_exe.replace("/", os.path.sep)
     return python_exe
