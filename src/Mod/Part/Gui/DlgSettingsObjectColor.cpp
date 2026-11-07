@@ -22,10 +22,35 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <vector>
+
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Gui/PreferencePages/ThemeDefaults.h>
 
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"
 
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+
+const std::vector<std::string>& objectColors()
+{
+    static const std::vector<std::string> colors = {
+        "DefaultShapeColor",
+        "DefaultAmbientColor",
+        "DefaultEmissiveColor",
+        "DefaultSpecularColor",
+        "DefaultShapeLineColor",
+        "DefaultShapeVertexColor",
+        "BoundingBoxColor",
+        "AnnotationTextColor",
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace PartGui;
 
@@ -101,6 +126,22 @@ void DlgSettingsObjectColor::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsObjectColor::loadThemeDefaults()
+{
+    Gui::ThemeDefaults::applyColors(viewGroup, objectColors());
+}
+
+void DlgSettingsObjectColor::resetSettingsToDefaults()
+{
+    Gui::ThemeDefaults::removeColors(viewGroup, objectColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 #include "moc_DlgSettingsObjectColor.cpp"

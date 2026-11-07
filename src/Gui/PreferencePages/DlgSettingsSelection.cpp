@@ -20,12 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string>
+#include <vector>
 
 #include <App/Application.h>
 
 #include "DlgSettingsSelection.h"
 #include "ui_DlgSettingsSelection.h"
+#include "ThemeDefaults.h"
 
+namespace
+{
+constexpr const char* viewGroup = "BaseApp/Preferences/View";
+
+const std::vector<std::string>& selectionColors()
+{
+    static const std::vector<std::string> colors = {
+        "HighlightColor",
+        "SelectionColor",
+    };
+    return colors;
+}
+}  // namespace
 
 using namespace Gui::Dialog;
 
@@ -66,6 +82,22 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxPreselect->onRestore();
     ui->checkBoxRecord->onRestore();
     ui->checkBoxSelectionCheckBoxes->onRestore();
+}
+
+void DlgSettingsSelection::loadThemeDefaults()
+{
+    ThemeDefaults::applyColors(viewGroup, selectionColors());
+}
+
+void DlgSettingsSelection::resetSettingsToDefaults()
+{
+    ThemeDefaults::removeColors(viewGroup, selectionColors());
+
+    PreferencePage::resetSettingsToDefaults();
+
+    // theme colors are applied after the base reset, which clears Pref* widget params
+    loadThemeDefaults();
+    loadSettings();
 }
 
 void DlgSettingsSelection::changeEvent(QEvent* e)

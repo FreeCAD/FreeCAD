@@ -47,6 +47,9 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
+
+    static void loadThemeDefaults();
 
 protected:
     void changeEvent(QEvent* e) override;
