@@ -31,4 +31,5 @@ from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
 from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401
 from TDTest.DrawViewScaleTypeTest import DrawViewScaleTypeTest  # noqa: F401
 from TDTest.PythonFeatureTest import PythonFeatureTest  # noqa: F401
+from TDTest.DrawPageRemovalTest import DrawPageRemovalTest  # noqa: F401
 
