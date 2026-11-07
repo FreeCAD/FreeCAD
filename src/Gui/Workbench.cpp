@@ -653,10 +653,11 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 
         if (!sels.empty()) {
             *item << "Separator" << "Std_ToggleVisibility"
-                  << "Std_ToggleSelectability" << "Std_TreeSelection"
-                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
+                  << "Std_TreeSelection" << "Std_RandomColor" << "Std_ToggleTransparency"
+                  << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole";
         }
+        *item << "Separator" << "Std_ToggleObjects";
     }
     else if (strcmp(recipient, "Tree") == 0) {
         if (!sels.empty()) {
