@@ -1787,8 +1787,8 @@ void processEdge(const TopoDS_Edge& edge,
                             // P2 = P2, already defined
                         }
                         else if (endAngle < 3 * pi) {
-                            // P1 = P1, already defined
-                            P2 = ProjPointOnPlane_XYZ(end, sketchPlane);
+                            P1 = ProjPointOnPlane_XYZ(end, sketchPlane);
+                            // P2 = P2, already defined
                         }
                         else {
                             // P1 = P1, already defined
