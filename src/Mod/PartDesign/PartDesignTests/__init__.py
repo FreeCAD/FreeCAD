@@ -22,4 +22,5 @@ from . import TestRevolve
 from . import TestShapeBinder
 from . import TestSuppressed
 from . import TestThickness
+from . import TestRib
 from . import TestTopologicalNamingProblem
