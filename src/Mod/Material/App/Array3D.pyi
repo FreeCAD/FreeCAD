@@ -41,36 +41,30 @@ class Array3D(BaseClass):
         """
         Get the number of rows in the array at the specified depth.
         """
-        ...
 
     @constmethod
     def getValue(self, depth: int, row: int, column: int, /) -> Quantity:
         """
         Get the value at the given row and column
         """
-        ...
 
     @constmethod
     def getDepthValue(self, depth: int, /) -> Quantity:
         """
         Get the column value at the given depth
         """
-        ...
 
     def setDepthValue(self, depth: int, value: str, /) -> None:
         """
         Set the column value at the given depth
         """
-        ...
 
     def setValue(self, depth: int, row: int, column: int, value: str, /) -> None:
         """
         Set the value at the given depth, row, and column
         """
-        ...
 
     def setRows(self, depth: int, rows: int, /) -> None:
         """
         Set the number of rows at the given depth
         """
-        ...

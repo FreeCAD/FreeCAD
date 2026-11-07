@@ -11,5 +11,3 @@ class Part(GeoFeature):
     Licence: LGPL
     This class handles document objects in Part
     """
-
-    ...

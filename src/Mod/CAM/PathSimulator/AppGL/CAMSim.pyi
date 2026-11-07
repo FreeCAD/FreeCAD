@@ -34,28 +34,23 @@ class CAMSim(BaseClass):
         """
         Start a simulation process on a box shape stock with given resolution
         """
-        ...
 
     def ResetSimulation(self, document: Document, /) -> None:
         """
         Clear the simulation and all gcode commands
         """
-        ...
 
     def AddTool(self, shape: TopoShape, toolnumber: int, diameter: float, resolution: float) -> Any:
         """
         Set the shape of the tool to be used for simulation
         """
-        ...
 
     def SetBaseShape(self, shape: TopoShape, resolution: float) -> None:
         """
         Set the shape of the base object of the job
         """
-        ...
 
     def AddCommand(self, command: Command, /) -> Any:
         """
         Add a path command to the simulation.
         """
-        ...

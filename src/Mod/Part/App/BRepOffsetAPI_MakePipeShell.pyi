@@ -31,7 +31,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         True  = Frenet
         False = CorrectedFrenet
         """
-        ...
 
     def setTrihedronMode(self, point: Vector, direction: Vector, /) -> None:
         """
@@ -39,7 +38,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         Sets a fixed trihedron to perform the sweeping.
         All sections will be parallel.
         """
-        ...
 
     def setBiNormalMode(self, direction: Vector, /) -> None:
         """
@@ -47,7 +45,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         Sets a fixed BiNormal direction to perform the sweeping.
         Angular relations between the section(s) and the BiNormal direction will be constant.
         """
-        ...
 
     def setSpineSupport(self, shape: TopoShape, /) -> bool:
         """
@@ -55,7 +52,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         Sets support to the spine to define the BiNormal of the trihedron, like the normal to the surfaces.
         Warning: To be effective, Each edge of the spine must have an representation on one face of SpineSupport.
         """
-        ...
 
     def setAuxiliarySpine(
         self, wire: TopoShape, CurvilinearEquivalence: bool, TypeOfContact: int, /
@@ -74,7 +70,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         1: Contact
         2: Contact On Border (The auxiliary spine becomes a boundary of the swept surface)
         """
-        ...
 
     @overload
     def add(
@@ -98,35 +93,30 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         If WithContact is true, the section is translated to be in contact with the spine.
         If WithCorrection is true, the section is rotated to be orthogonal to the spine tangent in the correspondent point.
         """
-        ...
 
     def remove(self, Profile: TopoShape, /) -> None:
         """
         remove(shape Profile)
         Removes the section Profile from this framework.
         """
-        ...
 
     def isReady(self) -> bool:
         """
         isReady()
         Returns true if this tool object is ready to build the shape.
         """
-        ...
 
     def getStatus(self) -> int:
         """
         getStatus()
         Get a status, when Simulate or Build failed.
         """
-        ...
 
     def makeSolid(self) -> bool:
         """
         makeSolid()
         Transforms the sweeping Shell in Solid. If a propfile is not closed returns False.
         """
-        ...
 
     def setTolerance(self, tol3d: float, boundTol: float, tolAngular: float, /) -> None:
         """
@@ -135,7 +125,6 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         BoundTol = boundary tolerance
         TolAngular = angular tolerance
         """
-        ...
 
     def setTransitionMode(self, mode: int, /) -> None:
         """
@@ -143,67 +132,57 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
         1: BRepBuilderAPI_RightCorner
         2: BRepBuilderAPI_RoundCorner
         """
-        ...
 
     def firstShape(self) -> TopoShape:
         """
         firstShape()
         Returns the Shape of the bottom of the sweep.
         """
-        ...
 
     def lastShape(self) -> TopoShape:
         """
         lastShape()
         Returns the Shape of the top of the sweep.
         """
-        ...
 
     def build(self) -> None:
         """
         build()
         Builds the resulting shape.
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         shape()
         Returns the resulting shape.
         """
-        ...
 
     def generated(self, S: TopoShape, /) -> list[TopoShape]:
         """
         generated(shape S)
         Returns a list of new shapes generated from the shape S by the shell-generating algorithm.
         """
-        ...
 
     def setMaxDegree(self, degree: int, /) -> None:
         """
         setMaxDegree(int degree)
         Define the maximum V degree of resulting surface.
         """
-        ...
 
     def setMaxSegments(self, num: int, /) -> None:
         """
         setMaxSegments(int num)
         Define the maximum number of spans in V-direction on resulting surface.
         """
-        ...
 
     def setForceApproxC1(self, flag: bool, /) -> None:
         """
         setForceApproxC1(bool)
         Set the flag that indicates attempt to approximate a C1-continuous surface if a swept surface proved to be C0.
         """
-        ...
 
     def simulate(self, nbsec: int, /) -> list:
         """
         simulate(int nbsec)
         Simulates the resulting shape by calculating the given number of cross-sections.
         """
-        ...

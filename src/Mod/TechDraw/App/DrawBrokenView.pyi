@@ -24,12 +24,9 @@ class DrawBrokenView(DrawViewPart):
 
     def mapPoint3dToView(self, point: Vector, /) -> Vector:
         """point2d = mapPoint3dToView(point3d) - returns the position of the 3d point within the broken view."""
-        ...
 
     def mapPoint2dFromView(self, point: Vector, /) -> Vector:
         """point2d = mapPoint2dFromView(point3d) - returns the position of the 2d point within an unbroken view."""
-        ...
 
     def getCompressedCenter(self) -> Any:
         """point3d = getCompressedCenter() - returns the geometric center of the source shapes after break cuts and gap compression."""
-        ...

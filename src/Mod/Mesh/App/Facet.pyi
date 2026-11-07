@@ -34,17 +34,14 @@ class Facet(PyObjectBase):
         free and is more or less a simple facet.
         After calling unbound() no topological operation will
         work!"""
-        ...
 
     def intersect(self, facet: Facet, /) -> list[tuple[float, float, float]]:
         """intersect(Facet) -> list
         Get a list of intersection points with another triangle."""
-        ...
 
     def isDegenerated(self, epsilon: float = ..., /) -> bool:
         """isDegenerated([float]) -> boolean
         Returns true if the facet is degenerated, otherwise false."""
-        ...
 
     def isDeformed(self, min_angle: float, max_angle: float, /) -> bool:
         """isDegenerated(MinAngle, MaxAngle) -> boolean
@@ -52,12 +49,10 @@ class Facet(PyObjectBase):
         A triangle is considered deformed if an angle is less than MinAngle
         or higher than MaxAngle.
         The two angles are given in radian."""
-        ...
 
     def getEdge(self, index: int, /) -> Edge:
         """getEdge(int) -> Edge
         Returns the edge of the facet."""
-        ...
     Index: Final[int]
     """The index of this facet in the MeshObject"""
 

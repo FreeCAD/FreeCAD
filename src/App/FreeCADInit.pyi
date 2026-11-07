@@ -10,30 +10,23 @@ class FCADLogger:
 
     def error(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log an error-level message."""
-        ...
     def warn(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log a warning-level message."""
-        ...
 
     def msg(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log a message-level message."""
-        ...
 
     def log(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log a log-level message."""
-        ...
 
     def trace(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log a trace-level message."""
-        ...
 
     def info(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log an informational message."""
-        ...
 
     def debug(self, msg: str, *args: object, **kwargs: object) -> None:
         """Log a debug-level message."""
-        ...
 
     def catch(
         self,
@@ -43,7 +36,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the error level."""
-        ...
 
     def catchWarn(
         self,
@@ -53,7 +45,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the warning level."""
-        ...
 
     def catchMsg(
         self,
@@ -63,7 +54,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the message level."""
-        ...
 
     def catchLog(
         self,
@@ -73,7 +63,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the log level."""
-        ...
 
     def catchTrace(
         self,
@@ -83,7 +72,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the trace level."""
-        ...
 
     def catchInfo(
         self,
@@ -93,7 +81,6 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the message level."""
-        ...
 
     def catchDebug(
         self,
@@ -103,4 +90,3 @@ class FCADLogger:
         **kwargs: object,
     ) -> object | None:
         """Call *func* and catch exceptions at the log level."""
-        ...

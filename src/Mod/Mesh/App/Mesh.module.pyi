@@ -30,21 +30,17 @@ PolynomialFitResult = TypedDict(
 # File and document I/O
 def read(name: str, /) -> Mesh:
     """Read one mesh file and return the resulting `Mesh` object."""
-    ...
 
 def open(name: str, /) -> None:
     """Open one mesh file into a new document."""
-    ...
 
 @overload
 def insert(name: str, /) -> None:
     """Insert one mesh file into the active document, creating one if needed."""
-    ...
 
 @overload
 def insert(name: str, doc_name: str, /) -> None:
     """Insert one mesh file into the named document, creating it if needed."""
-    ...
 
 def export(
     objectList: Sequence[DocumentObject],
@@ -53,11 +49,9 @@ def export(
     exportAmfCompressed: bool = True,
 ) -> None:
     """Export document objects to one mesh file."""
-    ...
 
 def show(mesh: Mesh, name: str = "Mesh", /) -> Feature:
     """Create one mesh feature in the active document from a `Mesh` object."""
-    ...
 
 # Primitive mesh builders
 @overload
@@ -69,24 +63,19 @@ def createBox(
     /,
 ) -> Mesh:
     """Create a box mesh from dimensions and an optional target edge length."""
-    ...
 
 @overload
 def createBox(box: BoundBox, /) -> Mesh:
     """Create a box mesh from one existing bounding box."""
-    ...
 
 def createPlane(x: float = 1.0, y: float = 0.0, z: float = 0.0, /) -> Mesh:
     """Create a two-triangle XY plane; when `y` is zero it defaults to `x`."""
-    ...
 
 def createSphere(radius: float = 5.0, sampling: int = 50, /) -> Mesh:
     """Create a tessellated sphere mesh."""
-    ...
 
 def createEllipsoid(radius1: float = 2.0, radius2: float = 4.0, sampling: int = 50, /) -> Mesh:
     """Create a tessellated ellipsoid mesh."""
-    ...
 
 def createCylinder(
     radius: float = 2.0,
@@ -97,7 +86,6 @@ def createCylinder(
     /,
 ) -> Mesh:
     """Create a tessellated cylinder mesh."""
-    ...
 
 def createCone(
     radius1: float = 2.0,
@@ -109,21 +97,16 @@ def createCone(
     /,
 ) -> Mesh:
     """Create a tessellated cone mesh."""
-    ...
 
 def createTorus(radius1: float = 10.0, radius2: float = 2.0, sampling: int = 50, /) -> Mesh:
     """Create a tessellated torus mesh."""
-    ...
 
 # Point-cloud helpers
 def calculateEigenTransform(points: Sequence[Vector], /) -> Placement:
     """Return the principal-axis placement for one point set."""
-    ...
 
 def polynomialFit(points: Sequence[Vector], /) -> PolynomialFitResult:
     """Fit a quadratic surface to one point set and return fit diagnostics."""
-    ...
 
 def minimumVolumeOrientedBox(points: Sequence[Vector], /) -> _MinimumVolumeBoxResult:
     """Return the oriented minimum-volume box center, axes, and extents."""
-    ...

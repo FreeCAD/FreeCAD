@@ -24,12 +24,10 @@ class ExternalGeometryExtension(GeometryExtension):
         """
         Returns a boolean indicating whether the given bit is set.
         """
-        ...
 
     def setFlag(self, flag: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
-        ...
     Ref: str = ""
     """Returns the reference string of this external geometry."""

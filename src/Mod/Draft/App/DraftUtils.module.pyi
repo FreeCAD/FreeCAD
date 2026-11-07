@@ -23,4 +23,3 @@ def readDXF(
     /,
 ) -> None:
     """Warn that the legacy Draft DXF helper is removed and return `None`."""
-    ...

@@ -32,35 +32,28 @@ class Points(object):
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this points object"""
-        ...
 
     def read(self, filename: str, /) -> None:
         """Read in a points object from file."""
-        ...
 
     @constmethod
     def write(self, filename: str, /) -> None:
         """Write the points object into file."""
-        ...
 
     @constmethod
     def writeInventor(self) -> Any:
         """Write the points in OpenInventor format to a string."""
-        ...
 
     def addPoints(self, points: Sequence[Vector | tuple[float, float, float]], /) -> None:
         """Add one or more points to the object"""
-        ...
 
     @constmethod
     def fromSegment(self, indices: Sequence[int], /) -> Points:
         """Get a new point object from a given segment"""
-        ...
 
     @constmethod
     def fromValid(self) -> Any:
         """Get a new point object from points with valid coordinates (i.e. that are not NaN)"""
-        ...
     CountPoints: Final[int]
     """Return the number of vertices of the points object."""
 

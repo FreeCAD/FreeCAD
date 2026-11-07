@@ -25,4 +25,3 @@ class TrimmedCurve(BoundedCurve):
         """
         Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
         """
-        ...

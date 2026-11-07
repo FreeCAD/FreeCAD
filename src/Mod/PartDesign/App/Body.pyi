@@ -33,4 +33,3 @@ class Body(BodyBase):
 
         @note the method doesn't modify the Tip unlike addObject()
         """
-        ...
