@@ -563,8 +563,17 @@ PyStreambuf::int_type PyStreambuf::underflow()
             return traits_type::eof();
         }
 
+        // read() may return more bytes than requested: a text stream returns
+        // `len` characters, which can be several bytes each after UTF-8
+        // conversion, and a non-conforming file-like object may ignore the
+        // size hint entirely. Never write past the buffer, otherwise both the
+        // memcpy and the egptr set below run out of bounds.
+        if (n > static_cast<std::size_t>(len)) {
+            n = static_cast<std::size_t>(len);
+        }
+
         // Check: bugprone-not-null-terminated-result
-        std::memcpy(start, c.data(), c.size());
+        std::memcpy(start, c.data(), n);
     }
     catch (Py::Exception& e) {
         e.clear();
