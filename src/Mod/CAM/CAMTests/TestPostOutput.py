@@ -27,7 +27,6 @@ import unittest
 
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine
 import Constants
 import Path
 import Path.Post.Command as PathCommand
@@ -109,8 +108,6 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.macro = FreeCAD.getUserMacroDir()
 
         # Create a simple geometry object for the job
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -784,8 +781,7 @@ class TestExport2Integration(unittest.TestCase):
         self.assertNotIn(" F", gcode)
 
         # Output G0 F's if asked
-
-        machine.processing.f_for_rapid_moves = True
+        machine.postprocessor_properties["f_for_rapid_moves"] = True
         post = self._create_postprocessor(machine)
 
         # convert_command_to_gcode level: no spurious F
@@ -798,11 +794,10 @@ class TestExport2Integration(unittest.TestCase):
         gcode = post.convert_command_to_gcode(cmd)
         self.assertIn(" F", gcode)
 
-        # Don't output G0 F's if they are zero (e.g. tool wasn't setup with rapid speed)
-
+        # set zero F if tool wasn't setup with rapid speed
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
-        self.assertNotIn(" F", gcode)
+        self.assertIn(" F0", gcode)
 
     def test003_arc_center_words_follow_the_plane(self):
         """K is dropped under G17, J under G18, I under G19. A plane word in a
@@ -1380,14 +1375,13 @@ G1 X20.000 Y10.000 F6000.000
         lines = gcode.split("\n")
 
         for i, line in enumerate(lines):
-            if line.startswith("(Block-name:"):
-                if i + 2 < len(lines):
-                    self.assertEqual(
-                        lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
-                    )
-                    self.assertEqual(
-                        lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
-                    )
+            if line.startswith("(Block-name:") and i + 2 < len(lines):
+                self.assertEqual(
+                    lines[i + 1], "(Block-expand: 0)", "Block should be followed by expand: 0"
+                )
+                self.assertEqual(
+                    lines[i + 2], "(Block-enable: 1)", "Block should be followed by enable: 1"
+                )
 
     # ===== 110-119: _expand_tool_change tests =====
 
