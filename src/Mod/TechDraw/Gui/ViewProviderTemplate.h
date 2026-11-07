@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <QMenu>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Gui/ViewProviderDocumentObject.h>
@@ -49,6 +51,7 @@ public:
     ~ViewProviderTemplate() override = default;
 
     void attach(App::DocumentObject *) override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
     bool useNewSelectionModel() const override {return false;}
     void updateData(const App::Property*) override;
