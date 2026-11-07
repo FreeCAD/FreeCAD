@@ -24,7 +24,6 @@ class Robot6Axis(Persistence):
     def check(self) -> Any:
         """Checks the shape and report errors in the shape structure.
         This is a more detailed check as done in isValid()."""
-        ...
     Axis1: float
     """Pose of Axis 1 in degrees"""
 

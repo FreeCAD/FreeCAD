@@ -23,4 +23,3 @@ class DrawViewDimExtent(DrawViewDimension):
 
     def tbd(self) -> Any:
         """tbd() - returns tbd."""
-        ...

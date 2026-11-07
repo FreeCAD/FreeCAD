@@ -34,24 +34,20 @@ class PathSim(BaseClass):
         """
         Start a simulation process on a box shape stock with given resolution
         """
-        ...
 
     def SetToolShape(self, tool: TopoShape, resolution: float, /) -> None:
         """
         Set the shape of the tool to be used for simulation
         """
-        ...
 
     def GetResultMesh(self) -> tuple[Mesh, Mesh]:
         """
         Return the current mesh result of the simulation.
         """
-        ...
 
     def ApplyCommand(self, position: Placement, command: Command) -> Placement:
         """
         Apply a single path command on the stock starting from placement.
         """
-        ...
     Tool: Final[Any]
     """Return current simulation tool."""

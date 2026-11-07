@@ -46,7 +46,6 @@ def approxCurve(
     Tolerance: float = 1.0e-3,
 ) -> BSplineCurve:
     """Approximate one point sequence with one B-spline curve."""
-    ...
 
 @overload
 def approxCurve(
@@ -59,7 +58,6 @@ def approxCurve(
     Tolerance: float = 1.0e-3,
 ) -> BSplineCurve:
     """Approximate one point sequence with one explicitly parametrized B-spline curve."""
-    ...
 
 @overload
 def approxCurve(
@@ -73,7 +71,6 @@ def approxCurve(
     Tolerance: float = 1.0e-3,
 ) -> BSplineCurve:
     """Approximate one point sequence with weighted energy terms."""
-    ...
 
 def approxSurface(
     Points: _SurfacePointCloud,
@@ -92,7 +89,6 @@ def approxSurface(
     UVDirs: _UvDirections | None = None,
 ) -> BSplineSurface:
     """Approximate one point cloud or mesh with one B-spline surface."""
-    ...
 
 # Point-cloud to mesh reconstruction
 def triangulate(
@@ -103,7 +99,6 @@ def triangulate(
     Normals: _Normals | None = None,
 ) -> Mesh:
     """Triangulate one point cloud into one mesh with greedy surface reconstruction."""
-    ...
 
 def poissonReconstruction(
     Points: Points,
@@ -114,11 +109,9 @@ def poissonReconstruction(
     Normals: _Normals | None = None,
 ) -> Mesh:
     """Reconstruct one mesh from one point cloud with the Poisson method."""
-    ...
 
 def viewTriangulation(Points: Points, Width: int, Height: int) -> Mesh:
     """Triangulate one regularly sampled height field into one mesh."""
-    ...
 
 def gridProjection(
     Points: Points,
@@ -126,7 +119,6 @@ def gridProjection(
     Normals: _Normals | None = None,
 ) -> Mesh:
     """Reconstruct one mesh from one point cloud with grid projection."""
-    ...
 
 def marchingCubesRBF(
     Points: Points,
@@ -134,7 +126,6 @@ def marchingCubesRBF(
     Normals: _Normals | None = None,
 ) -> Mesh:
     """Reconstruct one mesh from one point cloud with radial-basis marching cubes."""
-    ...
 
 def marchingCubesHoppe(
     Points: Points,
@@ -142,7 +133,6 @@ def marchingCubesHoppe(
     Normals: _Normals | None = None,
 ) -> Mesh:
     """Reconstruct one mesh from one point cloud with Hoppe marching cubes."""
-    ...
 
 def fitBSpline(
     Points: Points,
@@ -155,7 +145,6 @@ def fitBSpline(
     BoundaryWeight: float = 0.0,
 ) -> BSplineSurface:
     """Fit one B-spline surface directly to one point cloud."""
-    ...
 
 # Filtering and analysis
 def filterVoxelGrid(
@@ -165,7 +154,6 @@ def filterVoxelGrid(
     DimZ: float = 0.0,
 ) -> Points:
     """Downsample one point cloud with one voxel-grid filter."""
-    ...
 
 def normalEstimation(
     Points: Points,
@@ -173,7 +161,6 @@ def normalEstimation(
     SearchRadius: float = 0.0,
 ) -> list[Vector]:
     """Estimate one normal vector per point in one point cloud."""
-    ...
 
 def regionGrowingSegmentation(
     Points: Points,
@@ -181,11 +168,9 @@ def regionGrowingSegmentation(
     Normals: _Normals | None = None,
 ) -> list[_SegmentationCluster]:
     """Segment one point cloud into smooth regions and return point-index clusters."""
-    ...
 
 def featureSegmentation(Points: Points, KSearch: int = 5) -> list[_SegmentationCluster]:
     """Segment one point cloud by geometric features and return point-index clusters."""
-    ...
 
 def sampleConsensus(
     SacModel: _SacModel,
@@ -193,4 +178,3 @@ def sampleConsensus(
     Normals: _Normals | None = None,
 ) -> SampleConsensusResult:
     """Fit one sample-consensus primitive model to one point cloud."""
-    ...

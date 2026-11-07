@@ -21,7 +21,6 @@ class ApplicationDirectories(PyObjectBase):
         Args:
             path: The path to check.
         """
-        ...
 
     @staticmethod
     def migrateAllPaths(paths: list[str], /) -> list[str]:
@@ -45,7 +44,6 @@ class ApplicationDirectories(PyObjectBase):
             Running FreeCAD 1.1, /usr/share/FreeCAD/Config/v1-1 -> raises exception, path exists
             Running FreeCAD 1.2, /usr/share/FreeCAD/Config/v1-1/ -> /usr/share/FreeCAD/Config/v1-2/
         """
-        ...
 
     @staticmethod
     def versionStringForPath(major: int, minor: int, /) -> str:
@@ -60,7 +58,6 @@ class ApplicationDirectories(PyObjectBase):
             A string that can be used as the name for a versioned subdirectory.
             Only returns the version string, not the full path.
         """
-        ...
 
     @staticmethod
     def isVersionedPath(startingPath: str, /) -> bool:
@@ -78,7 +75,6 @@ class ApplicationDirectories(PyObjectBase):
             and False for either something that is not versioned, or something that is versioned
             but for a later version of FreeCAD.
         """
-        ...
 
     @staticmethod
     def mostRecentAvailableConfigVersion(startingPath: str, /) -> str:
@@ -95,7 +91,6 @@ class ApplicationDirectories(PyObjectBase):
         Returns:
             Most recent available dir name (not path).
         """
-        ...
 
     @staticmethod
     def mostRecentConfigFromBase(startingPath: str, /) -> str:
@@ -111,7 +106,6 @@ class ApplicationDirectories(PyObjectBase):
         Returns:
             Most recent available full path (not just dir name).
         """
-        ...
 
     @staticmethod
     def migrateConfig(oldPath: str, newPath: str, /) -> list[str]:
@@ -124,4 +118,3 @@ class ApplicationDirectories(PyObjectBase):
             oldPath: Path from.
             newPath: Path to.
         """
-        ...

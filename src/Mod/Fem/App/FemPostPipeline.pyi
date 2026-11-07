@@ -46,11 +46,9 @@ class FemPostPipeline(FemPostObject):
         3. the unit of the value as FreeCAD.Units.Unit,
         4. the Description of the frame type
         """
-        ...
 
     def scale(self, scale: float, /) -> None:
         """scale the points of a loaded vtk file"""
-        ...
 
     @overload
     def load(self, obj: DocumentObject, /) -> None: ...
@@ -73,27 +71,21 @@ class FemPostPipeline(FemPostObject):
         3. the unit of the value as FreeCAD.Units.Unit,
         4. the Description of the frame type
         """
-        ...
 
     def getFilter(self) -> list[object]:
         """Returns all filters, that this pipeline uses (non recursive, result does not contain branch child filters)"""
-        ...
 
     def recomputeChildren(self) -> None:
         """Recomputes all children of the pipeline"""
-        ...
 
     def getLastPostObject(self) -> DocumentObject | None:
         """Get the last post-processing object"""
-        ...
 
     def holdsPostObject(self, obj: DocumentObject, /) -> bool:
         """Check if this pipeline holds a given post-processing object"""
-        ...
 
     def renameArrays(self, names: dict[str, str], /) -> None:
         """Change name of data arrays"""
-        ...
 
     def addArrayFromFunction(self, functions: dict[str, str], /) -> None:
         """
@@ -101,15 +93,12 @@ class FemPostPipeline(FemPostObject):
         The arrays are defined as "func_name": "func" key-value pairs.
         Field names behave similarly to those in the calculator filter.
         """
-        ...
 
     def getOutputAlgorithm(self) -> vtkAlgorithm:
         """Returns the pipeline vtk algorithm, which generates the data passed to the pipelines filters.
 
         Note that the output algorithm may change depending on pipeline settings.
         """
-        ...
 
     def setTimeInfo(self, frame_type: str, unit: Unit, /) -> None:
         """Set pipeline frame information."""
-        ...

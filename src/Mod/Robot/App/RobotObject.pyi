@@ -23,4 +23,3 @@ class RobotObject(DocumentObject):
     def getRobot(self) -> Any:
         """Returns a copy of the robot. Be aware, the robot behaves the same
         like the robot of the object but is a copy!"""
-        ...

@@ -42,4 +42,3 @@ class ShapeFix_Root(PyObjectBase):
         """
         Returns tolerance limited by [MinTolerance,MaxTolerance]
         """
-        ...

@@ -31,52 +31,42 @@ class DrawViewPart(DrawView):
         getVisibleEdges([conventionalCoords]) - get the visible edges in the View as Part::TopoShapeEdges. Edges are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
-        ...
 
     def getVisibleVertexes(self, conventional_coords: bool = False, /) -> Any:
         """
         getVisibleVertexes() - get the visible vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
-        ...
 
     def getHiddenEdges(self, conventional_coords: bool = False, /) -> Any:
         """
         getHiddenEdges([conventionalCoords]) - get the hidden edges in the View as Part::TopoShapeEdges.  Edges are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
-        ...
 
     def getHiddenVertexes(self, conventional_coords: bool = False, /) -> Any:
         """
         getHiddenVertexes() - get the hidden vertexes as App.Vector in the View's coordinate system.  App.Vectors are returned
         in conventional coordinates if conventionalCoords is True.  The default is to return Qt inverted Y coordinates.
         """
-        ...
 
     def makeCosmeticVertex(self, point: Vector, /) -> str | None:
         """id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex."""
-        ...
 
     def makeCosmeticVertex3d(self, point: Vector, /) -> str | None:
         """id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex."""
-        ...
 
     def getCosmeticVertex(self, tag: str, /) -> CosmeticVertex | None:
         """cv = getCosmeticVertex(id) - returns CosmeticVertex with unique id."""
-        ...
 
     def getCosmeticVertexBySelection(self, selection_name: str, /) -> CosmeticVertex | None:
         """cv = getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections."""
-        ...
 
     def removeCosmeticVertex(self, cv: str | CosmeticVertex | list[CosmeticVertex], /) -> None:
         """removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None."""
-        ...
 
     def clearCosmeticVertices(self) -> Any:
         """clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None."""
-        ...
 
     def makeCosmeticLine(
         self,
@@ -88,7 +78,6 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns tag of new CosmeticEdge."""
-        ...
 
     def makeCosmeticLine3D(
         self,
@@ -100,7 +89,6 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticLine3D(p1, p2) - add a CosmeticEdge from p1 to p2(3D coordinates). Returns tag of new CosmeticEdge."""
-        ...
 
     def makeCosmeticCircle(
         self,
@@ -112,7 +100,6 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns tag of new CosmeticEdge."""
-        ...
 
     def makeCosmeticCircleArc(
         self,
@@ -126,7 +113,6 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns tag of new CosmeticEdge."""
-        ...
 
     def makeCosmeticCircle3d(
         self,
@@ -138,7 +124,6 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticCircle3d(center, radius) - add a CosmeticEdge at center (3d point) with radius. Returns tag of new CosmeticEdge."""
-        ...
 
     def makeCosmeticCircleArc3d(
         self,
@@ -152,63 +137,48 @@ class DrawViewPart(DrawView):
         /,
     ) -> str | None:
         """tag = makeCosmeticCircleArc3d(center, radius, start, end) - add a CosmeticEdge at center (3d point) with radius from start angle to end angle. Returns tag of new CosmeticEdge."""
-        ...
 
     def getCosmeticEdge(self, tag: str, /) -> CosmeticEdge:
         """ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id."""
-        ...
 
     def getCosmeticEdgeBySelection(self, selection_name: str, /) -> CosmeticEdge:
         """ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections"""
-        ...
 
     def removeCosmeticEdge(self, tag: str, /) -> None:
         """removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None."""
-        ...
 
     def makeCenterLine(self, sub_elements: list[str], mode: int, /) -> str | None:
         """makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns unique tag of added CenterLine."""
-        ...
 
     def getCenterLine(self, tag: str, /) -> CenterLine:
         """cl = getCenterLine(id) - returns CenterLine with unique id."""
-        ...
 
     def getCenterLineBySelection(self, selection_name: str, /) -> CenterLine:
         """cl = getCenterLineBySelection(name) - returns CenterLine by name (Edge25).  Used in selections"""
-        ...
 
     def removeCenterLine(self, tag: str, /) -> None:
         """removeCenterLine(cl) - remove CenterLine cl from View. Returns None."""
-        ...
 
     def clearCosmeticEdges(self) -> Any:
         """clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None."""
-        ...
 
     def refreshCosmeticEdges(self) -> Any:
         """refreshCosmeticEdges() - update display of all cosmetic edges. Returns None."""
-        ...
 
     def refreshCosmeticVertexes(self) -> Any:
         """refreshCosmeticVertexes() -  supdate display of all cosmetic Vertexes. Returns None."""
-        ...
 
     def refreshCenterlines(self) -> Any:
         """refreshCenterlines - update display of all centerlines. Returns None."""
-        ...
 
     def refreshAllCosmetic(self) -> Any:
         """refreshAllCosmetic - update display of all cosmetic elements (vertexes, edge, centerlines). Returns None."""
-        ...
 
     def clearCenterLines(self) -> Any:
         """clearCenterLines() - remove all CenterLines from the View. Returns None."""
-        ...
 
     def clearGeomFormats(self) -> Any:
         """clearGeomFormats() - remove all GeomFormats from the View. Returns None."""
-        ...
 
     def formatGeometricEdge(
         self, index: int, style: int, weight: float, color: tuple, visible: int, /
@@ -217,7 +187,6 @@ class DrawViewPart(DrawView):
         Applies appearance attributes to a geometric edge.
         Style parameter is from Qt::PenStyle and is converted to closest standard line number style.
         """
-        ...
 
     def decorateLine(
         self, edgeName: str, lineNumber: int, weight: float, color: tuple, visible: int, /
@@ -226,24 +195,19 @@ class DrawViewPart(DrawView):
         Applies appearance attributes to geometric edge edgeName ("Edge1").  Handles standard line
         numbers (0-15 (ISO) or 1-17 (ASME)).
         """
-        ...
 
 
     def getEdgeByIndex(self, index: int, /) -> TopoShapeEdge:
         """getEdgeByIndex(edgeIndex). Returns Part.TopoShape."""
-        ...
 
     def getEdgeBySelection(self, selection_name: str, /) -> TopoShapeEdge:
         """getEdgeBySelection(edgeName). Returns Part.TopoShape."""
-        ...
 
     def getVertexByIndex(self, index: int, /) -> TopoShapeVertex:
         """getVertexByIndex(vertexIndex). Returns Part.TopoShape."""
-        ...
 
     def getVertexBySelection(self, selection_name: str, /) -> TopoShapeVertex:
         """getVertexBySelection(vertexName). Returns Part.TopoShape."""
-        ...
 
     def projectPoint(self, point: Vector, invert: bool = ..., /) -> Vector:
         """
@@ -251,12 +215,9 @@ class DrawViewPart(DrawView):
         projection coordinate system of this DrawViewPart. Optionally inverts the Y coordinate of the
         result.
         """
-        ...
 
     def getGeometricCenter(self) -> Any:
         """point3d = getGeometricCenter() - returns the geometric center of the source shapes."""
-        ...
 
     def requestPaint(self) -> Any:
         """requestPaint(). Redraw the graphic for this View."""
-        ...

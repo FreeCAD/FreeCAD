@@ -31,7 +31,6 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
         file_name : str
             Open Inventor file.
         """
-        ...
     SymbolNode: Final[Any]
     """A pivy SoSeparator with the nodes of the constraint symbols"""
 

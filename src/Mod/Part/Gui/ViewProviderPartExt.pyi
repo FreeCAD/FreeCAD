@@ -16,5 +16,3 @@ class ViewProviderPartExt(ViewProviderGeometryObject):
     Author: David Carter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
-
-    ...

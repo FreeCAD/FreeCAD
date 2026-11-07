@@ -31,7 +31,6 @@ class AttachExtension(DocumentObjectExtension):
         Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
         and raises an exception if attachment calculation fails.
         """
-        ...
 
     def changeAttacherType(self, typename: str, /) -> bool:
         """
@@ -44,4 +43,3 @@ class AttachExtension(DocumentObjectExtension):
         'Attacher::AttachEngineLine'
         'Attacher::AttachEnginePoint'
         """
-        ...

@@ -23,10 +23,8 @@ class Feature(PartFeature):
         """
         getBaseObject: returns feature this one fuses itself to, or None. Normally, this should be the same as BaseFeature property, except for legacy workflow. In legacy workflow, it will look up the support of referenced sketch.
         """
-        ...
 
     def getBaseObject(self) -> Optional[object]:
         """
         getBaseObject: returns feature this one fuses itself to, or None. Normally, this should be the same as BaseFeature property, except for legacy workflow. In legacy workflow, it will look up the support of referenced sketch.
         """
-        ...

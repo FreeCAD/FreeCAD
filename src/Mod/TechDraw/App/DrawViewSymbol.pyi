@@ -21,4 +21,3 @@ class DrawViewSymbol(DrawView):
 
     def dumpSymbol(self, filename: str, /) -> None:
         """dumpSymbol(fileSpec) - dump the contents of Symbol to a file"""
-        ...
