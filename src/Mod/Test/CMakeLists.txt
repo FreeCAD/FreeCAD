@@ -35,6 +35,7 @@ SET(Test_SRCS
     TestMDIView.py
     TestRubberbandSelection.py
     VisualTestSupport.py
+    VisualComponentSnapshots.py
     VisualCoinNodeSnapshots.py
     VisualView3DRenderSnapshots.py
     TestView3DFramebufferCapture.py
