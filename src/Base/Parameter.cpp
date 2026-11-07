@@ -480,10 +480,13 @@ std::vector<Base::Reference<ParameterGrp>> ParameterGrp::GetGroups()
 
     DOMElement* pcTemp = FindElement(_pGroupNode, "FCParamGroup");
     while (pcTemp) {
-        Name = StrX(pcTemp->getAttributes()
-                        ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                        ->getNodeValue())
-                   .c_str();
+        DOMNode* nameAttr = pcTemp->getAttributes()->getNamedItem(XStrLiteral("Name").unicodeForm());
+        if (!nameAttr) {
+            // malformed group element without a Name attribute: skip it
+            pcTemp = FindNextElement(pcTemp, "FCParamGroup");
+            continue;
+        }
+        Name = StrX(nameAttr->getNodeValue()).c_str();
         // already created?
         if (!(rParamGrp = _GroupMap[Name]).isValid()) {
             rParamGrp = Base::Reference<ParameterGrp>(new ParameterGrp(pcTemp, Name.c_str(), this));
@@ -651,13 +654,15 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetAttributeMap(
 
     DOMElement* pcTemp = FindElement(_pGroupNode, T);
     while (pcTemp) {
-        Name = StrX(
-                   static_cast<DOMElement*>(pcTemp)
-                       ->getAttributes()
-                       ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                       ->getNodeValue()
-        )
-                   .c_str();
+        DOMNode* nameAttr = static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(
+            XStrLiteral("Name").unicodeForm()
+        );
+        if (!nameAttr) {
+            // malformed element without a Name attribute: skip it
+            pcTemp = FindNextElement(pcTemp, T);
+            continue;
+        }
+        Name = StrX(nameAttr->getNodeValue()).c_str();
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
             if (Type == ParamType::FCGroup) {
@@ -1410,11 +1415,10 @@ void ParameterGrp::Clear(bool notify)
         next = next->getNextSibling();
         ParamType type = TypeValue(StrX(child->getNodeName()).c_str());
         if (type != ParamType::FCInvalid && type != ParamType::FCGroup) {
-            params.emplace_back(
-                type,
-                StrX(child->getAttributes()->getNamedItem(XStrLiteral("Name").unicodeForm())->getNodeValue())
-                    .c_str()
-            );
+            DOMNode* nameAttr = child->getAttributes()->getNamedItem(XStrLiteral("Name").unicodeForm());
+            if (nameAttr) {
+                params.emplace_back(type, StrX(nameAttr->getNodeValue()).c_str());
+            }
         }
         DOMNode* node = _pGroupNode->removeChild(child);
         node->release();
@@ -1540,10 +1544,11 @@ std::vector<std::pair<ParameterGrp::ParamType, std::string>> ParameterGrp::GetPa
             StrX type(clChild->getNodeName());
             ParamType Type = TypeValue(type.c_str());
             if (Type != ParamType::FCInvalid && Type != ParamType::FCGroup) {
-                if (clChild->getAttributes()->getLength() > 0) {
-                    StrX name(clChild->getAttributes()
-                                  ->getNamedItem(XStrLiteral("Name").unicodeForm())
-                                  ->getNodeValue());
+                DOMNode* nameAttr = clChild->getAttributes()->getNamedItem(
+                    XStrLiteral("Name").unicodeForm()
+                );
+                if (nameAttr) {
+                    StrX name(nameAttr->getNodeValue());
                     if (!sFilter || strstr(name.c_str(), sFilter)) {
                         res.emplace_back(Type, name.c_str());
                     }
