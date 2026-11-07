@@ -25,6 +25,7 @@
 #include "SketcherTransformationExpressionHelper.h"
 
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace SketcherGui;
@@ -175,14 +176,18 @@ bool SketcherTransformationExpressionHelper::tryApplyExpressionToConstraint(
                 && (cstr->Third == getExpectedGeoId(origCstr->Third));
 
             if (match) {
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,
-                    "%s.setExpression('Constraints[%d]', '%s')",
-                    sketchObj.c_str(),
-                    static_cast<int>(constraintIndex),
-                    expression->toString().c_str()
-                );
-                return true;
+                App::DocumentObject* obj = App::GetApplication().getActiveDocument()->getObject(
+                    sketchObj.c_str()
+                );  // or equivalent lookup
+
+                if (obj) {
+                    std::string pathStr = boost::str(
+                        boost::format("Constraints[%d]") % constraintIndex
+                    );
+
+                    Gui::cmdSketcherExpression(obj, pathStr, expression->toString());
+                    return true;
+                }
             }
         }
     }
