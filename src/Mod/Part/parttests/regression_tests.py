@@ -3,6 +3,7 @@
 import FreeCAD
 from FreeCAD import Vector, Base, newDocument, closeDocument
 import Part
+import Materials
 
 import math
 import os
@@ -243,6 +244,28 @@ class RegressionTests(unittest.TestCase):
 
             # AttacherEngine should show "Engine Plane" (not "Engine 3D")
             self.assertEqual(attacher_engine, "Engine Plane")
+
+    def test_issue_34061_missing_material(self):
+        """
+        34061: A shape material that is not in any library must fall back to the
+        default material instead of stopping the box and the objects after it
+        from being restored.
+        """
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Label = "MissingMaterialBox"
+        cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        cylinder.Label = "NextObject"
+        box.ShapeMaterial = Materials.Material()
+        self.Doc.recompute()
+
+        target = newDocument("PartRegressionTest.issue_34061_target")
+        try:
+            box_copy, cylinder_copy = target.copyObject([box, cylinder])
+            self.assertEqual(box_copy.Label, "MissingMaterialBox")
+            self.assertEqual(cylinder_copy.Label, "NextObject")
+            self.assertEqual(box_copy.ShapeMaterial.UUID, cylinder.ShapeMaterial.UUID)
+        finally:
+            closeDocument(target.Name)
 
     def test_getSortedClusters(self):
         "Part.getSortedClusters() may crash with short edges"
