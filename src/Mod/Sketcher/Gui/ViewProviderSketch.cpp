@@ -5637,9 +5637,10 @@ void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* vi
     }
     // create context menu
     Gui::Application::Instance->setupContextMenu("Sketch", &menu);
-    QMenu contextMenu(viewer->getGLWidget());
-    Gui::MenuManager::getInstance()->setupContextMenu(&menu, contextMenu);
-    contextMenu.exec(QCursor::pos());
+    auto contextMenu = new QMenu(viewer->getGLWidget());
+    Gui::MenuManager::getInstance()->setupContextMenu(&menu, *contextMenu);
+    contextMenu->setAttribute(Qt::WA_DeleteOnClose);
+    contextMenu->popup(QCursor::pos());
 }
 
 void ViewProviderSketch::preselectToSelection(const std::stringstream& ss,
