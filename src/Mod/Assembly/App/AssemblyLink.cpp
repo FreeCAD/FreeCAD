@@ -21,7 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <algorithm>
 #include <cmath>
+#include <utility>
 #include <vector>
 
 
@@ -695,27 +697,15 @@ void AssemblyLink::handleJointReference(
     }
 
     // 2. Map to local link
-    auto it = objLinkMap.find(externalComponent);
-    auto prefixIt = objSubPrefixMap.find(externalComponent);
-    if (it == objLinkMap.end() && prefixIt != objSubPrefixMap.end()) {
-        auto* linkElement = freecad_cast<App::LinkElement*>(externalComponent);
-        auto* linkGroup = linkElement ? linkElement->getLinkGroup() : nullptr;
-        if (linkGroup) {
-            it = objLinkMap.find(linkGroup);
-        }
-    }
-    if (it == objLinkMap.end()) {
+    std::string subPrefix;
+    App::DocumentObject* localLink = getLocalObject(externalComponent, subPrefix);
+    if (!localLink) {
         Base::Console().warning(
             "AssemblyLink: Could not map external component {} to a local link for joint {}\n",
             externalComponent->getNameInDocument(),
             joint->getNameInDocument()
         );
         return;
-    }
-    App::DocumentObject* localLink = it->second;
-    std::string subPrefix;
-    if (prefixIt != objSubPrefixMap.end()) {
-        subPrefix = prefixIt->second;
     }
 
     // 3. Set the new reference
@@ -756,6 +746,79 @@ void AssemblyLink::handleJointReference(
     if (changed) {
         prop2->setSubValues(std::move(subs1));
     }
+}
+
+App::DocumentObject* AssemblyLink::getLocalObject(App::DocumentObject* srcObj, std::string& subPrefix) const
+{
+    auto it = objLinkMap.find(srcObj);
+    auto prefixIt = objSubPrefixMap.find(srcObj);
+    if (it == objLinkMap.end() && prefixIt != objSubPrefixMap.end()) {
+        auto* linkElement = freecad_cast<App::LinkElement*>(srcObj);
+        auto* linkGroup = linkElement ? linkElement->getLinkGroup() : nullptr;
+        if (linkGroup) {
+            it = objLinkMap.find(linkGroup);
+        }
+    }
+    if (it != objLinkMap.end()) {
+        subPrefix = prefixIt != objSubPrefixMap.end() ? prefixIt->second : std::string();
+        return it->second;
+    }
+
+    // The joints of an assembly reference the parts of its flexible sub-assemblies directly,
+    // i.e. the objects of their assembly links. Such an object stands for an object of the
+    // assembly linked by that sub-assembly link, and the assembly link of this link that
+    // stands for the sub-assembly link links to the same assembly.
+    for (const auto& [source, local] : getSubAssemblyLinks()) {
+        if (auto* obj = source->getSourceObject(srcObj)) {
+            return local->getLocalObject(obj, subPrefix);
+        }
+    }
+    return nullptr;
+}
+
+App::DocumentObject* AssemblyLink::getSourceObject(App::DocumentObject* localObj) const
+{
+    for (const auto& [srcObj, link] : objLinkMap) {
+        if (link == localObj) {
+            return srcObj;
+        }
+    }
+
+    for (const auto& [source, local] : getSubAssemblyLinks()) {
+        if (auto* obj = local->getSourceObject(localObj)) {
+            std::string subPrefix;
+            return source->getLocalObject(obj, subPrefix);
+        }
+    }
+    return nullptr;
+}
+
+std::vector<std::pair<AssemblyLink*, AssemblyLink*>> AssemblyLink::getSubAssemblyLinks() const
+{
+    std::vector<std::pair<AssemblyLink*, AssemblyLink*>> result;
+    AssemblyObject* assembly = getLinkedAssembly();
+    if (!assembly) {
+        return result;
+    }
+
+    // objLinkMap is only rebuilt when this link synchronizes: use the current objects of the
+    // linked assembly and of this link, not entries that may refer to deleted objects.
+    const std::vector<App::DocumentObject*> group = Group.getValues();
+    for (auto* obj : assembly->Group.getValues()) {
+        auto* source = freecad_cast<AssemblyLink*>(obj);
+        if (!source) {
+            continue;
+        }
+        auto it = objLinkMap.find(source);
+        if (it == objLinkMap.end()
+            || std::find(group.begin(), group.end(), it->second) == group.end()) {
+            continue;
+        }
+        if (auto* local = freecad_cast<AssemblyLink*>(it->second)) {
+            result.emplace_back(source, local);
+        }
+    }
+    return result;
 }
 
 void AssemblyLink::ensureNoJointGroup()
