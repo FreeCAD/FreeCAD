@@ -1345,16 +1345,6 @@ struct WireJoiner
                     adjacentList.push_back(vinfo);
                     ++info.iEnd[i];
                 }
-                // copy the adjacent indices to all connected edges
-                for (int j = info.iStart[i]; j < info.iEnd[i]; ++j) {
-                    auto& other = adjacentList[j];
-                    auto& otherInfo = *other.it;
-                    if (&otherInfo != &info) {
-                        int k = other.start ? 0 : 1;
-                        otherInfo.iStart[k] = info.iStart[i];
-                        otherInfo.iEnd[k] = info.iEnd[i];
-                    }
-                }
             }
             if (info.iStart[0] != info.iEnd[0] && info.iStart[1] != info.iEnd[1]) {
                 // add the edge only if it is connected to some other edges on
@@ -1451,8 +1441,7 @@ struct WireJoiner
                         wireData->Add(TopoDS::Edge(info.edge.Reversed()));
                     }
                 }
-                // TechDraw even uses 0.1 as tolerance. Really? Why?
-                TopoDS_Wire wire = makeCleanWire(wireData, 0.01);
+                TopoDS_Wire wire = makeCleanWire(wireData);
                 if (!BRep_Tool::IsClosed(wire)) {
                     FC_WARN("failed to close some projection wire");
                     Area::showShape(wire, "failed");
@@ -1476,31 +1465,54 @@ struct WireJoiner
         return skips;
     }
 
-    //! make a clean wire with sorted, oriented, connected, etc edges
-    // Copied from TechDraw::EdgeWalker
-    static TopoDS_Wire makeCleanWire(Handle(ShapeExtend_WireData) wireData, double tol)
+    // Build the wireData's edge list into a valid closed wire
+    // - for colocated but distinct vertices, rebuild the edge with actually identical vertices
+    // - for (small) gaps, close the gap with a line segment
+    static TopoDS_Wire makeCleanWire(Handle(ShapeExtend_WireData) wireData)
     {
-        TopoDS_Wire result;
-        BRepBuilderAPI_MakeWire mkWire;
-        ShapeFix_ShapeTolerance sTol;
+        const int n = wireData->NbEdges();
+        BRep_Builder builder;
 
-        Handle(ShapeFix_Wire) fixer = new ShapeFix_Wire;
-        fixer->Load(wireData);
-        fixer->Perform();
-        fixer->FixReorder();
-        fixer->SetMaxTolerance(tol);
-        fixer->ClosedWireMode() = Standard_True;
-        fixer->FixConnected(Precision::Confusion());
-        fixer->FixClosed(Precision::Confusion());
+        // Define utility lambdas
+        auto start = [](const TopoDS_Edge& e) {
+            return TopExp::FirstVertex(e, true);
+        };
+        auto end = [](const TopoDS_Edge& e) {
+            return TopExp::LastVertex(e, true);
+        };
 
-        for (int i = 1; i <= wireData->NbEdges(); i++) {
-            TopoDS_Edge edge = fixer->WireData()->Edge(i);
-            sTol.SetTolerance(edge, tol, TopAbs_VERTEX);
-            mkWire.Add(edge);
+        // Build the wire, rewriting edge vertexes or adding gap filling edges as needed
+        TopoDS_Wire wire;
+        builder.MakeWire(wire);
+        for (int i = 1; i <= n; ++i) {
+            TopoDS_Edge edge = wireData->Edge(i);
+            const TopoDS_Vertex nextStart = start(wireData->Edge((i % n) + 1));
+            if (!end(edge).IsSame(nextStart)
+                && BRep_Tool::Pnt(end(edge)).IsEqual(BRep_Tool::Pnt(nextStart), 0.0)) {
+                // Rebuild the edge, using nextStart as its end vertex
+                TopoDS_Edge copy = TopoDS::Edge(edge.EmptyCopied());
+                builder.Add(copy, start(edge).Oriented(TopAbs_FORWARD));
+                builder.Add(copy, nextStart.Oriented(TopAbs_REVERSED));
+                edge = copy;
+            }
+            builder.Add(wire, edge);
+
+            if (!end(edge).IsSame(nextStart)) {
+                // Bridge the gap with a line edge
+                const gp_Pnt gapStart = BRep_Tool::Pnt(end(edge));
+                const gp_Pnt gapEnd = BRep_Tool::Pnt(nextStart);
+                const gp_Dir direction(gp_Vec(gapStart, gapEnd));
+                TopoDS_Edge line;
+                builder.MakeEdge(line, new Geom_Line(gapStart, direction), Precision::Confusion());
+                builder.Add(line, end(edge).Oriented(TopAbs_FORWARD));
+                builder.Add(line, nextStart.Oriented(TopAbs_REVERSED));
+                builder.Range(line, 0, gapStart.Distance(gapEnd));
+                builder.Add(wire, line);
+            }
         }
 
-        result = mkWire.Wire();
-        return result;
+        wire.Closed(true);
+        return wire;
     }
 };
 
@@ -2273,7 +2285,10 @@ void Area::build()
         }
 
         if (myParams.Outline) {
-            myArea->Reorder();
+            if (op == OperationCompound) {
+                // (Order/orientation is already correct for clipper operations)
+                myArea->Reorder();
+            }
             for (auto it = myArea->m_curves.begin(), itNext = it; it != myArea->m_curves.end();
                  it = itNext) {
                 ++itNext;
