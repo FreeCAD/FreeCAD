@@ -364,6 +364,7 @@ def select(op):
     opsel = {}
     opsel["Contour"] = contourselect  # deprecated
     opsel["Deburr"] = chamferselect
+    opsel["Deburring"] = chamferselect
     opsel["Drilling"] = drillselect
     opsel["Tapping"] = tapselect
     opsel["Engrave"] = engraveselect
