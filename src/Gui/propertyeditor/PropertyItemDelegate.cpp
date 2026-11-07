@@ -277,6 +277,11 @@ QWidget* PropertyItemDelegate::createEditor(
             // eventFilter()
             return childItem->createEditor(parent, []() noexcept {});
         }
+        if (childItem->commitOnEditorClose()) {
+            // These items are committed in setModelData() when the editor
+            // closes, so don't update the property on every change.
+            return childItem->createEditor(parent, []() noexcept {});
+        }
         return childItem->createEditor(parent, [this]() {
             const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
         });
