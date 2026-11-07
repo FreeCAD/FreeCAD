@@ -570,11 +570,13 @@ def getClearedAreas(currentOp, bbox):
     representation carries exactly, arcs included. (Path.Area has no
     transform, so the path is moved rather than the area.)
     """
+    from PathScripts.PathUtils import getOperations
+
     clearedAreas = []
     job = currentOp.Proxy.job
     tol = job.GeometryTolerance.getValueAs("mm")
     currentFrame = PathUtil.workplaneForOp(currentOp)
-    for op in job.Operations.Group:
+    for op in getOperations(job):
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
