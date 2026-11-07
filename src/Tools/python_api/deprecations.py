@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-"""Discover and validate Python API deprecations without importing FreeCAD."""
+"""Discover and validate API deprecations without importing FreeCAD."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from typing import Iterable
 import warnings
 
 from .model import DeprecationRecord, Diagnostic, ScanResult
+from .property_alias_deprecations import scan_property_alias_deprecations
 
 SCHEMA_VERSION = 1
 STRUCTURED_FIELDS = {"deprecated_in", "removed_in", "replacement", "details"}
@@ -307,7 +308,7 @@ class _FileScanner(ast.NodeVisitor):
             self._scan_docstring(node)
 
 
-def _source_paths(source_root: Path) -> Iterable[Path]:
+def _python_source_paths(source_root: Path) -> Iterable[Path]:
     for path in source_root.rglob("*"):
         if not path.is_file() or not (path.suffix == ".py" or path.suffix == ".pyi"):
             continue
@@ -321,7 +322,7 @@ def scan_repository(root: Path) -> ScanResult:
     source_root = root / "src"
     records: list[DeprecationRecord] = []
     diagnostics: list[Diagnostic] = []
-    for path in sorted(_source_paths(source_root)):
+    for path in sorted(_python_source_paths(source_root)):
         try:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", SyntaxWarning)
@@ -340,6 +341,10 @@ def scan_repository(root: Path) -> ScanResult:
         scanner.visit(tree)
         records.extend(scanner.records)
         diagnostics.extend(scanner.diagnostics)
+
+    alias_result = scan_property_alias_deprecations(root, _structured_record)
+    records.extend(alias_result.records)
+    diagnostics.extend(alias_result.diagnostics)
 
     unique: dict[tuple[object, ...], DeprecationRecord] = {}
     by_symbol: dict[str, set[tuple[object, ...]]] = {}

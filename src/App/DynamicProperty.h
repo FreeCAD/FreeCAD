@@ -47,6 +47,20 @@ namespace App
 class Property;
 class PropertyContainer;
 
+/**
+ * @brief Controls how renameDynamicProperty() handles a property locked with
+ * Property::LockDynamic.
+ */
+enum class RenameLockedPolicy {
+    /// Throw Base::RuntimeError if the property is locked. Default; preserves prior behaviour.
+    Throw,
+    /// Rename despite the lock. Used by the alias machinery, where the declaring class is
+    /// renaming its own property.
+    Force,
+    /// Do not rename and do not throw; return `false`.
+    Skip,
+};
+
 struct AppExport CStringHasher
 {
     std::size_t operator()(const char* s) const;
@@ -190,7 +204,17 @@ public:
 
     bool changeDynamicProperty(const Property* prop, const char* group, const char* doc);
 
-    bool renameDynamicProperty(Property* prop, const char* newName);
+    /**
+     * @brief Rename a dynamic property.
+     *
+     * @param[in] prop The property to rename.
+     * @param[in] newName The new name.
+     * @param[in] policy How to handle a property locked with Property::LockDynamic.
+     * @return True if the property was renamed.
+     */
+    bool renameDynamicProperty(Property* prop,
+                                const char* newName,
+                                RenameLockedPolicy policy = RenameLockedPolicy::Throw);
 
 private:
     std::string getUniquePropertyName(const PropertyContainer& pc, const char* Name) const;
