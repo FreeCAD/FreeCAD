@@ -143,7 +143,14 @@ std::string Base::Tools::wstringToString(const std::wstring& str)
     // writing (2026).
     int inputLength = static_cast<int>(str.size());
     int neededSize = WideCharToMultiByte(
-        CP_UTF8, WC_ERR_INVALID_CHARS, str.data(), inputLength, nullptr, 0, nullptr, nullptr
+        CP_UTF8,
+        WC_ERR_INVALID_CHARS,
+        str.data(),
+        inputLength,
+        nullptr,
+        0,
+        nullptr,
+        nullptr
     );
     if (neededSize <= 0) {
         return {};
