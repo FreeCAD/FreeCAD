@@ -27,8 +27,11 @@ Command and task window handler for the OpenGL based CAM simulator
 import math
 import os
 import FreeCAD
+import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
+from Machine.models.machine import AxisRole
+from Path.Base.Generator import rotation
 from Path.Post import Utils as PostUtils
 from PathScripts import PathUtils
 import CAMSimulator
@@ -77,6 +80,63 @@ class CAMSimTaskUi:
         """User Pressed the Close button"""
         self.parent.cancel()
         FreeCADGui.Control.closeDialog()
+
+
+def TablePose(machine, placement, current=None):
+    """TablePose(machine, placement, current=None) ... Return (rotation, positions): how the
+    machine's rotary table turns the part to cut on placement's work plane, and the rotary axis
+    positions that give it, solved the way the post solves them. current holds the previous
+    operation's positions, which the solver stays nearest to.
+
+    The simulator turns the part by the rotation, so on a trunnion the tool stays vertical and
+    the part tilts under it; a tilting head leaves the part alone. Without a machine that
+    reaches the plane, the part is turned the shortest way that makes the tool axis vertical and
+    positions is None."""
+    z = Vector(0, 0, 1)
+    axis = placement.Rotation.multVec(z)
+    rotary = machine is not None and machine.has_rotary_axes
+    chain = rotation.build_kinematic_chain(machine) if rotary else []
+    if axis.isEqual(z, 1e-6):
+        return Rotation(), {ax.name: 0.0 for ax in chain} if rotary else None
+    if rotary:
+        result = rotation.solve_orientation(machine, axis, current_state=current)
+        if result.success:
+            table = [ax for ax in chain if ax.role == AxisRole.TABLE_ROTARY]
+            return rotation.compute_rotation_matrix(table, result.angles), result.angles
+    return Rotation(axis, z), None
+
+
+def RotaryAxes(machine):
+    """Return the machine's (table, head) rotary axes, in the order compute_rotation_matrix
+    applies them: each one's axes from the one nearest the part or tool out to the one on the
+    machine, as they are mounted on each other; mounted on neither, a table's azimuth (about Z)
+    first and a head's tilt first."""
+    if machine is None or not machine.has_rotary_axes:
+        return [], []
+
+    def applied(axes, table):
+        if all(axes[i].parent == axes[i - 1].name for i in range(1, len(axes))):
+            return axes[::-1]
+        return sorted(axes, key=lambda ax: (abs(ax.rotation_vector.z) > 0.9) != table)
+
+    chain = rotation.build_kinematic_chain(machine)
+    table = [ax for ax in chain if ax.role == AxisRole.TABLE_ROTARY]
+    head = [ax for ax in chain if ax.role == AxisRole.HEAD_ROTARY]
+    return applied(table, True), applied(head, False)
+
+
+def LastRotaryPositions(op, axes):
+    """LastRotaryPositions(op, axes) ... Return {axis name: position} for each axis op's path
+    moves, as the path leaves it. Used for operations that turn the rotaries themselves, such
+    as a 4th-axis surface."""
+    positions = {}
+    commands = op.Path.Commands if op.Path else []
+    for ax in axes:
+        for cmd in reversed(commands):
+            if ax.name in cmd.Parameters:
+                positions[ax.name] = float(cmd.Parameters[ax.name])
+                break
+    return positions
 
 
 def TSError(msg):
@@ -339,15 +399,56 @@ class CAMSimulation:
         """Activate the simulation"""
         self.SetupSimulation()
         self.millSim.ResetSimulation(FreeCADGui.getDocument(self.job.Document))
+        machine = self.job.Proxy.getMachine()
+        # each axis turns at its own rate and in the machine's sequence: the table's turn the
+        # part, the head's tilt the tool
+        table, head = RotaryAxes(machine)
+        axes = table + head
+        # degrees per second the rotaries turn to a new pose; the slowest axis sets the pace
+        indexRate = min((ax.max_velocity for ax in axes), default=0.0) / 60.0
+        self.millSim.SetRotaryAxes(
+            [
+                (ax.name, ax.rotation_vector, ax.max_velocity / 60.0, ax.sequence, ax in head)
+                for ax in axes
+            ]
+        )
+        positions = None
         for op in self.activeOps:
-            tool = PathDressup.toolController(op).Tool
-            toolNumber = PathDressup.toolController(op).ToolNumber
-            toolProfile = self.GetToolProfile(tool, 0.5)
+            self.millSim.BeginOperation(op.Label)
+            tc = PathDressup.toolController(op)
+            tool = tc.Tool
+            toolNumber = tc.ToolNumber
+            # arcs in the profile become chords: finer at high quality, where the cut surface
+            # is fine enough to show them
+            toolProfile = self.GetToolProfile(tool, 0.25 if self.quality >= 9 else 0.5)
             self.millSim.AddTool(toolProfile, toolNumber, tool.Diameter, 1)
-            path = PathUtils.getPathWithPlacement(op)
+            # The simulation runs at the programmed feeds. As in the cycle time estimate, a G0
+            # without F moves at the tool controller's rapid rate (its feed if none is set) and a
+            # feed move without F at its horizontal feed; a G0 or G1 with only F sets them.
+            hFeed = tc.HorizFeed.Value
+            rapid = tc.HorizRapid.Value or hFeed
+            if rapid > 0:
+                self.millSim.AddCommand(Path.Command("G0", {"F": rapid}))
+            if hFeed > 0:
+                self.millSim.AddCommand(Path.Command("G1", {"F": hFeed}))
+            # An operation's path is stored in its work plane's frame, the tool along the
+            # frame's Z, and its Placement positions it. The simulator takes path and frame as
+            # they are, so a tilted operation cuts with a tilted tool and its arcs stay arcs.
+            # The table pose turns the part the way the machine does.
+            frame = getattr(op, "Placement", Placement())
+            pose, solved = TablePose(machine, frame, positions)
+            positions = solved or positions
+            angles = [float(solved[ax.name]) for ax in axes] if solved else []
+            self.millSim.SetFrame(frame, pose, indexRate, angles)
             # the drill cycles' G98, G99 and G80 as the post writes them
-            for cmd in PostUtils.cannedCycleTerminator(path).Commands:
+            opCommands = PostUtils.cannedCycleTerminator(op.Path).Commands
+            for cmd in opCommands:
                 self.millSim.AddCommand(cmd)
+            # an operation that turns the rotaries itself leaves them where it ends; solve the
+            # next operation's pose from there
+            ended = LastRotaryPositions(op, axes)
+            if ended:
+                positions = dict(positions or {}, **ended)
         self.millSim.BeginSimulation(self.stock, self.quality)
         if self.baseShape is not None:
             self.millSim.SetBaseShape(self.baseShape, 1)

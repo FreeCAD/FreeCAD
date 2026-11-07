@@ -87,6 +87,9 @@ void SimDisplay::InitShaders()
 
     // Mill Path Line Shader
     shaderLinePath.CompileShader("PathLine", VertShader3DLine, FragShader3DLine);
+
+    // Stock cache shader - erases the cached stock where it has been cut through
+    shaderClear.CompileShader("Clear", VertShader2DFbo, FragShaderClear);
 }
 
 void SimDisplay::CreateFboQuad()
@@ -183,6 +186,7 @@ void SimDisplay::CreateDisplayFbos()
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    mViewVersion++;
 }
 
 void SimDisplay::CreateSsaoFbos()
@@ -269,6 +273,7 @@ void SimDisplay::CleanFbos()
 {
     // cleanup frame buffers
     GLDELETE_FRAMEBUFFER(mFbo);
+    GLDELETE_FRAMEBUFFER(mCacheFbo);
     GLDELETE_FRAMEBUFFER(mSsaoFbo);
     GLDELETE_FRAMEBUFFER(mSsaoBlurFbo);
 
@@ -280,6 +285,10 @@ void SimDisplay::CleanFbos()
     GLDELETE_TEXTURE(mFboSsaoBlurTexture);
     GLDELETE_TEXTURE(mFboRandTexture);
     GLDELETE_RENDERBUFFER(mRboDepthStencil);
+    GLDELETE_TEXTURE(mCacheColTexture);
+    GLDELETE_TEXTURE(mCachePosTexture);
+    GLDELETE_TEXTURE(mCacheNormTexture);
+    GLDELETE_RENDERBUFFER(mCacheRboDepthStencil);
 }
 
 void SimDisplay::CleanGL()
@@ -298,6 +307,7 @@ void SimDisplay::CleanGL()
     shaderSSAO.Destroy();
     shaderSSAOLighting.Destroy();
     shaderSSAOBlur.Destroy();
+    shaderClear.Destroy();
 
     displayInitiated = false;
 }
@@ -318,15 +328,15 @@ void SimDisplay::StartDepthPass()
     glDepthFunc(GL_LESS);
     glDepthMask(GL_TRUE);
     shaderFlat.Activate();
-    shaderFlat.UpdateViewMat(mMatLookAt);
+    shaderFlat.UpdateViewMat(mMatView);
 }
 
 void SimDisplay::StartGeometryPass(const vec3& objColor, bool invertNormals)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, mDrawToCache ? mCacheFbo : mFbo);
     shaderGeom.Activate();
     shaderGeom.UpdateNormalState(invertNormals);
-    shaderGeom.UpdateViewMat(mMatLookAt);
+    shaderGeom.UpdateViewMat(mMatView);
     shaderGeom.UpdateObjColor(objColor);
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
@@ -336,13 +346,115 @@ void SimDisplay::StartGeometryPass(const vec3& objColor, bool invertNormals)
 // slightly closer to the camera. This mitigates overlapping faces artifacts.
 void SimDisplay::StartCloserGeometryPass(const vec3& objColor)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, mDrawToCache ? mCacheFbo : mFbo);
     shaderGeomCloser.Activate();
     shaderGeomCloser.UpdateNormalState(false);
-    shaderGeomCloser.UpdateViewMat(mMatLookAt);
+    shaderGeomCloser.UpdateViewMat(mMatView);
     shaderGeomCloser.UpdateObjColor(objColor);
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
+}
+
+bool SimDisplay::MakeCache()
+{
+    // made on first use, the same attachments as the frame buffer and as large
+    if (mCacheFbo != 0 || mCacheFailed) {
+        return !mCacheFailed;
+    }
+    glGenFramebuffers(1, &mCacheFbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, mCacheFbo);
+    CreateGBufTex(GL_TEXTURE0, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, mCacheColTexture);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mCacheColTexture, 0);
+    CreateGBufTex(GL_TEXTURE1, GL_RGB32F, GL_RGBA, GL_FLOAT, mCachePosTexture);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mCachePosTexture, 0);
+    CreateGBufTex(GL_TEXTURE2, GL_RGB32F, GL_RGBA, GL_FLOAT, mCacheNormTexture);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mCacheNormTexture, 0);
+    const unsigned int attachments[3]
+        = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+    glDrawBuffers(3, attachments);
+    glGenRenderbuffers(1, &mCacheRboDepthStencil);
+    glBindRenderbuffer(GL_RENDERBUFFER, mCacheRboDepthStencil);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, mWidth, mHeight);
+    glFramebufferRenderbuffer(
+        GL_FRAMEBUFFER,
+        GL_DEPTH_STENCIL_ATTACHMENT,
+        GL_RENDERBUFFER,
+        mCacheRboDepthStencil
+    );
+    mCacheFailed = glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE;
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    return !mCacheFailed;
+}
+
+void SimDisplay::BeginCacheDraw(bool clear)
+{
+    // route the following geometry passes into the stock cache
+    mDrawToCache = true;
+    glBindFramebuffer(GL_FRAMEBUFFER, mCacheFbo);
+    if (clear) {
+        glClearColor(0, 0, 0, 0);
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glDepthMask(GL_TRUE);
+        glStencilMask(0xFF);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+}
+
+void SimDisplay::EndCacheDraw()
+{
+    mDrawToCache = false;
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+}
+
+void SimDisplay::ClearCacheHoles()
+{
+    // after the back faces, stencil 0 marks pixels cut through; clear the cache there
+    glBindFramebuffer(GL_FRAMEBUFFER, mCacheFbo);
+    shaderClear.Activate();
+    SetupVertexAttribs();
+    glDisable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL, 0, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+}
+
+void SimDisplay::CopyCacheToFrame()
+{
+    // all three attachments plus depth and stencil, so the tool and the rest draw on top
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, mCacheFbo);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, mFbo);
+    const unsigned int attachments[3]
+        = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+    for (unsigned int attachment : attachments) {
+        glReadBuffer(attachment);
+        glDrawBuffers(1, &attachment);
+        glBlitFramebuffer(0, 0, mWidth, mHeight, 0, 0, mWidth, mHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    }
+    glBlitFramebuffer(
+        0,
+        0,
+        mWidth,
+        mHeight,
+        0,
+        0,
+        mWidth,
+        mHeight,
+        GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT,
+        GL_NEAREST
+    );
+    // the loop narrowed the frame buffer's draw buffers (the cache's read buffer is set each time)
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    glDrawBuffers(3, attachments);
 }
 
 void SimDisplay::RenderLightObject()
@@ -355,7 +467,10 @@ void SimDisplay::RenderLightObject()
 void SimDisplay::ScaleViewToStock(StockObject* obj)
 {
     mMaxStockDimension = std::max(std::max(obj->size[0], obj->size[1]), obj->size[2]);
+    vec3_dup(mStockCenter, obj->center);
+    mStockRadius = 0.5f * vec3_len(obj->size);
     UpdateProjectionMatrix();
+    UpdateViewMatrix();
 }
 
 void SimDisplay::RenderResult(bool recalculate, bool ssao)
@@ -481,7 +596,7 @@ void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
     shaderLinePath.UpdateObjColorAlpha(pathLineColor);
     shaderLinePath.UpdateObjColor(pathLineColorPassed);
     shaderLinePath.UpdateCurSegment(curSegment);
-    shaderLinePath.UpdateViewMat(mMatLookAt);
+    shaderLinePath.UpdateViewMat(mMatView);
 }
 
 void SimDisplay::UpdateWindowScale(int width, int height)
@@ -509,8 +624,9 @@ void SimDisplay::UpdateCamera(const SoCamera& camera)
         return;
     }
 
-    UpdateCameraView(camera);
+    // projection first: the view matrix depends on the camera type
     UpdateCameraProjection(camera);
+    UpdateCameraView(camera);
 }
 
 void SimDisplay::UpdateCameraView(const SoCamera& camera)
@@ -519,7 +635,8 @@ void SimDisplay::UpdateCameraView(const SoCamera& camera)
     const SbVec3f position = camera.position.getValue();
     const SbRotation orientation = camera.orientation.getValue();
 
-    if (position == mCameraPosition && orientation == mCameraOrientation) {
+    if (position == mCameraPosition && orientation == mCameraOrientation
+        && mViewPerspective == mCameraPerspective) {
         return;
     }
 
@@ -553,17 +670,27 @@ void SimDisplay::UpdateCameraProjection(const SoCamera& camera)
 
 #endif
 
+    // Smallest scene depth beyond the stock center, in mm. The tool reaches well past a small
+    // stock.
+    constexpr float minSceneDepth = 1000.0f;
+    const float depth = std::max(mMaxStockDimension * 10.0f, minSceneDepth);
+
     if (perspective) {
         heightAngle = perspective->heightAngle.getValue();
 
-        nearDistance = mMaxStockDimension * 0.001f;
-        farDistance = mMaxStockDimension * 10.0f;
+        // The far plane is the camera's distance to the stock plus the scene depth, otherwise
+        // zooming out from a small stock clips it. The near plane scales with that distance to
+        // keep the same depth precision.
+        const SbVec3f center(mStockCenter[0], mStockCenter[1], mStockCenter[2]);
+        const float distance = (camera.position.getValue() - center).length();
+        nearDistance = std::max(mMaxStockDimension * 0.001f, distance * 0.001f);
+        farDistance = distance + depth;
     }
     else if (orthographic) {
         height = orthographic->height.getValue();
 
-        nearDistance = -mMaxStockDimension * 10.0f;
-        farDistance = mMaxStockDimension * 10.0f;
+        nearDistance = -depth;
+        farDistance = depth;
     }
 
     if ((bool)perspective == mCameraPerspective && heightAngle == mCameraHeightAngle
@@ -589,10 +716,54 @@ void SimDisplay::UpdateViewMatrix()
     SbVec3f dir(0, 0, -1);
     mCameraOrientation.multVec(dir, dir);
 
-    const auto target = mCameraPosition + dir;
-    mat4x4_look_at(mMatLookAt, mCameraPosition.getValue(), target.getValue(), up.getValue());
+    // An orthographic eye can end up near or past the stock, or far from it, and the clip planes
+    // are set about the eye. Move it along the view direction to one stock radius in front of
+    // the stock center; the image is the same.
+    SbVec3f eye = mCameraPosition;
+    mViewPerspective = mCameraPerspective;
+    if (!mCameraPerspective) {
+        const SbVec3f center(mStockCenter[0], mStockCenter[1], mStockCenter[2]);
+        eye += dir * ((center - eye).dot(dir) - mStockRadius);
+    }
+
+    const auto target = eye + dir;
+    mat4x4_look_at(mMatLookAt, eye.getValue(), target.getValue(), up.getValue());
+    mat4x4_mul(mMatView, mMatLookAt, mMatScene);
+    mViewVersion++;
 
     updateDisplay = true;
+}
+
+namespace
+{
+
+// True when any element of the two matrices differs by more than rounding
+bool SceneMatrixChanged(const mat4x4 oldScene, const mat4x4 newScene)
+{
+    constexpr float sceneChangeTolerance = 1e-5f;
+    for (int c = 0; c < 4; c++) {
+        for (int r = 0; r < 4; r++) {
+            if (std::fabs(oldScene[c][r] - newScene[c][r])
+                > sceneChangeTolerance * (1.f + std::fabs(newScene[c][r]))) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+}  // namespace
+
+void SimDisplay::SetSceneMatrix(const mat4x4 scene)
+{
+    // A moved scene makes the stock cache stale. Compared with the scene the cache was last made
+    // stale at, so that small moves cannot add up unseen.
+    if (SceneMatrixChanged(mVersionScene, scene)) {
+        mViewVersion++;
+        mat4x4_dup(mVersionScene, scene);
+    }
+    mat4x4_dup(mMatScene, scene);
+    mat4x4_mul(mMatView, mMatLookAt, mMatScene);
 }
 
 void SimDisplay::UpdateProjectionMatrix()
@@ -602,6 +773,7 @@ void SimDisplay::UpdateProjectionMatrix()
     const float aspect = (float)mWidth / mHeight;
 
     mat4x4 projmat;
+    mViewVersion++;
 
     if (mCameraPerspective) {
         mat4x4_perspective(projmat, mCameraHeightAngle, aspect, mCameraNearDistance, mCameraFarDistance);
@@ -624,6 +796,8 @@ void SimDisplay::UpdateProjectionMatrix()
     shaderSSAO.UpdateProjectionMat(projmat);
     shaderLinePath.Activate();
     shaderLinePath.UpdateProjectionMat(projmat);
+    shaderSSAOLighting.Activate();
+    shaderSSAOLighting.UpdateProjectionMat(projmat);
 
     projmat[2][2] *= 0.99999F;
     shaderGeomCloser.Activate();

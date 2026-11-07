@@ -88,6 +88,9 @@ extern QOpenGLExtraFunctions gOpenGLFunctions;
 #define glGenFramebuffers gOpenGLFunctions.glGenFramebuffers
 #define glFramebufferTexture2D gOpenGLFunctions.glFramebufferTexture2D
 #define glDrawBuffers gOpenGLFunctions.glDrawBuffers
+#define glBlitFramebuffer gOpenGLFunctions.glBlitFramebuffer
+#define glReadBuffer gOpenGLFunctions.glReadBuffer
+#define glStencilMask gOpenGLFunctions.glStencilMask
 #define glGenRenderbuffers gOpenGLFunctions.glGenRenderbuffers
 #define glBindRenderbuffer gOpenGLFunctions.glBindRenderbuffer
 #define glRenderbufferStorage gOpenGLFunctions.glRenderbufferStorage

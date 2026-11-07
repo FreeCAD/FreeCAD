@@ -49,23 +49,57 @@ public:
     /// <param name="endmill">Mill object</param>
     /// <param name="from">Start point</param>
     /// <param name="to">End point</param>
-    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
+    /// <param name="frame">Frame both points are given in; places the segment in the world</param>
+    MillPathSegment(
+        const EndMill& endmill,
+        const MillMotion& from,
+        const MillMotion& to,
+        const mat4x4 frame
+    );
     virtual ~MillPathSegment();
 
     virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
     virtual void render(int substep);
     virtual void GetHeadPosition(vec3 headPos);
+    void GetToolRotation(mat4x4 rot) const;
+    void SetMinSimSteps(int steps);
+    float Length() const;
+    void SetStepNumber(int step)
+    {
+        mStepNumber = step;
+    }
     static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
 
 public:
     const EndMill* endmill = nullptr;
     bool isMultyPart;
+    bool isCutting = true;  // false for a move that changes the tool axis between frames
+    int frameFrom = 0;      // frame of the motion the segment starts from
+    int frameTo = 0;        // frame the segment is given and drawn in
+    float feed = 0;         // mm/s, 0 when not known
+    bool isRapid = false;
+    float duration = 0;    // seconds the machine takes for the segment
+    float startTime = 0;   // seconds from program start to the segment's start
+    int firstStep = 0;     // simulation step the segment starts at
+    int op = -1;           // operation the segment's move belongs to
+    float turn = 0;        // degrees between the two poses of an index segment; 0 for a normal move
+    float axisTurn = 0;    // rotary travel over the index summed over the axes, degrees, if known
+    float rotaryTime = 0;  // seconds of the segment's duration spent turning the rotaries
+    bool index = false;    // rotaries turn between frames; the tool cuts nothing new
+    bool continuous = false;  // program turns the rotaries while cutting (XYZA moves and similar)
+    std::vector<float> angFrom, angTo;  // rotary positions at the segment ends, degrees
+    float machineLength = 0;            // continuous move: machine X, Y, Z travel
+    float rotaryTravel = 0;             // continuous move: largest rotary travel, degrees
+    vec3 machineFrom = {0, 0, 0};       // continuous move: end points in machine coordinates
+    vec3 machineTo = {0, 0, 0};
     int numSimSteps;
     int indexInArray = -1;
     int segmentIndex = -1;
 
 protected:
     mat4x4 mShearMat;
+    mat4x4 mFrame;
+    mat4x4 mFrameRot;
     Shape mShape;
     float mXYDistance;
     float mXYZDistance;

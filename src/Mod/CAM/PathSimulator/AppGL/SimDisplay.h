@@ -63,6 +63,20 @@ public:
     void SetupLinePathPass(int curSegment, bool isHidden);
     void UpdateWindowScale(int width, int height);
     void UpdateCamera(const SoCamera& camera);
+    void SetSceneMatrix(const mat4x4 scene);
+
+    // Stock cache: the cut stock as last drawn, with the same attachments as the frame buffer.
+    // ViewVersion() changes with the view, projection or window size, making the cache stale.
+    // false when this graphics card cannot keep it: the stock is then drawn whole every frame
+    bool MakeCache();
+    void BeginCacheDraw(bool clear);
+    void EndCacheDraw();
+    void ClearCacheHoles();
+    void CopyCacheToFrame();
+    unsigned int ViewVersion() const
+    {
+        return mViewVersion;
+    }
 
     void SetPathColor(const vec3& normal, const vec3& rapid);
 
@@ -93,6 +107,7 @@ protected:
     Shader shaderGeom, shaderSSAO, shaderSSAOLighting, shaderSSAOBlur;
     Shader shaderGeomCloser;
     Shader shaderLinePath;
+    Shader shaderClear;
 
     vec3 lightColor = {0.5f, 0.6f, 0.7f};
     vec3 lightPos = {20.0f, 20.0f, 10.0f};
@@ -101,6 +116,11 @@ protected:
     vec3 pathLineColorPassed = {0.9f, 0.3f, 0.3f};
 
     mat4x4 mMatLookAt;
+    mat4x4 mMatScene = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+    // the scene when mViewVersion last changed for a scene move
+    mat4x4 mVersionScene = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+    // camera view times the scene matrix (the table pose)
+    mat4x4 mMatView = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
     StockObject mlightObject;
 
     int mWidth = -1;
@@ -115,6 +135,9 @@ protected:
     float mCameraNearDistance = 1.0f;
     float mCameraFarDistance = 100.0f;
     float mMaxStockDimension = 100.0f;
+    vec3 mStockCenter = {0, 0, 0};
+    float mStockRadius = 50.0f;
+    bool mViewPerspective = true;  // camera type the view matrix was last built for
 
     SbVec3f mCameraPosition;
     SbRotation mCameraOrientation;
@@ -126,6 +149,16 @@ protected:
     unsigned int mFboNormTexture = 0;
     unsigned int mRboDepthStencil = 0;
     unsigned int mFboQuadVBO = 0;
+
+    // stock cache frame buffer; mDrawToCache sends geometry passes to it instead of mFbo
+    unsigned int mCacheFbo = 0;
+    unsigned int mCacheColTexture = 0;
+    unsigned int mCachePosTexture = 0;
+    unsigned int mCacheNormTexture = 0;
+    unsigned int mCacheRboDepthStencil = 0;
+    bool mCacheFailed = false;
+    bool mDrawToCache = false;
+    unsigned int mViewVersion = 0;  // incremented on each view, projection or size change
 
     // ssao frame buffers
     bool mSsaoValid = false;
