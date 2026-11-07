@@ -173,8 +173,18 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+       <item row="4" column="2">
+        <widget class="QComboBox" name="rampFeedMode">
+         <property name="toolTip">
+          <string>Automatic limits ramp feed by horizontal and vertical motion. Custom uses the specified ramp feed.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="rampFeed">
+        <property name="toolTip">
+         <string>Feed rate for ramp and helical entry moves</string>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>

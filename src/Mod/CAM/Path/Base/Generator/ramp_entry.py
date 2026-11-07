@@ -18,8 +18,10 @@
 #                                                                              #
 ################################################################################
 
+import FreeCAD
 import Path
 from Path.Geom import isRoughly, isStrictlyGreater, pointsCoincide
+import Path.Base.FeedRate as PathFeedRate
 
 import copy
 import math
@@ -132,7 +134,7 @@ class RampEntry:
                 raise ValueError("'HorizFeed' is 0")
             if not self.tc.VertFeed.Value:
                 raise ValueError("'VertFeed' is 0")
-            if not self.tc.RampFeed.Value:
+            if self.tc.RampFeedMode == "Custom" and not self.tc.RampFeed.Value:
                 raise ValueError("'RampFeed' is 0")
 
         if self.ignoreAbove is not None and not isinstance(self.ignoreAbove, (float, int)):
@@ -580,8 +582,15 @@ class RampEntry:
             if self.tc:
                 # set feed rate
                 if cmd.Name in Path.Geom.CmdMoveMill:
-                    if not isRoughly(lastZ, z):
-                        if pointsCoincide((x, y), (lastX, lastY)):
+                    if self.tc.RampFeedMode == "Automatic":
+                        params["F"] = PathFeedRate.rampFeedRate(
+                            self.tc, cmd, FreeCAD.Vector(lastX, lastY, lastZ)
+                        )
+                    elif not isRoughly(lastZ, z):
+                        if (
+                            pointsCoincide((x, y), (lastX, lastY))
+                            and cmd.Name not in Path.Geom.CmdMoveArc
+                        ):
                             params["F"] = self.tc.VertFeed.Value
                         else:
                             params["F"] = self.tc.RampFeed.Value

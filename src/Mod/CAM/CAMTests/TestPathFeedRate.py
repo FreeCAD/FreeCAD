@@ -19,6 +19,8 @@
 #                                                                              #
 ################################################################################
 
+import math
+import FreeCAD
 import Path
 import Path.Base.FeedRate as PathFeedRate
 
@@ -74,3 +76,77 @@ class TestPathFeedRate(PathTestBase):
         cmd = Path.Command("G1", {"X": 10.0, "Y": 0.0, "Z": 0.0})
         PathFeedRate.setFeedRate([cmd], _TestToolController(vert=50.0, horiz=250.0))
         self.assertEqual(cmd.Parameters["F"], 250.0)
+
+    def testAutomaticRampFeed(self):
+        tc = _TestToolController(vert=2.0, horiz=10.0)
+        tc.RampFeedMode = "Automatic"
+        start = FreeCAD.Vector()
+        for horizontal, vertical, expected in (
+            (10.0, 1.0, math.hypot(10.0, 1.0)),
+            (1.0, 10.0, 2.0 * math.hypot(1.0, 10.0) / 10.0),
+            (10.0, 0.0, 10.0),
+            (0.0, 10.0, 2.0),
+            (0.0, 0.0, 10.0),
+        ):
+            for direction in (-1, 1):
+                command = Path.Command("G1", {"X": horizontal, "Z": direction * vertical})
+                self.assertAlmostEqual(PathFeedRate.rampFeedRate(tc, command, start), expected)
+
+        tc.VertFeed.Value = 0.0
+        self.assertEqual(
+            PathFeedRate.rampFeedRate(tc, Path.Command("G1", {"X": 10, "Z": -1}), start),
+            0.0,
+        )
+
+    def testAutomaticHelixFeed(self):
+        """Full circles must use arc length, even with coincident XY endpoints."""
+        tc = _TestToolController(vert=2.0, horiz=10.0)
+        tc.RampFeedMode = "Automatic"
+        start = FreeCAD.Vector(5, 0, 0)
+        for name in ("G2", "G3"):
+            for height in (1.0, 100.0):
+                command = Path.Command(name, {"X": 5, "Y": 0, "Z": -height, "I": -5})
+                horizontal = 10 * math.pi
+                length = math.hypot(horizontal, height)
+                expected = min(10 * length / horizontal, 2 * length / height)
+                self.assertAlmostEqual(PathFeedRate.rampFeedRate(tc, command, start), expected)
+                self.assertEqual(command.Parameters["Z"], -height)
+
+        # Quarter-circle travel is longer than its chord, too.
+        command = Path.Command("G3", {"X": 0, "Y": 5, "Z": -10, "I": -5, "K": -5})
+        horizontal = 2.5 * math.pi
+        length = math.hypot(horizontal, 10)
+        self.assertAlmostEqual(
+            PathFeedRate.rampFeedRate(tc, command, start),
+            min(10 * length / horizontal, 2 * length / 10),
+        )
+        # Same endpoints, opposite direction: this is a three-quarter arc.
+        command = Path.Command("G2", command.Parameters)
+        horizontal = 7.5 * math.pi
+        length = math.hypot(horizontal, 10)
+        self.assertAlmostEqual(
+            PathFeedRate.rampFeedRate(tc, command, start),
+            min(10 * length / horizontal, 2 * length / 10),
+        )
+
+    def testCustomRampFeed(self):
+        tc = _TestToolController(vert=2.0, horiz=10.0)
+        tc.RampFeedMode = "Custom"
+        tc.RampFeed = _Quantity(123.0)
+        command = Path.Command("G1", {"X": 1, "Z": -10})
+        self.assertEqual(PathFeedRate.rampFeedRate(tc, command, FreeCAD.Vector()), 123.0)
+
+    def testRampFeedTracksPosition(self):
+        tc = _TestToolController(vert=2.0, horiz=10.0)
+        tc.RampFeedMode = "Automatic"
+        commands = [
+            Path.Command("G0", {"X": 5, "Y": 0, "Z": 10, "F": 99}),
+            Path.Command("G3", {"Z": 9, "I": -5}),
+            Path.Command("G1", {"X": 15, "Z": 8}),
+        ]
+        PathFeedRate.setRampFeedRate(commands, tc)
+        self.assertEqual(commands[0].Parameters["F"], 99)
+        self.assertAlmostEqual(
+            commands[1].Parameters["F"], 10 * math.hypot(10 * math.pi, 1) / (10 * math.pi)
+        )
+        self.assertAlmostEqual(commands[2].Parameters["F"], math.hypot(10, 1))

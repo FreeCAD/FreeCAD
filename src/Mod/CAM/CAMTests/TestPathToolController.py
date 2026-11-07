@@ -97,3 +97,47 @@ class TestPathToolController(PathTestBase):
         # self.assertEqual(tc0.Tool.Name, tc1.Tool.Name)
         # self.assertEqual(tc0.Tool.Label, tc1.Tool.Label)
         self.assertRoughly(tc0.Tool.Diameter, tc1.Tool.Diameter)
+
+    def testRampFeedModes(self):
+        tc = PathToolController.Create("TC", self.createTool())
+        self.assertEqual(tc.RampFeedMode, "Automatic")
+        self.assertNotIn("RampFeed", dict(tc.ExpressionEngine))
+        for mode in ("Custom", "Automatic"):
+            tc.RampFeedMode = mode
+            tc.RampFeed = 7.0
+            restored = PathToolController.FromTemplate(tc.Proxy.templateAttrs(tc))
+            self.assertEqual(restored.RampFeedMode, mode)
+            self.assertEqual(restored.RampFeed.Value, 7.0)
+
+    def testLegacyRampFeedMigration(self):
+        tc = PathToolController.Create("TC", self.createTool())
+        tc.removeProperty("RampFeedMode")
+        tc.RampFeed = 7.0
+        tc.Proxy.onDocumentRestored(tc)
+        self.assertEqual(tc.RampFeedMode, "Custom")
+        self.assertEqual(tc.RampFeed.Value, 7.0)
+
+        tc.removeProperty("RampFeedMode")
+        tc.setExpression("RampFeed", "HorizFeed / 2")
+        tc.Proxy.onDocumentRestored(tc)
+        self.assertEqual(tc.RampFeedMode, "Custom")
+        self.assertEqual(dict(tc.ExpressionEngine)["RampFeed"], "HorizFeed / 2")
+
+        tc.removeProperty("RampFeedMode")
+        tc.removeProperty("RampFeed")
+        tc.Proxy.onDocumentRestored(tc)
+        self.assertEqual(tc.RampFeedMode, "Automatic")
+        self.assertNotIn("RampFeed", dict(tc.ExpressionEngine))
+
+    def testLegacyRampFeedTemplate(self):
+        tc = PathToolController.Create("TC", self.createTool())
+        tc.RampFeed = 7.0
+        template = tc.Proxy.templateAttrs(tc)
+        del template[PathToolController.ToolControllerTemplate.RampFeedMode]
+        restored = PathToolController.FromTemplate(template)
+        self.assertEqual(restored.RampFeedMode, "Custom")
+        self.assertEqual(restored.RampFeed.Value, 7.0)
+
+        del template[PathToolController.ToolControllerTemplate.RampFeed]
+        restored = PathToolController.FromTemplate(template)
+        self.assertEqual(restored.RampFeedMode, "Automatic")

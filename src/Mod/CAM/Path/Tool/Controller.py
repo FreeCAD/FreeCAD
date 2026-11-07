@@ -53,6 +53,7 @@ class ToolControllerTemplate:
     LeadOutFeed = "leadoutfeed"
     Name = "name"
     RampFeed = "rampfeed"
+    RampFeedMode = "rampfeedmode"
     NoEngagementFeed = "noengagementfeed"
     SpindleDir = "dir"
     SpindleSpeed = "speed"
@@ -120,6 +121,7 @@ def _migrateRampDressups(tc):
             opTc.Label = opTc.Name
 
         feed_to_tc[feed] = opTc
+        opTc.RampFeedMode = "Custom"
 
         if isinstance(feed, str):
             opTc.setExpression("RampFeed", feed)
@@ -186,9 +188,9 @@ class ToolController:
             "App::PropertySpeed",
             "RampFeed",
             "Feed",
-            QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp and helical entry moves"),
         )
-        obj.setExpression("RampFeed", "HorizFeed")
+        self._addRampFeedMode(obj, "Automatic")
 
         obj.addProperty(
             "App::PropertySpeed",
@@ -220,9 +222,27 @@ class ToolController:
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
+        self.onChanged(obj, "RampFeedMode")
 
         if createTool:
             self.ensureToolBit(obj)
+
+    @staticmethod
+    def _addRampFeedMode(obj, mode):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "RampFeedMode",
+            "Feed",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Automatic limits ramp feed by horizontal and vertical motion"
+            ),
+        )
+        obj.RampFeedMode = ["Automatic", "Custom"]
+        obj.RampFeedMode = mode
+
+    def onChanged(self, obj, prop):
+        if prop == "RampFeedMode" and hasattr(obj, "RampFeed"):
+            obj.setEditorMode("RampFeed", 1 if obj.RampFeedMode == "Automatic" else 0)
 
     @classmethod
     def propertyEnumerations(cls, dataType="data"):
@@ -237,6 +257,10 @@ class ToolController:
 
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
+            "RampFeedMode": [
+                (translate("CAM_ToolController", "Automatic"), "Automatic"),
+                (translate("CAM_ToolController", "Custom"), "Custom"),
+            ],
             "SpindleDir": [
                 (translate("CAM_ToolController", "Forward"), "Forward"),
                 (translate("CAM_ToolController", "Reverse"), "Reverse"),
@@ -277,14 +301,16 @@ class ToolController:
         obj.setEditorMode("Placement", 2)
 
         needsRecompute = False
+        if not hasattr(obj, "RampFeedMode"):
+            self._addRampFeedMode(obj, "Custom" if hasattr(obj, "RampFeed") else "Automatic")
+            needsRecompute = True
         if not hasattr(obj, "RampFeed"):
             obj.addProperty(
                 "App::PropertySpeed",
                 "RampFeed",
                 "Feed",
-                QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+                QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp and helical entry moves"),
             )
-            obj.setExpression("RampFeed", "HorizFeed")
             _migrateRampDressups(obj)
             needsRecompute = True
 
@@ -321,6 +347,7 @@ class ToolController:
 
         if needsRecompute:
             obj.recompute()
+        self.onChanged(obj, "RampFeedMode")
 
     def onDelete(self, obj, arg2=None):
         if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
@@ -353,6 +380,9 @@ class ToolController:
                     )
                 if template.get(ToolControllerTemplate.RampFeed):
                     obj.RampFeed = template.get(ToolControllerTemplate.RampFeed, obj.RampFeed)
+                    obj.RampFeedMode = "Custom"
+                if template.get(ToolControllerTemplate.RampFeedMode):
+                    obj.RampFeedMode = template.get(ToolControllerTemplate.RampFeedMode)
                 if template.get(ToolControllerTemplate.NoEngagementFeed):
                     obj.NoEngagementFeed = template.get(
                         ToolControllerTemplate.NoEngagementFeed, obj.NoEngagementFeed
@@ -389,6 +419,12 @@ class ToolController:
                 if template.get(ToolControllerTemplate.Expressions):
                     for exprDef in template.get(ToolControllerTemplate.Expressions):
                         if exprDef[ToolControllerTemplate.ExprExpr]:
+                            if exprDef[
+                                ToolControllerTemplate.ExprProp
+                            ] == "RampFeed" and not template.get(
+                                ToolControllerTemplate.RampFeedMode
+                            ):
+                                obj.RampFeedMode = "Custom"
                             obj.setExpression(
                                 exprDef[ToolControllerTemplate.ExprProp],
                                 exprDef[ToolControllerTemplate.ExprExpr],
@@ -414,6 +450,7 @@ class ToolController:
         attrs[ToolControllerTemplate.LeadInFeed] = "%s" % (obj.LeadInFeed)
         attrs[ToolControllerTemplate.LeadOutFeed] = "%s" % (obj.LeadOutFeed)
         attrs[ToolControllerTemplate.RampFeed] = "%s" % (obj.RampFeed)
+        attrs[ToolControllerTemplate.RampFeedMode] = str(obj.RampFeedMode)
         attrs[ToolControllerTemplate.NoEngagementFeed] = "%s" % (obj.NoEngagementFeed)
         attrs[ToolControllerTemplate.VertRapid] = "%s" % (obj.VertRapid)
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)

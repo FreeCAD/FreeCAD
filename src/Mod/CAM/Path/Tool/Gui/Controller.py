@@ -216,7 +216,7 @@ class ToolControllerEditor(object):
             self.controller.tcOperationCountLabel.hide()
         self.obj = obj
 
-        comboToPropertyMap = [("spindleDirection", "SpindleDir")]
+        comboToPropertyMap = [("spindleDirection", "SpindleDir"), ("rampFeedMode", "RampFeedMode")]
         enumTups = PathToolController.ToolController.propertyEnumerations(dataType="raw")
 
         PathGuiUtil.populateCombobox(self.controller, enumTups, comboToPropertyMap)
@@ -310,6 +310,7 @@ class ToolControllerEditor(object):
             self.vertRapid.widget,
             self.controller.spindleSpeed,
             self.controller.spindleDirection,
+            self.controller.rampFeedMode,
         ]
         try:
             for obj in blockObjects:
@@ -324,6 +325,8 @@ class ToolControllerEditor(object):
             self.leadInFeed.updateWidget()
             self.leadOutFeed.updateWidget()
             self.rampFeed.updateWidget()
+            self.selectInComboBox(tc.RampFeedMode, self.controller.rampFeedMode)
+            self.rampFeed.widget.setEnabled(tc.RampFeedMode == "Custom")
             self.noEngagementFeed.updateWidget()
             self.vertFeed.updateWidget()
             self.vertRapid.updateWidget()
@@ -380,7 +383,9 @@ class ToolControllerEditor(object):
             self.vertFeed.updateProperty()
             self.leadInFeed.updateProperty()
             self.leadOutFeed.updateProperty()
-            self.rampFeed.updateProperty()
+            tc.RampFeedMode = self.controller.rampFeedMode.currentData()
+            if tc.RampFeedMode == "Custom":
+                self.rampFeed.updateProperty()
             self.noEngagementFeed.updateProperty()
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
@@ -422,6 +427,7 @@ class ToolControllerEditor(object):
         self.leadInFeed.widget.textChanged.connect(self.changed)
         self.leadOutFeed.widget.textChanged.connect(self.changed)
         self.rampFeed.widget.textChanged.connect(self.changed)
+        self.controller.rampFeedMode.currentIndexChanged.connect(self.changed)
         self.noEngagementFeed.widget.textChanged.connect(self.changed)
         self.vertRapid.widget.textChanged.connect(self.changed)
         self.horizRapid.widget.textChanged.connect(self.changed)

@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
 import FreeCAD
 import Path
 import Path.Base.MachineState as PathMachineState
@@ -40,6 +41,52 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+def rampFeedRate(toolController, command, start):
+    """Resolve an entry feed from its actual XY travel and Z displacement.
+
+    Arc travel is measured in the XY plane, not along the endpoint chord.
+    Automatic feeds limit both velocity components; custom feeds are unchanged.
+    """
+    if getattr(toolController, "RampFeedMode", "Custom") != "Automatic":
+        return toolController.RampFeed.Value
+
+    end = Path.Geom.commandEndPoint(command, start)
+    vertical = abs(end.z - start.z)
+    horizontal = math.hypot(end.x - start.x, end.y - start.y)
+    if command.Name in Path.Geom.CmdMoveArc:
+        params = command.Parameters
+        # Entry generators emit XY-plane arcs with relative I/J centers.
+        i, j = params.get("I", 0.0), params.get("J", 0.0)
+        a = math.atan2(-j, -i)
+        b = math.atan2(end.y - start.y - j, end.x - start.x - i)
+        sweep = (a - b if command.Name in Path.Geom.CmdMoveCW else b - a) % math.tau
+        if Path.Geom.pointsCoincide(Path.Geom.xy(start), Path.Geom.xy(end)):
+            sweep = math.tau
+        horizontal = math.hypot(i, j) * sweep
+
+    length = math.hypot(horizontal, vertical)
+    if not length:
+        return toolController.HorizFeed.Value
+    limits = []
+    if horizontal:
+        limits.append(toolController.HorizFeed.Value * length / horizontal)
+    if vertical:
+        limits.append(toolController.VertFeed.Value * length / vertical)
+    return min(limits)
+
+
+def setRampFeedRate(commands, toolController):
+    """Apply entry feeds, tracking modal coordinates through positioning moves."""
+    machine = PathMachineState.MachineState()
+    for command in commands:
+        if command.Name in Path.Geom.CmdMoveMill:
+            params = command.Parameters
+            params["F"] = rampFeedRate(toolController, command, machine.getPosition())
+            command.Parameters = params
+        machine.addCommand(command)
+    return commands
 
 
 def setFeedRate(commandlist, ToolController):

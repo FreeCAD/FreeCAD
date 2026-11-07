@@ -255,6 +255,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                 op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
                 PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                # The helical entry is a ramp move; use the ramp feed rate.
+                if obj.ToolController.RampFeedMode == "Automatic" or op.rampFeed:
+                    PathFeedRate.setRampFeedRate(helixCommands, obj.ToolController)
                 op.commandlist.extend(helixCommands[2:])
 
                 if cone_angle_rad:
@@ -270,6 +273,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                     }
                     spiralCommands = spiral.generate(**spiralArgs)
                     PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
+                    # The spiral is part of the entry; use the ramp feed rate.
+                    if obj.ToolController.RampFeedMode == "Automatic" or op.rampFeed:
+                        PathFeedRate.setRampFeedRate(spiralCommands, obj.ToolController)
                     # remove first linear movements
                     while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
                         del spiralCommands[0]
