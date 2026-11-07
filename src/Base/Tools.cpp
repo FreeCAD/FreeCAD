@@ -141,12 +141,10 @@ std::string Base::Tools::wstringToString(const std::wstring& str)
     }
     // Use a two-pass WideCharToMultiByte approach, which is the official recommendation as of this
     // writing (2026).
-    int neededSize
-        = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str.data(), -1, nullptr, 0, nullptr, nullptr);
-    // WideCharToMultiByte returns 0 on failure, e.g. for an unpaired UTF-16
-    // surrogate (NTFS allows such names). Without this check the code would
-    // allocate new char[0] and then build a std::string from a buffer that
-    // was never NUL-terminated, scanning out of bounds.
+    int inputLength = static_cast<int>(str.size());
+    int neededSize = WideCharToMultiByte(
+        CP_UTF8, WC_ERR_INVALID_CHARS, str.data(), inputLength, nullptr, 0, nullptr, nullptr
+    );
     if (neededSize <= 0) {
         return {};
     }
@@ -155,7 +153,7 @@ std::string Base::Tools::wstringToString(const std::wstring& str)
         CP_UTF8,
         WC_ERR_INVALID_CHARS,
         str.data(),
-        -1,
+        inputLength,
         result.data(),
         neededSize,
         nullptr,
@@ -164,8 +162,6 @@ std::string Base::Tools::wstringToString(const std::wstring& str)
     if (written <= 0) {
         return {};
     }
-    // The size includes the terminating NUL (the input length was -1), so trim it.
-    result.resize(static_cast<size_t>(written) - 1);
     return result;
 }
 #endif
