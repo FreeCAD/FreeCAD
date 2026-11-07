@@ -54,7 +54,8 @@ class TestGroupedAssemblyInsert(unittest.TestCase):
     def _listed(self, only_parts=False):
         self.doc.recompute()
         self.task = CommandInsertLink.TaskAssemblyInsertLink(
-            self.assembly, Gui.activeDocument().activeView())
+            self.assembly, Gui.activeDocument().activeView()
+        )
         # Keep both native QObject wrappers until normal task teardown.
         self.form = self.task.form
         self.form.CheckBox_ShowOnlyParts.setChecked(only_parts)
