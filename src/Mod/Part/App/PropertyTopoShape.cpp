@@ -1043,17 +1043,16 @@ void PropertyFilletEdges::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    // Do not pre-size the vector from the untrusted count: a crafted file can
-    // claim e.g. 0xFFFFFFFF elements and force a huge zero-filled allocation
-    // before a single byte of element data is read. Read incrementally instead
-    // and stop as soon as the stream runs dry, so the memory used is bounded by
-    // the data actually present.
+    if (!str) {
+        throw Base::FileException("Failed to read the number of fillet edges");
+    }
+    // The count comes from the file, so do not pre-size the vector from it.
     std::vector<FilletElement> values;
-    for (uint32_t i = 0; i < uCt && str; ++i) {
+    for (uint32_t i = 0; i < uCt; ++i) {
         FilletElement fe;
         str >> fe.edgeid >> fe.radius1 >> fe.radius2;
         if (!str) {
-            break;
+            throw Base::FileException("Fillet edge data is truncated");
         }
         values.push_back(fe);
     }
