@@ -639,10 +639,9 @@ void CosmeticExtension::removeGeomFormat(const std::string& delTag)
     for (auto& gf: cFormats) {
         if (gf->getTagAsString() != delTag)  {
             newFormats.push_back(gf);
-            continue;
         }
-        delete gf;
     }
+    // setValues deletes the removed entry
     GeomFormats.setValues(newFormats);
 }
 
