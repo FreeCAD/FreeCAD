@@ -83,6 +83,27 @@ TEST(NumericFormattingTest, formatsValuesWithEffectiveSeparators)
     );
 }
 
+TEST(NumericFormattingTest, negativeValuesRoundingToZeroHaveNoSign)
+{
+    const auto enUs = Base::createNumericLocaleContext("en_US");
+    Base::QuantityFormat fixed(Base::QuantityFormat::Fixed, 2);
+    fixed.option = Base::QuantityFormat::None;
+
+    // Values that round to zero at the display precision must not show a minus sign (#17271)
+    EXPECT_EQ(Base::formatNumericValue(-1e-17, fixed, enUs), "0.00");
+    EXPECT_EQ(Base::formatNumericValue(-0.0, fixed, enUs), "0.00");
+    EXPECT_EQ(Base::formatNumericValue(-0.004, fixed, enUs), "0.00");
+
+    // Values that stay non-zero after rounding keep their sign
+    EXPECT_EQ(Base::formatNumericValue(-0.006, fixed, enUs), "-0.01");
+    EXPECT_EQ(Base::formatNumericValue(-1.5, fixed, enUs), "-1.50");
+
+    // The same rule applies with locale-specific separators
+    const auto deDe = Base::createNumericLocaleContext("de_DE");
+    EXPECT_EQ(Base::formatNumericValue(-1e-17, fixed, deDe), "0,00");
+    EXPECT_EQ(Base::formatNumericValue(-1.5, fixed, deDe), "-1,50");
+}
+
 TEST(NumericFormattingTest, cLocaleUsesDeterministicFallback)
 {
     const Base::NumericLocaleContext expected {"en_US_POSIX", ".", ",", "+", "-", 3, 3, "0"};
