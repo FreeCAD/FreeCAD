@@ -84,8 +84,7 @@ std::optional<Base::Matrix4D> standaloneLinearPatternEditingTransform(
     PartDesign::Transformed* pattern
 )
 {
-    if (!freecad_cast<PartDesign::LinearPattern*>(pattern) || !view
-        || view->getObject() != pattern) {
+    if (!freecad_cast<PartDesign::LinearPattern*>(pattern) || !view || view->getObject() != pattern) {
         return std::nullopt;
     }
     auto* document = Gui::Application::Instance->editDocument([view](Gui::Document* doc) {
@@ -267,7 +266,8 @@ Base::Vector3d TaskPatternParameters::getPatternStartPoint() const
 {
     const auto point = getStartPoint();
     auto* pattern = freecad_cast<PartDesign::Transformed*>(getObject());
-    if (const auto transform = standaloneLinearPatternEditingTransform(getTopTransformedView(), pattern)) {
+    if (const auto transform
+        = standaloneLinearPatternEditingTransform(getTopTransformedView(), pattern)) {
         // getStartPoint is already in Body coordinates; return to the pattern's
         // local frame before applying its complete selected-occurrence transform.
         Base::Vector3d localPoint;
@@ -297,7 +297,8 @@ Base::Vector3d TaskPatternParameters::transformLinearPatternDirection(
         return direction;
     }
 
-    if (const auto transform = standaloneLinearPatternEditingTransform(getTopTransformedView(), transformed)) {
+    if (const auto transform
+        = standaloneLinearPatternEditingTransform(getTopTransformedView(), transformed)) {
         return transform->getCol(0) * direction.x + transform->getCol(1) * direction.y
             + transform->getCol(2) * direction.z;
     }

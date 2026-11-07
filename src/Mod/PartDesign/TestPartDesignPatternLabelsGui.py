@@ -14,8 +14,12 @@ from PySide import QtGui
 def worldPoint(matrix, point):
     rows = matrix
     values = tuple(point.getValue())
-    return App.Vector(*(sum(values[index] * rows[index][component] for index in range(3))
-                        + rows[3][component] for component in range(3)))
+    return App.Vector(
+        *(
+            sum(values[index] * rows[index][component] for index in range(3)) + rows[3][component]
+            for component in range(3)
+        )
+    )
 
 
 def datumLabels(datum_type):
@@ -87,17 +91,20 @@ class TestPartDesignPatternLabelsGui(unittest.TestCase):
         if nested or linked:
             part = self.doc.addObject("App::Part", "Part")
             part.addObject(body)
-            part.Placement = App.Placement(App.Vector(20, -30, 40),
-                                           App.Rotation(App.Vector(0, 1, 0), 25))
+            part.Placement = App.Placement(
+                App.Vector(20, -30, 40), App.Rotation(App.Vector(0, 1, 0), 25)
+            )
             root = part
         if body_placed:
-            body.Placement = App.Placement(App.Vector(100, 200, 30),
-                                           App.Rotation(App.Vector(0, 0, 1), 90))
+            body.Placement = App.Placement(
+                App.Vector(100, 200, 30), App.Rotation(App.Vector(0, 0, 1), 90)
+            )
         box = self.makeBox(body)
         if feature_placed:
             # X rotation leaves the pattern's X direction and box length aligned.
-            box.Placement = App.Placement(App.Vector(5, 7, 11),
-                                          App.Rotation(App.Vector(1, 0, 0), 30))
+            box.Placement = App.Placement(
+                App.Vector(5, 7, 11), App.Rotation(App.Vector(1, 0, 0), 30)
+            )
         pattern = self.makeLinearPattern(body, box)
         path = pattern.Name + "."
         if nested or linked:
@@ -106,8 +113,9 @@ class TestPartDesignPatternLabelsGui(unittest.TestCase):
             link = self.doc.addObject("App::Link", "Instance")
             link.LinkedObject = root
             link.LinkTransform = True
-            link.LinkPlacement = App.Placement(App.Vector(-50, 60, 80),
-                                               App.Rotation(App.Vector(1, 0, 0), 50))
+            link.LinkPlacement = App.Placement(
+                App.Vector(-50, 60, 80), App.Rotation(App.Vector(1, 0, 0), 50)
+            )
             root = link
             self.doc.recompute()
         # Obtain the selected model occurrence independently of the GUI labels.
@@ -118,8 +126,11 @@ class TestPartDesignPatternLabelsGui(unittest.TestCase):
         Gui.updateGui()
         edit_matrix = Gui.getDocument(self.doc.Name).EditingTransform
         for basis in (App.Vector(), App.Vector(1, 0, 0), App.Vector(0, 1, 0), App.Vector(0, 0, 1)):
-            self.assertLess((model_matrix.multVec(basis) - edit_matrix.multVec(basis)).Length, 1e-6,
-                            "Editing transform must match the selected model occurrence")
+            self.assertLess(
+                (model_matrix.multVec(basis) - edit_matrix.multVec(basis)).Length,
+                1e-6,
+                "Editing transform must match the selected model occurrence",
+            )
         # The source center is in Body coordinates. Remove the pattern's local
         # placement before applying its full selected-occurrence matrix.
         local_start = pattern.Placement.inverse().multVec(box.Shape.CenterOfMass)
@@ -166,8 +177,9 @@ class TestPartDesignPatternLabelsGui(unittest.TestCase):
         angle = App.Units.parseQuantity(str(label.getField("string")[0])).getValueAs("deg")
         self.assertAlmostEqual(angle.Value, 90)
         center = box.Shape.CenterOfMass
-        self.assertAlmostEqual(label.getField("param2").getValue(),
-                               math.atan2(center.y, center.x), places=6)
+        self.assertAlmostEqual(
+            label.getField("param2").getValue(), math.atan2(center.y, center.x), places=6
+        )
         origin = worldPoint(matrix, coin.SbVec3f(0, 0, 0))
         self.assertLess(origin.Length, 1e-5)
         axis = worldPoint(matrix, coin.SbVec3f(0, 0, 1)) - origin
