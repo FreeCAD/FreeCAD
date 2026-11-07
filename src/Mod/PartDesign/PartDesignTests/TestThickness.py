@@ -176,6 +176,73 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(len(thickness.Shape.Solids), 1)
         self.assertEqual(thickness.Placement, base.Placement)
 
+    def _create_box_with_sphere(self, sphereCenter):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        box.Length = 20.0
+        box.Width = 10.0
+        box.Height = 5.0
+        box.Placement = FreeCAD.Placement(FreeCAD.Vector(-10, -5, -5), FreeCAD.Rotation())
+        body.addObject(box)
+        sphere = self.Doc.addObject("PartDesign::SubtractiveSphere", "Sphere")
+        sphere.Radius = 3.0
+        sphere.Placement = FreeCAD.Placement(sphereCenter, FreeCAD.Rotation())
+        body.addObject(sphere)
+        self.Doc.recompute()
+        return body, sphere
+
+    def _add_thickness_on_bottom_face(self, body, base, bottomZ):
+        bottom = max(
+            (
+                index
+                for index, face in enumerate(base.Shape.Faces, 1)
+                if isinstance(face.Surface, Part.Plane)
+                and abs(face.CenterOfMass.z - bottomZ) < 1.0e-7
+            ),
+            key=lambda index: base.Shape.Faces[index - 1].Area,
+        )
+        thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
+        thickness.Base = (base, ["Face" + str(bottom)])
+        thickness.Value = 0.5
+        thickness.Reversed = True
+        body.addObject(thickness)
+        self.Doc.recompute()
+        return thickness
+
+    def testThicknessOnPatternedSphere(self):
+        body, sphere = self._create_box_with_sphere(FreeCAD.Vector(-6, 0, 0))
+        pattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
+        pattern.Originals = [sphere]
+        pattern.Direction = (self.Doc.getObject("X_Axis"), [""])
+        pattern.Length = 12.0
+        pattern.Occurrences = 2
+        body.addObject(pattern)
+        self.Doc.recompute()
+        self.assertTrue(pattern.isValid())
+
+        thickness = self._add_thickness_on_bottom_face(body, pattern, -5.0)
+
+        self.assertTrue(thickness.isValid())
+        self.assertTrue(thickness.Shape.isValid())
+        self.assertEqual(len(thickness.Shape.Solids), 1)
+
+    def testThicknessOnSphereFollowedByPlacedFeature(self):
+        body, sphere = self._create_box_with_sphere(FreeCAD.Vector())
+        box = self.Doc.addObject("PartDesign::AdditiveBox", "LowerBox")
+        box.Length = 20.0
+        box.Width = 10.0
+        box.Height = 3.0
+        box.Placement = FreeCAD.Placement(FreeCAD.Vector(-10, -5, -8), FreeCAD.Rotation())
+        body.addObject(box)
+        self.Doc.recompute()
+        self.assertTrue(box.isValid())
+
+        thickness = self._add_thickness_on_bottom_face(body, box, -8.0)
+
+        self.assertTrue(thickness.isValid())
+        self.assertTrue(thickness.Shape.isValid())
+        self.assertEqual(len(thickness.Shape.Solids), 1)
+
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestThickness")
 

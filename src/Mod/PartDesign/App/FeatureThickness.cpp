@@ -29,6 +29,7 @@
 
 #include <BRepOffset_Mode.hxx>
 #include <Precision.hxx>
+#include <ShapeUpgrade_RemoveLocations.hxx>
 #include <TopoDS.hxx>
 
 
@@ -167,6 +168,11 @@ App::DocumentObjectExecReturn* Thickness::execute()
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
+
+    // OCC cannot offset a sphere whose pole carries a location
+    ShapeUpgrade_RemoveLocations removeLocations;
+    removeLocations.Remove(TopShape.getShape());
+    TopShape.setShape(removeLocations.GetResult(), false);
 
     std::map<int, std::vector<TopoShape>> closeFaces;
     for (const auto& it : subStrings) {
