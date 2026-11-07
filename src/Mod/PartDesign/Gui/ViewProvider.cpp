@@ -300,6 +300,12 @@ void ViewProvider::onChanged(const App::Property* prop)
                         Gui::Application::Instance->getViewProvider(obj)
                     );
                     if (vpd && vpd->Visibility.getValue()) {
+                        // Showing without modifying the document must not modify it here either
+                        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+                            App::Property::NoModify,
+                            &vpd->Visibility,
+                            Visibility.testStatus(App::Property::NoModify)
+                        );
                         vpd->Visibility.setValue(false);
                     }
                 }
