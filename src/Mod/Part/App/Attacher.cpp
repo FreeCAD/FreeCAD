@@ -2053,7 +2053,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             }
 
             // extract the four lines
-            const TopoDS_Edge* edges[4];
+            const TopoDS_Edge* edges[4] = {nullptr, nullptr, nullptr, nullptr};
             BRepAdaptor_Curve adapts[4];
             gp_Lin lines[4];
             for (int i = 0; i < 4; i++) {
@@ -2062,7 +2062,9 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 }
                 catch (...) {
                 }
-                if (edges[i]->IsNull()) {
+                // If TopoDS::Edge threw (the shape is not an edge), edges[i] is
+                // still null; dereferencing it below would be a wild-pointer read.
+                if (edges[i] == nullptr || edges[i]->IsNull()) {
                     throw Base::ValueError(
                         "Null edge in AttachEngine3D::calculateAttachedPlacement()!"
                     );
