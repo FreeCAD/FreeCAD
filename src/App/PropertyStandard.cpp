@@ -3644,10 +3644,12 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
 void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader)
 {
     Base::InputStream str(reader);
-    std::vector<Material> values(count);
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<Material> values;
     uint32_t value {};  // must be 32 bit long
     float valueF {};
-    for (auto& it : values) {
+    for (uint32_t i = 0; i < count; ++i) {
+        Material it;
         str >> value;
         it.ambientColor.setPackedValue(value);
         str >> value;
@@ -3660,6 +3662,10 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
         it.shininess = valueF;
         str >> valueF;
         it.transparency = valueF;
+        if (!str) {
+            throw Base::FileException("PropertyMaterialList::RestoreDocFile(): truncated data");
+        }
+        values.push_back(it);
     }
     convertAlpha(values);
     setValues(values);
@@ -3670,10 +3676,12 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t count = 0;
     str >> count;
-    std::vector<Material> values(count);
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<Material> values;
     uint32_t value {};  // must be 32 bit long
     float valueF {};
-    for (auto& it : values) {
+    for (uint32_t i = 0; i < count; ++i) {
+        Material it;
         str >> value;
         it.ambientColor.setPackedValue(value);
         str >> value;
@@ -3686,6 +3694,10 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
         it.shininess = valueF;
         str >> valueF;
         it.transparency = valueF;
+        if (!str) {
+            throw Base::FileException("PropertyMaterialList::RestoreDocFile(): truncated data");
+        }
+        values.push_back(it);
     }
     for (auto& it : values) {
         readString(str, it.image);
@@ -3708,9 +3720,19 @@ void PropertyMaterialList::readString(Base::InputStream& str, std::string& value
     uint32_t uCt {};
     str >> uCt;
 
-    std::vector<char> temp(uCt);
-    str.read(temp.data(), uCt);
-    value.assign(temp.data(), temp.size());
+    // Read in chunks instead of allocating the untrusted length up front.
+    value.clear();
+    char buffer[4096];
+    uint32_t remaining = uCt;
+    while (remaining > 0) {
+        uint32_t n = remaining < sizeof(buffer) ? remaining : static_cast<uint32_t>(sizeof(buffer));
+        str.read(buffer, n);
+        if (!str) {
+            throw Base::FileException("PropertyMaterialList::readString(): truncated data");
+        }
+        value.append(buffer, n);
+        remaining -= n;
+    }
 }
 
 const char* PropertyMaterialList::getEditorName() const
