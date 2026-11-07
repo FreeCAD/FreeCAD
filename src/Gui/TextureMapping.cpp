@@ -103,7 +103,7 @@ void TextureMapping::reject()
 {
     if (this->grp) {
         this->grp->removeChild(this->tex);
-        if (this->grp->findChild(this->env) > -1) {
+        if (this->grp->findChild(this->env) >= 0) {
             this->grp->removeChild(this->env);
         }
         this->grp->unref();
@@ -184,7 +184,9 @@ void TextureMapping::onCheckEnvToggled(bool b)
         this->grp->insertChild(this->env, 2);
     }
     else {
-        this->grp->removeChild(this->env);
+        if (this->grp->findChild(this->env) >= 0) {
+            this->grp->removeChild(this->env);
+        }
     }
 }
 
