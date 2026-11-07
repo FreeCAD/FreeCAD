@@ -48,3 +48,4 @@ from bimtests.TestNativeIfc import TestNativeIfc
 from bimtests.TestWebGLExport import TestWebGLExport
 from bimtests.TestArchReport import TestArchReport
 from bimtests.TestArchCovering import TestArchCovering
+from bimtests.TestIfcExportImport2D import TestIfcExportImport2D
