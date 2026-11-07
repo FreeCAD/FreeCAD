@@ -49,7 +49,7 @@
 #include "FemConstraintTransform.h"
 #include "FemMesh.h"
 #include "FemMeshObject.h"
-#include "FemMeshProperty.h"
+#include "PropertyFemMesh.h"
 #include "FemMeshPy.h"
 #include "FemMeshShapeNetgenObject.h"
 #include "FemMeshShapeObject.h"
