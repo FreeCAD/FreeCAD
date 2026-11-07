@@ -7,3 +7,7 @@ target_link_libraries(Material_tests_run
     ${Python3_LIBRARIES}
     Materials
 )
+
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+endif()

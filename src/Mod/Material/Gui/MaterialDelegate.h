@@ -38,7 +38,7 @@
 namespace MatGui
 {
 
-class MaterialDelegate: public BaseDelegate
+class MatGuiExport MaterialDelegate: public BaseDelegate
 {
     Q_OBJECT
 public:
