@@ -22,17 +22,22 @@ class TestPerpendicularArcProjection(unittest.TestCase):
 
     @staticmethod
     def placement(root, name):
-        node = root.find("./ObjectData/Object[@name='%s']/Properties/"
-                         "Property[@name='Placement']/PropertyPlacement" % name)
+        node = root.find(
+            "./ObjectData/Object[@name='%s']/Properties/"
+            "Property[@name='Placement']/PropertyPlacement" % name
+        )
         if node is None:
             raise AssertionError("Archive placement missing: " + name)
         a = node.attrib
-        return App.Placement(App.Vector(*[float(a[k]) for k in ("Px", "Py", "Pz")]),
-                             App.Rotation(*[float(a[k]) for k in ("Q0", "Q1", "Q2", "Q3")]))
+        return App.Placement(
+            App.Vector(*[float(a[k]) for k in ("Px", "Py", "Pz")]),
+            App.Rotation(*[float(a[k]) for k in ("Q0", "Q1", "Q2", "Q3")]),
+        )
 
     def assertPlacementEqual(self, left, right):
-        self.assertLess(max(abs(x - y) for x, y in zip(left.toMatrix().A, right.toMatrix().A)),
-                        1e-9)
+        self.assertLess(
+            max(abs(x - y) for x, y in zip(left.toMatrix().A, right.toMatrix().A)), 1e-9
+        )
 
     @staticmethod
     def analyticExtrema(center, radius, first, last, source_placement, target_placement):
@@ -57,35 +62,56 @@ class TestPerpendicularArcProjection(unittest.TestCase):
         critical = math.atan2(b, a)
         lower = math.floor((first - critical) / math.pi) - 1
         upper = math.ceil((last - critical) / math.pi) + 1
-        candidates.extend(critical + k * math.pi for k in range(lower, upper + 1)
-                          if first - 1e-12 <= critical + k * math.pi <= last + 1e-12)
+        candidates.extend(
+            critical + k * math.pi
+            for k in range(lower, upper + 1)
+            if first - 1e-12 <= critical + k * math.pi <= last + 1e-12
+        )
         values = [a * math.cos(t) + b * math.sin(t) for t in candidates]
-        return (projected_center + direction * min(values),
-                projected_center + direction * max(values))
+        return (
+            projected_center + direction * min(values),
+            projected_center + direction * max(values),
+        )
 
     def assertProjection(self, target, expected_start, expected_end):
         self.assertEqual(len(target.ExternalGeo), 3)
         actual = target.ExternalGeo[2]
         self.assertIsInstance(actual, Part.LineSegment)
         start, end = actual.StartPoint, actual.EndPoint
-        endpoint_error = min(max((start - expected_start).Length, (end - expected_end).Length),
-                             max((end - expected_start).Length, (start - expected_end).Length))
+        endpoint_error = min(
+            max((start - expected_start).Length, (end - expected_end).Length),
+            max((end - expected_start).Length, (start - expected_end).Length),
+        )
         length_error = abs((end - start).Length - (expected_end - expected_start).Length)
-        self.assertLess(endpoint_error, 1e-6,
-                        "Projected endpoints must equal the true trimmed-arc extrema")
+        self.assertLess(
+            endpoint_error, 1e-6, "Projected endpoints must equal the true trimmed-arc extrema"
+        )
         self.assertLess(length_error, 1e-6)
 
-    def checkArc(self, first, last, reverse=False, source_placement=None,
-                 target_placement=None, full_circle=False):
+    def checkArc(
+        self,
+        first,
+        last,
+        reverse=False,
+        source_placement=None,
+        target_placement=None,
+        full_circle=False,
+    ):
         center = App.Vector(-25, 6, 4)
         radius = 17.5
         circle = Part.Circle(center, App.Vector(0, 0, 1), radius)
         geometry = circle if full_circle else Part.ArcOfCircle(circle, first, last)
         original_start = geometry.value(first)
         original_end = geometry.value(last)
-        self.assertLess((original_start - center -
-                         App.Vector(radius * math.cos(first), radius * math.sin(first), 0)).Length,
-                        1e-8, "Fixture circle parameter frame must match the independent oracle")
+        self.assertLess(
+            (
+                original_start
+                - center
+                - App.Vector(radius * math.cos(first), radius * math.sin(first), 0)
+            ).Length,
+            1e-8,
+            "Fixture circle parameter frame must match the independent oracle",
+        )
         if reverse:
             geometry.reverse()
             if not full_circle:
@@ -93,7 +119,8 @@ class TestPerpendicularArcProjection(unittest.TestCase):
                 self.assertLess((geometry.EndPoint - original_start).Length, 1e-8)
         source_placement = source_placement or App.Placement()
         target_placement = target_placement or App.Placement(
-            App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90))
+            App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90)
+        )
         source = self.doc.addObject("Part::Feature", "Source")
         source.Shape = geometry.toShape()
         source.Placement = source_placement
@@ -106,8 +133,10 @@ class TestPerpendicularArcProjection(unittest.TestCase):
         target.addExternal(source.Name, "Edge1")
         self.doc.recompute()
         self.assertNotIn("Invalid", target.State)
-        self.assertProjection(target, *self.analyticExtrema(center, radius, first, last,
-                                                          source_placement, target_placement))
+        self.assertProjection(
+            target,
+            *self.analyticExtrema(center, radius, first, last, source_placement, target_placement)
+        )
 
     def checkNormalizedInterval(self, normalized_start, normalized_end, **kwargs):
         # For target normal -Y and source normal +Z, dirOrientation is -X,
@@ -123,13 +152,17 @@ class TestPerpendicularArcProjection(unittest.TestCase):
         with ZipFile(archive) as saved:
             root = ET.fromstring(saved.read("Document.xml"))
             brep = saved.read("Sketch.Shape.brp").decode("utf-8")
-        reference = root.find("./ObjectData/Object[@name='Sketch001']/Properties/"
-                              "Property[@name='ExternalGeometry']/LinkSubList/Link")
+        reference = root.find(
+            "./ObjectData/Object[@name='Sketch001']/Properties/"
+            "Property[@name='ExternalGeometry']/LinkSubList/Link"
+        )
         self.assertEqual(reference.get("obj"), "Sketch")
         self.assertEqual(reference.get("sub"), "Edge3")
         self.assertIn(";g1;SKT", reference.get("shadow"))
-        arc = root.find("./ObjectData/Object[@name='Sketch']/Properties/"
-                        "Property[@name='Geometry']/GeometryList/Geometry[@id='1']/ArcOfCircle")
+        arc = root.find(
+            "./ObjectData/Object[@name='Sketch']/Properties/"
+            "Property[@name='Geometry']/GeometryList/Geometry[@id='1']/ArcOfCircle"
+        )
         a = arc.attrib
         self.assertEqual([float(a[k]) for k in ("NormalX", "NormalY", "NormalZ")], [0, 0, 1])
         self.assertEqual(float(a["AngleXU"]), 0)
@@ -156,9 +189,14 @@ class TestPerpendicularArcProjection(unittest.TestCase):
         target.Placement = target_placement
         target.addExternal(source.Name, "Edge3")
         self.doc.recompute()
-        expected = self.analyticExtrema(center, radius, first, last,
-                                       body_placement.multiply(source_placement),
-                                       body_placement.multiply(target_placement))
+        expected = self.analyticExtrema(
+            center,
+            radius,
+            first,
+            last,
+            body_placement.multiply(source_placement),
+            body_placement.multiply(target_placement),
+        )
         self.assertProjection(target, *expected)
 
     def testReversedArcOrientation(self):
@@ -199,6 +237,7 @@ _INTERVALS = (
 def _intervalTest(start, end):
     def test(self):
         self.checkNormalizedInterval(start, end)
+
     return test
 
 
