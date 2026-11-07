@@ -1630,6 +1630,32 @@ PyObject* TopoShapePy::isPartner(PyObject* args) const
     return Py_BuildValue("O", (test ? Py_True : Py_False));
 }
 
+PyObject* TopoShapePy::richCompare(PyObject* self, PyObject* object, int op)
+{
+    if (Py_TYPE(self) != Py_TYPE(object)) {
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
+
+    try {
+        const TopoDS_Shape& lhs = static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape();
+        const TopoDS_Shape& rhs = static_cast<TopoShapePy*>(object)->getTopoShapePtr()->getShape();
+        switch (op) {
+            case Py_EQ:
+                return PyBool_FromLong(lhs.IsSame(rhs));
+            case Py_NE:
+                return PyBool_FromLong(!lhs.IsSame(rhs));
+            default:
+                PyErr_SetString(PyExc_TypeError, "no ordering relation is defined.");
+                return nullptr;
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return nullptr;
+    }
+}
+
 PyObject* TopoShapePy::isValid(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
