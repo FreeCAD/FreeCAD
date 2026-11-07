@@ -638,7 +638,7 @@ SbBool SoQtOffscreenRenderer::renderFromBase(SoBase* base)
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
 
     // Start from the application-wide default format so the offscreen context inherits the OpenGL
-    // compatibility profile requested in Application::runApplication(). A freshly constructed
+    // compatibility profile requested in Application::startApplication(). A freshly constructed
     // QSurfaceFormat requests a NoProfile/2.0 context, which on Wayland with proprietary drivers
     // resolves to a core/ES context lacking the legacy GL entry points (glBegin/glEnd, etc.) that
     // Coin uses to draw geometry. In that case glClear still paints the background but no geometry

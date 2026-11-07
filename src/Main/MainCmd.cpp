@@ -114,8 +114,13 @@ int main(int argc, char** argv)
         std::string appName = App::Application::getExecutableName();
         std::cout << "While initializing " << appName << " the following exception occurred: '"
                   << e.what() << "'\n\n";
-        std::cout << "Python is searching for its runtime files in the following directories:\n"
-                  << Base::Interpreter().getPythonPath() << "\n\n";
+        if (Py_IsInitialized()) {
+            std::cout << "Python is searching for its runtime files in the following directories:\n"
+                      << Base::Interpreter().getPythonPath() << "\n\n";
+        }
+        else {
+            std::cout << "Python has not initialized yet.\n\n";
+        }
         std::cout << "Python version information:\n" << Py_GetVersion() << "\n";
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
