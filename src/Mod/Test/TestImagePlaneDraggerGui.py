@@ -200,7 +200,9 @@ class TestImagePlaneDraggerGui(unittest.TestCase):
         self.drag_x_arrow(80)
 
         moved = self.image.Placement
-        self.assertGreater(moved.Base.x - START.x, 1.0, "dragging the X arrow should move the image")
+        self.assertGreater(
+            moved.Base.x - START.x, 1.0, "dragging the X arrow should move the image"
+        )
         self.assertAlmostEqual(moved.Base.y, START.y, places=6)
         self.assertAlmostEqual(moved.Base.z, START.z, places=6)
         self.assertTrue(moved.Rotation.isSame(App.Rotation(), 1e-9))

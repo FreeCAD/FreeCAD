@@ -375,7 +375,8 @@ void TaskImage::resetEdit()
 {
     // Leave the edit mode that shows the transform dragger
     auto vp = Application::Instance->getViewProvider(feature.get());
-    auto guiDoc = vp ? static_cast<ViewProviderDocumentObject*>(vp)->getDocument() : nullptr;  // NOLINT
+    auto guiDoc = vp ? static_cast<ViewProviderDocumentObject*>(vp)->getDocument()
+                     : nullptr;  // NOLINT
     if (guiDoc && guiDoc->getInEdit() == vp) {
         guiDoc->resetEdit();
     }
