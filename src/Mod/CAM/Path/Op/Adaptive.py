@@ -160,12 +160,21 @@ def discretize(edge, flipDirection=False):
     return pts
 
 
-def _applyFeedRate(commands, feedRate):
-    """Apply feedRate to every milling move in commands.
+def _initHelixFeedProperties(obj, legacy=False):
+    """Keep legacy entry feeds separate from new operations' ramp feeds."""
+    if not hasattr(obj, "HelixFeedVersion"):
+        obj.addProperty(
+            "App::PropertyInteger",
+            "HelixFeedVersion",
+            "AdaptiveHelixEntry",
+            "Adaptive helix feed migration version",
+        )
+        obj.HelixFeedVersion = 0 if legacy else 1
+    obj.setEditorMode("HelixFeedVersion", 2)
 
-    Helical entry moves are ramp moves, so they use the tool controller's
-    RampFeed instead of the regular horizontal and vertical feeds.
-    """
+
+def _applyFeedRate(commands, feedRate):
+    """Apply the entry feed unchanged to every milling move."""
     for command in commands:
         if command.Name in Constants.GCODE_MOVE_MILL:
             parameters = command.Parameters
@@ -268,9 +277,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                 op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
                 PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
-                # The helical entry is a ramp move; use the ramp feed rate.
-                if op.rampFeed:
-                    _applyFeedRate(helixCommands, op.rampFeed)
+                # Legacy operations used VertFeed directly, without geometry limiting.
+                entryFeed = op.vertFeed if obj.HelixFeedVersion == 0 else op.rampFeed
+                _applyFeedRate(helixCommands, entryFeed)
                 op.commandlist.extend(helixCommands[2:])
 
                 if cone_angle_rad:
@@ -286,9 +295,8 @@ def GenerateGCode(op, obj, adaptiveResults):
                     }
                     spiralCommands = spiral.generate(**spiralArgs)
                     PathFeedRate.setFeedRate(spiralCommands, obj.ToolController)
-                    # The spiral is part of the entry; use the ramp feed rate.
-                    if op.rampFeed:
-                        _applyFeedRate(spiralCommands, op.rampFeed)
+                    # The connecting spiral uses the same entry feed.
+                    _applyFeedRate(spiralCommands, entryFeed)
                     # remove first linear movements
                     while spiralCommands[0].Name in Constants.GCODE_MOVE_LINE:
                         del spiralCommands[0]
@@ -1573,6 +1581,7 @@ class PathAdaptive(PathOp.ObjectOp):
     def initOperation(self, obj):
         """initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses."""
+        _initHelixFeedProperties(obj)
         obj.addProperty(
             "App::PropertyEnumeration",
             "Side",
@@ -1855,6 +1864,8 @@ class PathAdaptive(PathOp.ObjectOp):
             Execute(self, obj)
 
     def opOnDocumentRestored(self, obj):
+        # Operations saved without a version retain their legacy entry feed.
+        _initHelixFeedProperties(obj, legacy=True)
         if not hasattr(obj, "HelixConeAngle"):
             obj.addProperty(
                 "App::PropertyAngle",

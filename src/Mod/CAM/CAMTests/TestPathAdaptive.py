@@ -30,6 +30,7 @@ import area
 import math
 import os
 import shutil
+import tempfile
 import time
 
 if FreeCAD.GuiUp:
@@ -1297,6 +1298,37 @@ class TestPathAdaptive(PathTestBase):
             "Changing RampFeed should not affect the adaptive clearing feeds",
         )
 
+        # Conical entries include a connecting spiral, which also uses RampFeed.
+        adaptive.HelixConeAngle = 5.0
+        adaptive.recompute()
+        self.assertTrue(
+            any(cmd.Name.startswith("(Spiral to radius:") for cmd in adaptive.Path.Commands)
+        )
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.RampFeed.Value})
+        self.assertEqual(adaptive.HelixFeedVersion, 1)
+
+        # Legacy operations use VertFeed regardless of the controller's RampFeed.
+        adaptive.removeProperty("HelixFeedVersion")
+        adaptive.Proxy.opOnDocumentRestored(adaptive)
+        self.assertEqual(adaptive.HelixFeedVersion, 0)
+        adaptive.recompute()
+        self.assertEqual(adaptive.HelixFeedVersion, 0)
+        helixFeeds, adaptiveFeeds = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.VertFeed.Value})
+        self.assertEqual(toolController.RampFeed.Value, 1.5)
+        adaptive.HelixConeAngle = 0.0
+        toolController.setExpression("RampFeed", "HorizFeed")
+        adaptive.recompute()
+        helixFeeds, _ = getEntryAndClearingFeeds(adaptive.Path.Commands)
+        self.assertEqual(helixFeeds, {toolController.VertFeed.Value})
+        self.assertEqual(dict(toolController.ExpressionEngine)["RampFeed"], "HorizFeed")
+        self.assertTrue(adaptiveFeeds, "Expected adaptive clearing moves after migration")
+        self.assertTrue(
+            adaptiveFeeds <= {toolController.HorizFeed.Value, toolController.VertFeed.Value},
+            "Migrated ramp feeds should not affect the adaptive clearing feeds",
+        )
+
     # POSSIBLY MISSING TESTS:
     # - Something for region ordering
     # - Known-edge cases: cones/spheres/cylinders (especially partials on edges
@@ -1306,6 +1338,131 @@ class TestPathAdaptive(PathTestBase):
 
 
 # Eclass
+
+
+class TestAdaptiveHelixFeedMigration(PathTestBase):
+    """Test Adaptive helix-feed migration and real-document restoration."""
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestAdaptiveHelixFeedMigration")
+        self.tc = self.doc.addObject("App::FeaturePython", "ToolController")
+        for name, value in (("HorizFeed", 10), ("VertFeed", 2), ("RampFeed", 10)):
+            self.tc.addProperty("App::PropertySpeed", name)
+            setattr(self.tc, name, value)
+        self.tc.setExpression("RampFeed", "HorizFeed")
+        self.doc.recompute()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def operation(self, legacy=True):
+        obj = self.doc.addObject("App::FeaturePython", "Adaptive")
+        obj.addProperty("App::PropertyLink", "ToolController")
+        obj.ToolController = self.tc
+        PathAdaptive._initHelixFeedProperties(obj, legacy=legacy)
+        return obj
+
+    def testLegacyDefault(self):
+        obj = self.operation()
+        before = list(self.tc.ExpressionEngine)
+        beforeProperties = set(self.tc.PropertiesList)
+        beforeFeed = self.tc.RampFeed.Value
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.assertNotIn("HelixFeedAuto", obj.PropertiesList)
+        self.assertEqual(list(self.tc.ExpressionEngine), before)
+        self.assertEqual(set(self.tc.PropertiesList), beforeProperties)
+        self.assertEqual(self.tc.RampFeed.Value, beforeFeed)
+
+    def testMissingRampFeed(self):
+        self.tc.removeProperty("RampFeed")
+        obj = self.operation()
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.assertNotIn("RampFeed", self.tc.PropertiesList)
+
+    def testExplicitFeeds(self):
+        for expression, value in (
+            (None, 7),
+            (None, 10),
+            (None, 0),
+            ("VertFeed", 2),
+            ("HorizFeed / 2", 5),
+        ):
+            with self.subTest(expression=expression, value=value):
+                self.tc.setExpression("RampFeed", None)
+                self.tc.RampFeed = value
+                if expression:
+                    self.tc.setExpression("RampFeed", expression)
+                self.doc.recompute()
+                before = list(self.tc.ExpressionEngine)
+                obj = self.operation()
+                PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+                self.assertEqual(obj.HelixFeedVersion, 0)
+                self.assertEqual(self.tc.RampFeed.Value, value)
+                self.assertEqual(list(self.tc.ExpressionEngine), before)
+
+    def testNewOperationSharingController(self):
+        legacy = self.operation()
+        new = self.operation(legacy=False)
+        PathAdaptive._initHelixFeedProperties(legacy, legacy=True)
+        PathAdaptive._initHelixFeedProperties(new, legacy=True)
+        self.assertEqual(legacy.HelixFeedVersion, 0)
+        self.assertEqual(new.HelixFeedVersion, 1)
+        self.assertEqual(dict(self.tc.ExpressionEngine)["RampFeed"], "HorizFeed")
+
+    def testDeferredControllerRestore(self):
+        obj = self.operation()
+        obj.ToolController = None
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+        self.tc.setExpression("RampFeed", "VertFeed")
+        obj.ToolController = self.tc
+        PathAdaptive._initHelixFeedProperties(obj, legacy=True)
+        self.assertEqual(obj.HelixFeedVersion, 0)
+
+    def testSaveRestore(self):
+        # Use real operation proxies so opening the file exercises the actual
+        # restoration hooks, not just persistence of properties on plain objects.
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(
+            FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_adaptive.fcstd"
+        )
+        job = PathJob.Create("Job", [self.doc.Fusion], None)
+        job.GeometryTolerance = 0.001
+        self.tc = job.Tools.Group[0]
+        self.tc.HorizFeed = 10
+        self.tc.VertFeed = 2
+        self.tc.setExpression("RampFeed", "HorizFeed")
+        legacy = PathAdaptive.Create("LegacyAdaptive")
+        new = PathAdaptive.Create("NewAdaptive")
+        for obj in (legacy, new):
+            obj.Base = [(self.doc.Fusion, ["Face3"])]
+            obj.FinishingProfile = False
+            obj.UseOutline = False
+            obj.ToolController = self.tc
+            _addViewProvider(obj)
+        names = legacy.Name, new.Name
+        # Save a genuinely unmigrated operation. Do not recompute between
+        # removing the version property and writing the file.
+        legacy.removeProperty("HelixFeedVersion")
+        self.assertNotIn("HelixFeedVersion", legacy.PropertiesList)
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "AdaptiveHelixFeed.FCStd")
+            self.doc.saveAs(path)
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = FreeCAD.openDocument(path)
+            legacy, new = (self.doc.getObject(name) for name in names)
+            legacy.touch()
+            new.touch()
+            self.doc.recompute()
+            self.assertEqual(legacy.HelixFeedVersion, 0)
+            self.assertEqual(new.HelixFeedVersion, 1)
+            self.assertTrue(
+                any(cmd.Name.startswith("(Helix to depth:") for cmd in legacy.Path.Commands),
+                "The restored legacy operation should generate a helical entry",
+            )
+            self.assertEqual(new.ToolController, legacy.ToolController)
+            self.assertEqual(dict(legacy.ToolController.ExpressionEngine)["RampFeed"], "HorizFeed")
 
 
 def getPathBoundaries(paths, zLevels):
