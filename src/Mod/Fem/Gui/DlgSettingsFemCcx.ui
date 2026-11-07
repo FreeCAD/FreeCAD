@@ -563,8 +563,8 @@
           <property name="maximum">
            <number>10000000</number>
           </property>
-          <property name="singleStep">
-           <number>10</number>
+          <property name="stepType">
+           <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
           </property>
           <property name="value">
            <number>2000</number>
