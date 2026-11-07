@@ -179,6 +179,7 @@ endif(BUILD_GUI)
 #unit test files
 SET(TDTest_SRCS
     TDTest/__init__.py
+    TDTest/TaskHatchFaceTest.py
     TDTest/DrawHatchTest.py
     TDTest/DrawProjectionGroupTest.py
     TDTest/DrawViewAnnotationTest.py
