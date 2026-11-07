@@ -10,7 +10,7 @@
 #  The CMake (or environment) variable MEDFILE_ROOT_DIR can be set to
 #  guide the detection and indicate a root directory to look into.
 #
-############################################################################
+#---------------------------------------------------------------------------
 # Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 #
 # This library is free software; you can redistribute it and/or
@@ -42,13 +42,19 @@ endif()
 
 # Try CMake config/NO_MODULE first, and then legacy FindMEDFile.cmake failing that.
 set(_medfile_find_mode "config")
-find_package(MEDFile NO_MODULE)
+# add QUIET because libmed-dev on debian does not ship either a FindMEDFile.cmake or a medfile-config.cmake
+# see: https://github.com/FreeCAD/FreeCAD/issues/32785#issuecomment-5782466142
+find_package(MEDFile QUIET NO_MODULE)
 if(NOT MEDFile_FOUND)
     set(_cmake_module_path "${CMAKE_MODULE_PATH}")
     list(REMOVE_ITEM CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cMake")
     set(_medfile_find_mode "module")
-    find_package(MEDFile)
+    find_package(MEDFile QUIET)
     set(CMAKE_MODULE_PATH "${_cmake_module_path}")
+endif()
+
+if(NOT MEDFile_FOUND)
+    message(STATUS "No MEDFile CMake package found, falling back to manual detection.")
 endif()
 
 if(MEDFile_FOUND)
@@ -64,16 +70,61 @@ if(MEDFile_FOUND)
     if(NOT _medc_includes)
         set(_medc_includes "")
     endif()
-    find_file(_med_h med.h PATHS "${_medc_includes}" NO_PACKAGE_ROOT_PATH NO_CACHE)
+
+    # only accept med.h if it is reachable through the target's own include dirs.
+    # without NO_DEFAULT_PATH find_file() also searches CMAKE_PREFIX_PATH and
+    # system paths, and would "find" med.h even when medC exposes no include
+    # dirs at all
+    set(_med_h "")
+    if(_medc_includes)
+        find_file(_med_h med.h PATHS ${_medc_includes} NO_DEFAULT_PATH NO_CACHE)
+    endif()
+
     if(NOT _med_h)
-        find_file(_med_h med/med.h PATHS "${_medc_includes}" PATH_SUFFIXES med NO_PACKAGE_ROOT_PATH NO_CACHE)
-        if(NOT _med_h)
-            message(FATAL_ERROR "Imported MEDFile (${_medfile_find_mode} mode) but neither med.h or med/med.h were found")
+        # look next to the package that was found first. MEDFile_DIR is
+        # <prefix>/share/cmake/medfile-X, <prefix>/lib/cmake/medfile-X,
+        # <prefix>/lib64/..., <prefix>/share/cmake
+        set(_med_hints "")
+
+        # medC's library location, ie. <prefix>/lib/libmedC.so
+        get_target_property(_medc_loc medC IMPORTED_LOCATION)
+        if(NOT _medc_loc)
+            get_target_property(_medc_cfgs medC IMPORTED_CONFIGURATIONS)
+            if(_medc_cfgs)
+                foreach(_cfg IN LISTS _medc_cfgs)
+                    get_target_property(_medc_loc medC IMPORTED_LOCATION_${_cfg})
+                    if(_medc_loc)
+                        break()
+                    endif()
+                endforeach()
+            endif()
         endif()
-        get_filename_component(_med_h_dir "${_med_h}" DIRECTORY)
+        if(_medc_loc)
+            get_filename_component(_med_libdir "${_medc_loc}" DIRECTORY)
+            list(APPEND _med_hints "${_med_libdir}/..")
+        endif()
+
+        # walk up from wherever the package was found, make no assumption
+        # about deeply nested config file within the prefix
+        if(MEDFile_DIR)
+            set(_dir "${MEDFile_DIR}")
+            foreach(_i RANGE 4)
+                list(APPEND _med_hints "${_dir}")
+                get_filename_component(_dir "${_dir}/.." ABSOLUTE)
+            endforeach()
+        endif()
+
+        find_path(_med_h_dir NAMES med.h
+                  HINTS ${_med_hints}
+                  PATH_SUFFIXES include include/med med
+                  NO_CACHE)
+
+        if(NOT _med_h_dir)
+            message(FATAL_ERROR "Imported MEDFile (${_medfile_find_mode} mode) but med.h could not be located")
+        endif()
         list(APPEND _medc_includes "${_med_h_dir}")
-        message(STATUS "find_package(MEDFile)'s medC target was missing the ${_medc_includes} include dir, appendng")
         set_target_properties(medC PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_medc_includes}")
+        message(STATUS "MEDFile medC target lacked the med.h include dir, appended ${_med_h_dir}")
     endif()
 
     # MEDFile depends on HDF5, it might have added _FORTIFY_SOURCE defines to the build.
@@ -86,20 +137,20 @@ endif()
 
 # ------
 
-MESSAGE(STATUS "Check for medfile (libmed and libmedc) ...")
+message(STATUS "Check for medfile (libmed and libmedc) ...")
 
 # ------
 
-SET(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
-IF(MEDFILE_ROOT_DIR)
-  LIST(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
-ENDIF(MEDFILE_ROOT_DIR)
+set(MEDFILE_ROOT_DIR $ENV{MEDFILE_ROOT_DIR} CACHE PATH "Path to the MEDFile.")
+if(MEDFILE_ROOT_DIR)
+  list(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
+endif()
 
-FIND_PATH(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
-FIND_FILE(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
-IF(NOT meddotH)
-	MESSAGE(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
-ENDIF(NOT meddotH)
+find_path(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
+find_file(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
+if(NOT meddotH)
+	message(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
+endif()
 
 function(medfile_extract_med_h_data)
     file(READ ${meddotH} _med_h)
@@ -118,13 +169,20 @@ function(medfile_extract_med_h_data)
     endif()
 
     # Extract version info
-    string(REGEX MATCH "define[ \t]+MED_MAJOR_NUM[ \t]+([0-9?])" _med_major_version_match "${_med_h}")
-    set(MED_MAJOR_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    string(REGEX MATCH "define[ \t]+MED_MINOR_NUM[ \t]+([0-9?])" _med_minor_version_match "${_med_h}")
-    set(MED_MINOR_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    string(REGEX MATCH "define[ \t]+MED_RELEASE_NUM[ \t]+([0-9?])" _med_release_version_match "${_med_h}")
-    set(MED_RELEASE_VERSION "${CMAKE_MATCH_1}" PARENT_SCOPE)
-    set(MEDFILE_VERSION "${MED_MAJOR_VERSION}.${MED_MINOR_VERSION}.${MED_RELEASE_VERSION}" PARENT_SCOPE)
+    string(REGEX MATCH "define[ \t]+MED_MAJOR_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_major "${CMAKE_MATCH_1}")
+    string(REGEX MATCH "define[ \t]+MED_MINOR_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_minor "${CMAKE_MATCH_1}")
+    # in the med.h the word release is used to refer to the semver patch number
+    string(REGEX MATCH "define[ \t]+MED_RELEASE_NUM[ \t]+([0-9]+)" _match "${_med_h}")
+    set(_med_release "${CMAKE_MATCH_1}")
+
+    # PARENT_SCOPE only writes the caller's scope, so the values above have to be
+    # kept in locals to be usable here.
+    set(MED_MAJOR_VERSION "${_med_major}" PARENT_SCOPE)
+    set(MED_MINOR_VERSION "${_med_minor}" PARENT_SCOPE)
+    set(MED_RELEASE_VERSION "${_med_release}" PARENT_SCOPE)
+    set(MEDFILE_VERSION "${_med_major}.${_med_minor}.${_med_release}" PARENT_SCOPE)
 endfunction()
 
 medfile_extract_med_h_data()
@@ -162,5 +220,5 @@ if(NOT MSVC AND MEDFILE_HAVE_MPI)
     target_link_libraries(medC INTERFACE "${OPENMPI_LIBRARIES}")
 endif()
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(MEDFile REQUIRED_VARS MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES)
