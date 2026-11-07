@@ -352,18 +352,23 @@ void PropertyVectorList::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    std::vector<Base::Vector3d> values(uCt);
-    if (!isSinglePrecision()) {
-        for (auto& it : values) {
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<Base::Vector3d> values;
+    bool single = isSinglePrecision();
+    for (uint32_t i = 0; i < uCt; ++i) {
+        Base::Vector3d it;
+        if (!single) {
             str >> it.x >> it.y >> it.z;
         }
-    }
-    else {
-        Base::Vector3f vec;
-        for (auto& it : values) {
+        else {
+            Base::Vector3f vec;
             str >> vec.x >> vec.y >> vec.z;
             it.Set(vec.x, vec.y, vec.z);
         }
+        if (!str) {
+            throw Base::FileException("PropertyVectorList::RestoreDocFile(): truncated data");
+        }
+        values.push_back(it);
     }
     setValues(values);
 }
