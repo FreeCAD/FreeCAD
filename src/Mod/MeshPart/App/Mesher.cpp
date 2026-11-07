@@ -30,10 +30,13 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Part/App/BRepMesh.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <CXX/Objects.hxx>
 
 #include "Mesher.h"
 
@@ -238,13 +241,166 @@ Mesh::MeshObject* Mesher::createStandard() const
     return brepmesh.create(domains);
 }
 
-Mesh::MeshObject* Mesher::createMesh() const
+Mesh::MeshObject* Mesher::createNetgenPython() const
 {
-    // OCC standard mesher
-    if (method == Standard) {
-        return createStandard();
+    Mesh::MeshObject* mesh = new Mesh::MeshObject();  // NOLINT
+
+    Base::PyGILStateLocker lock;
+    Py::Module module(PyImport_ImportModule("netgen_mesh"), true);
+    if (module.isNull()) {
+        return mesh;
     }
 
+    Py::Tuple args(2);
+    Part::TopoShape topoShape(shape);
+    args.setItem(0, Py::asObject(topoShape.getPyObject()));
+
+    Py::Dict opts;
+    args.setItem(1, opts);
+
+    static std::map<int, std::string> mapFine {{
+        {0, "VeryCoarse"},
+        {1, "Coarse"},
+        {2, "Moderate"},
+        {3, "Fine"},
+        {4, "VeryFine"},
+    }};
+
+    auto it = mapFine.find(fineness);
+    if (it != mapFine.end()) {
+        opts.setItem("Fineness", Py::String(it->second));
+    }
+    else {
+        if (growthRate > 0) {
+            opts.setItem("GrowthRate", Py::Float(growthRate));
+        }
+        if (nbSegPerEdge > 0) {
+            opts.setItem("SegPerEdge", Py::Float(nbSegPerEdge));
+        }
+        if (nbSegPerRadius > 0) {
+            opts.setItem("SegPerRadius", Py::Float(nbSegPerRadius));
+        }
+    }
+
+    if (maxLen > 0) {
+        opts.setItem("MaxSize", Py::Float(maxLen));
+    }
+    if (minLen > 0) {
+        opts.setItem("MinSize", Py::Float(minLen));
+    }
+
+    opts.setItem("AllowQuad", Py::Boolean(allowquad));
+    opts.setItem("SecondOrder", Py::Boolean(secondOrder));
+
+    if (optimize) {
+        opts.setItem("Optimize", Py::Boolean(optimize));
+    }
+
+    try {
+        Py::Object py = module.callMemberFunction("shapeToMesh", args);
+        if (!PyObject_TypeCheck(py.ptr(), &Mesh::MeshPy::Type)) {
+            return mesh;
+        }
+
+        Mesh::MeshObject* pymesh = static_cast<Mesh::MeshPy*>(py.ptr())->getMeshObjectPtr();
+        mesh->swap(*pymesh);
+        return mesh;
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e;
+        e.reportException();
+        return mesh;
+    }
+}
+
+#if defined(HAVE_NETGEN)
+Mesh::MeshObject* Mesher::createNetgenSMesh() const
+{
+# ifndef HAVE_SMESH
+    throw Base::RuntimeError("SMESH is not available on this platform");
+# else
+    std::list<SMESH_Hypothesis*> hypoth;
+
+    if (!Mesher::_mesh_gen) {
+        Mesher::_mesh_gen = new SMESH_Gen();
+    }
+    SMESH_Gen* meshgen = Mesher::_mesh_gen;
+
+    int hyp = 0;
+
+#  if SMESH_VERSION_MAJOR >= 9
+    SMESH_Mesh* mesh = meshgen->CreateMesh(true);
+    NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++, meshgen);
+    NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++, meshgen);
+#  else
+    SMESH_Mesh* mesh = meshgen->CreateMesh(0, true);
+    NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++, 0, meshgen);
+    NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++, 0, meshgen);
+#  endif
+
+    if (fineness >= 0 && fineness < 5) {
+        hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
+    }
+    // user defined values
+    else {
+        if (growthRate > 0) {
+            hyp2d->SetGrowthRate(growthRate);
+        }
+        if (nbSegPerEdge > 0) {
+            hyp2d->SetNbSegPerEdge(nbSegPerEdge);
+        }
+        if (nbSegPerRadius > 0) {
+            hyp2d->SetNbSegPerRadius(nbSegPerRadius);
+        }
+    }
+
+    if (maxLen > 0) {
+        hyp2d->SetMaxSize(maxLen);
+    }
+    if (minLen > 0) {
+        hyp2d->SetMinSize(minLen);
+    }
+
+    hyp2d->SetQuadAllowed(allowquad);
+    hyp2d->SetOptimize(optimize);
+    // apply bisecting to create four triangles out of one
+    hyp2d->SetSecondOrder(secondOrder);
+    hypoth.push_back(hyp2d);
+    hypoth.push_back(alg2d);
+
+    // Set new cout
+    MeshingOutput stdcout;
+    std::streambuf* oldcout = std::cout.rdbuf(&stdcout);
+
+    // Apply the hypothesis and create the mesh
+    mesh->ShapeToMesh(shape);
+    for (int i = 0; i < hyp; i++) {
+        mesh->AddHypothesis(shape, i);
+    }
+    meshgen->Compute(*mesh, mesh->GetShapeToMesh());
+
+    // Restore old cout
+    std::cout.rdbuf(oldcout);
+
+    // build up the mesh structure
+    Mesh::MeshObject* meshdata = createFrom(mesh);
+
+    // clean up
+    TopoDS_Shape aNull;
+    mesh->ShapeToMesh(aNull);
+    mesh->Clear();
+    delete mesh;
+    for (auto it : hypoth) {
+        delete it;
+    }
+
+    return meshdata;
+# endif
+}
+#endif
+
+Mesh::MeshObject* Mesher::createMefisto() const
+{
 #ifndef HAVE_SMESH
     throw Base::RuntimeError("SMESH is not available on this platform");
 #else
@@ -263,140 +419,90 @@ Mesh::MeshObject* Mesher::createMesh() const
 
     int hyp = 0;
 
-    switch (method) {
-# if defined(HAVE_NETGEN)
-        case Netgen: {
-#  if SMESH_VERSION_MAJOR >= 9
-            NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++, meshgen);
-#  else
-            NETGENPlugin_Hypothesis_2D* hyp2d = new NETGENPlugin_Hypothesis_2D(hyp++, 0, meshgen);
-#  endif
-
-            if (fineness >= 0 && fineness < 5) {
-                hyp2d->SetFineness(NETGENPlugin_Hypothesis_2D::Fineness(fineness));
-            }
-            // user defined values
-            else {
-                if (growthRate > 0) {
-                    hyp2d->SetGrowthRate(growthRate);
-                }
-                if (nbSegPerEdge > 0) {
-                    hyp2d->SetNbSegPerEdge(nbSegPerEdge);
-                }
-                if (nbSegPerRadius > 0) {
-                    hyp2d->SetNbSegPerRadius(nbSegPerRadius);
-                }
-            }
-
-            if (maxLen > 0) {
-                hyp2d->SetMaxSize(maxLen);
-            }
-            if (minLen > 0) {
-                hyp2d->SetMinSize(minLen);
-            }
-
-            hyp2d->SetQuadAllowed(allowquad);
-            hyp2d->SetOptimize(optimize);
-            hyp2d->SetSecondOrder(secondOrder);  // apply bisecting to create four triangles out of one
-            hypoth.push_back(hyp2d);
-
-#  if SMESH_VERSION_MAJOR >= 9
-            NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++, meshgen);
-#  else
-            NETGENPlugin_NETGEN_2D* alg2d = new NETGENPlugin_NETGEN_2D(hyp++, 0, meshgen);
-#  endif
-            hypoth.push_back(alg2d);
-        } break;
-# endif
 # if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #  if defined(HAVE_MEFISTO)
-        case Mefisto: {
-            if (maxLength > 0) {
+    if (maxLength > 0) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, meshgen);
+        StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, meshgen);
 #   else
-                StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
+        StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);
 #   endif
-                hyp1d->SetLength(maxLength);
-                hypoth.push_back(hyp1d);
-            }
-            else if (localLength > 0) {
+        hyp1d->SetLength(maxLength);
+        hypoth.push_back(hyp1d);
+    }
+    else if (localLength > 0) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++, meshgen);
+        StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++, meshgen);
 #   else
-                StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++, 0, meshgen);
+        StdMeshers_LocalLength* hyp1d = new StdMeshers_LocalLength(hyp++, 0, meshgen);
 #   endif
-                hyp1d->SetLength(localLength);
-                hypoth.push_back(hyp1d);
-            }
-            else if (maxArea > 0) {
+        hyp1d->SetLength(localLength);
+        hypoth.push_back(hyp1d);
+    }
+    else if (maxArea > 0) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++, meshgen);
+        StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++, meshgen);
 #   else
-                StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++, 0, meshgen);
+        StdMeshers_MaxElementArea* hyp2d = new StdMeshers_MaxElementArea(hyp++, 0, meshgen);
 #   endif
-                hyp2d->SetMaxArea(maxArea);
-                hypoth.push_back(hyp2d);
-            }
-            else if (deflection > 0) {
+        hyp2d->SetMaxArea(maxArea);
+        hypoth.push_back(hyp2d);
+    }
+    else if (deflection > 0) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++, meshgen);
+        StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++, meshgen);
 #   else
-                StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++, 0, meshgen);
+        StdMeshers_Deflection1D* hyp1d = new StdMeshers_Deflection1D(hyp++, 0, meshgen);
 #   endif
-                hyp1d->SetDeflection(deflection);
-                hypoth.push_back(hyp1d);
-            }
-            else if (minLen > 0 && maxLen > 0) {
+        hyp1d->SetDeflection(deflection);
+        hypoth.push_back(hyp1d);
+    }
+    else if (minLen > 0 && maxLen > 0) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++, meshgen);
+        StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++, meshgen);
 #   else
-                StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++, 0, meshgen);
+        StdMeshers_Arithmetic1D* hyp1d = new StdMeshers_Arithmetic1D(hyp++, 0, meshgen);
 #   endif
-                hyp1d->SetLength(minLen, false);
-                hyp1d->SetLength(maxLen, true);
-                hypoth.push_back(hyp1d);
-            }
-            else {
+        hyp1d->SetLength(minLen, false);
+        hyp1d->SetLength(maxLen, true);
+        hypoth.push_back(hyp1d);
+    }
+    else {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++, meshgen);
+        StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++, meshgen);
 #   else
-                StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++, 0, meshgen);
+        StdMeshers_AutomaticLength* hyp1d = new StdMeshers_AutomaticLength(hyp++, 0, meshgen);
 #   endif
-                hypoth.push_back(hyp1d);
-            }
+        hypoth.push_back(hyp1d);
+    }
 
-            {
+    {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++, meshgen);
+        StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++, meshgen);
 #   else
-                StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++, 0, meshgen);
+        StdMeshers_NumberOfSegments* hyp1d = new StdMeshers_NumberOfSegments(hyp++, 0, meshgen);
 #   endif
-                hyp1d->SetNumberOfSegments(1);
-                hypoth.push_back(hyp1d);
-            }
+        hyp1d->SetNumberOfSegments(1);
+        hypoth.push_back(hyp1d);
+    }
 
-            if (regular) {
+    if (regular) {
 #   if SMESH_VERSION_MAJOR >= 9
-                StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++, meshgen);
+        StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++, meshgen);
 #   else
-                StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++, 0, meshgen);
+        StdMeshers_Regular_1D* hyp1d = new StdMeshers_Regular_1D(hyp++, 0, meshgen);
 #   endif
-                hypoth.push_back(hyp1d);
-            }
+        hypoth.push_back(hyp1d);
+    }
 
 #   if SMESH_VERSION_MAJOR >= 9
-            StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++, meshgen);
+    StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++, meshgen);
 #   else
-            StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++, 0, meshgen);
+    StdMeshers_MEFISTO_2D* alg2d = new StdMeshers_MEFISTO_2D(hyp++, 0, meshgen);
 #   endif
-            hypoth.push_back(alg2d);
-        } break;
+    hypoth.push_back(alg2d);
 #  endif
 # endif
-        default:
-            break;
-    }
 
     // Set new cout
     MeshingOutput stdcout;
@@ -426,6 +532,26 @@ Mesh::MeshObject* Mesher::createMesh() const
 
     return meshdata;
 #endif  // HAVE_SMESH
+}
+
+Mesh::MeshObject* Mesher::createMesh() const
+{
+    // OCC standard mesher
+    if (method == Standard) {
+        return createStandard();
+    }
+    if (method == Netgen) {
+#if defined(HAVE_NETGEN)
+        return createNetgenSMesh();
+#else
+        return createNetgenPython();
+#endif
+    }
+    if (method == Mefisto) {
+        return createMefisto();
+    }
+
+    return new Mesh::MeshObject();
 }
 
 Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const
