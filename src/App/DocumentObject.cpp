@@ -1436,7 +1436,8 @@ DocumentObject::getParents(int depth) const
 
         for (auto parent : links) {
             auto parents = parent->getParents(depth + 1);
-            if (parents.empty()) {
+            // Only a GeoFeatureGroup takes an object out of the scene root
+            if (parents.empty() || !GeoFeatureGroupExtension::getGroupOfObject(parent)) {
                 parents.emplace_back(parent, std::string());
             }
 
