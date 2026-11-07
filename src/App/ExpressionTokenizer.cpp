@@ -128,7 +128,8 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
             int token = std::get<0>(tokens[i]);
             if (token != '.' && token != '#' && token != ExpressionParser::IDENTIFIER
                 && token != ExpressionParser::INTEGER && token != ExpressionParser::STRING
-                && token != ExpressionParser::UNIT && token != ExpressionParser::ONE) {
+                && token != ExpressionParser::UNIT && token != ExpressionParser::USUNIT
+                && token != ExpressionParser::ONE) {
                 break;
             }
         }

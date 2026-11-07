@@ -624,8 +624,7 @@ bool DlgAddProperty::isNameValid()
     std::string name = ui->lineEditName->text().toStdString();
 
     return !name.empty() && name == Base::Tools::getIdentifier(name)
-        && !App::ExpressionParser::isTokenAConstant(name)
-        && !App::ExpressionParser::isTokenAUnit(name) && !propertyExists(name);
+        && !App::ExpressionParser::isTokenAConstant(name) && !propertyExists(name);
 }
 
 bool DlgAddProperty::isGroupValid()
@@ -681,7 +680,8 @@ void DlgAddProperty::showStatusMessage()
         error = tr("'%1' is a constant").arg(text);
     }
     else if (App::ExpressionParser::isTokenAUnit(name)) {
-        error = tr("'%1' is a unit").arg(text);
+        error = tr("'%1' is also a unit. Use '.%1' to reference this property in local expressions.")
+                    .arg(text);
     }
 
     ui->labelError->setText(error);
