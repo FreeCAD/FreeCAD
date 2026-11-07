@@ -436,7 +436,9 @@ TEST(QuantityInput, GrammarSelectionIsExplicit)
         InputPhase::Commit,
         constraints
     );
-    EXPECT_EQ(quantity.status, InputStatus::Invalid);
+    EXPECT_EQ(quantity.status, InputStatus::Acceptable);
+    ASSERT_TRUE(quantity.quantity);
+    EXPECT_DOUBLE_EQ(quantity.quantity->getValue(), 3.0);
 
     const auto expression = interpretQuantityInput(
         "1+2 mm",
@@ -502,7 +504,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
     const auto localizedPlus = interpretQuantityInput(
         "plus1 mm",
-        QuantityInputGrammar::Expression,
+        QuantityInputGrammar::Quantity,
         path,
         Base::Unit::Length,
         custom,
@@ -883,6 +885,34 @@ TEST(QuantityInput, SharedLocalizedInputCorpus)
             ASSERT_TRUE(result.quantity);
             EXPECT_DOUBLE_EQ(result.quantity->getValue(), *testCase.value);
         }
+    }
+}
+
+TEST(QuantityInput, UnitActsAsExpressionSeparatorQuantity)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    const QuantityConstraints constraints;
+
+    for (const auto& [input, expected] : {
+             std::pair {"-1\" + 0.25\"", -19.05},
+             std::pair {"-1\"+0.25\"", -19.05},
+             std::pair {"-1in+0.25\"", -19.05},
+         }) {
+        const auto result = interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            Base::Unit::Length,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
     }
 }
 

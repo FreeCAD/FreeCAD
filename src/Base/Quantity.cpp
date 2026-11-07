@@ -645,16 +645,6 @@ bool startsNumericToken(
     if (startsAt(input, position, locale.decimalSeparator)) {
         return digitAfter(position + locale.decimalSeparator.size());
     }
-    const std::string_view positiveSign {locale.positiveSign.data(), locale.positiveSign.size()};
-    const std::string_view negativeSign {locale.negativeSign.data(), locale.negativeSign.size()};
-    for (const auto sign :
-         {std::string_view {"+"}, std::string_view {"-"}, positiveSign, negativeSign}) {
-        if (startsAt(input, position, sign)) {
-            const auto next = position + sign.size();
-            return digitAfter(next) || (next < input.size() && input[next] == '.')
-                || startsAt(input, next, locale.decimalSeparator);
-        }
-    }
     return false;
 }
 

@@ -83,7 +83,6 @@ public:
     App::QuantityInputResult interpretInput(
         const QString& input,
         const App::ObjectIdentifier& path,
-        const App::QuantityInputGrammar grammar,
         const App::InputPhase phase
     ) const
     {
@@ -94,29 +93,16 @@ public:
         }
         constraints.minimum = minimum;
         constraints.maximum = maximum;
-        const auto parse = [&](const App::QuantityInputGrammar selectedGrammar) {
-            return App::interpretQuantityInput(
-                input.toUtf8().toStdString(),
-                selectedGrammar,
-                path,
-                displayUnit,
-                Gui::numericLocaleContextFor(q->locale()),
-                phase,
-                constraints
-            );
-        };
 
-        auto result = parse(grammar);
-        // Preserve the quantity parser as the authority for quantity-only syntax, while keeping
-        // the established unbound-field support for arithmetic expressions. A parser failure is
-        // the only case that permits the expression grammar fallback; malformed numbers and
-        // incompatible units must retain their original diagnostics.
-        if (grammar == App::QuantityInputGrammar::Quantity
-            && result.status == App::InputStatus::Invalid && result.diagnostic
-            && result.diagnostic->kind == App::InputDiagnosticKind::ExpressionSyntax) {
-            result = parse(App::QuantityInputGrammar::Expression);
-        }
-        return result;
+        return App::interpretQuantityInput(
+            input.toUtf8().toStdString(),
+            App::QuantityInputGrammar::Quantity,
+            path,
+            displayUnit,
+            Gui::numericLocaleContextFor(q->locale()),
+            phase,
+            constraints
+        );
     }
 
     QLocale locale;
@@ -442,9 +428,7 @@ void QuantitySpinBox::validateInput()
         return;
     }
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
-    const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
+    const auto result = d->interpretInput(text, path, App::InputPhase::Commit);
     if (result.status == App::InputStatus::Acceptable) {
         const bool needsEmit = !d->validInput || d->validStr != text || d->pendingEmit;
         commitQuantity(
@@ -668,9 +652,7 @@ void QuantitySpinBox::userInput(const QString& text)
     }
 
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
-    const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
+    const auto result = d->interpretInput(text, path, App::InputPhase::Editing);
     if (text.trimmed().isEmpty()) {
         Q_EMIT inputCleared();
     }
@@ -1115,9 +1097,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
     Q_D(const QuantitySpinBox);
 
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
-    const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
+    const auto result = d->interpretInput(text, path, App::InputPhase::Commit);
     return result.quantity.value_or(Base::Quantity());
 }
 
@@ -1127,9 +1107,7 @@ QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
     Q_UNUSED(pos)
 
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
-    const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
+    const auto result = d->interpretInput(text, path, App::InputPhase::Editing);
     return result.status == App::InputStatus::Acceptable ? QValidator::Acceptable
                                                          : QValidator::Intermediate;
 }

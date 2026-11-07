@@ -3806,12 +3806,19 @@ bool expressionStartsAt(
         && input.substr(position, value.size()) == value;
 }
 
-bool isExpressionIdentifierContinuation(const UChar32 codePoint)
+bool isExpressionSeparator(const UChar32 codePoint)
 {
-    // Keep this policy aligned with the IDENTIFIER and CELLADDRESS rules in Expression.l.
+    // Keep this policy aligned with the IDENTIFIER, CELLADDRESS, and UNIT rules in Expression.l.
     // Localized numeric normalization must never split a token accepted by the canonical lexer.
-    if (codePoint == '_' || codePoint == '@' || codePoint == '$') {
-        return true;
+    switch (codePoint) {
+        case '_':
+        case '@':
+        case '"':
+        case '\'':
+        case U'\u00B0': // degree °n
+        case U'\u2032': // prime ′
+        case U'\u2033': // double prime ″
+            return true;
     }
 
     switch (u_charType(codePoint)) {
@@ -3832,7 +3839,7 @@ bool isExpressionIdentifierContinuation(const UChar32 codePoint)
     }
 }
 
-bool followsExpressionIdentifier(std::string_view input, const std::size_t position)
+bool followsExpressionSeparator(std::string_view input, const std::size_t position)
 {
     if (position == 0 || position > static_cast<std::size_t>(std::numeric_limits<int32_t>::max())) {
         return false;
@@ -3842,7 +3849,7 @@ bool followsExpressionIdentifier(std::string_view input, const std::size_t posit
     UChar32 codePoint = U_SENTINEL;
     const auto* bytes = reinterpret_cast<const uint8_t*>(input.data());
     U8_PREV(bytes, 0, previous, codePoint);
-    return codePoint != U_SENTINEL && isExpressionIdentifierContinuation(codePoint);
+    return codePoint != U_SENTINEL && isExpressionSeparator(codePoint);
 }
 
 bool startsExpressionNumber(
@@ -3857,7 +3864,7 @@ bool startsExpressionNumber(
 
     // Base scans numeric tokens; App decides where expression grammar allows one to start.
     // In particular, identifier and cell-reference suffixes remain opaque to localization.
-    if (followsExpressionIdentifier(input, position)) {
+    if (followsExpressionSeparator(input, position)) {
         return false;
     }
 

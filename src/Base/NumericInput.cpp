@@ -269,11 +269,7 @@ Base::LocalizedNumberResult Base::scanLocalizedNumber(
     std::size_t signLength = 0;
     char sign = 0;
     if (signAt(input, position, locale, signLength, sign)) {
-        // std::from_chars accepts a leading minus but not a leading plus. A positive sign is
-        // still recognized by the scanner; it is simply omitted from the canonical literal.
-        if (sign != '+') {
-            canonical.push_back(sign);
-        }
+        canonical.push_back(sign);
         position += signLength;
         if (position == input.size() || boundary(input[position])) {
             return incomplete(NumericDiagnosticKind::IncompleteSign, position, position, canonical);

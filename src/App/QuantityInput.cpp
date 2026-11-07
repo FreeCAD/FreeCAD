@@ -399,10 +399,6 @@ App::QuantityInputResult App::interpretQuantityInput(
         }
     }
 
-    if (grammar == QuantityInputGrammar::Quantity && hasAdditiveOperator(input, path, locale)) {
-        return invalid(InputDiagnosticKind::ExpressionSyntax, first);
-    }
-
     Base::Quantity quantity;
     std::shared_ptr<Expression> parsedExpression;
     try {
