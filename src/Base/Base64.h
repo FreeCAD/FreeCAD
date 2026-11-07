@@ -36,6 +36,7 @@ These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 #include "FCGlobal.h"
 
@@ -118,6 +119,17 @@ BaseExport std::pair<std::size_t, std::size_t> base64_decode(void* out, char con
  * @return Return the decoded binary data.
  */
 BaseExport std::string base64_decode(std::string const& str);
+
+/** Decode input Base64 the way QByteArray::fromBase64() does by default
+ *
+ * Any character outside the Base64 alphabet, including padding and white
+ * space, is skipped, so decoding never fails. Use it where compatibility
+ * with data decoded by QByteArray::fromBase64() matters.
+ *
+ * @param str: input Base64 string
+ * @return Return the decoded binary data.
+ */
+BaseExport std::string base64_decode_lenient(std::string_view str);
 
 /** Decode base64 string into binary data
  * @param out: output binary data. Note that the data is not cleared before

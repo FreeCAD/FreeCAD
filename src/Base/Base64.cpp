@@ -200,6 +200,29 @@ std::string Base::base64_decode(std::string const& str)
     return out;
 }
 
+std::string Base::base64_decode_lenient(std::string_view str)
+{
+    const auto table = base64_decode_table();
+    std::string out;
+    out.reserve(str.size() * 3 / 4);
+    unsigned int buffer = 0;
+    int bits = 0;
+    for (const char ch : str) {
+        const signed char value = table[static_cast<unsigned char>(ch)];
+        if (value < 0) {
+            continue;
+        }
+        buffer = (buffer << 6) | static_cast<unsigned int>(value);
+        bits += 6;
+        if (bits >= 8) {
+            bits -= 8;
+            out.push_back(static_cast<char>(buffer >> bits));
+            buffer &= (1U << bits) - 1U;
+        }
+    }
+    return out;
+}
+
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,
 // cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers,
 // readability-magic-numbers)

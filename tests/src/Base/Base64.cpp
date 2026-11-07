@@ -166,3 +166,26 @@ TEST(Base64, unpaddedTrailingQuarters)
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+
+TEST(Base64, decodeLenientMatchesQByteArrayFromBase64)
+{
+    // Expected values produced by QByteArray::fromBase64() with default options.
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YWJj", "abc"},
+        {"YQ==", "a"},
+        {"YQ=", "a"},
+        {"YQ", "a"},
+        {"Y!", ""},
+        {"YQ==A", std::string("a\0", 2)},
+        {"A", ""},
+        {"YW=Jj", "abc"},
+        {"Y W\nJ\tj", "abc"},
+        {"-_.,~", ""},
+        {"AAEC", std::string("\0\1\2", 3)},
+        {"", ""},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        EXPECT_EQ(Base::base64_decode_lenient(encoded), expected) << encoded;
+    }
+}
