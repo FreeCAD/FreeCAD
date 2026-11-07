@@ -33,7 +33,9 @@
 # include <Standard_Address.hxx>
 #endif
 #include <Standard_Boolean.hxx>
-#include <Standard_Byte.hxx>
+#if OCC_VERSION_HEX < 0x080100
+# include <Standard_Byte.hxx>
+#endif
 #include <Standard_Character.hxx>
 #include <Standard_ConstructionError.hxx>
 #include <Standard_CString.hxx>
