@@ -7,7 +7,7 @@ from Base.Quantity import Quantity
 from Base.Vector import Vector
 from Base.Axis import Axis
 from Part.App.Part2DObject import Part2DObject
-from Part.App.Geometry import Geometry
+import Part.Geometry  # because generate adds `Geometry` property
 from Sketcher.App.Constraint import Constraint
 from typing import Final, List, Tuple, Union, overload
 
@@ -83,13 +83,13 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def addGeometry(self, geo: Geometry, is_construction: bool = False, /) -> int: ...
+    def addGeometry(self, geo: Part.Geometry, is_construction: bool = False, /) -> int: ...
     @overload
     def addGeometry(
-        self, geo: List[Geometry], is_construction: bool = False, /
+        self, geo: List[Part.Geometry], is_construction: bool = False, /
     ) -> Tuple[int, ...]: ...
     def addGeometry(
-        self, geo: Union[Geometry, List[Geometry]], is_construction: bool = False, /
+        self, geo: Union[Part.Geometry, List[Part.Geometry]], is_construction: bool = False, /
     ) -> Union[int, Tuple[int, ...]]:
         """
         Add geometric objects to the sketch.

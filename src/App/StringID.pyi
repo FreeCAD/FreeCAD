@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod, class_declarations
 from Base.BaseClass import BaseClass
-from typing import Any, Final, List
+from typing import Final
 
 
 @export(
@@ -24,26 +22,25 @@ class StringID(BaseClass):
     """
 
     @constmethod
-    def isSame(self, other: "StringID", /) -> bool:
+    def isSame(self, other: StringID, /) -> bool:
         """
         Check if two StringIDs are the same
         """
-        ...
 
-    Value: Final[int] = 0
+    Value: Final[int]
     """Return the integer value of this ID"""
 
-    Related: Final[List[Any]] = []
+    Related: Final[list[int]]
     """Return the related string IDs"""
 
-    Data: Final[str] = ""
+    Data: Final[str]
     """Return the data associated with this ID"""
 
-    IsBinary: Final[bool] = False
+    IsBinary: Final[bool]
     """Check if the data is binary,"""
 
-    IsHashed: Final[bool] = False
+    IsHashed: Final[bool]
     """Check if the data is hash, if so 'Data' returns a base64 encoded string of the raw hash"""
 
-    Index: int = 0
+    Index: int
     """Geometry index. Only meaningful for geometry element name"""

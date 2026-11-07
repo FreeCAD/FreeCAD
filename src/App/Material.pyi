@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import Any, overload
+from PropertyPythonContracts import _ColorValue, _ColorInput
+from typing import overload
 
 
 @export(
@@ -24,6 +23,20 @@ class Material(PyObjectBase):
     UserDocu: This is the Material class
     """
 
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(
+        self,
+        /,
+        DiffuseColor: _ColorInput = ...,
+        AmbientColor: _ColorInput = ...,
+        SpecularColor: _ColorInput = ...,
+        EmissiveColor: _ColorInput = ...,
+        Shininess: float = ...,
+        Transparency: float = ...,
+    ) -> None: ...
+
     def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
@@ -32,22 +45,41 @@ class Material(PyObjectBase):
         Brass, Bronze, Copper, Gold, Pewter, Plaster, Plastic, Silver, Steel, Stone, Shiny plastic,
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
         """
-        ...
 
-    AmbientColor: Any = ...
-    """Ambient color"""
+    @property
+    def AmbientColor(self) -> _ColorValue:
+        """Ambient color"""
 
-    DiffuseColor: Any = ...
-    """Diffuse color"""
+    @AmbientColor.setter
+    def AmbientColor(self, color: _ColorInput, /) -> None:
+        """Ambient color"""
 
-    EmissiveColor: Any = ...
-    """Emissive color"""
+    @property
+    def DiffuseColor(self) -> _ColorValue:
+        """Diffuse color"""
 
-    SpecularColor: Any = ...
-    """Specular color"""
+    @DiffuseColor.setter
+    def DiffuseColor(self, color: _ColorInput, /) -> None:
+        """Diffuse color"""
 
-    Shininess: float = 0.0
+    @property
+    def EmissiveColor(self) -> _ColorValue:
+        """Emissive color"""
+
+    @EmissiveColor.setter
+    def EmissiveColor(self, color: _ColorInput, /) -> None:
+        """Emissive color"""
+
+    @property
+    def SpecularColor(self) -> _ColorValue:
+        """Specular color"""
+
+    @SpecularColor.setter
+    def SpecularColor(self, color: _ColorInput, /) -> None:
+        """Specular color"""
+
+    Shininess: float
     """Shininess"""
 
-    Transparency: float = 0.0
+    Transparency: float
     """Transparency"""

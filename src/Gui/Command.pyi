@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import constmethod
 from Base.PyObjectBase import PyObjectBase
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, TypedDict
 
 class Command(PyObjectBase):
     """
@@ -14,32 +12,39 @@ class Command(PyObjectBase):
     Licence: LGPL
     """
 
+    if TYPE_CHECKING:
+        class _InfoDict(TypedDict):
+            name: str
+            menuText: str
+            toolTip: str
+            whatsThis: str
+            statusTip: str
+            pixmap: str
+            shortcut: str
+
     @staticmethod
-    def get(name: str, /) -> Optional["Command"]:
+    def get(name: str, /) -> Command | None:
         """
         Get a given command by name or None if it doesn't exist.
 
         name : str
             Command name.
         """
-        ...
 
     @staticmethod
     def update() -> None:
         """
         Update active status of all commands.
         """
-        ...
 
     @staticmethod
-    def listAll() -> List[str]:
+    def listAll() -> list[str]:
         """
         Returns the name of all commands.
         """
-        ...
 
     @staticmethod
-    def listByShortcut(string: str, useRegExp: bool = False, /) -> List[str]:
+    def listByShortcut(string: str, useRegExp: bool = False, /) -> list[str]:
         """
         Returns a list of all commands, filtered by shortcut.
         Shortcuts are converted to uppercase and spaces removed
@@ -50,7 +55,6 @@ class Command(PyObjectBase):
         useRegExp : bool
             Filter using regular expression.
         """
-        ...
 
     def run(self, item: int = 0, /) -> None:
         """
@@ -59,20 +63,17 @@ class Command(PyObjectBase):
         item : int
             Item to be run.
         """
-        ...
 
     @constmethod
     def isActive(self) -> bool:
         """
         Returns True if the command is active, False otherwise.
         """
-        ...
 
     def getShortcut(self) -> str:
         """
         Returns string representing shortcut key accelerator for command.
         """
-        ...
 
     def setShortcut(self, string: str, /) -> bool:
         """
@@ -81,35 +82,31 @@ class Command(PyObjectBase):
         string : str
             Shortcut to be set.
         """
-        ...
 
     def resetShortcut(self) -> bool:
         """
         Resets shortcut for given command back to the default, returns True for success.
         """
-        ...
 
-    def getInfo(self) -> Dict[Any, Any]:
+    def getInfo(self) -> _InfoDict:
         """
         Return information about this command.
         """
-        ...
 
-    def getAction(self) -> List[Any]:
+    def getAction(self) -> list[Any]:
         """
         Return the associated QAction object.
         """
-        ...
 
     @staticmethod
     def createCustomCommand(
         macroFile: str,
-        menuText: Optional[str] = None,
-        toolTip: Optional[str] = None,
-        whatsThis: Optional[str] = None,
-        statusTip: Optional[str] = None,
-        pixmap: Optional[str] = None,
-        shortcut: Optional[str] = None,
+        menuText: str | None = None,
+        toolTip: str | None = None,
+        whatsThis: str | None = None,
+        statusTip: str | None = None,
+        pixmap: str | None = None,
+        shortcut: str | None = None,
     ) -> str:
         """
         Create a custom command for a macro. Returns name of the created command.
@@ -129,7 +126,6 @@ class Command(PyObjectBase):
         shortcut : str
             Shortcut key sequence. Optional.
         """
-        ...
 
     @staticmethod
     def removeCustomCommand(name: str, /) -> bool:
@@ -143,10 +139,9 @@ class Command(PyObjectBase):
         name : str
             Command name.
         """
-        ...
 
     @staticmethod
-    def findCustomCommand(name: str, /) -> Optional[str]:
+    def findCustomCommand(name: str, /) -> str | None:
         """
         Given the name of a macro, return the name of the custom command for that macro
         or None if there is no command matching that macro script name.
@@ -154,4 +149,3 @@ class Command(PyObjectBase):
         name : str
             Macro name.
         """
-        ...

@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Quantity import Quantity
 from Vector import Vector
-from Metadata import export, constmethod, class_declarations, no_args
+from Metadata import export, constmethod, class_declarations, no_args, typing_only
 from PyObjectBase import PyObjectBase
 from enum import IntEnum
-from typing import overload, Union, Tuple, Sequence
+from Rotation import Rotation
+from Placement import Placement
+from typing import Any, overload
+from collections.abc import Sequence
 
 class ScaleType(IntEnum):
     Other = -1
@@ -69,51 +70,92 @@ class Matrix(PyObjectBase):
     Licence: LGPL
     """
 
-    A11: float = 0.0
+    @overload
+    def __init__(self) -> None:
+        """
+        Empty constructor.
+        """
+    # fmt: off
+    @overload
+    def __init__(
+        self,
+        /,
+        a11: float = 1.0, a12: float = 0.0, a13: float = 0.0, a14: float = 0.0,
+        a21: float = 0.0, a22: float = 1.0, a23: float = 0.0, a24: float = 0.0,
+        a31: float = 0.0, a32: float = 0.0, a33: float = 1.0, a34: float = 0.0,
+        a41: float = 0.0, a42: float = 0.0, a43: float = 0.0, a44: float = 1.0,
+    ) -> None:
+        """
+        Define from 16 coefficients of the 4x4 matrix.
+        coef : sequence of float
+            The sequence can have up to 16 elements which complete the matrix by rows.
+        """
+    # fmt: on
+
+    @overload
+    def __init__(self, matrix: Matrix, /) -> None:
+        """
+        Copy constructor.
+        matrix : Base.Matrix.
+        """
+
+    @overload
+    def __init__(self, v1: Vector, v2: Vector, v3: Vector, v4: Vector = ..., /) -> None:
+        """
+        Define from four 3D vectors which represent the columns of the 3x4 submatrix,
+        useful to represent an affine transformation. The fourth row is made up by
+        (0,0,0,1).
+        v1 : Base.Vector
+        v2 : Base.Vector
+        v3 : Base.Vector
+        v4 : Base.Vector
+            Default to (0,0,0). Optional.
+        """
+    A11: float
     """The (1,1) matrix element."""
-    A12: float = 0.0
+    A12: float
     """The (1,2) matrix element."""
-    A13: float = 0.0
+    A13: float
     """The (1,3) matrix element."""
-    A14: float = 0.0
+    A14: float
     """The (1,4) matrix element."""
-    A21: float = 0.0
+    A21: float
     """The (2,1) matrix element."""
-    A22: float = 0.0
+    A22: float
     """The (2,2) matrix element."""
-    A23: float = 0.0
+    A23: float
     """The (2,3) matrix element."""
-    A24: float = 0.0
+    A24: float
     """The (2,4) matrix element."""
-    A31: float = 0.0
+    A31: float
     """The (3,1) matrix element."""
-    A32: float = 0.0
+    A32: float
     """The (3,2) matrix element."""
-    A33: float = 0.0
+    A33: float
     """The (3,3) matrix element."""
-    A34: float = 0.0
+    A34: float
     """The (3,4) matrix element."""
-    A41: float = 0.0
+    A41: float
     """The (4,1) matrix element."""
-    A42: float = 0.0
+    A42: float
     """The (4,2) matrix element."""
-    A43: float = 0.0
+    A43: float
     """The (4,3) matrix element."""
-    A44: float = 0.0
+    A44: float
     """The (4,4) matrix element."""
 
     @property
     def A(self) -> tuple[float, ...]:
         """The matrix elements."""
-        ...
 
     @A.setter
-    def A(self, value: Sequence[float]) -> None: ...
+    def A(self, /, value: Sequence[float]) -> None: ...
     @overload
     def move(self, vector: Vector | tuple[float, float, float], /) -> None: ...
     @overload
     def move(self, x: float, y: float, z: float, /) -> None: ...
-    def move(self, *args) -> None:
+    @overload
+    def move(self, /, *args: Any) -> None:
         """
         Move the matrix along a vector, equivalent to left multiply the matrix
         by a pure translation transformation.
@@ -126,7 +168,6 @@ class Matrix(PyObjectBase):
         z : float
             `z` translation.
         """
-        ...
 
     @overload
     def scale(self, vector: Vector | tuple[float, float, float], /) -> None: ...
@@ -134,7 +175,8 @@ class Matrix(PyObjectBase):
     def scale(self, x: float, y: float, z: float, /) -> None: ...
     @overload
     def scale(self, factor: float, /) -> None: ...
-    def scale(self, *args) -> None:
+    @overload
+    def scale(self, /, *args: Any) -> None:
         """
         Scale the first three rows of the matrix.
 
@@ -148,10 +190,9 @@ class Matrix(PyObjectBase):
         factor : float
             global factor scale.
         """
-        ...
 
     @constmethod
-    def hasScale(self, tol: float = 0, /) -> ScaleType:
+    def hasScale(self, tol: float = 0.0, /) -> ScaleType:
         """
         Return an enum value of ScaleType. Possible values are:
         Uniform, NonUniformLeft, NonUniformRight, NoScaling or Other
@@ -159,22 +200,19 @@ class Matrix(PyObjectBase):
 
         tol : float
         """
-        ...
 
     @constmethod
-    def decompose(self) -> Tuple["Matrix", "Matrix", "Matrix", "Matrix"]:
+    def decompose(self) -> tuple[Matrix, Matrix, Matrix, Matrix]:
         """
         Return a tuple of matrices representing shear, scale, rotation and move.
         So that matrix = move * rotation * scale * shear.
         """
-        ...
 
     @no_args
     def nullify(self) -> None:
         """
         Make this the null matrix.
         """
-        ...
 
     @no_args
     @constmethod
@@ -182,23 +220,20 @@ class Matrix(PyObjectBase):
         """
         Check if this is the null matrix.
         """
-        ...
 
     @no_args
     def unity(self) -> None:
         """
         Make this matrix to unity (4D identity matrix).
         """
-        ...
 
     @constmethod
     def isUnity(self, tol: float = 0.0, /) -> bool:
         """
         Check if this is the unit matrix (4D identity matrix).
         """
-        ...
 
-    def transform(self, vector: Vector, matrix2: "Matrix", /) -> None:
+    def transform(self, vector: Vector, matrix2: Matrix, /) -> None:
         """
         Transform the matrix around a given point.
         Equivalent to left multiply the matrix by T*M*T_inv, where M is `matrix2`, T the
@@ -209,7 +244,6 @@ class Matrix(PyObjectBase):
         vector : Base.Vector
         matrix2 : Base.Matrix
         """
-        ...
 
     @constmethod
     def col(self, index: int, /) -> Vector:
@@ -220,7 +254,6 @@ class Matrix(PyObjectBase):
         index : int
             Required column index.
         """
-        ...
 
     def setCol(self, index: int, vector: Vector, /) -> None:
         """
@@ -231,7 +264,6 @@ class Matrix(PyObjectBase):
             Required column index.
         vector : Base.Vector
         """
-        ...
 
     @constmethod
     def row(self, index: int, /) -> Vector:
@@ -242,7 +274,6 @@ class Matrix(PyObjectBase):
         index : int
             Required row index.
         """
-        ...
 
     def setRow(self, index: int, vector: Vector, /) -> None:
         """
@@ -253,7 +284,6 @@ class Matrix(PyObjectBase):
             Required row index.
         vector : Base.Vector
         """
-        ...
 
     @no_args
     @constmethod
@@ -261,7 +291,6 @@ class Matrix(PyObjectBase):
         """
         Return the diagonal of the 3x3 leading principal submatrix as vector.
         """
-        ...
 
     def setDiagonal(self, vector: Vector, /) -> None:
         """
@@ -269,7 +298,6 @@ class Matrix(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
     def rotateX(self, angle: float | Quantity, /) -> None:
         """
@@ -278,7 +306,6 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     def rotateY(self, angle: float | Quantity, /) -> None:
         """
@@ -287,7 +314,6 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     def rotateZ(self, angle: float | Quantity, /) -> None:
         """
@@ -296,14 +322,16 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     @overload
-    def multiply(self, matrix: "Matrix", /) -> "Matrix": ...
-    @overload
-    def multiply(self, vector: Vector, /) -> Vector: ...
     @constmethod
-    def multiply(self, obj: Union["Matrix", Vector], /) -> Union["Matrix", Vector]:
+    def multiply(self, matrix: Matrix, /) -> Matrix: ...
+    @overload
+    @constmethod
+    def multiply(self, vector: Vector, /) -> Vector: ...
+    @overload
+    @constmethod
+    def multiply(self, obj: Matrix | Vector, /) -> Matrix | Vector:
         """
         Right multiply the matrix by the given object.
         If the argument is a vector, this is augmented to the 4D vector (`vector`, 1).
@@ -311,7 +339,6 @@ class Matrix(PyObjectBase):
         matrix : Base.Matrix
         vector : Base.Vector
         """
-        ...
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
@@ -320,37 +347,32 @@ class Matrix(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
     @no_args
     def invert(self) -> None:
         """
         Compute the inverse matrix in-place, if possible.
         """
-        ...
 
     @no_args
     @constmethod
-    def inverse(self) -> "Matrix":
+    def inverse(self) -> Matrix:
         """
         Compute the inverse matrix, if possible.
         """
-        ...
 
     @no_args
     def transpose(self) -> None:
         """
         Transpose the matrix in-place.
         """
-        ...
 
     @no_args
     @constmethod
-    def transposed(self) -> "Matrix":
+    def transposed(self) -> Matrix:
         """
         Returns a transposed copy of this matrix.
         """
-        ...
 
     @no_args
     @constmethod
@@ -358,7 +380,6 @@ class Matrix(PyObjectBase):
         """
         Compute the determinant of the matrix.
         """
-        ...
 
     @constmethod
     def isOrthogonal(self, tol: float = 1e-6, /) -> float:
@@ -369,10 +390,9 @@ class Matrix(PyObjectBase):
         tol : float
             Tolerance used to check orthogonality.
         """
-        ...
 
     @constmethod
-    def submatrix(self, dim: int, /) -> "Matrix":
+    def submatrix(self, dim: int, /) -> Matrix:
         """
         Get the leading principal submatrix of the given dimension.
         The (4 - `dim`) remaining dimensions are completed with the
@@ -381,7 +401,6 @@ class Matrix(PyObjectBase):
         dim : int
             Dimension parameter must be in the range [1,4].
         """
-        ...
 
     @no_args
     @constmethod
@@ -389,4 +408,20 @@ class Matrix(PyObjectBase):
         """
         Analyzes the type of transformation.
         """
-        ...
+
+    @typing_only
+    def __add__(self, other: Matrix, /) -> Matrix: ...
+    @typing_only
+    def __sub__(self, other: Matrix, /) -> Matrix: ...
+    @overload
+    @typing_only
+    def __mul__(self, other: Vector, /) -> Vector: ...
+    @overload
+    @typing_only
+    def __mul__(self, other: Rotation | Placement | Matrix | float, /) -> Matrix: ...
+    @typing_only
+    def __pow__(self, other: int, /) -> Matrix: ...
+    @typing_only
+    def __neg__(self) -> Matrix: ...
+    @typing_only
+    def __pos__(self) -> Matrix: ...

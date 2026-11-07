@@ -463,11 +463,11 @@ def exercise(
     assert_type(
         parameters.GetContents(),
         list[
-            tuple[
-                Literal["String", "Integer", "Float", "Boolean", "Unsigned Long"],
-                str,
-                str | int | float | bool,
-            ]
+            tuple[Literal["String"], str, str]
+            | tuple[Literal["Integer"], str, int]
+            | tuple[Literal["Float"], str, float]
+            | tuple[Literal["Boolean"], str, bool]
+            | tuple[Literal["Unsigned Long"], str, int]
         ]
         | None,
     )
@@ -476,11 +476,11 @@ def exercise(
     assert_type(gui_document, FreeCADGui.Document | None)
     assert_type(edit_document, FreeCADGui.Document | None)
     assert_type(active_gui_document, FreeCADGui.Document | None)
-    assert_type(gui_view, object | None)
+    assert_type(gui_view, FreeCADGui._MDIView | None)
     assert_type(gui_main_window, FreeCADGui._MainWindow)
     assert_type(resource_from_dialog, FreeCADGui._PyResource)
     assert_type(single_viewer, FreeCADGui._View3DInventor)
-    assert_type(split_viewer, FreeCADGui._View3DInventor | FreeCADGui._AbstractSplitView)
+    assert_type(split_viewer, FreeCADGui._AbstractSplitView)
     assert_type(material.Name, str)
     assert_type(path_command.toGCode(), str)
     assert_type(active_workbench, FreeCADGui.Workbench)
@@ -510,7 +510,7 @@ def exercise(
     assert_type(FreeCADGui.isIconCached("example"), bool)
     assert_type(FreeCADGui.getLocale(), str)
     assert_type(FreeCADGui.supportedLocales(), dict[str, str])
-    assert_type(FreeCADGui.activeView("Gui::View3DInventor"), object | None)
+    assert_type(FreeCADGui.activeView("Gui::View3DInventor"), FreeCADGui._MDIView | None)
     assert_type(FreeCADGui.getDocument("Document"), FreeCADGui.Document)
     assert_type(FreeCADGui.doCommandEval("1 + 1"), Any)
     assert_type(FreeCADGui.createViewer(), FreeCADGui._View3DInventor)
@@ -551,15 +551,15 @@ def exercise(
     assert_type(task_placement.isAllowedAlterView(), bool)
     assert_type(task_placement.isAllowedAlterSelection(), bool)
     assert_type(task_placement.getStandardButtons(), int)
-    assert_type(ui_loader.load("dialog.ui"), object | None)
-    assert_type(ui_loader.createWidget("Gui::InputField"), object | None)
+    assert_type(ui_loader.load("dialog.ui"), QtWidgets.QWidget | None)
+    assert_type(ui_loader.createWidget("Gui::InputField"), QtWidgets.QWidget | None)
     assert_type(ui_loader.availableWidgets(), list[str])
     assert_type(ui_loader.pluginPaths(), list[str])
     assert_type(ui_loader.errorString(), str)
     assert_type(ui_loader.isLanguageChangeEnabled(), bool)
     assert_type(ui_loader.workingDirectory(), str)
     assert_type(view.getCamera(), str)
-    assert_type(view.getCameraType(), str)
+    assert_type(view.getCameraType(), Literal["Orthographic", "Perspective"])
     assert_type(view.listCameraTypes(), list[str])
     assert_type(view.getCursorPos(), tuple[int, int])
     assert_type(view.getSize(), tuple[int, int])

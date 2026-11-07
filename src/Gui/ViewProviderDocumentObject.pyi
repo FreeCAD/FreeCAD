@@ -1,12 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
+from App.DocumentObject import DocumentObject
+from Gui.Document import Document as DocumentPy
 from ViewProvider import ViewProvider
-from typing import TYPE_CHECKING, Final
-
-if TYPE_CHECKING:
-    from FreeCAD import DocumentObject as _DocumentObject
+from typing import Final
 
 class ViewProviderDocumentObject(ViewProvider):
     """
@@ -20,12 +17,11 @@ class ViewProviderDocumentObject(ViewProvider):
         """
         Update the view representation of the object
         """
-        ...
-    Object: _DocumentObject = ...
+    Object: DocumentObject
     """Set/Get the associated data object"""
 
-    ForceUpdate: bool = False
+    ForceUpdate: bool
     """Reference count to force update visual"""
 
-    Document: Final["Document"] = ...
+    Document: Final[DocumentPy]
     """Return the document the view provider is part of"""

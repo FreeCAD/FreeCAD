@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
-from typing import overload, Final, Tuple, Union
+from typing import overload, Final, Any
 from Unit import Unit as UnitPy
 
 @export(
@@ -45,37 +43,42 @@ class Quantity(PyObjectBase):
     @overload
     def __init__(self) -> None: ...
     @overload
-    def __init__(self, value: float) -> None: ...
+    def __init__(self, value: float, /) -> None: ...
     @overload
-    def __init__(self, value: float, unit: UnitPy) -> None: ...
+    def __init__(self, value: float, unit: UnitPy, /) -> None: ...
     @overload
-    def __init__(self, quantity: "Quantity") -> None: ...
+    def __init__(self, quantity: Quantity, /) -> None: ...
     @overload
-    def __init__(self, string: str) -> None: ...
+    def __init__(self, string: str, /) -> None: ...
+    @overload
+    def __init__(self, value: float, unit: str, /) -> None: ...
+    @overload
+    def __init__(
+        self,
+        value: float,  # technically value is optional, but if-branch wont set self without it.
+        i1: int = 0, i2: int = 0, i3: int = 0, i4: int = 0,
+        i5: int = 0, i6: int = 0, i7: int = 0, i8: int = 0,
+        /,
+    ) -> None: ...
     # fmt: on
 
-    @overload
-    def toStr(self, /) -> str: ...
-    @overload
-    def toStr(self, decimals: int, /) -> str: ...
     @constmethod
     def toStr(self, decimals: int = ..., /) -> str:
         """
         Returns a string representation rounded to number of decimals. If no decimals are specified then
         the internal precision is used
         """
-        ...
 
     @constmethod
-    def getUserPreferred(self) -> Tuple[str, float, str]:
+    def getUserPreferred(self) -> tuple[str, float, str]:
         """
         Returns tuple with (quantity incl. unit, translation factor, unit)
         """
-        ...
 
     @overload
     def getValueAs(self, unit: str, /) -> float: ...
     @overload
+    @constmethod
     def getValueAs(
         self,
         translation: float,
@@ -90,11 +93,17 @@ class Quantity(PyObjectBase):
         /,
     ) -> float: ...
     @overload
+    @constmethod
+    def getValueAs(self, translation: float, unit: UnitPy, /) -> float: ...
+    @overload
+    @constmethod
     def getValueAs(self, unit: UnitPy, /) -> float: ...
     @overload
-    def getValueAs(self, quantity: "Quantity", /) -> float: ...
     @constmethod
-    def getValueAs(self, *args) -> float:
+    def getValueAs(self, quantity: Quantity, /) -> float: ...
+    @overload
+    @constmethod
+    def getValueAs(self, /, *args: Any) -> float:
         """
         Returns a floating point value as the provided unit
 
@@ -105,16 +114,17 @@ class Quantity(PyObjectBase):
         getValueAs(Qantity('N/m^2')) # a quantity
         getValueAs(Unit(0,1,0,0,0,0,0,0)) # a unit
         """
-        ...
 
     @overload
+    @constmethod
     def __round__(self, /) -> int: ...
     @overload
-    def __round__(self, ndigits: int, /) -> float: ...
     @constmethod
-    def __round__(self, ndigits: int = ..., /) -> Union[int, float]:
+    def __round__(self, ndigits: int, /) -> float: ...
+    @overload
+    @constmethod
+    def __round__(self, ndigits: int = ..., /) -> int | float:
         """
         Returns the Integral closest to x, rounding half toward even.
         When an argument is passed, work like built-in round(x, ndigits).
         """
-        ...

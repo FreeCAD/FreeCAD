@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import constmethod
 from PyObjectBase import PyObjectBase
-from typing import List, Final
+from typing import Final
 
 class BaseClass(PyObjectBase):
     """
@@ -14,10 +12,10 @@ class BaseClass(PyObjectBase):
     Licence: LGPL
     """
 
-    TypeId: Final[str] = ""
+    TypeId: Final[str]
     """Is the type of the FreeCAD object with module domain"""
 
-    Module: Final[str] = ""
+    Module: Final[str]
     """Module in which this class is defined"""
 
     @constmethod
@@ -25,11 +23,9 @@ class BaseClass(PyObjectBase):
         """
         Returns true if given type is a father
         """
-        ...
 
     @constmethod
-    def getAllDerivedFrom(self) -> List[object]:
+    def getAllDerivedFrom(self) -> list[str]:
         """
         Returns all descendants
         """
-        ...

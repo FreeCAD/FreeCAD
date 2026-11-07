@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+from App.Document import Document as AppDocument
+from App.DocumentObject import DocumentObject
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
-from typing import Any, Final, Tuple
+from Base.Vector import Vector
+from typing import Any, Final
 
 @export(
     Include="Gui/Selection/SelectionObject.h",
@@ -23,39 +26,37 @@ class SelectionObject(BaseClass):
         --
         This object becomes invalid.
         """
-        ...
 
-    def isObjectTypeOf(self, type: Any, /) -> bool:
+    def isObjectTypeOf(self, type: str, /) -> bool:
         """
         Test for a certain father class.
         """
-        ...
-    ObjectName: Final[str] = ""
+    ObjectName: Final[str]
     """Name of the selected object"""
 
-    SubElementNames: Final[Tuple[str, ...]] = ()
+    SubElementNames: Final[tuple[str, ...]]
     """Name of the selected sub-element if any"""
 
-    FullName: Final[str] = ""
+    FullName: Final[str]
     """Name of the selected object"""
 
-    TypeName: Final[str] = ""
+    TypeName: Final[str]
     """Type name of the selected object"""
 
-    DocumentName: Final[str] = ""
+    DocumentName: Final[str]
     """Name of the document of the selected object"""
 
-    Document: Final[Any] = ...
+    Document: Final[AppDocument]
     """Document of the selected object"""
 
-    Object: Final[Any] = ...
+    Object: Final[DocumentObject]
     """Selected object"""
 
-    SubObjects: Final[Tuple[Any, ...]] = ()
+    SubObjects: Final[tuple[Any, ...]]
     """Selected sub-element, if any"""
 
-    PickedPoints: Final[Tuple[Any, ...]] = ()
+    PickedPoints: Final[tuple[Vector, ...]]
     """Picked points for selection"""
 
-    HasSubObjects: Final[bool] = False
+    HasSubObjects: Final[bool]
     """Selected sub-element, if any"""
