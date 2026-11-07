@@ -20,7 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cmath>
 #include <limits>
+#include <optional>
 #include <QApplication>
 #include <QDebug>
 #include <QFocusEvent>
@@ -282,6 +285,141 @@ bool QuantitySpinBox::apply(const std::string& propName)
 
     return false;
 }
+
+namespace
+{
+
+int decimalPosition(const QString& text, int numberLen, const QString& decimalSeparator)
+{
+    if (decimalSeparator.isEmpty()) {
+        return numberLen;
+    }
+    const int pos = text.left(numberLen).indexOf(decimalSeparator);
+    return pos < 0 ? numberLen : pos;
+}
+
+/// Power of ten of the digit at `index` (0 = units, -1 = tenths, 1 = tens, ...).
+int digitExponent(const QString& text, int numberLen, int index, const QString& decimalSeparator)
+{
+    const int decPos = decimalPosition(text, numberLen, decimalSeparator);
+    int count = 0;
+    if (index < decPos) {
+        for (int i = index + 1; i < decPos; ++i) {
+            if (text.at(i).isDigit()) {
+                ++count;
+            }
+        }
+        return count;
+    }
+    for (int i = decPos + decimalSeparator.size(); i <= index; ++i) {
+        if (text.at(i).isDigit()) {
+            ++count;
+        }
+    }
+    return -count;
+}
+
+/// Index of the digit with the given exponent. If the (re-formatted) text no longer has such
+/// a digit, the closest existing one is returned. Returns -1 if there are no digits at all.
+int digitIndexForExponent(const QString& text, int numberLen, int exponent, const QString& decimalSeparator)
+{
+    const int decPos = decimalPosition(text, numberLen, decimalSeparator);
+    const int fracStart = decPos + decimalSeparator.size();
+    int fallback = -1;
+
+    if (exponent >= 0) {
+        int k = 0;
+        for (int i = decPos - 1; i >= 0; --i) {
+            if (!text.at(i).isDigit()) {
+                continue;
+            }
+            if (k == exponent) {
+                return i;
+            }
+            fallback = i;  // ends up as the left-most integer digit
+            ++k;
+        }
+        for (int i = fracStart; fallback < 0 && i < numberLen; ++i) {
+            if (text.at(i).isDigit()) {
+                fallback = i;
+            }
+        }
+        return fallback;
+    }
+
+    int k = 1;
+    for (int i = fracStart; i < numberLen; ++i) {
+        if (!text.at(i).isDigit()) {
+            continue;
+        }
+        if (k == -exponent) {
+            return i;
+        }
+        fallback = i;  // ends up as the right-most fractional digit
+        ++k;
+    }
+    for (int i = decPos - 1; fallback < 0 && i >= 0; --i) {
+        if (text.at(i).isDigit()) {
+            fallback = i;
+        }
+    }
+    return fallback;
+}
+
+/// Plain localized number (sign, digits, grouping, decimal separator) -> double.
+/// Anything else (exponent, expression, ...) yields nullopt.
+std::optional<double> parseNumberToken(const QString& token, const Base::NumericLocaleContext& ctx)
+{
+    const QString dec = QString::fromStdString(ctx.decimalSeparator);
+    const QString grp = QString::fromStdString(ctx.groupingSeparator);
+    const QString neg = QString::fromStdString(ctx.negativeSign);
+    const QString pos = QString::fromStdString(ctx.positiveSign);
+
+    int i = 0;
+    bool negative = false;
+    if (!neg.isEmpty() && token.startsWith(neg)) {
+        negative = true;
+        i = neg.size();
+    }
+    else if (token.startsWith(QLatin1Char('-'))) {
+        negative = true;
+        i = 1;
+    }
+    else if (!pos.isEmpty() && token.startsWith(pos)) {
+        i = pos.size();
+    }
+    else if (token.startsWith(QLatin1Char('+'))) {
+        i = 1;
+    }
+
+    QString ascii;
+    while (i < token.size()) {
+        const QChar ch = token.at(i);
+        if (ch.isDigit()) {
+            ascii += QChar(u'0' + ch.digitValue());
+            ++i;
+        }
+        else if (!dec.isEmpty() && token.mid(i, dec.size()) == dec) {
+            ascii += QLatin1Char('.');
+            i += dec.size();
+        }
+        else if (!grp.isEmpty() && token.mid(i, grp.size()) == grp) {
+            i += grp.size();
+        }
+        else {
+            return std::nullopt;
+        }
+    }
+
+    bool ok = false;
+    const double value = ascii.toDouble(&ok);
+    if (!ok) {
+        return std::nullopt;
+    }
+    return negative ? -value : value;
+}
+
+}  // namespace
 
 void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 {
@@ -911,6 +1049,93 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
     return ret;
 }
 
+std::optional<QuantitySpinBox::DigitTarget> QuantitySpinBox::digitTargetAtCursor(
+    const double displayedValue
+) const
+{
+    QLineEdit* le = lineEdit();
+    const QString text = le->text();
+    const auto ctx = Gui::numericLocaleContextFor(locale());
+    const int numberLen = Gui::numericInputSelectionLengthUtf16(text, ctx);
+    if (numberLen <= 0) {
+        return std::nullopt;
+    }
+
+    int index = -1;
+    const bool hasSelection = le->hasSelectedText();
+    if (hasSelection) {
+        const int start = le->selectionStart();
+        const int end = start + le->selectedText().size();
+        if (start <= 0 && end >= numberLen) {
+            // The whole number is selected (the state after focusing the field or after a
+            // normal step): keep the classic behaviour and use singleStep.
+            return std::nullopt;
+        }
+        // Rightmost digit of the selection that belongs to the number.
+        index = std::min(end, numberLen) - 1;
+        while (index >= start && !text.at(index).isDigit()) {
+            --index;
+        }
+        if (index < start) {
+            return std::nullopt;
+        }
+    }
+    else {
+        // Caret: the digit to the left of it, or, at the very start, the one to the right.
+        const int pos = le->cursorPosition();
+        if (pos > 0 && pos - 1 < numberLen && text.at(pos - 1).isDigit()) {
+            index = pos - 1;
+        }
+        else if (pos < numberLen && text.at(pos).isDigit()) {
+            index = pos;
+        }
+        else {
+            return std::nullopt;
+        }
+    }
+
+    // The text must be a plain number that agrees with the value being stepped. Otherwise
+    // (expression, different unit typed by the user, exponent notation...) the digit position
+    // says nothing about the magnitude of the step, so fall back to singleStep.
+    const QString decimalSeparator = QString::fromStdString(ctx.decimalSeparator);
+    const auto shown = parseNumberToken(text.left(numberLen), ctx);
+    if (!shown) {
+        return std::nullopt;
+    }
+    const int decPos = decimalPosition(text, numberLen, decimalSeparator);
+    const int decimals = std::max(0, numberLen - decPos - static_cast<int>(decimalSeparator.size()));
+    const double tolerance = 0.5 * std::pow(10.0, -decimals) + 1e-9 * std::abs(displayedValue);
+    if (std::abs(*shown - displayedValue) > tolerance) {
+        return std::nullopt;
+    }
+
+    return DigitTarget {digitExponent(text, numberLen, index, decimalSeparator), hasSelection};
+}
+
+void QuantitySpinBox::restoreDigitTarget(const DigitTarget& target)
+{
+    QLineEdit* le = lineEdit();
+    const QString text = le->text();
+    const auto ctx = Gui::numericLocaleContextFor(locale());
+    const int numberLen = Gui::numericInputSelectionLengthUtf16(text, ctx);
+    const int index = digitIndexForExponent(
+        text,
+        numberLen,
+        target.exponent,
+        QString::fromStdString(ctx.decimalSeparator)
+    );
+    if (index < 0) {
+        selectNumber();
+        return;
+    }
+    if (target.selection) {
+        le->setSelection(index, 1);
+    }
+    else {
+        le->setCursorPosition(index + 1);
+    }
+}
+
 void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
@@ -929,11 +1154,23 @@ void QuantitySpinBox::stepBy(int steps)
 
     const double displayScale = steppingUnit.getScale().getValue();
     const double displayedValue = base.getValue() / displayScale;
-    const double steppedValue = displayedValue + steps * d->singleStep;
+
+    // If the caret sits in a digit of the number, or a digit is selected, step that digit
+    // (10^exponent) instead of singleStep. With the whole number selected, or when the digit
+    // cannot be determined reliably, the step is singleStep as before.
+    const std::optional<DigitTarget> digit = digitTargetAtCursor(displayedValue);
+    const double stepSize = digit ? std::pow(10.0, digit->exponent) : d->singleStep;
+
+    const double steppedValue = displayedValue + steps * stepSize;
     Quantity quant(steppedValue * displayScale, steppingUnit.getUnit());
     commitQuantity(quant, TextPolicy::ReformatEditor, true);
     update();
-    selectNumber();
+    if (digit) {
+        restoreDigitTarget(*digit);
+    }
+    else {
+        selectNumber();
+    }
 }
 
 QSize QuantitySpinBox::sizeForText(const QString& txt) const

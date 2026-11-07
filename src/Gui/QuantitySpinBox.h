@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <Gui/MetaTypes.h>
 #include <Gui/SpinBox.h>
 
@@ -207,6 +209,15 @@ private:
     void validateInput() override;
     void commitQuantity(Base::Quantity quantity, TextPolicy textPolicy, bool notify);
     void updateText(const Base::Quantity&);
+
+    /// Digit of the editor text that a step should act on (see stepBy()).
+    struct DigitTarget
+    {
+        int exponent;    ///< power of ten of the digit (0 = units, -1 = tenths, 1 = tens ...)
+        bool selection;  ///< true if the digit was selected, false if it was a plain caret
+    };
+    std::optional<DigitTarget> digitTargetAtCursor(double displayedValue) const;
+    void restoreDigitTarget(const DigitTarget& target);
     void updateEdit(const QString& text);
     void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
