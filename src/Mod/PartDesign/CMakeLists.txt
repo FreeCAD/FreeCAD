@@ -17,6 +17,7 @@ if(BUILD_GUI)
     list (APPEND PartDesign_Scripts
           InitGui.py
           TestPartDesignGui.py
+          TestPartDesignPatternLabelsGui.py
           InvoluteGearFeature.py
           InvoluteGearFeature.ui
           SprocketFeature.py
