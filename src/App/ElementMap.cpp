@@ -381,14 +381,18 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef,
         if (!(stream >> tmp >> outerCount) || tmp != "NameCount") {
             FC_THROWM(Base::RuntimeError, "missing element name outerCount");  // NOLINT
         }
+        if (outerCount < 0) {
+            FC_THROWM(Base::RuntimeError, msg);  // NOLINT
+        }
 
         boost::io::ios_flags_saver ifs(stream);
         stream >> std::hex;
 
-        indices.names.resize(outerCount);
+        indices.names.clear();
         for (int j = 0; j < outerCount; ++j) {
             idx.setIndex(j);
-            auto* ref = &indices.names[j];
+            indices.names.emplace_back();
+            auto* ref = &indices.names.back();
             int innerCount = 0;
             while (true) {
                 if (!(stream >> tmp)) {
