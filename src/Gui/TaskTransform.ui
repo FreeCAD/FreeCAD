@@ -250,11 +250,23 @@
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
+    <widget class="QWidget" name="utilitiesWidget">
+     <property name="windowTitle">
       <string>Utilities</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="topMargin">
@@ -472,42 +484,97 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame">
-        <property name="frameShape">
-         <enum>QFrame::Shape::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Raised</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="flipPartButton">
         <property name="text">
          <string>Flip</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="cumulativeSnapButton">
+        <property name="toolTip">
+         <string>Snaps cumulatively by selecting references on the transformed object and targets on other objects</string>
+        </property>
+        <property name="text">
+         <string>Cumulative Snap</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="cumulativeSnapHistoryList">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>100</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="cumulativeSnapButtonLayout">
+        <item>
+         <widget class="QPushButton" name="undoCumulativeSnapButton">
+          <property name="text">
+           <string>Undo Last</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="clearCumulativeSnapButton">
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="cumulativeSnapInvertButtonLayout">
+        <item>
+         <widget class="QPushButton" name="invertCumulativeSnapUButton">
+          <property name="toolTip">
+           <string>Inverts the snap direction by U-axis rotation</string>
+          </property>
+          <property name="text">
+           <string>Invert U</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="invertCumulativeSnapVButton">
+          <property name="toolTip">
+           <string>Inverts the snap direction by V-axis rotation</string>
+          </property>
+          <property name="text">
+           <string>Invert V</string>
+          </property>
+         </widget>
+       </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="transformOriginGroupBox">
-     <property name="title">
+    <widget class="QWidget" name="draggerWidget">
+     <property name="windowTitle">
       <string>Dragger</string>
      </property>
      <layout class="QGridLayout" name="transformOriginLayout">
       <property name="leftMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <item row="0" column="1">
        <widget class="QComboBox" name="placementComboBox"/>
@@ -790,6 +857,11 @@
   <tabstop>zRotationSpinBox</tabstop>
   <tabstop>alignToOtherObjectButton</tabstop>
   <tabstop>flipPartButton</tabstop>
+  <tabstop>cumulativeSnapButton</tabstop>
+  <tabstop>undoCumulativeSnapButton</tabstop>
+  <tabstop>clearCumulativeSnapButton</tabstop>
+  <tabstop>invertCumulativeSnapUButton</tabstop>
+  <tabstop>invertCumulativeSnapVButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

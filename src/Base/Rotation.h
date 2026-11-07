@@ -125,6 +125,8 @@ public:
     bool isIdentity() const;
     bool isIdentity(double tol) const;
     bool isNull() const;
+    /// Checks quaternion components for NaN or infinity; a null quaternion is finite.
+    bool isFinite() const;
     bool isSame(const Rotation&) const;
     bool isSame(const Rotation&, double tol) const;
     //@}
