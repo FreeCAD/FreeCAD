@@ -1019,7 +1019,7 @@ class PartBOPTestContainer(unittest.TestCase):
         cut2.Base = cut1
         cut2.Tool = tool2
         cut1.Refine = cut2.Refine = False
-        plane =self.Doc.addObject("Part::Plane", "Plane")
+        plane = self.Doc.addObject("Part::Plane", "Plane")
         plane.Length = plane.Width = 20
         plane.Placement = FreeCAD.Placement(
             FreeCAD.Vector(-5, 2, -5), FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
