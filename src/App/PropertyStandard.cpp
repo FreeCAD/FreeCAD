@@ -893,10 +893,11 @@ void PropertyIntegerList::Restore(Base::XMLReader& reader)
     // get the value of my Attribute
     int count = reader.getAttribute<long>("count");
 
-    std::vector<long> values(count);
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<long> values;
     for (int i = 0; i < count; i++) {
         reader.readElement("I");
-        values[i] = reader.getAttribute<long>("v");
+        values.push_back(reader.getAttribute<long>("v"));
     }
 
     reader.readEndElement("IntegerList");
