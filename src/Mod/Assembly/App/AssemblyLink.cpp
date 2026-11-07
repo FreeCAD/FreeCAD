@@ -748,10 +748,7 @@ void AssemblyLink::handleJointReference(
     }
 }
 
-App::DocumentObject* AssemblyLink::getLocalObject(
-    App::DocumentObject* srcObj,
-    std::string& subPrefix
-) const
+App::DocumentObject* AssemblyLink::getLocalObject(App::DocumentObject* srcObj, std::string& subPrefix) const
 {
     auto it = objLinkMap.find(srcObj);
     auto prefixIt = objSubPrefixMap.find(srcObj);
