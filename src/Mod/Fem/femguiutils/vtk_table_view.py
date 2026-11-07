@@ -182,7 +182,7 @@ class VtkTableView(QtGui.QWidget):
         copy_action.setIcon(FreeCADGui.getIcon("edit-copy"))
         shortcut = QtGui.QKeySequence(QtGui.QKeySequence.Copy)
         copy_action.setToolTip(
-            translate("FEM", "Copy selection to clipboard ({})".format(shortcut.toString()))
+            translate("FEM", "Copy selection to clipboard ({})").format(shortcut.toString())
         )
         copy_action.setShortcut(shortcut)
         self.toolbar.addAction(copy_action)

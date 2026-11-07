@@ -938,16 +938,16 @@ class Plane(PlaneBase):
                     geom_is_shape = True
             if not geom_is_shape:
                 _wrn(
-                    translate(
-                        "draft", "Object without Part.Shape geometry:'{}'".format(obj.ObjectName)
+                    translate("draft", "Object without Part.Shape geometry:'{}'").format(
+                        obj.ObjectName
                     )
                     + "\n"
                 )
                 return False
             if geom.isNull():
                 _wrn(
-                    translate(
-                        "draft", "Object with null Part.Shape geometry:'{}'".format(obj.ObjectName)
+                    translate("draft", "Object with null Part.Shape geometry:'{}'").format(
+                        obj.ObjectName
                     )
                     + "\n"
                 )
@@ -962,7 +962,7 @@ class Plane(PlaneBase):
         normal = None
         for n in range(len(shapes)):
             if not geo_geometry.is_planar(shapes[n]):
-                _wrn(translate("draft", "'{}' object is not planar".format(names[n])) + "\n")
+                _wrn(translate("draft", "'{}' object is not planar").format(names[n]) + "\n")
                 return False
             if not normal:
                 normal = geo_geometry.get_normal(shapes[n])
@@ -973,8 +973,8 @@ class Plane(PlaneBase):
             for n in range(len(shapes)):
                 if not geo_geometry.are_coplanar(shapes[shape_ref], shapes[n]):
                     _wrn(
-                        translate(
-                            "draft", "{} and {} are not coplanar".format(names[shape_ref], names[n])
+                        translate("draft", "{} and {} are not coplanar").format(
+                            names[shape_ref], names[n]
                         )
                         + "\n"
                     )

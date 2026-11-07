@@ -468,7 +468,9 @@ class LibraryEditor(QWidget):
             QMessageBox.critical(
                 self,
                 FreeCAD.Qt.translate("CAM", "Error"),
-                FreeCAD.Qt.translate("CAM", f"Failed to import library: {file_path} {e}"),
+                FreeCAD.Qt.translate("CAM", "Failed to import library: {file_path} {e}").format(
+                    file_path=file_path, e=e
+                ),
             )
 
     def _on_export_library_requested(self):
@@ -636,8 +638,8 @@ class LibraryEditor(QWidget):
                 FreeCAD.Qt.translate("CAM", "Warning"),
                 FreeCAD.Qt.translate(
                     "CAM",
-                    f"Failed to import toolbit from '{file_path}' to library '{current_library.label}'.",
-                ),
+                    "Failed to import toolbit from '{file_path}' to library '{current_library.label}'.",
+                ).format(file_path=file_path, current_library=current_library),
             )
 
     def _on_export_toolbit_requested(self):

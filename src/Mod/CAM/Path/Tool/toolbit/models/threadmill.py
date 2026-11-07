@@ -44,6 +44,11 @@ class ToolBitThreadMill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
         cutting_angle = self.get_property_str("cuttingAngle", "?", precision=3)
 
-        return FreeCAD.Qt.translate(
-            "CAM", f"{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle"
+        return (
+            FreeCAD.Qt.translate(
+                "CAM", "{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle"
+            )
+            .replace("{diameter}", str(diameter))
+            .replace("{flutes}", str(flutes))
+            .replace("{cutting_angle}", str(cutting_angle))
         )
