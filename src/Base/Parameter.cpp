@@ -37,6 +37,7 @@
 #include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
+#include <xercesc/util/SecurityManager.hpp>
 #include <sstream>
 #include <chrono>
 #include <string>
@@ -1887,6 +1888,10 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE::InputSource& inpu
     //
     auto parser = std::make_unique<XercesDOMParser>();
     auto entityBlocker = std::make_unique<NoOpEntityResolver>();
+    // Cap internal entity expansion; secManager must outlive parse().
+    auto secManager = std::make_unique<SecurityManager>();
+    secManager->setEntityExpansionLimit(50000);
+    parser->setSecurityManager(secManager.get());
     parser->setValidationScheme(gValScheme);
     parser->setDoNamespaces(gDoNamespaces);
     parser->setDoSchema(gDoSchema);
