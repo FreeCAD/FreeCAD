@@ -1568,18 +1568,23 @@ void PropertyFloatList::RestoreDocFile(Base::Reader& reader)
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
-    std::vector<double> values(uCt);
-    if (!isSinglePrecision()) {
-        for (double& it : values) {
-            str >> it;
+    // Grow per element instead of pre-sizing from the untrusted count.
+    std::vector<double> values;
+    bool single = isSinglePrecision();
+    for (uint32_t i = 0; i < uCt; ++i) {
+        double v = 0.0;
+        if (!single) {
+            str >> v;
         }
-    }
-    else {
-        for (double& it : values) {
-            float val;
+        else {
+            float val = 0.0F;
             str >> val;
-            it = val;
+            v = val;
         }
+        if (!str) {
+            throw Base::FileException("PropertyFloatList::RestoreDocFile(): truncated data");
+        }
+        values.push_back(v);
     }
     setValues(values);
 }
