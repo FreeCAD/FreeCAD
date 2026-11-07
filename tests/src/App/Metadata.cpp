@@ -25,7 +25,11 @@
 // NOLINTNEXTLINE
 #include <gtest/gtest.h>
 
+#include <fstream>
+
 #include "App/Metadata.h"
+#include "Base/PathUtils.h"
+#include <src/TempDirectory.h>
 #include <xercesc/util/PlatformUtils.hpp>
 
 // NOLINTBEGIN(readability-named-parameter)
@@ -233,6 +237,21 @@ TEST_F(MetadataTest, MetadataInMemoryConstruction)
 {
     auto xml = GivenSimpleMetadataXMLString();
     auto testObject = App::Metadata(std::string {xml});
+    AssertMetadataMatches(testObject);
+}
+
+TEST_F(MetadataTest, MetadataUnicodePathConstruction)
+{
+    tests::TempDirectory tempDir {"metadata"};
+    const auto filePath = tempDir.path() / Base::pathFromUtf8("package-\xE2\x98\x83.xml");
+
+    {
+        std::ofstream file(filePath);
+        ASSERT_TRUE(file);
+        file << GivenSimpleMetadataXMLString();
+    }
+
+    auto testObject = App::Metadata(filePath);
     AssertMetadataMatches(testObject);
 }
 

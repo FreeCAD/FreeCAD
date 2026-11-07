@@ -33,7 +33,6 @@
 #include <cstdio>
 #include <format>
 #include <ostream>
-#include <QString>
 
 // FreeCAD Base header
 #include <Base/Console.h>

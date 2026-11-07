@@ -27,6 +27,46 @@ TEST(Translation, TranslateHandlerOverrides)
     EXPECT_EQ(translator.lastN, -1);
 }
 
+TEST(Translation, FormatUsesTranslation)
+{
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::Constant;
+    translator.constantTranslation = "Valeur: {}";
+
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
+    EXPECT_EQ(std::string("Valeur: 42"), Base::Translation::format("Ctx", "Value: {}", 42));
+    EXPECT_EQ(translator.lastContext, "Ctx");
+    EXPECT_EQ(translator.lastSourceText, "Value: {}");
+}
+
+TEST(Translation, FormatFallsBackToSourceOnBrokenTranslation)
+{
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::Constant;
+    translator.constantTranslation = "Valeur: {";
+
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
+    EXPECT_EQ(std::string("Value: 42"), Base::Translation::format("Ctx", "Value: {}", 42));
+}
+
+TEST(Translation, FormatFallsBackWhenTranslationLostThePlaceholder)
+{
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::Constant;
+    translator.constantTranslation = "Valeur: {1}";
+
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
+    EXPECT_EQ(std::string("Value: 42"), Base::Translation::format("Ctx", "Value: {}", 42));
+}
+
+TEST(Translation, FormatWithoutTranslatorFormatsSource)
+{
+    Base::Translation::Test::ScopedTranslator scoped(nullptr);
+
+    const std::string name = "Pad";
+    EXPECT_EQ(std::string("\"Pad\" failed"), Base::Translation::format("Ctx", "\"{}\" failed", name));
+}
+
 TEST(Translation, InstallRemoveHandlersDefaultToFalse)
 {
     Base::Translation::setTranslator(nullptr);
