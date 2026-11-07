@@ -30,6 +30,14 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 from femtools import constants
+from femtools import materialtables
+
+
+def write_table_rows(f, rows, unit, factor=1.0):
+    # One value and its temperature per line, the CalculiX layout of a temperature table
+    for temperature, cells in rows:
+        value = cells[0].getValueAs(unit).Value * factor
+        f.write(f"{value:.13G},{temperature:.13G}\n")
 
 
 def write_femelement_material(f, ccxwriter):
@@ -119,28 +127,52 @@ def write_femelement_material(f, ccxwriter):
         # write material properties
         f.write(f"** FreeCAD material name: {mat_info_name}\n")
         f.write(f"** {mat_label}\n")
+        # A temperature table replaces its scalar, the scalar stays the fallback
+        elastic_rows = materialtables.sorted_rows(mat_obj.ElasticTable)
+        conductivity_rows = materialtables.sorted_rows(mat_obj.ConductivityTable)
+        specific_heat_rows = materialtables.sorted_rows(mat_obj.SpecificHeatTable)
+        expansion_rows = materialtables.sorted_rows(mat_obj.ExpansionTable)
+
         f.write(f"*MATERIAL, NAME={mat_name}\n")
         if mat_obj.Category == "Solid":
             f.write("*ELASTIC\n")
-            f.write(f"{YM_in_MPa:.13G},{PR:.13G}\n")
+            if elastic_rows:
+                for temperature, (ym, pr) in elastic_rows:
+                    ym_in_MPa = ym.getValueAs("MPa").Value
+                    f.write(f"{ym_in_MPa:.13G},{pr.Value:.13G},{temperature:.13G}\n")
+            else:
+                f.write(f"{YM_in_MPa:.13G},{PR:.13G}\n")
         if is_density_needed() is True:
             f.write("*DENSITY\n")
             f.write(f"{density_in_tonne_per_mm3:.13G}\n")
         if ccxwriter.analysis_type == "thermomech":
             if mat_obj.Category == "Solid":
                 f.write("*CONDUCTIVITY\n")
-                f.write(f"{TC_in_WmK:.13G}\n")
+                if conductivity_rows:
+                    write_table_rows(f, conductivity_rows, "W/m/K")
+                else:
+                    f.write(f"{TC_in_WmK:.13G}\n")
                 f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
-                f.write(f"{TEC_in_mmK:.13G}\n")
+                if expansion_rows:
+                    write_table_rows(f, expansion_rows, "mm/mm/K")
+                else:
+                    f.write(f"{TEC_in_mmK:.13G}\n")
                 f.write("*SPECIFIC HEAT\n")
-                f.write(f"{SH_in_JkgK:.13G}\n")
+                if specific_heat_rows:
+                    # Same factor as the scalar, see SvdW comment above
+                    write_table_rows(f, specific_heat_rows, "J/kg/K", 1e06)
+                else:
+                    f.write(f"{SH_in_JkgK:.13G}\n")
             elif mat_obj.Category == "Fluid":
                 f.write("*FLUID CONSTANTS\n")
                 f.write(f"{SH_in_JkgK:.13G},{DV_in_tmms:.13G}\n")
         if ccxwriter.analysis_type == "static":
             if mat_obj.Category == "Solid":
                 f.write(f"*EXPANSION, ZERO={RT_in_K:.13G}\n")
-                f.write(f"{TEC_in_mmK:.13G}\n")
+                if expansion_rows:
+                    write_table_rows(f, expansion_rows, "mm/mm/K")
+                else:
+                    f.write(f"{TEC_in_mmK:.13G}\n")
         if (
             ccxwriter.analysis_type == "electromagnetic"
             and ccxwriter.solver_obj.ElectromagneticMode == "electrostatic"

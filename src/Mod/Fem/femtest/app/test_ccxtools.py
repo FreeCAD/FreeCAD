@@ -339,6 +339,23 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
+    def test_thermomech_bimetal_temperature_tables(self):
+        import Materials
+        from femexamples.thermomech_bimetal import setup
+        from femtools import materialtables
+
+        setup(self.document, "ccxtools", test_mode=True)
+        copper = self.document.MaterialCopper
+        manager = Materials.MaterialManager()
+        # Both cards have empty cells and fall in temperature
+        elastic_card = manager.getMaterial("1b714d0b-ed2b-4130-86cf-f2282658e2be")
+        thermal_card = manager.getMaterial("12cc83fb-d1d4-460e-a8fc-5236afef6ad0")
+        copper.ElasticTable = materialtables.rows_from_material(elastic_card, "ElasticTable")
+        for table in ("ConductivityTable", "SpecificHeatTable", "ExpansionTable"):
+            setattr(copper, table, materialtables.rows_from_material(thermal_card, table))
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
     def input_file_writing_test(
         self,
         base_name,

@@ -453,6 +453,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/square_pipe_end_twisted_edgeforces.inp
     femtest/data/calculix/square_pipe_end_twisted_nodeforces.inp
     femtest/data/calculix/thermomech_bimetal.inp
+    femtest/data/calculix/thermomech_bimetal_temperature_tables.inp
 )
 
 SET(FemTestsElmer_SRCS
@@ -599,6 +600,7 @@ SET(FemTools_SRCS
     femtools/errors.py
     femtools/femutils.py
     femtools/geomtools.py
+    femtools/materialtables.py
     femtools/membertools.py
     femtools/migrate_app.py
     femtools/objecttools.py
