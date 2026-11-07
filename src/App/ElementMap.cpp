@@ -250,11 +250,15 @@ ElementMapPtr ElementMap::restore(::App::StringHasherRef hasherRef, std::istream
         return map;
     }
 
+    if (count < 0) {
+        FC_THROWM(Base::RuntimeError, msg);  // NOLINT
+    }
     std::vector<std::string> postfixes;
-    postfixes.reserve(count);
     for (int i = 0; i < count; ++i) {
         postfixes.emplace_back();
-        stream >> postfixes.back();
+        if (!(stream >> postfixes.back())) {
+            FC_THROWM(Base::RuntimeError, msg);  // NOLINT
+        }
     }
 
     std::vector<ElementMapPtr> childMaps;
