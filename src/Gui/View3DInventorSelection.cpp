@@ -48,8 +48,7 @@ namespace
 // Datums rely on their own transparency for translucent planes and label backgrounds.
 bool keepsOwnTransparency(ViewProvider* vp)
 {
-    return freecad_cast<ViewProviderDatum*>(vp)
-        || freecad_cast<ViewProviderCoordinateSystem*>(vp);
+    return freecad_cast<ViewProviderDatum*>(vp) || freecad_cast<ViewProviderCoordinateSystem*>(vp);
 }
 }  // namespace
 
