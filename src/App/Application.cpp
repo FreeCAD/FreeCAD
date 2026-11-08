@@ -107,6 +107,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/UnitsModulePy.h>
 #include <Base/VectorPy.h>
+#include <Base/XMLTools.h>
 
 #include "Annotation.h"
 #include "Application.h"
@@ -2072,6 +2073,7 @@ void Application::destruct()
     Base::ScriptFactorySingleton::Destruct();
     Base::InterpreterSingleton::Destruct();
     Base::Type::destruct();
+    XMLTools::terminate();
     SafeMode::Destruct();
 }
 
@@ -2149,6 +2151,8 @@ void Application::init(int argc, char ** argv)
         }
 
         initTypes();
+
+        XMLTools::initialize();
 
         initConfig(argc,argv);
 

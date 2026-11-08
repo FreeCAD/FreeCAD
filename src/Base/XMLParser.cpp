@@ -111,11 +111,6 @@ private:
 };
 
 
-void InitXercesC()
-{
-    XMLPlatformUtils::Initialize();
-}
-
 std::unique_ptr<Base::XMLElement> toXMLElement(DOMNode* document)
 {
     auto element = std::make_unique<Base::XMLElement>();
@@ -230,7 +225,7 @@ std::unique_ptr<XMLElement> XMLElement::clone() const
 std::unique_ptr<XMLElement> ParseXMLFile(const fs::path& path)
 {
     try {
-        InitXercesC();
+        XMLTools::initialize();
 
 #if defined(FC_OS_WIN32)
         std::wstring name = path.wstring();
@@ -283,7 +278,7 @@ std::unique_ptr<XMLElement> ParseXMLFile(const fs::path& path)
 void SaveXMLFile(const fs::path& path, const XMLElement& xmlTree)
 {
     try {
-        InitXercesC();
+        XMLTools::initialize();
 
         DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(
             XUTF8StrLiteral("Core LS").unicodeForm()
@@ -319,7 +314,7 @@ std::optional<std::vector<std::string>> CheckXMLDocument(
 )
 {
     try {
-        InitXercesC();
+        XMLTools::initialize();
 
         DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(
             XUTF8StrLiteral("Core LS").unicodeForm()
