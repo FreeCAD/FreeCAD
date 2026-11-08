@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``QtUnitGui._UnitTest`` PyCXX type."""
 
-from __future__ import annotations
-
 class _UnitTest:
     """GUI wrapper for the Qt unit-test runner panel."""
 

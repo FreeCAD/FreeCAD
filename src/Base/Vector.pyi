@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod, sequence_protocol, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
 from typing import overload, Sequence

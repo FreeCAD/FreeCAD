@@ -6,8 +6,6 @@ This source-adjacent stub file carries the lightweight TCP server helpers
 exposed directly by the Web application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Callable
 from typing import TypeAlias
 

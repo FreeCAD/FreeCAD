@@ -7,8 +7,6 @@ with the helper aliases, workbench support classes, and module globals those
 signatures use.
 """
 
-from __future__ import annotations
-
 import FreeCAD as App
 from collections.abc import Sequence
 from enum import IntEnum

@@ -6,8 +6,6 @@ This source-adjacent stub file carries GUI export helpers and the lightweight
 scene/item bridge functions exposed directly by the TechDraw GUI module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 
 from TechDraw import DrawPage, DrawView

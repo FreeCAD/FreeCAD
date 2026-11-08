@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Quantity import Quantity
 from Vector import Vector
 from Metadata import export, constmethod, class_declarations, no_args

@@ -7,8 +7,6 @@ reconstruction, filtering, segmentation, and sample-consensus helpers exposed
 directly by the ReverseEngineering application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict, overload
 

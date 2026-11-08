@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export
 from Part.App.ShapeFix.ShapeFix_Face import ShapeFix_Face
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root

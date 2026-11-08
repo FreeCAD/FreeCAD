@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui.TaskPlacement`` PyCXX type."""
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 
 from FreeCAD import DocumentObject, Placement

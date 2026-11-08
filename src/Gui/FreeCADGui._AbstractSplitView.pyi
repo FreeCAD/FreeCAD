@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._AbstractSplitView`` PyCXX type."""
 
-from __future__ import annotations
-
 from FreeCADGui import _MDIView, _View3DInventorViewer
 
 class _AbstractSplitView:

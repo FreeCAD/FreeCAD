@@ -6,8 +6,6 @@ This source-adjacent stub file carries the active-analysis selector and the
 GUI editor helpers exposed directly by the Fem GUI module.
 """
 
-from __future__ import annotations
-
 from typing import overload
 
 from FreeCAD import DocumentObject
