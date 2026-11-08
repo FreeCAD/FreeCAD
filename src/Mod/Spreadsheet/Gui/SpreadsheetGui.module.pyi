@@ -6,8 +6,6 @@ This source-adjacent stub file carries the spreadsheet file import helpers
 exposed directly by the Spreadsheet GUI module.
 """
 
-from __future__ import annotations
-
 from typing import overload
 
 @overload

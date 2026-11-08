@@ -7,8 +7,6 @@ simple helper aliases, reexports, module globals, and typing-only support that
 those signatures use.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Any, Literal, TypeAlias, overload
 

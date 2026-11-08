@@ -6,8 +6,6 @@ This source-adjacent stub file carries the G-code I/O and path-construction
 helpers exposed directly by the CAM application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, overload
 

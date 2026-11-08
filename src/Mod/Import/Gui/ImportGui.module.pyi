@@ -6,8 +6,6 @@ This source-adjacent stub file carries the GUI-assisted import/export helpers,
 their option dictionaries, and the DXF inspection utilities.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict
 
