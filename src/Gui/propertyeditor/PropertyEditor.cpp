@@ -64,15 +64,11 @@ namespace
 {
 void refreshAccessibleTree(QTreeView* view)
 {
-#if QT_CONFIG(accessibility)
     if (!QAccessible::isActive()) {
         return;
     }
     QAccessibleTableModelChangeEvent event(view, QAccessibleTableModelChangeEvent::ModelReset);
     QAccessible::updateAccessibility(&event);
-#else
-    Q_UNUSED(view);
-#endif
 }
 }  // namespace
 
