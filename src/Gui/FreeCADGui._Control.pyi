@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._Control`` PyCXX type."""
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 
 from FreeCADGui import Document, _TaskDialog

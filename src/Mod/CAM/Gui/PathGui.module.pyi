@@ -6,8 +6,6 @@ This source-adjacent stub file carries the GUI-assisted G-code import and
 export helpers exposed directly by the CAM GUI module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import overload
 

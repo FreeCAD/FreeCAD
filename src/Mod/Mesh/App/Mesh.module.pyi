@@ -7,8 +7,6 @@ constructors, and point-cloud utilities exposed by the Mesh application
 module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from typing import TypeAlias, TypedDict, overload
 

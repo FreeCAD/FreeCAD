@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._TaskDialog`` PyCXX type."""
 
-from __future__ import annotations
-
 class _TaskDialog:
     """Base wrapper for task-panel dialogs."""
 

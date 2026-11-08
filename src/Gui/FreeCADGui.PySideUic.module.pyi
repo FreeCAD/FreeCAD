@@ -6,8 +6,6 @@ This source-adjacent stub file carries the PySide UI-loading convenience
 helpers that FreeCAD exposes from the GUI layer.
 """
 
-from __future__ import annotations
-
 from os import PathLike
 from typing import TypeAlias
 
