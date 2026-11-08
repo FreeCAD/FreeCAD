@@ -32,7 +32,6 @@
 #include <QTextStream>
 #include <QThread>
 #include <QTreeView>
-#include <Standard_Version.hxx>
 #include <Bnd_Box.hxx>
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
@@ -813,11 +812,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(
     TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
     BOPAlgo_ArgumentAnalyzer BOPCheck;
 
-#if OCC_VERSION_HEX < 0x070600
-    BOPCheck.SetProgressIndicator(theScope);
-#else
     Q_UNUSED(theScope)
-#endif  // 0x070600
 
 
     BOPCheck.SetShape1(BOPCopy);

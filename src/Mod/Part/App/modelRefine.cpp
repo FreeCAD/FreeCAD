@@ -1411,11 +1411,7 @@ Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape&
     Build();
 }
 
-#if OCC_VERSION_HEX >= 0x070600
 void Part::BRepBuilderAPI_RefineModel::Build(const Message_ProgressRange&)
-#else
-void Part::BRepBuilderAPI_RefineModel::Build()
-#endif
 {
     if (myShape.IsNull()) {
         throw Standard_Failure("Cannot remove splitter from empty shape");

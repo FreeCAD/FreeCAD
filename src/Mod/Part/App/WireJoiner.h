@@ -26,7 +26,6 @@
 
 #include <memory>
 #include <BRepBuilderAPI_MakeShape.hxx>
-#include <Standard_Version.hxx>
 #include "TopoShape.h"
 
 #include <Mod/Part/PartGlobal.h>
@@ -53,11 +52,7 @@ public:
     bool getOpenWires(TopoShape& shape, const char* op = "", bool noOriginal = true);
     bool getResultWires(TopoShape& shape, const char* op = "");
 
-#if OCC_VERSION_HEX < 0x070600
-    void Build() override;
-#else
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#endif
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& SThatModifies) override;
     const TopTools_ListOfShape& Generated(const TopoDS_Shape& SThatGenerates) override;
     Standard_Boolean IsDeleted(const TopoDS_Shape& SDeleted) override;
