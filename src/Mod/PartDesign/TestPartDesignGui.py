@@ -309,6 +309,18 @@ class PartDesignGuiTestCases(unittest.TestCase):
             for path in search.getPaths()
         ]
 
+    def dressUpTaskWidget(self, widget_type, name):
+        dialog = Gui.Control.activeTaskDialog()
+        self.assertIsNotNone(dialog)
+        # Command-line GUI tests can leave the main window hidden.
+        widgets = [
+            widget
+            for content in dialog.getDialogContent()
+            for widget in content.findChildren(widget_type, name)
+        ]
+        self.assertEqual(len(widgets), 1)
+        return widgets[0]
+
     def checkDressUpGizmoRecovery(self, initially_valid, enabled):
         Gui.activateWorkbench("PartDesignWorkbench")
         preferences = App.ParamGet("User parameter:BaseApp/Preferences/Gui/Gizmos")
@@ -342,15 +354,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
                             self.assertEqual(
                                 bool(switch.getField("on").getValue()), initially_valid
                             )
-                        editors = [
-                            widget
-                            for widget in Gui.getMainWindow().findChildren(
-                                QtGui.QAbstractSpinBox, editor_name
-                            )
-                            if widget.isVisible()
-                        ]
-                        self.assertEqual(len(editors), 1)
-                        editor = editors[0]
+                        editor = self.dressUpTaskWidget(QtGui.QAbstractSpinBox, editor_name)
 
                         def change_size(size):
                             self.assertTrue(editor.setProperty("rawValue", size))
@@ -445,27 +449,13 @@ class PartDesignGuiTestCases(unittest.TestCase):
                         switch = switches[0]
                         self.assertFalse(switch.getField("on").getValue())
                         if changed == "type":
-                            combos = [
-                                widget
-                                for widget in Gui.getMainWindow().findChildren(
-                                    QtGui.QComboBox, "chamferType"
-                                )
-                                if widget.isVisible()
-                            ]
-                            self.assertEqual(len(combos), 1)
-                            combos[0].setCurrentIndex(0)  # Equal distance: Size2 is not used.
+                            combo = self.dressUpTaskWidget(QtGui.QComboBox, "chamferType")
+                            combo.setCurrentIndex(0)  # Equal distance: Size2 is not used.
                         else:
                             name = "chamferAngle" if changed == "angle" else "chamferSize2"
-                            editors = [
-                                widget
-                                for widget in Gui.getMainWindow().findChildren(
-                                    QtGui.QAbstractSpinBox, name
-                                )
-                                if widget.isVisible()
-                            ]
-                            self.assertEqual(len(editors), 1)
+                            editor = self.dressUpTaskWidget(QtGui.QAbstractSpinBox, name)
                             value = 45 if changed == "angle" else 0.2
-                            self.assertTrue(editors[0].setProperty("rawValue", value))
+                            self.assertTrue(editor.setProperty("rawValue", value))
                         Gui.updateGui()
                         self.assertTrue(feature.isValid(), feature.State)
                         self.assertTrue(feature.Shape.isValid())
