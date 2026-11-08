@@ -224,8 +224,7 @@ TopoDS_Shape TopoShape::moved(const TopoDS_Shape& tds, const TopLoc_Location& lo
 
 TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const gp_Trsf& transfer)
 {
-    if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec())
-    {
+    if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec()) {
         auto transferCopy(transfer);
         transferCopy.SetScaleFactor(1.0);
         tds.Move(transferCopy);
