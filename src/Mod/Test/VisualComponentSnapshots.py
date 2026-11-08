@@ -13,12 +13,22 @@ import FreeCAD
 
 from VisualTestSupport import compare_images
 
-
 _PAGES = (
-    "buttons", "text", "numbers", "themed-spinboxes", "labels", "views", "containers",
-    "property-states", "property-scalars", "property-geometry", "property-collections",
-    "property-editors-states", "property-editors-scalars",
-    "property-editors-geometry", "property-editors-collections",
+    "buttons",
+    "text",
+    "numbers",
+    "themed-spinboxes",
+    "labels",
+    "views",
+    "containers",
+    "property-states",
+    "property-scalars",
+    "property-geometry",
+    "property-collections",
+    "property-editors-states",
+    "property-editors-scalars",
+    "property-editors-geometry",
+    "property-editors-collections",
 )
 
 
@@ -30,33 +40,45 @@ def _properties(doc, page):
     rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
     return {
         "property-scalars": (
-            ("Bool", "Boolean", True), ("Integer", "Integer", 42),
-            ("IntegerConstraint", "IntegerConstraint", 42), ("Percent", "Percent", 40),
-            ("Float", "Float", 12.5), ("FloatConstraint", "FloatConstraint", 12.5),
-            ("Precision", "Precision", 0.001), ("Quantity", "Quantity", 12.5),
-            ("Length", "Length", 12.5), ("Angle", "Angle", 45),
-            ("String", "String", "Sample text"), ("Font", "Font", "Noto Sans"),
+            ("Bool", "Boolean", True),
+            ("Integer", "Integer", 42),
+            ("IntegerConstraint", "IntegerConstraint", 42),
+            ("Percent", "Percent", 40),
+            ("Float", "Float", 12.5),
+            ("FloatConstraint", "FloatConstraint", 12.5),
+            ("Precision", "Precision", 0.001),
+            ("Quantity", "Quantity", 12.5),
+            ("Length", "Length", 12.5),
+            ("Angle", "Angle", 45),
+            ("String", "String", "Sample text"),
+            ("Font", "Font", "Noto Sans"),
             ("Enumeration", "Enumeration", ["First", "Second", "Third"]),
             ("Color", "Color", (0.2, 0.5, 0.9)),
-            ("File", "File", "/models/sample.FCStd"), ("Path", "Path", "/models"),
+            ("File", "File", "/models/sample.FCStd"),
+            ("Path", "Path", "/models"),
             ("FileIncluded", "IncludedFile", ""),
         ),
         "property-geometry": (
             ("Vector", "Vector", (1, 2, 3)),
             ("VectorDistance", "VectorDistance", (12.5, 25, -5)),
-            ("Position", "Position", (12.5, 25, -5)), ("Direction", "Direction", (0, 0, 1)),
-            ("Matrix", "Matrix", matrix), ("Rotation", "Rotation", rotation),
+            ("Position", "Position", (12.5, 25, -5)),
+            ("Direction", "Direction", (0, 0, 1)),
+            ("Matrix", "Matrix", matrix),
+            ("Rotation", "Rotation", rotation),
             ("Placement", "Placement", FreeCAD.Placement(FreeCAD.Vector(12.5, 25, -5), rotation)),
         ),
         "property-collections": (
             ("StringList", "Strings", ["First", "Second", "Third"]),
-            ("IntegerList", "Integers", [1, 2, 42]), ("FloatList", "Floats", [1.25, 2.5, 12.5]),
+            ("IntegerList", "Integers", [1, 2, 42]),
+            ("FloatList", "Floats", [1.25, 2.5, 12.5]),
             ("VectorList", "Vectors", [(1, 2, 3), (12.5, 25, -5)]),
             ("Map", "Map", {"Name": "Sample", "Size": "12.5"}),
             ("Material", "Material", FreeCAD.Material()),
             ("MaterialList", "Materials", [FreeCAD.Material()]),
-            ("Link", "Link", target), ("LinkList", "Links", [target]),
-            ("LinkSub", "SubLink", target), ("LinkSubList", "SubLinks", [(target, [""])]),
+            ("Link", "Link", target),
+            ("LinkList", "Links", [target]),
+            ("LinkSub", "SubLink", target),
+            ("LinkSubList", "SubLinks", [(target, [""])]),
         ),
     }[page]
 
@@ -65,12 +87,17 @@ def _values(doc, page):
     obj = doc.addObject("App::VarSet", "Values")
     names = []
     if page == "property-states":
-        for group, prefix, mode in (("Editable", "Editable", 0), ("Read-only", "Locked", 1),
-                                    ("Expression", "Bound", 0),
-                                    ("Read-only expression", "LockedBound", 1)):
+        for group, prefix, mode in (
+            ("Editable", "Editable", 0),
+            ("Read-only", "Locked", 1),
+            ("Expression", "Bound", 0),
+            ("Read-only expression", "LockedBound", 1),
+        ):
             for kind, suffix, value, expression in (
-                ("Bool", "False", False, "0"), ("Bool", "True", True, "1"),
-                ("Integer", "Integer", 42, "42"), ("Float", "Float", 12.5, "12.5"),
+                ("Bool", "False", False, "0"),
+                ("Bool", "True", True, "1"),
+                ("Integer", "Integer", 42, "42"),
+                ("Float", "Float", 12.5, "12.5"),
                 ("String", "String", "Sample text", "<<Sample text>>"),
             ):
                 name = prefix + suffix
@@ -98,13 +125,20 @@ def _values(doc, page):
                 names.append(name)
         return obj, names
 
-    for kind, name, value in (("Length", "Length", 12.5), ("Length", "BoundLength", 12.5),
-                              ("Integer", "BoundInteger", 42),
-                              ("String", "BoundString", "Sample text"), ("Map", "Map", {})):
+    for kind, name, value in (
+        ("Length", "Length", 12.5),
+        ("Length", "BoundLength", 12.5),
+        ("Integer", "BoundInteger", 42),
+        ("String", "BoundString", "Sample text"),
+        ("Map", "Map", {}),
+    ):
         obj.addProperty("App::Property" + kind, name)
         setattr(obj, name, value)
-    for name, expression in (("BoundLength", "Length"), ("BoundInteger", "42"),
-                             ("BoundString", "<<Sample text>>")):
+    for name, expression in (
+        ("BoundLength", "Length"),
+        ("BoundInteger", "42"),
+        ("BoundString", "<<Sample text>>"),
+    ):
         obj.setExpression(name, expression)
     return obj, names
 
@@ -121,14 +155,24 @@ class ComponentSnapshotTestCase(unittest.TestCase):
         import QtUnitGui
 
         cls.fixture = QtUnitGui
-        cls.output = Path(os.environ.get("FC_VISUAL_OUT_DIR")
-                          or tempfile.mkdtemp(prefix="freecad-component-zoo-"))
+        cls.output = Path(
+            os.environ.get("FC_VISUAL_OUT_DIR") or tempfile.mkdtemp(prefix="freecad-component-zoo-")
+        )
         cls.output.mkdir(parents=True, exist_ok=True)
-        root = next(parent for parent in Path(__file__).resolve().parents
-                    if (parent / "tests/visual/fonts/NotoSans-Regular.ttf").is_file())
+        root = next(
+            parent
+            for parent in Path(__file__).resolve().parents
+            if (parent / "tests/visual/fonts/NotoSans-Regular.ttf").is_file()
+        )
         relative = Path("tests/visual/baselines") / Path(__file__).stem
-        default = next((parent / relative for parent in Path(__file__).resolve().parents
-                        if (parent / relative).is_dir()), root / relative)
+        default = next(
+            (
+                parent / relative
+                for parent in Path(__file__).resolve().parents
+                if (parent / relative).is_dir()
+            ),
+            root / relative,
+        )
         cls.baselines = Path(os.environ.get("FC_VISUAL_BASELINE_DIR", default))
         cls.mode = os.environ.get("FC_VISUAL_MODE", "compare")
         if cls.mode not in ("compare", "record", "update"):
@@ -196,8 +240,12 @@ class ComponentSnapshotTestCase(unittest.TestCase):
         expected.parent.mkdir(parents=True, exist_ok=True)
         expected.write_bytes(baseline.read_bytes())
         passed, message = compare_images(
-            expected, actual, self.output / "diff" / actual.name,
-            tolerance=2, ignore_alpha=False, max_mismatched_pixels=0,
+            expected,
+            actual,
+            self.output / "diff" / actual.name,
+            tolerance=2,
+            ignore_alpha=False,
+            max_mismatched_pixels=0,
         )
         result.update(passed=passed, message=message)
         self.assertTrue(passed, f"{name}: {message}")
