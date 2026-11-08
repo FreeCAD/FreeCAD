@@ -25,7 +25,6 @@ class LinkView(BaseClass):
         """
         Reset the link view and clear the links
         """
-        ...
 
     @overload
     def setMaterial(self, material: None, /) -> None: ...
@@ -49,7 +48,6 @@ class LinkView(BaseClass):
         is unset, it defaults to the override material of the linked object, if there
         is one
         """
-        ...
 
     @overload
     def setType(self, type: int, /) -> None: ...
@@ -68,7 +66,6 @@ class LinkView(BaseClass):
         sublink: auto delegate to the sub-object references in the link, if there is
                  one and only one.
         """
-        ...
 
     @overload
     def setTransform(self, matrix: Any, /) -> None: ...
@@ -86,7 +83,6 @@ class LinkView(BaseClass):
         set transformation for elements of the link
                                           array/group by index
         """
-        ...
 
     def setChildren(self, children: List[Any], vis: List[Any] = [], type: int = 0, /) -> None:
         """
@@ -101,7 +97,6 @@ class LinkView(BaseClass):
            1: override visibility,
            2: override none.
         """
-        ...
 
     @overload
     def setLink(self, obj: Any, /) -> None: ...
@@ -124,7 +119,6 @@ class LinkView(BaseClass):
                  The sub-name must end with a '.' if it is referencing an sub-object,
                  or else it is considered a sub-element reference.
         """
-        ...
 
     def getDetailPath(self, sub: str, path: Any, /) -> Tuple[Any, Any]:
         """
@@ -132,26 +126,22 @@ class LinkView(BaseClass):
 
         Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
         """
-        ...
 
     def getElementPicked(self, pickPoint: Any, /) -> str | None:
         """
         get the element under a 3d pick point.
         """
-        ...
 
     def getBoundBox(self, vobj: ViewProviderDocumentObject, /) -> BoundBox:
         """
         get the bounding box.
         """
-        ...
 
     @constmethod
     def getChildren(self) -> Tuple[ViewProviderDocumentObject, ...] | None:
         """
         Get children view objects
         """
-        ...
     LinkedView: Final[Any] = ...
     """The linked view object"""
 

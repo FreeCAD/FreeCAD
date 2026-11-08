@@ -173,7 +173,6 @@ class TopoShapeEdge(TopoShape):
             paramval (float): the value of the primary parameter defining the edge at the
                 given position along its cartesian length.
         """
-        ...
 
     @constmethod
     def tangentAt(self, paramval: float, /) -> Vector:
@@ -211,7 +210,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the tangent to the Edge at the given
                location along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def valueAt(self, paramval: float, /) -> Vector:
@@ -253,7 +251,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the cartesian location on the Edge at the given
                distance along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def parameters(self, face: object = ..., /) -> List[float]:
@@ -264,7 +261,6 @@ class TopoShapeEdge(TopoShape):
         If the edge is part of a face then this face is required as argument.
         An exception is raised if the edge has no polygon.
         """
-        ...
 
     @constmethod
     def parameterAt(self, vertex: object, face: TopoShapeFace = None, /) -> float:
@@ -272,7 +268,6 @@ class TopoShapeEdge(TopoShape):
         Get the parameter at the given vertex if lying on the edge
         parameterAt(Vertex) -> Float
         """
-        ...
 
     @constmethod
     def normalAt(self, paramval: float, /) -> Vector:
@@ -310,7 +305,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the normal to the Edge at the given
                location along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def derivative1At(self, paramval: float, /) -> Vector:
@@ -348,7 +342,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the first derivative to the Edge at the
                given location along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def derivative2At(self, paramval: float, /) -> Vector:
@@ -386,7 +379,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the second derivative to the Edge at the
                given location along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def derivative3At(self, paramval: float, /) -> Vector:
@@ -424,7 +416,6 @@ class TopoShapeEdge(TopoShape):
             Vector: representing the third derivative to the Edge at the
                given location along its length (or extrapolated length)
         """
-        ...
 
     @constmethod
     def curvatureAt(self, paramval: float, /) -> float:
@@ -432,7 +423,6 @@ class TopoShapeEdge(TopoShape):
         Get the curvature at the given parameter [First|Last] if defined
         curvatureAt(paramval) -> Float
         """
-        ...
 
     @constmethod
     def centerOfCurvatureAt(self, paramval: float, /) -> Vector:
@@ -440,7 +430,6 @@ class TopoShapeEdge(TopoShape):
         Get the center of curvature at the given parameter [First|Last] if defined
         centerOfCurvatureAt(paramval) -> Vector
         """
-        ...
 
     @constmethod
     def firstVertex(self, Orientation: bool = False, /) -> Vertex:
@@ -451,7 +440,6 @@ class TopoShapeEdge(TopoShape):
         If there is none a Null shape is returned.
         Orientation = True : taking into account the edge orientation
         """
-        ...
 
     @constmethod
     def lastVertex(self, Orientation: bool = False, /) -> Vertex:
@@ -462,7 +450,6 @@ class TopoShapeEdge(TopoShape):
         If there is none a Null shape is returned.
         Orientation = True : taking into account the edge orientation
         """
-        ...
 
     @constmethod
     @overload
@@ -532,14 +519,12 @@ class TopoShapeEdge(TopoShape):
         s=Part.Compound([Part.Vertex(i) for i in p])
         Part.show(s)
         """
-        ...
 
     @constmethod
     def countNodes(self) -> int:
         """
         Returns the number of nodes of the 3D polygon of the edge.
         """
-        ...
 
     @constmethod
     def split(self, paramval: float, /) -> Wire:
@@ -557,7 +542,6 @@ class TopoShapeEdge(TopoShape):
         Returns:
             Wire: wire made up of two Edges
         """
-        ...
 
     @constmethod
     def isSeam(self, Face: object, /) -> bool:
@@ -565,7 +549,6 @@ class TopoShapeEdge(TopoShape):
         Checks whether the edge is a seam edge.
         isSeam(Face)
         """
-        ...
 
     @constmethod
     def curveOnSurface(self, idx: int, /) -> Tuple[object, object, object, float, float] | None:
@@ -576,4 +559,3 @@ class TopoShapeEdge(TopoShape):
         Returns None if index idx is out of range.
         Returns a 5-items tuple of a curve, a surface, a placement, first parameter and last parameter.
         """
-        ...

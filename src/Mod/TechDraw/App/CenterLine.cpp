@@ -128,6 +128,11 @@ CenterLine::CenterLine(const Base::Vector3d& pt1,
 
 CenterLine::~CenterLine()
 {
+    if (!PythonObject.is(Py::_None())) {
+        Base::PyGILStateLocker lock;
+        auto* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+        obj->setInvalid();
+    }
 }
 
 void CenterLine::initialize()

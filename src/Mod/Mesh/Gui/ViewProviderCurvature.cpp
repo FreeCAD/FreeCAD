@@ -538,7 +538,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
                 int index2 = facedetail->getPoint(1)->getCoordinateIndex();
                 int index3 = facedetail->getPoint(2)->getCoordinateIndex();
                 std::string info = self->curvatureInfo(false, index1, index2, index3);
-                Gui::getMainWindow()->setPaneText(1, QString::fromLatin1(info.c_str()));
+                Gui::getMainWindow()->setPaneText(1, QString::fromUtf8(info.c_str()));
             }
         }
     }

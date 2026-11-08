@@ -55,7 +55,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for visible sharp edges for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def Rg1LineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -64,7 +63,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for visible smooth edges for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def RgNLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -73,7 +71,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for visible sewn edges for either the given shape or for
         all added shapes (shape=None).
         """
-        ...
 
     def outLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -82,7 +79,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for visible outline edges for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def outLineVCompound3d(self) -> TopoShape:
         """
@@ -90,7 +86,6 @@ class HLRToShape(PyObjectBase):
 
         Sets the extraction filter for visible outline edges in 3D for all added shapes.
         """
-        ...
 
     def isoLineVCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -99,7 +94,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for visible isoparameters for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def hCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -108,7 +102,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for hidden sharp edges for either the given shape or for
         all added shapes (shape=None).
         """
-        ...
 
     def Rg1LineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -117,7 +110,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for hidden smooth edges for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def RgNLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -126,7 +118,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for hidden sewn edges for either the given shape or for
         all added shapes (shape=None).
         """
-        ...
 
     def outLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -135,7 +126,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for hidden outline edges for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def isoLineHCompound(self, shape: TopoShape = ..., /) -> TopoShape:
         """
@@ -144,7 +134,6 @@ class HLRToShape(PyObjectBase):
         Sets the extraction filter for hidden isoparameters for either the given shape or
         for all added shapes (shape=None).
         """
-        ...
 
     def compoundOfEdges(
         self, Type: int, Visible: bool, In3D: bool, Shape: Optional[TopoShape] = None
@@ -156,4 +145,3 @@ class HLRToShape(PyObjectBase):
         into account the kind of space (2d or 3d).  If Shape=None, return it for all
         added shapes, otherwise return it for shape Shape.
         """
-        ...

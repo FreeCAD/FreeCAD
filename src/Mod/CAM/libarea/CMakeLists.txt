@@ -32,7 +32,6 @@ set(AREA_SRC_COMMON
 set(AREA_SRC_CLIPPER
     AreaClipper.cpp
     Adaptive.cpp
-    clipper.cpp
 )
 
 # this defines the additional source-files for python module (wrapper to libarea)

@@ -20,6 +20,9 @@ class PartGuiExport PatternCircularParametersWidget: public QWidget
     Q_OBJECT
 
 public:
+    static inline const int AXIS_INDEX = 0;
+    static inline const int BINORMAL_AXIS_INDEX = 1;
+
     explicit PatternCircularParametersWidget(QWidget* parent = nullptr);
     ~PatternCircularParametersWidget() override;
 

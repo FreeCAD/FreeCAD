@@ -46,7 +46,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
@@ -200,7 +199,7 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
         QMessageBox::warning(
             Gui::getMainWindow(),
             QObject::tr("Error"),
-            QString::fromLatin1(e.GetMessageString())
+            QString::fromUtf8(e.GetMessageString())
         );
     }
 }
@@ -2520,7 +2519,7 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
                 hasDirection = true;
             }
         }
-        FCMD_OBJ_CMD(feat, "StartAtShape = False");
+        FCMD_OBJ_CMD(feat, "StartAtShape = True");
         if (!hasDirection) {
             FCMD_OBJ_CMD(
                 feat,
@@ -2572,6 +2571,8 @@ void CmdPartDesignPathPattern::activated(int iMsg)
 
     auto worker =
         [cmd = this](App::DocumentObject* feat, std::vector<App::DocumentObject*> /*features*/) {
+            FCMD_OBJ_CMD(feat, "RelativeToFirst = True");
+
             finishTransformed(cmd, feat);
         };
     prepareTransformed(pcActiveBody, this, "PathPattern", worker);

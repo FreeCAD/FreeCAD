@@ -105,7 +105,6 @@ class Matrix(PyObjectBase):
     @property
     def A(self) -> tuple[float, ...]:
         """The matrix elements."""
-        ...
 
     @A.setter
     def A(self, value: Sequence[float]) -> None: ...
@@ -126,7 +125,6 @@ class Matrix(PyObjectBase):
         z : float
             `z` translation.
         """
-        ...
 
     @overload
     def scale(self, vector: Vector | tuple[float, float, float], /) -> None: ...
@@ -148,7 +146,6 @@ class Matrix(PyObjectBase):
         factor : float
             global factor scale.
         """
-        ...
 
     @constmethod
     def hasScale(self, tol: float = 0, /) -> ScaleType:
@@ -159,7 +156,6 @@ class Matrix(PyObjectBase):
 
         tol : float
         """
-        ...
 
     @constmethod
     def decompose(self) -> Tuple["Matrix", "Matrix", "Matrix", "Matrix"]:
@@ -167,14 +163,12 @@ class Matrix(PyObjectBase):
         Return a tuple of matrices representing shear, scale, rotation and move.
         So that matrix = move * rotation * scale * shear.
         """
-        ...
 
     @no_args
     def nullify(self) -> None:
         """
         Make this the null matrix.
         """
-        ...
 
     @no_args
     @constmethod
@@ -182,21 +176,18 @@ class Matrix(PyObjectBase):
         """
         Check if this is the null matrix.
         """
-        ...
 
     @no_args
     def unity(self) -> None:
         """
         Make this matrix to unity (4D identity matrix).
         """
-        ...
 
     @constmethod
     def isUnity(self, tol: float = 0.0, /) -> bool:
         """
         Check if this is the unit matrix (4D identity matrix).
         """
-        ...
 
     def transform(self, vector: Vector, matrix2: "Matrix", /) -> None:
         """
@@ -209,7 +200,6 @@ class Matrix(PyObjectBase):
         vector : Base.Vector
         matrix2 : Base.Matrix
         """
-        ...
 
     @constmethod
     def col(self, index: int, /) -> Vector:
@@ -220,7 +210,6 @@ class Matrix(PyObjectBase):
         index : int
             Required column index.
         """
-        ...
 
     def setCol(self, index: int, vector: Vector, /) -> None:
         """
@@ -231,7 +220,6 @@ class Matrix(PyObjectBase):
             Required column index.
         vector : Base.Vector
         """
-        ...
 
     @constmethod
     def row(self, index: int, /) -> Vector:
@@ -242,7 +230,6 @@ class Matrix(PyObjectBase):
         index : int
             Required row index.
         """
-        ...
 
     def setRow(self, index: int, vector: Vector, /) -> None:
         """
@@ -253,7 +240,6 @@ class Matrix(PyObjectBase):
             Required row index.
         vector : Base.Vector
         """
-        ...
 
     @no_args
     @constmethod
@@ -261,7 +247,6 @@ class Matrix(PyObjectBase):
         """
         Return the diagonal of the 3x3 leading principal submatrix as vector.
         """
-        ...
 
     def setDiagonal(self, vector: Vector, /) -> None:
         """
@@ -269,7 +254,6 @@ class Matrix(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
     def rotateX(self, angle: float | Quantity, /) -> None:
         """
@@ -278,7 +262,6 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     def rotateY(self, angle: float | Quantity, /) -> None:
         """
@@ -287,7 +270,6 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     def rotateZ(self, angle: float | Quantity, /) -> None:
         """
@@ -296,7 +278,6 @@ class Matrix(PyObjectBase):
         angle : float
             Angle in radians.
         """
-        ...
 
     @overload
     def multiply(self, matrix: "Matrix", /) -> "Matrix": ...
@@ -311,7 +292,6 @@ class Matrix(PyObjectBase):
         matrix : Base.Matrix
         vector : Base.Vector
         """
-        ...
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:
@@ -320,14 +300,12 @@ class Matrix(PyObjectBase):
 
         vector : Base.Vector
         """
-        ...
 
     @no_args
     def invert(self) -> None:
         """
         Compute the inverse matrix in-place, if possible.
         """
-        ...
 
     @no_args
     @constmethod
@@ -335,14 +313,12 @@ class Matrix(PyObjectBase):
         """
         Compute the inverse matrix, if possible.
         """
-        ...
 
     @no_args
     def transpose(self) -> None:
         """
         Transpose the matrix in-place.
         """
-        ...
 
     @no_args
     @constmethod
@@ -350,7 +326,6 @@ class Matrix(PyObjectBase):
         """
         Returns a transposed copy of this matrix.
         """
-        ...
 
     @no_args
     @constmethod
@@ -358,7 +333,6 @@ class Matrix(PyObjectBase):
         """
         Compute the determinant of the matrix.
         """
-        ...
 
     @constmethod
     def isOrthogonal(self, tol: float = 1e-6, /) -> float:
@@ -369,7 +343,6 @@ class Matrix(PyObjectBase):
         tol : float
             Tolerance used to check orthogonality.
         """
-        ...
 
     @constmethod
     def submatrix(self, dim: int, /) -> "Matrix":
@@ -381,7 +354,6 @@ class Matrix(PyObjectBase):
         dim : int
             Dimension parameter must be in the range [1,4].
         """
-        ...
 
     @no_args
     @constmethod
@@ -389,4 +361,3 @@ class Matrix(PyObjectBase):
         """
         Analyzes the type of transformation.
         """
-        ...

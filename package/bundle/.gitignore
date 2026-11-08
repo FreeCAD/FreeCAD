@@ -1,4 +1,5 @@
 linux/AppDir/usr
+linux/AppDir/locale/*/LC_MESSAGES
 linux/AppDir/*.desktop
 linux/AppDir/*.svg
 linux/AppDir/packages.txt

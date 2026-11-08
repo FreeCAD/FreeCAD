@@ -45,46 +45,38 @@ class ShapeFix_Shape(ShapeFix_Root):
         """
         Initializes by shape
         """
-        ...
 
     def perform(self) -> bool:
         """
         Iterates on sub- shape and performs fixes
         """
-        ...
 
     def shape(self) -> TopoShape:
         """
         Returns resulting shape
         """
-        ...
 
     def fixSolidTool(self) -> object:
         """
         Returns tool for fixing solids
         """
-        ...
 
     def fixShellTool(self) -> object:
         """
         Returns tool for fixing shells
         """
-        ...
 
     def fixFaceTool(self) -> object:
         """
         Returns tool for fixing faces
         """
-        ...
 
     def fixWireTool(self) -> object:
         """
         Returns tool for fixing wires
         """
-        ...
 
     def fixEdgeTool(self) -> object:
         """
         Returns tool for fixing edges
         """
-        ...

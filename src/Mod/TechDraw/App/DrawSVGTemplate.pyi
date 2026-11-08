@@ -21,15 +21,12 @@ class DrawSVGTemplate(DrawTemplate):
 
     def getEditFieldContent(self, edit_field_name: str, /) -> str | None:
         """getEditFieldContent(EditFieldName) - returns the content of a specific Editable Text Field"""
-        ...
 
     def setEditFieldContent(self, edit_field_name: str, new_content: str, /) -> None:
         """setEditFieldContent(EditFieldName, NewContent) - sets a specific Editable Text Field to a new value"""
-        ...
 
     def translateLabel(self, context: str, base_name: str, unique_name: str, /) -> None:
         """
         translateLabel(translationContext, objectBaseName, objectUniqueName).
         No return value.  Replace the current label with a translated version where possible.
         """
-        ...

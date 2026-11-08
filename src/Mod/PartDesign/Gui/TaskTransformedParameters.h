@@ -101,6 +101,11 @@ protected:
      */
     void setupUI();
 
+    /// Place the next widget after all parameter controls, including those added at runtime.
+    /// Defaults to placing Recompute on Change after the main parameter panel.
+    void updateTabOrder();
+    static void updateTabOrder(QWidget* parameterWidget, QWidget* nextWidget);
+
     /**
      * Returns the base transformation
      * For standalone features it will be object associated with the view provider
@@ -145,9 +150,9 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Fill combobox with the axis from the sketch and the own bodys origin axis
-    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch, bool allowEmpty = false);
     /// Fill combobox with the planes from the sketch and the own bodys origin planes
-    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch, bool allowEmpty = false);
 
     /**
      * Returns the base transformed objectfromStdString

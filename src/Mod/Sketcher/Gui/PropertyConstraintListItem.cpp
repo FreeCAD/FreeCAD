@@ -287,7 +287,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
                 if (unnamednode) {
                     unnamednode->blockEvent = true;
                     unnamednode->setProperty(
-                        internalName.toLatin1(),
+                        internalName.toUtf8(),
                         QVariant::fromValue<Base::Quantity>(quant)
                     );
                     unnamednode->blockEvent = false;
@@ -299,7 +299,7 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             }
             else {
                 self->blockEvent = true;
-                self->setProperty(internalName.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+                self->setProperty(internalName.toUtf8(), QVariant::fromValue<Base::Quantity>(quant));
                 self->blockEvent = false;
             }
         }
@@ -322,7 +322,7 @@ bool PropertyConstraintListItem::event(QEvent* ev)
             QDynamicPropertyChangeEvent* ce = static_cast<QDynamicPropertyChangeEvent*>(ev);
             // Get property via internal name of a PropertyUnit
             QVariant prop = property(ce->propertyName());
-            QString propName = QString::fromLatin1(ce->propertyName());
+            QString propName = QString::fromUtf8(ce->propertyName());
             Base::Quantity quant = prop.value<Base::Quantity>();
 
             Sketcher::PropertyConstraintList* item;

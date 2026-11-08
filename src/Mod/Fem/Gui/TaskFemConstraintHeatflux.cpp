@@ -555,7 +555,7 @@ bool TaskDlgFemConstraintHeatflux::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 

@@ -306,11 +306,21 @@ class BIM_Box:
         self.doc.recompute()
 
     def _finish(self):
-        self.wp._restore()
+        # If the height of the box is entered numerically, this function triggers the
+        # cancel function of FreeCADGui.Snapper.getPoint. That function in turn triggers
+        # self.PointCallback with point=None, which triggers this function again.
+        # To avoid processing twice we check FreeCAD.activeDraftCommand:
+        if FreeCAD.activeDraftCommand is None:
+            return
+
         FreeCAD.activeDraftCommand = None
-        FreeCADGui.Snapper.off()
+        self.wp._restore()
         for c in self.cubetracker:
             c.finalize()
+        FreeCADGui.Snapper.off()
+        # Trigger cancel function of FreeCADGui.Snapper.getPoint:
+        if hasattr(FreeCADGui, "draftToolBar"):
+            FreeCADGui.draftToolBar.escape()
 
 
 FreeCADGui.addCommand("BIM_Box", BIM_Box())

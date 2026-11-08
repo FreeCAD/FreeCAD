@@ -113,6 +113,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         sketch = self.doc.addObject("Part::Part2DObject", "Sketch")
         sketch.Shape = Part.makeLine(App.Vector(5, 0, 0), App.Vector(5, 10, 0))
         self.array.Axis = (sketch, ["Edge1"])
+        self.array.BinormalAxis = (sketch, ["N_Axis"])
         self.doc.recompute()
 
         self.assertEqual(self.array.getStatusString(), "Valid")
@@ -147,6 +148,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         linear.Occurrences2 = 3
         polar.Axis = (None, ["Y_Axis"])
         self.array.Axis = (None, ["X_Axis"])
+        self.array.BinormalAxis = (None, ["Z_Axis"])
         self.doc.recompute()
         references = {
             "Linear": {"Direction": linear.Direction, "Direction2": linear.Direction2},

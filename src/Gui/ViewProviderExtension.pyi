@@ -17,11 +17,9 @@ class ViewProviderExtension(Extension):
         """
         Ignore the overlay icon of the named extension
         """
-        ...
 
     @constmethod
     def ignoreOverlayIcon(self, name: str, /) -> bool:
         """
         Return whether the overlay icon of the named extension is ignored
         """
-        ...

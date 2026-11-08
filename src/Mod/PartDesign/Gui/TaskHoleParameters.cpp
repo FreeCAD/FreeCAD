@@ -513,6 +513,15 @@ void TaskHoleParameters::setCutDiagram()
         ui->labelHoleCutCountersinkAngle->setVisible(false);
     }
 
+    // Hiding the countersink angle moves Depth beside Head diameter.
+    // Keep the depth fields in the order of the visible rows.
+    const bool hasCountersinkAngle = isCountersink || isCounterdrill;
+    auto* firstDepth = hasCountersinkAngle ? ui->HoleCutDepth : ui->Depth;
+    auto* secondDepth = hasCountersinkAngle ? ui->Depth : ui->HoleCutDepth;
+    QWidget::setTabOrder(ui->HoleCutDiameter, ui->HoleCutCountersinkAngle);
+    QWidget::setTabOrder(ui->HoleCutCountersinkAngle, firstDepth);
+    QWidget::setTabOrder(firstDepth, secondDepth);
+
     if (isAngled) {
         baseFileName += includeAngle ? "_angled_included" : "_angled";
     }

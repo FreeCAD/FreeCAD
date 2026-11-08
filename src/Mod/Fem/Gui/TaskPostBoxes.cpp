@@ -402,7 +402,7 @@ bool TaskDlgPost::accept()
     }
     catch (const Base::Exception& e) {
         m_view->getDocument()->abortCommand();
-        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromUtf8(e.what()));
         return false;
     }
 
@@ -1560,7 +1560,7 @@ void TaskPostClip::collectImplicitFunctions()
                 = getObject<Fem::FemPostClipFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromUtf8(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }
@@ -1869,7 +1869,7 @@ void TaskPostCut::collectImplicitFunctions()
                 = getObject<Fem::FemPostCutFilter>()->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = provider->Group.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromUtf8(funcs[i]->getNameInDocument()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }

@@ -1940,9 +1940,7 @@ class MachineEditorDialog(QtGui.QDialog):
         tab_layout.addWidget(scroll)
 
         if self.machine:
-            section_widgets = build_output_options(
-                self.machine, layout, context="CAM_MachineEditor"
-            )
+            section_widgets = build_output_options(self.machine, layout)
 
             # Wire every generated widget back to the Machine object so
             # that edits are persisted in real-time (same as before).

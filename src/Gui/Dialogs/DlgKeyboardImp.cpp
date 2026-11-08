@@ -161,7 +161,7 @@ void DlgCustomKeyboardImp::initCommandCompleter(
             return;
         }
 
-        QString group = QString::fromLatin1(cmd->getGroupName());
+        QString group = QString::fromUtf8(cmd->getGroupName());
         int index = combo->findData(group);
         if (index < 0) {
             return;
@@ -216,7 +216,7 @@ void DlgCustomKeyboardImp::populateCommandList(
         }
         item->setText(2, cmd->getShortcut());
         if (auto accel = cmd->getAccel()) {
-            item->setText(3, QKeySequence(QString::fromLatin1(accel)).toString());
+            item->setText(3, QKeySequence(QString::fromUtf8(accel)).toString());
         }
 
         if (current == cmd->getName()) {
@@ -468,7 +468,7 @@ void DlgCustomKeyboardImp::onCommandTreeWidgetCurrentItemChanged(QTreeWidgetItem
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd) {
         QKeySequence ks = ShortcutManager::instance()->getShortcut(cmd->getName(), cmd->getAccel());
-        QKeySequence ks2 = QString::fromLatin1(cmd->getAccel());
+        QKeySequence ks2 = QString::fromUtf8(cmd->getAccel());
         QKeySequence ks3 = ui->editShortcut->text();
         if (ks.isEmpty()) {
             ui->currentShortcut->clear();

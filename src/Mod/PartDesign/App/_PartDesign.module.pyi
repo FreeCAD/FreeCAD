@@ -24,4 +24,3 @@ def makeFilletArc(
     /,
 ) -> _FilletArcConstruction:
     """Return the tangent points and arc center for one fillet-arc construction."""
-    ...

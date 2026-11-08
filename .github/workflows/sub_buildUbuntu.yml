@@ -24,7 +24,7 @@
 # This is a build and test workflow for CI of FreeCAD.
 # This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 24.04
+name: Build Ubuntu
 
 on:
   workflow_call:
@@ -54,7 +54,7 @@ permissions:
 jobs:
 
   Build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
@@ -84,7 +84,7 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
         with:
           egress-policy: audit
 
@@ -98,10 +98,9 @@ jobs:
 
       - name: Install FreeCAD Python test dependencies
         run: |
-          sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
-          python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
+          python3 -m pip install ifcopenshell==0.8.5 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
@@ -139,7 +138,7 @@ jobs:
       - name: Install cmake
         uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
-          cmake-version: '3.31.6'
+          cmake-version: '4.2.3'
 
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
@@ -199,7 +198,7 @@ jobs:
 
       - name: Upload Coin node snapshot artifacts (on failure)
         if: failure() && inputs.testCoinNodeSnapshots
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
           path: /tmp/FreeCADTesting/CoinNodeSnapshots
@@ -249,7 +248,7 @@ jobs:
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -258,7 +257,7 @@ jobs:
 
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ env.reportfilename }}
           path: |

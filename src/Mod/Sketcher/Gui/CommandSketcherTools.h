@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <Mod/Sketcher/App/SketchObject.h>
-
 namespace SketcherGui
 {
 

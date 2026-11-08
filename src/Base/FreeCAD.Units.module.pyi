@@ -28,23 +28,19 @@ Radian: Quantity
 @overload
 def listSchemas() -> tuple[str, ...]:
     """Return the full ordered schema list."""
-    ...
 
 @overload
 def listSchemas(index: int, /) -> str:
     """Return one schema name by numeric index."""
-    ...
 
 # Quantity formatting and parsing
 @overload
 def toNumber(value: Quantity, format: _NumberFormat = ..., decimals: int = ..., /) -> str:
     """Format an existing Quantity value using the current unit schema."""
-    ...
 
 @overload
 def toNumber(value: float, format: _NumberFormat = ..., decimals: int = ..., /) -> str:
     """Format a plain numeric value using the current unit schema."""
-    ...
 
 def parseQuantity(expression: str, /) -> Quantity:
     """Parse one unit expression into a Quantity.
@@ -52,16 +48,12 @@ def parseQuantity(expression: str, /) -> Quantity:
     The expression may be a simple value with units, such as ``"1m"``, or a
     compound unit expression that FreeCAD's quantity parser understands.
     """
-    ...
 
 def getSchema() -> int:
     """Return the active unit-schema index into the tuple returned by ``listSchemas``."""
-    ...
 
 def setSchema(index: int, /) -> None:
     """Set the active unit-schema index."""
-    ...
 
 def schemaTranslate(quantity: Quantity, schema: int, /) -> tuple[str, float, str]:
     """Translate one quantity into the textual pieces used by another schema."""
-    ...

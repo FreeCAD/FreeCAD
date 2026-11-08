@@ -25,11 +25,9 @@ class BaseClass(PyObjectBase):
         """
         Returns true if given type is a father
         """
-        ...
 
     @constmethod
     def getAllDerivedFrom(self) -> List[object]:
         """
         Returns all descendants
         """
-        ...

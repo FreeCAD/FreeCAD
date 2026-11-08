@@ -79,8 +79,6 @@ using namespace std;
 using DU = DrawUtil;
 using FillMode = QGIFace::FillMode;
 
-const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
-
 QGIViewPart::QGIViewPart() :
     m_pathBuilder(new PathBuilder(this)),
     m_dashedLineGenerator(new LineGenerator())
@@ -1386,7 +1384,7 @@ void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::stri
 double QGIViewPart::getLineWidth() {
     auto vp{static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()))};
 
-    return vp->LineWidth.getValue() * lineScaleFactor; // Thick
+    return Rez::guiX(vp->LineWidth.getValue());
 }
 
 double QGIViewPart::getVertexSize() {

@@ -43,7 +43,6 @@ class Point(Geometry):
         """
         Create a vertex from this point.
         """
-        ...
     X: float = ...
     """X component of this point."""
 

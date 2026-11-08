@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 """Typed public signatures for the ``Import`` application module.
 
@@ -46,7 +47,6 @@ def open(
     mode: int = -1,
 ) -> _ImportColorAssignments | None:
     """Open one STEP, IGES, or glTF file and optionally return imported face colors."""
-    ...
 
 def insert(
     name: str,
@@ -57,7 +57,6 @@ def insert(
     mode: int = -1,
 ) -> _ImportColorAssignments | None:
     """Insert one STEP, IGES, or glTF file into a document and optionally return face colors."""
-    ...
 
 def export(
     obj: Sequence[_ImportExportObject],
@@ -67,7 +66,6 @@ def export(
     keepPlacement: bool | None = None,
 ) -> None:
     """Export document objects to one STEP, IGES, or glTF file."""
-    ...
 
 # DXF helpers
 def readDXF(
@@ -78,7 +76,6 @@ def readDXF(
     /,
 ) -> DxfImportStats:
     """Import one DXF file and return detailed import statistics."""
-    ...
 
 @overload
 def writeDXFShape(
@@ -90,7 +87,6 @@ def writeDXFShape(
     /,
 ) -> None:
     """Export one shape to a DXF file."""
-    ...
 
 @overload
 def writeDXFShape(
@@ -102,7 +98,6 @@ def writeDXFShape(
     /,
 ) -> None:
     """Export a shape sequence to a DXF file."""
-    ...
 
 @overload
 def writeDXFObject(
@@ -114,7 +109,6 @@ def writeDXFObject(
     /,
 ) -> None:
     """Export one document object to a DXF file."""
-    ...
 
 @overload
 def writeDXFObject(
@@ -126,4 +120,3 @@ def writeDXFObject(
     /,
 ) -> None:
     """Export a document-object sequence to a DXF file."""
-    ...

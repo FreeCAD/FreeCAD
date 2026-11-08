@@ -31,45 +31,38 @@ class Geometry(Persistence):
         Performs the symmetrical transformation of this geometric object, either
         about a point or about a plane defined by a point and an axis.
         """
-        ...
 
     def rotate(self, placement: Placement, /) -> None:
         """
         Rotates this geometric object by the given placement
         """
-        ...
 
     def scale(self, center: Union[Vector, tuple], factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
-        ...
 
     def transform(self, transformation: Matrix, /) -> None:
         """
         Applies a transformation to this geometric object
         """
-        ...
 
     def translate(self, vector: Union[Vector, tuple], /) -> None:
         """
         Translates this geometric object
         """
-        ...
 
     @constmethod
     def copy(self) -> "Geometry":
         """
         Create a copy of this geometry
         """
-        ...
 
     @constmethod
     def clone(self) -> "Geometry":
         """
         Create a clone of this geometry with the same Tag
         """
-        ...
 
     @constmethod
     def isSame(self, geom: "Geometry", tol: float, angulartol: float, /) -> bool:
@@ -78,57 +71,48 @@ class Geometry(Persistence):
 
         Compare this geometry to another one
         """
-        ...
 
     @constmethod
     def hasExtensionOfType(self, type_name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         """
-        ...
 
     @constmethod
     def hasExtensionOfName(self, name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         """
-        ...
 
     @constmethod
     def getExtensionOfType(self, type_name: str, /) -> Extension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
-        ...
 
     @constmethod
     def getExtensionOfName(self, name: str, /) -> Extension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
-        ...
 
     def setExtension(self, extension: Extension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
-        ...
 
     def deleteExtensionOfType(self, type_name: str, /) -> None:
         """
         Deletes all extensions of the indicated type.
         """
-        ...
 
     def deleteExtensionOfName(self, name: str, /) -> None:
         """
         Deletes all extensions of the indicated name.
         """
-        ...
 
     @constmethod
     def getExtensions(self) -> List[Extension]:
         """
         Returns a list with information about the geometry extensions.
         """
-        ...
