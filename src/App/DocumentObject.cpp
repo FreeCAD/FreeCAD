@@ -1988,6 +1988,8 @@ std::set<ObjectIdentifier> DocumentObject::getPropertyUses(const App::Property *
     }
 
     auto* objProp = freecad_cast<DocumentObject*>(prop->getContainer());
+    getPropertyUsesObj(uses, objProp, prop);
+
     std::vector<App::DocumentObject*> inList = objProp->getInList();
 
     for (auto* obj : inList) {
