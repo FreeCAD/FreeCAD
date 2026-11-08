@@ -497,9 +497,15 @@ def findElementClosestVertex(ref, mousePos):
 
     if elt_type == "Vertex":
         return element_name
+    if elt_type not in ("Edge", "Face"):
+        return ""
 
-    elif elt_type == "Edge":
-        edge = obj.Shape.getElement(element_name)
+    # Snapping uses geometric indices, not persistent names. External links can
+    # carry naming references from a different document's string hasher.
+    shape = Part.getShape(obj, noElementMap=True)
+
+    if elt_type == "Edge":
+        edge = shape.getElement(element_name)
         curve = edge.Curve
         if curve.TypeId == "Part::GeomCircle":
             # For centers, as they are not shape vertexes, we return the element name.
@@ -521,12 +527,12 @@ def findElementClosestVertex(ref, mousePos):
 
         vertexes = edge.Vertexes
 
-        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj)
+        vertex_name = findVertexNameInObject(vertexes[closest_vertex_index], obj, shape)
 
         return vertex_name
 
     elif elt_type == "Face":
-        face = obj.Shape.getElement(element_name)
+        face = shape.getElement(element_name)
         surface = face.Surface
         _type = surface.TypeId
         if _type == "Part::GeomSphere" or _type == "Part::GeomTorus":
@@ -545,7 +551,7 @@ def findElementClosestVertex(ref, mousePos):
 
             elif _type == "Part::GeomCylinder" and curve.TypeId == "Part::GeomBSplineCurve":
                 # handle special case of 2 cylinder intersecting.
-                for j, facej in enumerate(obj.Shape.Faces):
+                for j, facej in enumerate(shape.Faces):
                     surfacej = facej.Surface
                     if (elt_index - 1) != j and surfacej.TypeId == "Part::GeomCylinder":
                         for edgej in facej.Edges:
@@ -594,7 +600,7 @@ def findElementClosestVertex(ref, mousePos):
             # If center of gravity then we have no vertex name to set so we put element name
             return element_name
 
-        vertex_name = findVertexNameInObject(face.Vertexes[closest_vertex_index], obj)
+        vertex_name = findVertexNameInObject(face.Vertexes[closest_vertex_index], obj, shape)
 
         return vertex_name
 
@@ -621,14 +627,12 @@ def findClosestPointToMousePos(candidates_points, mousePos):
     return closest_point_index, point_min_length
 
 
-def findVertexNameInObject(vertex, obj):
-    for i, _ in enumerate(obj.Shape.Vertexes):
-        vertexName = "Vertex" + str(i + 1)
-
-        if (
-            obj.Shape.getElement(vertexName).Point == vertex.Point
-        ):  # Don't use the vtx param from enumerate's 2nd output to avoid hasher warning
-            return vertexName
+def findVertexNameInObject(vertex, obj, shape=None):
+    if shape is None:
+        shape = Part.getShape(obj, noElementMap=True)
+    for i, candidate in enumerate(shape.Vertexes):
+        if candidate.Point == vertex.Point:
+            return "Vertex" + str(i + 1)
     return ""
 
 
@@ -1042,7 +1046,7 @@ def getReferenceOwnerShape(ref):
     dot = sub.rfind(".")
     if root is None or dot <= 0:
         return None
-    shape = Part.getShape(root, sub[: dot + 1], App.Matrix(), True)
+    shape = Part.getShape(root, sub[: dot + 1], App.Matrix(), True, noElementMap=True)
     if shape is None or shape.isNull():
         return None
     return shape
@@ -1074,7 +1078,7 @@ def findPlacement(ref, ignoreVertex=False):
     elt_type, elt_index = extract_type_and_number(elt)
     vtx_type, _ = extract_type_and_number(vtx)
 
-    shape = obj.Shape
+    shape = Part.getShape(obj, noElementMap=True)
     useLive = False
     if isLinkArray(obj):
         # The array's stored Shape lags behind a moved inner body until the array recomputes.
