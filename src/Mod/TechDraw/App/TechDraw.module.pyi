@@ -6,8 +6,6 @@ This source-adjacent stub file carries the projection, export, and dimension
 helper APIs exposed directly by the TechDraw application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Mapping, Sequence
 from typing import Literal, TypeAlias, overload
 

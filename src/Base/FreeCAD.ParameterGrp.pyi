@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCAD.ParameterGrp`` PyCXX type."""
 
-from __future__ import annotations
-
 from typing import Literal, Protocol, TypeAlias
 
 _ParameterValue: TypeAlias = str | int | float | bool

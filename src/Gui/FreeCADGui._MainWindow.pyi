@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._MainWindow`` PyCXX type."""
 
-from __future__ import annotations
-
 from FreeCADGui import InputHint, _MDIView
 import PySide.QtWidgets as QtWidgets
 

@@ -7,8 +7,6 @@ These functions accept either a single message object or an explicit
 ``str()`` when needed, so the public stub keeps them intentionally broad.
 """
 
-from __future__ import annotations
-
 from typing import Literal, TypeAlias, overload
 
 from Base.Metadata import module

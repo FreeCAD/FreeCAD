@@ -6,8 +6,6 @@ This source-adjacent stub file carries the point-cloud file I/O and document
 helpers exposed directly by the Points application module.
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 
 from FreeCAD import DocumentObject

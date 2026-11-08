@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui.UiLoader`` PyCXX type."""
 
-from __future__ import annotations
-
 from os import PathLike
 
 class UiLoader:

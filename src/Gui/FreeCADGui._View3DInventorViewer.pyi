@@ -2,8 +2,6 @@
 
 """Typed public method signatures for the ``FreeCADGui._View3DInventorViewer`` PyCXX type."""
 
-from __future__ import annotations
-
 from typing import Any, TypeAlias, overload
 
 from FreeCAD import Matrix, Vector
