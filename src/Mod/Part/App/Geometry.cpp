@@ -112,11 +112,6 @@
 #include <TopExp_Explorer.hxx>
 #include <ShapeFix_Wire.hxx>
 
-#if OCC_VERSION_HEX < 0x070600
-# include <GeomAdaptor_HSurface.hxx>
-# include <GeomAdaptor_HCurve.hxx>
-#endif
-
 #include <boost/random.hpp>
 #include <cmath>
 #include <ctime>
@@ -186,10 +181,6 @@
 
 #include <gp_Quaternion.hxx>
 
-
-#if OCC_VERSION_HEX >= 0x070600
-using GeomAdaptor_HCurve = GeomAdaptor_Curve;
-#endif
 
 using namespace Part;
 
@@ -1889,7 +1880,7 @@ void GeomBSplineCurve::approximate(double tol3d, int maxSegments, int maxDegree,
 {
     try {
         GeomAdaptor_Curve adapt(myCurve);
-        Handle(GeomAdaptor_HCurve) hCurve = new GeomAdaptor_HCurve(adapt);
+        Handle(GeomAdaptor_Curve) hCurve = new GeomAdaptor_Curve(adapt);
         Approx_Curve3d approx(hCurve, tol3d, continuity, maxSegments, maxDegree);
         if (approx.IsDone()) {
             this->setHandle(approx.Curve());

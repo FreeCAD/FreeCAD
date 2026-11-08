@@ -61,15 +61,11 @@
 # include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Precision.hxx>
-# include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-#if OCC_VERSION_HEX < 0x070600
-# include <BRepAdaptor_HCurve.hxx>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -92,10 +88,6 @@ using namespace TechDraw;
 using namespace Part;
 using namespace std;
 using DU = DrawUtil;
-
-#if OCC_VERSION_HEX >= 0x070600
-using BRepAdaptor_HCurve = BRepAdaptor_Curve;
-#endif
 
 // Collection of Geometric Features
 Wire::Wire()
@@ -1135,7 +1127,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
     setDirection(edgeCurve);
 
     // if the curve is already has degree <= 3, we should not approximate it, but just use the existing curve
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(edgeCurve);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(edgeCurve);
     Handle(Geom_BSplineCurve) splineOut = hCurve->BSpline();   // the bspline from the edge
     if (hCurve->Degree() > 3) {
         // if the degree is > 3 Qt can not draw it, so we approximate it as bezier
@@ -1911,7 +1903,7 @@ bool GeometryUtils::asCubic(const BRepAdaptor_Curve &curveIn, Handle(Geom_BSplin
 {
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen/paper can't resolve this
     Standard_Integer maxDegree = 3, maxSegment = 200;
-    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(curveIn);
+    Handle(BRepAdaptor_Curve) hCurve = new BRepAdaptor_Curve(curveIn);
 
     try {
         Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);

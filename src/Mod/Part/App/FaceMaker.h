@@ -27,7 +27,6 @@
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <BRepAlgoAPI_BuilderAlgo.hxx>
 #include <BRepTools_History.hxx>
-#include <Standard_Version.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
@@ -93,11 +92,7 @@ public:
      */
     virtual const TopoDS_Face& Face();
 
-#if OCC_VERSION_HEX >= 0x070600
     void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
-#else
-    void Build() override;
-#endif
 
     // fails to compile, huh!
     // virtual const TopTools_ListOfShape& Generated(const TopoDS_Shape &S) override
