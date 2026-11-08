@@ -616,19 +616,33 @@ bool ViewProviderHole::generateBoreMeshData(
     }
     gp_Dir holeNormalAxis = *holeNormalOpt;
 
+    // The bore triangulations are needed twice, once for the projection bounds and once
+    // to build the vertices, so mesh each face only once.
+    struct BoreMesh
+    {
+        std::vector<gp_Pnt> points;
+        std::vector<Poly_Triangle> facets;
+        bool meshed {false};
+    };
+
+    std::vector<BoreMesh> boreMeshes(boreFaces.size());
+    for (std::size_t i = 0; i < boreFaces.size(); ++i) {
+        BoreMesh& bore = boreMeshes[i];
+        bore.meshed = Part::Tools::getTriangulation(boreFaces[i], bore.points, bore.facets);
+    }
+
     double minProj = std::numeric_limits<double>::max();
     double maxProj = std::numeric_limits<double>::lowest();
 
     // --- Compute projection bounds ---
-    for (const auto& face : boreFaces) {
-        std::vector<gp_Pnt> meshPoints;
-        std::vector<Poly_Triangle> meshFacets;
-        if (Part::Tools::getTriangulation(face, meshPoints, meshFacets)) {
-            for (const auto& p : meshPoints) {
-                double proj = gp_Vec(holeOriginPnt, p).Dot(holeNormalAxis);
-                minProj = std::min(minProj, proj);
-                maxProj = std::max(maxProj, proj);
-            }
+    for (const auto& bore : boreMeshes) {
+        if (!bore.meshed) {
+            continue;
+        }
+        for (const auto& p : bore.points) {
+            double proj = gp_Vec(holeOriginPnt, p).Dot(holeNormalAxis);
+            minProj = std::min(minProj, proj);
+            maxProj = std::max(maxProj, proj);
         }
     }
 
@@ -640,12 +654,15 @@ bool ViewProviderHole::generateBoreMeshData(
 
     bool success = false;
 
-    for (const auto& face : boreFaces) {
-        std::vector<gp_Pnt> meshPoints;
-        std::vector<Poly_Triangle> meshFacets;
-        if (!Part::Tools::getTriangulation(face, meshPoints, meshFacets)) {
+    for (std::size_t faceIndex = 0; faceIndex < boreFaces.size(); ++faceIndex) {
+        const BoreMesh& bore = boreMeshes[faceIndex];
+        if (!bore.meshed) {
             continue;
         }
+
+        const TopoDS_Face& face = boreFaces[faceIndex];
+        const std::vector<gp_Pnt>& meshPoints = bore.points;
+        const std::vector<Poly_Triangle>& meshFacets = bore.facets;
 
         Handle(Geom_Surface) surf = unwrapSurface(face);
         gp_Ax3 surfPos;
