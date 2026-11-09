@@ -85,9 +85,11 @@ class ImageComparisonTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             expected_path = Path(directory) / "expected.png"
             actual_path = Path(directory) / "actual.webp"
-            actual_path.write_bytes(bytes.fromhex(
-                "524946461a000000574542505650384c0d0000002fffc03f10071011118888fe0700"
-            ))
+            actual_path.write_bytes(
+                bytes.fromhex(
+                    "524946461a000000574542505650384c0d0000002fffc03f10071011118888fe0700"
+                )
+            )
             expected = QImage(256, 256, QImage.Format_ARGB32)
             expected.fill(0)
             self.assertTrue(expected.save(str(expected_path)))
@@ -287,7 +289,10 @@ class View3DRenderSnapshots(unittest.TestCase):
         image = self.viewer.grabFramebuffer()
         self.assertFalse(image.isNull(), "Viewport framebuffer is empty")
         ratio = self.viewport.devicePixelRatioF()
-        self.assertEqual(image.size(), self.qt.QSize(round(SNAPSHOT_WIDTH * ratio), round(SNAPSHOT_HEIGHT * ratio)))
+        self.assertEqual(
+            image.size(),
+            self.qt.QSize(round(SNAPSHOT_WIDTH * ratio), round(SNAPSHOT_HEIGHT * ratio)),
+        )
         return image
 
     def _snapshot(self, name, image=None):
@@ -653,10 +658,13 @@ class View3DRenderSnapshots(unittest.TestCase):
 
         for ratio in (1, 2):
             with self.subTest(capture="export", dpr=ratio):
-                self.assertEqual(captures["export", ratio].size(), self.qt.QSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT))
+                self.assertEqual(
+                    captures["export", ratio].size(), self.qt.QSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT)
+                )
             with self.subTest(capture="screen", dpr=ratio):
                 self.assertEqual(
-                    captures["screen", ratio].size(), self.qt.QSize(SNAPSHOT_WIDTH * ratio, SNAPSHOT_HEIGHT * ratio)
+                    captures["screen", ratio].size(),
+                    self.qt.QSize(SNAPSHOT_WIDTH * ratio, SNAPSHOT_HEIGHT * ratio),
                 )
 
         # Normalize only screen captures; fixed-size exports must match directly.
@@ -664,7 +672,10 @@ class View3DRenderSnapshots(unittest.TestCase):
             image = captures[kind, 2]
             if kind == "screen":
                 image = image.scaled(
-                    SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, self.qt.Qt.IgnoreAspectRatio, self.qt.Qt.SmoothTransformation
+                    SNAPSHOT_WIDTH,
+                    SNAPSHOT_HEIGHT,
+                    self.qt.Qt.IgnoreAspectRatio,
+                    self.qt.Qt.SmoothTransformation,
                 )
                 self.assertTrue(image.save(str(self.output / "hidpi" / "screen-normalized.png")))
             count = _changed_pixels(captures[kind, 1], image, tolerance=8)
@@ -706,7 +717,9 @@ class View3DRenderSnapshots(unittest.TestCase):
         ratio = int(os.environ["FC_VISUAL_HIDPI_WORKER"])
         self.assertEqual(self.viewport.devicePixelRatioF(), ratio)
         self.assertTrue(self._frame().save(str(self.output / "screen.png")))
-        self.view.saveImage(str(self.output / "export.png"), SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, "Current", "$MIBA", 0)
+        self.view.saveImage(
+            str(self.output / "export.png"), SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, "Current", "$MIBA", 0
+        )
 
 
 def load_tests(loader, tests, pattern):
