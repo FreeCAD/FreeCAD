@@ -76,6 +76,7 @@
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "GestureNavigationStyle.h"
 #include "Application.h"
@@ -1050,6 +1051,11 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
 
 
     if (!smev.flags->processed) {
+        // a dialog opened while replaying postponed events must not re-enter the state machine
+        if (inNaviMachine) {
+            return superclass::processSoEvent(ev);
+        }
+        Base::StateLocker lock(inNaviMachine);
         this->naviMachine->processEvent(smev);
     }
     if (!smev.flags->propagated && !smev.flags->processed) {
