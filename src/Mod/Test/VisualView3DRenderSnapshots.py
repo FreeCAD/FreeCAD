@@ -20,8 +20,8 @@ import zipfile
 import FreeCAD as App
 import FreeCADGui as Gui
 
-_WIDTH = 300
-_HEIGHT = 300
+from VisualTestSupport import SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT
+
 _STYLES = ("as-is", "hidden-line", "wireframe")
 _STEPS = (
     *(f"01-live-{style}" for style in _STYLES),
@@ -132,7 +132,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix="freecad-render-scene-")
         self.addCleanup(self.temp.cleanup)
 
-        self.harness = self.visual.ViewerSnapshotHarness(_WIDTH, _HEIGHT)
+        self.harness = self.visual.ViewerSnapshotHarness(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT)
         self.addCleanup(self.harness.close)
         self.addCleanup(Gui.Selection.clearSelection)
         self.addCleanup(Gui.Selection.clearPreselection)
@@ -153,7 +153,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         self.graphics.setFrameShape(self.widgets.QFrame.NoFrame)
         self.graphics.setHorizontalScrollBarPolicy(self.qt.Qt.ScrollBarAlwaysOff)
         self.graphics.setVerticalScrollBarPolicy(self.qt.Qt.ScrollBarAlwaysOff)
-        self.graphics.setFixedSize(_WIDTH, _HEIGHT)
+        self.graphics.setFixedSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT)
         self.viewport = self.graphics.viewport()
         self.addCleanup(self._drop_widgets)
         self.view.setNavigationType("Gui::CADNavigationStyle")
@@ -207,7 +207,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         image = self.viewer.grabFramebuffer()
         self.assertFalse(image.isNull(), "Viewport framebuffer is empty")
         ratio = self.viewport.devicePixelRatioF()
-        self.assertEqual(image.size(), self.qt.QSize(round(_WIDTH * ratio), round(_HEIGHT * ratio)))
+        self.assertEqual(image.size(), self.qt.QSize(round(SNAPSHOT_WIDTH * ratio), round(SNAPSHOT_HEIGHT * ratio)))
         return image
 
     def _snapshot(self, name, image=None):
@@ -293,7 +293,7 @@ class View3DRenderSnapshots(unittest.TestCase):
             self._style(style)
             native = self._frame()
             path = Path(self.temp.name) / "live.png"
-            self.view.saveImage(str(path), _WIDTH, _HEIGHT, "Current", "$MIBA", 0)
+            self.view.saveImage(str(path), SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, "Current", "$MIBA", 0)
             image = self._snapshot(f"01-live-{style}", self.images.QImage(str(path)))
             name = f"live-{style}-matches-viewport"
             if style == "hidden-line":
@@ -313,9 +313,9 @@ class View3DRenderSnapshots(unittest.TestCase):
             self._park_pointer()
             before = self._frame()
             self._drag_start()
-            self._move(self.qt.QPoint(_WIDTH // 2, _HEIGHT // 2))
+            self._move(self.qt.QPoint(SNAPSHOT_WIDTH // 2, SNAPSHOT_HEIGHT // 2))
             drag = self._snapshot(f"02-box-{style}-drag")
-            self._move(self.qt.QPoint(_WIDTH - 10, _HEIGHT - 10))
+            self._move(self.qt.QPoint(SNAPSHOT_WIDTH - 10, SNAPSHOT_HEIGHT - 10))
             moved = self._snapshot(f"02-box-{style}-moved")
             self._check(
                 f"box-{style}-outline-moves",
@@ -324,7 +324,7 @@ class View3DRenderSnapshots(unittest.TestCase):
             )
             self._mouse(
                 self.qt.QEvent.MouseButtonRelease,
-                self.qt.QPoint(_WIDTH - 10, _HEIGHT - 10),
+                self.qt.QPoint(SNAPSHOT_WIDTH - 10, SNAPSHOT_HEIGHT - 10),
                 self.qt.Qt.LeftButton,
                 self.qt.Qt.NoButton,
             )
@@ -338,7 +338,7 @@ class View3DRenderSnapshots(unittest.TestCase):
             )
             Gui.Selection.clearSelection()
             self._drag_start()
-            self._move(self.qt.QPoint(_WIDTH * 11 // 16, _HEIGHT * 3 // 4))
+            self._move(self.qt.QPoint(SNAPSHOT_WIDTH * 11 // 16, SNAPSHOT_HEIGHT * 3 // 4))
             self._cancel_selection()
             self._park_pointer()
             self._settle()
@@ -374,19 +374,19 @@ class View3DRenderSnapshots(unittest.TestCase):
         lit = self._snapshot(
             "04-capture-lit",
             self.viewer.renderToImage(
-                width=_WIDTH, height=_HEIGHT, samples=0, includeViewerLighting=True
+                width=SNAPSHOT_WIDTH, height=SNAPSHOT_HEIGHT, samples=0, includeViewerLighting=True
             ),
         )
         unlit = self._snapshot(
             "04-capture-unlit",
             self.viewer.renderToImage(
-                width=_WIDTH, height=_HEIGHT, samples=0, includeViewerLighting=False
+                width=SNAPSHOT_WIDTH, height=SNAPSHOT_HEIGHT, samples=0, includeViewerLighting=False
             ),
         )
         self._snapshot(
             "04-capture-msaa4",
             self.viewer.renderToImage(
-                width=_WIDTH, height=_HEIGHT, samples=4, includeViewerLighting=True
+                width=SNAPSHOT_WIDTH, height=SNAPSHOT_HEIGHT, samples=4, includeViewerLighting=True
             ),
         )
         self._check(
@@ -402,7 +402,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         self._snapshot(
             "04-capture-no-decorations",
             self.viewer.renderToImage(
-                width=_WIDTH, height=_HEIGHT, samples=0, includeViewerLighting=True
+                width=SNAPSHOT_WIDTH, height=SNAPSHOT_HEIGHT, samples=0, includeViewerLighting=True
             ),
         )
         self.view.setAxisCross(True)
@@ -446,7 +446,7 @@ class View3DRenderSnapshots(unittest.TestCase):
             try:
                 preview = dialog.findChild(QPrintPreviewWidget)
                 self.assertIsNotNone(preview, "Print dialog has no preview widget")
-                preview.setFixedSize(_WIDTH, _HEIGHT)
+                preview.setFixedSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT)
                 preview.setZoomMode(QPrintPreviewWidget.FitInView)
                 self._settle()
                 captured.append(self._snapshot(name, preview.grab().toImage()))
@@ -482,7 +482,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         document = QPdfDocument(None)
         document.load(str(pdf))
         self.assertEqual(document.pageCount(), 1, "PDF export did not produce one page")
-        image = document.render(0, self.qt.QSize(_WIDTH, _HEIGHT))
+        image = document.render(0, self.qt.QSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT))
         self._snapshot("05-print-pdf", image)
         document.close()
         # PDF export intentionally calls viewAll(); restore before the final viewport snapshot.
@@ -574,10 +574,10 @@ class View3DRenderSnapshots(unittest.TestCase):
 
         for ratio in (1, 2):
             with self.subTest(capture="export", dpr=ratio):
-                self.assertEqual(captures["export", ratio].size(), self.qt.QSize(_WIDTH, _HEIGHT))
+                self.assertEqual(captures["export", ratio].size(), self.qt.QSize(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT))
             with self.subTest(capture="screen", dpr=ratio):
                 self.assertEqual(
-                    captures["screen", ratio].size(), self.qt.QSize(_WIDTH * ratio, _HEIGHT * ratio)
+                    captures["screen", ratio].size(), self.qt.QSize(SNAPSHOT_WIDTH * ratio, SNAPSHOT_HEIGHT * ratio)
                 )
 
         # Normalize only screen captures; fixed-size exports must match directly.
@@ -585,11 +585,11 @@ class View3DRenderSnapshots(unittest.TestCase):
             image = captures[kind, 2]
             if kind == "screen":
                 image = image.scaled(
-                    _WIDTH, _HEIGHT, self.qt.Qt.IgnoreAspectRatio, self.qt.Qt.SmoothTransformation
+                    SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, self.qt.Qt.IgnoreAspectRatio, self.qt.Qt.SmoothTransformation
                 )
                 self.assertTrue(image.save(str(self.output / "hidpi" / "screen-normalized.png")))
             count = _changed_pixels(captures[kind, 1], image, tolerance=8)
-            limit = _WIDTH * _HEIGHT * 0.002
+            limit = SNAPSHOT_WIDTH * SNAPSHOT_HEIGHT * 0.002
             check = self._check if kind == "export" else self._xfail
             check(
                 f"hidpi-{kind}-parity",
@@ -627,7 +627,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         ratio = int(os.environ["FC_VISUAL_HIDPI_WORKER"])
         self.assertEqual(self.viewport.devicePixelRatioF(), ratio)
         self.assertTrue(self._frame().save(str(self.output / "screen.png")))
-        self.view.saveImage(str(self.output / "export.png"), _WIDTH, _HEIGHT, "Current", "$MIBA", 0)
+        self.view.saveImage(str(self.output / "export.png"), SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, "Current", "$MIBA", 0)
 
 
 def load_tests(loader, tests, pattern):

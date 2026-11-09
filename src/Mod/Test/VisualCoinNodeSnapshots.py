@@ -62,6 +62,8 @@ from VisualTestSupport import (
     FreeCAD,
     FreeCADGui,
     coin,
+    SNAPSHOT_WIDTH,
+    SNAPSHOT_HEIGHT,
     ViewerSnapshotHarness as _ViewerSnapshotHarness,
     compare_images as _compare_images,
     require_gui as _require_gui,
@@ -72,8 +74,6 @@ _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_SIZE = 18
 _TRANSLUCENCY_BACKGROUND_TOP = (0.20, 0.20, 0.60)
 _TRANSLUCENCY_BACKGROUND_BOTTOM = (0.90, 0.90, 1.00)
-_SNAPSHOT_WIDTH = 512
-_SNAPSHOT_HEIGHT = 512
 _PIXEL_TOLERANCE = 8
 _MAX_MISMATCH_PCT = 0.20
 _IGNORE_ALPHA = True
@@ -594,6 +594,7 @@ def _make_scene_for_node(type_name: str, fixture: _SnapshotFixture):
         label.name.setValue(_DEFAULT_FONT_FAMILY)
         label.size.setValue(20)
         label.justification.setValue(2)  # SoFrameLabel::CENTER
+        label.horAlignment.setValue(coin.SoImage.CENTER)
         label.frame.setValue(True)
         label.border.setValue(True)
         root.addChild(label)
@@ -643,15 +644,12 @@ def _make_scene_for_node(type_name: str, fixture: _SnapshotFixture):
         if type_name == "SoNaviCubeHiliteFront":
             # Gui::SoNaviCube::PickId::Front (see `src/Gui/Inventor/SoNaviCube.h`).
             cube.hiliteId.setValue(1)
-        width = float(_SNAPSHOT_WIDTH)
-        height = float(_SNAPSHOT_HEIGHT)
-
         # Render like a real overlay: small square in the corner.
-        overlay = max(64.0, min(width, height) * 0.60)
+        overlay = max(64.0, min(SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT) * 0.60)
         margin = 8.0
         cube.viewportRect.setValue(
-            width - overlay - margin,
-            height - overlay - margin,
+            SNAPSHOT_WIDTH - overlay - margin,
+            SNAPSHOT_HEIGHT - overlay - margin,
             overlay,
             overlay,
         )
@@ -1268,8 +1266,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     def test_so_datum_label_ignores_parent_cull_face(self):
         _require_gui()
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1341,8 +1339,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
     def test_so_string_label_anchor_regression(self):
         _require_gui()
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1447,8 +1445,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
         _load_required_modules(_SnapshotFixture(required_modules=("PartGui",)))
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1574,8 +1572,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         _require_gui()
         _load_required_modules(_SnapshotFixture(required_modules=("Part", "PartGui")))
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1667,8 +1665,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         """Keep the configured dark grid color when the grid overlays scene geometry."""
         _require_gui()
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
         out_dir = Path(
             os.environ.get(
                 "FC_VISUAL_OUT_DIR",
@@ -1699,7 +1697,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
         self.assertGreater(
             dark_pixels,
-            100_000,
+            width * height * 0.38,
             f"configured dark grid color should survive the screen-space traversal: {actual_path}",
         )
         self.assertEqual(
@@ -1722,8 +1720,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         else:
             node_types = list(_SNAPSHOT_FIXTURES)
 
-        width = _SNAPSHOT_WIDTH
-        height = _SNAPSHOT_HEIGHT
+        width = SNAPSHOT_WIDTH
+        height = SNAPSHOT_HEIGHT
 
         out_dir = Path(
             os.environ.get(

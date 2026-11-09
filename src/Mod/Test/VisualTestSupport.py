@@ -31,6 +31,9 @@ except Exception as exc:  # pragma: no cover
     coin = None
     _GUI_IMPORT_ERROR = _GUI_IMPORT_ERROR or exc
 
+SNAPSHOT_WIDTH = 300
+SNAPSHOT_HEIGHT = 300
+
 _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
