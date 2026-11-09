@@ -20,7 +20,7 @@ import zipfile
 import FreeCAD as App
 import FreeCADGui as Gui
 
-from VisualTestSupport import SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT
+from VisualTestSupport import SNAPSHOT_WIDTH, SNAPSHOT_HEIGHT, compare_images, write_baseline
 
 _STYLES = ("as-is", "hidden-line", "wireframe")
 _STEPS = (
@@ -51,9 +51,89 @@ def _changed_pixels(expected, actual, tolerance=8):
     left = bytes(expected.constBits())
     right = bytes(actual.constBits())
     return sum(
-        max(abs(left[i + c] - right[i + c]) for c in range(3)) > tolerance
+        (left[i + 3] != 0 or right[i + 3] != 0)
+        and max(abs(left[i + c] - right[i + c]) for c in range(3)) > tolerance
         for i in range(0, len(left), 4)
     )
+
+
+class ImageComparisonTests(unittest.TestCase):
+    def test_lossless_webp(self):
+        from PySide6.QtGui import QColor, QImage
+
+        with tempfile.TemporaryDirectory() as directory:
+            actual_path = Path(directory) / "actual.png"
+            baseline_path = Path(directory) / "baseline.webp"
+            image = QImage(3, 1, QImage.Format_ARGB32)
+            for index, color in enumerate(((17, 83, 241, 255), (219, 51, 11, 128), (9, 7, 5, 0))):
+                image.setPixelColor(index, 0, QColor(*color))
+            self.assertTrue(image.save(str(actual_path)))
+            write_baseline(actual_path, baseline_path)
+            passed, message = compare_images(
+                baseline_path,
+                actual_path,
+                Path(directory) / "diff.png",
+                tolerance=0,
+                ignore_alpha=False,
+                max_mismatched_pixels=0,
+            )
+            self.assertTrue(passed, message)
+
+    def test_small_webp(self):
+        from PySide6.QtGui import QImage
+
+        with tempfile.TemporaryDirectory() as directory:
+            expected_path = Path(directory) / "expected.png"
+            actual_path = Path(directory) / "actual.webp"
+            actual_path.write_bytes(bytes.fromhex(
+                "524946461a000000574542505650384c0d0000002fffc03f10071011118888fe0700"
+            ))
+            expected = QImage(256, 256, QImage.Format_ARGB32)
+            expected.fill(0)
+            self.assertTrue(expected.save(str(expected_path)))
+            passed, message = compare_images(
+                expected_path,
+                actual_path,
+                Path(directory) / "diff.png",
+                tolerance=0,
+                ignore_alpha=False,
+                max_mismatched_pixels=0,
+            )
+            self.assertTrue(passed, message)
+
+    def test_transparent_rgb(self):
+        from PySide6.QtGui import QColor, QImage
+
+        cases = (
+            ("transparent", (255, 0, 0, 0), (0, 255, 0, 0), 0, 0),
+            ("partly-transparent", (255, 0, 0, 128), (0, 255, 0, 128), 1, 1),
+            ("opaque", (255, 0, 0, 255), (0, 255, 0, 255), 1, 1),
+            ("alpha", (12, 34, 56, 0), (12, 34, 56, 255), 0, 1),
+            ("revealed", (255, 0, 0, 0), (0, 255, 0, 255), 1, 1),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            expected_path = Path(directory) / "expected.png"
+            actual_path = Path(directory) / "actual.png"
+            for name, before, after, rgb_changes, rgba_changes in cases:
+                with self.subTest(case=name):
+                    expected = QImage(1, 1, QImage.Format_ARGB32)
+                    actual = QImage(1, 1, QImage.Format_ARGB32)
+                    expected.fill(QColor(*before))
+                    actual.fill(QColor(*after))
+                    self.assertTrue(expected.save(str(expected_path)))
+                    self.assertTrue(actual.save(str(actual_path)))
+                    self.assertEqual(_changed_pixels(expected, actual, tolerance=0), rgb_changes)
+
+                    for ignore_alpha, changes in ((False, rgba_changes), (True, rgb_changes)):
+                        passed, message = compare_images(
+                            expected_path,
+                            actual_path,
+                            Path(directory) / "diff.png",
+                            tolerance=0,
+                            ignore_alpha=ignore_alpha,
+                            max_mismatched_pixels=0,
+                        )
+                        self.assertEqual(passed, changes == 0, message)
 
 
 class View3DRenderSnapshots(unittest.TestCase):
@@ -96,7 +176,7 @@ class View3DRenderSnapshots(unittest.TestCase):
         cls.mode = os.environ.get("FC_VISUAL_MODE", "compare")
         if cls.mode not in ("record", "compare", "update"):
             raise ValueError(f"Unknown FC_VISUAL_MODE: {cls.mode}")
-        if cls.mode == "compare" and not any(cls.baselines.glob("*.png")):
+        if cls.mode == "compare" and not any(cls.baselines.glob("*.webp")):
             raise unittest.SkipTest("No approved 3D render baselines; use the baseline manager")
         cls.snapshots = {}
         cls.checks = []
@@ -222,12 +302,11 @@ class View3DRenderSnapshots(unittest.TestCase):
 
         if self.mode in ("record", "update"):
             if os.environ.get("FC_VISUAL_UPDATE_BASELINE") == "1":
-                self.baselines.mkdir(parents=True, exist_ok=True)
-                (self.baselines / actual.name).write_bytes(actual.read_bytes())
+                self.visual.write_baseline(actual, self.baselines / f"{name}.webp")
             return image
 
         with self.subTest(snapshot=name):
-            baseline = self.baselines / f"{name}.png"
+            baseline = self.baselines / f"{name}.webp"
             result["passed"] = baseline.is_file()
             self.assertTrue(result["passed"], f"Missing baseline: {baseline}")
             expected = self.output / "expected" / baseline.name
@@ -236,7 +315,7 @@ class View3DRenderSnapshots(unittest.TestCase):
             passed, message = self.visual.compare_images(
                 expected,
                 actual,
-                self.output / "diff" / baseline.name,
+                self.output / "diff" / actual.name,
                 tolerance=8,
                 ignore_alpha=False,
                 max_mismatched_pixels=int(image.width() * image.height() * 0.002),

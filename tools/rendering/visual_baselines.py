@@ -107,7 +107,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     )
     options.add_argument(
         "--baseline-dir", metavar="DIR",
-        help="Read/write PNG baselines (default: tests/visual/baselines/<suite>)",
+        help="Read/write WebP baselines (default: tests/visual/baselines/<suite>)",
     )
     options.add_argument(
         "--out-dir", metavar="DIR",
@@ -152,6 +152,8 @@ def _gallery(output, report):
         cells = []
         for directory in ("expected", "actual", "diff"):
             path = output / directory / f"{name}.png"
+            if not path.is_file():
+                path = path.with_suffix(".webp")
             if path.is_file():
                 relative = html.escape(path.relative_to(output).as_posix(), quote=True)
                 cells.append(f'<td><a href="{relative}"><img src="{relative}"></a></td>')
@@ -284,7 +286,7 @@ def _run(args, cmd, env):
         if args.mode == "update":
             baseline_dir = Path(args.baseline_dir)
             baseline_dir.mkdir(parents=True, exist_ok=True)
-            for path in Path(candidates).glob("*.png"):
+            for path in Path(candidates).glob("*.webp"):
                 shutil.copyfile(path, baseline_dir / path.name)
     return 0
 

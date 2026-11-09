@@ -319,6 +319,23 @@ class ViewerSnapshotHarness:
             FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.previous_document.Name)
 
 
+def _load_image(path: Path):
+    from PySide.QtGui import QImage  # type: ignore
+
+    if path.suffix.lower() == ".webp" and path.is_file() and path.stat().st_size < 40:
+        # QTBUG-151937: Qt rejects valid WebP files shorter than 40 bytes.
+        return QImage.fromData(path.read_bytes().ljust(40, b"\0"), "WEBP")
+
+    return QImage(str(path))
+
+
+def write_baseline(actual_path: Path, baseline_path: Path):
+    baseline_path.parent.mkdir(parents=True, exist_ok=True)
+    # Qt selects lossless WebP at quality 100.
+    if not _load_image(actual_path).save(str(baseline_path), "WEBP", 100):
+        raise RuntimeError(f"cannot write WebP baseline: {baseline_path}")
+
+
 def compare_images(
     expected_path: Path,
     actual_path: Path,
@@ -330,8 +347,8 @@ def compare_images(
 ) -> tuple[bool, str]:
     from PySide.QtGui import QColor, QImage  # type: ignore
 
-    expected = QImage(str(expected_path))
-    actual = QImage(str(actual_path))
+    expected = _load_image(expected_path)
+    actual = _load_image(actual_path)
 
     if expected.isNull():
         return False, f"baseline is not a readable image: {expected_path}"
@@ -372,6 +389,11 @@ def compare_images(
             ag = (ap >> 8) & 0xFF
             ab = ap & 0xFF
             aa = (ap >> 24) & 0xFF
+
+            # Lossless codecs may change RGB under fully transparent pixels.
+            if ea == 0 and aa == 0:
+                diff.setPixel(x, y, 0)
+                continue
 
             dr = abs(er - ar)
             dg = abs(eg - ag)

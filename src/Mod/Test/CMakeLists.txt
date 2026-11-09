@@ -89,7 +89,7 @@ if(EXISTS "${_coin_node_snapshot_baseline_dir}")
         GLOB
         TestCoinNodeSnapshotBaselines
         CONFIGURE_DEPENDS
-        "${_coin_node_snapshot_baseline_dir}/*.png"
+        "${_coin_node_snapshot_baseline_dir}/*.webp"
     )
     if(TestCoinNodeSnapshotBaselines)
         set(_coin_node_snapshot_baseline_outdir "${CMAKE_BINARY_DIR}/tests/visual/baselines/VisualCoinNodeSnapshots")

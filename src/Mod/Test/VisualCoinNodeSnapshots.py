@@ -67,6 +67,7 @@ from VisualTestSupport import (
     ViewerSnapshotHarness as _ViewerSnapshotHarness,
     compare_images as _compare_images,
     require_gui as _require_gui,
+    write_baseline,
 )
 
 _BASELINE_REL = Path("tests") / "visual" / "baselines" / "VisualCoinNodeSnapshots"
@@ -156,13 +157,13 @@ def _find_repo_baseline_dir() -> Path | None:
     repo_root = _repo_root()
     if repo_root is not None:
         candidate = repo_root / _BASELINE_REL
-        if candidate.is_dir() and any(candidate.glob("*.png")):
+        if candidate.is_dir() and any(candidate.glob("*.webp")):
             return candidate
 
     here = Path(__file__).resolve()
     for parent in here.parents:
         candidate = parent / _BASELINE_REL
-        if candidate.is_dir() and any(candidate.glob("*.png")):
+        if candidate.is_dir() and any(candidate.glob("*.webp")):
             return candidate
     return None
 
@@ -1239,7 +1240,7 @@ def _make_top_view_scene(node, *, center: tuple[float, float, float], camera_hei
 
 
 class CoinNodeSnapshotTestCase(unittest.TestCase):
-    """Render Coin nodes through the live viewer and compare against PNG baselines."""
+    """Render Coin nodes through the live viewer and compare against WebP baselines."""
 
     def test_so_reg_point_unpickable_regression(self):
         _require_gui()
@@ -1789,10 +1790,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                             "delayed So3DAnnotation geometry should remain visible above the plate",
                         )
                     did_render = True
-                    baseline_path = baseline_dir / f"{type_name}.png"
+                    baseline_path = baseline_dir / f"{type_name}.webp"
 
                     if update_baseline:
-                        baseline_path.write_bytes(actual_path.read_bytes())
+                        write_baseline(actual_path, baseline_path)
                         continue
 
                     if not baseline_path.exists():
@@ -1803,7 +1804,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                             "(run with FC_VISUAL_UPDATE_BASELINE=1)"
                         )
 
-                    expected_path = expected_dir / f"{type_name}.png"
+                    expected_path = expected_dir / baseline_path.name
                     expected_dir.mkdir(parents=True, exist_ok=True)
                     expected_path.write_bytes(baseline_path.read_bytes())
 
