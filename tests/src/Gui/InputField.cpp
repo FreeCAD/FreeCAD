@@ -30,7 +30,11 @@ public:
         , document {App::GetApplication().newDocument(documentName.c_str(), "testUser")}
         , object {document->addObject("App::VarSet", "VarSet")}
         , property {object->addDynamicProperty("App::PropertyFloat", "Value", "Test")}
-    {}
+        , propertyToRead {object->addDynamicProperty("App::PropertyFloat", "ValueToRead", "Test")}
+    {
+        auto* p = freecad_cast<App::PropertyFloat*>(propertyToRead);
+        p->setValue(123.0);
+    }
 
     ~ScopedExpressionOwner()
     {
@@ -47,6 +51,7 @@ private:
     App::Document* document;
     App::DocumentObject* object;
     App::Property* property;
+    App::Property* propertyToRead;
 };
 
 class TestInputField: public Gui::InputField
@@ -345,10 +350,16 @@ private Q_SLOTS:
         TestInputField input;
         input.bind(owner.getPath());
         input.setUnit(Base::Unit::Length);
-        input.setText(QStringLiteral("2 mm"));
+        // Read a variable to make sure that the input_field#VarSet.Value
+        // property has an expression associated with it.  Inputs to
+        // InputFields that can make use of the Quantity grammar will use that
+        // and will not create an expression.  Inputs that require the
+        // Expression parser and refer to other variables will be associated
+        // with the property as an expression.
+        input.setText(QStringLiteral("input_field#VarSet.ValueToRead + 2 mm"));
 
         QVERIFY(input.hasValidInput());
-        QCOMPARE(input.rawValue(), 2.0);
+        QCOMPARE(input.rawValue(), 125.0);
         const auto previousExpression = QString::fromStdString(input.expressionString());
         QVERIFY(!previousExpression.isEmpty());
 
@@ -357,7 +368,7 @@ private Q_SLOTS:
         input.setText(QStringLiteral("str(1)"));
 
         QVERIFY(!input.hasValidInput());
-        QCOMPARE(input.rawValue(), 2.0);
+        QCOMPARE(input.rawValue(), 125.0);
         QCOMPARE(QString::fromStdString(input.expressionString()), previousExpression);
     }
 
