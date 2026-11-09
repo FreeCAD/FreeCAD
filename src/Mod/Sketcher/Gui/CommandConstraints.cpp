@@ -7164,16 +7164,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
                 std::vector<int> nGeoId3;
                 std::vector<PointPos> nPosId3;
-                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true);
-
-                if (std::any_of(nPosId3.begin(), nPosId3.end(), [](PointPos pos) { return pos == PointPos::mid; })) {
-                    Gui::TranslatedUserWarning(
-                        Obj,
-                        QObject::tr("Wrong selection"),
-                        QObject::tr("Edges are joined by midpoint.")
-                    );
-                    return;
-                }
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
 
                 if (found > 1) {  // too many intersection points
                     Gui::TranslatedUserWarning(
@@ -7184,6 +7175,16 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     return;
                 }
                 if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
                     Gui::TranslatedUserWarning(
                         Obj,
                         QObject::tr("Wrong selection"),
@@ -7393,16 +7394,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
                 std::vector<int> nGeoId3;
                 std::vector<PointPos> nPosId3;
-                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true);
-
-                if (std::any_of(nPosId3.begin(), nPosId3.end(), [](PointPos pos) { return pos == PointPos::mid; })) {
-                    Gui::TranslatedUserWarning(
-                        Obj,
-                        QObject::tr("Wrong selection"),
-                        QObject::tr("Edges are joined by midpoint.")
-                    );
-                    return;
-                }
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, true);
 
                 if (found > 1) {  // too many intersection points
                     Gui::TranslatedUserWarning(
@@ -7413,6 +7405,16 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                     return;
                 }
                 if (found == 0) {  // no intersection points
+                    // check if they are joined by midpoint
+                    if (Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3, true, true, false) > 0) {
+                        Gui::TranslatedUserWarning(
+                            Obj,
+                            QObject::tr("Wrong selection"),
+                            QObject::tr("Edges are joined by midpoint.")
+                        );
+                        return;
+                    }
+
                     Gui::TranslatedUserWarning(
                         Obj,
                         QObject::tr("Wrong selection"),
