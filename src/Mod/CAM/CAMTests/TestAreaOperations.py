@@ -527,6 +527,26 @@ class TestAreaOperations(unittest.TestCase):
         expected = x * (2 * r) + math.pi * r**2
         self.assertAreaNear(a, expected)
 
+    def test_thicken_point(self):
+        """Test thickening a curve of one point into a circle."""
+        r = 2
+        a = make_area(make_curve([(5, 5)]))
+
+        a.Thicken(r)
+
+        self.assertEqual(len(a.getCurves()), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
+
+    def test_thicken_zero_length(self):
+        """Test thickening a curve of a zero length segment into a circle."""
+        r = 2
+        a = make_area(make_curve([(5, 5), (5, 5)]))
+
+        a.Thicken(r)
+
+        self.assertEqual(len(a.getCurves()), 1, format_area(a, "result"))
+        self.assertAreaNear(a, math.pi * r**2)
+
     def test_reorder(self):
         """Test Reorder doesn't break the area."""
         a = self.create_square(0, 0, 10)
