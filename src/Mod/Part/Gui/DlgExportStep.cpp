@@ -169,8 +169,8 @@ void DlgExportHeaderStep::saveSettings()
     Part::STEP::ImportExportSettings settings;
 
     // header info
-    settings.setCompany(ui->lineEditCompany->text().toLatin1());
-    settings.setAuthor(ui->lineEditAuthor->text().toLatin1());
+    settings.setCompany(ui->lineEditCompany->text().toUtf8());
+    settings.setAuthor(ui->lineEditAuthor->text().toUtf8());
 }
 
 void DlgExportHeaderStep::loadSettings()

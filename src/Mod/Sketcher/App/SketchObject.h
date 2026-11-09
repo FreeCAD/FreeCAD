@@ -583,6 +583,17 @@ public:
      succeed.
      */
     bool convertToNURBS(int GeoId);
+    /**
+     * @brief Whether convertToNURBS() leaves @p GeoId unchanged.
+     *
+     * Replacing an existing spline would discard its constraints and detach its internal
+     * geometry, and converting an axis or pole would detach it from its parent. External geometry
+     * is never exempt, since its conversion creates a new internal copy.
+     *
+     * @param[in] GeoId The geometry to check.
+     * @return @c true for internal splines and internal-aligned geometry.
+     */
+    bool isExemptFromNURBSConversion(int GeoId) const;
 
     /*!
      \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
@@ -1028,6 +1039,9 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+    /// center-coincident arc of the same conic (left by a trim) that can take over the internal
+    /// alignment of GeoId, or GeoUndef
+    int findInternalAlignmentSibling(int GeoId) const;
 
     void onGeometryChanged();
     void onConstraintsChanged();

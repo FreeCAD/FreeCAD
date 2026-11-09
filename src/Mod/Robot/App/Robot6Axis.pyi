@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any
 
 from Base.Metadata import export
@@ -24,7 +22,6 @@ class Robot6Axis(Persistence):
     def check(self) -> Any:
         """Checks the shape and report errors in the shape structure.
         This is a more detailed check as done in isValid()."""
-        ...
     Axis1: float
     """Pose of Axis 1 in degrees"""
 

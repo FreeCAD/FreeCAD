@@ -6,8 +6,6 @@ This source-adjacent stub file carries the geometric helper that is exposed by
 the low-level PartDesign extension module.
 """
 
-from __future__ import annotations
-
 from typing import TypeAlias
 
 from FreeCAD.Base import Vector
@@ -24,4 +22,3 @@ def makeFilletArc(
     /,
 ) -> _FilletArcConstruction:
     """Return the tangent points and arc center for one fillet-arc construction."""
-    ...

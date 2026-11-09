@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
@@ -82,6 +83,17 @@ bool BoxSelection::isAutoDelete() const
     return autodelete;
 }
 
+static bool isShownInView(App::DocumentObject* obj)
+{
+    for (; obj; obj = App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp || !vp->isVisible()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void BoxSelection::selectionCallback(void* ud, SoEventCallback* cb)
 {
     Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
@@ -114,8 +126,7 @@ void BoxSelection::selectionCallback(void* ud, SoEventCallback* cb)
 
         std::vector<Part::Feature*> geom = doc->getObjectsOfType<Part::Feature>();
         for (auto it : geom) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(it);
-            if (!vp->isVisible()) {
+            if (!isShownInView(it)) {
                 continue;
             }
             const TopoDS_Shape& shape = it->Shape.getValue();

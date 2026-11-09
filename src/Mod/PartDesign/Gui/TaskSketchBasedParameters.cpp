@@ -220,7 +220,7 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
         return {};
     }
 
-    App::DocumentObject* obj = doc->getObject(parts[0].toLatin1());
+    App::DocumentObject* obj = doc->getObject(parts[0].toUtf8());
     if (!obj) {
         return {};
     }

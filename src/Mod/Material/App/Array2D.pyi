@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod
@@ -42,17 +40,14 @@ class Array2D(BaseClass):
         """
         Get the row given the first column value
         """
-        ...
 
     @constmethod
     def getValue(self, row: int, column: int, /) -> Quantity:
         """
         Get the value at the given row and column
         """
-        ...
 
     def setValue(self, row: int, column: int, value: str, /) -> None:
         """
         Set the value at the given row and column
         """
-        ...

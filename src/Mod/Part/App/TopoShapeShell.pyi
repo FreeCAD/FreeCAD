@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from typing import Final, Dict
@@ -77,7 +75,6 @@ class TopoShapeShell(TopoShape):
         Add a face to the shell.
         add(face)
         """
-        ...
 
     @constmethod
     def getFreeEdges(self) -> object:
@@ -85,7 +82,6 @@ class TopoShapeShell(TopoShape):
         Get free edges as compound.
         getFreeEdges() -> compound
         """
-        ...
 
     @constmethod
     def getBadEdges(self) -> object:
@@ -93,7 +89,6 @@ class TopoShapeShell(TopoShape):
         Get bad edges as compound.
         getBadEdges() -> compound
         """
-        ...
 
     @constmethod
     def makeHalfSpace(self, point: object, /) -> object:
@@ -101,4 +96,3 @@ class TopoShapeShell(TopoShape):
         Make a half-space solid by this shell and a reference point.
         makeHalfSpace(point) -> Solid
         """
-        ...

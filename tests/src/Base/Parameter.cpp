@@ -723,6 +723,8 @@ TEST_F(ParameterTest, TestNoLockFileLeftBehind)  // NOLINT
 #if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
 TEST_F(ParameterTest, TestLoadDocumentFromUnwritableDirectory)
 {
+    const auto cfg = getCreateConfig();
+
     if (geteuid() == 0) {
         GTEST_SKIP() << "Directory permissions do not restrict root.";
     }
@@ -732,7 +734,6 @@ TEST_F(ParameterTest, TestLoadDocumentFromUnwritableDirectory)
     fs::create_directories(directory);
     const fs::path document = directory / "prefs.cfg";
 
-    const auto cfg = getCreateConfig();
     cfg->GetGroup("Group")->SetInt("Int", 7);
     cfg->SaveDocument(Base::FileInfo::pathToString(document).c_str());
     fs::permissions(directory, fs::perms::owner_read | fs::perms::owner_exec);

@@ -740,6 +740,9 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
     std::set<App::DocumentObject*> objs;
 
     for (auto& sel : _SelList) {
+        if (pcDoc && pcDoc != sel.pDoc) {
+            continue;
+        }
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
             auto ret = objs.insert(pObject);
             if (ret.second) {
@@ -976,9 +979,9 @@ int SelectionSingleton::setPreselect(
             }
             msg.append(QStringLiteral(" %1.%2.%3 ")
                            .arg(
-                               QString::fromLatin1(pDocName),
-                               QString::fromLatin1(pObjectName),
-                               QString::fromLatin1(pSubName)
+                               QString::fromUtf8(pDocName),
+                               QString::fromUtf8(pObjectName),
+                               QString::fromUtf8(pSubName)
                            ));
 
             if (getMainWindow()) {

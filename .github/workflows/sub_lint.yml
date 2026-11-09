@@ -105,7 +105,7 @@ jobs:
 
   Lint:
     if: inputs.changedFiles != ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       logdir: /tmp/logs/
       fixesdir: /tmp/fixes/

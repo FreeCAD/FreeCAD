@@ -204,7 +204,7 @@ jobs:
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: '10.0.103'
 
@@ -306,8 +306,8 @@ jobs:
             runner: windows-11-arm
             cmakeArchitecture: ARM64
             makeInstaller: "false"
-            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.5/LibPack-26.3.0-v3.5.5-ARM64-Release.7z
-            libpackName: LibPack-26.3.0-v3.5.5-ARM64-Release
+            libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.6/LibPack-26.3.0-v3.5.6-ARM64-Release.7z
+            libpackName: LibPack-26.3.0-v3.5.6-ARM64-Release
     uses: ./.github/workflows/sub_releaseWindowsLibpack.yml
     with:
       build_tag: ${{ needs.upload_src.outputs.build_tag }}

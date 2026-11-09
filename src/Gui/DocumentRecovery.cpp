@@ -272,10 +272,10 @@ void DocumentRecovery::accept()
                 ++index;
             }
             catch (const std::exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (const Base::Exception& e) {
-                errorInfo = QString::fromLatin1(e.what());
+                errorInfo = QString::fromUtf8(e.what());
             }
             catch (...) {
                 errorInfo = tr("Unknown problem occurred");

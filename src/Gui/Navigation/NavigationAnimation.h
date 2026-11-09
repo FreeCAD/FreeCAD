@@ -70,8 +70,7 @@ public:
     );
 
 private:
-    float angularVelocity;   // [rad/ms]
-    SbVec3f linearVelocity;  // [/ms]
+    float targetAngle = 0.0F;  // [rad]
 
     SbRotation targetOrientation;
     SbVec3f targetTranslation;

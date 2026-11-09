@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Part.BodyBase import BodyBase
 from typing import Final
@@ -33,4 +31,3 @@ class Body(BodyBase):
 
         @note the method doesn't modify the Tip unlike addObject()
         """
-        ...

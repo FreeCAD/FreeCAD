@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Final
 
 from Base.Metadata import export
@@ -32,7 +30,6 @@ class MeshPoint(PyObjectBase):
         free and is more or less a simple vector/point.
         After calling unbound() no topological operation will
         work!"""
-        ...
     Index: Final[int]
     """The index of this point in the MeshObject"""
 

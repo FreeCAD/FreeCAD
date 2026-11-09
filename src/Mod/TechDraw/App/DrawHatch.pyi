@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
@@ -23,4 +21,3 @@ class DrawHatch(DocumentObject):
         translateLabel(translationContext, objectBaseName, objectUniqueName).
         No return value.  Replace the current label with a translated version where possible.
         """
-        ...

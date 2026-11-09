@@ -258,7 +258,7 @@ void Mirroring::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::string subName(msg.pSubName);
             std::stringstream refStr;
             refStr << objName << " : [" << subName << "]";
-            ui->referenceLineEdit->setText(QLatin1String(refStr.str().c_str()));
+            ui->referenceLineEdit->setText(QString::fromStdString(refStr.str()));
             ui->comboBox->setCurrentIndex(3);
         }
     }
@@ -275,7 +275,7 @@ void Mirroring::findShapes()
         return;
     }
 
-    this->document = QString::fromLatin1(activeDoc->getName());
+    this->document = QString::fromUtf8(activeDoc->getName());
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
@@ -285,7 +285,7 @@ void Mirroring::findShapes()
         );
         if (!shape.isNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromUtf8(obj->getNameInDocument());
 
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -314,9 +314,7 @@ bool Mirroring::accept()
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument(
-        (const char*)this->document.toLatin1()
-    );
+    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toUtf8());
     if (!activeDoc) {
         QMessageBox::critical(this, windowTitle(), tr("No such document '%1'.").arg(this->document));
         return false;
