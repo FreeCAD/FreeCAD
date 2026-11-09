@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import constmethod
 from BaseClass import BaseClass
 from typing import Final
@@ -31,7 +29,6 @@ class Persistence(BaseClass):
         Compression : int
             Set the data compression level in the range [0,9]. Set to 0 for no compression.
         """
-        ...
 
     def restoreContent(self, obj: object, /) -> None:
         # TODO: Starting with Python 3.12, collections.abc.Buffer can be used for type hinting
@@ -42,4 +39,3 @@ class Persistence(BaseClass):
         obj : buffer
             Object with buffer protocol support.
         """
-        ...

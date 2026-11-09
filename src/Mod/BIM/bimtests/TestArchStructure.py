@@ -26,6 +26,16 @@ import FreeCAD as App
 from FreeCAD import Vector
 import Arch
 import Part
+import ArchPrecast
+import WorkingPlane
+from ArchStructure import (
+    StructureMode,
+    ShapeKind,
+    placement_rotation,
+    _cross_section_axes,
+    _PLACEMENT_CONFIG,
+)
+from draftguitools.gui_insertion_point import POINT_CANDIDATES, insertion_point_offset
 from bimtests import TestArchBase
 
 
@@ -355,3 +365,214 @@ class TestArchStructure(TestArchBase.TestArchBase):
         finally:
             if test_doc.Name in App.listDocuments():
                 App.closeDocument(test_doc.Name)
+
+    def _default_wp(self):
+        wp = WorkingPlane.get_working_plane()
+        wp.align_to_rotation(App.Rotation())
+        return wp
+
+    def test_placement_config_covers_all_combinations(self):
+        """_PLACEMENT_CONFIG has an entry for every (mode, shape_kind) pair."""
+        self.printTestMessage("_PLACEMENT_CONFIG covers all combinations")
+        for mode in StructureMode:
+            for kind in ShapeKind:
+                self.assertIn(
+                    (mode, kind),
+                    _PLACEMENT_CONFIG,
+                    f"Missing _PLACEMENT_CONFIG entry for ({mode}, {kind})",
+                )
+
+    def test_placement_rotation_column_is_wp_rotation(self):
+        """Column rotation should match the Working Plane rotation."""
+        self.printTestMessage("placement_rotation column == WP rotation")
+        wp = self._default_wp()
+        rotation = placement_rotation(StructureMode.COLUMN, wp)
+        self.assertTrue(rotation.isSame(wp.get_placement().Rotation, 1e-6))
+
+    def test_placement_rotation_beam_matches_placeAlongEdge(self):
+        """Beam rotation should match placeAlongEdge, for both extrusion axes."""
+        self.printTestMessage("placement_rotation beam == placeAlongEdge")
+        wp = self._default_wp()
+        start = Vector(0, 0, 0)
+        end = Vector(1000, 0, 300)
+        for horizontal in (True, False):
+            rotation = placement_rotation(StructureMode.BEAM, wp, start, end, horizontal)
+            expected = Arch.placeAlongEdge(start, end, horizontal=horizontal).Rotation
+            self.assertTrue(rotation.isSame(expected, 1e-6))
+
+    def test_cross_section_axes_horizontal_beam_is_yz(self):
+        """A horizontal beam's cross-section runs along local Y and Z."""
+        self.printTestMessage("_cross_section_axes horizontal beam is YZ")
+        width_axis, height_axis = _cross_section_axes(StructureMode.BEAM, True)
+        self.assertTrue(width_axis.isEqual(Vector(0, 1, 0), 1e-6))
+        self.assertTrue(height_axis.isEqual(Vector(0, 0, 1), 1e-6))
+
+    def test_cross_section_axes_profile_beam_is_reversed_xy(self):
+        """A profile beam's cross-section runs along reversed local X and Y."""
+        self.printTestMessage("_cross_section_axes profile beam is reversed XY")
+        width_axis, height_axis = _cross_section_axes(StructureMode.BEAM, False)
+        self.assertTrue(width_axis.isEqual(Vector(-1, 0, 0), 1e-6))
+        self.assertTrue(height_axis.isEqual(Vector(0, -1, 0), 1e-6))
+
+    def test_cross_section_axes_default_is_xy(self):
+        """Columns use the default local X, Y cross-section."""
+        self.printTestMessage("_cross_section_axes default is XY")
+        for mode, horizontal in (
+            (StructureMode.COLUMN, False),
+            (StructureMode.COLUMN, True),
+        ):
+            width_axis, height_axis = _cross_section_axes(mode, horizontal)
+            self.assertTrue(width_axis.isEqual(Vector(1, 0, 0), 1e-6))
+            self.assertTrue(height_axis.isEqual(Vector(0, 1, 0), 1e-6))
+
+    def _anchor_offset(self, mode, kind, width, height, length, start=None, end=None, index=0):
+        """Resolve _PLACEMENT_CONFIG and compute the anchor for candidate
+        *index* (the center by default), the same way getPoint/update do."""
+        horizontal, shape_origin_fn = _PLACEMENT_CONFIG[(mode, kind)]
+        shape_origin = shape_origin_fn(width, height, length) if shape_origin_fn else None
+        wp = self._default_wp()
+        if mode == StructureMode.BEAM:
+            rotation = placement_rotation(mode, wp, start, end, horizontal)
+            cross_width, cross_height = width, height
+        else:
+            rotation = placement_rotation(mode, wp)
+            cross_width, cross_height = length, width
+        width_axis, height_axis = _cross_section_axes(mode, horizontal)
+        offset = insertion_point_offset(
+            cross_width,
+            cross_height,
+            index,
+            rotation,
+            width_axis=width_axis,
+            height_axis=height_axis,
+            shape_origin=shape_origin,
+        )
+        return offset, horizontal
+
+    def test_insertion_anchor_plain_column_centers_footprint_at_base(self):
+        """A plain column's index-0 anchor lands the click at the footprint
+        center, at the base (bottom) height."""
+        self.printTestMessage("insertion anchor: plain column centers footprint at base")
+        length, width, height = 200.0, 300.0, 3000.0
+        click = Vector(1000, 2000, 500)
+        offset, _ = self._anchor_offset(
+            StructureMode.COLUMN, ShapeKind.PLAIN, width, height, length
+        )
+        base = click - offset
+        column = Arch.makeStructure(length=length, width=width, height=height)
+        column.Placement.Base = base
+        self.document.recompute()
+        bb = column.Shape.BoundBox
+        self.assertAlmostEqual((bb.XMin + bb.XMax) / 2, click.x, places=3)
+        self.assertAlmostEqual((bb.YMin + bb.YMax) / 2, click.y, places=3)
+        self.assertAlmostEqual(bb.ZMin, click.z, places=3)
+
+    def test_insertion_anchor_precast_column_centers_footprint_at_base(self):
+        """A precast column's index-0 anchor lands the click at the footprint
+        center, at the base (bottom) height, despite its lower-left-corner
+        native geometry."""
+        self.printTestMessage("insertion anchor: precast column centers footprint at base")
+        length, width, height = 200.0, 300.0, 3000.0
+        click = Vector(1000, 2000, 500)
+        offset, _ = self._anchor_offset(
+            StructureMode.COLUMN, ShapeKind.PRECAST, width, height, length
+        )
+        base = click - offset
+        column = ArchPrecast.makePrecast(
+            precasttype="Pillar",
+            length=length,
+            width=width,
+            height=height,
+            chamfer=0,
+            dents=[],
+            groovenumber=0,
+            groovedepth=0,
+            grooveheight=0,
+            groovespacing=0,
+        )
+        column.Placement.Base = base
+        self.document.recompute()
+        bb = column.Shape.BoundBox
+        self.assertAlmostEqual((bb.XMin + bb.XMax) / 2, click.x, places=3)
+        self.assertAlmostEqual((bb.YMin + bb.YMax) / 2, click.y, places=3)
+        self.assertAlmostEqual(bb.ZMin, click.z, places=3)
+
+    def test_insertion_anchor_plain_beam_centers_cross_section(self):
+        """A plain beam's index-0 anchor lands the click at the cross-section
+        center, for the full length of the span."""
+        self.printTestMessage("insertion anchor: plain beam centers cross-section")
+        width, height, length = 200.0, 300.0, 1000.0
+        click = Vector(1000, 2000, 500)
+        start = click
+        end = click + Vector(length, 0, 0)
+        offset, horizontal = self._anchor_offset(
+            StructureMode.BEAM, ShapeKind.PLAIN, width, height, length, start, end
+        )
+        start_shifted = start - offset
+        end_shifted = end - offset
+        beam = Arch.makeStructure(length=length, width=width, height=height)
+        beam.Placement = Arch.placeAlongEdge(start_shifted, end_shifted, horizontal)
+        self.document.recompute()
+        bb = beam.Shape.BoundBox
+        self.assertAlmostEqual((bb.YMin + bb.YMax) / 2, click.y, places=3)
+        self.assertAlmostEqual((bb.ZMin + bb.ZMax) / 2, click.z, places=3)
+
+    def test_insertion_anchor_precast_beam_centers_cross_section(self):
+        """A precast beam's index-0 anchor lands the click at the cross-section
+        center, despite its lower-left-corner native geometry."""
+        self.printTestMessage("insertion anchor: precast beam centers cross-section")
+        width, height, length = 200.0, 300.0, 1000.0
+        click = Vector(1000, 2000, 500)
+        start = click
+        end = click + Vector(length, 0, 0)
+        offset, horizontal = self._anchor_offset(
+            StructureMode.BEAM, ShapeKind.PRECAST, width, height, length, start, end
+        )
+        start_shifted = start - offset
+        end_shifted = end - offset
+        beam = ArchPrecast.makePrecast(
+            precasttype="Beam",
+            length=length,
+            width=width,
+            height=height,
+            chamfer=0,
+            dents=[],
+            dentlength=0,
+            dentheight=0,
+        )
+        beam.Placement = Arch.placeAlongEdge(start_shifted, end_shifted, horizontal)
+        self.document.recompute()
+        bb = beam.Shape.BoundBox
+        self.assertAlmostEqual((bb.YMin + bb.YMax) / 2, click.y, places=3)
+        self.assertAlmostEqual((bb.ZMin + bb.ZMax) / 2, click.z, places=3)
+
+    def test_insertion_anchor_profile_beam_matches_plain_beam(self):
+        """Every candidate places a profile beam exactly where it places a plain
+        beam with the same cross-section, on a tilted span."""
+        self.printTestMessage("insertion anchor: profile beam matches plain beam")
+        width, height = 150.0, 300.0
+        start = Vector(1000, 2000, 500)
+        end = start + Vector(1000, 500, 300)
+        length = (end - start).Length
+        for index in range(len(POINT_CANDIDATES)):
+            boxes = []
+            for kind in (ShapeKind.PLAIN, ShapeKind.PROFILE):
+                offset, horizontal = self._anchor_offset(
+                    StructureMode.BEAM, kind, width, height, length, start, end, index
+                )
+                if kind == ShapeKind.PROFILE:
+                    profile = Arch.makeProfile([0, "REC", "REC150x300", "R", width, height])
+                    beam = Arch.makeStructure(profile, length=length)
+                else:
+                    beam = Arch.makeStructure(length=length, width=width, height=height)
+                beam.Placement = Arch.placeAlongEdge(start - offset, end - offset, horizontal)
+                self.document.recompute()
+                boxes.append(beam.Shape.BoundBox)
+            plain_box, profile_box = boxes
+            for limit in ("XMin", "XMax", "YMin", "YMax", "ZMin", "ZMax"):
+                self.assertAlmostEqual(
+                    getattr(profile_box, limit),
+                    getattr(plain_box, limit),
+                    places=3,
+                    msg=f"Candidate {index}: {limit} differs between profile and plain beam",
+                )

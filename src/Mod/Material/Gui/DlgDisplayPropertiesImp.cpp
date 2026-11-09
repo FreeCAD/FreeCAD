@@ -413,7 +413,7 @@ void DlgDisplayPropertiesImp::onChangeModeActivated(const QString& s)
     for (auto it : Provider) {
         if (auto* prop =
                 dynamic_cast<App::PropertyEnumeration*>(it->getPropertyByName("DisplayMode"))) {
-            prop->setValue(static_cast<const char*>(s.toLatin1()));
+            prop->setValue(static_cast<const char*>(s.toUtf8()));
         }
     }
 }
@@ -513,13 +513,14 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
             std::vector<std::string> value = prop->getEnumVector();
             if (it == views.begin()) {
                 for (const auto& jt : value) {
-                    commonModes << QLatin1String(jt.c_str());
+                    commonModes << QString::fromStdString(jt);
                 }
             }
             else {
                 for (const auto& jt : value) {
-                    if (commonModes.contains(QLatin1String(jt.c_str()))) {
-                        modes << QLatin1String(jt.c_str());
+                    const QString mode = QString::fromStdString(jt);
+                    if (commonModes.contains(mode)) {
+                        modes << mode;
                     }
                 }
 
@@ -537,7 +538,7 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
     for (const auto& view : views) {
         if (auto* prop =
                 dynamic_cast<App::PropertyEnumeration*>(view->getPropertyByName("DisplayMode"))) {
-            QString activeMode = QString::fromLatin1(prop->getValueAsString());
+            QString activeMode = QString::fromUtf8(prop->getValueAsString());
             int index = d->ui.changeMode->findText(activeMode);
             if (index != -1) {
                 d->ui.changeMode->setCurrentIndex(index);

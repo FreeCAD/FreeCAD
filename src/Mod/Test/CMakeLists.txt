@@ -20,6 +20,7 @@ SET(Test_SRCS
     TestLinkSuppression.py
     TestIntPairList.py
     TestGui.py
+    TestGroupVisibilityRestoreGui.py
     TestPySideUic.py
     UnicodeTests.py
     UnitTests.py

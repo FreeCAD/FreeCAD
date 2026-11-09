@@ -658,7 +658,7 @@ void CmdViewTriangulation::activated(int)
                                   "Height=%2.Height)"
             )
                                   .arg(document, object);
-            runCommand(Doc, command.toLatin1());
+            runCommand(Doc, command.toUtf8());
         }
 
         commitCommand();
@@ -669,7 +669,7 @@ void CmdViewTriangulation::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("Reen_ViewTriangulation", "View triangulation failed"),
-            QString::fromLatin1(e.what())
+            QString::fromUtf8(e.what())
         );
     }
 }

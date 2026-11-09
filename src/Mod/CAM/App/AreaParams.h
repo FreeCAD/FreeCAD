@@ -90,15 +90,15 @@
          false,                                                                                    \
          "If true, Area will explode the first shape into disconnected open edges, \n"             \
          "with all curves discretized, so that later operations like 'Difference' \n"              \
-         "behave like wire cutting. Without exploding, 'Difference' in ClipperLib\n"               \
+         "behave like wire cutting. Without exploding, 'Difference' in clipper\n"                  \
          "behave like face cutting."))(                                                            \
         (enum,                                                                                     \
          open_mode,                                                                                \
          OpenMode,                                                                                 \
          0,                                                                                        \
          "Specify how to handle open wires. 'None' means combine without openeration.\n"           \
-         "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"            \
-         "urge to close open wires.",                                                              \
+         "'Edges' means separate to edges before Union. Clipper assumes wires are\n"               \
+         "closed unless otherwise specified.",                                                     \
          (None)(Union)(Edges)))AREA_PARAMS_DEFLECTION AREA_PARAMS_CLIPPER_FILL
 
 #define AREA_PARAMS_FIT_ARCS ((bool, fit_arcs, FitArcs, true, "Enable arc fitting"))
@@ -116,7 +116,7 @@
              clipper_scale, \
              ClipperScale, \
              1e7, \
-             "ClipperLib operate on integers. This is the scale factor to convert\n" \
+             "Clipper operate on integers. This is the scale factor to convert\n" \
              "floating points.", \
              App::PropertyFloat) \
         )

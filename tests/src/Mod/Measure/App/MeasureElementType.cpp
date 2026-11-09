@@ -20,6 +20,7 @@
 #include <Mod/Measure/App/MeasureArea.h>
 #include <Mod/Measure/App/MeasureDistance.h>
 #include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/MeasureClient.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <src/App/InitApplication.h>
 
@@ -29,6 +30,10 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
+        Part::MeasureClient::initialize();
+        for (auto& entry : Part::MeasureClient::reportAreaCB()) {
+            Measure::MeasureArea::addGeometryHandler(entry.m_module, entry.m_callback);
+        }
     }
 
     void SetUp() override

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, forward_declarations, constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final
@@ -41,7 +39,6 @@ class Type(PyObjectBase):
 
         name : str
         """
-        ...
 
     @staticmethod
     def fromKey(key: int, /) -> "Type":
@@ -50,21 +47,18 @@ class Type(PyObjectBase):
 
         key : int
         """
-        ...
 
     @staticmethod
     def getNumTypes() -> int:
         """
         Returns the number of type ids created so far.
         """
-        ...
 
     @staticmethod
     def getBadType() -> "Type":
         """
         Returns an invalid type id.
         """
-        ...
 
     @staticmethod
     def getAllDerivedFrom(type: str | "Type", /) -> List["Type"]:
@@ -73,21 +67,18 @@ class Type(PyObjectBase):
 
         type : str, Base.BaseType
         """
-        ...
 
     @constmethod
     def getParent(self) -> "Type":
         """
         Returns the parent type id.
         """
-        ...
 
     @constmethod
     def isBad(self) -> bool:
         """
         Checks if the type id is invalid.
         """
-        ...
 
     @constmethod
     def isDerivedFrom(self, type: str | "Type", /) -> bool:
@@ -96,20 +87,17 @@ class Type(PyObjectBase):
 
         type : str, Base.BaseType
         """
-        ...
 
     @constmethod
     def getAllDerived(self) -> List[object]:
         """
         Returns all descendants from this type id.
         """
-        ...
 
     def createInstance(self) -> object:
         """
         Creates an instance of this type id.
         """
-        ...
 
     @staticmethod
     def createInstanceByName(name: str, load: bool = False, /) -> object | None:
@@ -120,4 +108,3 @@ class Type(PyObjectBase):
         load : bool
             Load named type id module.
         """
-        ...

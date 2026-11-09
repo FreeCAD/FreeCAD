@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod, class_declarations
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List
@@ -28,7 +26,6 @@ class StringID(BaseClass):
         """
         Check if two StringIDs are the same
         """
-        ...
 
     Value: Final[int] = 0
     """Return the integer value of this ID"""

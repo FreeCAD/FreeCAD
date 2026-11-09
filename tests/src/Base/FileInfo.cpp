@@ -1,3 +1,13 @@
+#ifdef _WIN32
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# include <winsock2.h>
+#endif
+
 #include <gtest/gtest.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
@@ -156,6 +166,54 @@ TEST_F(FileInfoTest, TestCopyFile)
     EXPECT_TRUE(file.copyTo(copy.filePath().c_str()));
     EXPECT_TRUE(copy.deleteFile());
 }
+
+#ifdef _WIN32
+TEST_F(FileInfoTest, TestUnixSocketDoesNotThrow)
+{
+    WSADATA wsaData;
+    ASSERT_EQ(WSAStartup(MAKEWORD(2, 2), &wsaData), 0);
+    SOCKET sock = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sock == INVALID_SOCKET) {
+        WSACleanup();
+        GTEST_SKIP() << "AF_UNIX sockets are not supported on this system";
+    }
+
+    // Same layout as sockaddr_un from afunix.h
+    struct
+    {
+        ADDRESS_FAMILY sun_family;
+        char sun_path[108];
+    } address {};
+    std::filesystem::path socketPath = Base::FileInfo::stringToPath(tmp.filePath() + "/test.sock");
+    socketPath.make_preferred();
+    address.sun_family = AF_UNIX;
+    strncpy_s(address.sun_path, socketPath.string().c_str(), _TRUNCATE);
+    int result = bind(sock, reinterpret_cast<sockaddr*>(&address), sizeof(address));
+    closesocket(sock);
+    WSACleanup();
+    ASSERT_EQ(result, 0) << "Could not create socket file " << socketPath.string();
+
+    Base::FileInfo socketFile(tmp.filePath() + "/test.sock");
+    EXPECT_NO_THROW({
+        EXPECT_TRUE(socketFile.exists());
+        EXPECT_FALSE(socketFile.isFile());
+        EXPECT_FALSE(socketFile.isDir());
+        EXPECT_FALSE(socketFile.isSymlink());
+        EXPECT_FALSE(socketFile.isReadable());
+        EXPECT_FALSE(socketFile.isWritable());
+        EXPECT_EQ(socketFile.size(), 0);
+        EXPECT_TRUE(socketFile.lastModified().isNull());
+    });
+    EXPECT_NO_THROW({
+        for (const auto& entry : tmp.getDirectoryContent()) {
+            (void)entry.isFile();
+        }
+    });
+
+    std::error_code ec;
+    std::filesystem::remove(socketPath, ec);
+}
+#endif
 
 // Tests for pathToString / stringToPath UTF-8 round-trip (PR #28222)
 

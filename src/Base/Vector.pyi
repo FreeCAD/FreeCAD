@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Metadata import export, constmethod, sequence_protocol, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
 from typing import overload, Sequence
@@ -102,7 +100,6 @@ class Vector(PyObjectBase):
         """
         Serialization of Vector objects.
         """
-        ...
 
     @constmethod
     def add(self, vector2: "Vector", /) -> "Vector":
@@ -111,7 +108,6 @@ class Vector(PyObjectBase):
 
         vector2 : Base.Vector
         """
-        ...
 
     @constmethod
     def sub(self, vector2: "Vector", /) -> "Vector":
@@ -120,14 +116,12 @@ class Vector(PyObjectBase):
 
         vector2 : Base.Vector
         """
-        ...
 
     @constmethod
     def negative(self) -> "Vector":
         """
         Returns the negative (opposite) of this vector.
         """
-        ...
 
     def scale(self, x: float, y: float, z: float, /) -> "Vector":
         """
@@ -140,7 +134,6 @@ class Vector(PyObjectBase):
         z : float
             z-component factor scale.
         """
-        ...
 
     def multiply(self, factor: float, /) -> "Vector":
         """
@@ -149,7 +142,6 @@ class Vector(PyObjectBase):
 
         factor : float
         """
-        ...
 
     @constmethod
     def dot(self, vector2: "Vector", /) -> float:
@@ -158,7 +150,6 @@ class Vector(PyObjectBase):
 
         vector2 : Base.Vector
         """
-        ...
 
     @constmethod
     def cross(self, vector2: "Vector", /) -> "Vector":
@@ -167,7 +158,6 @@ class Vector(PyObjectBase):
 
         vector2 : Base.Vector
         """
-        ...
 
     @constmethod
     def isOnLineSegment(self, vector1: "Vector", vector2: "Vector", /) -> bool:
@@ -177,7 +167,6 @@ class Vector(PyObjectBase):
         vector1 : Base.Vector
         vector2 : Base.Vector
         """
-        ...
 
     @constmethod
     def getAngle(self, vector2: "Vector", /) -> float:
@@ -186,13 +175,11 @@ class Vector(PyObjectBase):
 
         vector2 : Base.Vector
         """
-        ...
 
     def normalize(self) -> "Vector":
         """
         Normalizes in-place this vector to the length of 1.0.
         """
-        ...
 
     @constmethod
     def isEqual(self, vector2: "Vector", tol: float, /) -> bool:
@@ -203,7 +190,6 @@ class Vector(PyObjectBase):
         vector2 : Base.Vector
         tol : float
         """
-        ...
 
     @constmethod
     def isParallel(self, vector2: "Vector", tol: float, /) -> bool:
@@ -214,7 +200,6 @@ class Vector(PyObjectBase):
         vector2 : Base.Vector
         tol : float
         """
-        ...
 
     @constmethod
     def isNormal(self, vector2: "Vector", tol: float, /) -> bool:
@@ -225,7 +210,6 @@ class Vector(PyObjectBase):
         vector2 : Base.Vector
         tol : float
         """
-        ...
 
     def projectToLine(self, point: "Vector", dir: "Vector", /) -> "Vector":
         """
@@ -239,7 +223,6 @@ class Vector(PyObjectBase):
         point : Base.Vector
         dir : Base.Vector
         """
-        ...
 
     def projectToPlane(self, base: "Vector", normal: "Vector", /) -> "Vector":
         """
@@ -249,7 +232,6 @@ class Vector(PyObjectBase):
         base : Base.Vector
         normal : Base.Vector
         """
-        ...
 
     @constmethod
     def distanceToPoint(self, point2: "Vector", /) -> float:
@@ -258,7 +240,6 @@ class Vector(PyObjectBase):
 
         point2 : Base.Vector
         """
-        ...
 
     @constmethod
     def distanceToLine(self, base: "Vector", dir: "Vector", /) -> float:
@@ -270,7 +251,6 @@ class Vector(PyObjectBase):
         base : Base.Vector
         dir : Base.Vector
         """
-        ...
 
     @constmethod
     def distanceToLineSegment(self, point1: "Vector", point2: "Vector", /) -> "Vector":
@@ -282,7 +262,6 @@ class Vector(PyObjectBase):
         point1 : Base.Vector
         point2 : Base.Vector
         """
-        ...
 
     @constmethod
     def distanceToPlane(self, base: "Vector", normal: "Vector", /) -> float:
@@ -293,4 +272,3 @@ class Vector(PyObjectBase):
         base : Base.Vector
         normal : Base.Vector
         """
-        ...

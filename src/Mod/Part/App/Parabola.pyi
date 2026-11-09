@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
@@ -45,4 +43,3 @@ class Parabola(Conic):
 
         The three points must lie on a plane parallel to xy plane and must not be collinear
         """
-        ...

@@ -1852,7 +1852,7 @@ void Document::saveAll()
                 getMainWindow(),
                 QObject::tr("Failed to save document")
                     + QStringLiteral(": %1").arg(QString::fromUtf8(doc->getName())),
-                QString::fromLatin1(e.what())
+                QString::fromUtf8(e.what())
             );
             break;
         }

@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
@@ -44,19 +42,16 @@ class LinkBaseExtension(DocumentObjectExtension):
         If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
         it is assumed that the actual property name is the same as 'key'
         """
-        ...
 
     def getLinkExtProperty(self, name: str, /) -> Any:
         """
         return the property value by its predefined name
         """
-        ...
 
     def getLinkExtPropertyName(self, name: str, /) -> str:
         """
         lookup the property name by its predefined name
         """
-        ...
 
     @overload
     def getLinkPropertyInfo(self, /) -> tuple[tuple[str, str, str]]:
@@ -77,7 +72,6 @@ class LinkBaseExtension(DocumentObjectExtension):
             (index): return (name,type,doc) of a specific property
             (name): return (type,doc) of a specific property
         """
-        ...
 
     def setLink(
         self,
@@ -95,7 +89,6 @@ class LinkBaseExtension(DocumentObjectExtension):
 
         subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
         """
-        ...
 
     def cacheChildLabel(self, enable: bool = True, /) -> None:
         """
@@ -104,16 +97,13 @@ class LinkBaseExtension(DocumentObjectExtension):
         The cache is not updated on child label change for performance reason. You must
         call this function on any child label change
         """
-        ...
 
     def flattenSubname(self, subname: str, /) -> str:
         """
         Return a flattened subname in case it references an object inside a linked plain group
         """
-        ...
 
     def expandSubname(self, subname: str, /) -> str:
         """
         Return an expanded subname in case it references an object inside a linked plain group
         """
-        ...

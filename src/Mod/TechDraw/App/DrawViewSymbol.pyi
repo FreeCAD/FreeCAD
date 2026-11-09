@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
@@ -21,4 +19,3 @@ class DrawViewSymbol(DrawView):
 
     def dumpSymbol(self, filename: str, /) -> None:
         """dumpSymbol(fileSpec) - dump the contents of Symbol to a file"""
-        ...

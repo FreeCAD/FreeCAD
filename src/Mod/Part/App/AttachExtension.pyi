@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export
 from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final
@@ -31,7 +29,6 @@ class AttachExtension(DocumentObjectExtension):
         Returns True if attachment calculation was successful, false if object is not attached and Placement wasn't updated,
         and raises an exception if attachment calculation fails.
         """
-        ...
 
     def changeAttacherType(self, typename: str, /) -> bool:
         """
@@ -44,4 +41,3 @@ class AttachExtension(DocumentObjectExtension):
         'Attacher::AttachEngineLine'
         'Attacher::AttachEnginePoint'
         """
-        ...

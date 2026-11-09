@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any
 
 from Base.Metadata import export
@@ -25,8 +23,6 @@ class ViewProviderFemPostFilter(ViewProviderDocumentObject):
 
     def createDisplayTaskWidget(self) -> Any:
         """Returns the display option task panel for a post processing edit task dialog."""
-        ...
 
     def createExtractionTaskWidget(self) -> Any:
         """Returns the data extraction task panel for a post processing edit task dialog."""
-        ...

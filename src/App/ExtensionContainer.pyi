@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from Base.Metadata import export, constmethod
 from PropertyContainer import PropertyContainer
 
@@ -21,11 +19,9 @@ class ExtensionContainer(PropertyContainer):
         """
         Adds an extension to the object. Requires the string identifier for the python extension as argument
         """
-        ...
 
     @constmethod
     def hasExtension(self, identifier: str, derived: bool = True, /) -> bool:
         """
         Returns if this object has the specified extension
         """
-        ...

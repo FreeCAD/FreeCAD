@@ -24,7 +24,7 @@
 # This is a build and test workflow for CI of FreeCAD.
 # This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 24.04
+name: Build Ubuntu
 
 on:
   workflow_call:
@@ -54,7 +54,7 @@ permissions:
 jobs:
 
   Build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
@@ -98,10 +98,9 @@ jobs:
 
       - name: Install FreeCAD Python test dependencies
         run: |
-          sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
-          python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
+          python3 -m pip install ifcopenshell==0.8.5 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
@@ -139,7 +138,7 @@ jobs:
       - name: Install cmake
         uses: jwlawson/actions-setup-cmake@0d6a7d60b009d01c9e7523be22153ff8f19460d3 # v2.2.0
         with:
-          cmake-version: '3.31.6'
+          cmake-version: '4.2.3'
 
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure

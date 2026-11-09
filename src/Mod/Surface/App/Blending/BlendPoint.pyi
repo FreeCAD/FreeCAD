@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from __future__ import annotations
-
 from typing import Any, Final, Sequence
 
 from Base.BaseClass import PyObjectBase
@@ -28,18 +26,15 @@ class BlendPoint(PyObjectBase):
     @constmethod
     def getSize(self) -> Any:
         """Return BlendPoint first derivative length."""
-        ...
 
     def setSize(self, size: float, /) -> None:
         """
         Resizes the BlendPoint vectors by setting the length of the first derivative.
         """
-        ...
 
     def setvectors(self, vectors: Sequence[Vector], /) -> None:
         """
         Set the vectors of BlendPoint.
         """
-        ...
     Vectors: Final[list]
     """The list of vectors of this BlendPoint."""
