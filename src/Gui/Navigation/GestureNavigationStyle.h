@@ -100,6 +100,7 @@ protected:  // state machine classes
 protected:  // members variables
     std::unique_ptr<NaviMachine> naviMachine;
     EventQueue postponedEvents;
+    bool inNaviMachine = false;
 
     // settings:
     /// if false, tilting with touchscreen gestures will be disabled
