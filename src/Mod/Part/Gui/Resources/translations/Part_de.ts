@@ -8090,7 +8090,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="571"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Keine Referenz</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="577"/>

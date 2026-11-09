@@ -1183,12 +1183,12 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="141"/>
       <source>Description of current mesh accuracy level</source>
-      <translation type="unfinished">Description of current mesh accuracy level</translation>
+      <translation>Penerangan tahap ketepatan jejaring semasa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="144"/>
       <source>Balanced - Good compromise with solid results</source>
-      <translation type="unfinished">Balanced - Good compromise with solid results</translation>
+      <translation>Seimbang - Kompromi yang baik dengan hasil yang mantap</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPlanarSurfaceEdit.ui" line="174"/>
@@ -1352,7 +1352,7 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="37"/>
       <source>Reverse the cut direction (enters at the deep end)</source>
-      <translation type="unfinished">Reverse the cut direction (enters at the deep end)</translation>
+      <translation>Songsangkan arah pemotongan (masuk pada bahagian dalam)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="40"/>
@@ -1362,7 +1362,7 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="48"/>
       <source>Pull the path end back by the tool radius when the flute terminates at depth (blind end). Has no effect when the path ramps back up to stock surface.</source>
-      <translation type="unfinished">Pull the path end back by the tool radius when the flute terminates at depth (blind end). Has no effect when the path ramps back up to stock surface.</translation>
+      <translation>Tarik hujung laluan ke belakang mengikut jejari mata alat apabila lurah mata (*flute*) berakhir pada kedalaman tertentu (hujung tertutup/buta). Tidak memberi kesan apabila laluan menaik semula ke permukaan bahan (*stock*).</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="51"/>
@@ -1372,7 +1372,7 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="59"/>
       <source>Merge connected edges that meet tangent-continuously (collinear lines or smoothly-joined curves) into a single flute path. Uncheck to keep every selected edge as its own independent flute path.</source>
-      <translation type="unfinished">Merge connected edges that meet tangent-continuously (collinear lines or smoothly-joined curves) into a single flute path. Uncheck to keep every selected edge as its own independent flute path.</translation>
+      <translation>Cantumkan tepi bersambung yang bertemu secara tangen selanjar (garisan segaris atau lengkung bersambung lancar) menjadi satu laluan lurah tunggal. Nyahpilih untuk mengekalkan setiap tepi yang dipilih sebagai laluan lurahnya sendiri yang berasingan.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="62"/>
@@ -1424,7 +1424,7 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="125"/>
       <source>Z profile for a flat (2D) wire: RampFull ramps the full length; RampStart ramps only the entry; RampStartEnd ramps entry and exit.</source>
-      <translation type="unfinished">Z profile for a flat (2D) wire: RampFull ramps the full length; RampStart ramps only the entry; RampStartEnd ramps entry and exit.</translation>
+      <translation>Profil Z untuk wayar rata (2D): RampFull merup sepanjang keseluruhan; RampStart merup bahagian masuk sahaja; RampStartEnd merup bahagian masuk dan keluar.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="133"/>
@@ -1444,7 +1444,7 @@ Tidak menjejaskan jarak titik laluan alat (Sample Interval).</translation>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="155"/>
       <source>Whether Ramp Length or Ramp % defines the ramp size. They are independent — only the selected one is used, and it applies to every selected wire.</source>
-      <translation type="unfinished">Whether Ramp Length or Ramp % defines the ramp size. They are independent — only the selected one is used, and it applies to every selected wire.</translation>
+      <translation>Sama ada Panjang Rup (*Ramp Length*) atau % Rup (*Ramp %*) yang menentukan saiz rup. Kedua-duanya bebas — hanya pilihan yang dipilih akan digunakan, dan ia terpakai pada setiap wayar yang dipilih.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="163"/>
@@ -7625,7 +7625,7 @@ this gives the pause of the next move</translation>
     <message>
       <location filename="../../../Path/Op/Flute.py" line="1458"/>
       <source>Pull the path end back by the tool radius when the flute terminates at depth (blind end). Has no effect when the path ramps back up to stock surface.</source>
-      <translation type="unfinished">Pull the path end back by the tool radius when the flute terminates at depth (blind end). Has no effect when the path ramps back up to stock surface.</translation>
+      <translation>Tarik hujung laluan ke belakang mengikut jejari mata alat apabila lurah mata (*flute*) berakhir pada kedalaman tertentu (hujung tertutup/buta). Tidak memberi kesan apabila laluan menaik semula ke permukaan bahan (*stock*).</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Flute.py" line="1470"/>

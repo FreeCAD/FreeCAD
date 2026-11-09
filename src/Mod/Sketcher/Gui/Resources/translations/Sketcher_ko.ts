@@ -3367,7 +3367,7 @@ the characters listed here will be drawn using a substitute font.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
       <source>Hides all object features that depend on the opened sketch</source>
-      <translation>열려 있는 스케치에 종속되는 모든 객체의 형상을 숨깁니다</translation>
+      <translation>열려 있는 스케치에 종속되는 모든 대상체의 특징형상을 숨깁니다</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="585"/>

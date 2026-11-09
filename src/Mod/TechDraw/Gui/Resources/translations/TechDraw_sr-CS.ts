@@ -10082,7 +10082,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>Simple</source>
-      <translation>Jednostavno</translation>
+      <translation>Jednostavni</translation>
     </message>
   </context>
   <context>

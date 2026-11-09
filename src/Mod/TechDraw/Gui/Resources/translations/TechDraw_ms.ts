@@ -8848,7 +8848,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="50"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="88"/>

@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>이 옵션을 선택하면 피처가 트리 보기에서 하위 항목을 자신의 자식으로 표시합니다</translation>
+      <translation>이 옵션을 선택하면 특징형상이 나무 보기에서 하위 항목을 자신의 자식으로 표시합니다</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>

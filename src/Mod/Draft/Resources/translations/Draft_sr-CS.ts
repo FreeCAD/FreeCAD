@@ -374,7 +374,7 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular Array</source>
-      <translation>Kružno umnožavanje</translation>
+      <translation>Prstenasto umnožavanje</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
@@ -403,7 +403,7 @@ It cannot be zero.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="120"/>
       <source>The number of symmetry lines in the circular array</source>
-      <translation>Broj linija simetrije u kružnom umnožavanju</translation>
+      <translation>Broj linija simetrije u prstenastom umnožavanju</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
@@ -4549,7 +4549,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="703"/>
       <source>Trimex: move the mouse into the 3D view before typing a value</source>
-      <translation type="unfinished">Trimex: move the mouse into the 3D view before typing a value</translation>
+      <translation>Trimeks: pre nego što unesete vrednost, pomerite miš u 3D pogled</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="714"/>
@@ -5215,7 +5215,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="92"/>
       <source>Circular Array</source>
-      <translation>Kružno umnožavanje</translation>
+      <translation>Prstenasto umnožavanje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="185"/>
@@ -5249,7 +5249,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="275"/>
       <source>Create Circular Array</source>
-      <translation>Napravi kružno umnožavanje</translation>
+      <translation>Napravi prstenasto umnožavanje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="362"/>
@@ -7359,7 +7359,7 @@ U suprotnom, kopije će imati istu orijentaciju kao originalni bazni objekat.</t
       <translation>Vrste umnožavanja koje možete napraviti.
 - Pravougaono: postavlja kopije u pravcu glavnih X, Y, Z osa.
 - Polar: postavlja kopije po kružnom luku, do određenog ugla, i sa određenom orijentacijom definisanom centrom i osom.
-- Kružno: postavlja kopije u koncentrične kružne prstenove oko baznog objekta.</translation>
+- Prstenasto: postavlja kopije u koncentrične kružnice oko baznog objekta.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
@@ -7402,13 +7402,13 @@ U suprotnom, kopije će imati istu orijentaciju kao originalni bazni objekat.</t
     <message>
       <location filename="../../draftobjects/array.py" line="216"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>Smer ose oko koje će se napraviti elementi prilikom polarnog ili kružnog umnožavanja</translation>
+      <translation>Smer ose oko koje će se napraviti elementi prilikom polarnog ili prstenastog umnožavanja</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="228"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation>Centar polarnog i kružnog umnožavanja.
+      <translation>Centar polarnog i prstenastog umnožavanja.
 'Osa' prolazi kroz ovu tačku.</translation>
     </message>
     <message>
@@ -7417,7 +7417,7 @@ The 'Axis' passes through this point.</source>
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
       <translation>Objekat osa koji zamenjuje vrednost 'Osa' i 'Centar', na primer, pomoćna linija.
-Njen položaj će se koristiti prilikom polarnog i kružnog umnožavanja.
+Njen položaj će se koristiti prilikom polarnog i prstenastog umnožavanja.
 Ostavi ovu osobinu praznom da bi mogao ručno da podesiš 'Osu' i 'Centar'.</translation>
     </message>
     <message>
@@ -7453,7 +7453,7 @@ Ostavi ovu osobinu praznom da bi mogao ručno da podesiš 'Osu' i 'Centar'.</tra
     <message>
       <location filename="../../draftobjects/array.py" line="313"/>
       <source>A parameter that determines how many symmetry planes the circular array will have</source>
-      <translation>Parametar koji određuje koliko će ravni simetrije imati kružno umnožavanje</translation>
+      <translation>Parametar koji određuje koliko će ravni simetrije imati prstenasto umnožavanje</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="141"/>
@@ -8211,7 +8211,7 @@ iznad kotne linije</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="80"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation>Alatke za pravljnje različitih vrsta umnožavanja: pravougaono, polarno, kružno, po vodilji i umnožavanje tačaka</translation>
+      <translation>Alatke za pravljnje različitih vrsta umnožavanja: pravougaono, polarno, prstenasto, po vodilji i umnožavanje tačaka</translation>
     </message>
   </context>
   <context>
@@ -8260,7 +8260,7 @@ Kontrolne tačke i svojstva svakog čvora se mogu uređivati nakon konstruisanja
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="59"/>
       <source>Circular Array</source>
-      <translation>Kružno umnožavanje</translation>
+      <translation>Prstenasto umnožavanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="63"/>

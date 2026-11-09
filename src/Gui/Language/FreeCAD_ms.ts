@@ -744,7 +744,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="298"/>
       <source>Out of range</source>
-      <translation type="unfinished">Out of range</translation>
+      <translation>Di luar julat</translation>
     </message>
   </context>
   <context>
@@ -782,7 +782,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="457"/>
       <source>Current View</source>
-      <translation type="unfinished">Current View</translation>
+      <translation>Pandangan Semasa</translation>
     </message>
   </context>
   <context>
@@ -825,7 +825,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Custom Clipping Direction</source>
-      <translation type="unfinished">Custom Clipping Direction</translation>
+      <translation>Arah Pemotongan Tersuai</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -881,7 +881,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../DemoMode.ui" line="146"/>
       <source>Fullscreen</source>
-      <translation type="unfinished">Fullscreen</translation>
+      <translation>Skrin Penuh</translation>
     </message>
     <message>
       <location filename="../DemoMode.ui" line="153"/>
@@ -941,7 +941,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Tambah Sifat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="27"/>
@@ -951,12 +951,12 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="51"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="58"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Petua Alat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
@@ -976,32 +976,32 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="666"/>
       <source>Invalid group name</source>
-      <translation type="unfinished">Invalid group name</translation>
+      <translation>Nama kumpulan tidak betul</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="669"/>
       <source>Invalid type name</source>
-      <translation type="unfinished">Invalid type name</translation>
+      <translation>Nama jenis tidak sah</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="675"/>
       <source>Invalid property name '%1'</source>
-      <translation type="unfinished">Invalid property name '%1'</translation>
+      <translation>Nama sifat '%1' tidak sah</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="678"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>Sifat '%1' telah wujud</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="681"/>
       <source>'%1' is a constant</source>
-      <translation type="unfinished">'%1' is a constant</translation>
+      <translation>'%1' ialah pemalar</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="684"/>
       <source>'%1' is a unit</source>
-      <translation type="unfinished">'%1' is a unit</translation>
+      <translation>'%1' ialah unit</translation>
     </message>
   </context>
   <context>
@@ -1014,7 +1014,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished">Site</translation>
+      <translation>Tapak</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="46"/>
@@ -1042,7 +1042,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgCheckableMessageBox.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>Perbualan</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCheckableMessageBox.ui" line="45"/>
@@ -1057,7 +1057,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgCheckableMessageBox.h" line="126"/>
       <source>Don't show me again</source>
-      <translation type="unfinished">Don't show me again</translation>
+      <translation>Jangan tunjukkan lagi</translation>
     </message>
   </context>
   <context>
@@ -1070,7 +1070,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgChooseIcon.ui" line="38"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Folder Ikon</translation>
     </message>
   </context>
   <context>
@@ -1088,7 +1088,7 @@ sambil melakukan klik kiri atau kanan, kemudian gerakkan tetikus ke atas atau ke
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePack.ui" line="38"/>
       <source>Browse</source>
-      <translation type="unfinished">Browse</translation>
+      <translation>Layari</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePack.ui" line="60"/>
@@ -2129,7 +2129,7 @@ Specify another directory.</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="79"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="250"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="93"/>
@@ -4971,7 +4971,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="463"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>Folder Ikon</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
@@ -5541,7 +5541,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../Dialogs/DlgTreeWidget.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>Perbualan</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgTreeWidget.ui" line="27"/>
@@ -6692,7 +6692,7 @@ How do you want to proceed?</translation>
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="183"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
   </context>
   <context>
@@ -9981,7 +9981,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1909"/>
       <source>Fullscreen</source>
-      <translation type="unfinished">Fullscreen</translation>
+      <translation>Skrin Penuh</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1910"/>
@@ -14675,7 +14675,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="17"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>Perbualan</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="26"/>
@@ -14988,7 +14988,7 @@ treated as shortcut key sequence 'F, F'.</translation>
     <message>
       <location filename="../Widgets.cpp" line="1924"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
   </context>
   <context>

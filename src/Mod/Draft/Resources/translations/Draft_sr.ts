@@ -374,7 +374,7 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular Array</source>
-      <translation>Кружно умножавање</translation>
+      <translation>Прстенасто умножавање</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
@@ -403,7 +403,7 @@ It cannot be zero.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="120"/>
       <source>The number of symmetry lines in the circular array</source>
-      <translation>Број линија симетрије у кружном умножавању</translation>
+      <translation>Број линија симетрије у прстенастом умножавању</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
@@ -4551,7 +4551,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="703"/>
       <source>Trimex: move the mouse into the 3D view before typing a value</source>
-      <translation type="unfinished">Trimex: move the mouse into the 3D view before typing a value</translation>
+      <translation>Тримекс: пре него што унесете вредност, померите миш у 3Д поглед</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="714"/>
@@ -5217,7 +5217,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="92"/>
       <source>Circular Array</source>
-      <translation>Кружно умножавање</translation>
+      <translation>Прстенасто умножавање</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="185"/>
@@ -5251,7 +5251,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="275"/>
       <source>Create Circular Array</source>
-      <translation>Направи кружно умножавање</translation>
+      <translation>Направи прстенасто умножавање</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="362"/>
@@ -7361,7 +7361,7 @@ Otherwise the copies will have the same orientation as the original Base object.
       <translation>Врсте умножавања које можете направити.
 - Правоугаоно: поставља копије у правцу главних X, Y, Z оса.
 - Полар: поставља копије по кружном луку, до одређеног угла, и са одређеном оријентацијом дефинисаном центром и осом.
-- Кружно: поставља копије у концентричне кружне прстенове око базног објекта.</translation>
+- Прстенасто: поставља копије у концентричне кружнице око базног објекта.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="120"/>
@@ -7404,13 +7404,13 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="../../draftobjects/array.py" line="216"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>Смер осе око које ће се направити елементи приликом поларног или кружног умножавања</translation>
+      <translation>Смер осе око које ће се направити елементи приликом поларног или прстенастог умножавања</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="228"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation>Центар поларног и кружног умножавања.
+      <translation>Центар поларног и прстенастог умножавања.
 'Оса' пролази кроз ову тачку.</translation>
     </message>
     <message>
@@ -7419,7 +7419,7 @@ The 'Axis' passes through this point.</source>
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
       <translation>Објекат оса који замењује вредност 'Оса' и 'Центар', на пример, помоћна линија.
-Њен положај ће се користити приликом поларног и кружног умножавања.
+Њен положај ће се користити приликом поларног и прстенастог умножавања.
 Остави ову особину празном да би могао ручно да подесиш 'Осу' и 'Центар'.</translation>
     </message>
     <message>
@@ -7455,7 +7455,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
     <message>
       <location filename="../../draftobjects/array.py" line="313"/>
       <source>A parameter that determines how many symmetry planes the circular array will have</source>
-      <translation>Параметар који одређује колико ће равни симетрије имати кружно умножавање</translation>
+      <translation>Параметар који одређује колико ће равни симетрије имати прстенасто умножавање</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="141"/>
@@ -8213,7 +8213,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="80"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation>Алатке за прављње различитих врста умножавања: правоугаоно, поларно, кружно, по водиљи и умножавање тачака</translation>
+      <translation>Алатке за прављње различитих врста умножавања: правоугаоно, прстенасто, кружно, по водиљи и умножавање тачака</translation>
     </message>
   </context>
   <context>
@@ -8262,7 +8262,7 @@ Control points and properties of each knot can be edited after creation.</source
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="59"/>
       <source>Circular Array</source>
-      <translation>Кружно умножавање</translation>
+      <translation>Прстенасто умножавање</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="63"/>

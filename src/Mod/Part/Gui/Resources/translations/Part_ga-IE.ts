@@ -8098,7 +8098,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="571"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Gan tagairt</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="577"/>

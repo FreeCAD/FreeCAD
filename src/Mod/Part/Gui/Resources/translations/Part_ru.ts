@@ -2198,7 +2198,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2651"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Круговой массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2686"/>
@@ -2213,12 +2213,12 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2756"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Линейный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2791"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Полярный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2819"/>
@@ -2878,8 +2878,8 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgExtrusion.cpp" line="598"/>
       <source>Creating extrusion failed.
 No shape could be extruded.</source>
-      <translation type="unfinished">Creating extrusion failed.
-No shape could be extruded.</translation>
+      <translation>Не удалось создать выдавливание.
+Нет формы для выдавливания.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
@@ -4606,7 +4606,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="55"/>
       <source>Automatic refinement of Part Boolean results</source>
-      <translation type="unfinished">Automatic refinement of Part Boolean results</translation>
+      <translation>Автоматическое улучшение результатов булевых операций верстака Деталь</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
@@ -8070,7 +8070,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="165"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Круговой массив ссылок</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="168"/>
@@ -8085,12 +8085,12 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="175"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Полярный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="178"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Линейный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../TaskLinkArrayParameters.cpp" line="321"/>
@@ -8180,7 +8180,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2637"/>
       <source>Circular Link Array</source>
-      <translation type="unfinished">Circular Link Array</translation>
+      <translation>Круговой массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2638"/>
@@ -8234,7 +8234,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Linear Link Array</source>
-      <translation type="unfinished">Linear Link Array</translation>
+      <translation>Линейный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2743"/>
@@ -8252,7 +8252,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../Command.cpp" line="2777"/>
       <source>Polar Link Array</source>
-      <translation type="unfinished">Polar Link Array</translation>
+      <translation>Полярный массив ссылок</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2778"/>

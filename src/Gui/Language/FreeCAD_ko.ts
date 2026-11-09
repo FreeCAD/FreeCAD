@@ -6589,7 +6589,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
-      <translation>문서 %4의 객체 %2(%3)에 있는 속성 %1은 다음에 의해 참조됩니다:</translation>
+      <translation>문서 %4의 대상체 %2(%3)에 있는 속성 %1은 다음에 의해 참조됩니다:</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1037"/>
@@ -9450,7 +9450,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandFeat.cpp" line="58"/>
       <source>Recomputes a feature or document</source>
-      <translation>재계산 기능 또는 문서</translation>
+      <translation>특징형상 또는 문서를 재계산합니다</translation>
     </message>
   </context>
   <context>

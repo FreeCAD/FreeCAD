@@ -7188,7 +7188,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="352"/>
       <source>Regardless of feature size (RFS)</source>
-      <translation>피처 크기 무관(RFS)</translation>
+      <translation>대상체 크기 무관(RFS)</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="367"/>
@@ -9970,7 +9970,7 @@ there is an open task dialog.</source>
       <location filename="../../CommandExtensionDims.cpp" line="230"/>
       <location filename="../../CommandExtensionDims.cpp" line="407"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
-      <translation>치수 앞에 반복 피처 횟수를 삽입합니다.</translation>
+      <translation>치수 앞에 반복되는 특징형상 횟수를 삽입합니다</translation>
     </message>
   </context>
   <context>

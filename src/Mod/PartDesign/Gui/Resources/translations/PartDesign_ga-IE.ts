@@ -3415,7 +3415,7 @@ fad a thomhas feadh an treo shonraithe</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="423"/>
       <location filename="../../TaskTransformedParameters.cpp" line="509"/>
       <source>No reference</source>
-      <translation type="unfinished">No reference</translation>
+      <translation>Gan tagairt</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>

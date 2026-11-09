@@ -10905,7 +10905,7 @@ Dialog../ui/dialogClassification.ui../ui/dialogIfcProperties.ui../ui/dialogIfcEl
       <location filename="../../bimcommands/BimIfcExplorer.py" line="90"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="101"/>
       <source>Value</source>
-      <translation type="unfinished">Value</translation>
+      <translation>Nilai</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="100"/>

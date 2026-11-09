@@ -6109,7 +6109,7 @@ Building creation aborted.</source>
       <location filename="../../bimcommands/BimSpace.py" line="71"/>
       <location filename="../../bimcommands/BimRoof.py" line="94"/>
       <source>%1 select a base object</source>
-      <translation>기준 객체를 %1 선택하세요</translation>
+      <translation>기준 대상체를 %1 선택하세요</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -9994,7 +9994,7 @@ Ignored if this wall is based on a solid.</source>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="42"/>
       <source>Cuts an object with a plane</source>
-      <translation>평면으로 객체를 자릅니다</translation>
+      <translation>평면으로 대상체를 자릅니다</translation>
     </message>
   </context>
   <context>
@@ -11662,7 +11662,7 @@ Alt+PgUp으로 돌출부 확장, Alt+PgDown으로 돌출부 축소, Alt+/로 자
     <message>
       <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Save Visibility of Objects</source>
-      <translation>객체 가시성 저장</translation>
+      <translation>대상체 가시성 저장</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="131"/>
@@ -13721,7 +13721,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="120"/>
       <source>Creates a 2D projection of only the intersecting faces of the selected objects on the XY-plane.</source>
-      <translation>선택한 객체들의 교차하는 면만을 XY 평면에 2D 투영합니다.</translation>
+      <translation>선택한 대상체들의 교차하는 면만을 XY평면에 2D 투영합니다.</translation>
     </message>
   </context>
   <context>
@@ -13729,7 +13729,7 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="35"/>
       <source>2D Offset</source>
-      <translation>2D 오프셋</translation>
+      <translation>2D 편차</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="36"/>
@@ -13755,12 +13755,12 @@ Do you want to proceed?</source>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="35"/>
       <source>Remove From Group</source>
-      <translation>그룹에서 제거</translation>
+      <translation>모둠에서 제거</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Removes this object from its parent group</source>
-      <translation>이 객체를 상위 그룹에서 제거합니다</translation>
+      <translation>이 대상체를 상위 모둠에서 제거합니다</translation>
     </message>
   </context>
   <context>
